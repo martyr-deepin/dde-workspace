@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Karim Oulad Chalha <herr.linux88@gmail.com>, 2013
+# Mohd <mo-hd@windowslive.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Destkop Environment\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-18 10:28+0800\n"
-"PO-Revision-Date: 2013-12-25 22:01+0000\n"
-"Last-Translator: Karim Oulad Chalha <herr.linux88@gmail.com>\n"
+"POT-Creation-Date: 2014-04-10 13:26+0800\n"
+"PO-Revision-Date: 2014-04-10 05:22+0000\n"
+"Last-Translator: electricface <songwentai@linuxdeepin.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/projects/p/deepin-destkop-environment/language/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,288 +19,12 @@ msgstr ""
 "Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#: ../resources/launcher/js/grid.coffee:87
-#: ../resources/desktop/js/specialitem.coffee:51
-#: ../resources/desktop/js/specialitem.coffee:138
-#: ../resources/desktop/js/specialitem.coffee:232
-#: ../resources/desktop/js/specialitem.coffee:284
-#: ../resources/desktop/js/desktopentry.coffee:101
-#: ../resources/desktop/js/richdir.coffee:130
-#: ../resources/desktop/js/richdir.coffee:458
-msgid "_Open"
-msgstr "_فتح"
-
-#: ../resources/launcher/js/grid.coffee:91
-msgid "Send to d_esktop"
-msgstr "إرسال إلى _سطح المكتب "
-
-#: ../resources/launcher/js/grid.coffee:92
-msgid "Send to do_ck"
-msgstr "إرسال إلى الرضيف"
-
-#: ../resources/launcher/js/search.coffee:29
-msgid "Type to search..."
-msgstr "أكتب للبحث..."
-
-#: ../resources/launcher/js/config.coffee:31
-msgid "_Hide hidden icons"
-msgstr "أخفي الأيقونات الم_خفية"
-
-#: ../resources/launcher/js/config.coffee:32
-msgid "_Display hidden icons"
-msgstr "أظ_هر الأيقونات المخفية"
-
-#: ../resources/launcher/js/config.coffee:35
-msgid "_Hide this icon"
-msgstr "أخفي هذه ال_أيقونة"
-
-#: ../resources/launcher/js/config.coffee:36
-msgid "_Display this icon"
-msgstr "أ_ظهر هذه الأيقونة"
-
-#: ../resources/launcher/js/config.coffee:41
-msgid "_Add to autostart"
-msgstr "أ_ضف إلى برمجيات تلقائية التشغيل"
-
-#: ../resources/launcher/js/config.coffee:42
-msgid "_Remove from autostart"
-msgstr "حذف من البرمجيات تلقائية التشغيل"
-
-#: ../resources/launcher/js/config.coffee:48
-msgid "Sort By _Frequency"
-msgstr "رتب حسب التر_دد"
-
-#: ../resources/launcher/js/config.coffee:49
-msgid "Sort By _Name"
-msgstr "رتب _حسب الإسم"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Jan"
-msgstr "يناير"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Feb"
-msgstr "فبراير"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Mar"
-msgstr "مارس"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Apr"
-msgstr "أبريل"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "May"
-msgstr "مايو"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Jun"
-msgstr "يونيو"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Jul"
-msgstr "يوليو"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Aug"
-msgstr "أغسطس"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Sep"
-msgstr "سبتمبر"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Oct"
-msgstr "أكتوبر"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Nov"
-msgstr "نوفمبر"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Dec"
-msgstr "ديسمبر"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Sun"
-msgstr "الأحد"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Mon"
-msgstr "الإثنين"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Tue"
-msgstr "الثلاثاء"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Wed"
-msgstr "الأربعاء"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Thu"
-msgstr "الخميس"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Fri"
-msgstr "الجمعة"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Sat"
-msgstr "السبت"
-
-#: ../resources/greeter/js/user.coffee:109
-msgid "Administrator"
-msgstr "المدير"
-
-#: ../resources/greeter/js/user.coffee:110
-#: ../resources/greeter/js/user.coffee:111
-#: ../resources/greeter/js/user.coffee:112
-msgid "Standard user"
-msgstr "المستخدم العادي"
-
-#: ../resources/greeter/js/user.coffee:160
-msgid "guest"
-msgstr "الضيف"
-
-#: ../resources/greeter/js/user.coffee:308
-msgid "Log In"
-msgstr "تسجبل الخروج"
-
-#: ../resources/greeter/js/user.coffee:310
-msgid "Unlock"
-msgstr "إلغاء القفل"
-
-#: ../resources/greeter/js/user.coffee:530
-msgid "Welcome"
-msgstr "أهلا وسهلا"
-
-#: ../resources/greeter/js/lock.coffee:62
-#: ../resources/greeter/js/greeter.coffee:88
-msgid "ShutDown"
-msgstr "إطفاء الجهاز"
-
-#: ../resources/greeter/js/powermenu.coffee:71
-msgid "suspend"
-msgstr "علق"
-
-#: ../resources/greeter/js/powermenu.coffee:75
-msgid "restart"
-msgstr "إعادة التشغيل"
-
-#: ../resources/dock/js/launcher.coffee:47 ../lib/dentry/mime_actions.c:213
-msgid "_Run"
-msgstr "ت_شغيل"
-
-#: ../resources/dock/js/launcher.coffee:56
-msgid "_Undock"
-msgstr "إلغاء الق_فل"
-
-#: ../resources/dock/js/deepin_item.coffee:97
-#: ../resources/desktop/js/specialitem.coffee:240
-msgid "_Clean up"
-msgstr "_تنضيف"
-
-#: ../resources/dock/js/deepin_item.coffee:99
-#: ../resources/dock/js/clientgroup.coffee:116
-msgid "_Close"
-msgstr "_غلق"
-
-#: ../resources/dock/js/deepin_item.coffee:119
-#: ../resources/desktop/js/desktopentry.coffee:150
-msgid "Can not open this file."
-msgstr "لا يمكن فتح هذا الملف."
-
-#: ../resources/dock/js/deepin_item.coffee:119
-#: ../resources/desktop/js/application.coffee:177
-#: ../resources/desktop/js/desktopentry.coffee:150
-#: ../resources/desktop/js/richdir.coffee:351
-#: ../resources/desktop/js/richdir.coffee:476
-msgid "Warning"
-msgstr "تحذير"
-
-#: ../resources/dock/js/deepin_item.coffee:225
-msgid "_View as analog"
-msgstr "عرض كنظير"
-
-#: ../resources/dock/js/deepin_item.coffee:226
-#: ../resources/dock/js/deepin_item.coffee:266
-msgid "_Time settings"
-msgstr "إ_عدادات الوقت"
-
-#: ../resources/dock/js/deepin_item.coffee:265
-msgid "_View as digit"
-msgstr "ع_رض كأرقام"
-
-#: ../resources/dock/js/deepin_item.coffee:290
-msgid "Launcher"
-msgstr "مُطلق"
-
-#: ../resources/dock/js/deepin_item.coffee:291
-msgid "Show/Hide Desktop"
-msgstr "عرض/إخفاء سطح المكتب"
-
-#: ../resources/dock/js/deepin_item.coffee:292
-#: ../resources/desktop/js/specialitem.coffee:173
-msgid "Trash"
-msgstr "المهملات"
-
-#: ../resources/dock/js/clientgroup.coffee:106
-msgid "_New Window"
-msgstr "نافذة _جديدة"
-
-#: ../resources/dock/js/clientgroup.coffee:117
-msgid "Close _All"
-msgstr "غل_ق الكل"
-
-#: ../resources/dock/js/clientgroup.coffee:119
-msgid "_Dock me"
-msgstr "رصف_ني"
-
-#: ../resources/dock/js/item.coffee:302
-msgid "The item is invalid. Do you want to remove it from the dock panel?"
-msgstr "العنصر غير سليم. هل ترغب في حذفه من رصيف اللوحة؟"
-
-#: ../resources/desktop/js/specialitem.coffee:34
-msgid "Computer"
-msgstr "حاسوب"
-
-#: ../resources/desktop/js/specialitem.coffee:53
-#: ../resources/desktop/js/specialitem.coffee:140
-#: ../resources/desktop/js/desktopentry.coffee:109
-#: ../resources/desktop/js/richdir.coffee:465
-msgid "_Properties"
-msgstr "_خصائص"
-
-#: ../resources/desktop/js/specialitem.coffee:83
-msgid "Home"
-msgstr "المنزل"
-
-#: ../resources/desktop/js/specialitem.coffee:236
-msgid "_Clean up %1 items"
-msgstr "تنضي_ف %1 عناصر"
-
-#: ../resources/desktop/js/specialitem.coffee:238
-msgid "_Clean up 1 item"
-msgstr "تنضي_ف عنصر 1"
-
-#: ../resources/desktop/js/specialitem.coffee:268
-msgid "Software Center"
-msgstr "مركز برمجيات"
-
 #: ../resources/desktop/js/invalidlink.coffee:34
-#: ../resources/desktop/js/desktopentry.coffee:107
 #: ../resources/desktop/js/richdir.coffee:136
 #: ../resources/desktop/js/richdir.coffee:463
+#: ../resources/desktop/js/desktopentry.coffee:107
 msgid "_Delete"
 msgstr "_حذف"
-
-#: ../resources/desktop/js/application.coffee:177
-#: ../resources/desktop/js/richdir.coffee:351
-#: ../resources/desktop/js/richdir.coffee:476
-msgid "The link has expired. Do you want to delete it?"
-msgstr "الرابط قد إنتهت صلاحيته. هل تريد حذفه؟"
 
 #: ../resources/desktop/js/grid.coffee:70 ../lib/dentry/fileops.c:402
 msgid "Untitled"
@@ -349,20 +74,55 @@ msgstr "إعدادات س_طح المكتب"
 msgid "Pe_rsonalize"
 msgstr "ت_خصيص"
 
-#: ../resources/desktop/js/desktopentry.coffee:103
+#: ../resources/desktop/js/richdir.coffee:130
+#: ../resources/desktop/js/richdir.coffee:458
+#: ../resources/desktop/js/desktopentry.coffee:101
+#: ../resources/desktop/js/specialitem.coffee:51
+#: ../resources/desktop/js/specialitem.coffee:138
+#: ../resources/desktop/js/specialitem.coffee:232
+#: ../resources/desktop/js/specialitem.coffee:284
+#: ../resources/launcher/js/grid.coffee:91
+msgid "_Open"
+msgstr "_فتح"
+
+#: ../resources/desktop/js/richdir.coffee:132
+#: ../resources/desktop/js/desktopentry.coffee:106
+msgid "_Rename"
+msgstr "_إعادة التسمية"
+
+#: ../resources/desktop/js/richdir.coffee:134
+msgid "_Ungroup"
+msgstr "إلغاء التجمي_ع"
+
+#: ../resources/desktop/js/richdir.coffee:351
+#: ../resources/desktop/js/richdir.coffee:476
+#: ../resources/desktop/js/application.coffee:177
+msgid "The link has expired. Do you want to delete it?"
+msgstr "إنتهت صلاحية الرابط. هل تريد حذفه ؟"
+
+#: ../resources/desktop/js/richdir.coffee:351
+#: ../resources/desktop/js/richdir.coffee:476
+#: ../resources/desktop/js/desktopentry.coffee:150
+#: ../resources/desktop/js/application.coffee:177
+msgid "Warning"
+msgstr "تحذير"
+
 #: ../resources/desktop/js/richdir.coffee:460
+#: ../resources/desktop/js/desktopentry.coffee:103
 msgid "Cu_t"
 msgstr "ق_ص"
 
-#: ../resources/desktop/js/desktopentry.coffee:104
 #: ../resources/desktop/js/richdir.coffee:461
+#: ../resources/desktop/js/desktopentry.coffee:104
 msgid "_Copy"
 msgstr "_نسخ"
 
-#: ../resources/desktop/js/desktopentry.coffee:106
-#: ../resources/desktop/js/richdir.coffee:132
-msgid "_Rename"
-msgstr "_إعادة التسمية"
+#: ../resources/desktop/js/richdir.coffee:465
+#: ../resources/desktop/js/desktopentry.coffee:109
+#: ../resources/desktop/js/specialitem.coffee:53
+#: ../resources/desktop/js/specialitem.coffee:140
+msgid "_Properties"
+msgstr "_خصائص"
 
 #: ../resources/desktop/js/desktopentry.coffee:115
 #: ../resources/desktop/js/desktopentry.coffee:122
@@ -379,87 +139,233 @@ msgstr "_إستخراج"
 msgid "Extract _Here"
 msgstr "إستخراج _هنا"
 
-#: ../resources/desktop/js/richdir.coffee:134
-msgid "_Ungroup"
-msgstr "إلغاء التجمي_ع"
+#: ../resources/desktop/js/desktopentry.coffee:150
+msgid "Can not open this file."
+msgstr "لا يمكن فتح هذا الملف."
 
-#: ../resources/shutdown/js/utils.coffee:26
-msgid "Lock"
-msgstr "قفل"
+#: ../resources/desktop/js/specialitem.coffee:34
+msgid "Computer"
+msgstr "الكمبيوتر"
 
-#: ../resources/shutdown/js/utils.coffee:26
-msgid "Suspend"
-msgstr "علق"
+#: ../resources/desktop/js/specialitem.coffee:83
+msgid "Home"
+msgstr "المنزل"
 
-#: ../resources/shutdown/js/utils.coffee:26
-msgid "Log out"
-msgstr "تسجيل الخروج"
+#: ../resources/desktop/js/specialitem.coffee:173
+msgid "Trash"
+msgstr "المهملات"
 
-#: ../resources/shutdown/js/utils.coffee:26
-msgid "Restart"
+#: ../resources/desktop/js/specialitem.coffee:236
+msgid "_Clean up %1 items"
+msgstr "تنظي_ف %1 عناصر"
+
+#: ../resources/desktop/js/specialitem.coffee:238
+msgid "_Clean up 1 item"
+msgstr "تنظي_ف عنصر 1"
+
+#: ../resources/desktop/js/specialitem.coffee:240
+msgid "_Clean up"
+msgstr "_تنظيف"
+
+#: ../resources/desktop/js/specialitem.coffee:268
+msgid "Software Center"
+msgstr "مركز البرمجيات"
+
+#: ../resources/dock/js/deepin_item.coffee:66
+msgid "Launcher"
+msgstr "مُطلق"
+
+#: ../resources/dock/js/deepin_item.coffee:69
+msgid "Show/Hide Desktop"
+msgstr "عرض / إخفاء سطح المكتب"
+
+#: ../resources/dock/js/clientgroup.coffee:36
+msgid "_New window"
+msgstr ""
+
+#: ../resources/dock/js/clientgroup.coffee:49
+msgid "_Close"
+msgstr "_إغلاق"
+
+#: ../resources/dock/js/clientgroup.coffee:50
+msgid "Close _All"
+msgstr "إغلا_ق الكل"
+
+#: ../resources/dock/js/clientgroup.coffee:52
+msgid "_Dock me"
+msgstr "رصف_ني"
+
+#: ../resources/dock/js/launcher.coffee:42 ../lib/dentry/mime_actions.c:213
+msgid "_Run"
+msgstr "ت_شغيل"
+
+#: ../resources/dock/js/launcher.coffee:56
+msgid "_Undock"
+msgstr "إلغاء الق_فل"
+
+#: ../resources/dock/js/item.coffee:267
+msgid "The item is invalid. Do you want to remove it from the dock panel?"
+msgstr "العنصر غير سليم. هل ترغب في حذفه من رصيف اللوحة ؟"
+
+#: ../resources/greeter/js/greeter.coffee:57
+msgid "guest"
+msgstr "الضيف"
+
+#: ../resources/greeter/js/user.coffee:80
+msgid "Log In"
+msgstr "تسجبل الدخول"
+
+#: ../resources/greeter/js/user.coffee:82
+msgid "Unlock"
+msgstr "إلغاء القفل"
+
+#: ../resources/greeter/js/user.coffee:115
+msgid "Welcome"
+msgstr "مرحباً"
+
+#: ../resources/greeter/js/user.coffee:121
+msgid "Switch User"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Jan"
+msgstr "يناير"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Feb"
+msgstr "فبراير"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Mar"
+msgstr "مارس"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Apr"
+msgstr "أبريل"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "May"
+msgstr "مايو"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Jun"
+msgstr "يونيو"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Jul"
+msgstr "يوليو"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Aug"
+msgstr "أغسطس"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Sep"
+msgstr "سبتمبر"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Oct"
+msgstr "أكتوبر"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Nov"
+msgstr "نوفمبر"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Dec"
+msgstr "ديسمبر"
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Sun"
+msgstr "الأحد"
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Mon"
+msgstr "الإثنين"
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Tue"
+msgstr "الثلاثاء"
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Wed"
+msgstr "الأربعاء"
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Thu"
+msgstr "الخميس"
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Fri"
+msgstr "الجمعة"
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Sat"
+msgstr "السبت"
+
+#: ../resources/greeter/js/session.coffee:25
+msgid "Session"
+msgstr ""
+
+#: ../resources/greeter/js/session.coffee:134
+msgid "suspend"
+msgstr "تعليق"
+
+#: ../resources/greeter/js/session.coffee:136
+msgid "hibernate"
+msgstr ""
+
+#: ../resources/greeter/js/session.coffee:138
+msgid "shutdown"
+msgstr ""
+
+#: ../resources/greeter/js/session.coffee:140
+msgid "restart"
 msgstr "إعادة التشغيل"
 
-#: ../resources/shutdown/js/utils.coffee:26
-msgid "Shut down"
-msgstr "إطفاء الجهاز"
+#: ../resources/launcher/js/config.coffee:30
+msgid "_Hide hidden icons"
+msgstr "أخفي الأيقونات الم_خفية"
 
-#: ../resources/shutdown/js/utils.coffee:28
-msgid "The system will be locked in %1 seconds."
-msgstr "سيتم قفل النظام في %1 ثواني."
+#: ../resources/launcher/js/config.coffee:31
+msgid "_Display hidden icons"
+msgstr "أظ_هر الأيقونات المخفية"
 
-#: ../resources/shutdown/js/utils.coffee:29
-msgid "The system will be suspended in %1 seconds."
-msgstr "سيتم تعليق النظام في %1 ثواني."
+#: ../resources/launcher/js/config.coffee:34
+msgid "_Hide this icon"
+msgstr "أخفي هذه ال_أيقونة"
 
-#: ../resources/shutdown/js/utils.coffee:30
-msgid "You will be automatically logged out in %1 seconds."
-msgstr "سيتم تلقائيا تسجيل خروجك في %1 ثواني."
+#: ../resources/launcher/js/config.coffee:35
+msgid "_Display this icon"
+msgstr "أ_ظهر هذه الأيقونة"
 
-#: ../resources/shutdown/js/utils.coffee:31
-msgid "The system will restart in %1 seconds."
-msgstr "سيتم إعادة تشغيل النظام في %1 ثواني."
+#: ../resources/launcher/js/config.coffee:40
+msgid "_Add to autostart"
+msgstr "أضف إلى برمجيات تلقائية التشغيل_"
 
-#: ../resources/shutdown/js/utils.coffee:32
-msgid "The system will shut down in %1 seconds."
-msgstr "سيتم غلق النظام في %1 ثواني."
+#: ../resources/launcher/js/config.coffee:41
+msgid "_Remove from autostart"
+msgstr "حذف من التشغيلات التلقائية_"
 
-#: ../resources/shutdown/js/confirmdialog.coffee:63
-msgid "Cancel"
-msgstr "إلغاء"
+#: ../resources/launcher/js/config.coffee:47
+msgid "Sort By _Frequency"
+msgstr "رتب حسب التر_دد"
 
-#: ../app/launcher/launcher.c:334 ../app/launcher/launcher.c:345
-msgid "another instance of launcher is running...\n"
-msgstr "مثيل أخر للمطلق قيد التشغيل...\n"
+#: ../resources/launcher/js/config.coffee:48
+msgid "Sort By _Name"
+msgstr "رتب _حسب الإسم"
 
-#: ../app/greeter/startsession.c:152 ../app/greeter/dlock.c:126
-#: ../app/greeter/greeter.c:153
-msgid "Invalid Password"
-msgstr "كلمة الير غير صحيحة"
+#: ../resources/launcher/js/grid.coffee:95
+msgid "Send to d_esktop"
+msgstr "إرسال إلى _سطح المكتب "
 
-#: ../app/greeter/camera.c:47
-msgid "Oops...I can't recognize your face. "
-msgstr "أووبس...لا أستطيع أن أتعرف على وجهك. "
+#: ../resources/launcher/js/grid.coffee:96
+msgid "Send to do_ck"
+msgstr "إرسال إلى الرصيف"
 
-#: ../app/greeter/camera.c:177
-msgid "Please login with your password or click your picture to retry."
-msgstr "المرجوا تسجيل الدخول بكلمة السر أو إضغط على صورتك لإعادة المحاولة."
-
-#: ../app/greeter/camera.c:234
-#, c-format
-msgid "%sRetry automatically in %ds"
-msgstr "%s إعادة المحاولة تلقائيا في %d ثواني"
-
-#: ../app/greeter/mutils.c:83
-msgid "%a, %b %d, %Y"
-msgstr "%a, %b %d, %Y"
-
-#: ../app/dock/dock.c:284
-msgid "another instance of dock is running...\n"
-msgstr "مثيل أخر من الرصيف قيد التشغيل...\n"
-
-#: ../app/dock/dock.c:378
-msgid "Dock failed to start, because the plugin of compiz is not enabled"
-msgstr "فشل بدء الرصيف, لان ملحق كومبيز غير مفعل"
+#: ../resources/launcher/js/search.coffee:23
+msgid "Type to search..."
+msgstr "أكتب للبحث..."
 
 #: ../app/desktop/desktop.c:213
 msgid "New file"
@@ -469,22 +375,51 @@ msgstr "ملف جديد"
 msgid "New directory"
 msgstr "فتح الدليل"
 
-#: ../app/app_tray/tray.c:287
-msgid "another systray is already running..."
-msgstr "شريط مصغرات أخر فيد التشغيل..."
+#: ../app/dock/dock.c:285
+msgid "another instance of dock is running...\n"
+msgstr "مثيل أخر من الرصيف قيد التشغيل...\n"
+
+#: ../app/dock/dock.c:378
+msgid "Dock failed to start, because the plugin of compiz is not enabled"
+msgstr "فشل بدء الرصيف ، لان ملحق كومبيز غير مفعل"
+
+#: ../app/greeter/mutils.c:83
+msgid "%a, %b %d, %Y"
+msgstr "%a, %b %d, %Y"
+
+#: ../app/greeter/camera.c:47
+msgid "Oops...I can't recognize your face. "
+msgstr "عفواً...لا أستطيع أن أتعرف على وجهك."
+
+#: ../app/greeter/camera.c:177
+msgid "Please login with your password or click your picture to retry."
+msgstr "الرجاء تسجيل الدخول بكلمة المرور أو إضغط على صورتك لإعادة المحاولة."
+
+#: ../app/greeter/camera.c:234
+#, c-format
+msgid "%sRetry automatically in %ds"
+msgstr "%s إعادة المحاولة تلقائيا في %d ثواني"
+
+#: ../app/greeter/dlock.c:113 ../app/greeter/greeter.c:148
+msgid "Invalid Password"
+msgstr "كلمة المرور غير صحيحة"
+
+#: ../app/launcher/launcher.c:334 ../app/launcher/launcher.c:345
+msgid "another instance of launcher is running...\n"
+msgstr "مثيل أخر للمطلق قيد التشغيل...\n"
 
 #: ../lib/dentry/entry.c:746
 #, c-format
 msgid ""
 "This *.desktop file cannot be changed to the name \"%s\".You may not have "
 "such permission"
-msgstr "لا يمكن تغيير هذا الملف *.desktop إلى الإسم \"%s\".يمكن أنك لا تملك صلاحيات للقيام بذلك"
+msgstr "هذا*. ملف سطح المكتب لا يمكن تغييره إلى الأسم \"%s\". قد لا تملك الصلاحية للقيام بذلك"
 
 #: ../lib/dentry/entry.c:752
 #, c-format
 msgid ""
 "The name \"%s\" is already used in this folder. Please use a different name."
-msgstr "الإسم \"%s\" مستخدم بالفعل في هذا المجلد. المرجوا إستعمال إسم أخر."
+msgstr "الأسم \"%s\" مستخدم بالفعل في هذا المجلد. الرجاء إستعمال إسم أخر."
 
 #: ../lib/dentry/entry.c:758
 msgid "The Item could not be renamed"
@@ -496,11 +431,11 @@ msgstr "نسخ"
 
 #: ../lib/dentry/entry.c:1414
 msgid "App Group"
-msgstr "أضف مجموعة"
+msgstr "تطبيق المجموعة"
 
 #: ../lib/dentry/fileops.c:565
 msgid "move"
-msgstr "حرك"
+msgstr "نقل"
 
 #: ../lib/dentry/fileops.c:771
 msgid "Copy"
@@ -512,11 +447,11 @@ msgstr "حذف الملف"
 
 #: ../lib/dentry/fileops_delete.c:30
 msgid "Are you sure you want to permanently delete the files?"
-msgstr "هل أنت متأكد من أنك تريد حذف الملفات نهائيا؟"
+msgstr "هل أنت متأكد من أنك تريد حذف الملفات نهائيا ؟"
 
 #: ../lib/dentry/fileops_delete.c:31
 msgid "If you delete an item, it will be permanently lost"
-msgstr "إذت حذفت عنصرا, سيتم فقدانه نهائيا"
+msgstr "إذا حذفت عنصراً ، سيتم فقدانه نهائيا"
 
 #: ../lib/dentry/fileops_delete.c:34
 msgid "Delete"
@@ -553,7 +488,7 @@ msgstr "_إستبدل"
 #: ../lib/dentry/fileops_error_dialog.c:218
 #, c-format
 msgid "Merge folder \"%s\"?"
-msgstr "دمج المجلد \"%s\"؟"
+msgstr "دمج المجلد \"%s\" ؟"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
 msgid ""
@@ -583,7 +518,7 @@ msgstr "إستبداله سيتسبب في حذف كل الملفات في ال�
 #: ../lib/dentry/fileops_error_dialog.c:240
 #, c-format
 msgid "Replace folder \"%s\"?"
-msgstr "إستبدال المجلد \"%s\"؟"
+msgstr "إستبدال المجلد \"%s\" ؟"
 
 #: ../lib/dentry/fileops_error_dialog.c:242
 #, c-format
@@ -593,7 +528,7 @@ msgstr "مجلد يحمل نفس الإسم موجود أصلا في \"%s\"."
 #: ../lib/dentry/fileops_error_dialog.c:248
 #, c-format
 msgid "Replace file \"%s\"?"
-msgstr "إستبدال الملف \"%s\"؟"
+msgstr "إستبدال الملف \"%s\" ؟"
 
 #: ../lib/dentry/fileops_error_dialog.c:249
 msgid "Replacing it will overwrite its content."
@@ -616,22 +551,22 @@ msgstr "ملف أخر يحمل نفس الإسم موجود أصلا في \"%s\"
 
 #: ../lib/dentry/fileops_error_dialog.c:331
 msgid "Original file"
-msgstr "ملف الأصلي"
+msgstr "الملف الأصلي"
 
 #: ../lib/dentry/fileops_error_dialog.c:332
 #: ../lib/dentry/fileops_error_dialog.c:360
 msgid "Size:"
-msgstr "حجم:"
+msgstr "الحجم :"
 
 #: ../lib/dentry/fileops_error_dialog.c:336
 #: ../lib/dentry/fileops_error_dialog.c:364
 msgid "Type:"
-msgstr "نوع:"
+msgstr "النوع :"
 
 #: ../lib/dentry/fileops_error_dialog.c:340
 #: ../lib/dentry/fileops_error_dialog.c:368
 msgid "Last modified:"
-msgstr "تم تحريره اخر مرة:"
+msgstr "آخر تعديل :"
 
 #: ../lib/dentry/fileops_error_dialog.c:359
 msgid "Replace with"
@@ -649,15 +584,15 @@ msgstr "خطأ عنذ %s الملفات"
 
 #: ../lib/dentry/fileops_trash.c:58
 msgid "Empty Trash"
-msgstr "أفرغ سلة المهملات"
+msgstr "أفراغ سلة المهملات"
 
 #: ../lib/dentry/fileops_trash.c:67
 msgid "Empty all items from Trash?"
-msgstr "إفراغ كل العناصر من المهملات؟"
+msgstr "أفراغ كل العناصر من المهملات ؟"
 
 #: ../lib/dentry/fileops_trash.c:68
 msgid "All items in the Trash will be permanently deleted."
-msgstr "سيتم حذف نهائيا كل العناصر في المهملات."
+msgstr "كل العناصر في المهملات سيتم حذفها نهائياً."
 
 #: ../lib/dentry/fileops_trash.c:71
 msgid "Empty _Trash"
@@ -666,7 +601,7 @@ msgstr "_أفرغ سلة المهملات"
 #: ../lib/dentry/mime_actions.c:198
 #, c-format
 msgid "Do you want to run \"%s\", or display its contents?"
-msgstr "هل ترغب بتنفيذ \"%s\", أو عرض محتوياته؟"
+msgstr "هل ترغب بتنفيذ \"%s\", أو عرض محتوياته ؟"
 
 #: ../lib/dentry/mime_actions.c:199
 #, c-format
@@ -683,47 +618,47 @@ msgstr "_عرض"
 
 #: ../lib/category.c:43
 msgid "all"
-msgstr "كل"
+msgstr "الجميع"
 
 #: ../lib/category.c:44
 msgid "internet"
-msgstr "شبكة"
+msgstr "الأنترنت"
 
 #: ../lib/category.c:45
 msgid "multimedia"
-msgstr "وسائط متعددة"
+msgstr "الوسائط المتعددة"
 
 #: ../lib/category.c:46
 msgid "games"
-msgstr "العاب"
+msgstr "الألعاب"
 
 #: ../lib/category.c:47
 msgid "graphics"
-msgstr "رسوميات"
+msgstr "الرسوميات"
 
 #: ../lib/category.c:48
 msgid "productivity"
-msgstr "مكتب"
+msgstr "الإنتاجية "
 
 #: ../lib/category.c:49
 msgid "industry"
-msgstr "صناعة"
+msgstr "الصناعية"
 
 #: ../lib/category.c:50
 msgid "education"
-msgstr "تعليم"
+msgstr "التعليمية"
 
 #: ../lib/category.c:51
 msgid "development"
-msgstr "تطوير"
+msgstr "التطويرية"
 
 #: ../lib/category.c:52
 msgid "system"
-msgstr "نظام"
+msgstr "النظام"
 
 #: ../lib/category.c:53
 msgid "utilities"
-msgstr "ملحقات"
+msgstr "الملحقات"
 
 #: ../lib/category.c:54
 msgid "other"

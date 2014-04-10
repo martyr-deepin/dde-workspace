@@ -3,9 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# fri <pavelfric@seznam.cz>, 2013
-# fri <pavelfric@seznam.cz>, 2013
-# fri <pavelfric@seznam.cz>, 2014
+# Ömer GÖK <omergok@outlook.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Destkop Environment\n"
@@ -13,67 +11,67 @@ msgstr ""
 "POT-Creation-Date: 2014-04-10 13:26+0800\n"
 "PO-Revision-Date: 2014-04-10 05:22+0000\n"
 "Last-Translator: electricface <songwentai@linuxdeepin.com>\n"
-"Language-Team: Czech (http://www.transifex.com/projects/p/deepin-destkop-environment/language/cs/)\n"
+"Language-Team: Turkish (http://www.transifex.com/projects/p/deepin-destkop-environment/language/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: cs\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Language: tr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: ../resources/desktop/js/invalidlink.coffee:34
 #: ../resources/desktop/js/richdir.coffee:136
 #: ../resources/desktop/js/richdir.coffee:463
 #: ../resources/desktop/js/desktopentry.coffee:107
 msgid "_Delete"
-msgstr "_Smazat"
+msgstr "_Sil"
 
 #: ../resources/desktop/js/grid.coffee:70 ../lib/dentry/fileops.c:402
 msgid "Untitled"
-msgstr "Bez názvu"
+msgstr "İsimsiz"
 
 #: ../resources/desktop/js/grid.coffee:993
 msgid "_Folder"
-msgstr "_Složka"
+msgstr "_Klasör"
 
 #: ../resources/desktop/js/grid.coffee:994
 msgid "_Text document"
-msgstr "_Textový dokument"
+msgstr "_Metin Belgesi"
 
 #: ../resources/desktop/js/grid.coffee:1003
 msgid "_Sort by"
-msgstr "Třídit _dle"
+msgstr "_Sırala"
 
 #: ../resources/desktop/js/grid.coffee:1004
 msgid "_Name"
-msgstr "Náz_ev"
+msgstr "_İsim"
 
 #: ../resources/desktop/js/grid.coffee:1005
 msgid "Last modified _time"
-msgstr "Naposledy z_měněno"
+msgstr "Son Düzenleme _Tarihi"
 
 #: ../resources/desktop/js/grid.coffee:1008
 msgid "_New"
-msgstr "_Nový"
+msgstr "_Yeni"
 
 #: ../resources/desktop/js/grid.coffee:1010
 msgid "Open in _terminal"
-msgstr "Otevřít v _terminálu"
+msgstr "_Terminalde Aç"
 
 #: ../resources/desktop/js/grid.coffee:1011
 msgid "_Paste"
-msgstr "_Vložit"
+msgstr "Ya_pıştır"
 
 #: ../resources/desktop/js/grid.coffee:1013
 msgid "_Display settings"
-msgstr "Nastavení _obrazovky"
+msgstr "Seçenekleri _Görüntüle"
 
 #: ../resources/desktop/js/grid.coffee:1014
 msgid "D_esktop settings"
-msgstr "Nastavení _plochy"
+msgstr "Masa_üstü Seçenekleri"
 
 #: ../resources/desktop/js/grid.coffee:1015
 msgid "Pe_rsonalize"
-msgstr "Přizpůso_bení"
+msgstr "Ki_şiselleştir"
 
 #: ../resources/desktop/js/richdir.coffee:130
 #: ../resources/desktop/js/richdir.coffee:458
@@ -84,101 +82,101 @@ msgstr "Přizpůso_bení"
 #: ../resources/desktop/js/specialitem.coffee:284
 #: ../resources/launcher/js/grid.coffee:91
 msgid "_Open"
-msgstr "_Otevřít"
+msgstr "_Aç"
 
 #: ../resources/desktop/js/richdir.coffee:132
 #: ../resources/desktop/js/desktopentry.coffee:106
 msgid "_Rename"
-msgstr "_Přejmenovat"
+msgstr "_Yeniden Adlandır"
 
 #: ../resources/desktop/js/richdir.coffee:134
 msgid "_Ungroup"
-msgstr "_Zrušit seskupení"
+msgstr ""
 
 #: ../resources/desktop/js/richdir.coffee:351
 #: ../resources/desktop/js/richdir.coffee:476
 #: ../resources/desktop/js/application.coffee:177
 msgid "The link has expired. Do you want to delete it?"
-msgstr "Odkaz vypršel. Chcete jej smazat?"
+msgstr ""
 
 #: ../resources/desktop/js/richdir.coffee:351
 #: ../resources/desktop/js/richdir.coffee:476
 #: ../resources/desktop/js/desktopentry.coffee:150
 #: ../resources/desktop/js/application.coffee:177
 msgid "Warning"
-msgstr "Varování"
+msgstr "Uyarı"
 
 #: ../resources/desktop/js/richdir.coffee:460
 #: ../resources/desktop/js/desktopentry.coffee:103
 msgid "Cu_t"
-msgstr "Vy_jmout"
+msgstr "K_es"
 
 #: ../resources/desktop/js/richdir.coffee:461
 #: ../resources/desktop/js/desktopentry.coffee:104
 msgid "_Copy"
-msgstr "_Kopírovat"
+msgstr "_Kopyala"
 
 #: ../resources/desktop/js/richdir.coffee:465
 #: ../resources/desktop/js/desktopentry.coffee:109
 #: ../resources/desktop/js/specialitem.coffee:53
 #: ../resources/desktop/js/specialitem.coffee:140
 msgid "_Properties"
-msgstr "_Vlastnosti"
+msgstr "_Özellikler"
 
 #: ../resources/desktop/js/desktopentry.coffee:115
 #: ../resources/desktop/js/desktopentry.coffee:122
 msgid "Co_mpress"
-msgstr "Za_balit"
+msgstr "A_rşivle"
 
 #: ../resources/desktop/js/desktopentry.coffee:118
 #: ../resources/desktop/js/desktopentry.coffee:123
 msgid "_Extract"
-msgstr "_Rozbalit"
+msgstr "_Arşivden Çıkar"
 
 #: ../resources/desktop/js/desktopentry.coffee:119
 #: ../resources/desktop/js/desktopentry.coffee:124
 msgid "Extract _Here"
-msgstr "Rozbalit _zde"
+msgstr "Buraya _Çıkar"
 
 #: ../resources/desktop/js/desktopentry.coffee:150
 msgid "Can not open this file."
-msgstr "Nelze otevřít tento soubor."
+msgstr "Bu dosyla açılamıyor."
 
 #: ../resources/desktop/js/specialitem.coffee:34
 msgid "Computer"
-msgstr "Počítač"
+msgstr "Bilgisayar"
 
 #: ../resources/desktop/js/specialitem.coffee:83
 msgid "Home"
-msgstr "Domovská složka"
+msgstr "Ev"
 
 #: ../resources/desktop/js/specialitem.coffee:173
 msgid "Trash"
-msgstr "Koš"
+msgstr "Çöp"
 
 #: ../resources/desktop/js/specialitem.coffee:236
 msgid "_Clean up %1 items"
-msgstr "U_klidit %1 položek"
+msgstr ""
 
 #: ../resources/desktop/js/specialitem.coffee:238
 msgid "_Clean up 1 item"
-msgstr "_Uklidit 1 položku"
+msgstr ""
 
 #: ../resources/desktop/js/specialitem.coffee:240
 msgid "_Clean up"
-msgstr "U_klidit"
+msgstr ""
 
 #: ../resources/desktop/js/specialitem.coffee:268
 msgid "Software Center"
-msgstr "Středisko programů"
+msgstr "Yazılım Merkezi"
 
 #: ../resources/dock/js/deepin_item.coffee:66
 msgid "Launcher"
-msgstr "Spouštěč"
+msgstr "Çalıştırıcı"
 
 #: ../resources/dock/js/deepin_item.coffee:69
 msgid "Show/Hide Desktop"
-msgstr "Ukázat/Skrýt plochu"
+msgstr "Masaüstünü Göster/Gizle"
 
 #: ../resources/dock/js/clientgroup.coffee:36
 msgid "_New window"
@@ -186,43 +184,43 @@ msgstr ""
 
 #: ../resources/dock/js/clientgroup.coffee:49
 msgid "_Close"
-msgstr "_Zavřít"
+msgstr "_Kapat"
 
 #: ../resources/dock/js/clientgroup.coffee:50
 msgid "Close _All"
-msgstr "Zavřít _vše"
+msgstr "_Hepsini Kapat"
 
 #: ../resources/dock/js/clientgroup.coffee:52
 msgid "_Dock me"
-msgstr "U_kotvit"
+msgstr ""
 
 #: ../resources/dock/js/launcher.coffee:42 ../lib/dentry/mime_actions.c:213
 msgid "_Run"
-msgstr "_Spustit"
+msgstr "_Çalıştır"
 
 #: ../resources/dock/js/launcher.coffee:56
 msgid "_Undock"
-msgstr "_Uvolnit z panelu"
+msgstr ""
 
 #: ../resources/dock/js/item.coffee:267
 msgid "The item is invalid. Do you want to remove it from the dock panel?"
-msgstr "Položka je neplatná. Chcete ji odstranit z kotvícího panelu?"
+msgstr ""
 
 #: ../resources/greeter/js/greeter.coffee:57
 msgid "guest"
-msgstr "Host"
+msgstr "ziyaretçi"
 
 #: ../resources/greeter/js/user.coffee:80
 msgid "Log In"
-msgstr "Přihlášení"
+msgstr "Giriş"
 
 #: ../resources/greeter/js/user.coffee:82
 msgid "Unlock"
-msgstr "Odemknout"
+msgstr "Kilidi Aç"
 
 #: ../resources/greeter/js/user.coffee:115
 msgid "Welcome"
-msgstr "Vítejte"
+msgstr "Hoş Geldiniz"
 
 #: ../resources/greeter/js/user.coffee:121
 msgid "Switch User"
@@ -230,79 +228,79 @@ msgstr ""
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Jan"
-msgstr "Led"
+msgstr "Oca"
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Feb"
-msgstr "Úno"
+msgstr "Şub"
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Mar"
-msgstr "Bře"
+msgstr "Mar"
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Apr"
-msgstr "Dub"
+msgstr "Nis"
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "May"
-msgstr "Kvě"
+msgstr "May"
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Jun"
-msgstr "Čer"
+msgstr "Haz"
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Jul"
-msgstr "Čec"
+msgstr "Tem"
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Aug"
-msgstr "Srp"
+msgstr "Ağu"
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Sep"
-msgstr "Zář"
+msgstr "Eyl"
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Oct"
-msgstr "Říj"
+msgstr "Eki"
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Nov"
-msgstr "Lis"
+msgstr "Kas"
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Dec"
-msgstr "Pro"
+msgstr "Ara"
 
 #: ../resources/greeter/js/time.coffee:39
 msgid "Sun"
-msgstr "Ned"
+msgstr "Paz"
 
 #: ../resources/greeter/js/time.coffee:39
 msgid "Mon"
-msgstr "Po"
+msgstr "Pzt"
 
 #: ../resources/greeter/js/time.coffee:39
 msgid "Tue"
-msgstr "Út"
+msgstr "Sal"
 
 #: ../resources/greeter/js/time.coffee:39
 msgid "Wed"
-msgstr "St"
+msgstr "Çrş"
 
 #: ../resources/greeter/js/time.coffee:39
 msgid "Thu"
-msgstr "Čt"
+msgstr "Prş"
 
 #: ../resources/greeter/js/time.coffee:39
 msgid "Fri"
-msgstr "Pá"
+msgstr "Cum"
 
 #: ../resources/greeter/js/time.coffee:39
 msgid "Sat"
-msgstr "So"
+msgstr "Cmt"
 
 #: ../resources/greeter/js/session.coffee:25
 msgid "Session"
@@ -310,7 +308,7 @@ msgstr ""
 
 #: ../resources/greeter/js/session.coffee:134
 msgid "suspend"
-msgstr "Uspat"
+msgstr "askıya al"
 
 #: ../resources/greeter/js/session.coffee:136
 msgid "hibernate"
@@ -322,67 +320,67 @@ msgstr ""
 
 #: ../resources/greeter/js/session.coffee:140
 msgid "restart"
-msgstr "Spustit znovu"
+msgstr "yeniden başlat"
 
 #: ../resources/launcher/js/config.coffee:30
 msgid "_Hide hidden icons"
-msgstr "_Skrýt skryté ikony"
+msgstr "_Gizli simgeleri sakla"
 
 #: ../resources/launcher/js/config.coffee:31
 msgid "_Display hidden icons"
-msgstr "_Zobrazit skryté ikony"
+msgstr "_Gizli simgeleri göster"
 
 #: ../resources/launcher/js/config.coffee:34
 msgid "_Hide this icon"
-msgstr "_Skrýt tuto ikonu"
+msgstr "_Bu simgeyi sakla"
 
 #: ../resources/launcher/js/config.coffee:35
 msgid "_Display this icon"
-msgstr "_Zobrazit tuto ikonu"
+msgstr "_Bu simgeyi göster"
 
 #: ../resources/launcher/js/config.coffee:40
 msgid "_Add to autostart"
-msgstr "_Přidat do automatického spuštění"
+msgstr ""
 
 #: ../resources/launcher/js/config.coffee:41
 msgid "_Remove from autostart"
-msgstr "_Odstranit z automatického spuštění"
+msgstr ""
 
 #: ../resources/launcher/js/config.coffee:47
 msgid "Sort By _Frequency"
-msgstr "Třídit dle č_etnosti"
+msgstr ""
 
 #: ../resources/launcher/js/config.coffee:48
 msgid "Sort By _Name"
-msgstr "Třídit dle _názvu"
+msgstr "_İsme göre sırala"
 
 #: ../resources/launcher/js/grid.coffee:95
 msgid "Send to d_esktop"
-msgstr "Odeslat na p_lochu"
+msgstr "Masaüstüne _gönder"
 
 #: ../resources/launcher/js/grid.coffee:96
 msgid "Send to do_ck"
-msgstr "Odeslat do _panelu"
+msgstr ""
 
 #: ../resources/launcher/js/search.coffee:23
 msgid "Type to search..."
-msgstr "Pište, co chcete, aby se hledalo..."
+msgstr "Ara"
 
 #: ../app/desktop/desktop.c:213
 msgid "New file"
-msgstr "Nový soubor"
+msgstr "Yeni dosya"
 
 #: ../app/desktop/desktop.c:224
 msgid "New directory"
-msgstr "Nový adresář"
+msgstr "Yeni dizin"
 
 #: ../app/dock/dock.c:285
 msgid "another instance of dock is running...\n"
-msgstr "Již běží jiná instance panelu...\n"
+msgstr ""
 
 #: ../app/dock/dock.c:378
 msgid "Dock failed to start, because the plugin of compiz is not enabled"
-msgstr "Panel se nepodařilo spustit, protože přídavný modul pro compiz není povolen"
+msgstr ""
 
 #: ../app/greeter/mutils.c:83
 msgid "%a, %b %d, %Y"
@@ -390,277 +388,277 @@ msgstr "%a, %b %d, %Y"
 
 #: ../app/greeter/camera.c:47
 msgid "Oops...I can't recognize your face. "
-msgstr "To je dobrý... Váš obličej nebyl rozpoznán. "
+msgstr "Oops... Yüzünüzü tanıyamadım."
 
 #: ../app/greeter/camera.c:177
 msgid "Please login with your password or click your picture to retry."
-msgstr "Přihlašte se, prosím, pod svým jménem, nebo klepněte na obrázek se svým obličejem pro zopakování postupu."
+msgstr "Lütfen şifrenizle giriş yapın veya tekrar denemek için resme tıklayın."
 
 #: ../app/greeter/camera.c:234
 #, c-format
 msgid "%sRetry automatically in %ds"
-msgstr "%s Zopakovat automaticky za %ds"
+msgstr ""
 
 #: ../app/greeter/dlock.c:113 ../app/greeter/greeter.c:148
 msgid "Invalid Password"
-msgstr "Neplatné heslo"
+msgstr "Yanlış Şifre"
 
 #: ../app/launcher/launcher.c:334 ../app/launcher/launcher.c:345
 msgid "another instance of launcher is running...\n"
-msgstr "Již běží jiná instance spouštěče...\n"
+msgstr ""
 
 #: ../lib/dentry/entry.c:746
 #, c-format
 msgid ""
 "This *.desktop file cannot be changed to the name \"%s\".You may not have "
 "such permission"
-msgstr "Název tohoto souboru *.desktop nelze změnit na \"%s\". Nemáte k tomu oprávnění"
+msgstr ""
 
 #: ../lib/dentry/entry.c:752
 #, c-format
 msgid ""
 "The name \"%s\" is already used in this folder. Please use a different name."
-msgstr "Název \"%s\" se už v této složce používá. Použijte, prosím, jiný název."
+msgstr "\"%s\" adı bu dosyada kullanımdadır. Lütfen farklı bir isim kullanın."
 
 #: ../lib/dentry/entry.c:758
 msgid "The Item could not be renamed"
-msgstr "položku se nepodařilo přejmenovat"
+msgstr "Bu dosya yeniden isimlendirilemed"
 
 #: ../lib/dentry/entry.c:832 ../lib/dentry/fileops.c:804
 msgid "copy"
-msgstr "Kopírovat"
+msgstr "kopyala"
 
 #: ../lib/dentry/entry.c:1414
 msgid "App Group"
-msgstr "Přidat skupinu"
+msgstr ""
 
 #: ../lib/dentry/fileops.c:565
 msgid "move"
-msgstr "Přesunout"
+msgstr "taşı"
 
 #: ../lib/dentry/fileops.c:771
 msgid "Copy"
-msgstr "Kopírovat"
+msgstr "Kopyala"
 
 #: ../lib/dentry/fileops_delete.c:27
 msgid "Delete File"
-msgstr "Smazat soubor"
+msgstr "Dosyayı Sil"
 
 #: ../lib/dentry/fileops_delete.c:30
 msgid "Are you sure you want to permanently delete the files?"
-msgstr "Jste si jistý, že chcete trvale smazat tento soubor?"
+msgstr "Bu dosyayı kalıcı olarak silmek istediğinizden emin misiniz ?"
 
 #: ../lib/dentry/fileops_delete.c:31
 msgid "If you delete an item, it will be permanently lost"
-msgstr "pokud smažete nějakou položku, bude trvale ztracena"
+msgstr "Eğer bir dosyayı silerseniz kalıcı olarak silinecektir"
 
 #: ../lib/dentry/fileops_delete.c:34
 msgid "Delete"
-msgstr "Smazat"
+msgstr "Sil"
 
 #: ../lib/dentry/fileops_error_dialog.c:62
 msgid "File conflict"
-msgstr "Střet souborů"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:106
 msgid "_Select a new name for the destination"
-msgstr "_Vybrat nový název pro cíl"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:117
 msgid "Reset"
-msgstr "Nastavit znovu"
+msgstr "Sıfırla"
 
 #: ../lib/dentry/fileops_error_dialog.c:126
 msgid "Apply this action to all files"
-msgstr "Použít tuto činnost na všechny soubory"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:133
 msgid "_Skip"
-msgstr "_Přeskočit"
+msgstr "_Atla"
 
 #: ../lib/dentry/fileops_error_dialog.c:136
 msgid "Re_name"
-msgstr "Přej_menovat"
+msgstr "Yeniden Adlandır"
 
 #: ../lib/dentry/fileops_error_dialog.c:141
 msgid "Replace"
-msgstr "Nahradit"
+msgstr "Değiştir"
 
 #: ../lib/dentry/fileops_error_dialog.c:218
 #, c-format
 msgid "Merge folder \"%s\"?"
-msgstr "Sloučit složku \"%s\"?"
+msgstr "\"%s\" dosyasını birleştir?"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
 msgid ""
 "Merging will ask for confirmation before replacing any files in the folder "
 "that conflict with the files being copied."
-msgstr "Při slučování budete požádáni o potvrzení, předtím než budou nahrazeny jakékoli soubory ve složce, které se střetávají se soubory, jež jsou kopírovány."
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:224
 #, c-format
 msgid "An older folder with the same name already exists in \"%s\"."
-msgstr "Starší složka se stejným názvem již existuje v \"%s\"."
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:228
 #, c-format
 msgid "A newer folder with the same name already exists in \"%s\"."
-msgstr "Novější složka se stejným názvem již existuje v \"%s\"."
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:232
 #, c-format
 msgid "Another folder with the same name already exists in \"%s\"."
-msgstr "Jiná složka se stejným názvem již existuje v \"%s\"."
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:238
 msgid "Replacing it will remove all files in the folder."
-msgstr "Při jejím nahrazení budou nahrazeny všechny soubory ve složce."
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:240
 #, c-format
 msgid "Replace folder \"%s\"?"
-msgstr "Nahradit složku \"%s\"?"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:242
 #, c-format
 msgid "A folder with the same name already exists in \"%s\"."
-msgstr "Složka se stejným názvem již existuje v \"%s\"."
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:248
 #, c-format
 msgid "Replace file \"%s\"?"
-msgstr "Nahradit soubor \"%s\"?"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:249
 msgid "Replacing it will overwrite its content."
-msgstr "Při jeho nahrazení bude přepsán jeho obsah."
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:251
 #, c-format
 msgid "An older file with the same name already exists in \"%s\"."
-msgstr "Starší soubor se stejným názvem již existuje v \"%s\"."
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:255
 #, c-format
 msgid "A newer file with the same name already exists in \"%s\"."
-msgstr "Novější soubor se stejným názvem již existuje v \"%s\"."
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:259
 #, c-format
 msgid "Another file with the same name already exists in \"%s\"."
-msgstr "Jiný soubor se stejným názvem již existuje v \"%s\"."
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:331
 msgid "Original file"
-msgstr "Původní soubor"
+msgstr "Orjinal dosya"
 
 #: ../lib/dentry/fileops_error_dialog.c:332
 #: ../lib/dentry/fileops_error_dialog.c:360
 msgid "Size:"
-msgstr "Velikost:"
+msgstr "Boyut:"
 
 #: ../lib/dentry/fileops_error_dialog.c:336
 #: ../lib/dentry/fileops_error_dialog.c:364
 msgid "Type:"
-msgstr "Typ:"
+msgstr "Tür:"
 
 #: ../lib/dentry/fileops_error_dialog.c:340
 #: ../lib/dentry/fileops_error_dialog.c:368
 msgid "Last modified:"
-msgstr "Naposledy změněno:"
+msgstr "Son düzenleme:"
 
 #: ../lib/dentry/fileops_error_dialog.c:359
 msgid "Replace with"
-msgstr "Nahradit"
+msgstr "İle değiştir"
 
 #: ../lib/dentry/fileops_error_dialog.c:385
 msgid "Merge"
-msgstr "Sloučit"
+msgstr "Birleştir"
 
 #: ../lib/dentry/fileops_error_reporting.c:105
 #: ../lib/dentry/fileops_error_reporting.c:187
 #, c-format
 msgid "Error while %s files"
-msgstr "Chyba při %s souborech"
+msgstr ""
 
 #: ../lib/dentry/fileops_trash.c:58
 msgid "Empty Trash"
-msgstr "Prázdný koš"
+msgstr "Çöpü Boşalt"
 
 #: ../lib/dentry/fileops_trash.c:67
 msgid "Empty all items from Trash?"
-msgstr "Odstranit všechny položky z koše?"
+msgstr "Çöpteki tüm eşyaları sil ?"
 
 #: ../lib/dentry/fileops_trash.c:68
 msgid "All items in the Trash will be permanently deleted."
-msgstr "Všechny položky v koši budou trvale smazány"
+msgstr "Çöpteki bütün dosyalar kalıcı olarak silinecek."
 
 #: ../lib/dentry/fileops_trash.c:71
 msgid "Empty _Trash"
-msgstr "Prázdný _koš"
+msgstr "Çöpü _Boşalt"
 
 #: ../lib/dentry/mime_actions.c:198
 #, c-format
 msgid "Do you want to run \"%s\", or display its contents?"
-msgstr "Chcete spustit \"%s\", nebo smazat jeho obsah?"
+msgstr "\"%s\"'ı çalıştırmak mı istiyorsunuz yoksa içeriğine bakmak mı ?"
 
 #: ../lib/dentry/mime_actions.c:199
 #, c-format
 msgid "\"%s\" is an executable text file."
-msgstr "\"%s\" je spustitelný textový soubor."
+msgstr ""
 
 #: ../lib/dentry/mime_actions.c:210
 msgid "Run in _Terminal"
-msgstr "Spustit v _terminálu"
+msgstr "_Terminalde çalıştır"
 
 #: ../lib/dentry/mime_actions.c:211
 msgid "_Display"
-msgstr "_Zobrazit"
+msgstr "_Göster"
 
 #: ../lib/category.c:43
 msgid "all"
-msgstr "vše"
+msgstr "hepsi"
 
 #: ../lib/category.c:44
 msgid "internet"
-msgstr "Internet"
+msgstr "internet"
 
 #: ../lib/category.c:45
 msgid "multimedia"
-msgstr "Multimédia"
+msgstr "multimedya"
 
 #: ../lib/category.c:46
 msgid "games"
-msgstr "Hry"
+msgstr "oyunlar"
 
 #: ../lib/category.c:47
 msgid "graphics"
-msgstr "Grafika"
+msgstr "grafik"
 
 #: ../lib/category.c:48
 msgid "productivity"
-msgstr "Tvořivost"
+msgstr "verimlilik"
 
 #: ../lib/category.c:49
 msgid "industry"
-msgstr "Průmysl"
+msgstr "endüstri"
 
 #: ../lib/category.c:50
 msgid "education"
-msgstr "Vzdělání"
+msgstr "eğitim"
 
 #: ../lib/category.c:51
 msgid "development"
-msgstr "Vývoj"
+msgstr "geliştirici"
 
 #: ../lib/category.c:52
 msgid "system"
-msgstr "Systém"
+msgstr "sistem"
 
 #: ../lib/category.c:53
 msgid "utilities"
-msgstr "Příslušenství"
+msgstr "yardımcı uygulamalar"
 
 #: ../lib/category.c:54
 msgid "other"
-msgstr "Jiné"
+msgstr "diğer"

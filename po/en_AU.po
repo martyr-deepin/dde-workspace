@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Destkop Environment\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-18 10:28+0800\n"
-"PO-Revision-Date: 2014-02-10 03:25+0000\n"
-"Last-Translator: cxbii <mycxbii@gmail.com>\n"
+"POT-Creation-Date: 2014-04-10 13:26+0800\n"
+"PO-Revision-Date: 2014-04-10 05:22+0000\n"
+"Last-Translator: electricface <songwentai@linuxdeepin.com>\n"
 "Language-Team: English (Australia) (http://www.transifex.com/projects/p/deepin-destkop-environment/language/en_AU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,287 +17,11 @@ msgstr ""
 "Language: en_AU\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../resources/launcher/js/grid.coffee:87
-#: ../resources/desktop/js/specialitem.coffee:51
-#: ../resources/desktop/js/specialitem.coffee:138
-#: ../resources/desktop/js/specialitem.coffee:232
-#: ../resources/desktop/js/specialitem.coffee:284
-#: ../resources/desktop/js/desktopentry.coffee:101
-#: ../resources/desktop/js/richdir.coffee:130
-#: ../resources/desktop/js/richdir.coffee:458
-msgid "_Open"
-msgstr ""
-
-#: ../resources/launcher/js/grid.coffee:91
-msgid "Send to d_esktop"
-msgstr ""
-
-#: ../resources/launcher/js/grid.coffee:92
-msgid "Send to do_ck"
-msgstr ""
-
-#: ../resources/launcher/js/search.coffee:29
-msgid "Type to search..."
-msgstr ""
-
-#: ../resources/launcher/js/config.coffee:31
-msgid "_Hide hidden icons"
-msgstr ""
-
-#: ../resources/launcher/js/config.coffee:32
-msgid "_Display hidden icons"
-msgstr ""
-
-#: ../resources/launcher/js/config.coffee:35
-msgid "_Hide this icon"
-msgstr ""
-
-#: ../resources/launcher/js/config.coffee:36
-msgid "_Display this icon"
-msgstr ""
-
-#: ../resources/launcher/js/config.coffee:41
-msgid "_Add to autostart"
-msgstr ""
-
-#: ../resources/launcher/js/config.coffee:42
-msgid "_Remove from autostart"
-msgstr ""
-
-#: ../resources/launcher/js/config.coffee:48
-msgid "Sort By _Frequency"
-msgstr ""
-
-#: ../resources/launcher/js/config.coffee:49
-msgid "Sort By _Name"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Jan"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Feb"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Mar"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Apr"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "May"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Jun"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Jul"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Aug"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Sep"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Oct"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Nov"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Dec"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Sun"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Mon"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Tue"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Wed"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Thu"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Fri"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Sat"
-msgstr ""
-
-#: ../resources/greeter/js/user.coffee:109
-msgid "Administrator"
-msgstr ""
-
-#: ../resources/greeter/js/user.coffee:110
-#: ../resources/greeter/js/user.coffee:111
-#: ../resources/greeter/js/user.coffee:112
-msgid "Standard user"
-msgstr ""
-
-#: ../resources/greeter/js/user.coffee:160
-msgid "guest"
-msgstr ""
-
-#: ../resources/greeter/js/user.coffee:308
-msgid "Log In"
-msgstr ""
-
-#: ../resources/greeter/js/user.coffee:310
-msgid "Unlock"
-msgstr ""
-
-#: ../resources/greeter/js/user.coffee:530
-msgid "Welcome"
-msgstr ""
-
-#: ../resources/greeter/js/lock.coffee:62
-#: ../resources/greeter/js/greeter.coffee:88
-msgid "ShutDown"
-msgstr ""
-
-#: ../resources/greeter/js/powermenu.coffee:71
-msgid "suspend"
-msgstr ""
-
-#: ../resources/greeter/js/powermenu.coffee:75
-msgid "restart"
-msgstr ""
-
-#: ../resources/dock/js/launcher.coffee:47 ../lib/dentry/mime_actions.c:213
-msgid "_Run"
-msgstr ""
-
-#: ../resources/dock/js/launcher.coffee:56
-msgid "_Undock"
-msgstr ""
-
-#: ../resources/dock/js/deepin_item.coffee:97
-#: ../resources/desktop/js/specialitem.coffee:240
-msgid "_Clean up"
-msgstr ""
-
-#: ../resources/dock/js/deepin_item.coffee:99
-#: ../resources/dock/js/clientgroup.coffee:116
-msgid "_Close"
-msgstr ""
-
-#: ../resources/dock/js/deepin_item.coffee:119
-#: ../resources/desktop/js/desktopentry.coffee:150
-msgid "Can not open this file."
-msgstr ""
-
-#: ../resources/dock/js/deepin_item.coffee:119
-#: ../resources/desktop/js/application.coffee:177
-#: ../resources/desktop/js/desktopentry.coffee:150
-#: ../resources/desktop/js/richdir.coffee:351
-#: ../resources/desktop/js/richdir.coffee:476
-msgid "Warning"
-msgstr ""
-
-#: ../resources/dock/js/deepin_item.coffee:225
-msgid "_View as analog"
-msgstr ""
-
-#: ../resources/dock/js/deepin_item.coffee:226
-#: ../resources/dock/js/deepin_item.coffee:266
-msgid "_Time settings"
-msgstr ""
-
-#: ../resources/dock/js/deepin_item.coffee:265
-msgid "_View as digit"
-msgstr ""
-
-#: ../resources/dock/js/deepin_item.coffee:290
-msgid "Launcher"
-msgstr ""
-
-#: ../resources/dock/js/deepin_item.coffee:291
-msgid "Show/Hide Desktop"
-msgstr ""
-
-#: ../resources/dock/js/deepin_item.coffee:292
-#: ../resources/desktop/js/specialitem.coffee:173
-msgid "Trash"
-msgstr ""
-
-#: ../resources/dock/js/clientgroup.coffee:106
-msgid "_New Window"
-msgstr ""
-
-#: ../resources/dock/js/clientgroup.coffee:117
-msgid "Close _All"
-msgstr ""
-
-#: ../resources/dock/js/clientgroup.coffee:119
-msgid "_Dock me"
-msgstr ""
-
-#: ../resources/dock/js/item.coffee:302
-msgid "The item is invalid. Do you want to remove it from the dock panel?"
-msgstr ""
-
-#: ../resources/desktop/js/specialitem.coffee:34
-msgid "Computer"
-msgstr ""
-
-#: ../resources/desktop/js/specialitem.coffee:53
-#: ../resources/desktop/js/specialitem.coffee:140
-#: ../resources/desktop/js/desktopentry.coffee:109
-#: ../resources/desktop/js/richdir.coffee:465
-msgid "_Properties"
-msgstr ""
-
-#: ../resources/desktop/js/specialitem.coffee:83
-msgid "Home"
-msgstr ""
-
-#: ../resources/desktop/js/specialitem.coffee:236
-msgid "_Clean up %1 items"
-msgstr ""
-
-#: ../resources/desktop/js/specialitem.coffee:238
-msgid "_Clean up 1 item"
-msgstr ""
-
-#: ../resources/desktop/js/specialitem.coffee:268
-msgid "Software Center"
-msgstr ""
-
 #: ../resources/desktop/js/invalidlink.coffee:34
-#: ../resources/desktop/js/desktopentry.coffee:107
 #: ../resources/desktop/js/richdir.coffee:136
 #: ../resources/desktop/js/richdir.coffee:463
+#: ../resources/desktop/js/desktopentry.coffee:107
 msgid "_Delete"
-msgstr ""
-
-#: ../resources/desktop/js/application.coffee:177
-#: ../resources/desktop/js/richdir.coffee:351
-#: ../resources/desktop/js/richdir.coffee:476
-msgid "The link has expired. Do you want to delete it?"
 msgstr ""
 
 #: ../resources/desktop/js/grid.coffee:70 ../lib/dentry/fileops.c:402
@@ -348,19 +72,54 @@ msgstr ""
 msgid "Pe_rsonalize"
 msgstr ""
 
-#: ../resources/desktop/js/desktopentry.coffee:103
+#: ../resources/desktop/js/richdir.coffee:130
+#: ../resources/desktop/js/richdir.coffee:458
+#: ../resources/desktop/js/desktopentry.coffee:101
+#: ../resources/desktop/js/specialitem.coffee:51
+#: ../resources/desktop/js/specialitem.coffee:138
+#: ../resources/desktop/js/specialitem.coffee:232
+#: ../resources/desktop/js/specialitem.coffee:284
+#: ../resources/launcher/js/grid.coffee:91
+msgid "_Open"
+msgstr ""
+
+#: ../resources/desktop/js/richdir.coffee:132
+#: ../resources/desktop/js/desktopentry.coffee:106
+msgid "_Rename"
+msgstr ""
+
+#: ../resources/desktop/js/richdir.coffee:134
+msgid "_Ungroup"
+msgstr ""
+
+#: ../resources/desktop/js/richdir.coffee:351
+#: ../resources/desktop/js/richdir.coffee:476
+#: ../resources/desktop/js/application.coffee:177
+msgid "The link has expired. Do you want to delete it?"
+msgstr ""
+
+#: ../resources/desktop/js/richdir.coffee:351
+#: ../resources/desktop/js/richdir.coffee:476
+#: ../resources/desktop/js/desktopentry.coffee:150
+#: ../resources/desktop/js/application.coffee:177
+msgid "Warning"
+msgstr ""
+
 #: ../resources/desktop/js/richdir.coffee:460
+#: ../resources/desktop/js/desktopentry.coffee:103
 msgid "Cu_t"
 msgstr ""
 
-#: ../resources/desktop/js/desktopentry.coffee:104
 #: ../resources/desktop/js/richdir.coffee:461
+#: ../resources/desktop/js/desktopentry.coffee:104
 msgid "_Copy"
 msgstr ""
 
-#: ../resources/desktop/js/desktopentry.coffee:106
-#: ../resources/desktop/js/richdir.coffee:132
-msgid "_Rename"
+#: ../resources/desktop/js/richdir.coffee:465
+#: ../resources/desktop/js/desktopentry.coffee:109
+#: ../resources/desktop/js/specialitem.coffee:53
+#: ../resources/desktop/js/specialitem.coffee:140
+msgid "_Properties"
 msgstr ""
 
 #: ../resources/desktop/js/desktopentry.coffee:115
@@ -378,61 +137,252 @@ msgstr ""
 msgid "Extract _Here"
 msgstr ""
 
-#: ../resources/desktop/js/richdir.coffee:134
-msgid "_Ungroup"
+#: ../resources/desktop/js/desktopentry.coffee:150
+msgid "Can not open this file."
 msgstr ""
 
-#: ../resources/shutdown/js/utils.coffee:26
-msgid "Lock"
+#: ../resources/desktop/js/specialitem.coffee:34
+msgid "Computer"
 msgstr ""
 
-#: ../resources/shutdown/js/utils.coffee:26
-msgid "Suspend"
+#: ../resources/desktop/js/specialitem.coffee:83
+msgid "Home"
 msgstr ""
 
-#: ../resources/shutdown/js/utils.coffee:26
-msgid "Log out"
+#: ../resources/desktop/js/specialitem.coffee:173
+msgid "Trash"
 msgstr ""
 
-#: ../resources/shutdown/js/utils.coffee:26
-msgid "Restart"
+#: ../resources/desktop/js/specialitem.coffee:236
+msgid "_Clean up %1 items"
 msgstr ""
 
-#: ../resources/shutdown/js/utils.coffee:26
-msgid "Shut down"
+#: ../resources/desktop/js/specialitem.coffee:238
+msgid "_Clean up 1 item"
 msgstr ""
 
-#: ../resources/shutdown/js/utils.coffee:28
-msgid "The system will be locked in %1 seconds."
+#: ../resources/desktop/js/specialitem.coffee:240
+msgid "_Clean up"
 msgstr ""
 
-#: ../resources/shutdown/js/utils.coffee:29
-msgid "The system will be suspended in %1 seconds."
+#: ../resources/desktop/js/specialitem.coffee:268
+msgid "Software Center"
 msgstr ""
 
-#: ../resources/shutdown/js/utils.coffee:30
-msgid "You will be automatically logged out in %1 seconds."
+#: ../resources/dock/js/deepin_item.coffee:66
+msgid "Launcher"
 msgstr ""
 
-#: ../resources/shutdown/js/utils.coffee:31
-msgid "The system will restart in %1 seconds."
+#: ../resources/dock/js/deepin_item.coffee:69
+msgid "Show/Hide Desktop"
 msgstr ""
 
-#: ../resources/shutdown/js/utils.coffee:32
-msgid "The system will shut down in %1 seconds."
+#: ../resources/dock/js/clientgroup.coffee:36
+msgid "_New window"
 msgstr ""
 
-#: ../resources/shutdown/js/confirmdialog.coffee:63
-msgid "Cancel"
+#: ../resources/dock/js/clientgroup.coffee:49
+msgid "_Close"
 msgstr ""
 
-#: ../app/launcher/launcher.c:334 ../app/launcher/launcher.c:345
-msgid "another instance of launcher is running...\n"
+#: ../resources/dock/js/clientgroup.coffee:50
+msgid "Close _All"
 msgstr ""
 
-#: ../app/greeter/startsession.c:152 ../app/greeter/dlock.c:126
-#: ../app/greeter/greeter.c:153
-msgid "Invalid Password"
+#: ../resources/dock/js/clientgroup.coffee:52
+msgid "_Dock me"
+msgstr ""
+
+#: ../resources/dock/js/launcher.coffee:42 ../lib/dentry/mime_actions.c:213
+msgid "_Run"
+msgstr ""
+
+#: ../resources/dock/js/launcher.coffee:56
+msgid "_Undock"
+msgstr ""
+
+#: ../resources/dock/js/item.coffee:267
+msgid "The item is invalid. Do you want to remove it from the dock panel?"
+msgstr ""
+
+#: ../resources/greeter/js/greeter.coffee:57
+msgid "guest"
+msgstr ""
+
+#: ../resources/greeter/js/user.coffee:80
+msgid "Log In"
+msgstr ""
+
+#: ../resources/greeter/js/user.coffee:82
+msgid "Unlock"
+msgstr ""
+
+#: ../resources/greeter/js/user.coffee:115
+msgid "Welcome"
+msgstr ""
+
+#: ../resources/greeter/js/user.coffee:121
+msgid "Switch User"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Jan"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Feb"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Mar"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Apr"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "May"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Jun"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Jul"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Aug"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Sep"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Oct"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Nov"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Dec"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Sun"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Mon"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Tue"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Wed"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Thu"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Fri"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Sat"
+msgstr ""
+
+#: ../resources/greeter/js/session.coffee:25
+msgid "Session"
+msgstr ""
+
+#: ../resources/greeter/js/session.coffee:134
+msgid "suspend"
+msgstr ""
+
+#: ../resources/greeter/js/session.coffee:136
+msgid "hibernate"
+msgstr ""
+
+#: ../resources/greeter/js/session.coffee:138
+msgid "shutdown"
+msgstr ""
+
+#: ../resources/greeter/js/session.coffee:140
+msgid "restart"
+msgstr ""
+
+#: ../resources/launcher/js/config.coffee:30
+msgid "_Hide hidden icons"
+msgstr ""
+
+#: ../resources/launcher/js/config.coffee:31
+msgid "_Display hidden icons"
+msgstr ""
+
+#: ../resources/launcher/js/config.coffee:34
+msgid "_Hide this icon"
+msgstr ""
+
+#: ../resources/launcher/js/config.coffee:35
+msgid "_Display this icon"
+msgstr ""
+
+#: ../resources/launcher/js/config.coffee:40
+msgid "_Add to autostart"
+msgstr ""
+
+#: ../resources/launcher/js/config.coffee:41
+msgid "_Remove from autostart"
+msgstr ""
+
+#: ../resources/launcher/js/config.coffee:47
+msgid "Sort By _Frequency"
+msgstr ""
+
+#: ../resources/launcher/js/config.coffee:48
+msgid "Sort By _Name"
+msgstr ""
+
+#: ../resources/launcher/js/grid.coffee:95
+msgid "Send to d_esktop"
+msgstr ""
+
+#: ../resources/launcher/js/grid.coffee:96
+msgid "Send to do_ck"
+msgstr ""
+
+#: ../resources/launcher/js/search.coffee:23
+msgid "Type to search..."
+msgstr ""
+
+#: ../app/desktop/desktop.c:213
+msgid "New file"
+msgstr ""
+
+#: ../app/desktop/desktop.c:224
+msgid "New directory"
+msgstr ""
+
+#: ../app/dock/dock.c:285
+msgid "another instance of dock is running...\n"
+msgstr ""
+
+#: ../app/dock/dock.c:378
+msgid "Dock failed to start, because the plugin of compiz is not enabled"
+msgstr ""
+
+#: ../app/greeter/mutils.c:83
+msgid "%a, %b %d, %Y"
 msgstr ""
 
 #: ../app/greeter/camera.c:47
@@ -448,28 +398,12 @@ msgstr ""
 msgid "%sRetry automatically in %ds"
 msgstr ""
 
-#: ../app/greeter/mutils.c:83
-msgid "%a, %b %d, %Y"
+#: ../app/greeter/dlock.c:113 ../app/greeter/greeter.c:148
+msgid "Invalid Password"
 msgstr ""
 
-#: ../app/dock/dock.c:284
-msgid "another instance of dock is running...\n"
-msgstr ""
-
-#: ../app/dock/dock.c:378
-msgid "Dock failed to start, because the plugin of compiz is not enabled"
-msgstr ""
-
-#: ../app/desktop/desktop.c:213
-msgid "New file"
-msgstr ""
-
-#: ../app/desktop/desktop.c:224
-msgid "New directory"
-msgstr ""
-
-#: ../app/app_tray/tray.c:287
-msgid "another systray is already running..."
+#: ../app/launcher/launcher.c:334 ../app/launcher/launcher.c:345
+msgid "another instance of launcher is running...\n"
 msgstr ""
 
 #: ../lib/dentry/entry.c:746

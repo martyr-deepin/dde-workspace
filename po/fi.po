@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Destkop Environment\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-18 10:28+0800\n"
-"PO-Revision-Date: 2014-01-23 15:41+0000\n"
-"Last-Translator: artor <arto@rusanen.me>\n"
+"POT-Creation-Date: 2014-04-10 13:26+0800\n"
+"PO-Revision-Date: 2014-04-10 05:22+0000\n"
+"Last-Translator: electricface <songwentai@linuxdeepin.com>\n"
 "Language-Team: Finnish (http://www.transifex.com/projects/p/deepin-destkop-environment/language/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,288 +18,12 @@ msgstr ""
 "Language: fi\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../resources/launcher/js/grid.coffee:87
-#: ../resources/desktop/js/specialitem.coffee:51
-#: ../resources/desktop/js/specialitem.coffee:138
-#: ../resources/desktop/js/specialitem.coffee:232
-#: ../resources/desktop/js/specialitem.coffee:284
-#: ../resources/desktop/js/desktopentry.coffee:101
-#: ../resources/desktop/js/richdir.coffee:130
-#: ../resources/desktop/js/richdir.coffee:458
-msgid "_Open"
-msgstr "_Avaa"
-
-#: ../resources/launcher/js/grid.coffee:91
-msgid "Send to d_esktop"
-msgstr "Lähetä työpöydälle"
-
-#: ../resources/launcher/js/grid.coffee:92
-msgid "Send to do_ck"
-msgstr "Lähetä telakkaan"
-
-#: ../resources/launcher/js/search.coffee:29
-msgid "Type to search..."
-msgstr "Kirjoita etsiäksesi..."
-
-#: ../resources/launcher/js/config.coffee:31
-msgid "_Hide hidden icons"
-msgstr "Piilota piilotiedostot"
-
-#: ../resources/launcher/js/config.coffee:32
-msgid "_Display hidden icons"
-msgstr "Näytä piilotiedostot"
-
-#: ../resources/launcher/js/config.coffee:35
-msgid "_Hide this icon"
-msgstr "Piilota tämä ikoni"
-
-#: ../resources/launcher/js/config.coffee:36
-msgid "_Display this icon"
-msgstr "Näytä tämä ikoni"
-
-#: ../resources/launcher/js/config.coffee:41
-msgid "_Add to autostart"
-msgstr "Lisää automaattikäynnistykseen"
-
-#: ../resources/launcher/js/config.coffee:42
-msgid "_Remove from autostart"
-msgstr "Poista automaattikäynnistyksestä"
-
-#: ../resources/launcher/js/config.coffee:48
-msgid "Sort By _Frequency"
-msgstr "Lajittele lukumäärän mukaan"
-
-#: ../resources/launcher/js/config.coffee:49
-msgid "Sort By _Name"
-msgstr "Lajittele nimen mukaan"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Jan"
-msgstr "Tam"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Feb"
-msgstr "Hel"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Mar"
-msgstr "Maa"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Apr"
-msgstr "Huh"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "May"
-msgstr "Tou"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Jun"
-msgstr "Kes"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Jul"
-msgstr "Hei"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Aug"
-msgstr "Elo"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Sep"
-msgstr "Syy"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Oct"
-msgstr "Lok"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Nov"
-msgstr "Mar"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Dec"
-msgstr "Jou"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Sun"
-msgstr "Sun"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Mon"
-msgstr "Ma"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Tue"
-msgstr "Ti"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Wed"
-msgstr "Ke"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Thu"
-msgstr "To"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Fri"
-msgstr "Pe"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Sat"
-msgstr "La"
-
-#: ../resources/greeter/js/user.coffee:109
-msgid "Administrator"
-msgstr "Järjestelmänvalvoja"
-
-#: ../resources/greeter/js/user.coffee:110
-#: ../resources/greeter/js/user.coffee:111
-#: ../resources/greeter/js/user.coffee:112
-msgid "Standard user"
-msgstr "Normaali käyttäjä"
-
-#: ../resources/greeter/js/user.coffee:160
-msgid "guest"
-msgstr "vieras"
-
-#: ../resources/greeter/js/user.coffee:308
-msgid "Log In"
-msgstr "Su"
-
-#: ../resources/greeter/js/user.coffee:310
-msgid "Unlock"
-msgstr "Avaus"
-
-#: ../resources/greeter/js/user.coffee:530
-msgid "Welcome"
-msgstr "Tervetuloa"
-
-#: ../resources/greeter/js/lock.coffee:62
-#: ../resources/greeter/js/greeter.coffee:88
-msgid "ShutDown"
-msgstr "Sammutus"
-
-#: ../resources/greeter/js/powermenu.coffee:71
-msgid "suspend"
-msgstr "keskeytä"
-
-#: ../resources/greeter/js/powermenu.coffee:75
-msgid "restart"
-msgstr "uudelleenkäynnistys"
-
-#: ../resources/dock/js/launcher.coffee:47 ../lib/dentry/mime_actions.c:213
-msgid "_Run"
-msgstr "Suorita"
-
-#: ../resources/dock/js/launcher.coffee:56
-msgid "_Undock"
-msgstr "Irroita"
-
-#: ../resources/dock/js/deepin_item.coffee:97
-#: ../resources/desktop/js/specialitem.coffee:240
-msgid "_Clean up"
-msgstr "Tyhjennä"
-
-#: ../resources/dock/js/deepin_item.coffee:99
-#: ../resources/dock/js/clientgroup.coffee:116
-msgid "_Close"
-msgstr "Sulje"
-
-#: ../resources/dock/js/deepin_item.coffee:119
-#: ../resources/desktop/js/desktopentry.coffee:150
-msgid "Can not open this file."
-msgstr "Tiedostoa ei voi avata."
-
-#: ../resources/dock/js/deepin_item.coffee:119
-#: ../resources/desktop/js/application.coffee:177
-#: ../resources/desktop/js/desktopentry.coffee:150
-#: ../resources/desktop/js/richdir.coffee:351
-#: ../resources/desktop/js/richdir.coffee:476
-msgid "Warning"
-msgstr "Varoitus"
-
-#: ../resources/dock/js/deepin_item.coffee:225
-msgid "_View as analog"
-msgstr "Näytä analogisena"
-
-#: ../resources/dock/js/deepin_item.coffee:226
-#: ../resources/dock/js/deepin_item.coffee:266
-msgid "_Time settings"
-msgstr "Ajan asetukset"
-
-#: ../resources/dock/js/deepin_item.coffee:265
-msgid "_View as digit"
-msgstr "Näytä digitaalisena"
-
-#: ../resources/dock/js/deepin_item.coffee:290
-msgid "Launcher"
-msgstr "Käynnistäjä"
-
-#: ../resources/dock/js/deepin_item.coffee:291
-msgid "Show/Hide Desktop"
-msgstr "Näytä/piilota työpöytä"
-
-#: ../resources/dock/js/deepin_item.coffee:292
-#: ../resources/desktop/js/specialitem.coffee:173
-msgid "Trash"
-msgstr "Roskakori"
-
-#: ../resources/dock/js/clientgroup.coffee:106
-msgid "_New Window"
-msgstr "Uusi ikkuna"
-
-#: ../resources/dock/js/clientgroup.coffee:117
-msgid "Close _All"
-msgstr "Sulje kaikki"
-
-#: ../resources/dock/js/clientgroup.coffee:119
-msgid "_Dock me"
-msgstr "Telakoi"
-
-#: ../resources/dock/js/item.coffee:302
-msgid "The item is invalid. Do you want to remove it from the dock panel?"
-msgstr "Kohde on epäkelpo. Haluatko poistaa sen paneelista?"
-
-#: ../resources/desktop/js/specialitem.coffee:34
-msgid "Computer"
-msgstr "Tietokone"
-
-#: ../resources/desktop/js/specialitem.coffee:53
-#: ../resources/desktop/js/specialitem.coffee:140
-#: ../resources/desktop/js/desktopentry.coffee:109
-#: ../resources/desktop/js/richdir.coffee:465
-msgid "_Properties"
-msgstr "_Ominaisuudet"
-
-#: ../resources/desktop/js/specialitem.coffee:83
-msgid "Home"
-msgstr "Koti"
-
-#: ../resources/desktop/js/specialitem.coffee:236
-msgid "_Clean up %1 items"
-msgstr "Poista %1 kohdetta"
-
-#: ../resources/desktop/js/specialitem.coffee:238
-msgid "_Clean up 1 item"
-msgstr "Poista 1 kohde"
-
-#: ../resources/desktop/js/specialitem.coffee:268
-msgid "Software Center"
-msgstr "Ohjelmistohallinta"
-
 #: ../resources/desktop/js/invalidlink.coffee:34
-#: ../resources/desktop/js/desktopentry.coffee:107
 #: ../resources/desktop/js/richdir.coffee:136
 #: ../resources/desktop/js/richdir.coffee:463
+#: ../resources/desktop/js/desktopentry.coffee:107
 msgid "_Delete"
 msgstr "Pois_ta"
-
-#: ../resources/desktop/js/application.coffee:177
-#: ../resources/desktop/js/richdir.coffee:351
-#: ../resources/desktop/js/richdir.coffee:476
-msgid "The link has expired. Do you want to delete it?"
-msgstr "Linkki on vanhentunut. Haluatko poistaa sen?"
 
 #: ../resources/desktop/js/grid.coffee:70 ../lib/dentry/fileops.c:402
 msgid "Untitled"
@@ -349,20 +73,55 @@ msgstr "T_yöpöydän asetukset"
 msgid "Pe_rsonalize"
 msgstr "Pe_rsonointi"
 
-#: ../resources/desktop/js/desktopentry.coffee:103
+#: ../resources/desktop/js/richdir.coffee:130
+#: ../resources/desktop/js/richdir.coffee:458
+#: ../resources/desktop/js/desktopentry.coffee:101
+#: ../resources/desktop/js/specialitem.coffee:51
+#: ../resources/desktop/js/specialitem.coffee:138
+#: ../resources/desktop/js/specialitem.coffee:232
+#: ../resources/desktop/js/specialitem.coffee:284
+#: ../resources/launcher/js/grid.coffee:91
+msgid "_Open"
+msgstr "_Avaa"
+
+#: ../resources/desktop/js/richdir.coffee:132
+#: ../resources/desktop/js/desktopentry.coffee:106
+msgid "_Rename"
+msgstr "_Uudelleennimeä"
+
+#: ../resources/desktop/js/richdir.coffee:134
+msgid "_Ungroup"
+msgstr "Pura r_yhmittely"
+
+#: ../resources/desktop/js/richdir.coffee:351
+#: ../resources/desktop/js/richdir.coffee:476
+#: ../resources/desktop/js/application.coffee:177
+msgid "The link has expired. Do you want to delete it?"
+msgstr "Linkki on vanhentunut. Haluatko poistaa sen?"
+
+#: ../resources/desktop/js/richdir.coffee:351
+#: ../resources/desktop/js/richdir.coffee:476
+#: ../resources/desktop/js/desktopentry.coffee:150
+#: ../resources/desktop/js/application.coffee:177
+msgid "Warning"
+msgstr "Varoitus"
+
 #: ../resources/desktop/js/richdir.coffee:460
+#: ../resources/desktop/js/desktopentry.coffee:103
 msgid "Cu_t"
 msgstr "L_eikkaa"
 
-#: ../resources/desktop/js/desktopentry.coffee:104
 #: ../resources/desktop/js/richdir.coffee:461
+#: ../resources/desktop/js/desktopentry.coffee:104
 msgid "_Copy"
 msgstr "_Kopioi"
 
-#: ../resources/desktop/js/desktopentry.coffee:106
-#: ../resources/desktop/js/richdir.coffee:132
-msgid "_Rename"
-msgstr "_Uudelleennimeä"
+#: ../resources/desktop/js/richdir.coffee:465
+#: ../resources/desktop/js/desktopentry.coffee:109
+#: ../resources/desktop/js/specialitem.coffee:53
+#: ../resources/desktop/js/specialitem.coffee:140
+msgid "_Properties"
+msgstr "_Ominaisuudet"
 
 #: ../resources/desktop/js/desktopentry.coffee:115
 #: ../resources/desktop/js/desktopentry.coffee:122
@@ -379,62 +138,253 @@ msgstr "Pu_ra"
 msgid "Extract _Here"
 msgstr "Pura T_änne"
 
-#: ../resources/desktop/js/richdir.coffee:134
-msgid "_Ungroup"
-msgstr "Pura r_yhmittely"
+#: ../resources/desktop/js/desktopentry.coffee:150
+msgid "Can not open this file."
+msgstr "Tiedostoa ei voi avata."
 
-#: ../resources/shutdown/js/utils.coffee:26
-msgid "Lock"
-msgstr "Lukitse"
+#: ../resources/desktop/js/specialitem.coffee:34
+msgid "Computer"
+msgstr "Tietokone"
 
-#: ../resources/shutdown/js/utils.coffee:26
-msgid "Suspend"
-msgstr "Valmiustila"
+#: ../resources/desktop/js/specialitem.coffee:83
+msgid "Home"
+msgstr "Koti"
 
-#: ../resources/shutdown/js/utils.coffee:26
-msgid "Log out"
-msgstr "Kirjaudu ulos"
+#: ../resources/desktop/js/specialitem.coffee:173
+msgid "Trash"
+msgstr "Roskakori"
 
-#: ../resources/shutdown/js/utils.coffee:26
-msgid "Restart"
-msgstr "Käynnistä uudelleen"
+#: ../resources/desktop/js/specialitem.coffee:236
+msgid "_Clean up %1 items"
+msgstr "Poista %1 kohdetta"
 
-#: ../resources/shutdown/js/utils.coffee:26
-msgid "Shut down"
-msgstr "Sammuta"
+#: ../resources/desktop/js/specialitem.coffee:238
+msgid "_Clean up 1 item"
+msgstr "Poista 1 kohde"
 
-#: ../resources/shutdown/js/utils.coffee:28
-msgid "The system will be locked in %1 seconds."
-msgstr "Järjestelmä lukitaan %1 sekunnin päästä."
+#: ../resources/desktop/js/specialitem.coffee:240
+msgid "_Clean up"
+msgstr "Tyhjennä"
 
-#: ../resources/shutdown/js/utils.coffee:29
-msgid "The system will be suspended in %1 seconds."
-msgstr "Järjestelmä keskeytetään %1 sekunnin päästä."
+#: ../resources/desktop/js/specialitem.coffee:268
+msgid "Software Center"
+msgstr "Ohjelmistohallinta"
 
-#: ../resources/shutdown/js/utils.coffee:30
-msgid "You will be automatically logged out in %1 seconds."
-msgstr "Sinut kirjataan automaattisesti ulos %1 sekunnin päästä."
+#: ../resources/dock/js/deepin_item.coffee:66
+msgid "Launcher"
+msgstr "Käynnistäjä"
 
-#: ../resources/shutdown/js/utils.coffee:31
-msgid "The system will restart in %1 seconds."
-msgstr "Järjestelmä käynnistetään uudelleen %1 sekunnin päästä."
+#: ../resources/dock/js/deepin_item.coffee:69
+msgid "Show/Hide Desktop"
+msgstr "Näytä/piilota työpöytä"
 
-#: ../resources/shutdown/js/utils.coffee:32
-msgid "The system will shut down in %1 seconds."
-msgstr "Järjestelmä sammutetaan %1 sekunnin päästä."
+#: ../resources/dock/js/clientgroup.coffee:36
+msgid "_New window"
+msgstr ""
 
-#: ../resources/shutdown/js/confirmdialog.coffee:63
-msgid "Cancel"
-msgstr "Peruutus"
+#: ../resources/dock/js/clientgroup.coffee:49
+msgid "_Close"
+msgstr "Sulje"
 
-#: ../app/launcher/launcher.c:334 ../app/launcher/launcher.c:345
-msgid "another instance of launcher is running...\n"
-msgstr "käynnistimestä on toinen instanssi käynnissä...\n"
+#: ../resources/dock/js/clientgroup.coffee:50
+msgid "Close _All"
+msgstr "Sulje kaikki"
 
-#: ../app/greeter/startsession.c:152 ../app/greeter/dlock.c:126
-#: ../app/greeter/greeter.c:153
-msgid "Invalid Password"
-msgstr "Epäkelpo salasana"
+#: ../resources/dock/js/clientgroup.coffee:52
+msgid "_Dock me"
+msgstr "Telakoi"
+
+#: ../resources/dock/js/launcher.coffee:42 ../lib/dentry/mime_actions.c:213
+msgid "_Run"
+msgstr "Suorita"
+
+#: ../resources/dock/js/launcher.coffee:56
+msgid "_Undock"
+msgstr "Irroita"
+
+#: ../resources/dock/js/item.coffee:267
+msgid "The item is invalid. Do you want to remove it from the dock panel?"
+msgstr "Kohde on epäkelpo. Haluatko poistaa sen paneelista?"
+
+#: ../resources/greeter/js/greeter.coffee:57
+msgid "guest"
+msgstr "vieras"
+
+#: ../resources/greeter/js/user.coffee:80
+msgid "Log In"
+msgstr "Su"
+
+#: ../resources/greeter/js/user.coffee:82
+msgid "Unlock"
+msgstr "Avaus"
+
+#: ../resources/greeter/js/user.coffee:115
+msgid "Welcome"
+msgstr "Tervetuloa"
+
+#: ../resources/greeter/js/user.coffee:121
+msgid "Switch User"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Jan"
+msgstr "Tam"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Feb"
+msgstr "Hel"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Mar"
+msgstr "Maa"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Apr"
+msgstr "Huh"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "May"
+msgstr "Tou"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Jun"
+msgstr "Kes"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Jul"
+msgstr "Hei"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Aug"
+msgstr "Elo"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Sep"
+msgstr "Syy"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Oct"
+msgstr "Lok"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Nov"
+msgstr "Mar"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Dec"
+msgstr "Jou"
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Sun"
+msgstr "Sun"
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Mon"
+msgstr "Ma"
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Tue"
+msgstr "Ti"
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Wed"
+msgstr "Ke"
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Thu"
+msgstr "To"
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Fri"
+msgstr "Pe"
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Sat"
+msgstr "La"
+
+#: ../resources/greeter/js/session.coffee:25
+msgid "Session"
+msgstr ""
+
+#: ../resources/greeter/js/session.coffee:134
+msgid "suspend"
+msgstr "keskeytä"
+
+#: ../resources/greeter/js/session.coffee:136
+msgid "hibernate"
+msgstr ""
+
+#: ../resources/greeter/js/session.coffee:138
+msgid "shutdown"
+msgstr ""
+
+#: ../resources/greeter/js/session.coffee:140
+msgid "restart"
+msgstr "uudelleenkäynnistys"
+
+#: ../resources/launcher/js/config.coffee:30
+msgid "_Hide hidden icons"
+msgstr "Piilota piilotiedostot"
+
+#: ../resources/launcher/js/config.coffee:31
+msgid "_Display hidden icons"
+msgstr "Näytä piilotiedostot"
+
+#: ../resources/launcher/js/config.coffee:34
+msgid "_Hide this icon"
+msgstr "Piilota tämä ikoni"
+
+#: ../resources/launcher/js/config.coffee:35
+msgid "_Display this icon"
+msgstr "Näytä tämä ikoni"
+
+#: ../resources/launcher/js/config.coffee:40
+msgid "_Add to autostart"
+msgstr "Lisää automaattikäynnistykseen"
+
+#: ../resources/launcher/js/config.coffee:41
+msgid "_Remove from autostart"
+msgstr "Poista automaattikäynnistyksestä"
+
+#: ../resources/launcher/js/config.coffee:47
+msgid "Sort By _Frequency"
+msgstr "Lajittele lukumäärän mukaan"
+
+#: ../resources/launcher/js/config.coffee:48
+msgid "Sort By _Name"
+msgstr "Lajittele nimen mukaan"
+
+#: ../resources/launcher/js/grid.coffee:95
+msgid "Send to d_esktop"
+msgstr "Lähetä työpöydälle"
+
+#: ../resources/launcher/js/grid.coffee:96
+msgid "Send to do_ck"
+msgstr "Lähetä telakkaan"
+
+#: ../resources/launcher/js/search.coffee:23
+msgid "Type to search..."
+msgstr "Kirjoita etsiäksesi..."
+
+#: ../app/desktop/desktop.c:213
+msgid "New file"
+msgstr "Uusi tiedosto"
+
+#: ../app/desktop/desktop.c:224
+msgid "New directory"
+msgstr "Uusi hakemisto"
+
+#: ../app/dock/dock.c:285
+msgid "another instance of dock is running...\n"
+msgstr "telakasta on toinen instanssi käynnissä...\n"
+
+#: ../app/dock/dock.c:378
+msgid "Dock failed to start, because the plugin of compiz is not enabled"
+msgstr "Telakkaa ei voitu käynnistää, koska compiz liitännäistä ei ole käytössä"
+
+#: ../app/greeter/mutils.c:83
+msgid "%a, %b %d, %Y"
+msgstr "%a, %b %d, %Y"
 
 #: ../app/greeter/camera.c:47
 msgid "Oops...I can't recognize your face. "
@@ -449,29 +399,13 @@ msgstr "Kirjaudu salasanallasi tai valitse kuvasi yrittääksesi uudelleen."
 msgid "%sRetry automatically in %ds"
 msgstr "%sUudelleenyritys %d sekunnin päästä"
 
-#: ../app/greeter/mutils.c:83
-msgid "%a, %b %d, %Y"
-msgstr "%a, %b %d, %Y"
+#: ../app/greeter/dlock.c:113 ../app/greeter/greeter.c:148
+msgid "Invalid Password"
+msgstr "Epäkelpo salasana"
 
-#: ../app/dock/dock.c:284
-msgid "another instance of dock is running...\n"
-msgstr "telakasta on toinen instanssi käynnissä...\n"
-
-#: ../app/dock/dock.c:378
-msgid "Dock failed to start, because the plugin of compiz is not enabled"
-msgstr "Telakkaa ei voitu käynnistää, koska compiz liitännäistä ei ole käytössä"
-
-#: ../app/desktop/desktop.c:213
-msgid "New file"
-msgstr "Uusi tiedosto"
-
-#: ../app/desktop/desktop.c:224
-msgid "New directory"
-msgstr "Uusi hakemisto"
-
-#: ../app/app_tray/tray.c:287
-msgid "another systray is already running..."
-msgstr "toinen systray on jo käynnissä..."
+#: ../app/launcher/launcher.c:334 ../app/launcher/launcher.c:345
+msgid "another instance of launcher is running...\n"
+msgstr "käynnistimestä on toinen instanssi käynnissä...\n"
 
 #: ../lib/dentry/entry.c:746
 #, c-format

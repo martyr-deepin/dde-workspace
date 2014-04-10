@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Destkop Environment\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-18 10:28+0800\n"
-"PO-Revision-Date: 2014-01-03 16:13+0000\n"
-"Last-Translator: ballmet <emkohencel@gmail.com>\n"
+"POT-Creation-Date: 2014-04-10 13:26+0800\n"
+"PO-Revision-Date: 2014-04-10 05:22+0000\n"
+"Last-Translator: electricface <songwentai@linuxdeepin.com>\n"
 "Language-Team: Slovak (http://www.transifex.com/projects/p/deepin-destkop-environment/language/sk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,288 +19,12 @@ msgstr ""
 "Language: sk\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: ../resources/launcher/js/grid.coffee:87
-#: ../resources/desktop/js/specialitem.coffee:51
-#: ../resources/desktop/js/specialitem.coffee:138
-#: ../resources/desktop/js/specialitem.coffee:232
-#: ../resources/desktop/js/specialitem.coffee:284
-#: ../resources/desktop/js/desktopentry.coffee:101
-#: ../resources/desktop/js/richdir.coffee:130
-#: ../resources/desktop/js/richdir.coffee:458
-msgid "_Open"
-msgstr "_Otvoriť"
-
-#: ../resources/launcher/js/grid.coffee:91
-msgid "Send to d_esktop"
-msgstr "Odoslať na p_lochu"
-
-#: ../resources/launcher/js/grid.coffee:92
-msgid "Send to do_ck"
-msgstr "Odoslať do do_cku"
-
-#: ../resources/launcher/js/search.coffee:29
-msgid "Type to search..."
-msgstr "Píšte pre vyhľadávanie..."
-
-#: ../resources/launcher/js/config.coffee:31
-msgid "_Hide hidden icons"
-msgstr "_Skryť skryté ikony"
-
-#: ../resources/launcher/js/config.coffee:32
-msgid "_Display hidden icons"
-msgstr "_Zobraziť skryté ikony"
-
-#: ../resources/launcher/js/config.coffee:35
-msgid "_Hide this icon"
-msgstr "_Schovať túto ikonu"
-
-#: ../resources/launcher/js/config.coffee:36
-msgid "_Display this icon"
-msgstr "_Zobraziť túto ikonu"
-
-#: ../resources/launcher/js/config.coffee:41
-msgid "_Add to autostart"
-msgstr "_Pridať do automatického spustenia"
-
-#: ../resources/launcher/js/config.coffee:42
-msgid "_Remove from autostart"
-msgstr "_Odstrániť z automatického spustenia"
-
-#: ../resources/launcher/js/config.coffee:48
-msgid "Sort By _Frequency"
-msgstr "Zoradiť podľa _početnosti"
-
-#: ../resources/launcher/js/config.coffee:49
-msgid "Sort By _Name"
-msgstr "Zoradiť podľa _mena"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Jan"
-msgstr "Jan"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Feb"
-msgstr "Feb"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Mar"
-msgstr "Mar"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Apr"
-msgstr "Apr"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "May"
-msgstr "Máj"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Jun"
-msgstr "Jún"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Jul"
-msgstr "Júl"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Aug"
-msgstr "Aug"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Sep"
-msgstr "Sep"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Oct"
-msgstr "Okt"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Nov"
-msgstr "Nov"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Dec"
-msgstr "Dec"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Sun"
-msgstr "Ned"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Mon"
-msgstr "Po"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Tue"
-msgstr "Ut"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Wed"
-msgstr "St"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Thu"
-msgstr "Št"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Fri"
-msgstr "Pi"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Sat"
-msgstr "So"
-
-#: ../resources/greeter/js/user.coffee:109
-msgid "Administrator"
-msgstr "Administrátor"
-
-#: ../resources/greeter/js/user.coffee:110
-#: ../resources/greeter/js/user.coffee:111
-#: ../resources/greeter/js/user.coffee:112
-msgid "Standard user"
-msgstr "Bežný používateľ"
-
-#: ../resources/greeter/js/user.coffee:160
-msgid "guest"
-msgstr "Hosť"
-
-#: ../resources/greeter/js/user.coffee:308
-msgid "Log In"
-msgstr "Prihlásenie"
-
-#: ../resources/greeter/js/user.coffee:310
-msgid "Unlock"
-msgstr "Odomknúť"
-
-#: ../resources/greeter/js/user.coffee:530
-msgid "Welcome"
-msgstr "Vitajte"
-
-#: ../resources/greeter/js/lock.coffee:62
-#: ../resources/greeter/js/greeter.coffee:88
-msgid "ShutDown"
-msgstr "Vypnúť"
-
-#: ../resources/greeter/js/powermenu.coffee:71
-msgid "suspend"
-msgstr "uspať"
-
-#: ../resources/greeter/js/powermenu.coffee:75
-msgid "restart"
-msgstr "reštartovať"
-
-#: ../resources/dock/js/launcher.coffee:47 ../lib/dentry/mime_actions.c:213
-msgid "_Run"
-msgstr "_Spustiť"
-
-#: ../resources/dock/js/launcher.coffee:56
-msgid "_Undock"
-msgstr "_Odstrániť z docku"
-
-#: ../resources/dock/js/deepin_item.coffee:97
-#: ../resources/desktop/js/specialitem.coffee:240
-msgid "_Clean up"
-msgstr "_Upratať"
-
-#: ../resources/dock/js/deepin_item.coffee:99
-#: ../resources/dock/js/clientgroup.coffee:116
-msgid "_Close"
-msgstr "_Zatvoriť"
-
-#: ../resources/dock/js/deepin_item.coffee:119
-#: ../resources/desktop/js/desktopentry.coffee:150
-msgid "Can not open this file."
-msgstr "Tento súbor sa nedá otvoriť."
-
-#: ../resources/dock/js/deepin_item.coffee:119
-#: ../resources/desktop/js/application.coffee:177
-#: ../resources/desktop/js/desktopentry.coffee:150
-#: ../resources/desktop/js/richdir.coffee:351
-#: ../resources/desktop/js/richdir.coffee:476
-msgid "Warning"
-msgstr "Varovanie"
-
-#: ../resources/dock/js/deepin_item.coffee:225
-msgid "_View as analog"
-msgstr "_Zobraziť ako hodiny s ručičkami"
-
-#: ../resources/dock/js/deepin_item.coffee:226
-#: ../resources/dock/js/deepin_item.coffee:266
-msgid "_Time settings"
-msgstr "_Nastavenia času"
-
-#: ../resources/dock/js/deepin_item.coffee:265
-msgid "_View as digit"
-msgstr "_Zobraziť ako číslicu"
-
-#: ../resources/dock/js/deepin_item.coffee:290
-msgid "Launcher"
-msgstr "Spúšťač"
-
-#: ../resources/dock/js/deepin_item.coffee:291
-msgid "Show/Hide Desktop"
-msgstr "Zobraziť/Schovať plochu"
-
-#: ../resources/dock/js/deepin_item.coffee:292
-#: ../resources/desktop/js/specialitem.coffee:173
-msgid "Trash"
-msgstr "Kôš"
-
-#: ../resources/dock/js/clientgroup.coffee:106
-msgid "_New Window"
-msgstr "_Nové okno"
-
-#: ../resources/dock/js/clientgroup.coffee:117
-msgid "Close _All"
-msgstr "Zatvoriť _všetko"
-
-#: ../resources/dock/js/clientgroup.coffee:119
-msgid "_Dock me"
-msgstr "Pridať do dock_u"
-
-#: ../resources/dock/js/item.coffee:302
-msgid "The item is invalid. Do you want to remove it from the dock panel?"
-msgstr "Položka je neplatná. Chcete ju odstrániť z docku?"
-
-#: ../resources/desktop/js/specialitem.coffee:34
-msgid "Computer"
-msgstr "Počítač"
-
-#: ../resources/desktop/js/specialitem.coffee:53
-#: ../resources/desktop/js/specialitem.coffee:140
-#: ../resources/desktop/js/desktopentry.coffee:109
-#: ../resources/desktop/js/richdir.coffee:465
-msgid "_Properties"
-msgstr "_Nastavenia"
-
-#: ../resources/desktop/js/specialitem.coffee:83
-msgid "Home"
-msgstr "Domovská zložka"
-
-#: ../resources/desktop/js/specialitem.coffee:236
-msgid "_Clean up %1 items"
-msgstr "_Upratať %1 položiek"
-
-#: ../resources/desktop/js/specialitem.coffee:238
-msgid "_Clean up 1 item"
-msgstr "_Upratať 1 položku"
-
-#: ../resources/desktop/js/specialitem.coffee:268
-msgid "Software Center"
-msgstr "Centrum softvéru"
-
 #: ../resources/desktop/js/invalidlink.coffee:34
-#: ../resources/desktop/js/desktopentry.coffee:107
 #: ../resources/desktop/js/richdir.coffee:136
 #: ../resources/desktop/js/richdir.coffee:463
+#: ../resources/desktop/js/desktopentry.coffee:107
 msgid "_Delete"
 msgstr "_Vymazať"
-
-#: ../resources/desktop/js/application.coffee:177
-#: ../resources/desktop/js/richdir.coffee:351
-#: ../resources/desktop/js/richdir.coffee:476
-msgid "The link has expired. Do you want to delete it?"
-msgstr "Odkaz vypršal. Chcete ho zmazať?"
 
 #: ../resources/desktop/js/grid.coffee:70 ../lib/dentry/fileops.c:402
 msgid "Untitled"
@@ -350,20 +74,55 @@ msgstr "Nastavenie p_racovnej plochy"
 msgid "Pe_rsonalize"
 msgstr "_Osobné úpravy"
 
-#: ../resources/desktop/js/desktopentry.coffee:103
+#: ../resources/desktop/js/richdir.coffee:130
+#: ../resources/desktop/js/richdir.coffee:458
+#: ../resources/desktop/js/desktopentry.coffee:101
+#: ../resources/desktop/js/specialitem.coffee:51
+#: ../resources/desktop/js/specialitem.coffee:138
+#: ../resources/desktop/js/specialitem.coffee:232
+#: ../resources/desktop/js/specialitem.coffee:284
+#: ../resources/launcher/js/grid.coffee:91
+msgid "_Open"
+msgstr "_Otvoriť"
+
+#: ../resources/desktop/js/richdir.coffee:132
+#: ../resources/desktop/js/desktopentry.coffee:106
+msgid "_Rename"
+msgstr "_Premenovať"
+
+#: ../resources/desktop/js/richdir.coffee:134
+msgid "_Ungroup"
+msgstr "_Zrušiť zoskupenie"
+
+#: ../resources/desktop/js/richdir.coffee:351
+#: ../resources/desktop/js/richdir.coffee:476
+#: ../resources/desktop/js/application.coffee:177
+msgid "The link has expired. Do you want to delete it?"
+msgstr "Odkaz vypršal. Chcete ho zmazať?"
+
+#: ../resources/desktop/js/richdir.coffee:351
+#: ../resources/desktop/js/richdir.coffee:476
+#: ../resources/desktop/js/desktopentry.coffee:150
+#: ../resources/desktop/js/application.coffee:177
+msgid "Warning"
+msgstr "Varovanie"
+
 #: ../resources/desktop/js/richdir.coffee:460
+#: ../resources/desktop/js/desktopentry.coffee:103
 msgid "Cu_t"
 msgstr "Vy_strihnúť"
 
-#: ../resources/desktop/js/desktopentry.coffee:104
 #: ../resources/desktop/js/richdir.coffee:461
+#: ../resources/desktop/js/desktopentry.coffee:104
 msgid "_Copy"
 msgstr "_Kopírovať"
 
-#: ../resources/desktop/js/desktopentry.coffee:106
-#: ../resources/desktop/js/richdir.coffee:132
-msgid "_Rename"
-msgstr "_Premenovať"
+#: ../resources/desktop/js/richdir.coffee:465
+#: ../resources/desktop/js/desktopentry.coffee:109
+#: ../resources/desktop/js/specialitem.coffee:53
+#: ../resources/desktop/js/specialitem.coffee:140
+msgid "_Properties"
+msgstr "_Nastavenia"
 
 #: ../resources/desktop/js/desktopentry.coffee:115
 #: ../resources/desktop/js/desktopentry.coffee:122
@@ -380,62 +139,253 @@ msgstr "_Rozbaliť"
 msgid "Extract _Here"
 msgstr "Rozbaliť _tu"
 
-#: ../resources/desktop/js/richdir.coffee:134
-msgid "_Ungroup"
-msgstr "_Zrušiť zoskupenie"
+#: ../resources/desktop/js/desktopentry.coffee:150
+msgid "Can not open this file."
+msgstr "Tento súbor sa nedá otvoriť."
 
-#: ../resources/shutdown/js/utils.coffee:26
-msgid "Lock"
-msgstr "Zamknúť"
+#: ../resources/desktop/js/specialitem.coffee:34
+msgid "Computer"
+msgstr "Počítač"
 
-#: ../resources/shutdown/js/utils.coffee:26
-msgid "Suspend"
-msgstr "Uspať"
+#: ../resources/desktop/js/specialitem.coffee:83
+msgid "Home"
+msgstr "Domovská zložka"
 
-#: ../resources/shutdown/js/utils.coffee:26
-msgid "Log out"
-msgstr "Odhlásiť sa"
+#: ../resources/desktop/js/specialitem.coffee:173
+msgid "Trash"
+msgstr "Kôš"
 
-#: ../resources/shutdown/js/utils.coffee:26
-msgid "Restart"
-msgstr "Reštartovať"
+#: ../resources/desktop/js/specialitem.coffee:236
+msgid "_Clean up %1 items"
+msgstr "_Upratať %1 položiek"
 
-#: ../resources/shutdown/js/utils.coffee:26
-msgid "Shut down"
-msgstr "Vypnúť"
+#: ../resources/desktop/js/specialitem.coffee:238
+msgid "_Clean up 1 item"
+msgstr "_Upratať 1 položku"
 
-#: ../resources/shutdown/js/utils.coffee:28
-msgid "The system will be locked in %1 seconds."
-msgstr "Systém bude uzamknutý o %1 sekúnd."
+#: ../resources/desktop/js/specialitem.coffee:240
+msgid "_Clean up"
+msgstr "_Upratať"
 
-#: ../resources/shutdown/js/utils.coffee:29
-msgid "The system will be suspended in %1 seconds."
-msgstr "Systém bude uspaný o %1 sekúnd."
+#: ../resources/desktop/js/specialitem.coffee:268
+msgid "Software Center"
+msgstr "Centrum softvéru"
 
-#: ../resources/shutdown/js/utils.coffee:30
-msgid "You will be automatically logged out in %1 seconds."
-msgstr "Budete automaticky odhlásený o %1 sekúnd."
+#: ../resources/dock/js/deepin_item.coffee:66
+msgid "Launcher"
+msgstr "Spúšťač"
 
-#: ../resources/shutdown/js/utils.coffee:31
-msgid "The system will restart in %1 seconds."
-msgstr "Systém sa reštartuje o %1 sekúnd."
+#: ../resources/dock/js/deepin_item.coffee:69
+msgid "Show/Hide Desktop"
+msgstr "Zobraziť/Schovať plochu"
 
-#: ../resources/shutdown/js/utils.coffee:32
-msgid "The system will shut down in %1 seconds."
-msgstr "Systém sa vypne o %1 sekúnd."
+#: ../resources/dock/js/clientgroup.coffee:36
+msgid "_New window"
+msgstr ""
 
-#: ../resources/shutdown/js/confirmdialog.coffee:63
-msgid "Cancel"
-msgstr "Zrušiť"
+#: ../resources/dock/js/clientgroup.coffee:49
+msgid "_Close"
+msgstr "_Zatvoriť"
 
-#: ../app/launcher/launcher.c:334 ../app/launcher/launcher.c:345
-msgid "another instance of launcher is running...\n"
-msgstr "Iná inštancia spúšťača je už spustená...\n"
+#: ../resources/dock/js/clientgroup.coffee:50
+msgid "Close _All"
+msgstr "Zatvoriť _všetko"
 
-#: ../app/greeter/startsession.c:152 ../app/greeter/dlock.c:126
-#: ../app/greeter/greeter.c:153
-msgid "Invalid Password"
-msgstr "Nesprávne heslo"
+#: ../resources/dock/js/clientgroup.coffee:52
+msgid "_Dock me"
+msgstr "Pridať do dock_u"
+
+#: ../resources/dock/js/launcher.coffee:42 ../lib/dentry/mime_actions.c:213
+msgid "_Run"
+msgstr "_Spustiť"
+
+#: ../resources/dock/js/launcher.coffee:56
+msgid "_Undock"
+msgstr "_Odstrániť z docku"
+
+#: ../resources/dock/js/item.coffee:267
+msgid "The item is invalid. Do you want to remove it from the dock panel?"
+msgstr "Položka je neplatná. Chcete ju odstrániť z docku?"
+
+#: ../resources/greeter/js/greeter.coffee:57
+msgid "guest"
+msgstr "Hosť"
+
+#: ../resources/greeter/js/user.coffee:80
+msgid "Log In"
+msgstr "Prihlásenie"
+
+#: ../resources/greeter/js/user.coffee:82
+msgid "Unlock"
+msgstr "Odomknúť"
+
+#: ../resources/greeter/js/user.coffee:115
+msgid "Welcome"
+msgstr "Vitajte"
+
+#: ../resources/greeter/js/user.coffee:121
+msgid "Switch User"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Jan"
+msgstr "Jan"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Feb"
+msgstr "Feb"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Mar"
+msgstr "Mar"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Apr"
+msgstr "Apr"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "May"
+msgstr "Máj"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Jun"
+msgstr "Jún"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Jul"
+msgstr "Júl"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Aug"
+msgstr "Aug"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Sep"
+msgstr "Sep"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Oct"
+msgstr "Okt"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Nov"
+msgstr "Nov"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Dec"
+msgstr "Dec"
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Sun"
+msgstr "Ned"
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Mon"
+msgstr "Po"
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Tue"
+msgstr "Ut"
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Wed"
+msgstr "St"
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Thu"
+msgstr "Št"
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Fri"
+msgstr "Pi"
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Sat"
+msgstr "So"
+
+#: ../resources/greeter/js/session.coffee:25
+msgid "Session"
+msgstr ""
+
+#: ../resources/greeter/js/session.coffee:134
+msgid "suspend"
+msgstr "uspať"
+
+#: ../resources/greeter/js/session.coffee:136
+msgid "hibernate"
+msgstr ""
+
+#: ../resources/greeter/js/session.coffee:138
+msgid "shutdown"
+msgstr ""
+
+#: ../resources/greeter/js/session.coffee:140
+msgid "restart"
+msgstr "reštartovať"
+
+#: ../resources/launcher/js/config.coffee:30
+msgid "_Hide hidden icons"
+msgstr "_Skryť skryté ikony"
+
+#: ../resources/launcher/js/config.coffee:31
+msgid "_Display hidden icons"
+msgstr "_Zobraziť skryté ikony"
+
+#: ../resources/launcher/js/config.coffee:34
+msgid "_Hide this icon"
+msgstr "_Schovať túto ikonu"
+
+#: ../resources/launcher/js/config.coffee:35
+msgid "_Display this icon"
+msgstr "_Zobraziť túto ikonu"
+
+#: ../resources/launcher/js/config.coffee:40
+msgid "_Add to autostart"
+msgstr "_Pridať do automatického spustenia"
+
+#: ../resources/launcher/js/config.coffee:41
+msgid "_Remove from autostart"
+msgstr "_Odstrániť z automatického spustenia"
+
+#: ../resources/launcher/js/config.coffee:47
+msgid "Sort By _Frequency"
+msgstr "Zoradiť podľa _početnosti"
+
+#: ../resources/launcher/js/config.coffee:48
+msgid "Sort By _Name"
+msgstr "Zoradiť podľa _mena"
+
+#: ../resources/launcher/js/grid.coffee:95
+msgid "Send to d_esktop"
+msgstr "Odoslať na p_lochu"
+
+#: ../resources/launcher/js/grid.coffee:96
+msgid "Send to do_ck"
+msgstr "Odoslať do do_cku"
+
+#: ../resources/launcher/js/search.coffee:23
+msgid "Type to search..."
+msgstr "Píšte pre vyhľadávanie..."
+
+#: ../app/desktop/desktop.c:213
+msgid "New file"
+msgstr "Nový súbor"
+
+#: ../app/desktop/desktop.c:224
+msgid "New directory"
+msgstr "Nový adresár"
+
+#: ../app/dock/dock.c:285
+msgid "another instance of dock is running...\n"
+msgstr "Inštancia docku je už spustená...\n"
+
+#: ../app/dock/dock.c:378
+msgid "Dock failed to start, because the plugin of compiz is not enabled"
+msgstr "Dock nebol spustený, pretože Compiz nie je povolený"
+
+#: ../app/greeter/mutils.c:83
+msgid "%a, %b %d, %Y"
+msgstr "%a, %b %d, %Y"
 
 #: ../app/greeter/camera.c:47
 msgid "Oops...I can't recognize your face. "
@@ -450,29 +400,13 @@ msgstr "Prihláste sa pod svojim menom alebo kliknite na svoj obrázok pre zopak
 msgid "%sRetry automatically in %ds"
 msgstr "%s Opakovať automaticky o %ds"
 
-#: ../app/greeter/mutils.c:83
-msgid "%a, %b %d, %Y"
-msgstr "%a, %b %d, %Y"
+#: ../app/greeter/dlock.c:113 ../app/greeter/greeter.c:148
+msgid "Invalid Password"
+msgstr "Nesprávne heslo"
 
-#: ../app/dock/dock.c:284
-msgid "another instance of dock is running...\n"
-msgstr "Inštancia docku je už spustená...\n"
-
-#: ../app/dock/dock.c:378
-msgid "Dock failed to start, because the plugin of compiz is not enabled"
-msgstr "Dock nebol spustený, pretože Compiz nie je povolený"
-
-#: ../app/desktop/desktop.c:213
-msgid "New file"
-msgstr "Nový súbor"
-
-#: ../app/desktop/desktop.c:224
-msgid "New directory"
-msgstr "Nový adresár"
-
-#: ../app/app_tray/tray.c:287
-msgid "another systray is already running..."
-msgstr "Už beží iná oznamovacia oblasť v paneli..."
+#: ../app/launcher/launcher.c:334 ../app/launcher/launcher.c:345
+msgid "another instance of launcher is running...\n"
+msgstr "Iná inštancia spúšťača je už spustená...\n"
 
 #: ../lib/dentry/entry.c:746
 #, c-format

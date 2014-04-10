@@ -3,14 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# jasper580 <jasperweyne@gmail.com>, 2014
 # richdb <rr.debruin@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Destkop Environment\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-18 10:28+0800\n"
-"PO-Revision-Date: 2013-12-20 13:24+0000\n"
-"Last-Translator: richdb <rr.debruin@gmail.com>\n"
+"POT-Creation-Date: 2014-04-10 13:26+0800\n"
+"PO-Revision-Date: 2014-04-10 05:22+0000\n"
+"Last-Translator: electricface <songwentai@linuxdeepin.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/deepin-destkop-environment/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,288 +19,12 @@ msgstr ""
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../resources/launcher/js/grid.coffee:87
-#: ../resources/desktop/js/specialitem.coffee:51
-#: ../resources/desktop/js/specialitem.coffee:138
-#: ../resources/desktop/js/specialitem.coffee:232
-#: ../resources/desktop/js/specialitem.coffee:284
-#: ../resources/desktop/js/desktopentry.coffee:101
-#: ../resources/desktop/js/richdir.coffee:130
-#: ../resources/desktop/js/richdir.coffee:458
-msgid "_Open"
-msgstr "_Openen"
-
-#: ../resources/launcher/js/grid.coffee:91
-msgid "Send to d_esktop"
-msgstr "Stuur naar d_esktop"
-
-#: ../resources/launcher/js/grid.coffee:92
-msgid "Send to do_ck"
-msgstr "Stuur naar do_cl"
-
-#: ../resources/launcher/js/search.coffee:29
-msgid "Type to search..."
-msgstr "Typ om te zoeken..."
-
-#: ../resources/launcher/js/config.coffee:31
-msgid "_Hide hidden icons"
-msgstr "_Verberg verborgen iconen"
-
-#: ../resources/launcher/js/config.coffee:32
-msgid "_Display hidden icons"
-msgstr "_Toon verborgen iconen"
-
-#: ../resources/launcher/js/config.coffee:35
-msgid "_Hide this icon"
-msgstr "_Verberg dit icoon"
-
-#: ../resources/launcher/js/config.coffee:36
-msgid "_Display this icon"
-msgstr "_Toon dit icoon"
-
-#: ../resources/launcher/js/config.coffee:41
-msgid "_Add to autostart"
-msgstr "_Toevoegen aan autostart"
-
-#: ../resources/launcher/js/config.coffee:42
-msgid "_Remove from autostart"
-msgstr "_Verwijderen van autostart"
-
-#: ../resources/launcher/js/config.coffee:48
-msgid "Sort By _Frequency"
-msgstr "Sorteren op _frequentie"
-
-#: ../resources/launcher/js/config.coffee:49
-msgid "Sort By _Name"
-msgstr "Sorteren op _naam"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Jan"
-msgstr "Jan"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Feb"
-msgstr "Feb"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Mar"
-msgstr "Mar"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Apr"
-msgstr "Apr"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "May"
-msgstr "Mei"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Jun"
-msgstr "Jun"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Jul"
-msgstr "Jul"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Aug"
-msgstr "Aug"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Sep"
-msgstr "Sep"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Oct"
-msgstr "Okt"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Nov"
-msgstr "Nov"
-
-#: ../resources/greeter/js/time.coffee:42
-msgid "Dec"
-msgstr "Dec"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Sun"
-msgstr "Zon"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Mon"
-msgstr "Ma"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Tue"
-msgstr "Din"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Wed"
-msgstr "Woe"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Thu"
-msgstr "Do"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Fri"
-msgstr "Vrij"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Sat"
-msgstr "Zat"
-
-#: ../resources/greeter/js/user.coffee:109
-msgid "Administrator"
-msgstr ""
-
-#: ../resources/greeter/js/user.coffee:110
-#: ../resources/greeter/js/user.coffee:111
-#: ../resources/greeter/js/user.coffee:112
-msgid "Standard user"
-msgstr ""
-
-#: ../resources/greeter/js/user.coffee:160
-msgid "guest"
-msgstr "gast"
-
-#: ../resources/greeter/js/user.coffee:308
-msgid "Log In"
-msgstr "Inloggen"
-
-#: ../resources/greeter/js/user.coffee:310
-msgid "Unlock"
-msgstr "Openen"
-
-#: ../resources/greeter/js/user.coffee:530
-msgid "Welcome"
-msgstr "Welkom"
-
-#: ../resources/greeter/js/lock.coffee:62
-#: ../resources/greeter/js/greeter.coffee:88
-msgid "ShutDown"
-msgstr ""
-
-#: ../resources/greeter/js/powermenu.coffee:71
-msgid "suspend"
-msgstr "slaapstand"
-
-#: ../resources/greeter/js/powermenu.coffee:75
-msgid "restart"
-msgstr "opnieuw opstarten"
-
-#: ../resources/dock/js/launcher.coffee:47 ../lib/dentry/mime_actions.c:213
-msgid "_Run"
-msgstr "_Uitvoeren"
-
-#: ../resources/dock/js/launcher.coffee:56
-msgid "_Undock"
-msgstr "_Loskoppelen"
-
-#: ../resources/dock/js/deepin_item.coffee:97
-#: ../resources/desktop/js/specialitem.coffee:240
-msgid "_Clean up"
-msgstr "_Opschonen"
-
-#: ../resources/dock/js/deepin_item.coffee:99
-#: ../resources/dock/js/clientgroup.coffee:116
-msgid "_Close"
-msgstr "_Sluiten"
-
-#: ../resources/dock/js/deepin_item.coffee:119
-#: ../resources/desktop/js/desktopentry.coffee:150
-msgid "Can not open this file."
-msgstr "Kan dit bestand niet openen."
-
-#: ../resources/dock/js/deepin_item.coffee:119
-#: ../resources/desktop/js/application.coffee:177
-#: ../resources/desktop/js/desktopentry.coffee:150
-#: ../resources/desktop/js/richdir.coffee:351
-#: ../resources/desktop/js/richdir.coffee:476
-msgid "Warning"
-msgstr "Waarschuwing"
-
-#: ../resources/dock/js/deepin_item.coffee:225
-msgid "_View as analog"
-msgstr ""
-
-#: ../resources/dock/js/deepin_item.coffee:226
-#: ../resources/dock/js/deepin_item.coffee:266
-msgid "_Time settings"
-msgstr ""
-
-#: ../resources/dock/js/deepin_item.coffee:265
-msgid "_View as digit"
-msgstr ""
-
-#: ../resources/dock/js/deepin_item.coffee:290
-msgid "Launcher"
-msgstr "Launcher"
-
-#: ../resources/dock/js/deepin_item.coffee:291
-msgid "Show/Hide Desktop"
-msgstr "Toon/Verberg Desktop"
-
-#: ../resources/dock/js/deepin_item.coffee:292
-#: ../resources/desktop/js/specialitem.coffee:173
-msgid "Trash"
-msgstr "Prullenbak"
-
-#: ../resources/dock/js/clientgroup.coffee:106
-msgid "_New Window"
-msgstr "_Nieuw venster"
-
-#: ../resources/dock/js/clientgroup.coffee:117
-msgid "Close _All"
-msgstr "Alles _Sluiten"
-
-#: ../resources/dock/js/clientgroup.coffee:119
-msgid "_Dock me"
-msgstr "_Koppel mij"
-
-#: ../resources/dock/js/item.coffee:302
-msgid "The item is invalid. Do you want to remove it from the dock panel?"
-msgstr "Het item is ongeldig. Wilt u het van het dock paneel verwijderen?"
-
-#: ../resources/desktop/js/specialitem.coffee:34
-msgid "Computer"
-msgstr "Computer"
-
-#: ../resources/desktop/js/specialitem.coffee:53
-#: ../resources/desktop/js/specialitem.coffee:140
-#: ../resources/desktop/js/desktopentry.coffee:109
-#: ../resources/desktop/js/richdir.coffee:465
-msgid "_Properties"
-msgstr "_Eigenschappen"
-
-#: ../resources/desktop/js/specialitem.coffee:83
-msgid "Home"
-msgstr "Thuis"
-
-#: ../resources/desktop/js/specialitem.coffee:236
-msgid "_Clean up %1 items"
-msgstr "_Opschonen %1items"
-
-#: ../resources/desktop/js/specialitem.coffee:238
-msgid "_Clean up 1 item"
-msgstr "_Opschonen 1 item"
-
-#: ../resources/desktop/js/specialitem.coffee:268
-msgid "Software Center"
-msgstr "Software Center"
-
 #: ../resources/desktop/js/invalidlink.coffee:34
-#: ../resources/desktop/js/desktopentry.coffee:107
 #: ../resources/desktop/js/richdir.coffee:136
 #: ../resources/desktop/js/richdir.coffee:463
+#: ../resources/desktop/js/desktopentry.coffee:107
 msgid "_Delete"
 msgstr "_Verwijderen"
-
-#: ../resources/desktop/js/application.coffee:177
-#: ../resources/desktop/js/richdir.coffee:351
-#: ../resources/desktop/js/richdir.coffee:476
-msgid "The link has expired. Do you want to delete it?"
-msgstr "De link is verlopen. Wilt u deze verwijderen?"
 
 #: ../resources/desktop/js/grid.coffee:70 ../lib/dentry/fileops.c:402
 msgid "Untitled"
@@ -349,20 +74,55 @@ msgstr "D_esktop instellingen"
 msgid "Pe_rsonalize"
 msgstr "Pe_rsonaliseren"
 
-#: ../resources/desktop/js/desktopentry.coffee:103
+#: ../resources/desktop/js/richdir.coffee:130
+#: ../resources/desktop/js/richdir.coffee:458
+#: ../resources/desktop/js/desktopentry.coffee:101
+#: ../resources/desktop/js/specialitem.coffee:51
+#: ../resources/desktop/js/specialitem.coffee:138
+#: ../resources/desktop/js/specialitem.coffee:232
+#: ../resources/desktop/js/specialitem.coffee:284
+#: ../resources/launcher/js/grid.coffee:91
+msgid "_Open"
+msgstr "_Openen"
+
+#: ../resources/desktop/js/richdir.coffee:132
+#: ../resources/desktop/js/desktopentry.coffee:106
+msgid "_Rename"
+msgstr "_Hernoemen"
+
+#: ../resources/desktop/js/richdir.coffee:134
+msgid "_Ungroup"
+msgstr "Groep _opheffen"
+
+#: ../resources/desktop/js/richdir.coffee:351
+#: ../resources/desktop/js/richdir.coffee:476
+#: ../resources/desktop/js/application.coffee:177
+msgid "The link has expired. Do you want to delete it?"
+msgstr "De link is verlopen. Wilt u deze verwijderen?"
+
+#: ../resources/desktop/js/richdir.coffee:351
+#: ../resources/desktop/js/richdir.coffee:476
+#: ../resources/desktop/js/desktopentry.coffee:150
+#: ../resources/desktop/js/application.coffee:177
+msgid "Warning"
+msgstr "Waarschuwing"
+
 #: ../resources/desktop/js/richdir.coffee:460
+#: ../resources/desktop/js/desktopentry.coffee:103
 msgid "Cu_t"
 msgstr "_Knippen"
 
-#: ../resources/desktop/js/desktopentry.coffee:104
 #: ../resources/desktop/js/richdir.coffee:461
+#: ../resources/desktop/js/desktopentry.coffee:104
 msgid "_Copy"
 msgstr "Ko_piëren"
 
-#: ../resources/desktop/js/desktopentry.coffee:106
-#: ../resources/desktop/js/richdir.coffee:132
-msgid "_Rename"
-msgstr "_Hernoemen"
+#: ../resources/desktop/js/richdir.coffee:465
+#: ../resources/desktop/js/desktopentry.coffee:109
+#: ../resources/desktop/js/specialitem.coffee:53
+#: ../resources/desktop/js/specialitem.coffee:140
+msgid "_Properties"
+msgstr "_Eigenschappen"
 
 #: ../resources/desktop/js/desktopentry.coffee:115
 #: ../resources/desktop/js/desktopentry.coffee:122
@@ -379,62 +139,253 @@ msgstr "_Uitpakken"
 msgid "Extract _Here"
 msgstr "_Hier uitpakken"
 
-#: ../resources/desktop/js/richdir.coffee:134
-msgid "_Ungroup"
-msgstr "Groep _opheffen"
+#: ../resources/desktop/js/desktopentry.coffee:150
+msgid "Can not open this file."
+msgstr "Kan dit bestand niet openen."
 
-#: ../resources/shutdown/js/utils.coffee:26
-msgid "Lock"
-msgstr "Op slot doen"
+#: ../resources/desktop/js/specialitem.coffee:34
+msgid "Computer"
+msgstr "Computer"
 
-#: ../resources/shutdown/js/utils.coffee:26
-msgid "Suspend"
-msgstr "Slaapstand"
+#: ../resources/desktop/js/specialitem.coffee:83
+msgid "Home"
+msgstr "Thuis"
 
-#: ../resources/shutdown/js/utils.coffee:26
-msgid "Log out"
-msgstr "Uitloggen"
+#: ../resources/desktop/js/specialitem.coffee:173
+msgid "Trash"
+msgstr "Prullenbak"
 
-#: ../resources/shutdown/js/utils.coffee:26
-msgid "Restart"
-msgstr "Herstarten"
+#: ../resources/desktop/js/specialitem.coffee:236
+msgid "_Clean up %1 items"
+msgstr "_Opschonen %1items"
 
-#: ../resources/shutdown/js/utils.coffee:26
-msgid "Shut down"
-msgstr "Afsluiten"
+#: ../resources/desktop/js/specialitem.coffee:238
+msgid "_Clean up 1 item"
+msgstr "_Opschonen 1 item"
 
-#: ../resources/shutdown/js/utils.coffee:28
-msgid "The system will be locked in %1 seconds."
+#: ../resources/desktop/js/specialitem.coffee:240
+msgid "_Clean up"
+msgstr "_Opschonen"
+
+#: ../resources/desktop/js/specialitem.coffee:268
+msgid "Software Center"
+msgstr "Software Center"
+
+#: ../resources/dock/js/deepin_item.coffee:66
+msgid "Launcher"
+msgstr "Launcher"
+
+#: ../resources/dock/js/deepin_item.coffee:69
+msgid "Show/Hide Desktop"
+msgstr "Toon/Verberg Desktop"
+
+#: ../resources/dock/js/clientgroup.coffee:36
+msgid "_New window"
 msgstr ""
 
-#: ../resources/shutdown/js/utils.coffee:29
-msgid "The system will be suspended in %1 seconds."
+#: ../resources/dock/js/clientgroup.coffee:49
+msgid "_Close"
+msgstr "_Sluiten"
+
+#: ../resources/dock/js/clientgroup.coffee:50
+msgid "Close _All"
+msgstr "Alles _Sluiten"
+
+#: ../resources/dock/js/clientgroup.coffee:52
+msgid "_Dock me"
+msgstr "_Koppel mij"
+
+#: ../resources/dock/js/launcher.coffee:42 ../lib/dentry/mime_actions.c:213
+msgid "_Run"
+msgstr "_Uitvoeren"
+
+#: ../resources/dock/js/launcher.coffee:56
+msgid "_Undock"
+msgstr "_Loskoppelen"
+
+#: ../resources/dock/js/item.coffee:267
+msgid "The item is invalid. Do you want to remove it from the dock panel?"
+msgstr "Het item is ongeldig. Wilt u het van het dock paneel verwijderen?"
+
+#: ../resources/greeter/js/greeter.coffee:57
+msgid "guest"
+msgstr "gast"
+
+#: ../resources/greeter/js/user.coffee:80
+msgid "Log In"
+msgstr "Inloggen"
+
+#: ../resources/greeter/js/user.coffee:82
+msgid "Unlock"
+msgstr "Openen"
+
+#: ../resources/greeter/js/user.coffee:115
+msgid "Welcome"
+msgstr "Welkom"
+
+#: ../resources/greeter/js/user.coffee:121
+msgid "Switch User"
 msgstr ""
 
-#: ../resources/shutdown/js/utils.coffee:30
-msgid "You will be automatically logged out in %1 seconds."
+#: ../resources/greeter/js/time.coffee:38
+msgid "Jan"
+msgstr "Jan"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Feb"
+msgstr "Feb"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Mar"
+msgstr "Mar"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Apr"
+msgstr "Apr"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "May"
+msgstr "Mei"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Jun"
+msgstr "Jun"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Jul"
+msgstr "Jul"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Aug"
+msgstr "Aug"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Sep"
+msgstr "Sep"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Oct"
+msgstr "Okt"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Nov"
+msgstr "Nov"
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Dec"
+msgstr "Dec"
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Sun"
+msgstr "Zon"
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Mon"
+msgstr "Ma"
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Tue"
+msgstr "Din"
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Wed"
+msgstr "Woe"
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Thu"
+msgstr "Do"
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Fri"
+msgstr "Vrij"
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Sat"
+msgstr "Zat"
+
+#: ../resources/greeter/js/session.coffee:25
+msgid "Session"
 msgstr ""
 
-#: ../resources/shutdown/js/utils.coffee:31
-msgid "The system will restart in %1 seconds."
+#: ../resources/greeter/js/session.coffee:134
+msgid "suspend"
+msgstr "slaapstand"
+
+#: ../resources/greeter/js/session.coffee:136
+msgid "hibernate"
 msgstr ""
 
-#: ../resources/shutdown/js/utils.coffee:32
-msgid "The system will shut down in %1 seconds."
+#: ../resources/greeter/js/session.coffee:138
+msgid "shutdown"
 msgstr ""
 
-#: ../resources/shutdown/js/confirmdialog.coffee:63
-msgid "Cancel"
-msgstr "Annuleren"
+#: ../resources/greeter/js/session.coffee:140
+msgid "restart"
+msgstr "opnieuw opstarten"
 
-#: ../app/launcher/launcher.c:334 ../app/launcher/launcher.c:345
-msgid "another instance of launcher is running...\n"
-msgstr "een ander exemplaar van launcher wordt al uitgevoerd...\n"
+#: ../resources/launcher/js/config.coffee:30
+msgid "_Hide hidden icons"
+msgstr "_Verberg verborgen iconen"
 
-#: ../app/greeter/startsession.c:152 ../app/greeter/dlock.c:126
-#: ../app/greeter/greeter.c:153
-msgid "Invalid Password"
-msgstr "Ongeldig wachtwoord"
+#: ../resources/launcher/js/config.coffee:31
+msgid "_Display hidden icons"
+msgstr "_Toon verborgen iconen"
+
+#: ../resources/launcher/js/config.coffee:34
+msgid "_Hide this icon"
+msgstr "_Verberg dit icoon"
+
+#: ../resources/launcher/js/config.coffee:35
+msgid "_Display this icon"
+msgstr "_Toon dit icoon"
+
+#: ../resources/launcher/js/config.coffee:40
+msgid "_Add to autostart"
+msgstr "_Toevoegen aan autostart"
+
+#: ../resources/launcher/js/config.coffee:41
+msgid "_Remove from autostart"
+msgstr "_Verwijderen van autostart"
+
+#: ../resources/launcher/js/config.coffee:47
+msgid "Sort By _Frequency"
+msgstr "Sorteren op _frequentie"
+
+#: ../resources/launcher/js/config.coffee:48
+msgid "Sort By _Name"
+msgstr "Sorteren op _naam"
+
+#: ../resources/launcher/js/grid.coffee:95
+msgid "Send to d_esktop"
+msgstr "Stuur naar d_esktop"
+
+#: ../resources/launcher/js/grid.coffee:96
+msgid "Send to do_ck"
+msgstr "Stuur naar do_cl"
+
+#: ../resources/launcher/js/search.coffee:23
+msgid "Type to search..."
+msgstr "Typ om te zoeken..."
+
+#: ../app/desktop/desktop.c:213
+msgid "New file"
+msgstr "Nieuw bestand"
+
+#: ../app/desktop/desktop.c:224
+msgid "New directory"
+msgstr "Nieuw map"
+
+#: ../app/dock/dock.c:285
+msgid "another instance of dock is running...\n"
+msgstr "een ander exemplaar van dock wordt al uitgevoerd ...\n"
+
+#: ../app/dock/dock.c:378
+msgid "Dock failed to start, because the plugin of compiz is not enabled"
+msgstr "Dock kan niet worden gestart, omdat de plugin van Compiz niet is ingeschakeld"
+
+#: ../app/greeter/mutils.c:83
+msgid "%a, %b %d, %Y"
+msgstr "%a, %b %d, %Y"
 
 #: ../app/greeter/camera.c:47
 msgid "Oops...I can't recognize your face. "
@@ -449,29 +400,13 @@ msgstr "Log in met uw wachtwoord of klik op de afbeelding om opnieuw te proberen
 msgid "%sRetry automatically in %ds"
 msgstr "%sProbeer automatisch opnieuw in %ds"
 
-#: ../app/greeter/mutils.c:83
-msgid "%a, %b %d, %Y"
-msgstr "%a, %b %d, %Y"
+#: ../app/greeter/dlock.c:113 ../app/greeter/greeter.c:148
+msgid "Invalid Password"
+msgstr "Ongeldig wachtwoord"
 
-#: ../app/dock/dock.c:284
-msgid "another instance of dock is running...\n"
-msgstr "een ander exemplaar van dock wordt al uitgevoerd ...\n"
-
-#: ../app/dock/dock.c:378
-msgid "Dock failed to start, because the plugin of compiz is not enabled"
-msgstr "Dock kan niet worden gestart, omdat de plugin van Compiz niet is ingeschakeld"
-
-#: ../app/desktop/desktop.c:213
-msgid "New file"
-msgstr "Nieuw bestand"
-
-#: ../app/desktop/desktop.c:224
-msgid "New directory"
-msgstr "Nieuw map"
-
-#: ../app/app_tray/tray.c:287
-msgid "another systray is already running..."
-msgstr ""
+#: ../app/launcher/launcher.c:334 ../app/launcher/launcher.c:345
+msgid "another instance of launcher is running...\n"
+msgstr "een ander exemplaar van launcher wordt al uitgevoerd...\n"
 
 #: ../lib/dentry/entry.c:746
 #, c-format
@@ -559,172 +494,172 @@ msgstr "Mappen samenvoegen \"%s\"?"
 msgid ""
 "Merging will ask for confirmation before replacing any files in the folder "
 "that conflict with the files being copied."
-msgstr ""
+msgstr "Samenvoegen zal om bevestiging vragen voor het vervangen van bestanden in de map die conflicteert met de bestanden die gekopiëerd worden."
 
 #: ../lib/dentry/fileops_error_dialog.c:224
 #, c-format
 msgid "An older folder with the same name already exists in \"%s\"."
-msgstr ""
+msgstr "Een oudere map met dezelfde naam bestaat al in \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:228
 #, c-format
 msgid "A newer folder with the same name already exists in \"%s\"."
-msgstr ""
+msgstr "Een nieuwere map met dezelfde naam bestaat al in \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:232
 #, c-format
 msgid "Another folder with the same name already exists in \"%s\"."
-msgstr ""
+msgstr "Een andere map met dezelfde naam bestaat al in \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:238
 msgid "Replacing it will remove all files in the folder."
-msgstr ""
+msgstr "Vervangen zal alle bestanden in de map verwijderen."
 
 #: ../lib/dentry/fileops_error_dialog.c:240
 #, c-format
 msgid "Replace folder \"%s\"?"
-msgstr ""
+msgstr "Vervang map \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:242
 #, c-format
 msgid "A folder with the same name already exists in \"%s\"."
-msgstr ""
+msgstr "Een map met dezelfde naam bestaat al in \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:248
 #, c-format
 msgid "Replace file \"%s\"?"
-msgstr ""
+msgstr "Vervang bestand \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:249
 msgid "Replacing it will overwrite its content."
-msgstr ""
+msgstr "Vervangen zal de inhoud overschrijven."
 
 #: ../lib/dentry/fileops_error_dialog.c:251
 #, c-format
 msgid "An older file with the same name already exists in \"%s\"."
-msgstr ""
+msgstr "Een ouder bestand met dezelfde naam bestaat al in \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:255
 #, c-format
 msgid "A newer file with the same name already exists in \"%s\"."
-msgstr ""
+msgstr "Een nieuwer bestand met dezelfde naam bestaat al in \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:259
 #, c-format
 msgid "Another file with the same name already exists in \"%s\"."
-msgstr ""
+msgstr "Een ander bestand met dezelfde naam bestaat al in \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:331
 msgid "Original file"
-msgstr ""
+msgstr "Origineel bestand"
 
 #: ../lib/dentry/fileops_error_dialog.c:332
 #: ../lib/dentry/fileops_error_dialog.c:360
 msgid "Size:"
-msgstr ""
+msgstr "Grootte:"
 
 #: ../lib/dentry/fileops_error_dialog.c:336
 #: ../lib/dentry/fileops_error_dialog.c:364
 msgid "Type:"
-msgstr ""
+msgstr "Type:"
 
 #: ../lib/dentry/fileops_error_dialog.c:340
 #: ../lib/dentry/fileops_error_dialog.c:368
 msgid "Last modified:"
-msgstr ""
+msgstr "Laatst bewerkt:"
 
 #: ../lib/dentry/fileops_error_dialog.c:359
 msgid "Replace with"
-msgstr ""
+msgstr "Vervang door"
 
 #: ../lib/dentry/fileops_error_dialog.c:385
 msgid "Merge"
-msgstr ""
+msgstr "Voeg samen"
 
 #: ../lib/dentry/fileops_error_reporting.c:105
 #: ../lib/dentry/fileops_error_reporting.c:187
 #, c-format
 msgid "Error while %s files"
-msgstr ""
+msgstr "Fout tijdens %s bestanden"
 
 #: ../lib/dentry/fileops_trash.c:58
 msgid "Empty Trash"
-msgstr ""
+msgstr "Leeg Prullenbak"
 
 #: ../lib/dentry/fileops_trash.c:67
 msgid "Empty all items from Trash?"
-msgstr ""
+msgstr "Verwijder alle bestanden uit de prullenbak?"
 
 #: ../lib/dentry/fileops_trash.c:68
 msgid "All items in the Trash will be permanently deleted."
-msgstr ""
+msgstr "Alle bestanden in de prullenbak zullen voorgoed verwijderd zijn."
 
 #: ../lib/dentry/fileops_trash.c:71
 msgid "Empty _Trash"
-msgstr ""
+msgstr "Leeg _Prullenbak"
 
 #: ../lib/dentry/mime_actions.c:198
 #, c-format
 msgid "Do you want to run \"%s\", or display its contents?"
-msgstr ""
+msgstr "Wilt u \"%s\" starten, of de inhoud weergeven?"
 
 #: ../lib/dentry/mime_actions.c:199
 #, c-format
 msgid "\"%s\" is an executable text file."
-msgstr ""
+msgstr "\"%s\" is een uitvoerbaar tekstbestand."
 
 #: ../lib/dentry/mime_actions.c:210
 msgid "Run in _Terminal"
-msgstr ""
+msgstr "Open in _Terminal"
 
 #: ../lib/dentry/mime_actions.c:211
 msgid "_Display"
-msgstr ""
+msgstr "_Weergave"
 
 #: ../lib/category.c:43
 msgid "all"
-msgstr ""
+msgstr "alles"
 
 #: ../lib/category.c:44
 msgid "internet"
-msgstr ""
+msgstr "internet"
 
 #: ../lib/category.c:45
 msgid "multimedia"
-msgstr ""
+msgstr "multimedia"
 
 #: ../lib/category.c:46
 msgid "games"
-msgstr ""
+msgstr "spellen"
 
 #: ../lib/category.c:47
 msgid "graphics"
-msgstr ""
+msgstr "grafisch"
 
 #: ../lib/category.c:48
 msgid "productivity"
-msgstr ""
+msgstr "productiviteit"
 
 #: ../lib/category.c:49
 msgid "industry"
-msgstr ""
+msgstr "industrie"
 
 #: ../lib/category.c:50
 msgid "education"
-msgstr ""
+msgstr "educatie"
 
 #: ../lib/category.c:51
 msgid "development"
-msgstr ""
+msgstr "ontwikkeling"
 
 #: ../lib/category.c:52
 msgid "system"
-msgstr ""
+msgstr "systeem"
 
 #: ../lib/category.c:53
 msgid "utilities"
-msgstr ""
+msgstr "hulpprogramma's"
 
 #: ../lib/category.c:54
 msgid "other"
-msgstr ""
+msgstr "anders"
