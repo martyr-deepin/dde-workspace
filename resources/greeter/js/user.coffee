@@ -229,7 +229,7 @@ class UserInfo extends Widget
         @userimg_background.style.width = @userimg_border.style.width - 3
         @userimg_background.style.height = @userimg_border.style.height - 3
 
-        @loginAnimation()
+        #@loginAnimation()
     
     
     hide:=>
