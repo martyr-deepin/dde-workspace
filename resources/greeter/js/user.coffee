@@ -247,7 +247,7 @@ class UserInfo extends Widget
         @element.style.display = "-webkit-box"
         @focus()
 
-    hide_animation:->
+    hide_animation:(cb)->
         @username_div.style.display = "none"
         @login.hide()
         
@@ -257,12 +257,15 @@ class UserInfo extends Widget
                 @userimg_div.style.display = "none"
                 @element.style.display = "none"
                 @blur()
+                cb?()
         )
     
-    show_animation:->
+    show_animation:(cb)->
         @show()
         @userimg.style.opacity = "0.0"
-        jQuery(@userimg).animate({opacity:'1.0'},@time_animation)
+        jQuery(@userimg).animate({opacity:'1.0'},@time_animation,
+            "linear",cb?()
+        )
 
     userFaceLogin: (name)->
         face = false
@@ -550,20 +553,8 @@ DCore.signal_connect("failed-too-much", (msg)->
 DCore.signal_connect("auth-succeed", ->
     echo "auth-succeed!"
     echo  "--------#{new Date().getTime()}-----------"
-    power_flag = false
-    if (power = localStorage.getObject("shutdown_from_lock"))?
-        if power.lock is true
-            power_flag = true
-    if power_flag
-        power.lock = false
-        localStorage.setObject("shutdown_from_lock",power)
-        if power_can(power.value)
-            power_force(power.value)
-        else
-            confirmdialog = new ConfirmDialog(power.value)
-            confirmdialog.frame_build()
-            document.body.appendChild(confirmdialog.element)
-            confirmdialog.interval(60)
+    if powermenu?.check_is_shutdown_from_lock()
+        powermenu?.auth_succeed_excute()
     else
         if is_greeter
             echo "greeter exit"
