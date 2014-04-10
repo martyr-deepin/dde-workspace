@@ -109,6 +109,7 @@ class User extends Widget
 
 
     switchtoprev_userinfo : =>
+        if !_current_user.animation_end then return
         echo "switchtoprev_userinfo from #{@current_user_index}: #{_current_user.username}"
         _current_user.hide_animation()
         @current_user_index = @check_index(@current_user_index + 1)
@@ -118,6 +119,7 @@ class User extends Widget
         _current_user.animate_prev()
 
     switchtonext_userinfo : =>
+        if !_current_user.animation_end then return
         echo "switchtonext_userinfo from #{@current_user_index}: #{_current_user.username}"
         _current_user.hide_animation()
         @current_user_index = @check_index(@current_user_index - 1)
@@ -179,6 +181,7 @@ class UserInfo extends Widget
         
         @is_logined = false
         @is_recognizing = false
+        @animation_end = true
         @index = null
         @time_animation = 500
         @face_login = @userFaceLogin(@username)
@@ -252,19 +255,24 @@ class UserInfo extends Widget
         @login.hide()
         
         @userimg.style.opacity = "1.0"
+        @animation_end = false
         jQuery(@userimg).animate({opacity:'0.0'},@time_animation,
             "linear",=>
                 @userimg_div.style.display = "none"
                 @element.style.display = "none"
                 @blur()
+                @animation_end = true
                 cb?()
         )
     
     show_animation:(cb)->
         @show()
         @userimg.style.opacity = "0.0"
+        @animation_end = false
         jQuery(@userimg).animate({opacity:'1.0'},@time_animation,
-            "linear",cb?()
+            "linear",=>
+                @animation_end = true
+                cb?()
         )
 
     userFaceLogin: (name)->
