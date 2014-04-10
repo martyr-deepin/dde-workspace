@@ -199,11 +199,23 @@ class UserInfo extends Widget
         @userimg = create_img("userimg", @img_src, @userimg_background)
         @userimg_div.style.display = "none"
         
-        echo "-------scaleFinal =  #{scaleFinal}-----------------"
-        @face_recognize_div.style.width = 135 * scaleFinal
-        @face_recognize_div.style.height = 135 * scaleFinal
-        @face_recognize_div.style.left = @userimg_div.style.left + 25
+        @login = new LoginEntry("login", @username, (u, p)=>@on_verify(u, p))
+        @element.appendChild(@login.element)
+        @login.show()
+        
+        @face_recognize_div.style.display = "block"
+        div_users_width = $("#div_users").clientWidth
+        face_recognize_width = 135 * scaleFinal
+        face_recognize_height = 135 * scaleFinal
+        face_recognize_left = (div_users_width - face_recognize_width) / 2
+        face_recognize_top = -7.5 * scaleFinal
+        echo "(#{div_users_width} - #{face_recognize_width})/2 = #{face_recognize_left}"
+        @face_recognize_div.style.width = face_recognize_width
+        @face_recognize_div.style.height = face_recognize_height
+        @face_recognize_div.style.left = face_recognize_left
+        @face_recognize_div.style.top = face_recognize_top
         @face_recognize_div.style.display = "none"
+
         
         @userimg.style.width = 110 * scaleFinal
         @userimg.style.height = 110 * scaleFinal
@@ -216,11 +228,8 @@ class UserInfo extends Widget
         @username_div.innerText = @username
         @username_div.style.display = "none"
 
-        @login = new LoginEntry("login", @username, (u, p)=>@on_verify(u, p))
-        @element.appendChild(@login.element)
         @login.hide()
-
-        #@loginAnimation()
+        @loginAnimation()
     
     
     hide:=>
@@ -277,8 +286,7 @@ class UserInfo extends Widget
         rotate_animation = =>
             @face_recognize_div.style.display = "block"
             @face_animation_interval = setInterval(=>
-                @face_recognize_div.style.left = @userimg_div.style.left
-                rotate = (rotate + 5) % 360
+                rotate = (rotate + 5 * scaleFinal) % 360
                 animation_rotate(@face_recognize_img,rotate)
             ,20)
         
