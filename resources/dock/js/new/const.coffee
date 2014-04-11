@@ -19,3 +19,5 @@ ITEM_DATA_FIELD =
     menu: "menu"
 
 ANIMATION_TIME = 400
+
+TRASH_ID = "trash"
