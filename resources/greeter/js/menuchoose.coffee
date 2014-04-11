@@ -316,11 +316,15 @@ class ComboBox extends Widget
         e.stopPropagation()
         echo "current_img do_click:#{@id}"
         if is_greeter
-            if @menu.id is "power_menuchoose"
-                $("#desktop_menuchoose").style.display = "none"
-            else if @menu.id is "desktop_menuchoose"
-                #if detect_is_from_lock() then return
-                $("#power_menuchoose").style.display = "none"
+            try
+                if @menu.id is "power_menuchoose"
+                    $("#desktop_menuchoose")?.style.display = "none"
+                else if @menu.id is "desktop_menuchoose"
+                    #if _current_user?.is_logined then return
+                    $("#power_menuchoose")?.style.display = "none"
+
+            catch e
+                echo "#{e}"
         if !@menu.animation_end then return
         if @menu.element.style.display isnt "none"
             @menu.hide()

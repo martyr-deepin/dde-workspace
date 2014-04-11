@@ -97,23 +97,3 @@ if not is_livecd
     $("#div_switchuser").appendChild(s.element)
 
 
-document.body.addEventListener("keydown",(e)->
-    echo "keydown:#{e.which}"
-    if is_greeter
-        if $("#power_menuchoose") or $("#desktop_menuchoose")
-            if $("#power_menuchoose").style.display isnt "none"
-                powermenu.keydown_listener(e)
-            else if $("#desktop_menuchoose").style.display isnt "none"
-                desktopmenu.keydown_listener(e)
-            else if is_greeter and greeter and user
-                greeter.keydown_listener(e,user)
-        else if is_greeter and greeter and user
-            greeter.keydown_listener(e,user)
-    else
-        if $("#power_menuchoose") and $("#power_menuchoose").style.display isnt "none"
-            powermenu.keydown_listener(e)
-        else if audio_play_status
-            mediacontrol.keydown_listener(e)
-        else if is_greeter and greeter and user
-            greeter.keydown_listener(e,user)
-)
