@@ -45,7 +45,7 @@ void desktop_run_deepin_settings(const char* mod)
     char* e_p=shell_escape(mod);
     g_free(e_p);
     
-    char* cmd_line=g_strdup_printf("dss %s\n", e_p);
+    char* cmd_line=g_strdup_printf("dde-control-center %s\n", e_p);
     GError* error=NULL;
     static char* zone = "zone";
     if (g_str_equal(mod,zone)){
