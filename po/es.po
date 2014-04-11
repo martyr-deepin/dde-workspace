@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Destkop Environment\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-11 14:07+0800\n"
+"POT-Creation-Date: 2014-04-11 14:35+0800\n"
 "PO-Revision-Date: 2013-12-13 06:57+0000\n"
 "Last-Translator: lihongwu <lihongwu1987@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/deepin-destkop-"
@@ -33,15 +33,7 @@ msgstr "Reiniciar"
 msgid "Suspend"
 msgstr "Suspender"
 
-#: ../resources/greeter/js/powermenu.coffee:49
-msgid "Log out"
-msgstr "Cerrar sesión"
-
-#: ../resources/greeter/js/powermenu.coffee:50
-msgid "Lock"
-msgstr "Bloquear"
-
-#: ../resources/greeter/js/powermenu.coffee:86
+#: ../resources/greeter/js/powermenu.coffee:84
 msgid "Enter your password to %1"
 msgstr ""
 
@@ -728,6 +720,12 @@ msgstr "Utilidades"
 msgid "other"
 msgstr "Otros"
 
+#~ msgid "Log out"
+#~ msgstr "Cerrar sesión"
+
+#~ msgid "Lock"
+#~ msgstr "Bloquear"
+
 #, fuzzy
 #~ msgid "_Time as settings"
 #~ msgstr "Ajustes de _Pantalla"
@@ -780,63 +778,3 @@ msgstr "Otros"
 
 #~ msgid "Sort By _Name"
 #~ msgstr "Ordenar por _Nombre"
-
-#~ msgid "Log In"
-#~ msgstr "Iniciar sesión"
-
-#~ msgid "Unlock"
-#~ msgstr "Desbloquear"
-
-#~ msgid "Welcome"
-#~ msgstr "Bienvenido"
-
-#, fuzzy
-#~ msgid "ShutDown"
-#~ msgstr "Apagar"
-
-#, fuzzy
-#~ msgid "Force Log out"
-#~ msgstr "Cerrar sesión"
-
-#, fuzzy
-#~ msgid "Force Restart"
-#~ msgstr "Reiniciar"
-
-#, fuzzy
-#~ msgid "Force Shut down"
-#~ msgstr "Apagar"
-
-#, fuzzy
-#~ msgid "The system will be locked in %1 seconds."
-#~ msgstr "El sistema será bloqueado en:"
-
-#, fuzzy
-#~ msgid "The system will be suspended in %1 seconds."
-#~ msgstr "El sistema será suspendido en:"
-
-#, fuzzy
-#~ msgid "You will be automatically logged out in %1 seconds."
-#~ msgstr "Tu sesión terminará automáticamente en:"
-
-#, fuzzy
-#~ msgid "The system will restart in %1 seconds."
-#~ msgstr "El sistema se reiniciará en:"
-
-#, fuzzy
-#~ msgid "The system will shut down in %1 seconds."
-#~ msgstr "El sistema se apagará en:"
-
-#~ msgid "Cancel"
-#~ msgstr "Cancelar"
-
-#~ msgid "Session"
-#~ msgstr "Sesión"
-
-#~ msgid "hibernate"
-#~ msgstr "hibernar"
-
-#~ msgid "Switch User"
-#~ msgstr "Cambiar de usuario"
-
-#~ msgid "seconds."
-#~ msgstr "segundos."

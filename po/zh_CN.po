@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-11 14:07+0800\n"
+"POT-Creation-Date: 2014-04-11 14:35+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Deepin Translation Team <support@linuxdeepin.com>\n"
 "Language-Team: Deepin Translation Team <support@linuxdeepin.com>\n"
@@ -29,15 +29,7 @@ msgstr "重启"
 msgid "Suspend"
 msgstr "待机"
 
-#: ../resources/greeter/js/powermenu.coffee:49
-msgid "Log out"
-msgstr "注销"
-
-#: ../resources/greeter/js/powermenu.coffee:50
-msgid "Lock"
-msgstr "锁定"
-
-#: ../resources/greeter/js/powermenu.coffee:86
+#: ../resources/greeter/js/powermenu.coffee:84
 msgid "Enter your password to %1"
 msgstr "请输入密码以完成%1"
 
@@ -703,6 +695,12 @@ msgstr "实用工具"
 msgid "other"
 msgstr "其他"
 
+#~ msgid "Log out"
+#~ msgstr "注销"
+
+#~ msgid "Lock"
+#~ msgstr "锁定"
+
 #~ msgid "shut down"
 #~ msgstr "关机"
 
@@ -717,57 +715,3 @@ msgstr "其他"
 
 #~ msgid "Sort By _Name"
 #~ msgstr "按名字排序(_N)"
-
-#~ msgid "Administrator"
-#~ msgstr "管理员"
-
-#~ msgid "Standard user"
-#~ msgstr "标准用户"
-
-#~ msgid "Log In"
-#~ msgstr "登录"
-
-#~ msgid "Unlock"
-#~ msgstr "解锁"
-
-#~ msgid "Welcome"
-#~ msgstr "欢迎"
-
-#~ msgid "ShutDown"
-#~ msgstr "关机"
-
-#~ msgid "Force Log out"
-#~ msgstr "强制注销"
-
-#~ msgid "Force Restart"
-#~ msgstr "强制重启"
-
-#~ msgid "Force Shut down"
-#~ msgstr "强制关机"
-
-#~ msgid "The system will be locked in %1 seconds."
-#~ msgstr "系统将在 %1 秒后锁定"
-
-#~ msgid "The system will be suspended in %1 seconds."
-#~ msgstr "系统将在 %1 秒后待机"
-
-#~ msgid "You will be automatically logged out in %1 seconds."
-#~ msgstr "系统将在 %1 秒后注销当前用户"
-
-#~ msgid "The system will restart in %1 seconds."
-#~ msgstr "系统将在 %1 秒后重新启动"
-
-#~ msgid "The system will shut down in %1 seconds."
-#~ msgstr "系统将在 %1 秒后关闭"
-
-#~ msgid "Cancel"
-#~ msgstr "取消"
-
-#~ msgid "Session"
-#~ msgstr "桌面环境"
-
-#~ msgid "hibernate"
-#~ msgstr "休眠"
-
-#~ msgid "Switch User"
-#~ msgstr "切换用户"

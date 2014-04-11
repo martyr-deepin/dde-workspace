@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-11 14:07+0800\n"
+"POT-Creation-Date: 2014-04-11 14:35+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,15 +29,7 @@ msgstr ""
 msgid "Suspend"
 msgstr ""
 
-#: ../resources/greeter/js/powermenu.coffee:49
-msgid "Log out"
-msgstr ""
-
-#: ../resources/greeter/js/powermenu.coffee:50
-msgid "Lock"
-msgstr ""
-
-#: ../resources/greeter/js/powermenu.coffee:86
+#: ../resources/greeter/js/powermenu.coffee:84
 msgid "Enter your password to %1"
 msgstr ""
 
