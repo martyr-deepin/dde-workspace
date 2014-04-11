@@ -19,6 +19,32 @@ DCore.signal_connect("embed_window_leave", (info)->console.log(info))
 document.body.addEventListener("contextmenu", (e)->
     e.preventDefault()
 )
+document.body.addEventListener("drop", (e)->
+    console.log("drop on body")
+    s_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
+    s_widget = Widget.look_up(s_id)
+    if s_widget and s_widget.isNormal()
+        t = app_list.element.removeChild(s_widget.element)
+        calc_app_item_size()
+
+        t.style.position = "fixed"
+        t.style.left = (e.x + s_widget.element.clientWidth/2)+ "px"
+        t.style.top = (e.y + s_widget.element.clientHeight/2)+ "px"
+        document.body.appendChild(t)
+        s_widget.destroyWidthAnimation()
+        dockedAppManager.Undock(s_id)
+)
+document.body.addEventListener("dragenter", (e)->
+    clearTimeout(cancelInsertTimer)
+)
+document.body.addEventListener("dragover", (e)->
+    clearTimeout(cancelInsertTimer)
+    app_list.hide_indicator()
+    console.log("dragover on body")
+    s_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
+    if Widget.look_up(s_id)?.isNormal()
+        e.preventDefault()
+)
 
 settings = new Setting()
 

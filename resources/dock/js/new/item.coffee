@@ -28,7 +28,21 @@ class Item extends Widget
         @element.classList.add("AppItem")
         # @element.draggable=true
         @img.draggable=true
-        @container?.appendChild?(@element)
+        e = document.getElementsByName(@id)
+        if e.length != 0
+            e = e[0]
+            console.log("find indicator")
+            e.parentNode.insertBefore(@element, e)
+            e.parentNode.removeChild(e)
+            items = []
+            ch = @element.parentNode.children
+            for i in [0...ch.length]
+                child = ch[i]
+                items.push(child.id)
+            console.log(items)
+            dockedAppManager?.Sort(items)
+        else
+            @container?.appendChild?(@element)
 
     set_tooltip: (text) ->
         if @tooltip == null
@@ -78,6 +92,8 @@ class Item extends Widget
         # app_list.record_last_over_item(@)
         Preview_close_now()
         return if @is_fixed_pos
+        if @isNormal()
+            @tooltip?.hide()
         e.dataTransfer.setDragImage(@img, 24, 24)
         e.dataTransfer.setData(DEEPIN_ITEM_ID, @id)
         console.log("DEEPIN_ITEM_ID: #{@id}")
@@ -88,6 +104,7 @@ class Item extends Widget
 
     on_dragenter: (e)=>
         console.log("dragenter image #{@id}")
+        clearTimeout(cancelInsertTimer)
         cancelInsertTimer = setTimeout(->
             app_list.hide_indicator()
             calc_app_item_size()
@@ -110,6 +127,7 @@ class Item extends Widget
 
     on_dragleave: (e)=>
         console.log("dragleave")
+        clearTimeout(cancelInsertTimer)
         cancelInsertTimer = setTimeout(->
             app_list.hide_indicator()
             calc_app_item_size()
@@ -123,14 +141,16 @@ class Item extends Widget
         e.stopPropagation()
         e.preventDefault()
         app_list.hide_indicator()
-        calc_app_item_size()
+        cancelInsertTimer = setTimeout(->
+            calc_app_item_size()
+        , 100)
 
     on_drop: (e) =>
         e.preventDefault()
         e.stopPropagation()
         @hide_swap_indicator()
         console.log("do drop, #{@id}")
-        console.log(e.dataTransfer.getData(DEEPIN_ITEM_ID))
+        console.log("deepin item id: #{e.dataTransfer.getData(DEEPIN_ITEM_ID)}")
         if dnd_is_deepin_item(e)
             console.log("id deepin item")
             if @_try_swaping_id != @id
@@ -144,7 +164,9 @@ class Item extends Widget
                 path = decodeURI(file.path)
                 tmp_list.push(path)
             if tmp_list.length > 0
-                @core?.onDrop(tmp_list.join())
+                fileList = tmp_list.join()
+                console.log("drop to open: #{fileList}")
+                @core?.onDrop(fileList)
 
 
 class AppItem extends Item
@@ -168,10 +190,10 @@ class AppItem extends Item
             @init_clientgroup()
 
 
-        if app_list._insert_anchor_item
-            app_list.append(@)
-        else
-            app_list.append_app_item?(@)
+        # if app_list._insert_anchor_item
+        #     app_list.append(@)
+        # else
+        #     app_list.append_app_item?(@)
 
         @core?.connect("DataChanged", (name, value)=>
             console.log("#{name} is changed to #{value}")
@@ -287,6 +309,9 @@ class AppItem extends Item
         setTimeout(=>
             @destroy()
         ,500)
+
+    rotate: (time) ->
+        apply_animation(@img, "rotateOut", time or 1000)
 
     isNormal:->
         @core.isNormal?()
