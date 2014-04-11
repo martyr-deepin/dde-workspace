@@ -11,7 +11,7 @@ option_text = [_("System Settings"),_("Workspace"),_("Launcher"),_("Desktop"),_(
 cfgValue = [
     "dbus-send --type=method_call --dest=com.deepin.Dss /com/deepin/Dss com.deepin.Dss.Toggle",
     "workspace",
-    "/usr/bin/launcher"
+    "/usr/bin/dde-launcher"
     "/usr/lib/deepin-daemon/desktop-toggle",
     ""
 ]
