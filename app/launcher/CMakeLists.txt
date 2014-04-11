@@ -16,6 +16,9 @@ include_directories(${DWEBVIEW_INCLUDE_DIRS} ${DBUS_INCLUDE_DIRS})
 
 add_executable(${NAME} ${SRC_LIST})
 add_dependencies(${NAME} ${NAME}_js ${NAME}-daemon)
+set_target_properties(${NAME}
+	PROPERTIES OUTPUT_NAME dde-${NAME}
+	)
 
 if (TEST)
   target_link_libraries(${NAME} dcom dentry dbus ${DWEBVIEW_LIBRARIES}
@@ -25,7 +28,7 @@ else()
 endif()
 
 install(
-    PROGRAMS ${PROJECT_BINARY_DIR}/${NAME}
+    PROGRAMS ${PROJECT_BINARY_DIR}/dde-${NAME}
     DESTINATION bin
     )
 install(
