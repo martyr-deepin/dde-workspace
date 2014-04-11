@@ -99,3 +99,18 @@ catch e
 
 PowerManager = null
 ANIMATION = false
+
+
+zoneDBus = null
+enableZoneDetect = (enable) ->
+    echo "enableZoneDetect :#{enable}"
+    ZONE = "com.deepin.daemon.Zone"
+    try
+        zoneDBus = DCore.DBus.session(ZONE) if not zoneDBus?
+        echo "EnableZoneDetected_sync #{enable}" if zoneDBus?
+        zoneDBus.EnableZoneDetected_sync(enable) if zoneDBus?
+    catch e
+        echo "zoneDBus #{ZONE} error : #{e}"
+ #-------------------------------------------
+
+

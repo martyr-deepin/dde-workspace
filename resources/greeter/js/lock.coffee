@@ -18,17 +18,6 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-
-zoneDBus = null
-enableZoneDetect = (enable) ->
-    ZONE = "com.deepin.daemon.Zone"
-    try
-        zoneDBus = DCore.DBus.session(ZONE) if not zoneDBus?
-        zoneDBus?.EnableZoneDetected_sync(enable)
-    catch e
-        echo "zoneDBus #{ZONE} error : #{e}"
- #-------------------------------------------
-
 class Lock extends Widget
 
     constructor:->

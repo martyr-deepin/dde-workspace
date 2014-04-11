@@ -56,7 +56,7 @@ class PowerMenu extends Widget
             @power_dict[id]()
 
     new_power_menu:->
-        echo "new_@power_menu"
+        echo "new_power_menu"
         @get_power_dict()
 
         @power_menu = new ComboBox("power", @menuChoose_click_cb)
