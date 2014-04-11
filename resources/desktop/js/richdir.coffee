@@ -158,6 +158,7 @@ class RichDir extends DesktopEntry
 
 
     item_blur : =>
+        echo "item_blur"
         if @div_pop != null && !@pop_div_item_contextmenu_flag then @hide_pop_block()
         super
 
