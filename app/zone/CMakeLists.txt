@@ -1,4 +1,5 @@
-SET(NAME "zone")
+SET(NAME "dde-zone")
+SET(NAME_SRC "zone")
 
 GEN_JSC_SOURCE2(JSC_GEN "jsc" "zone" "zone.cfg" "dbus.cfg")
 
@@ -13,7 +14,7 @@ target_link_libraries(${NAME} dcom dbus ${DWEBVIEW_LIBRARIES})
 
 execute_process(
     COMMAND make
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/resources/${NAME}/js
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/resources/${NAME_SRC}/js
     )
 
 install(
@@ -22,7 +23,7 @@ install(
     )
 
 install(
-    DIRECTORY ${PROJECT_SOURCE_DIR}/resources/${NAME}
+    DIRECTORY ${PROJECT_SOURCE_DIR}/resources/${NAME_SRC}
     DESTINATION ${RESOURCE_DIR}
     )
 
