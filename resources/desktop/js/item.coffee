@@ -389,7 +389,7 @@ class Item extends Widget
             @item_name.addEventListener("mouseup", @on_event_stoppropagation)
             @item_name.addEventListener("click", @on_event_stoppropagation)
             @item_name.addEventListener("dblclick", @on_event_stoppropagation)
-            #@item_name.addEventListener("contextmenu", @contextmenu_event_handler)
+            @item_name.addEventListener("contextmenu", @contextmenu_event_handler)
             @item_name.addEventListener("keydown", @on_item_rename_keydown)
             @item_name.addEventListener("keypress", @on_item_rename_keypress)
             @item_name.addEventListener("keyup", @on_item_rename_keyup)
