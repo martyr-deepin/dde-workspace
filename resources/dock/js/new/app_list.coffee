@@ -1,8 +1,14 @@
+showIndicatorTimer = null
 class AppList
     @expand_panel_id: null
     constructor: (@id) ->
         @element = $("#app_list")
         @element.classList.add("AppList")
+        @element.addEventListener("dragenter", @do_dragenter)
+        @element.addEventListener("dragover", @do_dragover)
+        @element.addEventListener("dragleave", @do_dragleave)
+        @element.addEventListener("drop", @do_drop)
+        @element.draggable = true
         @insert_indicator = create_element(tag:"div", class:"InsertIndicator")
         @_insert_anchor_item = null
         @is_insert_indicator_shown = false
@@ -29,33 +35,64 @@ class AppList
         e.stopPropagation()
         e.preventDefault()
         if dnd_is_desktop(e)
+            console.log("is desktop")
             path = e.dataTransfer.getData("text/uri-list").substring("file://".length).trim()
-            DCore.Dock.request_dock(decodeURI(path))
+            id = get_path_name(path)
+            t = create_element(tag:'div', id:id)
+            console.log("insert tmp before insert_indicator")
+            console.log(t)
+            console.log(@insert_indicator)
+            @element.insertBefore(t, @insert_indicator)
+            dockedAppManager.Dock(id, "", "", "")
         else if dnd_is_deepin_item(e) and @insert_indicator.parentNode == @element
             id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
             item = Widget.look_up(id) or Widget.look_up("le_"+id)
-            item.flash(0.5)
             @append(item)
         @hide_indicator()
         calc_app_item_size()
-        # update_dock_region()
 
     do_dragover: (e) =>
+        console.log("applist dragover")
+        clearTimeout(cancelInsertTimer)
         e.preventDefault()
         e.stopPropagation()
-        min_x = get_page_xy($("#show_launcher"), 0, 0).x
-        max_x = get_page_xy($("#app_list").lastChild.previousSibling, 0, 0).x
-        if e.screenX > min_x and e.screenX < max_x
-            if dnd_is_deepin_item(e) or dnd_is_desktop(e)
-                e.dataTransfer.dropEffect="copy"
-                # n = e.x / (ITEM_WIDTH * ICON_SCALE)
-                @show_indicator(e.x, e.dataTransfer.getData(DEEPIN_ITEM_ID))
-                # if n > 1  # skip the show_launcher
-                #     @show_indicator(e.x, e.dataTransfer.getData(DEEPIN_ITEM_ID))
-                # else
-                #     @hide_indicator()
+        if dnd_is_deepin_item(e) or dnd_is_desktop(e)
+            clearTimeout(showIndicatorTimer)
+            try_insert_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
+            e.dataTransfer.dropEffect="copy"
+            step = 6
+            x = e.x
+            el = null
+            while 1
+                x -= step
+                el = document.elementFromPoint(x, e.y)
+                if el.classList.contains("AppItemImg")
+                    console.log(el.parentNode.parentNode.id)
+                    if el.parentNode.parentNode.id == try_insert_id
+                        return
+                    break
+                # else if el.tagName = "BODY"
+                #     return
+            x = e.x
+            while 1
+                x += step
+                el = document.elementFromPoint(x, e.y)
+                if el.classList.contains("AppItemImg")
+                    break
+                else if el.tagName == "BODY"
+                    el = null
+            el = el.parentNode.parentNode if el
+            if el.parentNode.id != "app_list"
+                el = null
+            if el == null or el.id != try_insert_id
+                console.log(el)
+                showIndicatorTimer = setTimeout(=>
+                    @show_indicator(el, try_insert_id)
+                , 100)
 
     do_dragleave: (e)=>
+        clearTimeout(showIndicatorTimer)
+        console.log("app_list dragleave")
         @hide_indicator()
         e.stopPropagation()
         e.preventDefault()
@@ -64,45 +101,44 @@ class AppList
             # update_dock_region()
 
     do_dragenter: (e)=>
+        console.log("applist dragenter")
         e.stopPropagation()
         e.preventDefault()
-        min_x = get_page_xy($("#show_launcher"), 0, 0).x
-        max_x = get_page_xy($("#app_list").lastChild.previousSibling, 0, 0).x
-        if e.screenX > min_x and e.screenX < max_x
-            DCore.Dock.require_all_region()
+        DCore.Dock.require_all_region()
+        # @do_dragover(e)
 
     swap_item: (src, dest)->
         swap_element(src.element, dest.element)
-        DCore.Dock.swap_apps_position(src.app_id, dest.app_id)
+        items = []
+        appList = $("#app_list")
+        for i in [0...appList.children.length]
+            child = appList.children[i]
+            items.push(child.id)
+        dockedAppManager.Sort(items)
+        # DCore.Dock.swap_apps_position(src.app_id, dest.app_id)
 
     hide_indicator: ->
         if @insert_indicator.parentNode == @element
+            console.log("remove Insert indicator")
             @element.removeChild(@insert_indicator)
             @is_insert_indicator_shown = false
             clearTimeout(AppList.expand_panel_id)
 
-    show_indicator: (x, try_insert_id)->
+    show_indicator: (anchor, try_insert_id)->
         if @is_insert_indicator_shown
             return
-        @insert_indicator.style.width = ICON_SCALE * ICON_WIDTH
-        @insert_indicator.style.height = ICON_SCALE * ICON_HEIGHT
-        margin_top = (ITEM_HEIGHT - ICON_HEIGHT - BOARD_IMG_MARGIN_BOTTOM) * ICON_SCALE
-        @insert_indicator.style.marginTop = margin_top
+        @insert_indicator.style.width = ICON_WIDTH
+        @insert_indicator.style.height = ICON_HEIGHT
 
-        return if @_insert_anchor_item?.app_id == try_insert_id
+        return if anchor?.id == try_insert_id
+        @is_insert_indicator_shown = true
 
-        if @_insert_anchor_item and get_page_xy(@_insert_anchor_item.img).x < x
-            @_insert_anchor_item = @_insert_anchor_item.next()
-            return if @_insert_anchor_item?.app_id == try_insert_id
-        else
-            return if @_insert_anchor_item?.prev()?.app_id == try_insert_id
-
-        if @_insert_anchor_item
-            @element.insertBefore(@insert_indicator, @_insert_anchor_item.element)
+        console.log("Insert Indicator")
+        if anchor
+            @element.insertBefore(@insert_indicator, anchor)
         else
             @element.appendChild(@insert_indicator)
 
-        @is_insert_indicator_shown = true
         AppList.expand_panel_id = setTimeout(->
             panel.set_width(panel.width())
             panel.redraw()

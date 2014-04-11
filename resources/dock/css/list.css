@@ -2,6 +2,7 @@
     -webkit-box-orient: horizontal;
     /* -webkit-box-flex: 1; */
     /* border: solid 2px yellow; */
+    /* background-color:red; */
 }
 
 .AppItem {
@@ -18,6 +19,7 @@
   /* position:relative; */
   display: -webkit-box;
   -webkit-box-pack:center;
+  /* border:black 1px solid; */
 }
 .indicatorWarp{
   top: 9px;
