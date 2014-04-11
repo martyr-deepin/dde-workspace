@@ -13,6 +13,5 @@
 #define VAL_WORKSPACE "workspace"
 #define VAL_NONE "none"
 
-gboolean compiz_set(const char *key, const char *value);
 
 #endif
