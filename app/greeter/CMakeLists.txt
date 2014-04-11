@@ -1,5 +1,5 @@
 SET(NAME "lightdm-deepin-greeter")
-SET(NAME_RESOURCE "greeter")
+SET(NAME_SRC "greeter")
 
 GEN_JSC_SOURCE2(JSC_GEN "jsc" "greeter" "greeter.cfg" "dbus.cfg")
 GEN_JSC_SOURCE2(JSC_LOCK_GEN "jsc" "lock" "lock.cfg" "dbus.cfg")
@@ -13,16 +13,16 @@ add_executable(${NAME} greeter.c user.c session.c mutils.c greeter_util.c ${JSC_
     ${DBUS_GEN}
     #camera.c settings.c ${DBUS_GEN}
     )
-add_dependencies(${NAME} ${NAME_RESOURCE}_js)
+add_dependencies(${NAME} ${NAME_SRC}_js)
 add_executable(dde-lock lock.c user.c lock_util.c mutils.c ${JSC_LOCK_GEN}
     ${DBUS_GEN}
     #camera.c settings.c ${DBUS_GEN}
     )
-add_dependencies(dde-lock ${NAME_RESOURCE}_js)
+add_dependencies(dde-lock ${NAME_SRC}_js)
 add_executable(switchtogreeter switchtogreeter.c)
-add_dependencies(switchtogreeter ${NAME_RESOURCE}_js)
+add_dependencies(switchtogreeter ${NAME_SRC}_js)
 add_executable(dde-lockservice lockservice.c)
-add_dependencies(dde-lockservice ${NAME_RESOURCE}_js)
+add_dependencies(dde-lockservice ${NAME_SRC}_js)
 
 #set(OPENCV_LIBS opencv_core opencv_imgproc opencv_objdetect)
 target_link_libraries(${NAME} dcom dbus ${DWEBVIEW_LIBRARIES} ${LIGHTDM_LIBRARIES}
@@ -58,7 +58,7 @@ install(
     )
 
 install(
-    DIRECTORY ${PROJECT_SOURCE_DIR}/resources/${NAME_RESOURCE}
+    DIRECTORY ${PROJECT_SOURCE_DIR}/resources/${NAME_SRC}
     DESTINATION ${RESOURCE_DIR}
     )
 
@@ -72,4 +72,4 @@ install(
     DESTINATION /etc/dbus-1/system.d/
     )
 
-GEN_JS_FILE(${NAME_RESOURCE})
+GEN_JS_FILE(${NAME_SRC})
