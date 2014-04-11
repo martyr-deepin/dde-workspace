@@ -76,12 +76,12 @@ void lock_switch_user ()
 {
     GError *error = NULL;
 
-    if (g_find_program_in_path ("switchtogreeter") == NULL) {
-        g_warning ("lock switch user:can't find switchtogreeter\n");
+    if (g_find_program_in_path ("dde-switchtogreeter") == NULL) {
+        g_warning ("lock switch user:can't find dde-switchtogreeter\n");
         return ;
     }
 
-    g_spawn_command_line_async ("switchtogreeter", &error);
+    g_spawn_command_line_async ("dde-switchtogreeter", &error);
     if (error != NULL) {
         g_warning ("switch to greeter error:%s\n", error->message);
         g_error_free (error);
