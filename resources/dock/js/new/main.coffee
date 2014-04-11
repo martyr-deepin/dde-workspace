@@ -77,7 +77,13 @@ entryManager.connect("TrayInited",->
 
 entryManager.connect("Added", (path)->
     d = get_dbus("session", itemDBus(path))
-    console.log("try to Add #{d.Id}")
+    console.log("try to Add #{d.Id}, #{TRASH_ID}")
+    if d.Id == TRASH_ID
+        t = Widget.look_up(d.Id)
+        t.core = d
+        t.show_indicator()
+        return
+
     if Widget.look_up(d.Id)
         return
 
@@ -98,8 +104,12 @@ entryManager.connect("Added", (path)->
 entryManager.connect("Removed", (id)->
     # TODO: change id to the real id
     console.log("Removed #{id}")
-    if id != "trash"
-        deleteItem(id)
+    if id == TRASH_ID
+        t = Widget.look_up(id)
+        t.core = null
+        t.hide_indicator()
+        return
+    deleteItem(id)
     calc_app_item_size()
     systemTray?.updateTrayIcon()
 )
@@ -119,7 +129,7 @@ try
 
 show_launcher = new LauncherItem("show_launcher", icon_launcher, _("Launcher"))
 # clock = create_clock(DCore.Dock.clock_type())
-trash = new Trash("trash", Trash.get_icon(DCore.DEntry.get_trash_count()), _("Trash"))
+trash = new Trash(TRASH_ID, Trash.get_icon(DCore.DEntry.get_trash_count()), _("Trash"))
 show_desktop = new ShowDesktop()
 
 DCore.Dock.emit_webview_ok()

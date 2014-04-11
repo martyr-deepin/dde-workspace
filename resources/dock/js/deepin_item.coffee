@@ -5,8 +5,9 @@ class Applet extends Item
         @type = ITEM_TYPE_APPLET
 
         @indicatorWarp = create_element(tag:'div', class:"indicatorWarp", @element)
+        @openingIndicator = create_img(src:OPENING_INDICATOR, class:"indicator OpeningIndicator", @indicatorWarp)
         @openIndicator = create_img(src:OPEN_INDICATOR, class:"indicator OpenIndicator", @indicatorWarp)
-        @openIndicator.style.display = "none"
+        @openIndicator.style.display = 'none'
         # @open_indicator = create_img("OpenIndicator", OPEN_INDICATOR, @element)
         # @open_indicator.style.left = INDICATER_IMG_MARGIN_LEFT
         # @open_indicator.style.display = "none"
@@ -44,7 +45,7 @@ class FixedItem extends Applet
     show: (v)->
         @__show = v
         if @__show
-            @openIndicator.style.display = "block"
+            @openIndicator.style.display = ""
         else
             @openIndicator.style.display = "none"
 
@@ -133,6 +134,11 @@ class Trash extends PostfixedItem
 
     on_click: (e)=>
         super
+        if  @is_opened
+            @core.Activate(0,0)
+            return
+        @openingIndicator.style.display = 'inline'
+        @openingIndicator.style.webkitAnimationName = 'Breath'
         if !DCore.DEntry.launch(@entry, [])
             confirm(_("Can not open this file."), _("Warning"))
 
@@ -163,13 +169,16 @@ class Trash extends PostfixedItem
         evt.dataTransfer.dropEffect = "move"
 
     show_indicator: ->
+        console.log("show_indicator")
         @is_opened = true
-        @open_indicator.style.display = "block"
+        @openIndicator.style.display = ""
+        @openingIndicator.style.display = 'none'
+        @openingIndicator.style.webkitAnimationName = ''
 
     hide_indicator:->
         @is_opened = false
         @id = 0
-        @open_indicator.style.display = "none"
+        @openIndicator.style.display = "none"
 
     set_id: (id)->
         @id = id
