@@ -52,7 +52,7 @@ apply_linear_hide_show = (el, time,timefunc)->
     , time * 1000)
 
 apply_linear_show = (el, time, timefunc,cb)->
-    #el.style.opacity = "0.0"
+    el.style.opacity = "0.0"
     apply_animation(el, "linear-show", "#{time}s", timefunc)
     id = setTimeout(->
         el.style.webkitAnimation = ""

@@ -298,9 +298,9 @@ void dock_emit_webview_ok()
                                                        GTK_MESSAGE_ERROR,
                                                        GTK_BUTTONS_OK,
                                                        _("Dock failed to start"
-                                                         ", because the plugin"
-                                                         " of compiz is not "
-                                                         "enabled"));
+                                                         ", because "
+                                                         "Compiz is not "
+                                                         "enabled."));
             gtk_dialog_run(GTK_DIALOG(dialog));
             gtk_widget_destroy(dialog);
             exit(2);
@@ -474,7 +474,7 @@ gboolean primary_changed_handler(gpointer data)
 int main(int argc, char* argv[])
 {
     if (is_application_running(DOCK_ID_NAME)) {
-        g_warning(_("another instance of dock is running...\n"));
+        g_warning("another instance of dock is running...\n");
         return 1;
     }
 

@@ -55,7 +55,6 @@ body {
     color:white;
     text-shadow:1px 0 1px #000, 0 1px 1px #000, -1px 0 1px #000, 0 -1px 1px #000;
     word-wrap:break-word;
-    word-break:break-all;
     -webkit-line-clamp:2;
     text-overflow:ellipsis;
     display:-webkit-box;
@@ -104,9 +103,9 @@ body {
 .DesktopEntry .item_name {
     border-radius:2px;
     outline:none;
-    overflow:hidden;
     padding: 0 1px; /*fix the truncation when the word's length is to long*/
-    word-wrap:normal;
+    
+    word-wrap: break-word;
     overflow:hidden;
     text-overflow:ellipsis;
 }

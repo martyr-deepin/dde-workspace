@@ -114,11 +114,10 @@ class Display extends Widget
 
 
     showDisplayMode:->
-        clearTimeout(@timepress) if @timepress
+        clearTimeout(@timepress)
+        clearTimeout(timeout_osdHide)
         
         @timepress = setTimeout(=>
-            clearTimeout(timeout_osdHide) if timeout_osdHide
-            
             @FromSwitchMonitors = true
             @valueDiv.style.display = "none" if @valueDiv
             if @DBusMonitors.length == 1 then return
@@ -134,16 +133,14 @@ class Display extends Widget
             set_bg(@,imgName,@preDisplayImg)
             @preDisplayImg = imgName
             
-            timeout_osdHide = setTimeout(=>
-                osdHide()
-            ,TIME_HIDE)
+            timeout_osdHide = setTimeout(osdHide,TIME_HIDE)
         ,TIME_PRESS)
     
 
     showBrightness:->
         clearTimeout(@timepress) if @timepress
         @timepress = setTimeout(=>
-            clearTimeout(timeout_osdHide) if timeout_osdHide
+            clearTimeout(timeout_osdHide) if timeout_osdHide?
 
             echo "#{@id} Class  show"
             osdShow()

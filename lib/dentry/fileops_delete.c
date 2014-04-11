@@ -26,11 +26,11 @@ void fileops_confirm_delete (GFile* file_list[], guint num, gboolean show_dialog
 					 GTK_MESSAGE_WARNING,
 					 GTK_BUTTONS_CANCEL,
 					 NULL);
-	gtk_window_set_title (GTK_WINDOW (dialog), _("Delete File"));
+	gtk_window_set_title (GTK_WINDOW (dialog), _("Delete Files"));
 	gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
 	g_object_set (dialog,
 	          "text", _("Are you sure you want to permanently delete the files?"),
-		  "secondary-text", _("If you delete an item, it will be permanently lost."),
+		  "secondary-text", _("If you delete the files, they will be permanently lost."),
 		  NULL);
 
 	gtk_dialog_add_buttons (GTK_DIALOG (dialog), _("Delete"),

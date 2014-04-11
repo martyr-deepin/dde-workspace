@@ -22,7 +22,7 @@ draw_camera_id = null
 _current_user = null
 password_error_msg = null
 guest_id = "guest"
-guest_name = _("guest")
+guest_name = _("Guest")
 
 class User extends Widget
     img_src_before = "images/userswitch/"
@@ -109,6 +109,7 @@ class User extends Widget
 
 
     switchtoprev_userinfo : =>
+        if !_current_user.animation_end then return
         echo "switchtoprev_userinfo from #{@current_user_index}: #{_current_user.username}"
         _current_user.hide_animation()
         @current_user_index = @check_index(@current_user_index + 1)
@@ -118,6 +119,7 @@ class User extends Widget
         _current_user.animate_prev()
 
     switchtonext_userinfo : =>
+        if !_current_user.animation_end then return
         echo "switchtonext_userinfo from #{@current_user_index}: #{_current_user.username}"
         _current_user.hide_animation()
         @current_user_index = @check_index(@current_user_index - 1)
@@ -179,6 +181,7 @@ class UserInfo extends Widget
         
         @is_logined = false
         @is_recognizing = false
+        @animation_end = true
         @index = null
         @time_animation = 500
         @face_login = @userFaceLogin(@username)
@@ -198,11 +201,28 @@ class UserInfo extends Widget
         @userimg_background = create_element("div","userimg_background",@userimg_border)
         @userimg = create_img("userimg", @img_src, @userimg_background)
         @userimg_div.style.display = "none"
+
+        @username_div = create_element("div", "username_div", @userbase)
+        @username_div.innerText = @username
+        @username_div.style.display = "none"
         
-        echo "-------scaleFinal =  #{scaleFinal}-----------------"
-        @face_recognize_div.style.width = 135 * scaleFinal
-        @face_recognize_div.style.height = 135 * scaleFinal
-        @face_recognize_div.style.left = @userimg_div.style.left + 25
+        @login = new LoginEntry("login", @username, (u, p)=>@on_verify(u, p))
+        @element.appendChild(@login.element)
+        @login.hide()
+
+
+        ###------set width height left top--------####
+        @face_recognize_div.style.display = "block"
+        div_users_width = $("#div_users").clientWidth
+        face_recognize_width = 135 * scaleFinal
+        face_recognize_height = 135 * scaleFinal
+        face_recognize_left = (div_users_width - face_recognize_width) / 2
+        face_recognize_top = -7.5 * scaleFinal
+        echo "(#{div_users_width} - #{face_recognize_width})/2 = #{face_recognize_left}"
+        @face_recognize_div.style.width = face_recognize_width
+        @face_recognize_div.style.height = face_recognize_height
+        @face_recognize_div.style.left = face_recognize_left
+        @face_recognize_div.style.top = face_recognize_top
         @face_recognize_div.style.display = "none"
         
         @userimg.style.width = 110 * scaleFinal
@@ -211,14 +231,6 @@ class UserInfo extends Widget
         @userimg_border.style.height = @userimg.style.height + 16 * scaleFinal
         @userimg_background.style.width = @userimg_border.style.width - 3
         @userimg_background.style.height = @userimg_border.style.height - 3
-
-        @username_div = create_element("div", "username_div", @userbase)
-        @username_div.innerText = @username
-        @username_div.style.display = "none"
-
-        @login = new LoginEntry("login", @username, (u, p)=>@on_verify(u, p))
-        @element.appendChild(@login.element)
-        @login.hide()
 
         #@loginAnimation()
     
@@ -238,22 +250,30 @@ class UserInfo extends Widget
         @element.style.display = "-webkit-box"
         @focus()
 
-    hide_animation:->
+    hide_animation:(cb)->
         @username_div.style.display = "none"
         @login.hide()
         
         @userimg.style.opacity = "1.0"
+        @animation_end = false
         jQuery(@userimg).animate({opacity:'0.0'},@time_animation,
             "linear",=>
                 @userimg_div.style.display = "none"
                 @element.style.display = "none"
                 @blur()
+                @animation_end = true
+                cb?()
         )
     
-    show_animation:->
+    show_animation:(cb)->
         @show()
         @userimg.style.opacity = "0.0"
-        jQuery(@userimg).animate({opacity:'1.0'},@time_animation)
+        @animation_end = false
+        jQuery(@userimg).animate({opacity:'1.0'},@time_animation,
+            "linear",=>
+                @animation_end = true
+                cb?()
+        )
 
     userFaceLogin: (name)->
         face = false
@@ -277,8 +297,7 @@ class UserInfo extends Widget
         rotate_animation = =>
             @face_recognize_div.style.display = "block"
             @face_animation_interval = setInterval(=>
-                @face_recognize_div.style.left = @userimg_div.style.left
-                rotate = (rotate + 5) % 360
+                rotate = (rotate + 5 * scaleFinal) % 360
                 animation_rotate(@face_recognize_img,rotate)
             ,20)
         
@@ -420,6 +439,7 @@ class LoginEntry extends Widget
             @password_error(_("click login button to log in"))
             @loginbutton.disable = false
             @loginbutton.style.pointer = "cursor"
+            @password.setAttribute("readonly","readonly")
 
     show:->
         @element.style.display = "-webkit-box"
@@ -541,25 +561,13 @@ DCore.signal_connect("failed-too-much", (msg)->
 DCore.signal_connect("auth-succeed", ->
     echo "auth-succeed!"
     echo  "--------#{new Date().getTime()}-----------"
-    power_flag = false
-    if (power = localStorage.getObject("shutdown_from_lock"))?
-        if power.lock is true
-            power_flag = true
-    if power_flag
-        power.lock = false
-        localStorage.setObject("shutdown_from_lock",power)
-        if power_can(power.value)
-            power_force(power.value)
-        else
-            confirmdialog = new ConfirmDialog(power.value)
-            confirmdialog.frame_build()
-            document.body.appendChild(confirmdialog.element)
-            confirmdialog.interval(60)
+    enableZoneDetect(true)
+    if powermenu?.check_is_shutdown_from_lock()
+        powermenu?.auth_succeed_excute()
     else
         if is_greeter
             echo "greeter exit"
         else
-            enableZoneDetect(true)
             DCore.Lock.quit()
             echo "dlock exit"
 )

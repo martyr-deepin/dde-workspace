@@ -22,7 +22,6 @@
 class MenuChoose extends Widget
     choose_num = -1
     select_state_confirm = false
-    frame_click = true
     
     
     #var for animation
@@ -189,14 +188,13 @@ class MenuChoose extends Widget
     body_click_to_hide:->
         document.body.addEventListener("click",(e)=>
             e.stopPropagation()
-            if !frame_click and @element.style.display isnt "none"
+            if !@frame_click and @element.style.display isnt "none"
                 echo "body_click_to_hide"
                 if !@animation_end then return
                 @hide()
                 $(".password").focus()
             else
-                frame_click = false
-                @confirm_shutdown_hide()
+                @frame_click = false
         )
  
 
@@ -204,9 +202,9 @@ class MenuChoose extends Widget
         @frame = create_element("div", "frame", @element)
         @button = create_element("div","button",@frame)
        
-        @frame.addEventListener("click",(e)->
+        @frame.addEventListener("click",(e)=>
             e.stopPropagation()
-            frame_click = true
+            @frame_click = true
         )
         @body_click_to_hide()
 
@@ -243,7 +241,7 @@ class MenuChoose extends Widget
             @opt[i].addEventListener("click",(e)->
                 e.stopPropagation()
                 i = this.value
-                frame_click = true
+                that.frame_click = true
                 that.opt_img[i].src = that.img_url_click[i]
                 that.current = that.option[i]
                 that.fade(i)
@@ -253,75 +251,10 @@ class MenuChoose extends Widget
     set_callback: (@cb)->
 
        
-    confirm_shutdown_show:(powervalue)=>
-        power = {"lock":true,"value":powervalue}
-        localStorage.setObject("shutdown_from_lock",power)
-
-        option_text = @option_text[j] for option,j in @option when option is powervalue
-        value = _("Enter password to %1").args(option_text)
-        localStorage.setItem("password_value_shutdown",value)
-        
-        @password = $(".password")
-        @loginbutton = $(".loginbutton")
-
-        password_error = (msg) =>
-            @password.style.color = "#F4AF53"
-            @password.style.fontSize = "1.2em"
-            @password.style.paddingBottom = "0.4em"
-            @password.style.letterSpacing = "0px"
-            @password.type = "text"
-            password_error_msg = msg
-            @password.value = password_error_msg
-            @password.blur()
-            @loginbutton.disable = true
-        
-        password_error(value)
-        @loginbutton.src = "images/userinfo/#{powervalue}_normal.png"
-        
-
-    confirm_shutdown_hide:=>
-        if not (power = localStorage.getObject("shutdown_from_lock"))? then return
-        if !power.lock then return
-        power.lock = false
-        localStorage.setObject("shutdown_from_lock",power)
-
-        @password = $(".password")
-        @loginbutton = $(".loginbutton")
-        
-        input_password_again = =>
-            @password.style.color = "rgba(255,255,255,0.5)"
-            @password.style.fontSize = "2.0em"
-            @password.style.paddingBottom = "0.2em"
-            @password.style.letterSpacing = "5px"
-            @password.type = "password"
-            @password.focus()
-            @loginbutton.disable = false
-            @password.value = null
-
-        input_password_again()
-        jQuery(@loginbutton).animate(
-            {opacity:'0.0';},
-            t_userinfo_show_hide,
-            "linear",=>
-                @loginbutton.src = "images/userinfo/lock_normal.png"
-                jQuery(@loginbutton).animate(
-                    {opacity:'1.0';},
-                    t_userinfo_show_hide
-                )
-        )
-
     fade:(i)->
         echo "--------------fade:#{@option[i]}---------------"
         @hide()
-        if is_greeter
-            echo "is_greeter"
-            @cb(@option[i], @option_text[i])
-        else
-            echo "is_lock"
-            if @id is "power_menuchoose" and @option[i] isnt "suspend"
-                @confirm_shutdown_show(@option[i])
-            else
-                @cb(@option[i], @option_text[i])
+        @cb(@option[i], @option_text[i])
 
     
     hover_state:(i)->
@@ -436,7 +369,6 @@ class ComboBox extends Widget
         @menu.current = current
         @current_text?.textContent = current
 
-        if @id is "desktop"
-            localStorage.setItem("menu_current_id",current)
+        localStorage.setItem("menu_current_id",current)
         return current
 

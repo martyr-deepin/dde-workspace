@@ -67,6 +67,7 @@ class ListChoose extends Widget
                 li.style.backgroundColor = null
 
     ChooseIndex: =>
+        clearTimeout(timeout_osdHide)
         @prevIndex = @currentIndex
         @currentIndex++
 
@@ -75,4 +76,6 @@ class ListChoose extends Widget
         
         @current = @Listul[@currentIndex]
         @setBackground(@currentIndex)
+        
+        timeout_osdHide = setTimeout(osdHide,TIME_HIDE)
         return @currentIndex

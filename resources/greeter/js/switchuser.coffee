@@ -43,7 +43,9 @@ class SwitchUser extends Widget
         )
 
     SwitchToGreeter:->
+        echo "SwitchToGreeter"
         try
+            enableZoneDetect(true)
             switch_dbus = DCore.DBus.sys_object("org.freedesktop.DisplayManager","/org/freedesktop/DisplayManager/Seat0","org.freedesktop.DisplayManager.Seat")
             if switch_dbus.CanSwitch
                 switch_dbus.SwitchToGreeter()

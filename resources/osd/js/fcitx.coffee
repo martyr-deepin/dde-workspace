@@ -167,14 +167,11 @@ class FcitxOSD extends Widget
     IMChanged: ->
         echo "IMChanged"
         #setBodySize(160,120)
-        clearTimeout(timeout_osdHide) if timeout_osdHide
+        clearTimeout(timeout_osdHide)
         osdShow()
         @show()
         @imListBackgroundChange()
-        
-        timeout_osdHide = setTimeout(=>
-            osdHide()
-        ,TIME_HIDE)
+        timeout_osdHide = setTimeout(osdHide,TIME_HIDE)
 
     IMOther: ->
         echo "IMOther"

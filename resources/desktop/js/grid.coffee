@@ -1019,7 +1019,7 @@ grid_right_click = (evt) ->
         new MenuItem(4, _("_Paste")).setActive(DCore.DEntry.can_paste()),
         new MenuSeparator(),
         new MenuItem(5, _("_Display settings")),
-        new MenuItem(6, _("_Corner settings")),
+        new MenuItem(6, _("_Corner navigation")),
         new MenuItem(7, _("Pe_rsonalize"))
     )
     menu.addListener(grid_do_itemselected).showMenu(evt.clientX, evt.clientY)

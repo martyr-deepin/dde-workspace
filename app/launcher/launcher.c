@@ -487,7 +487,7 @@ int main(int argc, char* argv[])
     }
 
     if (is_application_running(LAUNCHER_ID_NAME)) {
-        g_message(_("another instance of launcher is running..."));
+        g_message("another instance of launcher is running...");
 
         if (!is_hidden) {
             dbus_launcher_toggle();
