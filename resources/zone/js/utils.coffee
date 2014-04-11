@@ -9,7 +9,7 @@ cfgKey = ["left-up","left-down","right-up","right-down"]
 # option_text must be one-to-one with cfgValue
 option_text = [_("System Settings"),_("Workspace"),_("Launcher"),_("Desktop"),_("None")]
 cfgValue = [
-    "dbus-send --type=method_call --dest=com.deepin.Dss /com/deepin/Dss com.deepin.Dss.Toggle",
+    "dbus-send --type=method_call --dest=com.deepin.dde.ControlCenter /com/deepin/dde/ControlCenter com.deepin.dde.ControlCenter.Toggle",
     "workspace",
     "/usr/bin/dde-launcher"
     "/usr/lib/deepin-daemon/desktop-toggle",
