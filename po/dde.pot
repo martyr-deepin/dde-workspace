@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-09 17:11+0800\n"
+"POT-Creation-Date: 2014-04-11 14:07+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,27 +17,35 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../resources/greeter/js/menuchoose.coffee:261
-msgid "Enter your password to %1"
+#: ../resources/greeter/js/powermenu.coffee:46
+msgid "Shut down"
 msgstr ""
 
-#: ../resources/greeter/js/powermenu.coffee:50
-msgid "Suspend"
-msgstr ""
-
-#: ../resources/greeter/js/powermenu.coffee:51
+#: ../resources/greeter/js/powermenu.coffee:47
 msgid "Restart"
 msgstr ""
 
-#: ../resources/greeter/js/powermenu.coffee:52
-msgid "Shut down"
+#: ../resources/greeter/js/powermenu.coffee:48
+msgid "Suspend"
+msgstr ""
+
+#: ../resources/greeter/js/powermenu.coffee:49
+msgid "Log out"
+msgstr ""
+
+#: ../resources/greeter/js/powermenu.coffee:50
+msgid "Lock"
+msgstr ""
+
+#: ../resources/greeter/js/powermenu.coffee:86
+msgid "Enter your password to %1"
 msgstr ""
 
 #: ../resources/greeter/js/user.coffee:25
 msgid "Guest"
 msgstr ""
 
-#: ../resources/greeter/js/user.coffee:420
+#: ../resources/greeter/js/user.coffee:439
 msgid "click login button to log in"
 msgstr ""
 
@@ -126,7 +134,7 @@ msgstr ""
 #: ../resources/desktop/js/specialitem.coffee:234
 #: ../resources/desktop/js/specialitem.coffee:288
 #: ../resources/desktop/js/richdir.coffee:131
-#: ../resources/desktop/js/richdir.coffee:470
+#: ../resources/desktop/js/richdir.coffee:471
 #: ../resources/desktop/js/desktopentry.coffee:101
 #: ../resources/launcher/js/item.coffee:266
 msgid "_Open"
@@ -134,7 +142,7 @@ msgstr ""
 
 #: ../resources/desktop/js/specialitem.coffee:53
 #: ../resources/desktop/js/specialitem.coffee:141
-#: ../resources/desktop/js/richdir.coffee:477
+#: ../resources/desktop/js/richdir.coffee:478
 #: ../resources/desktop/js/desktopentry.coffee:109
 msgid "_Properties"
 msgstr ""
@@ -175,32 +183,32 @@ msgid "_Ungroup"
 msgstr ""
 
 #: ../resources/desktop/js/richdir.coffee:137
-#: ../resources/desktop/js/richdir.coffee:475
+#: ../resources/desktop/js/richdir.coffee:476
 #: ../resources/desktop/js/desktopentry.coffee:107
 #: ../resources/desktop/js/invalidlink.coffee:34
 msgid "_Delete"
 msgstr ""
 
-#: ../resources/desktop/js/richdir.coffee:356
-#: ../resources/desktop/js/richdir.coffee:490
+#: ../resources/desktop/js/richdir.coffee:357
+#: ../resources/desktop/js/richdir.coffee:491
 #: ../resources/desktop/js/application.coffee:177
 msgid "The link is invalid. Do you want to delete it?"
 msgstr ""
 
-#: ../resources/desktop/js/richdir.coffee:356
-#: ../resources/desktop/js/richdir.coffee:490
+#: ../resources/desktop/js/richdir.coffee:357
+#: ../resources/desktop/js/richdir.coffee:491
 #: ../resources/desktop/js/desktopentry.coffee:151
 #: ../resources/desktop/js/application.coffee:177
 #: ../resources/dock/js/deepin_item.coffee:137
 msgid "Warning"
 msgstr ""
 
-#: ../resources/desktop/js/richdir.coffee:472
+#: ../resources/desktop/js/richdir.coffee:473
 #: ../resources/desktop/js/desktopentry.coffee:103
 msgid "Cu_t"
 msgstr ""
 
-#: ../resources/desktop/js/richdir.coffee:473
+#: ../resources/desktop/js/richdir.coffee:474
 #: ../resources/desktop/js/desktopentry.coffee:104
 msgid "_Copy"
 msgstr ""
@@ -421,7 +429,7 @@ msgstr ""
 msgid "%a, %b %d, %Y"
 msgstr ""
 
-#: ../app/greeter/dlock.c:130 ../app/greeter/greeter.c:181
+#: ../app/greeter/greeter.c:181 ../app/greeter/lock.c:130
 msgid "Invalid Password"
 msgstr ""
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-09 17:11+0800\n"
+"POT-Creation-Date: 2014-04-11 14:07+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Wang Dianjin <wangdianjin@linuxdeepin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,28 +17,36 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../resources/greeter/js/menuchoose.coffee:261
-msgid "Enter your password to %1"
-msgstr ""
+#: ../resources/greeter/js/powermenu.coffee:46
+msgid "Shut down"
+msgstr "關機"
 
-#: ../resources/greeter/js/powermenu.coffee:50
-msgid "Suspend"
-msgstr "暫停"
-
-#: ../resources/greeter/js/powermenu.coffee:51
+#: ../resources/greeter/js/powermenu.coffee:47
 msgid "Restart"
 msgstr "重新啟動"
 
-#: ../resources/greeter/js/powermenu.coffee:52
-msgid "Shut down"
-msgstr "關機"
+#: ../resources/greeter/js/powermenu.coffee:48
+msgid "Suspend"
+msgstr "暫停"
+
+#: ../resources/greeter/js/powermenu.coffee:49
+msgid "Log out"
+msgstr "登出"
+
+#: ../resources/greeter/js/powermenu.coffee:50
+msgid "Lock"
+msgstr "鎖定"
+
+#: ../resources/greeter/js/powermenu.coffee:86
+msgid "Enter your password to %1"
+msgstr ""
 
 #: ../resources/greeter/js/user.coffee:25
 #, fuzzy
 msgid "Guest"
 msgstr "訪客"
 
-#: ../resources/greeter/js/user.coffee:420
+#: ../resources/greeter/js/user.coffee:439
 msgid "click login button to log in"
 msgstr ""
 
@@ -127,7 +135,7 @@ msgstr "電腦"
 #: ../resources/desktop/js/specialitem.coffee:234
 #: ../resources/desktop/js/specialitem.coffee:288
 #: ../resources/desktop/js/richdir.coffee:131
-#: ../resources/desktop/js/richdir.coffee:470
+#: ../resources/desktop/js/richdir.coffee:471
 #: ../resources/desktop/js/desktopentry.coffee:101
 #: ../resources/launcher/js/item.coffee:266
 msgid "_Open"
@@ -135,7 +143,7 @@ msgstr "開啟(_O)"
 
 #: ../resources/desktop/js/specialitem.coffee:53
 #: ../resources/desktop/js/specialitem.coffee:141
-#: ../resources/desktop/js/richdir.coffee:477
+#: ../resources/desktop/js/richdir.coffee:478
 #: ../resources/desktop/js/desktopentry.coffee:109
 msgid "_Properties"
 msgstr "屬性(_P)"
@@ -176,33 +184,33 @@ msgid "_Ungroup"
 msgstr "取消群組(_U)"
 
 #: ../resources/desktop/js/richdir.coffee:137
-#: ../resources/desktop/js/richdir.coffee:475
+#: ../resources/desktop/js/richdir.coffee:476
 #: ../resources/desktop/js/desktopentry.coffee:107
 #: ../resources/desktop/js/invalidlink.coffee:34
 msgid "_Delete"
 msgstr "删除(_D)"
 
-#: ../resources/desktop/js/richdir.coffee:356
-#: ../resources/desktop/js/richdir.coffee:490
+#: ../resources/desktop/js/richdir.coffee:357
+#: ../resources/desktop/js/richdir.coffee:491
 #: ../resources/desktop/js/application.coffee:177
 #, fuzzy
 msgid "The link is invalid. Do you want to delete it?"
 msgstr "該連結已經失效，是否要刪除？"
 
-#: ../resources/desktop/js/richdir.coffee:356
-#: ../resources/desktop/js/richdir.coffee:490
+#: ../resources/desktop/js/richdir.coffee:357
+#: ../resources/desktop/js/richdir.coffee:491
 #: ../resources/desktop/js/desktopentry.coffee:151
 #: ../resources/desktop/js/application.coffee:177
 #: ../resources/dock/js/deepin_item.coffee:137
 msgid "Warning"
 msgstr "警告"
 
-#: ../resources/desktop/js/richdir.coffee:472
+#: ../resources/desktop/js/richdir.coffee:473
 #: ../resources/desktop/js/desktopentry.coffee:103
 msgid "Cu_t"
 msgstr "剪下(_T)"
 
-#: ../resources/desktop/js/richdir.coffee:473
+#: ../resources/desktop/js/richdir.coffee:474
 #: ../resources/desktop/js/desktopentry.coffee:104
 msgid "_Copy"
 msgstr "複製(_C)"
@@ -429,7 +437,7 @@ msgstr "%s%d秒後自動重試"
 msgid "%a, %b %d, %Y"
 msgstr "%Y年%b%d日 %A"
 
-#: ../app/greeter/dlock.c:130 ../app/greeter/greeter.c:181
+#: ../app/greeter/greeter.c:181 ../app/greeter/lock.c:130
 msgid "Invalid Password"
 msgstr "密碼錯誤"
 
@@ -773,12 +781,6 @@ msgstr "其他"
 
 #~ msgid "ShutDown"
 #~ msgstr "關機"
-
-#~ msgid "Lock"
-#~ msgstr "鎖定"
-
-#~ msgid "Log out"
-#~ msgstr "登出"
 
 #, fuzzy
 #~ msgid "Force Log out"

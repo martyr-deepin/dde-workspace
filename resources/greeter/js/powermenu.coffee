@@ -46,7 +46,9 @@ class PowerMenu extends Widget
         @power_title["shutdown"] = _("Shut down")
         @power_title["restart"] = _("Restart")
         @power_title["suspend"] = _("Suspend")
-        
+        test1 = _("Log out")
+        test2 = _("Lock")
+
         return @power_dict
 
     menuChoose_click_cb : (id, title)=>
