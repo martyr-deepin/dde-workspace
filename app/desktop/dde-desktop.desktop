@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name=DeepinDesktopEnvironment
-Exec=desktop
+Exec=dde-desktop
 NoDisplay=true
 X-GNOME-Autostart-Phase=Desktop
 X-GNOME-Autostart-Notify=true

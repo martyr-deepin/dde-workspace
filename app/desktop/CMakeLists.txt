@@ -1,4 +1,5 @@
-SET(NAME "desktop")
+SET(NAME "dde-desktop")
+SET(NAME_SRC "desktop")
 
 add_subdirectory(test)
 
@@ -22,11 +23,11 @@ install(
     DESTINATION bin
     )
 install(
-    DIRECTORY ${PROJECT_SOURCE_DIR}/resources/${NAME}
+    DIRECTORY ${PROJECT_SOURCE_DIR}/resources/${NAME_SRC}
     DESTINATION ${RESOURCE_DIR}
     )
 
 install(
-    FILES ${CMAKE_CURRENT_SOURCE_DIR}/deepin-desktop.desktop
+    FILES ${CMAKE_CURRENT_SOURCE_DIR}/dde-desktop.desktop
     DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications
     )
