@@ -8,6 +8,7 @@ all: ${com_coffee} \
 	new/region.coffee\
 	new/settings.coffee\
 	global_menu.coffee\
+	new/docked_app_manager.coffee\
 	panel.coffee\
 	new/app_list.coffee \
 	show_desktop.coffee\
@@ -18,7 +19,6 @@ all: ${com_coffee} \
 	new/item.coffee \
 	deepin_item.coffee\
 	new/system_tray.coffee\
-	new/docked_app_manager.coffee\
 	new/main.coffee
 	coffee -cj dock.js $^
 

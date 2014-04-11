@@ -16,7 +16,7 @@ class AppList
     append: (c)->
         if @_insert_anchor_item and @_insert_anchor_item.element.parentNode == @element
             @element.insertBefore(c.element, @_insert_anchor_item.element)
-            DCore.Dock.insert_apps_position(c.app_id, @_insert_anchor_item.app_id)
+            # DCore.Dock.insert_apps_position(c.app_id, @_insert_anchor_item.app_id)
             @_insert_anchor_item = null
             @hide_indicator()
         else
@@ -34,16 +34,19 @@ class AppList
     do_drop: (e)=>
         e.stopPropagation()
         e.preventDefault()
+        console.log("do drop on app_list")
         if dnd_is_desktop(e)
             console.log("is desktop")
             path = e.dataTransfer.getData("text/uri-list").substring("file://".length).trim()
             id = get_path_name(path)
-            t = create_element(tag:'div', id:id)
+            t = create_element(tag:'div', name:id)
             console.log("insert tmp before insert_indicator")
             console.log(t)
             console.log(@insert_indicator)
-            @element.insertBefore(t, @insert_indicator)
-            dockedAppManager.Dock(id, "", "", "")
+            console.log(@insert_indicator.parentNode)
+            if @insert_indicator.parentNode
+                @element.insertBefore(t, @insert_indicator)
+                dockedAppManager?.Dock(id, "", "", "")
         else if dnd_is_deepin_item(e) and @insert_indicator.parentNode == @element
             id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
             item = Widget.look_up(id) or Widget.look_up("le_"+id)
@@ -97,7 +100,9 @@ class AppList
         e.stopPropagation()
         e.preventDefault()
         if dnd_is_deepin_item(e) or dnd_is_desktop(e)
-            calc_app_item_size()
+            cancelInsertTimer = setTimeout(-
+                calc_app_item_size()
+            , 100)
             # update_dock_region()
 
     do_dragenter: (e)=>
@@ -115,7 +120,6 @@ class AppList
             child = appList.children[i]
             items.push(child.id)
         dockedAppManager.Sort(items)
-        # DCore.Dock.swap_apps_position(src.app_id, dest.app_id)
 
     hide_indicator: ->
         if @insert_indicator.parentNode == @element
@@ -134,6 +138,7 @@ class AppList
         @is_insert_indicator_shown = true
 
         console.log("Insert Indicator")
+        # console.log(@element)
         if anchor
             @element.insertBefore(@insert_indicator, anchor)
         else

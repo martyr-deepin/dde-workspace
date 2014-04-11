@@ -1,4 +1,9 @@
-dockedAppManager = get_dbus("session", name:"com.deepin.daemon.Dock", path:"/dde/dock/DockedAppManager", interface:"dde.dock.DockedAppManager")
+dockedAppManager = get_dbus(
+    "session",
+    name:"com.deepin.daemon.Dock"
+    path:"/dde/dock/DockedAppManager"
+    interface:"dde.dock.DockedAppManager"
+)
 
 dockedAppManager?.connect("Docked", (id)->
     console.log("Docked #{id}")
@@ -6,9 +11,13 @@ dockedAppManager?.connect("Docked", (id)->
     appList = $("#app_list")
     for i in [0...appList.children.length]
         child = appList.children[i]
-        items.push(child.id)
+        if child.getAtrribute('name')
+            console.log(child.getAtrribute('name'))
+            items.push(child.name)
+        else
+            items.push(child.id)
 
-    if not $DBus[id]
+    if not $DBus[id] and items.indexOf(id) == -1
         # append to the last.
         # dock-apps-builder will listen Docked signal, and emit Added signal if
         # necessary.
