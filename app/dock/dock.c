@@ -361,7 +361,7 @@ JS_EXPORT_API
 void dock_toggle_launcher(gboolean show)
 {
     if (show) {
-        run_command("launcher");
+        run_command("dde-launcher");
     } else {
         close_launcher_window();
     }
