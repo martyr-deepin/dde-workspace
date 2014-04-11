@@ -14,26 +14,26 @@ add_executable(${NAME} greeter.c user.c session.c mutils.c greeter_util.c ${JSC_
     #camera.c settings.c ${DBUS_GEN}
     )
 add_dependencies(${NAME} ${NAME_RESOURCE}_js)
-add_executable(dlock dlock.c user.c lock_util.c mutils.c ${JSC_LOCK_GEN}
+add_executable(dde-lock lock.c user.c lock_util.c mutils.c ${JSC_LOCK_GEN}
     ${DBUS_GEN}
     #camera.c settings.c ${DBUS_GEN}
     )
-add_dependencies(dlock ${NAME_RESOURCE}_js)
+add_dependencies(dde-lock ${NAME_RESOURCE}_js)
 add_executable(switchtogreeter switchtogreeter.c)
 add_dependencies(switchtogreeter ${NAME_RESOURCE}_js)
-add_executable(lockservice lockservice.c)
-add_dependencies(lockservice ${NAME_RESOURCE}_js)
+add_executable(dde-lockservice lockservice.c)
+add_dependencies(dde-lockservice ${NAME_RESOURCE}_js)
 
 #set(OPENCV_LIBS opencv_core opencv_imgproc opencv_objdetect)
 target_link_libraries(${NAME} dcom dbus ${DWEBVIEW_LIBRARIES} ${LIGHTDM_LIBRARIES}
     ${GST_LIBRARIES}
     #${OPENCV_LIBS} ${GST_LIBRARIES}
     )
-target_link_libraries(dlock dcom dbus ${DWEBVIEW_LIBRARIES} 
+target_link_libraries(dde-lock dcom dbus ${DWEBVIEW_LIBRARIES} 
     ${GST_LIBRARIES})
     #${OPENCV_LIBS} ${GST_LIBRARIES})
 target_link_libraries(switchtogreeter ${DWEBVIEW_LIBRARIES})
-target_link_libraries(lockservice crypt dcom dbus ${DWEBVIEW_LIBRARIES})
+target_link_libraries(dde-lockservice crypt dcom dbus ${DWEBVIEW_LIBRARIES})
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS} ${LIGHTDM_INCLUDE_DIRS}
     ${OPENCV_INCLUDE_DIRES} ${GST_INCLUDE_DIRS})
@@ -48,12 +48,12 @@ install(
     )
 
 install(
-    PROGRAMS ${PROJECT_BINARY_DIR}/dlock
+    PROGRAMS ${PROJECT_BINARY_DIR}/dde-lock
     DESTINATION bin
     )
 
 install(
-    PROGRAMS ${PROJECT_BINARY_DIR}/lockservice
+    PROGRAMS ${PROJECT_BINARY_DIR}/dde-lockservice
     DESTINATION bin
     )
 
