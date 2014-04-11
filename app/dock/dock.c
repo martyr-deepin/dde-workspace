@@ -527,7 +527,9 @@ int main(int argc, char* argv[])
 
     /* check_compiz_validity(); */
 
+#ifdef NDEBUG
     g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
+#endif
     g_log_set_default_handler((GLogFunc)log_to_file, "dock");
 
     set_desktop_env_name("Deepin");

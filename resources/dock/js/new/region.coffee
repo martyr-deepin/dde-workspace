@@ -30,12 +30,14 @@ calc_app_item_size = ->
 update_dock_region = do->
     lastWidth = null
     (w)->
+        # console.log("last Width: #{lastWidth}")
         if w
             lastWidth = w
         else if lastWidth
             w = lastWidth
         if panel
             panel.set_width(w)
+        # console.log("width: #{w}")
         apps = $s(".AppItem")
         last = apps[apps.length-1]
         if last and last.clientWidth != 0

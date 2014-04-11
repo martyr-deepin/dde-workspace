@@ -16,6 +16,9 @@ SET(SRC_LIST embed_window.c dock.c dock_hide.c dock_config.c handle_icon.c migra
 
 add_executable(${NAME} ${SRC_LIST})
 add_dependencies(${NAME} ${NAME}_js)
+SET_TARGET_PROPERTIES(${NAME}
+	PROPERTIES OUTPUT_NAME dde-${NAME}
+	)
 
 
 target_link_libraries(${NAME} dcom dentry dbus
@@ -23,7 +26,7 @@ target_link_libraries(${NAME} dcom dentry dbus
     ${DBUS_LIBRARIES} ${DWEBVIEW_LIBRARIES} dtest)
 
 install(
-    PROGRAMS ${PROJECT_BINARY_DIR}/${NAME}
+    PROGRAMS ${PROJECT_BINARY_DIR}/dde-${NAME}
     DESTINATION bin
     )
 install(
