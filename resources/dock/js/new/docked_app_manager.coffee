@@ -45,3 +45,12 @@ initDockedAppPosition = ->
         if target
             list.insertBefore(target, list.firstElementChild)
 
+
+sortDockedItem = ->
+    items = []
+    ch = app_list.element.children
+    for i in [0...ch.length]
+        child = ch[i]
+        items.push(child.id)
+    console.log(items)
+    dockedAppManager?.Sort(items)
