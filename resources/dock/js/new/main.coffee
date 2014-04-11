@@ -148,4 +148,4 @@ catch
     systemTray.destroy()
     systemTray = null
 
-new Time("time", "img/time.png", "")
+new Time("time", "js/plugins/time/img/time.png", "")

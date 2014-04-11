@@ -88,11 +88,15 @@
     position: relative;
     text-align: center;
     width: 100%;
-    top: 13px;
+    top: 18px;
     font-weight: bold;
     font-size:8px;
     color: rgb(255,191,12);
     cursor: default;
+    display:-webkit-box;
+    -webkit-box-pack:center;
+}
+.timeNumber{
 }
 
 .DigitClockWeek {
