@@ -9,14 +9,14 @@ GEN_DBUS_SOURCE(DBUS_GEN "jsc/dbus.go" "desktop")
 SET(SRC_LIST desktop.c inotify_item.c utils.c ${JSC_GEN} ${DBUS_GEN})
 
 add_executable(${NAME} ${SRC_LIST})
-add_dependencies(${NAME} ${NAME}_js)
+add_dependencies(${NAME} ${NAME_SRC}_js)
 
 target_link_libraries(${NAME} dcom dentry dbus ${DWEBVIEW_LIBRARIES}
     desktop_test dtest)
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS})
 
-GEN_JS_FILE(${NAME})
+GEN_JS_FILE(${NAME_SRC})
 
 install(
     PROGRAMS ${PROJECT_BINARY_DIR}/${NAME}

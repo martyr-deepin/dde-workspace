@@ -8,6 +8,7 @@ include_directories(${DWEBVIEW_INCLUDE_DIRS})
 SET(SRC_LIST  ${JSC_GEN} )
 
 add_executable(${NAME} ${SRC_LIST} osd.c)
+add_dependencies(${NAME} ${NAME_SRC}_js)
 
 target_link_libraries(${NAME} dcom dbus ${DWEBVIEW_LIBRARIES})
 
@@ -31,4 +32,4 @@ install(
     FILES ${CMAKE_CURRENT_SOURCE_DIR}/dde-osd.desktop
     DESTINATION /etc/xdg/autostart/ 
     )
-GEN_JS_FILE(${NAME})
+GEN_JS_FILE(${NAME_SRC})

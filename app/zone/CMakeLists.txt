@@ -8,6 +8,7 @@ include_directories(${DWEBVIEW_INCLUDE_DIRS})
 SET(SRC_LIST  ${JSC_GEN} )
 
 add_executable(${NAME} ${SRC_LIST} set-compiz-gsettings.c zone.c)
+add_dependencies(${NAME} ${NAME_SRC}_js)
 
 target_link_libraries(${NAME} dcom dbus ${DWEBVIEW_LIBRARIES})
 
@@ -27,4 +28,4 @@ install(
     DESTINATION ${RESOURCE_DIR}
     )
 
-GEN_JS_FILE(${NAME})
+GEN_JS_FILE(${NAME_SRC})
