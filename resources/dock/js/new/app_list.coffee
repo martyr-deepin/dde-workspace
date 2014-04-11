@@ -16,13 +16,10 @@ class AppList
     append: (c)->
         if @_insert_anchor_item and @_insert_anchor_item.element.parentNode == @element
             @element.insertBefore(c.element, @_insert_anchor_item.element)
-            # DCore.Dock.insert_apps_position(c.app_id, @_insert_anchor_item.app_id)
             @_insert_anchor_item = null
             @hide_indicator()
         else
             @append_app_item(c)
-            if @_insert_anchor_item == null
-                DCore.Dock.insert_apps_position(c.app_id, null)
         run_post(calc_app_item_size)
 
     append_app_item: (c)->
@@ -50,7 +47,9 @@ class AppList
         else if dnd_is_deepin_item(e) and @insert_indicator.parentNode == @element
             id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
             item = Widget.look_up(id) or Widget.look_up("le_"+id)
-            @append(item)
+            @element.insertBefore(item.element, @insert_indicator)
+            sortDockedItem()
+            # @append(item)
         @hide_indicator()
         calc_app_item_size()
 

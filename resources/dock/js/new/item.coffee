@@ -34,13 +34,7 @@ class Item extends Widget
             console.log("find indicator")
             e.parentNode.insertBefore(@element, e)
             e.parentNode.removeChild(e)
-            items = []
-            ch = @element.parentNode.children
-            for i in [0...ch.length]
-                child = ch[i]
-                items.push(child.id)
-            console.log(items)
-            dockedAppManager?.Sort(items)
+            sortDockedItem()
         else
             @container?.appendChild?(@element)
 
