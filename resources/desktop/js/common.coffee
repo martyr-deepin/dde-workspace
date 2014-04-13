@@ -99,8 +99,7 @@ _GET_CFG_BOOL_ = (val) ->
     DCore.Desktop.get_config_boolean(val)
 
 
-DSS = "com.deepin.Dss"
-DSS_DBUS = null
+DSS = "com.deepin.dde.ControlCenter"
 try
     DSS_DBUS = DCore.DBus.session(DSS)
 catch e
