@@ -55,9 +55,12 @@ GSettings* dock_gsettings = NULL;
 
 extern void install_monitor();
 PRIVATE
-void watch_workarea_changes(GtkWidget* widget, GSettings* dock_gsettings);
+void setup_root_window_watcher(GtkWidget* widget, GSettings* dock_gsettings);
 PRIVATE
 void unwatch_workarea_changes(GtkWidget* widget);
+
+//store xids belong desktop to helper find "Focus Changed"
+PRIVATE Window __DESKTOP_XID[3]= {0};
 
 PRIVATE
 GFile* _get_useable_file(const char* basename);
@@ -566,41 +569,68 @@ int main(int argc, char* argv[])
     monitor_resource_file("desktop", webview);
 #endif
 
+    __DESKTOP_XID[0] = GDK_WINDOW_XID(gtk_widget_get_window(container));
+    __DESKTOP_XID[1] = GDK_WINDOW_XID(gtk_widget_get_window(webview));
+    __DESKTOP_XID[2] = GDK_WINDOW_XID(fw);
+
     gtk_main();
     unwatch_workarea_changes(container);
     return 0;
 }
 
 
-PRIVATE GdkFilterReturn watch_workarea(GdkXEvent *gxevent, GdkEvent* event, gpointer user_data)
+PRIVATE GdkFilterReturn watch_root_window(GdkXEvent *gxevent, GdkEvent* event, gpointer user_data)
 {
     NOUSED(event);
     XPropertyEvent *xevt = (XPropertyEvent*)gxevent;
 
-    if (xevt->type == PropertyNotify &&
-            XInternAtom(xevt->display, "_NET_WORKAREA", False) == xevt->atom) {
-        g_message("GET _NET_WORKAREA change on rootwindow");
-	GSettings* dock_gsettings = user_data;
-	update_workarea_size (dock_gsettings);
+    if (xevt->type == PropertyNotify) {
+	if (xevt->atom == gdk_x11_get_xatom_by_name("_NET_WORKAREA")) {
+	    g_message("GET _NET_WORKAREA change on rootwindow");
+	    GSettings* dock_gsettings = user_data;
+	    update_workarea_size (dock_gsettings);
+	    return GDK_FILTER_CONTINUE;
+	} else if (xevt->atom == gdk_x11_get_xatom_by_name("_NET_ACTIVE_WINDOW")) {
+	    Window active_window=0;
+	    gboolean state = False;
+	    if ((state = get_atom_value_by_name(xevt->display, xevt->window, "_NET_ACTIVE_WINDOW", &active_window, get_atom_value_for_index,0))) {
+		static gboolean has_focus= False;
+
+		if (!has_focus) {
+		    for (size_t i=0; i < sizeof(__DESKTOP_XID)/sizeof(Window); i++) {
+			if (__DESKTOP_XID[i] == active_window) {
+			    has_focus = True;
+			    desktop_focus_changed(has_focus);
+			    return GDK_FILTER_CONTINUE;
+			}
+		    }
+		}
+		//don't use else branch, becuas has_focus may be changed!!
+		if (has_focus) {
+		    has_focus = False;
+		    desktop_focus_changed(has_focus);
+		}
+	    }
+	}
     }
     return GDK_FILTER_CONTINUE;
 }
 
-void watch_workarea_changes(GtkWidget* widget, GSettings* dock_gsettings)
+void setup_root_window_watcher(GtkWidget* widget, GSettings* dock_gsettings)
 {
 
     GdkScreen *gscreen = gtk_widget_get_screen(widget);
     GdkWindow *groot = gdk_screen_get_root_window(gscreen);
     gdk_window_set_events(groot, gdk_window_get_events(groot) | GDK_PROPERTY_CHANGE_MASK);
     //TODO: remove this filter when unrealize
-    gdk_window_add_filter(groot, watch_workarea, dock_gsettings);
+    gdk_window_add_filter(groot, watch_root_window, dock_gsettings);
 }
 
 void unwatch_workarea_changes(GtkWidget* widget)
 {
     GdkScreen *gscreen = gtk_widget_get_screen(widget);
     GdkWindow *groot = gdk_screen_get_root_window(gscreen);
-    gdk_window_remove_filter(groot, watch_workarea, NULL);
+    gdk_window_remove_filter(groot, watch_root_window, NULL);
 }
 
 static gboolean __init__ = FALSE;
@@ -629,7 +659,7 @@ void desktop_emit_webview_ok()
         g_signal_connect(desktop_gsettings, "changed::enabled-plugins",
                          G_CALLBACK(desktop_plugins_changed), NULL);
 
-        watch_workarea_changes(container, dock_gsettings);
+        setup_root_window_watcher(container, dock_gsettings);
     }
     update_workarea_size (dock_gsettings);
 }
