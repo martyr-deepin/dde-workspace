@@ -22,8 +22,8 @@
   /* border:black 1px solid; */
 }
 .indicatorWarp{
-  top: 9px;
   position:relative;
+  top: 9px;
   text-align: center;
 }
 

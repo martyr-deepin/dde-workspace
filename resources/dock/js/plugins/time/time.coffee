@@ -32,7 +32,7 @@ class Time extends SystemItem
 
     update_time: =>
         # @time.textContent = "#{@hour()}:#{@min()}"
-        console.log("#{@hour(24, true)}:#{@min()}")
+        # console.log("#{@hour(24, true)}:#{@min()}")
         hour = @hour(24, true)
         @hourHeightNumber.style.display = 'none'
         @hourHeightNumber = @hourHeight.children[parseInt(hour[0])]
