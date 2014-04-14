@@ -177,6 +177,11 @@ class AppItem extends Item
 
         @indicatorWarp = create_element(tag:'div', class:"indicatorWarp", @element)
         @openingIndicator = create_img(src:OPENING_INDICATOR, class:"indicator OpeningIndicator", @indicatorWarp)
+        @openingIndicator.addEventListener("webkitAnimationEnd", ->
+            this.style.display = 'none'
+            this.style.webkitAnimationName = ''
+            # @swap_to_clientgroup()
+        )
         @openIndicator = create_img(src:OPEN_INDICATOR, class:"indicator OpenIndicator", @indicatorWarp)
 
         @tooltip = null

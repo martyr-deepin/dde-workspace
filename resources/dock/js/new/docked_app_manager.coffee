@@ -11,7 +11,7 @@ dockedAppManager?.connect("Docked", (id)->
     appList = $("#app_list")
     for i in [0...appList.children.length]
         child = appList.children[i]
-        if child.getAtrribute('name')
+        if child.getAttribute('name')
             console.log(child.getAtrribute('name'))
             items.push(child.name)
         else
