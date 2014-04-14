@@ -50,10 +50,13 @@ class PowerMenu extends Widget
         return @power_dict
 
     menuChoose_click_cb : (id, title)=>
-        if id isnt "suspend"
-            @confirm_shutdown_show(id)
-        else
+        if is_greeter
             @power_dict[id]()
+        else
+            if id isnt "suspend"
+                @confirm_shutdown_show(id)
+            else
+                @power_dict[id]()
 
     new_power_menu:->
         echo "new_power_menu"
