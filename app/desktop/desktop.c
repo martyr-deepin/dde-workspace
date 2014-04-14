@@ -522,10 +522,10 @@ gboolean desktop_is_livecd (const char* username)
     gint length = 0;
     if (g_file_get_contents(filename,&contents,&length,NULL))
     {
-        g_warning("-------------------%s",contents);
+        g_warning("--------%s----",contents);
         gchar* ptr = g_strstr_len(contents, -1, "boot=casper");
         if (ptr == NULL) {
-            g_warning("not found");
+            g_warning("not found boot=casper");
         } else {
             result = TRUE;
         }
