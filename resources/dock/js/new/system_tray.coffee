@@ -7,6 +7,7 @@ class SystemTray extends SystemItem
         @hood.style.height = '48px'
         @hood.addEventListener("mouseover", @on_mouseover)
         @img.style.display = 'none'
+        @imgWarp.addEventListener("mouseout", @on_mouseout)
         @openIndicator.style.display = 'none'
         @core = get_dbus(
             'session',
@@ -109,18 +110,20 @@ class SystemTray extends SystemItem
         if @upperItemNumber > 2
             @showTimer = setTimeout(=>
                 webkitCancelAnimationFrame(@calcTimer)
+                DCore.Dock.require_all_region()
                 @updateTrayIcon()
                 for item in @items
                     $EW.show(item)
             , ANIMATION_TIME)
         else
             webkitCancelAnimationFrame(@calcTimer)
+            DCore.Dock.require_all_region()
             for item in @items
                 $EW.show(item)
         super
 
     on_mouseout: (e)=>
-        # console.log("mouseout")
+        console.log("systray mouseout")
         clearTimeout(@showTimer)
         webkitCancelAnimationFrame(@calcTimer)
         @updatePanel()

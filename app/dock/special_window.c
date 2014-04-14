@@ -31,7 +31,6 @@ extern Window active_client_id;
 extern Window get_dock_window();
 
 Window launcher_id = 0;
-gulong desktop_pid = 0;
 
 gboolean launcher_should_exit()
 {
@@ -55,28 +54,6 @@ void close_launcher_window()
 {
     dbus_launcher_hide();
     js_post_signal("launcher_destroy");
-}
-
-PRIVATE
-gboolean desktop_has_focus(Display* dsp, gboolean* ret)
-{
-    gboolean state;
-    gulong active_client_wm_pid;
-    if ((state = get_atom_value_by_name(dsp, active_client_id, "_NET_WM_PID",
-                                       &active_client_wm_pid, get_atom_value_for_index, 0))) {
-        *ret = active_client_wm_pid == desktop_pid;
-    }
-
-    return state;
-}
-
-DesktopFocusState get_desktop_focus_state(Display* dsp)
-{
-    gboolean is_focus;
-    if (desktop_has_focus(dsp, &is_focus))
-        return is_focus ? DESKTOP_HAS_FOCUS : DESKTOP_LOST_FOCUS;
-    else
-        return DESKTOP_FOCUS_UNKNOWN;
 }
 
 PRIVATE

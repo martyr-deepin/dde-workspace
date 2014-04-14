@@ -137,15 +137,15 @@ DCore.Dock.test()
 
 setTimeout(->
     IN_INIT = false
+    try
+        if not systemTray
+            systemTray = new SystemTray("system-tray", trayIcon, "")
+    catch
+        systemTray.destroy()
+        systemTray = null
+
+    new Time("time", "js/plugins/time/img/time.png", "")
     calc_app_item_size()
     # apps are moved up, so add 8
     DCore.Dock.change_workarea_height(ITEM_HEIGHT * ICON_SCALE + 8)
 , 100)
-
-try
-    systemTray = new SystemTray("system-tray", trayIcon, "")
-catch
-    systemTray.destroy()
-    systemTray = null
-
-new Time("time", "js/plugins/time/img/time.png", "")

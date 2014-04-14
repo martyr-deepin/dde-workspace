@@ -20,4 +20,4 @@ ITEM_DATA_FIELD =
 
 ANIMATION_TIME = 400
 
-TRASH_ID = "trash"
+TRASH_ID = "filemanager-trash"

@@ -32,13 +32,14 @@ class Time extends SystemItem
 
     update_time: =>
         # @time.textContent = "#{@hour()}:#{@min()}"
+        # console.log("#{@hour(24, true)}:#{@min()}")
         hour = @hour(24, true)
         @hourHeightNumber.style.display = 'none'
         @hourHeightNumber = @hourHeight.children[parseInt(hour[0])]
         @hourHeightNumber.style.display = ''
 
         @hourLowNumber.style.display = 'none'
-        @hourLowNumber = @hourHeight.children[parseInt(hour[1])]
+        @hourLowNumber = @hourLow.children[parseInt(hour[1])]
         @hourLowNumber.style.display = ''
         @hourLowNumber.style.marginLeft = '1px'
         @hourLowNumber.style.marginRight = '2px'
@@ -51,7 +52,7 @@ class Time extends SystemItem
         @minHeightNumber.style.marginRight = '1px'
 
         @minLowNumber.style.display = 'none'
-        @minLowNumber = @minHeight.children[parseInt(hour[1])]
+        @minLowNumber = @minLow.children[parseInt(min[1])]
         @minLowNumber.style.display = ''
 
     force2bit: (n)->

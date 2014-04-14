@@ -76,9 +76,11 @@ class Item extends Widget
 
     show_swap_indicator: ->
         @add_css_class("ItemSwapIndicator", @img)
+        @indicatorWarp.style.top = '5px'
 
     hide_swap_indicator: ->
         @remove_css_class("ItemSwapIndicator", @img)
+        @indicatorWarp.style.top = '9px'
 
     on_dragstart: (e)=>
         e.stopPropagation()
@@ -99,10 +101,11 @@ class Item extends Widget
     on_dragenter: (e)=>
         console.log("dragenter image #{@id}")
         clearTimeout(cancelInsertTimer)
-        cancelInsertTimer = setTimeout(->
-            app_list.hide_indicator()
-            calc_app_item_size()
-        , 100)
+        if app_list.is_insert_indicator_shown
+            cancelInsertTimer = setTimeout(->
+                app_list.hide_indicator()
+                calc_app_item_size()
+            , 100)
         e.preventDefault()
         e.stopPropagation()
         return if @is_fixed_pos
@@ -122,10 +125,11 @@ class Item extends Widget
     on_dragleave: (e)=>
         console.log("dragleave")
         clearTimeout(cancelInsertTimer)
-        cancelInsertTimer = setTimeout(->
-            app_list.hide_indicator()
-            calc_app_item_size()
-        , 100)
+        if app_list.is_insert_indicator_shown
+            cancelInsertTimer = setTimeout(->
+                app_list.hide_indicator()
+                calc_app_item_size()
+            , 100)
         @_try_swaping_id = null
         @hide_swap_indicator()
         e.preventDefault()
@@ -134,10 +138,11 @@ class Item extends Widget
     on_dragover:(e)=>
         e.stopPropagation()
         e.preventDefault()
-        app_list.hide_indicator()
-        cancelInsertTimer = setTimeout(->
-            calc_app_item_size()
-        , 100)
+        if app_list.is_insert_indicator_shown
+            app_list.hide_indicator()
+            cancelInsertTimer = setTimeout(->
+                calc_app_item_size()
+            , 100)
 
     on_drop: (e) =>
         e.preventDefault()
@@ -371,7 +376,7 @@ class AppItem extends Item
                 )
 
     on_mouseout:(e)=>
-        super
+        # super
         if @isNormal()
             super
             if Preview_container.is_showing
