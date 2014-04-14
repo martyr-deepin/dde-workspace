@@ -596,20 +596,16 @@ PRIVATE GdkFilterReturn watch_root_window(GdkXEvent *gxevent, GdkEvent* event, g
 	    if ((state = get_atom_value_by_name(xevt->display, xevt->window, "_NET_ACTIVE_WINDOW", &active_window, get_atom_value_for_index,0))) {
 		static gboolean has_focus= False;
 
-		if (!has_focus) {
-		    for (size_t i=0; i < sizeof(__DESKTOP_XID)/sizeof(Window); i++) {
-			if (__DESKTOP_XID[i] == active_window) {
-			    has_focus = True;
-			    desktop_focus_changed(has_focus);
-			    return GDK_FILTER_CONTINUE;
-			}
+		for (size_t i=0; i < sizeof(__DESKTOP_XID)/sizeof(Window); i++) {
+		    if (__DESKTOP_XID[i] == active_window) {
+			has_focus = True;
+			desktop_focus_changed(has_focus);
+			return GDK_FILTER_CONTINUE;
 		    }
 		}
-		//don't use else branch, becuas has_focus may be changed!!
-		if (has_focus) {
-		    has_focus = False;
-		    desktop_focus_changed(has_focus);
-		}
+
+		has_focus = False;
+		desktop_focus_changed(has_focus);
 	    }
 	}
     }
