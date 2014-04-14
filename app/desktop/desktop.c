@@ -516,23 +516,22 @@ JS_EXPORT_API
 gboolean desktop_is_livecd (const char* username)
 {
     g_warning("desktop_is_livecd");
-    if (g_strcmp0 ("deepin", username) != 0) {
-        return FALSE;
+    const gchar *filename = "/proc/cmdline";
+    gchar *contents = NULL;
+    gboolean result = FALSE;
+    gint length = 0;
+    if (g_file_get_contents(filename,&contents,&length,NULL))
+    {
+        g_warning("-------------------%s",contents);
+        gchar* ptr = g_strstr_len(contents, -1, "boot=casper");
+        if (ptr == NULL) {
+            g_warning("not found");
+        } else {
+            result = TRUE;
+        }
+        g_free(contents);
     }
-
-    struct spwd *user_data;
-
-    user_data = getspnam (username);
-
-    if (user_data == NULL || strlen (user_data->sp_pwdp) == 0) {
-        return FALSE;
-    }
-
-    if ((strcmp (crypt ("", user_data->sp_pwdp), user_data->sp_pwdp)) != 0) {
-        return FALSE;
-    }
-
-    return TRUE;
+    return result;
 }
 
 JS_EXPORT_API
