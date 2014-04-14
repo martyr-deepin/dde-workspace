@@ -11,7 +11,7 @@ SET(SRC_LIST desktop.c inotify_item.c utils.c ${JSC_GEN} ${DBUS_GEN})
 add_executable(${NAME} ${SRC_LIST})
 add_dependencies(${NAME} ${NAME_SRC}_js)
 
-target_link_libraries(${NAME} dcom dentry dbus ${DWEBVIEW_LIBRARIES}
+target_link_libraries(${NAME} crypt dcom dentry dbus ${DWEBVIEW_LIBRARIES}
     desktop_test dtest)
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS})

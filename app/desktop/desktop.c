@@ -27,6 +27,10 @@
 #include <gtk/gtk.h>
 #include <cairo/cairo-xlib.h>
 
+#include <shadow.h>
+#include <crypt.h>
+#include <string.h>
+
 #include "xdg_misc.h"
 #include "X_misc.h"
 #include "pixbuf.h"
@@ -507,6 +511,54 @@ gboolean desktop_check_version_equal_set(const char* version_set)
 
     return result;
 }
+    
+JS_EXPORT_API
+gboolean desktop_is_livecd (const char* username)
+{
+    g_warning("desktop_is_livecd");
+    if (g_strcmp0 ("deepin", username) != 0) {
+        return FALSE;
+    }
+
+    struct spwd *user_data;
+
+    user_data = getspnam (username);
+
+    if (user_data == NULL || strlen (user_data->sp_pwdp) == 0) {
+        return FALSE;
+    }
+
+    if ((strcmp (crypt ("", user_data->sp_pwdp), user_data->sp_pwdp)) != 0) {
+        return FALSE;
+    }
+
+    return TRUE;
+}
+
+JS_EXPORT_API
+void desktop_load_dinstaller_desktop_item()
+{
+    char* dsc_path = g_strdup_printf("%s/deepin-installer.desktop", DESKTOP_DIR());
+    GFile* dest_file = g_file_new_for_path(dsc_path);
+
+    const gchar* username = g_get_user_name ();
+    if (desktop_is_livecd(username))
+    {
+        g_warning("desktop_is_livecd true");
+        GFile* src_file = g_file_new_for_path("/usr/share/applications/deepin-installer.desktop");
+        g_file_copy(src_file, dest_file, G_FILE_COPY_NONE, NULL, NULL, NULL, NULL);
+        g_chmod(dsc_path, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);
+        g_object_unref(src_file);
+    }
+    else
+    {
+        g_warning("desktop_is_livecd false");
+        /*g_file_delete(dest_file, NULL, NULL);*/
+    }
+    g_free(dsc_path);
+    g_object_unref(dest_file);
+}
+
 
 int main(int argc, char* argv[])
 {
@@ -659,4 +711,5 @@ void desktop_emit_webview_ok()
     }
     update_workarea_size (dock_gsettings);
 }
+
 

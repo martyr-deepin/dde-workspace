@@ -84,6 +84,7 @@ clear_speical_desktop_items = ->
 
 
 load_speical_desktop_items = ->
+    DCore.Desktop.load_dinstaller_desktop_item()
     return
     clear_speical_desktop_items()
 
