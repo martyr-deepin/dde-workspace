@@ -59,8 +59,6 @@ int dock_has_overlay_client()
 {
     return 0;
 }
-void active_window_changed() {
-}
 int dock_is_client_minimized(double xid)
 {
 }
@@ -69,3 +67,44 @@ gboolean is_has_client(const char* app_id) {
     return 0;
 }
 
+
+
+JS_EXPORT_API
+void dock_draw_window_preview(JSValueRef canvas, double xid, double dest_width, double dest_height)
+{
+    GdkWindow* win = gdk_x11_window_foreign_new_for_display(gdk_display_get_default(), (long)xid);
+    if (win == NULL) {
+	return;
+    }
+
+    if (JSValueIsNull(get_global_context(), canvas)) {
+        g_debug("draw_window_preview with null canvas!");
+        return;
+    }
+    cairo_t* cr =  fetch_cairo_from_html_canvas(get_global_context(), canvas);
+
+    cairo_save(cr);
+    //clear preview content to prevent translucency window problem
+    cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
+    cairo_paint(cr);
+    cairo_restore(cr);
+
+    int width = gdk_window_get_width(win);
+    int height = gdk_window_get_height(win);
+
+    cairo_save(cr);
+    double scale = 0;
+    if (width > height) {
+        scale = dest_width/width;
+        cairo_scale(cr, scale, scale);
+        gdk_cairo_set_source_window(cr, win, 0, 0.5*(dest_height/scale-height));
+    } else {
+        scale = dest_height/height;
+        cairo_scale(cr, scale, scale);
+        gdk_cairo_set_source_window(cr, win, 0.5*(dest_width/scale-width), 0);
+    }
+    cairo_paint(cr);
+    cairo_restore(cr);
+
+    canvas_custom_draw_did(cr, NULL);
+}

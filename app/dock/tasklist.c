@@ -51,28 +51,18 @@ extern char* dcore_get_theme_icon(const char*, double);
 GKeyFile* record_file = NULL;
 
 PRIVATE Atom ATOM_ACTIVE_WINDOW;
-PRIVATE Atom ATOM_WINDOW_ICON;
-PRIVATE Atom ATOM_WINDOW_TYPE;
-/* PRIVATE Atom ATOM_WINDOW_TYPE_KDE_OVERRIDE; */
 PRIVATE Atom ATOM_CLOSE_WINDOW;
 PRIVATE Atom ATOM_SHOW_DESKTOP;
 PRIVATE Display* _dsp = NULL;
-PRIVATE Atom ATOM_DEEPIN_WINDOW_VIEWPORTS;
 PRIVATE Atom ATOM_DEEPIN_SCREEN_VIEWPORT;
-PRIVATE Atom ATOM_CLIENT_LIST;
 
 
 PRIVATE
 void _init_atoms()
 {
-    ATOM_CLIENT_LIST = gdk_x11_get_xatom_by_name("_NET_CLIENT_LIST");
     ATOM_ACTIVE_WINDOW = gdk_x11_get_xatom_by_name("_NET_ACTIVE_WINDOW");
-    ATOM_WINDOW_ICON = gdk_x11_get_xatom_by_name("_NET_WM_ICON");
-    ATOM_WINDOW_TYPE = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE");
-    /* ATOM_WINDOW_TYPE_KDE_OVERRIDE = gdk_x11_get_xatom_by_name("_KDE_NET_WM_WINDOW_TYPE_OVERRIDE"); */
     ATOM_CLOSE_WINDOW = gdk_x11_get_xatom_by_name("_NET_CLOSE_WINDOW");
     ATOM_SHOW_DESKTOP = gdk_x11_get_xatom_by_name("_NET_SHOWING_DESKTOP");
-    ATOM_DEEPIN_WINDOW_VIEWPORTS = gdk_x11_get_xatom_by_name("DEEPIN_WINDOW_VIEWPORTS");
     ATOM_DEEPIN_SCREEN_VIEWPORT = gdk_x11_get_xatom_by_name("DEEPIN_SCREEN_VIEWPORT");
 }
 
@@ -90,7 +80,6 @@ gboolean is_same_workspace(Workspace* lhs, Workspace* rhs)
 // Key: GINT_TO_POINTER(the id of window)
 // Value: struct Client*
 Window active_client_id = 0;
-DesktopFocusState desktop_focus_state = DESKTOP_HAS_FOCUS;
 
 
 JS_EXPORT_API
@@ -134,18 +123,16 @@ GdkFilterReturn monitor_root_change(GdkXEvent* xevent, GdkEvent *event, gpointer
     switch (((XEvent*)xevent)->type) {
     case PropertyNotify: {
         XPropertyEvent* ev = xevent;
-        if (ev->atom == ATOM_ACTIVE_WINDOW) {
-            active_window_changed(_dsp, (Window)dock_get_active_window());
-        } else if (ev->atom == ATOM_SHOW_DESKTOP) {
+        if (ev->atom == ATOM_SHOW_DESKTOP) {
             js_post_signal("desktop_status_changed");
         } else if (ev->atom == ATOM_DEEPIN_SCREEN_VIEWPORT) {
             _update_current_viewport(&current_workspace);
         }
-        break;
     }
     }
 
-    dock_update_hide_mode();
+    //NOTO: what's time should be we call this?
+    //dock_update_hide_mode();
     return GDK_FILTER_CONTINUE;
 }
 
@@ -159,9 +146,6 @@ void init_task_list()
     gdk_window_set_events(root, GDK_PROPERTY_CHANGE_MASK | gdk_window_get_events(root));
 
     gdk_window_add_filter(root, monitor_root_change, NULL);
-
-
-    active_window_changed(_dsp, (Window)dock_get_active_window());
 }
 
 
@@ -233,46 +217,6 @@ gboolean dock_window_need_to_be_minimized(double id)
     return !dock_is_client_minimized(id) && dock_get_active_window() == id;
 }
 
-
-JS_EXPORT_API
-void dock_draw_window_preview(JSValueRef canvas, double xid, double dest_width, double dest_height)
-{
-    GdkWindow* win = gdk_x11_window_foreign_new_for_display(gdk_display_get_default(), (long)xid);
-    if (win == NULL) {
-	return;
-    }
-
-    if (JSValueIsNull(get_global_context(), canvas)) {
-        g_debug("draw_window_preview with null canvas!");
-        return;
-    }
-    cairo_t* cr =  fetch_cairo_from_html_canvas(get_global_context(), canvas);
-
-    cairo_save(cr);
-    //clear preview content to prevent translucency window problem
-    cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
-    cairo_paint(cr);
-    cairo_restore(cr);
-
-    int width = gdk_window_get_width(win);
-    int height = gdk_window_get_height(win);
-
-    cairo_save(cr);
-    double scale = 0;
-    if (width > height) {
-        scale = dest_width/width;
-        cairo_scale(cr, scale, scale);
-        gdk_cairo_set_source_window(cr, win, 0, 0.5*(dest_height/scale-height));
-    } else {
-        scale = dest_height/height;
-        cairo_scale(cr, scale, scale);
-        gdk_cairo_set_source_window(cr, win, 0.5*(dest_width/scale-width), 0);
-    }
-    cairo_paint(cr);
-    cairo_restore(cr);
-
-    canvas_custom_draw_did(cr, NULL);
-}
 
 
 JS_EXPORT_API
