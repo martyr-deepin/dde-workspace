@@ -233,7 +233,7 @@ void init_launchers()
 {
     if (k_apps == NULL) {
         k_apps = load_app_config(APPS_INI);
-        update_dock_apps();
+        // update_dock_apps();
     }
 }
 
