@@ -57,7 +57,7 @@
   bottom:8px;
   -webkit-animation-duration: 1s;
   -webkit-animation-timing-function: ease-in-out;
-  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-iteration-count: 2;
 }
 
 @-webkit-keyframes showOut{
