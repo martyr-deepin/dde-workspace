@@ -74,11 +74,32 @@ greeter.start_login_connect(userinfo)
 greeter.webview_ok(_current_user) if hide_face_login
 #greeter.mousewheel_listener(user)
 
-
 version = new Version()
 $("#div_version").appendChild(version.element)
 
 powermenu = new PowerMenu($("#div_power"))
 powermenu.new_power_menu()
 
+document.body.addEventListener("keydown",(e)->
+    try
+        if is_greeter
+            if $("#power_menuchoose")? or $("#desktop_menuchoose")?
+                if $("#power_menuchoose").style.display isnt "none"
+                    powermenu.keydown_listener(e)
+                else if $("#desktop_menuchoose")?.style.display isnt "none"
+                    desktopmenu.keydown_listener(e)
+                else if is_greeter and greeter and user
+                    greeter.keydown_listener(e,user)
+            else if is_greeter and greeter and user
+                greeter.keydown_listener(e,user)
+        else
+            if $("#power_menuchoose")? and $("#power_menuchoose")?.style.display isnt "none"
+                    powermenu.keydown_listener(e)
+            else if audio_play_status
+                mediacontrol.keydown_listener(e)
+            else if is_greeter and greeter and user
+                greeter.keydown_listener(e,user)
 
+    catch e
+        echo "#{e}"
+)
