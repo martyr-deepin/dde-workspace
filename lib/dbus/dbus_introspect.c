@@ -85,6 +85,32 @@ void handle_signal_callback(gpointer no_used_key, struct SignalInfo* info, DBusM
     g_free(params);
 }
 
+struct HandleSignalInfo {
+    GHashTable* cbs;
+    DBusMessage* msg;
+};
+
+gboolean delay_handle_signal(struct HandleSignalInfo* t)
+{
+	g_hash_table_foreach(t->cbs, (GHFunc)handle_signal_callback, t->msg);
+	dbus_message_unref(t->msg);
+	g_free(t);
+	return FALSE;
+}
+
+
+int get_timeout()
+{
+    static int saved_timeout = 0;
+    if (saved_timeout < 300) {
+	return 150 + 400 * g_random_double();
+    } else {
+	return 100 + 400 * g_random_double();
+    }
+    printf("GetTimeout: %d\n", saved_timeout);
+    return saved_timeout;
+}
+
 DBusHandlerResult watch_signal(DBusConnection* connection, DBusMessage *msg,
         void *no_use)
 {
@@ -110,11 +136,13 @@ DBusHandlerResult watch_signal(DBusConnection* connection, DBusMessage *msg,
     if (cbs_info == NULL) {
         return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
     } else {
-	g_hash_table_foreach(cbs_info, (GHFunc)handle_signal_callback, msg);
+	struct HandleSignalInfo *t = g_new(struct HandleSignalInfo, 1);
+	t->cbs = cbs_info;
+	t->msg = dbus_message_ref(msg);
+	g_timeout_add(get_timeout(), delay_handle_signal, t);
         return DBUS_HANDLER_RESULT_HANDLED;
     }
 }
-
 
 PRIVATE void signal_info_free(struct SignalInfo* sig_info)
 {
