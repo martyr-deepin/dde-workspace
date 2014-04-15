@@ -1,14 +1,14 @@
-# DCore.signal_connect("active_window_changed", (info)->)
-# DCore.signal_connect("launcher_added", (info) ->)
-# DCore.signal_connect("dock_request", (info) ->)
-# DCore.signal_connect("launcher_removed", (info) ->)
-# DCore.signal_connect("task_updated", (info) ->)
-# DCore.signal_connect("dock_hidden", ->)
-# DCore.signal_connect("task_removed", (info) ->)
-# DCore.signal_connect("close_window", (info)->)
-# DCore.signal_connect("active_window", (info)->)
+DCore.signal_connect("active_window_changed", (info)->)
+DCore.signal_connect("launcher_added", (info) ->)
+DCore.signal_connect("dock_request", (info) ->)
+DCore.signal_connect("launcher_removed", (info) ->)
+DCore.signal_connect("task_updated", (info) ->)
+DCore.signal_connect("dock_hidden", ->)
+DCore.signal_connect("task_removed", (info) ->)
 DCore.signal_connect("in_mini_mode", ->)
 DCore.signal_connect("in_normal_mode", ->)
+DCore.signal_connect("close_window", (info)->)
+DCore.signal_connect("active_window", (info)->)
 DCore.signal_connect("message_notify", (info)->)
 
 DCore.signal_connect("embed_window_configure_changed", (info)->console.log(info))
@@ -62,6 +62,16 @@ EntryManager =
     path:"/dde/dock/EntryManager"
     interface:"dde.dock.EntryManager"
 entryManager = get_dbus('session', EntryManager)
+entries = entryManager.Entries
+for entry in entries
+    console.log(entry)
+    d = get_dbus("session", itemDBus(entry))
+    console.log("init add: #{d.Id}")
+    if !Widget.look_up(d.Id)
+        createItem(d)
+
+initDockedAppPosition()
+
 
 trayIcon = DCore.get_theme_icon("deepin-systray", 48) || NOT_FOUND_ICON
 systemTray = null
@@ -71,7 +81,7 @@ systemTray = null
 #         systemTray = new SystemTray("system-tray", trayIcon, "")
 # )
 entryManager.connect("TrayInited",->
-    if not systemTray
+    if not systemTray and not $("#system-tray")
         systemTray = new SystemTray("system-tray", trayIcon, "")
 )
 
@@ -114,16 +124,6 @@ entryManager.connect("Removed", (id)->
     systemTray?.updateTrayIcon()
 )
 
-entries = entryManager.Entries
-for entry in entries
-    console.log(entry)
-    d = get_dbus("session", itemDBus(entry))
-    console.log("init add: #{d.Id}")
-    if !Widget.look_up(d.Id)
-        createItem(d)
-
-initDockedAppPosition()
-
 try
     icon_launcher = DCore.get_theme_icon("start-here", 48)
 
@@ -138,10 +138,10 @@ DCore.Dock.test()
 setTimeout(->
     IN_INIT = false
     try
-        if not systemTray
+        if not systemTray and not $("#system-tray")
             systemTray = new SystemTray("system-tray", trayIcon, "")
     catch
-        systemTray.destroy()
+        systemTray?.destroy()
         systemTray = null
 
     new Time("time", "js/plugins/time/img/time.png", "")
