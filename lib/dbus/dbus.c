@@ -58,10 +58,6 @@ JSValueRef dbus_session_object( const char* bus_name, const char* object_path, c
     if (value == NULL) {
 	return NULL;
     }
-
-    /*GDBusProxy* proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SESSION, G_DBUS_PROXY_FLAGS_NONE, NULL, "org.freedesktop.DBus", "/org/freedesktop/DBus", "org.freedesktop.DBus", NULL, NULL);*/
-    /*g_dbus_proxy_call_sync(proxy, "AddMatch", g_variant_new("(s)", "eavesdrop=true,type=signal"),  G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL);*/
-    /*g_object_unref(proxy);*/
     return value;
 }
 
