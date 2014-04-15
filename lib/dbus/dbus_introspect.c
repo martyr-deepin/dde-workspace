@@ -12,13 +12,13 @@
 
 void dbus_object_info_free(struct DBusObjectInfo* info);
 
-static GHashTable *__sig_info_hash = NULL; // hash of (path:ifc:sig_name  ---> (hash of callbackid---> *SignalInfo))
+static GHashTable *__sig_callback_hash = NULL; // hash of (path:ifc:sig_name  ---> (hash of callbackid---> callback))
 static GHashTable *__objs_cache = NULL;
 
 void reset_dbus_infos()
 {
-    if (__sig_info_hash) {
-        g_hash_table_remove_all(__sig_info_hash);
+    if (__sig_callback_hash) {
+        g_hash_table_remove_all(__sig_callback_hash);
     }
     if (__objs_cache) {
         g_hash_table_remove_all(__objs_cache);
@@ -28,11 +28,8 @@ void reset_dbus_infos()
 typedef int SIGNAL_CALLBACK_ID;
 
 struct SignalInfo {
-    const char* name;
-    GSList* signatures;
-    const char* path;
-    const char* iface;
     JSObjectRef callback;
+    GVariant* body;
 };
 struct AsyncInfo {
     JSObjectRef on_ok;
@@ -65,31 +62,37 @@ guint key_equal(struct ObjCacheKey* a, struct ObjCacheKey* b)
     return ret;
 }
 
-void handle_signal_callback(gpointer no_used_key, struct SignalInfo* info, GDBusMessage *msg)
+PRIVATE void signal_info_free(struct SignalInfo* info)
 {
-    NOUSED(no_used_key);
+    g_assert(info != NULL);
+    if (info->callback) {
+        JSValueUnprotect(get_global_context(), info->callback);
+    }
+    g_free(info);
+}
+
+gboolean handle_signal_callback(struct SignalInfo* info)
+{
     g_assert(info->callback != NULL);
 
-    GVariant* body = g_dbus_message_get_body(msg);
-    if (body == NULL) {
+    if (info->body == NULL) {
 	JSObjectCallAsFunction(get_global_context(), info->callback, NULL, 0, NULL, NULL);
     } else {
-	int num = g_slist_length(info->signatures);
-	if (num != g_variant_n_children(body)) {
-	    return;
-	}
+	int num = g_variant_n_children(info->body);
 
 	JSValueRef *params = g_new(JSValueRef, num);
 	for (int i=0; i<num; i++) {
-	    GVariant* item = g_variant_get_child_value(body, i);
+	    GVariant* item = g_variant_get_child_value(info->body, i);
 	    params[i] = dbus_to_js(get_global_context(), item);
 	    g_variant_unref(item);
 	}
-
 	JSObjectCallAsFunction(get_global_context(), info->callback, NULL, num, params, NULL);
 
 	g_free(params);
     }
+    g_variant_unref(info->body);
+    g_free(info);
+    return FALSE;
 }
 
 GDBusMessage* watch_signal(GDBusConnection* connection, GDBusMessage *msg, gboolean incoming, gpointer *no_use)
@@ -99,7 +102,7 @@ GDBusMessage* watch_signal(GDBusConnection* connection, GDBusMessage *msg, gbool
 	return msg;
     }
 
-    if (__sig_info_hash == NULL)
+    if (__sig_callback_hash == NULL)
         return msg;
 
 
@@ -108,26 +111,30 @@ GDBusMessage* watch_signal(GDBusConnection* connection, GDBusMessage *msg, gbool
     const char* path = g_dbus_message_get_path(msg);
 
     char* key = g_strdup_printf("%s:%s:%s@%s", path, iface, s_name, g_dbus_connection_get_unique_name(connection));
-    GHashTable* cbs_info  = g_hash_table_lookup(__sig_info_hash, key);
+    GHashTable* cbs_info  = g_hash_table_lookup(__sig_callback_hash, key);
     g_free(key);
 
     if (cbs_info == NULL) {
 	return msg;
     } else {
-	g_hash_table_foreach(cbs_info, (GHFunc)handle_signal_callback, msg);
+	GHashTableIter iter;
+	g_hash_table_iter_init(&iter, cbs_info);
+	JSObjectRef callback;
+
+	while (g_hash_table_iter_next(&iter, NULL, &callback)) {
+	    struct SignalInfo* sig_info  = g_new(struct SignalInfo, 1);
+	    GVariant* body = g_dbus_message_get_body(msg);
+	    sig_info->callback =callback;
+	    if (body) {
+		sig_info->body= g_variant_ref(body);
+	    } 
+	    g_main_context_invoke(NULL, handle_signal_callback, sig_info);
+	}
+
 	return msg;
     }
 }
 
-
-PRIVATE void signal_info_free(struct SignalInfo* sig_info)
-{
-    g_assert(sig_info != NULL);
-    if (sig_info->callback) {
-        JSValueUnprotect(get_global_context(), sig_info->callback);
-    }
-    g_free(sig_info);
-}
 
 SIGNAL_CALLBACK_ID add_signal_callback(JSContextRef ctx, struct DBusObjectInfo *info,
         struct Signal *sig, JSObjectRef func)
@@ -135,28 +142,21 @@ SIGNAL_CALLBACK_ID add_signal_callback(JSContextRef ctx, struct DBusObjectInfo *
     g_assert(sig != NULL);
     g_assert(func != NULL);
 
-    if (__sig_info_hash == NULL) {
-        __sig_info_hash = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, (GDestroyNotify)g_hash_table_destroy);
+    if (__sig_callback_hash == NULL) {
+        __sig_callback_hash = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, (GDestroyNotify)g_hash_table_destroy);
     }
 
     char* key = g_strdup_printf("%s:%s:%s@%s", info->path, info->iface, sig->name, g_dbus_connection_get_unique_name(info->connection));
 
-    GHashTable *cbs = g_hash_table_lookup(__sig_info_hash, key);
+    GHashTable *cbs = g_hash_table_lookup(__sig_callback_hash, key);
     if (cbs == NULL) {
-	cbs = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, (GDestroyNotify)signal_info_free);
-	g_hash_table_insert(__sig_info_hash, key, cbs);
+	cbs = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, (GDestroyNotify)js_value_unprotect);
+	g_hash_table_insert(__sig_callback_hash, key, cbs);
     }
 
-    struct SignalInfo* sig_info = g_new0(struct SignalInfo, 1);
-    sig_info->name = sig->name;
-    sig_info->signatures = sig->signature;
-    sig_info->path = info->path;
-    sig_info->iface = info->iface;
-    sig_info->callback = func;
-    JSValueProtect(ctx, func);
-
+    js_value_protect(func);
     SIGNAL_CALLBACK_ID id = (SIGNAL_CALLBACK_ID)GPOINTER_TO_INT(func);
-    g_hash_table_insert(cbs, GINT_TO_POINTER((int)id), sig_info);
+    g_hash_table_insert(cbs, GINT_TO_POINTER((int)id), func);
     return id;
 }
 
@@ -224,7 +224,7 @@ JSValueRef signal_disconnect(JSContextRef ctx,
     char* sig_name = jsvalue_to_cstr(ctx, arguments[0]);
     char* key = g_strdup_printf("%s%s%s", info->path, info->iface, sig_name);
     g_free(sig_name);
-    GHashTable *cbs = g_hash_table_lookup(__sig_info_hash, key);
+    GHashTable *cbs = g_hash_table_lookup(__sig_callback_hash, key);
     g_free(key);
 
     if (cbs == NULL) {
