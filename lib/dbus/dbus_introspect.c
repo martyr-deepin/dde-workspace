@@ -310,9 +310,11 @@ bool dynamic_set (JSContextRef ctx, JSObjectRef object,
     char* prop_name = jsstring_to_cstr(ctx, propertyName);
     struct Property *p = g_hash_table_lookup(obj_info->properties, prop_name);
 
+    GVariantType* sig = g_variant_type_new(p->signature->data);
     g_dbus_connection_call_sync(obj_info->connection, obj_info->server, obj_info->path, "org.freedesktop.DBus.Properties", "Set", 
-	    g_variant_new("(ssv)", obj_info->iface, prop_name, js_to_dbus(ctx, jsvalue, p->signature->data, exception)), NULL,
+	    g_variant_new("(ssv)", obj_info->iface, prop_name, js_to_dbus(ctx, jsvalue, sig, exception)), NULL,
 	    G_DBUS_CALL_FLAGS_NONE, -1, NULL, &error);
+    g_variant_type_free(sig);
     g_free(prop_name);
 
     if (error != NULL) {
@@ -421,7 +423,9 @@ JSValueRef dynamic_function(JSContextRef ctx,
 
     GVariant** args = g_new(GVariant*, argumentCount);
     for (guint i=0; i<argumentCount; i++) {
-	args[i] = js_to_dbus(ctx, arguments[i], g_slist_nth_data(sigs_in, i), exception);
+        GVariantType* sig = g_variant_type_new(g_slist_nth_data(sigs_in, i));
+	args[i] = js_to_dbus(ctx, arguments[i], sig, exception);
+        g_variant_type_free(sig);
 	if (args[i] == NULL) {
 	    //TODO: Clear
 	    g_warning("jsvalue to dbus don't match at pos:%d", i);
