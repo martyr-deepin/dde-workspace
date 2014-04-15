@@ -562,11 +562,11 @@ DCore.signal_connect("auth-succeed", ->
     echo "auth-succeed!"
     echo  "--------#{new Date().getTime()}-----------"
     enableZoneDetect(true)
-    if powermenu?.check_is_shutdown_from_lock()
-        powermenu?.auth_succeed_excute()
+    if is_greeter
+        echo "greeter exit"
     else
-        if is_greeter
-            echo "greeter exit"
+        if powermenu?.check_is_shutdown_from_lock()
+            powermenu?.auth_succeed_excute()
         else
             DCore.Lock.quit()
             echo "dlock exit"

@@ -29,7 +29,8 @@ class PowerMenu extends Widget
         @img_before = "images/powermenu/"
         if not @parent? then @parent = document.body
         @parent.appendChild(@element)
-
+        @clear_shutdown_from_lock()
+    
     suspend_cb : ->
         power_force("suspend")
 
@@ -50,10 +51,13 @@ class PowerMenu extends Widget
         return @power_dict
 
     menuChoose_click_cb : (id, title)=>
-        if id isnt "suspend"
-            @confirm_shutdown_show(id)
-        else
+        if is_greeter
             @power_dict[id]()
+        else
+            if id isnt "suspend"
+                @confirm_shutdown_show(id)
+            else
+                @power_dict[id]()
 
     new_power_menu:->
         echo "new_power_menu"
@@ -106,12 +110,9 @@ class PowerMenu extends Widget
         
 
     confirm_shutdown_hide:=>
-        if not (power = localStorage.getObject("shutdown_from_lock"))? then return
-        if !power.lock then return
-        power.lock = false
-        localStorage.setObject("shutdown_from_lock",power)
-
-        
+        if @check_is_shutdown_from_lock()
+            power = @clear_shutdown_from_lock()
+                
         input_password_again = =>
             $(".password").style.color = "rgba(255,255,255,0.5)"
             $(".password").style.fontSize = "2.0em"
@@ -142,12 +143,27 @@ class PowerMenu extends Widget
                 power_flag = true
         return power_flag
 
+    clear_shutdown_from_lock : ->
+        if (power = localStorage.getObject("shutdown_from_lock"))?
+            power.lock = false
+            localStorage.setObject("shutdown_from_lock",power)
+        else
+            power = {"lock":false,"value":null}
+            localStorage.setObject("shutdown_from_lock",power)
+        return power
+             
+    set_shutdown_from_lock : (powervalue) ->
+        if (power = localStorage.getObject("shutdown_from_lock"))?
+            power.lock = true
+            power.value = powervalue
+            localStorage.setObject("shutdown_from_lock",power)
+        return
+    
     auth_succeed_excute: ->
         echo "PowerMenu auth_succeed_excute"
         if @check_is_shutdown_from_lock()
-            power = localStorage.getObject("shutdown_from_lock")
-            power?.lock = false
-            localStorage.setObject("shutdown_from_lock",power)
+            power = @clear_shutdown_from_lock()
+            if not power.value? then return
             if power_can(power.value)
                 power_force(power.value)
             else
