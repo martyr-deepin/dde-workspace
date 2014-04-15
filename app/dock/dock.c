@@ -153,7 +153,9 @@ void size_workaround(GtkWidget* container, GdkRectangle* allocation)
 gboolean is_compiz_plugin_valid()
 {
     gboolean is_compiz_running = false;
-    gint screen_num = gdk_display_get_n_screens(gdk_display_get_default());
+    // !!! according to the document, the number of screens is always 1 since
+    // v3.10.
+    gint screen_num = 1;// gdk_display_get_n_screens(gdk_display_get_default());
     char buf[128] = {0};
     Display* dpy = XOpenDisplay(NULL);
 

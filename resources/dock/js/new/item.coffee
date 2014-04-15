@@ -8,6 +8,7 @@ class Item extends Widget
         @imgWarp = create_element(tag:'div', class:"imgWarp", @element)
         @img = create_element(tag:'div',class:"AppItemImg", @imgWarp)
         # @img.src = icon || NOT_FOUND_ICON
+        @iconObj = create_img(src:icon || NOT_FOUND_ICON)
         @img.style.backgroundImage = "url(#{icon || NOT_FOUND_ICON})"
         @img.style.backgroundRepeat = 'no-repeat'
         @img.style.backgroundSize = '48px 48px'
@@ -90,7 +91,7 @@ class Item extends Widget
         return if @is_fixed_pos
         if @isNormal()
             @tooltip?.hide()
-        e.dataTransfer.setDragImage(@img, 24, 24)
+        e.dataTransfer.setDragImage(@iconObj, 24, 24)
         e.dataTransfer.setData(DEEPIN_ITEM_ID, @id)
         console.log("DEEPIN_ITEM_ID: #{@id}")
 
@@ -170,7 +171,7 @@ class Item extends Widget
 
 class AppItem extends Item
     is_fixed_pos: false
-    constructor:(@id, @icon, @title, @container)->
+    constructor:(@id, icon, @title, @container)->
         super
 
         @core = new EntryProxy($DBus[@id])
@@ -229,6 +230,7 @@ class AppItem extends Item
                     # TODO:
                     # use a big images, and change the position.
                     @img.style.backgroundImage = value || NOT_FOUND_ICON
+                    @iconObj.src = value || NOT_FOUND_ICON
         )
 
     init_clientgroup:->
