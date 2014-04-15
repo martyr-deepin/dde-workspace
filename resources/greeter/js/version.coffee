@@ -20,6 +20,17 @@
 class Version extends Widget
     constructor:->
         super
+        @element.style.display = "-webkit-box"
+        
         img_src_before = "images/"
         logo_img = create_img("version_img","",@element)
         logo_img.src = "#{img_src_before}/logo.png"
+        
+        ver = create_element("div","ver",@element)
+        ver.style.display = "block"
+        ver.style.marginLeft = "0.4em"
+        ver.style.top = 0
+        ver.textContent = "Alpha"
+        ver.style.fontFamily = "Arial"
+        ver.style.fontSize = "1em"
+        ver.style.color = "rgba(255,255,255,0.9)"
