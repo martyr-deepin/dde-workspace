@@ -1,5 +1,3 @@
-#include <dbus/dbus-glib.h>
-#include <dbus/dbus.h>
 #include <glib.h>
 #include <JavaScriptCore/JavaScript.h>
 
@@ -7,40 +5,22 @@
 #include "jsextension.h"
 #include "dbus_introspect.h"
 
-PRIVATE gboolean init = FALSE;
-
-DBusHandlerResult watch_signal(DBusConnection* connection, DBusMessage *msg, void *no_use);
-
-void dbus_init()
+JS_EXPORT_API JSValueRef dbus_sys_object( const char* bus_name, const char* object_path, const char* interface, JSData* js)
 {
-    dbus_g_thread_init();
-    init = TRUE;
-}
-
-JS_EXPORT_API
-JSValueRef dbus_sys_object(
-        const char* bus_name,
-        const char* object_path,
-        const char* interface,
-        JSData* js)
-{
-    if (!init) dbus_init();
-
-    static DBusGConnection* sys_con = NULL;
+    static GDBusConnection* sys_con = NULL;
     if (sys_con == NULL) {
 	GError *error = NULL;
-	sys_con = dbus_g_bus_get(DBUS_BUS_SYSTEM, &error);
+	sys_con = g_bus_get_sync(G_BUS_TYPE_SYSTEM, NULL, &error);
 	if (error != NULL) {
 	    g_warning("ERROR:%s\n", error->message);
 	    g_error_free(error);
 	}
 	g_assert(sys_con != NULL);
-	dbus_connection_add_filter( dbus_g_connection_get_connection(sys_con), watch_signal, NULL, NULL);
+	g_dbus_connection_add_filter(sys_con, watch_signal, NULL, NULL);
     }
-    JSValueRef value = get_dbus_object(get_global_context(), sys_con,
-            bus_name, object_path, interface);
+    JSValueRef value = get_dbus_object(get_global_context(), sys_con, bus_name, object_path, interface, js->exception);
     if (value == NULL) {
-        js_fill_exception(get_global_context(), js->exception, "Can't dynamic build this dbus interface)");
+	return NULL;
     }
     return value;
 }
@@ -61,30 +41,27 @@ JSValueRef dbus_sys(const char* bus_name, JSData* js)
 
 
 JS_EXPORT_API
-JSValueRef dbus_session_object(
-        const char* bus_name,
-        const char* object_path,
-        const char* interface,
-        JSData* js)
+JSValueRef dbus_session_object( const char* bus_name, const char* object_path, const char* interface, JSData* js)
 { 
-    if (!init) dbus_init();
-
-    static DBusGConnection* session_con = NULL;
+    static GDBusConnection* session_con = NULL;
     if (session_con == NULL) {
 	GError *error = NULL;
-	session_con = dbus_g_bus_get(DBUS_BUS_SESSION, &error);
+	session_con = g_bus_get_sync(G_BUS_TYPE_SESSION, NULL, &error);
 	if (error != NULL) {
 	    g_warning("ERROR:%s\n", error->message);
 	    g_error_free(error);
 	}
-	g_assert(session_con != NULL);
-	dbus_connection_add_filter(dbus_g_connection_get_connection(session_con), watch_signal, NULL, NULL);
+	g_assert(session_con!= NULL);
+	g_dbus_connection_add_filter(session_con, watch_signal, NULL, NULL);
     }
-    JSValueRef value = get_dbus_object(get_global_context(), session_con,
-            bus_name, object_path, interface);
+    JSValueRef value = get_dbus_object(get_global_context(), session_con, bus_name, object_path, interface, js->exception);
     if (value == NULL) {
-        js_fill_exception(get_global_context(), js->exception, "Can't dynamic build this dbus interface)");
+	return NULL;
     }
+
+    /*GDBusProxy* proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SESSION, G_DBUS_PROXY_FLAGS_NONE, NULL, "org.freedesktop.DBus", "/org/freedesktop/DBus", "org.freedesktop.DBus", NULL, NULL);*/
+    /*g_dbus_proxy_call_sync(proxy, "AddMatch", g_variant_new("(s)", "eavesdrop=true,type=signal"),  G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL);*/
+    /*g_object_unref(proxy);*/
     return value;
 }
 
