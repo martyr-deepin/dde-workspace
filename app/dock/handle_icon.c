@@ -27,7 +27,7 @@
 #include "handle_icon.h"
 #include "xdg_misc.h"
 #include "utils.h"
-#include "launcher.h"
+// #include "launcher.h"
 #include <gio/gdesktopappinfo.h>
 
 #define BOARD_PATH RESOURCE_DIR"/dock/img/board.png"

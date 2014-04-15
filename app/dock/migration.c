@@ -2,7 +2,7 @@
 #include "pixbuf.h"
 #include "utils.h"
 #include "xid2aid.h"
-#include "launcher.h"
+// #include "launcher.h"
 #include "dock_config.h"
 #include "dominant_color.h"
 #include "handle_icon.h"
@@ -108,3 +108,4 @@ void dock_draw_window_preview(JSValueRef canvas, double xid, double dest_width, 
 
     canvas_custom_draw_did(cr, NULL);
 }
+

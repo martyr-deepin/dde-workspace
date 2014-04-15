@@ -32,7 +32,7 @@
 #include "tasklist.h"
 #include "i18n.h"
 #include "dock_config.h"
-#include "launcher.h"
+// #include "launcher.h"
 #include "region.h"
 #include "dock_hide.h"
 #include "DBUS_dock.h"
@@ -40,6 +40,9 @@
 #include "display_info.h"
 
 #define DOCK_CONFIG "dock/config.ini"
+#define DOCKED_ITEM_KEY_NAME "Position"
+#define DOCKED_ITEM_GROUP_NAME "__Config__"
+#define APPS_INI "dock/apps.ini"
 
 static GtkWidget* container = NULL;
 static GtkWidget* webview = NULL;
@@ -308,7 +311,7 @@ void dock_emit_webview_ok()
 
         inited = TRUE;
         init_config();
-        init_launchers();
+        // init_launchers();
         init_task_list();
         /* tray_init(webview); */
         update_dock_size_mode();

@@ -12,9 +12,10 @@
 #include "dock_config.h"
 #include "dominant_color.h"
 #include "handle_icon.h"
-#include "launcher.h"
+// #include "launcher.h"
 #include "region.h"
 #include "special_window.h"
 #include "jsextension.h"
 
 #endif
+
