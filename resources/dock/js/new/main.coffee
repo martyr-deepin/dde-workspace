@@ -72,7 +72,6 @@ for entry in entries
 
 initDockedAppPosition()
 
-
 trayIcon = DCore.get_theme_icon("deepin-systray", 48) || NOT_FOUND_ICON
 systemTray = null
 # freedesktop = get_dbus("session", "org.freedesktop.DBus")
@@ -104,6 +103,7 @@ entryManager.connect("Added", (path)->
     if systemTray?.isShowing
         systemTray.updateTrayIcon()
 
+    initDockedAppPosition()
     setTimeout(->
         calc_app_item_size()
         if systemTray?.isShowing
