@@ -39,11 +39,14 @@ class Category
         @grid.appendChild(frag)
 
     setNameDecoration: ->
-        MARGIN_TO_NAME = 10
-        width = "#{@header.clientWidth - @nameNode.clientWidth - MARGIN_TO_NAME}px"
-        @decoration.style.width = width
-        @decoration.firstChild.style.width = width
-        @decoration.lastChild.style.width = width
+        setTimeout(=>
+            MARGIN_TO_NAME = 10
+            # console.log("#{@id}: head: #{@header.clientWidth}, name: #{@nameNode.clientWidth}")
+            width = "#{@header.clientWidth - @nameNode.clientWidth - MARGIN_TO_NAME}px"
+            @decoration.style.width = width
+            @decoration.firstChild.style.width = width
+            @decoration.lastChild.style.width = width
+        , 10)
         @
 
     isShown: ->

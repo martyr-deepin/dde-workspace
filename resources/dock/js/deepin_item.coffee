@@ -1,6 +1,6 @@
 class Applet extends Item
     is_fixed_pos: false
-    constructor: (@id, @icon, title, @container)->
+    constructor: (@id, icon, title, @container)->
         super
         @type = ITEM_TYPE_APPLET
 
@@ -38,7 +38,7 @@ class Applet extends Item
 class FixedItem extends Applet
     is_fixed_pos: true
     __show: false
-    constructor:(@id, @icon, title, @container)->
+    constructor:(@id, icon, title, @container)->
         super
         @img.draggable = false
 
@@ -54,22 +54,22 @@ class FixedItem extends Applet
 
 
 class PrefixedItem extends FixedItem
-    constructor:(@id, @icon, title)->
-        super(@id, @icon, title, $("#pre_fixed"))
+    constructor:(@id, icon, title)->
+        super(@id, icon, title, $("#pre_fixed"))
         # $("#pre_fixed").appendChild(@element)
 
 
 class SystemItem extends AppItem#ClientGroup
     is_fixed_pos: true
-    constructor:(@id, @icon, title)->
-        super(@id, @icon, title, $("#system"))
+    constructor:(@id, icon, title)->
+        super(@id, icon, title, $("#system"))
         @img.draggable = false
         $("#system").appendChild(@element)
 
 
 class PostfixedItem extends FixedItem
-    constructor:(@id, @icon, title)->
-        super(@id, @icon, title, $("#post_fixed"))
+    constructor:(@id, icon, title)->
+        super(@id, icon, title, $("#post_fixed"))
 
 
 class ClockBase extends SystemItem

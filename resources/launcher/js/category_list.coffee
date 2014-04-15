@@ -36,9 +36,11 @@ class CategoryList
         @blank = create_element(tag:'div', id:'blank', frag)
         $("#grid").appendChild(frag)
 
-        for info in infos
-            id = info[0]
+    updateNameDecoration:->
+        for id in @categories
             @categories[id].setNameDecoration()
+
+        @
 
     updateBlankHeight:->
         containerHeight = $("#container").clientHeight

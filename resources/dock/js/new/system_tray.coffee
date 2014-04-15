@@ -1,8 +1,8 @@
 class SystemTray extends SystemItem
-    constructor:(@id, @icon, title)->
+    constructor:(@id, icon, title)->
         super
         @hood = create_element(tag:"div", class:"ReflectImg", @imgWarp)
-        @hood.style.backgroundImage = "url(\"#{@icon}\")"
+        @hood.style.backgroundImage = "url(\"#{icon}\")"
         @hood.style.width = '48px'
         @hood.style.height = '48px'
         @hood.addEventListener("mouseover", @on_mouseover)
@@ -51,7 +51,10 @@ class SystemTray extends SystemItem
             , ANIMATION_TIME)
         )
 
-        @items = @core.TrayIcons.slice(0) || []
+        if Array.isArray @core.TrayIcons
+            @items = @core.TrayIcons.slice(0) || []
+        else
+            @items = []
         # @ews = new EmbedWindow(@items, false)
         # @ews.show()
         # console.log("TrayIcons: #{@items}")
