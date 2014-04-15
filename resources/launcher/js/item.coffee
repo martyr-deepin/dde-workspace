@@ -193,7 +193,7 @@ class Item extends Widget
         dt.setDragCanvas(Item.dragCanvas, ITEM_IMG_SIZE/2+3, ITEM_IMG_SIZE/2)
 
     on_dragstart: (e)=>
-        s_dock?.Show()
+        # s_dock?.Show()
         # target is hoverBoxOutter
         target = e.target
         o = e
@@ -243,7 +243,7 @@ class Item extends Widget
         switcher.bright()
 
     on_dragend: (e)=>
-        s_dock?.Hide()
+        # s_dock?.Hide()
         target = e.target
         item = target.parentNode
         item.classList.remove("item_dragged")
