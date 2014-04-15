@@ -101,19 +101,6 @@ GVariant* js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue, const GVariantT
     g_assert_not_reached();
 }
 
-static GVariantClass child_type (GVariant* parent)
-{
-    int n = g_variant_n_children(parent);
-    if (n == 0) {
-        g_assert_not_reached();
-    } else {
-        GVariant* c = g_variant_get_child_value(parent, 0);
-        GVariantClass r = g_variant_classify(c);
-        g_variant_unref(c);
-        return r;
-    }
-}
-
 JSValueRef dbus_to_js(JSContextRef ctx, GVariant *dbus)
 {
     JSValueRef jsvalue = NULL;
@@ -158,50 +145,43 @@ JSValueRef dbus_to_js(JSContextRef ctx, GVariant *dbus)
             }
 
 	case G_VARIANT_CLASS_DICT_ENTRY:
-                g_assert_not_reached();
+                /*g_assert_not_reached();*/
+	    break;
 
 	case G_VARIANT_CLASS_ARRAY:
-            {
-                int n = g_variant_n_children(dbus);
-                if (n == 0) {
-                    return JSObjectMake(ctx, NULL, NULL);
-                }
-                switch (child_type(dbus)) {
-                    case G_VARIANT_CLASS_DICT_ENTRY:
-                        {
-                            jsvalue = JSObjectMake(ctx, NULL, NULL);
-                            for (int i=0; i<n; i++) {
-                                GVariant *dic = g_variant_get_child_value(dbus, i);
-                                GVariant *key= g_variant_get_child_value (dic, 0);
-                                GVariant *value = g_variant_get_child_value (dic, 1);
+		{
+		    if (g_variant_type_is_dict_entry(g_variant_type_element(g_variant_get_type(dbus)))) {
+			jsvalue = JSObjectMake(ctx, NULL, NULL);
+			for (size_t i=0; i<g_variant_n_children(dbus); i++) {
+			    GVariant *dic = g_variant_get_child_value(dbus, i);
+			    GVariant *key= g_variant_get_child_value (dic, 0);
+			    GVariant *value = g_variant_get_child_value (dic, 1);
 
-                                JSValueRef js_key = dbus_to_js(ctx, key);
-                                JSValueRef js_value = dbus_to_js(ctx, value);
+			    JSValueRef js_key = dbus_to_js(ctx, key);
+			    JSValueRef js_value = dbus_to_js(ctx, value);
 
-                                JSStringRef key_str = JSValueToStringCopy(ctx, js_key, NULL);
-                                JSObjectSetProperty(ctx, (JSObjectRef)jsvalue, key_str, js_value, 0, NULL);
-                                JSStringRelease(key_str);
+			    JSStringRef key_str = JSValueToStringCopy(ctx, js_key, NULL);
+			    JSObjectSetProperty(ctx, (JSObjectRef)jsvalue, key_str, js_value, 0, NULL);
+			    JSStringRelease(key_str);
 
-                                g_variant_unref(key);
-                                g_variant_unref(value);
-                                g_variant_unref(dic);
-                            }
-                            return jsvalue;
-                        }
-                    default:
-                        {
-                            JSValueRef *args = g_new(JSValueRef, n);
-                            for (int i=0; i < n; i++) {
-                                GVariant* v = g_variant_get_child_value(dbus, i);
-                                args[i] = dbus_to_js(ctx, v);
-                                g_variant_unref(v);
-                            }
-                            jsvalue = JSObjectMakeArray(ctx, n, args, NULL);
-                            g_free(args);
-                            return jsvalue;
-                        }
-                }
-            }
+			    g_variant_unref(key);
+			    g_variant_unref(value);
+			    g_variant_unref(dic);
+			}
+			return jsvalue;
+		    } else {
+			int n = g_variant_n_children(dbus);
+			JSValueRef *args = g_new(JSValueRef, n);
+			for (int i=0; i < n; i++) {
+			    GVariant* v = g_variant_get_child_value(dbus, i);
+			    args[i] = dbus_to_js(ctx, v);
+			    g_variant_unref(v);
+			}
+			jsvalue = JSObjectMakeArray(ctx, n, args, NULL);
+			g_free(args);
+			return jsvalue;
+		    }
+		}
 	case G_VARIANT_CLASS_TUPLE:
 	    {
                 int n = g_variant_n_children(dbus);
