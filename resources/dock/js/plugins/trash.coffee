@@ -1,5 +1,5 @@
 class Trash extends PostfixedItem
-    constructor:(@id, @icon, title)->
+    constructor:(@id, icon, title)->
         super
         @set_tooltip(title)
         @entry = DCore.DEntry.get_trash_entry()
