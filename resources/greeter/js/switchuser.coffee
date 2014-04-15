@@ -53,6 +53,7 @@ class SwitchUser extends Widget
                 DCore.Lock.switch_user()
         catch error
             echo "can not find the switch dbus,perhaps you only have one userAccount!"
+            DCore.Lock.switch_user()
             return false
 
     SwitchToUser:(username,session_name)->
