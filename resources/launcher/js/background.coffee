@@ -20,6 +20,9 @@
 
 setBackground = (uid, path)->
     callback = (path)->
+        # launcher-daemon parse uri failed
+        if path.indexOf(' ') != -1
+            path = encodeURI(path)
         console.log "set background to #{path}"
         localStorage.setItem("bg", path)
         _b.style.backgroundImage = "url(#{path})"
