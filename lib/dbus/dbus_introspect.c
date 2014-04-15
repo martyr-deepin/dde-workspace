@@ -349,12 +349,7 @@ JSValueRef dynamic_get (JSContextRef ctx,
 
 
 static
-JSValueRef dynamic_function(JSContextRef ctx,
-                            JSObjectRef function,
-                            JSObjectRef this,
-                            size_t argumentCount,
-                            const JSValueRef arguments[],
-                            JSValueRef *exception)
+JSValueRef dynamic_function(JSContextRef ctx, JSObjectRef function, JSObjectRef this, size_t argumentCount, const JSValueRef arguments[], JSValueRef *exception)
 {
     JSValueRef ret;
     gboolean async = TRUE;
@@ -437,17 +432,23 @@ JSValueRef dynamic_function(JSContextRef ctx,
 		G_DBUS_CALL_FLAGS_NONE, -1, NULL,
 		(GAsyncReadyCallback)async_callback, info);
     } else {
-	GVariant * v = g_dbus_connection_call_sync(obj_info->connection, obj_info->name, obj_info->path, obj_info->iface, func_name, 
-		g_variant_builder_end(&args), sigs_out, 
-		G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL);
-	if (g_variant_n_children(v) == 1) {
-	    GVariant* arg0 = g_variant_get_child_value(v, 0);
-	    ret = dbus_to_js(ctx, arg0);
-	    g_variant_unref(arg0);
-	} else {
-	    ret = dbus_to_js(ctx, v);
-	}
-	g_variant_unref(v);
+        GError* error = NULL;
+        GVariant * v = g_dbus_connection_call_sync(obj_info->connection, obj_info->name, obj_info->path, obj_info->iface, func_name,
+                g_variant_builder_end(&args), sigs_out,
+                G_DBUS_CALL_FLAGS_NONE, -1, NULL, &error);
+        if (error != NULL) {
+            js_fill_exception(ctx, exception, error->message);
+            g_error_free(error);
+            return NULL;
+        }
+        if (g_variant_n_children(v) == 1) {
+            GVariant* arg0 = g_variant_get_child_value(v, 0);
+            ret = dbus_to_js(ctx, arg0);
+            g_variant_unref(arg0);
+        } else {
+            ret = dbus_to_js(ctx, v);
+        }
+        g_variant_unref(v);
     }
     g_variant_type_free(sigs_out);
 
@@ -563,8 +564,7 @@ JSObjectRef build_dbus_object(JSContextRef ctx, struct ObjCacheKey *key)
     return obj_info->obj;
 }
 
-JSObjectRef get_dbus_object(JSContextRef ctx, GDBusConnection* con,
-        const char* bus_name, const char* path, const char* iface, JSValueRef* exception)
+JSObjectRef get_dbus_object(JSContextRef ctx, GDBusConnection* con, const char* bus_name, const char* path, const char* iface, JSValueRef* exception)
 {
     if (bus_name == NULL || path == NULL ||  iface == NULL) {
 	char* err_str = g_strdup_printf("can't build dbus object by %s:%s:%s\n", bus_name, path, iface);
