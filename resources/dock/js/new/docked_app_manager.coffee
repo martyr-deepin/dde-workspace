@@ -1,9 +1,13 @@
-dockedAppManager = get_dbus(
-    "session",
-    name:"com.deepin.daemon.Dock"
-    path:"/dde/dock/DockedAppManager"
-    interface:"dde.dock.DockedAppManager"
-)
+dockedAppManager
+try
+    dockedAppManager = get_dbus(
+        "session",
+        name:"com.deepin.daemon.Dock"
+        path:"/dde/dock/DockedAppManager"
+        interface:"dde.dock.DockedAppManager"
+    )
+catch e
+    console.log e
 
 dockedAppManager?.connect("Docked", (id)->
     console.log("Docked #{id}")
@@ -11,9 +15,10 @@ dockedAppManager?.connect("Docked", (id)->
     appList = $("#app_list")
     for i in [0...appList.children.length]
         child = appList.children[i]
-        if child.getAttribute('name')
-            console.log(child.getAtrribute('name'))
-            items.push(child.name)
+        name = child.getAttribute('name')
+        if name
+            console.log(name)
+            items.push(name)
         else
             items.push(child.id)
 

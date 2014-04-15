@@ -24,7 +24,7 @@
 #include "pixbuf.h"
 #include "utils.h"
 #include "xid2aid.h"
-#include "launcher.h"
+// #include "launcher.h"
 #include "dock_config.h"
 #include "dominant_color.h"
 #include "handle_icon.h"
