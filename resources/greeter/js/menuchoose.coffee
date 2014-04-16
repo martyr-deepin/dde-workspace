@@ -61,7 +61,7 @@ class MenuChoose extends Widget
     
     setPos:->
         left = (screen.width  - @element.clientWidth) / 2
-        top = (screen.height  - @element.clientHeight) / 2 * 0.8
+        top = (screen.height  - @element.clientHeight) / 2 * 0.9
         @element.style.left = "#{left}px"
         @element.style.top = "#{top}px"
         XStartShow = (screen.width - left) - @element.clientWidth
