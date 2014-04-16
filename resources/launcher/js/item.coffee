@@ -327,7 +327,7 @@ class Item extends Widget
 
             when 5 then @toggle_autostart()
             when 6
-                if confirm(_("The operation may also remove other applications that depends on the item. Are you sure you want to uninstall the item?", "Launcher"))
+                if confirm(_("The operation may also remove other applications that depends on the item. Are you sure you want to uninstall the item?", "Launcher"), _("launcher"))
                     @status = SOFTWARE_STATE.UNINSTALLING
                     @hide()
                     categoryList.hideEmptyCategories()
