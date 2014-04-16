@@ -48,6 +48,7 @@ void background_info_set_background_by_drawable(BackgroundInfo* info, guint32 dr
             width, height
             );
     g_mutex_unlock(&info->m);
+    gdk_window_invalidate_rect(gtk_widget_get_window(info->container), NULL, FALSE);
 }
 
 void background_info_set_background_by_file(BackgroundInfo* info, const char* file)
@@ -68,11 +69,13 @@ void background_info_set_background_by_file(BackgroundInfo* info, const char* fi
     info->bg = gdk_cairo_surface_create_from_pixbuf(pb, 1, gtk_widget_get_window(info->container));
     g_mutex_unlock(&info->m);
     g_object_unref(pb);
+    gdk_window_invalidate_rect(gtk_widget_get_window(info->container), NULL, FALSE);
 }
 
 void background_info_change_alpha(BackgroundInfo* info, double alpha)
 {
     info->alpha = alpha;
+    gdk_window_invalidate_rect(gtk_widget_get_window(info->container), NULL, FALSE);
 }
 
 void background_info_clear(BackgroundInfo* info)
