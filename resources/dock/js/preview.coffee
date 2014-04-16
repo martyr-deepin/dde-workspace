@@ -337,7 +337,7 @@ class PreviewWindow extends Widget
         @hoverImg.style.display = 'none'
         @close_button.addEventListener('click', (e)=>
             e.stopPropagation()
-            DCore.Dock.close_window(@w_id)
+            clientManager?.CloseWindow(@w_id)
         )
         @close_button.addEventListener("mouseover", (e)=>
             @hoverImg.style.display = 'inline'
@@ -402,11 +402,11 @@ class PreviewWindow extends Widget
         @remove_css_class("PreviewWindowActived")
 
     do_click: (e)=>
-        DCore.Dock.active_window(@w_id)
+        clientManager?.ActiveWindow(@w_id)
         Preview_close_now(Preview_container._current_group)
 
     do_rightclick: (e)=>
-        DCore.Dock.active_window(@w_id)
+        clientManager?.ActiveWindow(@w_id)
 
     do_mouseover: (e)=>
         clearTimeout(launcher_mouseout_id)

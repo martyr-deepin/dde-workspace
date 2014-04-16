@@ -1,136 +1,144 @@
-#Copyright (c) 2011 ~ 2012 Deepin, Inc.
-#              2011 ~ 2012 snyh
-#
-#Author:      snyh <snyh@snyh.org>
-#Maintainer:  snyh <snyh@snyh.org>
-#
-#This program is free software; you can redistribute it and/or modify
-#it under the terms of the GNU General Public License as published by
-#the Free Software Foundation; either version 3 of the License, or
-#(at your option) any later version.
-#
-#This program is distributed in the hope that it will be useful,
-#but WITHOUT ANY WARRANTY; without even the implied warranty of
-#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#GNU General Public License for more details.
-#
-#You should have received a copy of the GNU General Public License
-#along with this program; if not, see <http://www.gnu.org/licenses/>.
+DCore.signal_connect("in_mini_mode", ->)
+DCore.signal_connect("in_normal_mode", ->)
+DCore.signal_connect("close_window", (info)->)
+DCore.signal_connect("active_window", (info)->)
+DCore.signal_connect("message_notify", (info)->)
 
+DCore.signal_connect("embed_window_configure_changed", (info)->console.log(info))
+DCore.signal_connect("embed_window_destroyed", (info)->console.log(info))
+DCore.signal_connect("embed_window_enter", (info)->console.log(info))
+DCore.signal_connect("embed_window_leave", (info)->console.log(info))
 
-document.body.addEventListener("contextmenu", (e) ->
-    # forbid context menu
+document.body.addEventListener("contextmenu", (e)->
     e.preventDefault()
 )
-$("#container").style.maxWidth = screen.width - PANEL_MARGIN * 2
+document.body.addEventListener("drop", (e)->
+    console.log("drop on body")
+    s_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
+    s_widget = Widget.look_up(s_id)
+    if s_widget and s_widget.isNormal()
+        t = app_list.element.removeChild(s_widget.element)
+        calc_app_item_size()
+
+        t.style.position = "fixed"
+        t.style.left = (e.x + s_widget.element.clientWidth/2)+ "px"
+        t.style.top = (e.y + s_widget.element.clientHeight/2)+ "px"
+        document.body.appendChild(t)
+        s_widget.destroyWidthAnimation()
+        dockedAppManager.Undock(s_id)
+)
+document.body.addEventListener("dragenter", (e)->
+    clearTimeout(cancelInsertTimer)
+)
+document.body.addEventListener("dragover", (e)->
+    clearTimeout(cancelInsertTimer)
+    app_list.hide_indicator()
+    console.log("dragover on body")
+    s_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
+    if Widget.look_up(s_id)?.isNormal()
+        e.preventDefault()
+)
+
+settings = new Setting()
+
+show_desktop = new ShowDesktop()
+
 panel = new Panel("panel")
+panel.draw()
 
+app_list = new AppList("app_list")
 
-_current_active_window = null
-get_active_window = ->
-    return _current_active_window
+$DBus = {}
 
-DCore.signal_connect("active_window_changed", (info)->
-    if (info.app_id)
-        active_group?.to_normal_status()
-        active_group = Widget.look_up("le_"+info.app_id)
-        active_group?.to_active_status(info.id)
+EntryManager =
+    name:"com.deepin.daemon.Dock"
+    path:"/dde/dock/EntryManager"
+    interface:"dde.dock.EntryManager"
+entryManager = get_dbus('session', EntryManager)
+entries = entryManager.Entries
+for entry in entries
+    console.log(entry)
+    d = get_dbus("session", itemDBus(entry))
+    console.log("init add: #{d.Id}")
+    if !Widget.look_up(d.Id)
+        createItem(d)
 
-        Preview_active_window_changed(info.id)
-        _current_active_window = info.id
-    else
-        active_group?.to_normal_status()
-        active_group = null
-        Preview_active_window_changed(null)
-        _current_active_window = null
+initDockedAppPosition()
+
+trayIcon = DCore.get_theme_icon("deepin-systray", 48) || NOT_FOUND_ICON
+systemTray = null
+# freedesktop = get_dbus("session", "org.freedesktop.DBus")
+# freedesktop.connect("NameOwnerChanged", (name, oldName, newName)->
+#     if newName != "" && name == "com.deepin.dde.TrayManager" && not systemTray
+#         systemTray = new SystemTray("system-tray", trayIcon, "")
+# )
+entryManager.connect("TrayInited",->
+    if not systemTray and not $("#system-tray")
+        systemTray = new SystemTray("system-tray", trayIcon, "")
 )
 
-DCore.signal_connect("launcher_added", (info) ->
-    c = Widget.look_up(info.Id)
-    if not c
-        new Launcher(info.Id, info.Icon, info.Core, info.Actions)
-)
-DCore.signal_connect("dock_request", (info) ->
-    group = Widget.look_up("le_"+info.Id)
-    if group
-        apply_flash(group.img, 0.3)
-    else
-        c = Widget.look_up(info.Id)
-        if not c
-            l = new Launcher(info.Id, info.Icon, info.Core, info.Actions)
-            apply_flash(l.img, 1)
-        else
-            apply_rotate(c.element, 0.3)
-)
-
-DCore.signal_connect("launcher_removed", (info) ->
-    Widget.look_up(info.Id)?.destroy_with_animation()
-)
-
-DCore.signal_connect("task_updated", (info) ->
-    if info.app_id == 'trash'
-        Widget.look_up(info.app_id).set_id(info.id).show_indicator()
+entryManager.connect("Added", (path)->
+    d = get_dbus("session", itemDBus(path))
+    console.log("try to Add #{d.Id}, #{TRASH_ID}")
+    if d.Id == TRASH_ID
+        t = Widget.look_up(d.Id)
+        t.core = d
+        t.show_indicator()
         return
 
-    leader = Widget.look_up("le_" + info.app_id)
-
-    if not leader
-        leader = new ClientGroup("le_"+info.app_id, info.icon, info.app_id, info.exec, info.actions)
-        leader?.try_swap_launcher()
-
-    leader?.update_client(info.id, info.icon, info.title)
-)
-DCore.signal_connect("dock_hidden", ->
-    Preview_close_now()
-)
-
-DCore.signal_connect("task_removed", (info) ->
-    if info.app_id == 'trash'
-        Widget.look_up(info.app_id).hide_indicator()
+    if Widget.look_up(d.Id)
         return
-    Widget.look_up("le_"+info.app_id)?.remove_client(info.id)
-)
 
-DCore.signal_connect("in_mini_mode", ->
-    MAX_SCALE = 0.5
+    console.log("Added #{path}")
+    createItem(d)
+    # console.log("added done")
     calc_app_item_size()
+    if systemTray?.isShowing
+        systemTray.updateTrayIcon()
+
+    initDockedAppPosition()
+    setTimeout(->
+        calc_app_item_size()
+        if systemTray?.isShowing
+            systemTray.updateTrayIcon()
+    , 100)
 )
 
-DCore.signal_connect("in_normal_mode", ->
-    MAX_SCALE = 1
+entryManager.connect("Removed", (id)->
+    # TODO: change id to the real id
+    console.log("Removed #{id}")
+    if id == TRASH_ID
+        t = Widget.look_up(id)
+        t.core = null
+        t.hide_indicator()
+        return
+    deleteItem(id)
     calc_app_item_size()
+    systemTray?.updateTrayIcon()
 )
-
-DCore.signal_connect("close_window", (info)->
-    echo "#{info.app_id}"
-    Widget.look_up("le_" + info.app_id).close_all_windows()
-)
-
-DCore.signal_connect("active_window", (info)->
-    echo "#{info.app_id}"
-    Widget.look_up("le_" + info.app_id).do_click()
-)
-
-DCore.signal_connect("message_notify", (info)->
-    panel.update(info.appid, info.itemid)
-)
-
-setTimeout(->
-    IN_INIT = false
-    calc_app_item_size()
-    # apps are moved up, so add 8
-    DCore.Dock.change_workarea_height(ITEM_HEIGHT * ICON_SCALE + 8)
-, 100)
 
 try
     icon_launcher = DCore.get_theme_icon("start-here", 48)
-    # icon_desktop = DCore.get_theme_icon("show_desktop", 48)
 
 show_launcher = new LauncherItem("show_launcher", icon_launcher, _("Launcher"))
-clock = create_clock(DCore.Dock.clock_type())
-trash = new Trash("trash", Trash.get_icon(DCore.DEntry.get_trash_count()), _("Trash"))
+# clock = create_clock(DCore.Dock.clock_type())
+trash = new Trash(TRASH_ID, Trash.get_icon(DCore.DEntry.get_trash_count()), _("Trash"))
 show_desktop = new ShowDesktop()
 
 DCore.Dock.emit_webview_ok()
 DCore.Dock.test()
 
+setTimeout(->
+    IN_INIT = false
+    try
+        if not systemTray and not $("#system-tray")
+            systemTray = new SystemTray("system-tray", trayIcon, "")
+    catch
+        systemTray?.destroy()
+        systemTray = null
+
+    new Time("time", "js/plugins/time/img/time.png", "")
+    calc_app_item_size()
+    # apps are moved up, so add 8
+    DCore.Dock.change_workarea_height(ITEM_HEIGHT * ICON_SCALE + 8)
+, 100)

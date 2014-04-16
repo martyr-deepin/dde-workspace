@@ -2,15 +2,13 @@
 #include "pixbuf.h"
 #include "utils.h"
 #include "xid2aid.h"
-// #include "launcher.h"
 #include "dock_config.h"
 #include "dominant_color.h"
 #include "handle_icon.h"
-#include "tasklist.h"
 #include "dock_hide.h"
 #include "region.h"
-#include "special_window.h"
 #include "xdg_misc.h"
+#include "dwebview.h"
 int _is_maximized_window(Window win)
 {
     gulong items;
@@ -59,11 +57,12 @@ int dock_has_overlay_client()
 {
     return 0;
 }
-int dock_is_client_minimized(double xid)
+int dock_is_client_minimized(double xid G_GNUC_UNUSED)
 {
+    return 0;
 }
 
-gboolean is_has_client(const char* app_id) {
+gboolean is_has_client(const char* app_id G_GNUC_UNUSED) {
     return 0;
 }
 

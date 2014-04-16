@@ -24,7 +24,6 @@
 #include "dock_hide.h"
 #include "region.h"
 #include "dock_config.h"
-#include "tasklist.h"
 #include "X_misc.h"
 #include "jsextension.h"
 #include <gtk/gtk.h>
@@ -34,6 +33,8 @@ extern int _dock_height;
 extern void _change_workarea_height(int height);
 extern GdkWindow* DOCK_GDK_WINDOW();
 extern gboolean mouse_pointer_leave();
+extern gboolean dock_has_maximize_client();
+extern double dock_get_active_window();
 
 #define GUARD_WINDOW_HEIGHT 1
 
@@ -402,11 +403,11 @@ void dock_update_hide_mode()
     if (!GD.is_webview_loaded || _IN_TOGGLE_SHOW) return;
     _change_workarea_height(_dock_height);
 
-    extern Window launcher_id;
-    if (launcher_id != 0 && dock_get_active_window() == launcher_id) {
-        dock_show_now();
-        return;
-    }
+    // extern Window launcher_id;
+    // if (launcher_id != 0 && dock_get_active_window() == launcher_id) {
+    //     dock_show_now();
+    //     return;
+    // }
 
     switch (GD.config.hide_mode) {
     case ALWAYS_HIDE_MODE: {
@@ -418,14 +419,14 @@ void dock_update_hide_mode()
         break;
     }
     case INTELLIGENT_HIDE_MODE: {
-        if (!is_mouse_in_dock()) {
-            g_debug("mouse not in dock");
-            if (dock_has_overlay_client()) {
-                dock_delay_hide(50);
-            } else {
-                dock_delay_show(50);
-            }
-        }
+    //     if (!is_mouse_in_dock()) {
+    //         g_debug("mouse not in dock");
+    //         if (dock_has_overlay_client()) {
+    //             dock_delay_hide(50);
+    //         } else {
+    //             dock_delay_show(50);
+    //         }
+    //     }
         break;
     }
     case AUTO_HIDE_MODE: {

@@ -44,6 +44,7 @@
 
 /*#include "settings.h"*/
 /*#include "camera.h"*/
+#include "background.h"
 
 #include "X_misc.h"
 #include "gs-grab.h"
@@ -57,7 +58,7 @@
 #ifndef DEBUG
 static GSGrab* grab = NULL;
 #endif
-static GtkWidget* lock_container = NULL;
+static GtkWidget* container = NULL;
 const gchar *username = NULL;
 
 JS_EXPORT_API
@@ -180,16 +181,16 @@ focus_out_cb (GtkWidget* w, GdkEvent*e, gpointer user_data)
     NOUSED(w);
     NOUSED(e);
     NOUSED(user_data);
-    gdk_window_focus (gtk_widget_get_window (lock_container), 0);
+    gdk_window_focus (gtk_widget_get_window (container), 0);
 }
 
 static void
-lock_show_cb (GtkWindow* lock_container, gpointer data)
+lock_show_cb (GtkWindow* container, gpointer data)
 {
     NOUSED(data);
     gs_grab_move_to_window (grab,
-                            gtk_widget_get_window (GTK_WIDGET(lock_container)),
-                            gtk_window_get_screen (lock_container),
+                            gtk_widget_get_window (GTK_WIDGET(container)),
+                            gtk_window_get_screen (container),
                             FALSE);
 }
 
@@ -235,26 +236,26 @@ xevent_filter (GdkXEvent *xevent, GdkEvent  *event, GdkWindow *window)
 
     switch (ev->type) {
 
-	    g_debug ("event type: %d", ev->xany.type);
+        g_debug ("event type: %d", ev->xany.type);
         case MapNotify:
-	        g_debug("dlock: MapNotify");
+            g_debug("dlock: MapNotify");
              {
                  XMapEvent *xme = &ev->xmap;
                  if (! x11_window_is_ours (xme->window))
                  {
-			g_debug("dlock: gdk_window_raise");
+            g_debug("dlock: gdk_window_raise");
                       gdk_window_raise (window);
                  }
              }
              break;
 
         case ConfigureNotify:
-	         g_debug("dlock: ConfigureNotify");
+             g_debug("dlock: ConfigureNotify");
              {
                   XConfigureEvent *xce = &ev->xconfigure;
                   if (! x11_window_is_ours (xce->window))
                   {
-			          g_debug("dlock: gdk_window_raise");
+                      g_debug("dlock: gdk_window_raise");
                       gdk_window_raise (window);
                   }
              }
@@ -289,16 +290,16 @@ int main (int argc, char **argv)
 
     lock_report_pid ();
 
-    lock_container = create_web_container (FALSE, TRUE);
-    ensure_fullscreen (lock_container);
+    container = create_web_container (FALSE, TRUE);
+    ensure_fullscreen (container);
 
-    gtk_window_set_decorated (GTK_WINDOW(lock_container), FALSE);
-    gtk_window_set_skip_taskbar_hint (GTK_WINDOW (lock_container), TRUE);
-    gtk_window_set_skip_pager_hint (GTK_WINDOW (lock_container), TRUE);
+    gtk_window_set_decorated (GTK_WINDOW(container), FALSE);
+    gtk_window_set_skip_taskbar_hint (GTK_WINDOW (container), TRUE);
+    gtk_window_set_skip_pager_hint (GTK_WINDOW (container), TRUE);
 
-    gtk_window_fullscreen (GTK_WINDOW (lock_container));
-    gtk_widget_set_events (GTK_WIDGET (lock_container),
-                           gtk_widget_get_events (GTK_WIDGET (lock_container))
+    gtk_window_fullscreen (GTK_WINDOW (container));
+    gtk_widget_set_events (GTK_WIDGET (container),
+                           gtk_widget_get_events (GTK_WIDGET (container))
                            | GDK_POINTER_MOTION_MASK
                            | GDK_BUTTON_PRESS_MASK
                            | GDK_BUTTON_RELEASE_MASK
@@ -310,23 +311,27 @@ int main (int argc, char **argv)
                            | GDK_LEAVE_NOTIFY_MASK);
 
     GtkWidget *webview = d_webview_new_with_uri (LOCK_HTML_PATH);
-    gtk_container_add (GTK_CONTAINER (lock_container), GTK_WIDGET (webview));
+    gtk_container_add (GTK_CONTAINER (container), GTK_WIDGET (webview));
+
+    BackgroundInfo* bg_info = create_background_info(container, webview);
+    background_info_set_background_by_file(bg_info, "/usr/share/backgrounds/default_background.jpg");
 
 #ifndef DEBUG
-    g_message(" Zone Not DEBUG");
-    gtk_window_set_keep_above (GTK_WINDOW (lock_container), TRUE);
-    g_signal_connect (lock_container, "show", G_CALLBACK (lock_show_cb), NULL);
+    g_message(" Lock Not DEBUG");
+    gtk_window_set_keep_above (GTK_WINDOW (container), TRUE);
+    g_signal_connect (container, "show", G_CALLBACK (lock_show_cb), NULL);
     g_signal_connect (webview, "focus-out-event", G_CALLBACK( focus_out_cb), NULL);
 #endif
-    g_signal_connect (lock_container, "delete-event", G_CALLBACK (prevent_exit), NULL);
-    gtk_widget_realize (lock_container);
+    g_signal_connect (container, "delete-event", G_CALLBACK (prevent_exit), NULL);
+    gtk_widget_realize (container);
     gtk_widget_realize (webview);
-
-    GdkWindow *gdkwindow = gtk_widget_get_window (lock_container);
+    
+    GdkWindow *gdkwindow = gtk_widget_get_window (container);
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba (gdkwindow, &rgba);
     gdk_window_set_skip_taskbar_hint (gdkwindow, TRUE);
     gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
+
 
 #ifndef DEBUG
     gdk_window_set_keep_above (gdkwindow, TRUE);
@@ -336,9 +341,9 @@ int main (int argc, char **argv)
     grab = gs_grab_new ();
 #endif
 
-    gtk_widget_show_all (lock_container);
+    gtk_widget_show_all (container);
 
-    gdk_window_focus (gtk_widget_get_window (lock_container), 0);
+    gdk_window_focus (gtk_widget_get_window (container), 0);
     gdk_window_stick (gdkwindow);
 
     /*init_camera(argc, argv);*/

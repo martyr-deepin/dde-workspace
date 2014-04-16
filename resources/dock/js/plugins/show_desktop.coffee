@@ -19,18 +19,7 @@
 
 
 class ShowDesktop
-    @set_time_id: null
-    __show: false
     constructor:->
-        DCore.signal_connect("desktop_status_changed", =>
-            @set_status(DCore.Dock.get_desktop_status())
-        )
 
-    show: (v)->
-        @__show = v
-
-    set_status: (status)=>
-        @show(status)
-
-    toggle: =>
-        DCore.Dock.show_desktop(!@__show)
+    toggle: ->
+        clientManager?.ToggleShowDesktop()
