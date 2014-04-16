@@ -112,21 +112,13 @@ class User extends Widget
         return index
 
 
-    switchtoprev_userinfo : =>
+    switch_userinfo :(direc) =>
         if !_current_user.animation_end then return
-        echo "switchtoprev_userinfo from #{@current_user_index}: #{_current_user.username}"
+        echo "switch_userinfo ---#{direc}--- from #{@current_user_index}: #{_current_user.username}"
         _current_user.hide_animation()
-        @current_user_index = @check_index(@current_user_index + 1)
-        _current_user = @userinfo_all[@current_user_index]
-        echo "to #{@current_user_index}: #{_current_user.username}"
-        _current_user.show_animation()
-        _current_user.animate_prev()
-
-    switchtonext_userinfo : =>
-        if !_current_user.animation_end then return
-        echo "switchtonext_userinfo from #{@current_user_index}: #{_current_user.username}"
-        _current_user.hide_animation()
-        @current_user_index = @check_index(@current_user_index - 1)
+        if direc is "prev" then index = @current_user_index - 1
+        else if direc is "next" then index = @current_user_index + 1
+        @current_user_index = @check_index(index)
         _current_user = @userinfo_all[@current_user_index]
         echo "to #{@current_user_index}: #{_current_user.username}"
         _current_user.show_animation()
@@ -152,14 +144,14 @@ class User extends Widget
         @normal_hover_click_cb(@prevuserinfo_img,
             img_src_before + "left_normal.png",
             img_src_before + "left_hover.png",
-            img_src_before + "left_press.png",
-            @switchtoprev_userinfo
+            img_src_before + "left_press.png",=>
+                @switch_userinfo("next")
         )
         @normal_hover_click_cb(@nextuserinfo_img,
             img_src_before + "right_normal.png",
             img_src_before + "right_hover.png",
-            img_src_before + "right_press.png",
-            @switchtonext_userinfo
+            img_src_before + "right_press.png",=>
+                @switch_userinfo("prev")
         )
 
     normal_hover_click_cb: (el,normal,hover,click,click_cb) ->
