@@ -133,7 +133,6 @@ class User extends Widget
         _current_user.animate_prev()
 
 
-
     prev_next_userinfo_create:->
         opacity = "0.8"
         @switchuser_div = create_element("div","switchuser_div",@element)
