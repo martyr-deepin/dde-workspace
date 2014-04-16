@@ -27,14 +27,6 @@ applications = {}
 # value: Item class
 uninstalling_apps = {}
 
-path = localStorage.getItem("bg")
-setBackground(path)
-setTimeout(->
-    p = daemon.GetBackgroundPict_sync()
-    if p != path
-        setBackground(p)
-, 1000)
-
 init_all_applications = ->
     # get all applications and sort them by name
     _all_items = daemon.ItemInfos_sync(CATEGORY_ID.ALL)

@@ -93,5 +93,9 @@ BackgroundInfo* create_background_info(GtkWidget* container, GtkWidget* child)
     gtk_widget_realize (child);
     gdk_window_set_composited(gtk_widget_get_window(child), TRUE);
     g_signal_connect (container, "draw", G_CALLBACK (background_info_draw_callback), info);
+    gtk_widget_realize (container);
+    GdkRGBA color = {0,0,0,0};
+    gdk_window_set_background_rgba(gtk_widget_get_window(container), &color);
+
     return info;
 }

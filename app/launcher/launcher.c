@@ -42,7 +42,7 @@
 #include "X_misc.h"
 #include "i18n.h"
 #include "category.h"
-#include "background.h"
+#include "bg.h"
 #include "test.h"
 #include "DBUS_launcher.h"
 
@@ -403,58 +403,9 @@ void signal_handler(int signum)
     }
 }
 
-#if 0
-void start_check()
-{
-    g_message("%s", g_getenv("DBUS_SESSION_BUS_ADDRESS"));
-    GError* err = NULL;
-    GDBusProxy* proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SESSION,
-                                                      G_DBUS_PROXY_FLAGS_NONE,
-                                                      NULL,
-                                                      "org.freedesktop.DBus",
-                                                      "/",
-                                                      "org.freedesktop.DBus",
-                                                      // "com.deepin.dde.daemon.Launcher",
-                                                      // "/com/deepin/dde/daemon/Launcher",
-                                                      // "com.deepin.dde.daemon.Launcher",
-                                                      NULL,
-                                                      &err
-                                                      );
-
-    if (proxy == NULL) {
-        g_warning("get dbus proxy failed: %s", err->message);
-        g_error_free(err);
-        exit(0);
-    }
-
-    GVariant* ret = g_dbus_proxy_call_sync(proxy,
-                                           // "GetBackgroundPict",
-                                           // NULL,
-                                           "StartServiceByName",
-                                           g_variant_new("(su)",
-                                                         "com.deepin.dde.daemon.Launcher",
-                                                         1
-                                                        ),
-                                           G_DBUS_CALL_FLAGS_NONE,
-                                           -1,  // timeout
-                                           NULL,  // cancellable
-                                           &err
-                                          );
-    if (ret != NULL)
-        g_variant_unref(ret);
-    g_object_unref(proxy);
-
-    if (err != NULL) {
-        g_warning("[%s:%s] %s", __FILE__, __func__, err->message);
-        g_error_free(err);
-        exit(0);
-    }
-}
-#endif
-
-
 int main(int argc, char* argv[])
 {
+    gtk_init(&argc, &argv);
     g_log_set_default_handler((GLogFunc)log_to_file, "launcher");
 
     GOptionContext* ctx = g_option_context_new("launcher");
@@ -497,7 +448,6 @@ int main(int argc, char* argv[])
         return 0;
     }
 
-    gtk_init(&argc, &argv);
     g_message("gtk init done");
 
     if (is_debug) {
@@ -546,12 +496,10 @@ int main(int argc, char* argv[])
 
     gtk_widget_realize(container);
     gtk_widget_realize(webview);
+    setup_background(container, webview);
 
     GdkWindow* gdkwindow = gtk_widget_get_window(container);
     gdk_window_add_filter(gdkwindow, launcher_ensure_fullscreen, NULL);
-    GdkRGBA rgba = {0, 0, 0, 0.0 };
-    gdk_window_set_background_rgba(gdkwindow, &rgba);
-    set_background(gtk_widget_get_window(webview), launcher.width, launcher.height);
 
     gdk_window_set_skip_taskbar_hint(gdkwindow, TRUE);
     gdk_window_set_skip_pager_hint(gdkwindow, TRUE);
