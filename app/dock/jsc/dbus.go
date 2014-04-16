@@ -6,7 +6,6 @@ func main() {
 	DBusInstall(
 		"setup_dock_dbus_service",
 		SessionDBUS("com.deepin.dde.dock"),
-		Method("ShowDesktop", Callback("dock_show_desktop"), Arg("value:gboolean")),
 		Method("ToggleShow", Callback("dock_toggle_show")),
 		Method("ShowInspector", Callback("dock_show_inspector")),
 		Method("MessageNotify", Callback("dock_bus_message_notify"), Arg("appid:gchar*"), Arg("itemid:gchar*")),
