@@ -29,10 +29,8 @@
 #include "X_misc.h"
 #include "xdg_misc.h"
 #include "utils.h"
-#include "tasklist.h"
 #include "i18n.h"
 #include "dock_config.h"
-// #include "launcher.h"
 #include "region.h"
 #include "dock_hide.h"
 #include "DBUS_dock.h"
@@ -46,12 +44,14 @@
 
 static GtkWidget* container = NULL;
 static GtkWidget* webview = NULL;
+Window active_client_id = 0;
 
 struct DisplayInfo dock;
 int _dock_height = 68;
 GdkWindow* DOCK_GDK_WINDOW() { return gtk_widget_get_window(container); }
 GdkWindow* GET_CONTAINER_WINDOW() { return DOCK_GDK_WINDOW(); }
 
+gboolean dock_has_maximize_client();
 JS_EXPORT_API void dock_change_workarea_height(double height);
 
 GdkWindow* get_dock_guard_window();
@@ -84,18 +84,30 @@ gboolean get_leave_enter_guard()
     }
 }
 
-gboolean leave_notify(GtkWidget* w, GdkEventCrossing* e, gpointer u)
+
+JS_EXPORT_API
+double dock_get_active_window()
 {
-    NOUSED(w);
-    NOUSED(u);
+    Window aw = 0;
+    Atom ATOM_ACTIVE_WINDOW = gdk_x11_get_xatom_by_name("_NET_ACTIVE_WINDOW");
+    Display* _dsp = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
+    get_atom_value_by_atom(_dsp, GDK_ROOT_WINDOW(), ATOM_ACTIVE_WINDOW, &aw, get_atom_value_for_index, 0);
+    return aw;
+}
+
+
+gboolean leave_notify(GtkWidget* w G_GNUC_UNUSED,
+                      GdkEventCrossing* e G_GNUC_UNUSED,
+                      gpointer u G_GNUC_UNUSED)
+{
     if (!get_leave_enter_guard())
         return FALSE;
 
-    extern Window launcher_id;
-    if (launcher_id != 0 && dock_get_active_window() == launcher_id) {
-        dock_show_now();
-        return FALSE;
-    }
+    // extern Window launcher_id;
+    // if (launcher_id != 0 && dock_get_active_window() == launcher_id) {
+    //     dock_show_now();
+    //     return FALSE;
+    // }
 
     if (e->detail == GDK_NOTIFY_NONLINEAR_VIRTUAL && !mouse_pointer_leave(e->x, e->y)) {
         if (GD.config.hide_mode == ALWAYS_HIDE_MODE && !is_mouse_in_dock()) {
@@ -112,11 +124,10 @@ gboolean leave_notify(GtkWidget* w, GdkEventCrossing* e, gpointer u)
     }
     return FALSE;
 }
-gboolean enter_notify(GtkWidget* w, GdkEventCrossing* e, gpointer u)
+gboolean enter_notify(GtkWidget* w G_GNUC_UNUSED,
+                      GdkEventCrossing* e G_GNUC_UNUSED,
+                      gpointer u G_GNUC_UNUSED)
 {
-    NOUSED(w);
-    NOUSED(e);
-    NOUSED(u);
     if (!get_leave_enter_guard())
         return FALSE;
 
@@ -171,9 +182,8 @@ gboolean is_compiz_plugin_valid()
 
 
 static
-void is_compiz_valid(GdkScreen* screen, gpointer data)
+void is_compiz_valid(GdkScreen* screen, gpointer data G_GNUC_UNUSED)
 {
-    NOUSED(data);
     if (!gdk_screen_is_composited(screen)) {
         GtkWidget* dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL,
                                                    GTK_MESSAGE_ERROR,
@@ -313,9 +323,6 @@ void dock_emit_webview_ok()
 
         inited = TRUE;
         init_config();
-        // init_launchers();
-        init_task_list();
-        /* tray_init(webview); */
         update_dock_size_mode();
         init_dock_guard_window();
     } else {
@@ -368,7 +375,8 @@ void dock_toggle_launcher(gboolean show)
     if (show) {
         run_command("dde-launcher");
     } else {
-        close_launcher_window();
+        dbus_launcher_hide();
+        js_post_signal("launcher_destroy");
     }
 }
 
@@ -548,8 +556,7 @@ int main(int argc, char* argv[])
     gdk_window_set_background_rgba(DOCK_GDK_WINDOW(), &rgba);
 
     setup_dock_dbus_service();
-    GFileMonitor* m = monitor_trash();
-    NOUSED(m);
+    GFileMonitor* m G_GNUC_UNUSED = monitor_trash();
 
     gtk_main();
     return 0;
