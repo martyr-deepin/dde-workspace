@@ -1,5 +1,5 @@
 class Trash extends PostfixedItem
-    constructor:(@id, @icon, title)->
+    constructor:(@id, icon, title)->
         super
         @set_tooltip(title)
         @entry = DCore.DEntry.get_trash_entry()
@@ -52,7 +52,7 @@ class Trash extends PostfixedItem
         if !DCore.DEntry.launch(@entry, [])
             confirm(_("Can not open this file."), _("Warning"))
 
-    do_drop: (evt)=>
+    on_drop: (evt)=>
         evt.stopPropagation()
         evt.preventDefault()
         if dnd_is_file(evt) or dnd_is_desktop(evt)
@@ -63,17 +63,17 @@ class Trash extends PostfixedItem
                 tmp_list.push(e)
             if tmp_list.length > 0 then DCore.DEntry.trash(tmp_list)
 
-    do_dragenter : (evt) =>
+    on_dragenter : (evt) =>
         evt.stopPropagation()
         evt.preventDefault()
         evt.dataTransfer.dropEffect = "move"
 
-    do_dragover : (evt) =>
+    on_dragover : (evt) =>
         evt.stopPropagation()
         evt.preventDefault()
         evt.dataTransfer.dropEffect = "move"
 
-    do_dragleave : (evt) =>
+    on_dragleave : (evt) =>
         evt.stopPropagation()
         evt.preventDefault()
         evt.dataTransfer.dropEffect = "move"
@@ -102,5 +102,5 @@ class Trash extends PostfixedItem
 
     update: (n=null)->
         n = DCore.DEntry.get_trash_count() if n == null
-        @img.src = Trash.get_icon(n)
+        @img.style.backgroundImage = "url(file://#{Trash.get_icon(n)})"
 
