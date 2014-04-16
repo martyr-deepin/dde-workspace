@@ -26,8 +26,9 @@ gboolean background_info_draw_callback(GtkWidget* w, cairo_t* cr, BackgroundInfo
 
 void background_info_set_background_by_drawable(BackgroundInfo* info, guint32 drawable)
 {
-    guint width=0, height=0;
-    guint x,y,root,border,depth;
+    gint x, y;
+    Window root;
+    guint border,depth, width=0, height=0;
     Display* dpy = gdk_x11_get_default_xdisplay();
     gdk_error_trap_push();
     XGetGeometry(dpy, drawable, &root, &x, &y, &width, &height, &border, &depth);

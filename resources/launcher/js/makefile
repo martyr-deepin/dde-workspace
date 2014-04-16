@@ -7,7 +7,6 @@ all: ${com_coffee} \
 	const.coffee \
 	utils.coffee \
 	dbus.coffee \
-	background.coffee \
 	search_result.coffee \
 	search_bar.coffee \
 	category_bar.coffee \
