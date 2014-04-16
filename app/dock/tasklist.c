@@ -35,8 +35,6 @@
 #include "xdg_misc.h"
 #include "DBUS_dock.h"
 #include "desktop_action.h"
-extern Window get_dock_window();
-extern char* dcore_get_theme_icon(const char*, double);
 
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
@@ -44,11 +42,6 @@ extern char* dcore_get_theme_icon(const char*, double);
 #include <dwebview.h>
 #include <string.h>
 #include <math.h>
-#include <gio/gdesktopappinfo.h>
-
-#define RECORD_FILE "dock/record.ini"
-#define FILTER_FILE "dock/filter.ini"
-GKeyFile* record_file = NULL;
 
 PRIVATE Atom ATOM_ACTIVE_WINDOW;
 PRIVATE Atom ATOM_CLOSE_WINDOW;
@@ -73,10 +66,6 @@ struct _Workspace {
 
 static Workspace current_workspace = {0, 0};
 
-gboolean is_same_workspace(Workspace* lhs, Workspace* rhs)
-{
-    return lhs->x == rhs->x && lhs->y == rhs->y;
-}
 // Key: GINT_TO_POINTER(the id of window)
 // Value: struct Client*
 Window active_client_id = 0;
@@ -105,7 +94,7 @@ PRIVATE
 void _update_current_viewport(Workspace* vp)
 {
     gulong n_item;
-    gpointer data= get_window_property(_dsp, GDK_ROOT_WINDOW(), ATOM_DEEPIN_SCREEN_VIEWPORT, &n_item);
+    gpointer data = get_window_property(_dsp, GDK_ROOT_WINDOW(), ATOM_DEEPIN_SCREEN_VIEWPORT, &n_item);
     if (data == NULL)
         return;
     vp->x = X_FETCH_32(data, 0);
@@ -201,60 +190,5 @@ void dock_show_desktop(gboolean value)
     event.data.l[0] = value;
     XSendEvent(_dsp, root, False,
             StructureNotifyMask, (XEvent*)&event);
-}
-
-
-JS_EXPORT_API
-void dock_iconify_window(double id)
-{
-    XIconifyWindow(_dsp, (Window)id, 0);
-}
-
-
-JS_EXPORT_API
-gboolean dock_window_need_to_be_minimized(double id)
-{
-    return !dock_is_client_minimized(id) && dock_get_active_window() == id;
-}
-
-
-
-JS_EXPORT_API
-gboolean dock_request_dock_by_client_id(double id)
-{
-    //TODO:REMOVE
-    /*Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER((int)id));*/
-    /*g_return_val_if_fail(c != NULL, FALSE);*/
-
-    /*if (dock_has_launcher(c->app_id)) {*/
-        /*// already has this app info*/
-        /*g_debug("[%s] already has this app info", __func__);*/
-        /*return FALSE;*/
-    /*} else if (c->app_id == NULL || c->exec == NULL || c->icon == NULL) {*/
-        /*g_warning("[%s] cannot dock app, because app_id, command line or icon maybe NULL", __func__);*/
-        /*return FALSE;*/
-    /*} else {*/
-        /*g_debug("[%s] request_by_info: appid: %s, exec: %s, icon: %s",*/
-                /*__func__, c->app_id, c->exec, c->icon);*/
-        /*request_by_info(c->app_id, c->exec, c->icon);*/
-        /*return TRUE;*/
-    /*}*/
-    return False;
-}
-
-
-
-JS_EXPORT_API
-void dock_set_compiz_workaround_preview(gboolean v)
-{
-    static gboolean _v = 3;
-    if (_v != v) {
-        GSettings* compiz_workaround = g_settings_new_with_path(
-                "org.compiz.workarounds",
-                "/org/compiz/profiles/deepin/plugins/workarounds/");
-        g_settings_set_boolean(compiz_workaround, "keep-minimized-windows", v);
-        g_object_unref(compiz_workaround);
-        _v = v;
-    }
 }
 
