@@ -44,6 +44,7 @@ class Greeter extends Widget
 
 
     keydown_listener:(e,user)->
+        echo "greeter keydown_listener"
         if e.which == LEFT_ARROW
             user?.switchtonext_userinfo()
         else if e.which == RIGHT_ARROW
@@ -58,11 +59,10 @@ desktopmenu.new_desktop_menu()
 
 user = new User()
 $("#div_users").appendChild(user.element)
-user.isSupportGuest()
 user.new_userinfo_for_greeter()
 user.prev_next_userinfo_create() if user.userinfo_all.length > 1
 
-left = (screen.width  - $("#div_users").clientWidth) / 2
+left = (screen.width  - $("#div_users").clientWidth) / 2 * 1.4
 top = (screen.height  - $("#div_users").clientHeight) / 2 * 0.8
 $("#div_users").style.left = "#{left}px"
 $("#div_users").style.top = "#{top}px"

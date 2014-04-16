@@ -31,7 +31,6 @@ class User extends Widget
         super
         
         @current_user_index = 0
-        
         @user_session = []
         @userinfo_all = []
         @accounts = new Accounts(APP_NAME)
@@ -44,31 +43,6 @@ class User extends Widget
         echo "_default_username:#{@_default_username};uid:#{@_default_userid}"
         return @_default_userid
     
-
-    new_userinfo_for_greeter:->
-        echo "new_userinfo_for_greeter"
-        for uid in @accounts.users_id
-            if not @accounts.is_disable_user(uid)
-                username = @accounts.users_id_dbus[uid].UserName
-                usericon = @accounts.users_id_dbus[uid].IconFile
-                u = new UserInfo(username, username, usericon)
-                @userinfo_all.push(u)
-                #u.is_logined = @accounts.is_user_logined(uid)
-                u.is_logined = @accounts.is_user_sessioned_on(uid)
-                _current_user = u if uid is @_default_userid
-        
-        user.index = j for user,j in @userinfo_all
-        _current_user = @userinfo_all[0] if not _current_user?
-        if @userinfo_all.length >= 3 then @sort_current_user_info_center()
-        for user,j in @userinfo_all
-            @element.appendChild(user.element)
-            if user.index is _current_user.index
-                _current_user.show()
-            else
-                user.hide()
-        
-        return @userinfo_all
-
     sort_current_user_info_center:->
         echo "sort_current_user_info_center"
         tmp_length = (@userinfo_all.length - 1) / 2
@@ -78,32 +52,62 @@ class User extends Widget
             @userinfo_all[center_index] = _current_user
             @userinfo_all[_current_user.index] = center_old
             _current_user.index = center_index
-        @current_user_index =_current_user.index
-    
+        _current_user.index =_current_user.index
+     
+     isSupportGuest:->
+        if is_support_guest and @accounts.isAllowGuest() is true
+            guest_image = "images/guest.jpg"
+            #guest_image = "/var/lib/AccountsService/icons/guest.jpg"
+            u = new UserInfo(guest_id, guest_name, guest_image)
+            @userinfo_all.push(u)
+            #if DCore.Greeter.is_guest_default() then u.show()
+            #else u.hide()
+
+    new_userinfo_for_greeter:->
+        echo "new_userinfo_for_greeter"
+        for uid in @accounts.users_id
+            if not @accounts.is_disable_user(uid)
+                username = @accounts.users_id_dbus[uid].UserName
+                usericon = @accounts.users_id_dbus[uid].IconFile
+                u = new UserInfo(username, username, usericon)
+                @userinfo_all.push(u)
+                u.is_logined = @accounts.is_user_sessioned_on(uid)
+                _current_user = u if uid is @_default_userid
+        
+        @isSupportGuest()
+
+        user.index = j for user,j in @userinfo_all
+        if not _current_user?
+            _current_user = @userinfo_all[0]
+            _current_user.index = 0
+            @current_user_index = 0
+        
+        for user in @userinfo_all
+            @element.appendChild(user.element)
+            if user.index is _current_user.index
+                _current_user.show()
+                @current_user_index = _current_user.index
+            else
+                user.hide()
+        
+        return @userinfo_all
+
+   
     new_userinfo_for_lock:->
         echo "new_userinfo_for_lock"
         username = @accounts.users_id_dbus[@_default_userid].UserName
         usericon = @accounts.users_id_dbus[@_default_userid].IconFile
         _current_user = new UserInfo(username, username, usericon)
         _current_user.index = 0
-        _current_user.show()
         @element.appendChild(_current_user.element)
+        _current_user.show()
     
-    isSupportGuest:->
-        if is_support_guest and @accounts.isAllowGuest() is true
-            guest_image = "images/guest.jpg"
-            #guest_image = "/var/lib/AccountsService/icons/guest.jpg"
-            u = new UserInfo(guest_id, guest_name, guest_image)
-            u.hide()
-            @userinfo_all.push(u)
-            @element.appendChild(u.element)
-            if DCore.Greeter.is_guest_default() then u.show()
     
     get_current_userinfo:->
         return _current_user
 
     check_index:(index)->
-        if index >= @userinfo_all.length then index = 0
+        if index > @userinfo_all.length - 1 then index = 0
         else if index < 0 then index = @userinfo_all.length - 1
         return index
 
@@ -126,7 +130,8 @@ class User extends Widget
         _current_user = @userinfo_all[@current_user_index]
         echo "to #{@current_user_index}: #{_current_user.username}"
         _current_user.show_animation()
-        _current_user.animate_next()
+        _current_user.animate_prev()
+
 
 
     prev_next_userinfo_create:->
