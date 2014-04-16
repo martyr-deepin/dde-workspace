@@ -40,24 +40,6 @@ class Lock extends Widget
         )
 
 
-    setBodyWallpaper:(wallpaper)->
-        echo "setBodyWallpaper:#{wallpaper}"
-        _b = document.body
-        _b.style.height = window.innerHeight
-        _b.style.width = window.innerWidth
-        switch wallpaper
-            when "sky_move"
-                _b.style.backgroundImage = "url(js/skyThree/sky3.jpg)"
-                inject_js("js/skyThree/sky.js")
-            when "sky_static"
-                _b.style.backgroundImage = "url(js/skyThree/sky3.jpg)"
-            when "color"
-                _b.style.backgroundImage = "url(images/background1.jpg)"
-            else
-                inject_js("js/skyThree/Three.js")
-                inject_js("js/skyThree/sky.js")
-
-
 lock = new Lock()
 setBodyWallpaper("sky_move")
 

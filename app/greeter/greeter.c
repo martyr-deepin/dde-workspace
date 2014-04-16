@@ -42,6 +42,7 @@
 
 /*#include "settings.h"*/
 /*#include "camera.h"*/
+#include "background.h"
 
 #include "user.h"
 #include "session.h"
@@ -242,7 +243,7 @@ gboolean greeter_start_session (const gchar *username, const gchar *password, co
 
 int main (int argc, char **argv)
 {
-    g_message("greeter main");
+    g_message("-------------greeter main--------------");
     /* if (argc == 2 && 0 == g_strcmp0(argv[1], "-d")) */
     g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
 
@@ -289,6 +290,9 @@ int main (int argc, char **argv)
     webview = d_webview_new_with_uri (GREETER_HTML_PATH);
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
 
+    BackgroundInfo* bg_info = create_background_info(container, webview);
+    background_info_set_background_by_file(bg_info, "/usr/share/backgrounds/default_background.jpg");
+    
     gtk_widget_realize (webview);
     gtk_widget_realize (container);
 

@@ -51,6 +51,7 @@ void background_info_set_background_by_drawable(BackgroundInfo* info, guint32 dr
 
 void background_info_set_background_by_file(BackgroundInfo* info, const char* file)
 {
+    g_message("background_info_set_background_by_file:%s",file);
     GError* error = NULL;
     GdkPixbuf* pb = gdk_pixbuf_new_from_file(file, &error);
     if (error != NULL) {
@@ -84,6 +85,7 @@ void background_info_clear(BackgroundInfo* info)
 
 BackgroundInfo* create_background_info(GtkWidget* container, GtkWidget* child)
 {
+    g_message("create_background_info");
     BackgroundInfo* info = g_new0(BackgroundInfo, 1);
     g_mutex_init(&info->m);
     info->alpha = 1;
