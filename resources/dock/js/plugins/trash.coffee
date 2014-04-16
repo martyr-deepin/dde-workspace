@@ -102,5 +102,5 @@ class Trash extends PostfixedItem
 
     update: (n=null)->
         n = DCore.DEntry.get_trash_count() if n == null
-        @img.src = Trash.get_icon(n)
+        @img.style.backgroundImage = "url(file://#{Trash.get_icon(n)})"
 
