@@ -227,6 +227,7 @@ inject_css = (el,src)->
     css_element.href = src
 
 get_dbus = (type, opt, testProperty)->
+    throw "require 3 arguments" if not testProperty
     type = type.toLowerCase()
     if type == "system"
         type = "sys"
@@ -256,6 +257,6 @@ get_dbus = (type, opt, testProperty)->
     while d and not d[testProperty]
         try
             d = func.apply(null, dbusArg)
-            console.log "dbus starts incompletely"
+            console.log "DBus \"#{opt.name} #{opt.path} #{opt.interface}\" starts incompletely"
     d
 
