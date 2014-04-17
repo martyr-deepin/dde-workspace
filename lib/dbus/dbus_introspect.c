@@ -69,19 +69,19 @@ gboolean handle_signal_callback(struct SignalInfo* info)
     if (info->body == NULL) {
         JSObjectCallAsFunction(get_global_context(), info->callback, NULL, 0, NULL, NULL);
     } else {
-        int num = g_variant_n_children(info->body);
+	int num = g_variant_n_children(info->body);
 
-        JSValueRef *params = g_new(JSValueRef, num);
-        for (int i=0; i<num; i++) {
-            GVariant* item = g_variant_get_child_value(info->body, i);
-            params[i] = dbus_to_js(get_global_context(), item);
-            g_variant_unref(item);
-        }
-        JSObjectCallAsFunction(get_global_context(), info->callback, NULL, num, params, NULL);
+	JSValueRef *params = g_new(JSValueRef, num);
+	for (int i=0; i<num; i++) {
+	    GVariant* item = g_variant_get_child_value(info->body, i);
+	    params[i] = dbus_to_js(get_global_context(), item);
+	    g_variant_unref(item);
+	}
+	JSObjectCallAsFunction(get_global_context(), info->callback, NULL, num, params, NULL);
 
-        g_free(params);
+	g_free(params);
+	g_variant_unref(info->body);
     }
-    g_variant_unref(info->body);
     g_free(info);
     return FALSE;
 }
