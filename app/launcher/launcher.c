@@ -311,38 +311,6 @@ void launcher_webview_ok()
 }
 
 
-#if 0
-PRIVATE
-void daemonize()
-{
-#ifdef NDEBUG
-    close_std_stream();
-#endif
-
-    g_debug("daemonize");
-
-    pid_t pid = 0;
-    if ((pid = fork()) == -1) {
-        g_warning("fork error");
-        exit(0);
-    } else if (pid != 0){
-        // parent
-        exit(0);
-    }
-
-    setsid();
-
-    if ((pid = fork()) == -1) {
-        g_warning("fork error");
-        exit(0);
-    } else if (pid != 0){
-        // parent
-        exit(0);
-    }
-}
-#endif
-
-
 void check_version()
 {
     if (launcher_config == NULL)
