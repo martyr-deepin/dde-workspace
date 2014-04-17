@@ -325,6 +325,31 @@ bool dynamic_set (JSContextRef ctx, JSObjectRef object,
     return TRUE;
 }
 
+bool has_property(JSContextRef ctx, JSObjectRef object, JSStringRef propertyName)
+{
+    struct DBusObjectInfo* obj_info = JSObjectGetPrivate(object);
+    char* prop_name = jsstring_to_cstr(ctx, propertyName);
+    GDBusProxy* proxy = g_dbus_proxy_new_sync(obj_info->connection, G_DBUS_PROXY_FLAGS_NONE, NULL,
+            obj_info->name, obj_info->path, obj_info->iface,
+            NULL, NULL);
+
+    gboolean has = FALSE;
+
+    gchar** names = g_dbus_proxy_get_cached_property_names(proxy);
+    if (names != NULL) {
+        for (int i=0; i < g_strv_length(names); i++) {
+            if (g_strcmp0(names[i], prop_name) == 0) {
+                has = TRUE;
+                break;
+            }
+        }
+        g_strfreev(names);
+    }
+    g_free(prop_name);
+    return has;
+}
+
+
 JSValueRef dynamic_get (JSContextRef ctx,
         JSObjectRef object, JSStringRef propertyName, JSValueRef* exception)
 {
@@ -537,9 +562,9 @@ JSObjectRef build_dbus_object(JSContextRef ctx, struct ObjCacheKey *key)
         static_funcs,
         NULL,
         NULL,//obj_finalize,
-        NULL,
-        NULL,
-        NULL,
+        has_property,
+        dynamic_get,
+        dynamic_set,
         NULL,
         NULL,
         NULL,
