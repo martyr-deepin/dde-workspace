@@ -1,12 +1,11 @@
+FREEDESKKTOP_LOGIN1 =
+    name:"org.freedesktop.login1",
+    path:"/org/freedesktop/login1",
+    interface:"org.freedesktop.login1.Manager",
 
 power_request = (power) ->
     try
-        dbus_power = get_dbus("system",
-            name:"org.freedesktop.login1",
-            path:"/org/freedesktop/login1",
-            interface:"org.freedesktop.login1.Manager",
-            "Reboot"
-        )
+        dbus_power = get_dbus("system",FREEDESKKTOP_LOGIN1,"Reboot")
         echo dbus_power
     catch e
         echo "dbus_power error:#{e}"
@@ -22,12 +21,7 @@ power_request = (power) ->
 power_can = (power) ->
     if is_greeter
         try
-            dbus_power = get_dbus("system",
-                name:"org.freedesktop.login1",
-                path:"/org/freedesktop/login1",
-                interface:"org.freedesktop.login1.Manager",
-                "CanReboot"
-            )
+            dbus_power = get_dbus("system",FREEDESKKTOP_LOGIN1,"CanReboot")
             echo dbus_power
         catch e
             echo "dbus_power error:#{e}"
@@ -43,12 +37,12 @@ power_can = (power) ->
         return result
     else
         try
-            dbus_power = get_dbus("session",
+            DEEPIN_SESSION =
                 name:"com.deepin.SessionManager",
                 path:"/com/deepin/SessionManager",
                 interface:"com.deepin.SessionManager",
-                "CanReboot"
-            )
+            
+            dbus_power = get_dbus("session",DEEPIN_SESSION,"CanReboot")
             echo dbus_power
         catch e
             echo "dbus_power error:#{e}"
@@ -65,12 +59,7 @@ power_can = (power) ->
 
 power_force = (power) ->
     try
-        dbus_power = get_dbus("system"
-            name:"org.freedesktop.login1",
-            path:"/org/freedesktop/login1",
-            interface:"org.freedesktop.login1.Manager",
-            "Reboot"
-        )
+        dbus_power = get_dbus("system",FREEDESKKTOP_LOGIN1,"Reboot")
         echo dbus_power
     catch e
         echo "dbus_power error:#{e}"

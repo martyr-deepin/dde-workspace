@@ -20,6 +20,11 @@
 
 
 class SwitchUser extends Widget
+    DisplayManager =
+        name:"org.freedesktop.DisplayManager",
+        path:"/org/freedesktop/DisplayManager/Seat0",
+        interface:"org.freedesktop.DisplayManager.Seat",
+    
     constructor: ()->
         super
         clearInterval(draw_camera_id)
@@ -46,12 +51,7 @@ class SwitchUser extends Widget
         echo "SwitchToGreeter"
         try
             enableZoneDetect(true)
-            switch_dbus = get_dbus("system",
-                name:"org.freedesktop.DisplayManager",
-                path:"/org/freedesktop/DisplayManager/Seat0",
-                interface:"org.freedesktop.DisplayManager.Seat",
-                "CanSwitch"
-            )
+            switch_dbus = get_dbus("system",DisplayManager,"CanSwitch")
             if switch_dbus.CanSwitch
                 switch_dbus.SwitchToGreeter()
             else
@@ -63,12 +63,7 @@ class SwitchUser extends Widget
 
     SwitchToUser:(username,session_name)->
         try
-            switch_dbus = get_dbus("system",
-                name:"org.freedesktop.DisplayManager",
-                path:"/org/freedesktop/DisplayManager/Seat0",
-                interface:"org.freedesktop.DisplayManager.Seat",
-                "SwitchToUser"
-            )
+            switch_dbus = get_dbus("system",DisplayManager,"SwitchToUser")
             switch_dbus.SwitchToUser_sync(username,session_name)
             echo switch_dbus
         catch error

@@ -1,7 +1,7 @@
 class Keyboard
     #Keyboard DBus
     KEYBOARD =
-        obj: "com.deepin.daemon.InputDevices"
+        name: "com.deepin.daemon.InputDevices"
         path: "/com/deepin/daemon/InputDevice/Keyboard"
         interface: "com.deepin.daemon.InputDevice.Keyboard"
 
@@ -11,12 +11,7 @@ class Keyboard
 
     getDBus: ->
         try
-            @DBusKeyboard = get_dbus("session",
-                name:KEYBOARD.obj,
-                path:KEYBOARD.path,
-                interface:KEYBOARD.interface,
-                "UserLayoutList"
-            )
+            @DBusKeyboard = get_dbus("session",KEYBOARD,"UserLayoutList")
             @UserLayoutList = @DBusKeyboard.UserLayoutList
         catch e
             echo " DBusKeyboard :#{KEYBOARD} ---#{e}---"

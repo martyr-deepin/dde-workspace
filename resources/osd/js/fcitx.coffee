@@ -44,12 +44,12 @@ class Fcitx
 
     getDBus:->
         try
-            @DBusStatus = get_dbus("session", FCITX_STATUS.interface, "Activate")
+            @DBusStatus = get_dbus("session", FCITX_STATUS, "Menu")
         catch e
             echo "DBusStatus :#{FCITX_STATUS.interface} ---#{e}---"
 
         try
-            @DBusIM = get_dbus("session", FCITX_INPUTMETHOD, "GetCurrentIM")
+            @DBusIM = get_dbus("session", FCITX_INPUTMETHOD, "IMList")
             @IMList = @DBusIM.IMList
             @IMTrueList.push(im) for im in @IMList when im[3]
             echo @IMTrueList

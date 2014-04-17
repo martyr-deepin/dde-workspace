@@ -22,7 +22,7 @@ zoneDBus = null
 getZoneDBus = ->
     ZONE = "com.deepin.daemon.Zone"
     try
-        zoneDBus = get_dbus("session", ZONE, "EnableZoneDetected_sync")
+        zoneDBus = get_dbus("session", ZONE, "EnableZoneDetected")
     catch e
         echo "zoneDBus #{ZONE} error : #{e}"
 
