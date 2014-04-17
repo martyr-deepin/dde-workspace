@@ -50,7 +50,7 @@ class Audio extends Widget
         echo "GetDefaultSink:#{DefaultSink}"
         try
             AUDIO_SINKS.path = DefaultSink
-            @DBusDefaultSink = get_dbus(session, AUDIO_SINKS, "SetSinkVolume")
+            @DBusDefaultSink = get_dbus("session", AUDIO_SINKS, "SetSinkVolume")
         catch e
             echo "getDBusSinks ERROR: ---#{e}---"
 

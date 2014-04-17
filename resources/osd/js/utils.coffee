@@ -39,7 +39,7 @@ TIME_PRESS = 5
 timeout_osdHide = null
 DBusMediaKey = null
 try
-    DBusMediaKey = get_dbus("session", MEDIAKEY.interface, "AudioMute")
+    DBusMediaKey = DCore.DBus.session_object(MEDIAKEY.name, MEDIAKEY.path, MEDIAKEY.interface)
 catch e
     echo "Error:-----DBusMediaKey:#{e}"
 echo DBusMediaKey
