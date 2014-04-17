@@ -4,7 +4,8 @@ class Setting
             'session',
             name: "com.deepin.daemon.Dock",
             path: "/dde/dock/DockSetting",
-            interface:"dde.dock.DockSetting"
+            interface:"dde.dock.DockSetting",
+            "GetHideMode"
         )
         @dbus.connect("HideModeChanged", (mode)=>
             console.log("mode changed to #{mode}")

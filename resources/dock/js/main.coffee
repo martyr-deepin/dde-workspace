@@ -54,11 +54,11 @@ EntryManager =
     name:"com.deepin.daemon.Dock"
     path:"/dde/dock/EntryManager"
     interface:"dde.dock.EntryManager"
-entryManager = get_dbus('session', EntryManager)
+entryManager = get_dbus('session', EntryManager, "Entries")
 entries = entryManager.Entries
 for entry in entries
     console.log(entry)
-    d = get_dbus("session", itemDBus(entry))
+    d = get_dbus("session", itemDBus(entry), "Data")
     console.log("init add: #{d.Id}")
     if !Widget.look_up(d.Id)
         createItem(d)
@@ -78,7 +78,7 @@ entryManager.connect("TrayInited",->
 )
 
 entryManager.connect("Added", (path)->
-    d = get_dbus("session", itemDBus(path))
+    d = get_dbus("session", itemDBus(path), "Data")
     console.log("try to Add #{d.Id}, #{TRASH_ID}")
     if d.Id == TRASH_ID
         t = Widget.look_up(d.Id)

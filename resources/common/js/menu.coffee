@@ -186,7 +186,8 @@ class Menu
             "session",
             name:DEEPIN_MENU_NAME,
             path:DEEPIN_MENU_PATH,
-            interface:DEEPIN_MENU_MANAGER_INTERFACE
+            interface:DEEPIN_MENU_MANAGER_INTERFACE,
+            "RegisterMenu"
         )
 
         menu_dbus_path = manager.RegisterMenu_sync()
@@ -195,7 +196,9 @@ class Menu
             "session",
             name:DEEPIN_MENU_NAME,
             path:menu_dbus_path,
-            interface:DEEPIN_MENU_INTERFACE)
+            interface:DEEPIN_MENU_INTERFACE,
+            "ShowMenu"
+        )
 
         if not @dbus?
             echo "get deepin dbus menu failed"
