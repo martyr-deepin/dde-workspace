@@ -254,6 +254,8 @@ get_dbus = (type, opt, testProperty)->
         return null
 
     while d and not d[testProperty]
-        console.log("dbus starts incompletely")
+        try
+            d = func.apply(null, dbusArg)
+            console.log "dbus starts incompletely"
     d
 
