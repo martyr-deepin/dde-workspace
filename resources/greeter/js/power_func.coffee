@@ -1,7 +1,12 @@
 
 power_request = (power) ->
     try
-        dbus_power = DCore.DBus.sys_object("org.freedesktop.login1","/org/freedesktop/login1","org.freedesktop.login1.Manager")
+        dbus_power = get_dbus("system",
+            name:"org.freedesktop.login1",
+            path:"/org/freedesktop/login1",
+            interface:"org.freedesktop.login1.Manager",
+            "Reboot"
+        )
         echo dbus_power
     catch e
         echo "dbus_power error:#{e}"
@@ -17,7 +22,12 @@ power_request = (power) ->
 power_can = (power) ->
     if is_greeter
         try
-            dbus_power = DCore.DBus.sys_object("org.freedesktop.login1","/org/freedesktop/login1","org.freedesktop.login1.Manager")
+            dbus_power = get_dbus("system",
+                name:"org.freedesktop.login1",
+                path:"/org/freedesktop/login1",
+                interface:"org.freedesktop.login1.Manager",
+                "CanReboot"
+            )
             echo dbus_power
         catch e
             echo "dbus_power error:#{e}"
@@ -33,7 +43,12 @@ power_can = (power) ->
         return result
     else
         try
-            dbus_power = DCore.DBus.session_object("com.deepin.SessionManager","/com/deepin/SessionManager","com.deepin.SessionManager")
+            dbus_power = get_dbus("session",
+                name:"com.deepin.SessionManager",
+                path:"/com/deepin/SessionManager",
+                interface:"com.deepin.SessionManager",
+                "CanReboot"
+            )
             echo dbus_power
         catch e
             echo "dbus_power error:#{e}"
@@ -50,7 +65,12 @@ power_can = (power) ->
 
 power_force = (power) ->
     try
-        dbus_power = DCore.DBus.sys_object("org.freedesktop.login1","/org/freedesktop/login1","org.freedesktop.login1.Manager")
+        dbus_power = get_dbus("system"
+            name:"org.freedesktop.login1",
+            path:"/org/freedesktop/login1",
+            interface:"org.freedesktop.login1.Manager",
+            "Reboot"
+        )
         echo dbus_power
     catch e
         echo "dbus_power error:#{e}"

@@ -21,35 +21,31 @@
 class Accounts
     ACCOUNTS_DAEMON = "com.deepin.daemon.Accounts"
     ACCOUNTS_USER =
-        obj: ACCOUNTS_DAEMON
+        name: ACCOUNTS_DAEMON
         path: "/com/deepin/daemon/Accounts/User1000"
         interface: "com.deepin.daemon.Accounts.User"
-    
+
     GRAPHIC = "com.deepin.api.Graphic"
     APP = null
 
     constructor:(@id)->
         APP = @id#APP_NAME for DCore[APP]
-        
+
         @users_id = []
         @users_name = []
         @users_id_dbus = []
         @users_name_dbus = []
-    
+
         @getDBus()
 
     getDBus:->
         try
-            @Dbus_Account = DCore.DBus.sys(ACCOUNTS_DAEMON)
+            @Dbus_Account = get_dbus("system", ACCOUNTS_DAEMON, "UserList")
             echo "ACCOUNTS_DAEMON succeed and then connect path"
             for path in @Dbus_Account.UserList
                 echo path
                 ACCOUNTS_USER.path = path
-                user_dbus = DCore.DBus.sys_object(
-                    ACCOUNTS_USER.obj,
-                    ACCOUNTS_USER.path,
-                    ACCOUNTS_USER.interface
-                )
+                user_dbus = get_dbus("system", ACCOUNTS_USER, "UserName")
                 echo "Uid:#{user_dbus.Uid}"
                 echo "UserName:#{user_dbus.UserName}"
                 @users_id.push(user_dbus.Uid)
@@ -60,7 +56,7 @@ class Accounts
             echo "Dbus_Account #{ACCOUNTS_DAEMON} ERROR: #{e}"
 
         try
-            @Dbus_Graphic = DCore.DBus.session(GRAPHIC)
+            @Dbus_Graphic = get_dbus("session", GRAPHIC, "BackgroundBlurPictPath_sync")
         catch e
             echo "#{GRAPHIC} dbus ERROR: #{e}"
 
@@ -75,7 +71,7 @@ class Accounts
 
     is_user_sessioned_on:(uid)->
         if APP isnt "Greeter" then return true
-        
+
         username = @users_id_dbus[uid].UserName
         try
             is_sessioned_on = DCore.Greeter.get_user_session_on(username)
@@ -83,7 +79,7 @@ class Accounts
             echo "#{e}"
             is_sessioned_on = false
         return is_sessioned_on
-        
+
 
     get_user_id:(user)->
         id = null
@@ -93,7 +89,7 @@ class Accounts
             echo "get_user_id #{e}"
         if not id? then id = "1000"
         return id
-    
+
     get_user_icon:(uid)->
         icon = null
         try
@@ -130,7 +126,7 @@ class Accounts
         BackgroundBlurPictPath = DEFAULT_BG if not BackgroundBlurPictPath?
         echo "BackgroundBlurPictPath final:#{BackgroundBlurPictPath}"
         return BackgroundBlurPictPath
-    
+
     get_default_username:->
         try
             if APP is "Greeter"
@@ -140,12 +136,12 @@ class Accounts
         catch e
             echo "get_default_username:#{e}"
         return @_default_username
-    
+
     get_current_user_background:->
         @_current_username = @get_default_username()
         @_current_userid = @get_user_id(@_current_username)
         return @get_user_bg(uid)
-    
+
     get_current_user_blur_background:->
         @_current_username = @get_default_username()
         @_current_userid = @get_user_id(@_current_username)

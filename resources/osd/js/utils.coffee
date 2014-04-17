@@ -30,7 +30,7 @@ setFocus = (focus)->
 
 #MediaKey DBus
 MEDIAKEY =
-    obj: "com.deepin.daemon.KeyBinding"
+    name: "com.deepin.daemon.KeyBinding"
     path: "/com/deepin/daemon/MediaKey"
     interface: "com.deepin.daemon.MediaKey"
 
@@ -39,11 +39,7 @@ TIME_PRESS = 5
 timeout_osdHide = null
 DBusMediaKey = null
 try
-    DBusMediaKey = DCore.DBus.session_object(
-        MEDIAKEY.obj,
-        MEDIAKEY.path,
-        MEDIAKEY.interface
-    )
+    DBusMediaKey = get_dbus("session", MEDIAKEY.interface, "AudioMute")
 catch e
     echo "Error:-----DBusMediaKey:#{e}"
 echo DBusMediaKey
@@ -57,12 +53,12 @@ allElsHide = ->
 osdHide = ->
     return if FOCUS
     echo "osdHide : #{timeout_osdHide}"
-    
+
     allElsHide()
     DCore.Osd.hide()
     clearTimeout(timeout_osdHide)
     return
-    
+
     #document.body.opacity = "1"
     #jQuery(document.body).animate(
     #    {opacity:'0';},200,"linear",->
@@ -92,7 +88,7 @@ _b.addEventListener("contextmenu",(e)=>
     e.preventDefault()
     e.stopPropagation()
 )
-        
+
 setBodySize = (width,height)->
     _b.style.width = width
     _b.style.height = height
@@ -100,7 +96,7 @@ setBodySize = (width,height)->
 set_bg = (cls,imgName,prevImgName)->
     if prevImgName == imgName then return
     echo "set_bg: bgChanged from #{prevImgName} to #{imgName}"
-    
+
     cls.bg1 = create_element("div","#{cls.id}_bg1",cls.element) if not cls.bg1?
     cls.bg2 = create_element("div","#{cls.id}_bg2",cls.element) if not cls.bg2?
     cls.bg1.style.position = "absolute"
@@ -114,7 +110,7 @@ set_bg = (cls,imgName,prevImgName)->
     cls.bg2.style.backgroundImage = "url(img/#{imgName}.png)"
     cls.bg1.style.display = "block"
     cls.bg2.style.display = "block"
-    
+
     t = 500
     cls.bg1.style.opacity = "1.0"
     jQuery(cls.bg1).animate({opacity:'0';},t,"swing")

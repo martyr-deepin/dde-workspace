@@ -335,39 +335,38 @@ keep_user_background (const gchar *username)
     }
     g_free (bg_path);
 
-    for (int i = 0; i < gdk_display_get_n_screens (gdk_display_get_default ()); i++) {
-        GdkScreen *screen;
-        cairo_surface_t *surface;
-        cairo_t *c;
-        int monitor;
+    // !!! since 3.10 gdk_display_get_n_screens is deprecated
+    // and the number of screens is always 1.
+    GdkScreen* screen = gdk_screen_get_default();
+    cairo_surface_t *surface;
+    cairo_t *c;
+    int monitor;
 
-        screen = gdk_display_get_screen (gdk_display_get_default (), i);
-        surface = create_root_surface (screen);
-        c = cairo_create (surface);
+    surface = create_root_surface (screen);
+    c = cairo_create (surface);
 
-        for (monitor = 0; monitor < gdk_screen_get_n_monitors (screen); monitor++) {
-            gdk_screen_get_monitor_geometry (screen, monitor, &monitor_geometry);
+    for (monitor = 0; monitor < gdk_screen_get_n_monitors (screen); monitor++) {
+        gdk_screen_get_monitor_geometry (screen, monitor, &monitor_geometry);
 
-            if (background_pixbuf) {
-                GdkPixbuf *pixbuf = gdk_pixbuf_scale_simple (background_pixbuf,
-                                                             monitor_geometry.width,
-                                                             monitor_geometry.height,
-                                                             GDK_INTERP_BILINEAR);
+        if (background_pixbuf) {
+            GdkPixbuf *pixbuf = gdk_pixbuf_scale_simple (background_pixbuf,
+                                                         monitor_geometry.width,
+                                                         monitor_geometry.height,
+                                                         GDK_INTERP_BILINEAR);
 
-                gdk_cairo_set_source_pixbuf (c, pixbuf, monitor_geometry.x, monitor_geometry.y);
-                g_object_unref (pixbuf);
+            gdk_cairo_set_source_pixbuf (c, pixbuf, monitor_geometry.x, monitor_geometry.y);
+            g_object_unref (pixbuf);
 
-            } else {
-                gdk_cairo_set_source_rgba (c, &background_color);
-            }
-
-            cairo_paint (c);
-            cairo_surface_flush (surface);
-            XFlush (gdk_x11_get_default_xdisplay ());
+        } else {
+            gdk_cairo_set_source_rgba (c, &background_color);
         }
 
-        cairo_destroy (c);
+        cairo_paint (c);
+        cairo_surface_flush (surface);
+        XFlush (gdk_x11_get_default_xdisplay ());
     }
+
+    cairo_destroy (c);
 
     if (background_pixbuf) {
         g_object_unref (background_pixbuf);

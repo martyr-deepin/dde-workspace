@@ -25,7 +25,7 @@ class SwitchUser extends Widget
         clearInterval(draw_camera_id)
         draw_camera_id = null
         document.body.style.fontSize = "62.5%"
-    
+
     button_switch:->
         @switch = create_img("switch", "images/userswitch/acount_switch_hover.png", @element)
         @switch.style.cursor = "pointer"
@@ -46,7 +46,12 @@ class SwitchUser extends Widget
         echo "SwitchToGreeter"
         try
             enableZoneDetect(true)
-            switch_dbus = DCore.DBus.sys_object("org.freedesktop.DisplayManager","/org/freedesktop/DisplayManager/Seat0","org.freedesktop.DisplayManager.Seat")
+            switch_dbus = get_dbus("system",
+                name:"org.freedesktop.DisplayManager",
+                path:"/org/freedesktop/DisplayManager/Seat0",
+                interface:"org.freedesktop.DisplayManager.Seat",
+                "CanSwitch"
+            )
             if switch_dbus.CanSwitch
                 switch_dbus.SwitchToGreeter()
             else
@@ -58,7 +63,12 @@ class SwitchUser extends Widget
 
     SwitchToUser:(username,session_name)->
         try
-            switch_dbus = DCore.DBus.sys_object("org.freedesktop.DisplayManager","/org/freedesktop/DisplayManager/Seat0","org.freedesktop.DisplayManager.Seat")
+            switch_dbus = get_dbus("system",
+                name:"org.freedesktop.DisplayManager",
+                path:"/org/freedesktop/DisplayManager/Seat0",
+                interface:"org.freedesktop.DisplayManager.Seat",
+                "SwitchToUser"
+            )
             switch_dbus.SwitchToUser_sync(username,session_name)
             echo switch_dbus
         catch error

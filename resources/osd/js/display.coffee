@@ -22,10 +22,10 @@ class Display extends Widget
     #Display DBus
     DISPLAY = "com.deepin.daemon.Display"
     DISPLAY_MONITORS =
-        obj: DISPLAY
+        name: DISPLAY
         path: "/com/deepin/daemon/Display/MonitorLVDS1"
         interface: "com.deepin.daemon.Display.Monitor"
-    #-1 copy 
+    #-1 copy
     #0 expand
     #1 onlyCurrentScreen
     #2 onlySecondScreen
@@ -40,7 +40,7 @@ class Display extends Widget
         @OpenedMonitorsName = []
         @valueEach = []
         @ModeChoose = DEFAULT_DISPLAY_MODE
-        
+
         _b.appendChild(@element)
         @getDBus()
         _b.addEventListener("keyup",(e)=>
@@ -50,10 +50,10 @@ class Display extends Widget
 
     hide:->
         @element.style.display = "none"
-    
+
     getDBus:->
         try
-            @DBusDisplay = DCore.DBus.session(DISPLAY)
+            @DBusDisplay = get_dbus("session", DISPLAY, "Monitors")
             @Monitors = @DBusDisplay.Monitors
             @DisplayMode = @DBusDisplay.DisplayMode
             @HasChanged = @DBusDisplay.HasChanged
@@ -64,11 +64,7 @@ class Display extends Widget
         try
             for path in @Monitors
                 DISPLAY_MONITORS.path = path
-                DBusMonitor = DCore.DBus.session_object(
-                    DISPLAY_MONITORS.obj,
-                    DISPLAY_MONITORS.path,
-                    DISPLAY_MONITORS.interface
-                )
+                DBusMonitor = get_dbus("session", DISPLAY_MONITORS, "FullName")
                 echo DBusMonitor
                 @DBusMonitors.push(DBusMonitor)
                 if DBusMonitor.Opened
@@ -78,13 +74,13 @@ class Display extends Widget
                     @DBusPrimarMonitor = DBusMonitor
         catch e
             echo "getDBusMonitors ERROR: ---#{e}---"
-    
+
     getDBusMonitor:(name)->
         return dbus = monitor for monitor in @DBusMonitors when monitor.FullName is name
-    
+
     getBrightness:(name)->
         @getDBusMonitor(name).Brightness
-    
+
     getPrimarBrightnessValue:->
         name = @PrimarMonitorName
         bright = @getBrightness(name) if name?
@@ -96,17 +92,17 @@ class Display extends Widget
             echo "getPrimarBrightnessValue: ERROR: #{e}"
         finally
             return value
-     
+
     switchDisplayMode:(ModeChoose)->
         setFocus(false)
         osdHide()
-        
+
         if @DBusMonitors.length == 1 then return
         @DisplayMode = @DBusDisplay.DisplayMode
         if not @DisplayMode? then @DisplayMode = 0
         @DisplayMode++
         if @DisplayMode > @DBusMonitors.length then @DisplayMode = -1
-        
+
         ModeChoose = @DisplayMode
         echo "SwitchMode to (#{ModeChoose})"
         @DBusDisplay.SwitchMode_sync(ModeChoose)
@@ -116,7 +112,7 @@ class Display extends Widget
     showDisplayMode:->
         clearTimeout(@timepress)
         clearTimeout(timeout_osdHide)
-        
+
         @timepress = setTimeout(=>
             @FromSwitchMonitors = true
             @valueDiv.style.display = "none" if @valueDiv
@@ -132,10 +128,10 @@ class Display extends Widget
             imgName = "#{@id}_#{ImgIndex}"
             set_bg(@,imgName,@preDisplayImg)
             @preDisplayImg = imgName
-            
+
             timeout_osdHide = setTimeout(osdHide,TIME_HIDE)
         ,TIME_PRESS)
-    
+
 
     showBrightness:->
         clearTimeout(@timepress) if @timepress
@@ -145,12 +141,12 @@ class Display extends Widget
             echo "#{@id} Class  show"
             osdShow()
             @element.style.display = "block"
-            
+
             value = @getPrimarBrightnessValue()
             echo "showBrightValue:#{value}"
             set_bg(@,@id,@prebgImg)
             @prebgImg = @id
-            
+
             showValue(value,0,1,@,"Brightness_bar")
             timeout_osdHide = setTimeout(=>
                 osdHide()

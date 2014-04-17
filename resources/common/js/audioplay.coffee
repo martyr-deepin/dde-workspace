@@ -28,18 +28,28 @@ class AudioPlay
             mpris = @get_mpris_dbus()
             if not mpris? then return
             echo mpris
-            @mpris_dbus = DCore.DBus.session_object("#{mpris}", "/org/mpris/MediaPlayer2", "org.mpris.MediaPlayer2.Player")
+            @mpris_dbus = get_dbus("session",
+                name:"#{mpris}",
+                path:"/org/mpris/MediaPlayer2",
+                interface:"org.mpris.MediaPlayer2.Player",
+                "PlaybackStatus"
+            )
             launched_status = true
         catch error
             launched_status = false
             echo "@mpris_dbus is null ,the player isnt launched!"
 
-    
+
     get_mpris_dbus:->
         @mpris_dbus_min = "org.mpris.MediaPlayer2."
         dbus_all = []
         @mpris_dbus_all = []
-        freedesktop_dbus = DCore.DBus.session_object("org.freedesktop.DBus","/","org.freedesktop.DBus")
+        freedesktop_dbus = get_dbus("session",
+            name:"org.freedesktop.DBus",
+            path:"/",
+            interface:"org.freedesktop.DBus",
+            "ListNames_sync"
+        )
         dbus_all = freedesktop_dbus.ListNames_sync()
         for dbus in dbus_all
             index = dbus.indexOf(@mpris_dbus_min)
@@ -54,11 +64,16 @@ class AudioPlay
             else
                 for dbus in @mpris_dbus_all
                     if dbus.name is "dmusic" then return dbus.mpris
-                
+
                 for dbus in @mpris_dbus_all
                     mpris = dbus.mpris
                     try
-                        mpris_dbus = DCore.DBus.session_object("#{mpris}", "/org/mpris/MediaPlayer2", "org.mpris.MediaPlayer2.Player")
+                        mpris_dbus = get_dbus("session",
+                            name:"#{mpris}",
+                            path:"/org/mpris/MediaPlayer2",
+                            interface:"org.mpris.MediaPlayer2.Player",
+                            "PlaybackStatus"
+                        )
                         #if dbus.name is DCore.DEntry.get_default_audio_player_name().toLowerCase() return dbus.mpris
                         if mpris_dbus.PlaybackStatus isnt "Stopped" then return mpris
                     catch e
@@ -122,7 +137,7 @@ class AudioPlay
     getUrl:->
         #www url
         @mpris_dbus.Metadata['xesam:url']
-    
+
     getalbum:->
         #zhuanji name
         @mpris_dbus.Metadata['xesam:album']

@@ -32,12 +32,13 @@ class Trash extends PostfixedItem
         console.log(id)
         switch id
             when 1
-                loop
-                    try
-                        DCore.DBus.session_object("org.gnome.Nautilus",
-                                                  "/org/gnome/Nautilus",
-                                                  "org.gnome.Nautilus.FileOperations").EmptyTrash()
-                        break
+                d = get_dbus("session",
+                        name:"org.gnome.Nautilus",
+                        path:"/org/gnome/Nautilus",
+                        interface:"org.gnome.Nautilus.FileOperations",
+                        "EmptyTrash"
+                )
+                d.EmptyTrash()
                 @update()
             when 2
                 DCore.Dock.close_window(@id)

@@ -20,17 +20,17 @@
 class Fcitx
     FCITX = "org.fcitx.Fcitx-0"
     FCITX_STATUS =
-        obj: FCITX
+        name: FCITX
         path: "/StatusNotifierItem"
         interface: "org.kde.StatusNotifierItem"
 
     FCITX_INPUTMETHOD =
-        obj: FCITX
+        name: FCITX
         path: "/inputmethod"
         interface: "org.fcitx.Fcitx.InputMethod"
 
     FCITX_KEYBOARD =
-        obj: FCITX
+        name: FCITX
         path: "/keyboard"
         interface: "org.fcitx.Fcitx.Keyboard"
 
@@ -39,25 +39,17 @@ class Fcitx
         @IMList = []
         @IMTrueList = []
         @Layouts = []
-        
+
         @getDBus()
-   
+
     getDBus:->
         try
-            @DBusStatus = DCore.DBus.session_object(
-                FCITX_STATUS.obj,
-                FCITX_STATUS.path,
-                FCITX_STATUS.interface
-            )
+            @DBusStatus = get_dbus("session", FCITX_STATUS.interface, "Activate")
         catch e
             echo "DBusStatus :#{FCITX_STATUS.interface} ---#{e}---"
 
         try
-            @DBusIM = DCore.DBus.session_object(
-                FCITX_INPUTMETHOD.obj,
-                FCITX_INPUTMETHOD.path,
-                FCITX_INPUTMETHOD.interface
-            )
+            @DBusIM = get_dbus("session", FCITX_INPUTMETHOD, "GetCurrentIM")
             @IMList = @DBusIM.IMList
             @IMTrueList.push(im) for im in @IMList when im[3]
             echo @IMTrueList
@@ -67,23 +59,19 @@ class Fcitx
             echo "DBusIM :#{FCITX_INPUTMETHOD.interface} ---#{e}---"
 
         try
-            @DBusLayout = DCore.DBus.session_object(
-                FCITX_KEYBOARD.obj,
-                FCITX_KEYBOARD.path,
-                FCITX_KEYBOARD.interface
-            )
+            @DBusLayout = get_dbus("session", FCITX_KEYBOARD, "GetLayouts_sync")
             @Layouts = @DBusLayout.GetLayouts_sync()
         catch e
             echo "DBusLayout :#{FCITX_KEYBOARD.interface} ---#{e}---"
 
-        
+
     getCurrentIMState: ->
         @PrevIM = @CurrentIM
         @CurrentIM = @DBusIM.GetCurrentIM_sync()
         @PrevState = @CurrentState
         @CurrentState = @DBusIM.GetCurrentState_sync()
         echo "@CurrentIM:#{@CurrentIM},@CurrentState:#{@CurrentState}"
-   
+
 
     getIMState: ->
         @getCurrentIMState()
@@ -92,7 +80,7 @@ class Fcitx
         else if @CurrentState != 0  then @IMState = "IM_SHOW"
         else @IMState = "IM_OTHER"
         return @IMState
-    
+
     setCurrentIM: (im)->
         @DBusIM.SetCurrentIM_sync(im)
 
@@ -102,7 +90,7 @@ class Fcitx
 
     setLayoutForIM: (im,layout,variant)->
         @DBusLayout.SetLayoutForIM_sync(im,layout.variant)
-    
+
     setDefaultLayout: (layout,variant)->
         @DBusLayout.SetDefaultLayout_sync(layout.variant)
 
@@ -116,16 +104,16 @@ class FcitxOSD extends Widget
         super
         echo "New FcitxOSD :#{@id}"
         _b.appendChild(@element)
-    
+
         @fcitx = new Fcitx()
         @fcitx.fcitxSignalsConnect(@cbIMState)
-    
+
     hide:->
         @element.style.display = "none"
-    
+
     show:->
         @element.style.display = "-webkit-box"
-    
+
     imListBackgroundChange: ->
         if not @IMListul?
             @IMli = []
@@ -135,11 +123,11 @@ class FcitxOSD extends Widget
                 @IMli[i] = create_element("li","IMli",@IMListul)
                 @IMli_span[i] = create_element("span","IMli_span",@IMli[i])
                 @IMli_span[i].textContent = im[0]
-        
+
         @fcitx.getIMState()
         @currentIMIndex = @fcitx.CurrentState - 1
         @currentIMIndex = @fcitx.PrevState if @currentIMIndex == -1
-        
+
         for li,i in @IMli
             if i == @currentIMIndex
                 li.style.border = "rgba(255,255,255,0.5) 2px solid"
@@ -147,7 +135,7 @@ class FcitxOSD extends Widget
             else
                 li.style.border = "rgba(255,255,255,0.0) 2px solid"
                 li.style.backgroundColor = null
-        
+
     cbIMState: =>
         echo "cbIMState"
         @IMState = @fcitx.getIMState()

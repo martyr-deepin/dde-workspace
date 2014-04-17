@@ -22,7 +22,7 @@ class Audio extends Widget
     #Audio DBus
     AUDIO = "com.deepin.daemon.Audio"
     AUDIO_SINKS =
-        obj: AUDIO
+        name: AUDIO
         path: "/com/deepin/daemon/Audio/Sink0"
         interface: "com.deepin.daemon.Audio.Sink"
     DEFAULT_SINK = "/com/deepin/daemon/Audio/Sink0"
@@ -33,28 +33,24 @@ class Audio extends Widget
         _b.appendChild(@element)
         @getDBusAudio()
         @getDBusDefaultSink(@DefaultSink)
-        
-   
+
+
     hide:->
         @element.style.display = "none"
-    
+
     getDBusAudio:->
         try
-            @DBusAudio = DCore.DBus.session(AUDIO)
+            @DBusAudio = get_dbus("session", AUDIO, "GetDefaultSink")
             @DefaultSink = @DBusAudio.GetDefaultSink_sync()
             if not @DefaultSink? then @DefaultSink = DEFAULT_SINK
         catch e
             echo " DBusAudio :#{AUDIO} ---#{e}---"
-  
+
     getDBusDefaultSink:(DefaultSink)->
         echo "GetDefaultSink:#{DefaultSink}"
         try
             AUDIO_SINKS.path = DefaultSink
-            @DBusDefaultSink = DCore.DBus.session_object(
-                AUDIO_SINKS.obj,
-                AUDIO_SINKS.path,
-                AUDIO_SINKS.interface
-            )
+            @DBusDefaultSink = get_dbus(session, AUDIO_SINKS, "SetSinkVolume")
         catch e
             echo "getDBusSinks ERROR: ---#{e}---"
 
@@ -67,13 +63,13 @@ class Audio extends Widget
 
     getVolume:->
         volume = @DBusDefaultSink.Volume
-       
+
     setVolume:(volume)->
         @DBusDefaultSink.SetSinkVolume_sync(volume)
 
     getMute:->
         @DBusDefaultSink.Mute
-    
+
     setMute:(mute)->
         @DBusDefaultSink.SetSinkMute_sync(mute)
 
@@ -91,7 +87,7 @@ class Audio extends Widget
         else if volume <= 70 then bg = "Audio_2"
         else bg = "Audio_3"
         return bg
-    
+
     show:(value)->
         clearTimeout(@timepress)
         clearTimeout(timeout_osdHide)

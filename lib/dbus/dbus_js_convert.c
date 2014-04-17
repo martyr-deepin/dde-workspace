@@ -188,7 +188,7 @@ JSValueRef dbus_to_js(JSContextRef ctx, GVariant *dbus)
                 jsvalue = JSObjectMakeArray(ctx, 0, NULL, NULL);
                 for (int i=0; i < n; i++) {
                     GVariant* v = g_variant_get_child_value(dbus, i);
-                    JSObjectSetPropertyAtIndex(ctx, jsvalue, i, dbus_to_js(ctx, v), NULL);
+                    JSObjectSetPropertyAtIndex(ctx, (JSObjectRef)jsvalue, i, dbus_to_js(ctx, v), NULL);
                     g_variant_unref(v);
                 }
                 return jsvalue;
@@ -211,3 +211,4 @@ GVariantType* gslit_to_varianttype(GSList* l)
     g_string_append(str, ")");
     return g_variant_type_new(g_string_free(str, FALSE));
 }
+

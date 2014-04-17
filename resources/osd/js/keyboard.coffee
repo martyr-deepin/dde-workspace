@@ -8,13 +8,14 @@ class Keyboard
     constructor:->
         echo "New Keyboard"
         @UserLayoutList = []
-    
+
     getDBus: ->
         try
-            @DBusKeyboard = DCore.DBus.session_object(
-                KEYBOARD.obj,
-                KEYBOARD.path,
-                KEYBOARD.interface
+            @DBusKeyboard = get_dbus("session",
+                name:KEYBOARD.obj,
+                path:KEYBOARD.path,
+                interface:KEYBOARD.interface,
+                "UserLayoutList"
             )
             @UserLayoutList = @DBusKeyboard.UserLayoutList
         catch e
@@ -34,7 +35,7 @@ SwitchLayout = (keydown)->
     if keydown then return
     setFocus(false)
     echo "SwitchLayout"
-    
+
     keyboard = new Keyboard() if not keyboard?
     keyboard.getDBus()
     if keyboard.UserLayoutList.length < 2 then return

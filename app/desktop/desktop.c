@@ -511,15 +511,15 @@ gboolean desktop_check_version_equal_set(const char* version_set)
 
     return result;
 }
-    
+
 JS_EXPORT_API
-gboolean desktop_is_livecd (const char* username)
+gboolean desktop_is_livecd (const char* username G_GNUC_UNUSED)
 {
     g_message("desktop_is_livecd");
     const gchar *filename = "/proc/cmdline";
     gchar *contents = NULL;
     gboolean result = FALSE;
-    gint length = 0;
+    gsize length = 0;
     if (g_file_get_contents(filename,&contents,&length,NULL))
     {
         g_message("--------%s----",contents);

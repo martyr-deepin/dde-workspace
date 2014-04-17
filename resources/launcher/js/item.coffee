@@ -19,7 +19,7 @@
 
 
 try
-    s_dock = DCore.DBus.session("com.deepin.dde.dock")
+    s_dock = get_dbus("session", "com.deepin.dde.dock", "ToggleShow")
 catch error
     s_dock = null
 

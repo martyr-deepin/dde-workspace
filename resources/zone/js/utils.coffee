@@ -22,7 +22,7 @@ zoneDBus = null
 getZoneDBus = ->
     ZONE = "com.deepin.daemon.Zone"
     try
-        zoneDBus = DCore.DBus.session(ZONE)
+        zoneDBus = get_dbus("session", ZONE, "EnableZoneDetected_sync")
     catch e
         echo "zoneDBus #{ZONE} error : #{e}"
 
@@ -51,7 +51,7 @@ getZoneConfig = ->
         value = DCore.Zone.get_config(key)
         cfgKeyVal[key] = value
         zoneKeyText[key] = option_text[j] for val ,j in cfgValue when val is value
- 
+
 setZoneConfig = (key,value)->
     cfgKeyVal[key] = value
     zoneKeyText[key] = option_text[j] for val ,j in cfgValue when val is value
@@ -69,11 +69,11 @@ bgRadial = ->
     y = wHeight / 2
     r = wWidth / 2
     echo wWidth + "------" + wHeight + ";" + x + "-----" + y + "r:#{r}"
-    
+
     rg = context.createRadialGradient(x,y,0,x,y,r)
     rg.addColorStop(0,'#FFFFFF')
     rg.addColorStop(1,'#000000')
-    
+
     context.fillStyle = rg
     context.beginPath()
     context.arc(x,y,r,0,2 * Math.PI)

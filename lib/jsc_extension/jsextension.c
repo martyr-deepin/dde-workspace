@@ -101,7 +101,7 @@ PRIVATE gboolean _js_value_unprotect(JSValueRef v)
 }
 void js_value_unprotect(JSValueRef v)
 {
-    g_main_context_invoke(NULL, _js_value_unprotect, v);
+    g_main_context_invoke(NULL, (GSourceFunc)_js_value_unprotect, (gpointer)v);
 }
 PRIVATE gboolean _js_value_protect(JSValueRef v)
 {
@@ -110,5 +110,6 @@ PRIVATE gboolean _js_value_protect(JSValueRef v)
 }
 void js_value_protect(JSValueRef v)
 {
-    g_main_context_invoke(NULL, _js_value_protect, v);
+    g_main_context_invoke(NULL, (GSourceFunc)_js_value_protect, (gpointer)v);
 }
+
