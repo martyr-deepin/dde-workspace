@@ -192,6 +192,26 @@ void launcher_show()
 {
     gtk_widget_show_all(container);
     is_launcher_shown = TRUE;
+    GError* err = NULL;
+    GDBusConnection* conn = g_bus_get_sync(G_BUS_TYPE_SESSION, NULL, &err);
+    if (err != NULL) {
+        g_warning("%s", err->message);
+        g_error_free(err);
+        return;
+    }
+    g_dbus_connection_emit_signal(conn,
+                                  NULL,
+                                  "/com/deepin/dde/launcher",
+                                  "com.deepin.dde.launcher",
+                                  "Shown",
+                                  NULL,
+                                  &err
+                                  );
+    g_object_unref(conn);
+    if (err != NULL) {
+        g_warning("launcher emit Shown signal failed: %s", err->message);
+        g_error_free(err);
+    }
 }
 
 
@@ -203,6 +223,26 @@ void launcher_hide()
     is_launcher_shown = FALSE;
     gtk_widget_hide(container);
     js_post_signal("exit_launcher");
+    GError* err = NULL;
+    GDBusConnection* conn = g_bus_get_sync(G_BUS_TYPE_SESSION, NULL, &err);
+    if (err != NULL) {
+        g_warning("%s", err->message);
+        g_error_free(err);
+        return;
+    }
+    g_dbus_connection_emit_signal(conn,
+                                  NULL,
+                                  "/com/deepin/dde/launcher",
+                                  "com.deepin.dde.launcher",
+                                  "Closed",
+                                  NULL,
+                                  &err
+                                  );
+    g_object_unref(conn);
+    if (err != NULL) {
+        g_warning("launcher emit Closed signal failed: %s", err->message);
+        g_error_free(err);
+    }
 }
 
 
