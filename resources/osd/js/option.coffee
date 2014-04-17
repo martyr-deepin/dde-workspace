@@ -92,8 +92,8 @@ TouchPadOff = (keydown)->
     OptionCls.show()
 
 
-#DBusMediaKey.connect("CapsLockOn",CapsLockOn) if DBusMediaKey?
-#DBusMediaKey.connect("CapsLockOff",CapsLockOff) if DBusMediaKey?
+DBusMediaKey.connect("CapsLockOn",CapsLockOn) if DBusMediaKey?
+DBusMediaKey.connect("CapsLockOff",CapsLockOff) if DBusMediaKey?
 DBusMediaKey.connect("NumLockOn",NumLockOn) if DBusMediaKey?
 DBusMediaKey.connect("NumLockOff",NumLockOff) if DBusMediaKey?
 DBusMediaKey.connect("TouchPadOff",TouchPadOff) if DBusMediaKey?
