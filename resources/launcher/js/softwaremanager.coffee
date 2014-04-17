@@ -32,7 +32,7 @@ uninstallReport = (status, msg)->
     console.log "uninstall #{message}, #{msg}"
     icon_launcher = DCore.get_theme_icon("start-here", 48)
     try
-        notification = get_dbus("session", NOTIFICATIONS)
+        notification = get_dbus("session", NOTIFICATIONS, "Notify")
         notification.Notify("Deepin Launcher", -1, icon_launcher, "Uninstall #{message}", "#{msg}", [], {}, 0)
     catch e
         console.log e
@@ -70,11 +70,11 @@ uninstall = (opt) ->
 
     if not softwareManager?
         try
-            softwareManager = get_dbus("system", SOFTWARE_MANAGER)
+            softwareManager = get_dbus("system", SOFTWARE_MANAGER, "uninstall_pkg")
         catch e
             console.log e
             try
-                notification = get_dbus("session", NOTIFICATIONS)
+                notification = get_dbus("session", NOTIFICATIONS, "Notify")
                 notification.Notify("Deepin Launcher", -1, icon_launcher, _("Uninstall failed"), _("Cannot find Deepin Software Center."), [], {}, 0)
             catch e
                 console.log e

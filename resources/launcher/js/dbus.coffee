@@ -20,7 +20,7 @@
 
 LAUNCHER_DAEMON="com.deepin.dde.daemon.Launcher"
 try
-    daemon = get_dbus("session", LAUNCHER_DAEMON)
+    daemon = get_dbus("session", LAUNCHER_DAEMON, "GetFavors")
 catch e
     console.log e
     DCore.Launcher.quit()
@@ -32,7 +32,7 @@ START_MANAGER =
     interface: "com.deepin.StartManager"
 
 try
-    startManager = get_dbus("session", START_MANAGER)
+    startManager = get_dbus("session", START_MANAGER, "AutostartList")
 catch e
     console.log e
     DCore.Launcher.quit()

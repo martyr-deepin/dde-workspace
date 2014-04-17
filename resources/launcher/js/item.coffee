@@ -316,9 +316,10 @@ class Item extends Widget
                 try
                     dock = get_dbus(
                         "session",
-                        name:"com.deepin.daemon.Dock"
-                        path:"/dde/dock/DockedAppManager"
-                        interface:"dde.dock.DockedAppManager"
+                        name:"com.deepin.daemon.Dock",
+                        path:"/dde/dock/DockedAppManager",
+                        interface:"dde.dock.DockedAppManager",
+                        "DockedAppList"
                     )
                     console.log(get_path_name(@path))
                     dock.Dock(get_path_name(@path), "", "", "")

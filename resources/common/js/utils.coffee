@@ -226,7 +226,7 @@ inject_css = (el,src)->
     css_element.rel = "stylesheet"
     css_element.href = src
 
-get_dbus = (type, opt)->
+get_dbus = (type, opt, testProperty)->
     type = type.toLowerCase()
     if type == "system"
         type = "sys"
@@ -246,10 +246,14 @@ get_dbus = (type, opt)->
             if (d = func.apply(null, dbusArg))?
                 break
     catch e
-        throw "Get DBus \"#{opt.name} #{opt.path} #{opt.interface}\" failed: #{e}"
+        console.log "Get DBus \"#{opt.name} #{opt.path} #{opt.interface}\" failed: #{e}"
         return null
 
     if !d
-        throw "Get DBus \"#{opt.name} #{opt.path} #{opt.interface}\" failed"
+        console.log "Get DBus \"#{opt.name} #{opt.path} #{opt.interface}\" failed"
+        return null
+
+    while d and not d[testProperty]
+        console.log("dbus starts incompletely")
     d
 
