@@ -515,17 +515,17 @@ gboolean desktop_check_version_equal_set(const char* version_set)
 JS_EXPORT_API
 gboolean desktop_is_livecd (const char* username)
 {
-    g_warning("desktop_is_livecd");
+    g_message("desktop_is_livecd");
     const gchar *filename = "/proc/cmdline";
     gchar *contents = NULL;
     gboolean result = FALSE;
     gint length = 0;
     if (g_file_get_contents(filename,&contents,&length,NULL))
     {
-        g_warning("--------%s----",contents);
+        g_message("--------%s----",contents);
         gchar* ptr = g_strstr_len(contents, -1, "boot=casper");
         if (ptr == NULL) {
-            g_warning("not found boot=casper");
+            g_message("not found boot=casper");
         } else {
             result = TRUE;
         }
@@ -543,7 +543,7 @@ void desktop_load_dinstaller_desktop_item()
     const gchar* username = g_get_user_name ();
     if (desktop_is_livecd(username))
     {
-        g_warning("desktop_is_livecd true");
+        g_message("desktop_is_livecd true");
         GFile* src_file = g_file_new_for_path("/usr/share/applications/deepin-installer.desktop");
         g_file_copy(src_file, dest_file, G_FILE_COPY_NONE, NULL, NULL, NULL, NULL);
         g_chmod(dsc_path, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);
@@ -551,7 +551,7 @@ void desktop_load_dinstaller_desktop_item()
     }
     else
     {
-        g_warning("desktop_is_livecd false");
+        g_message("desktop_is_livecd false");
         /*g_file_delete(dest_file, NULL, NULL);*/
     }
     g_free(dsc_path);
