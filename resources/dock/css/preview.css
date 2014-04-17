@@ -105,12 +105,12 @@
   margin-top: 2%;
 }
 .PWClose {
-  width: 14px;
-  height: 14px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   position: absolute;
-  right: -8px;
-  top: -7px;
+  right: -9px;
+  top: -9px;
   font-weight: 20;
   text-align: center;
   color:white;

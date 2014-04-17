@@ -44,28 +44,14 @@ gboolean dock_has_maximize_client()
         Window xid = X_FETCH_32(data, i);
         if (_is_maximized_window(xid)) {
             has = TRUE;
-            goto out;
+            break;
         }
     }
 
-out:
     XFree(data);
 
     return has;
 }
-int dock_has_overlay_client()
-{
-    return 0;
-}
-int dock_is_client_minimized(double xid G_GNUC_UNUSED)
-{
-    return 0;
-}
-
-gboolean is_has_client(const char* app_id G_GNUC_UNUSED) {
-    return 0;
-}
-
 
 
 JS_EXPORT_API

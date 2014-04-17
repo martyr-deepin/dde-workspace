@@ -10,6 +10,8 @@ func main() {
 		Method("Hide", Callback("launcher_hide")),
 		Method("Toggle", Callback("launcher_toggle")),
 		Method("Exit", Callback("launcher_quit")),
+		Signal("Shown"),
+		Signal("Closed"),
 	)
 	DBusCall(
 		SessionDBUS("com.deepin.dde.launcher"),

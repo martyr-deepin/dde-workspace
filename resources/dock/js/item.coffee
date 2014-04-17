@@ -262,6 +262,7 @@ class AppItem extends Item
         @init_clientgroup()
 
     swap_to_activator:->
+        Preview_close_now()
         @init_activator()
 
     update_client: (id, title)->

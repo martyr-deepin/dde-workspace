@@ -381,7 +381,7 @@ class PreviewWindow extends Widget
             @canvas_width = Preview_container.pw_width
             @canvas_height = Preview_container.pw_height
         else
-            @scale = Preview_container.scale
+            @scale = Preview_container.scale || 1
             console.log("PWWindow scale: #{@scale}")
             @element.style.width = PREVIEW_WINDOW_WIDTH * @scale
             @element.style.height = PREVIEW_WINDOW_HEIGHT * @scale
