@@ -337,7 +337,7 @@ bool has_property(JSContextRef ctx, JSObjectRef object, JSStringRef propertyName
 
     gchar** names = g_dbus_proxy_get_cached_property_names(proxy);
     if (names != NULL) {
-        for (int i=0; i < g_strv_length(names); i++) {
+        for (guint i=0; i < g_strv_length(names); i++) {
             if (g_strcmp0(names[i], prop_name) == 0) {
                 has = TRUE;
                 break;
