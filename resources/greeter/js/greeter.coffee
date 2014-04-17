@@ -44,10 +44,11 @@ class Greeter extends Widget
 
 
     keydown_listener:(e,user)->
+        echo "greeter keydown_listener"
         if e.which == LEFT_ARROW
-            user?.switchtonext_userinfo()
+            user?.switch_userinfo("next")
         else if e.which == RIGHT_ARROW
-            user?.switchtoprev_userinfo()
+            user?.switch_userinfo("prev")
 
 greeter = new Greeter()
 setBodyWallpaper("sky_move")
@@ -58,7 +59,6 @@ desktopmenu.new_desktop_menu()
 
 user = new User()
 $("#div_users").appendChild(user.element)
-user.isSupportGuest()
 user.new_userinfo_for_greeter()
 user.prev_next_userinfo_create() if user.userinfo_all.length > 1
 
