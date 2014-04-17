@@ -28,21 +28,16 @@ class DesktopMenu extends Widget
         if not @parent? then @parent = document.body
         @parent.appendChild(@element)
    
-        @is_one_session = false
-        @sessions = DCore.Greeter.get_sessions()
-        if @sessions.length < 2 then @is_one_session = true
-       
 
     hide:->
         @element.style.display = "none"
-        @de_menu?.hide()
+        @ComboBox?.hide()
 
     show:->
         @element.style.display = "block"
-        @de_menu?.show()
+        @ComboBox?.show()
 
     update_current_icon:(@current)->
-        return if @is_one_session
         @show()
         try
             echo "set_current(@current) :----#{@current}----"
@@ -54,18 +49,18 @@ class DesktopMenu extends Widget
         finally
             echo @current_img_src
             localStorage.setItem("menu_current_id",@current)
-            @de_menu.current_img.src = @current_img_src
+            @ComboBox.current_img.src = @current_img_src
 
     menuChoose_click_cb : (current, title)=>
-        return if @is_one_session
-        @current = @de_menu.set_current(current)
+        @current = @ComboBox.set_current(current)
         @update_current_icon(@current)
 
     new_desktop_menu: ->
         echo "new_desktop_menu"
-        return if @is_one_session
         
-        @de_menu = new ComboBox("desktop", @menuChoose_click_cb)
+        @ComboBox = new ComboBox("desktop", @menuChoose_click_cb)
+        @sessions = DCore.Greeter.get_sessions()
+        if @sessions.length == 0 then return
         for session in @sessions
             id = session.toLowerCase()
             name = id
@@ -74,13 +69,11 @@ class DesktopMenu extends Widget
             icon_path_normal = @img_before + "#{icon}_normal.png"
             icon_path_hover = @img_before + "#{icon}_hover.png"
             icon_path_press = @img_before + "#{icon}_press.png"
-            @de_menu.insert(id, name, icon_path_normal,icon_path_hover,icon_path_press)
-        @de_menu.frame_build()
-        @de_menu.currentTextShow()
-        @element.appendChild(@de_menu.element)
+            @ComboBox.insert(id, name, icon_path_normal,icon_path_hover,icon_path_press)
+        @ComboBox.frame_build()
+        @ComboBox.currentTextShow()
+        @element.appendChild(@ComboBox.element)
         
 
     keydown_listener:(e)->
-        return if @is_one_session
-        echo "@de_menu keydown_listener"
-        @de_menu.menu.keydown(e)
+        @ComboBox.menu.keydown(e)

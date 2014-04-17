@@ -50,11 +50,27 @@ class Greeter extends Widget
         else if e.which == RIGHT_ARROW
             user?.switch_userinfo("prev")
 
+    isOnlyOneSession:->
+        @sessions = DCore.Greeter.get_sessions()
+        @is_one_session = false
+        if @sessions.length == 0
+            echo "your system has no session!!!"
+            warning_text = _("Your system has no session! Please go to tty and install session:'sudo apt-get install deepin-desktop-environment'")
+            noSessionText = create_element("div","noSessionText",@element)
+            noSessionText.innerText = warning_text
+        else if @sessions.length == 1 then @is_one_session = true
+       
+
+
 greeter = new Greeter()
 setBodyWallpaper("sky_move")
+greeter.isOnlyOneSession()
 
-desktopmenu = new DesktopMenu($("#div_desktop"))
-desktopmenu.new_desktop_menu()
+desktopmenu = null
+if greeter.sessions.length == 0 then return
+else if greeter.sessions.length > 1
+    desktopmenu = new DesktopMenu($("#div_desktop"))
+    desktopmenu.new_desktop_menu()
 
 
 user = new User()
@@ -72,34 +88,22 @@ _current_user = user.get_current_userinfo()
 
 greeter.start_login_connect(userinfo)
 greeter.webview_ok(_current_user) if hide_face_login
-#greeter.mousewheel_listener(user)
 
 version = new Version()
 $("#div_version").appendChild(version.element)
 
+powermenu = null
 powermenu = new PowerMenu($("#div_power"))
 powermenu.new_power_menu()
 
 document.body.addEventListener("keydown",(e)->
     try
         if is_greeter
-            if $("#power_menuchoose")? or $("#desktop_menuchoose")?
-                if $("#power_menuchoose").style.display isnt "none"
-                    powermenu.keydown_listener(e)
-                else if $("#desktop_menuchoose")?.style.display isnt "none"
-                    desktopmenu.keydown_listener(e)
-                else if is_greeter and greeter and user
-                    greeter.keydown_listener(e,user)
-            else if is_greeter and greeter and user
+            if powermenu?.ComboBox.menu.is_hide() and desktopmenu?.ComboBox.menu.is_hide()
                 greeter.keydown_listener(e,user)
-        else
-            if $("#power_menuchoose")? and $("#power_menuchoose")?.style.display isnt "none"
-                    powermenu.keydown_listener(e)
-            else if audio_play_status
-                mediacontrol.keydown_listener(e)
-            else if is_greeter and greeter and user
-                greeter.keydown_listener(e,user)
-
+            else
+                powermenu?.keydown_listener(e)
+                desktopmenu?.keydown_listener(e)
     catch e
         echo "#{e}"
 )

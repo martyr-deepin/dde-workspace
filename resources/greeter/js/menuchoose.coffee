@@ -279,6 +279,8 @@ class MenuChoose extends Widget
 
     
     keydown:(e)->
+        if @is_hide() then return
+        echo "MenuChoose #{@id} keydown from choose_num:#{choose_num}"
         switch e.which
             when LEFT_ARROW
                 choose_num--
@@ -293,6 +295,15 @@ class MenuChoose extends Widget
                 @fade(i)
             when ESC_KEY
                 destory_all()
+        echo "to choose_num #{choose_num}}"
+    
+    is_hide:->
+        if @element.style.display is "none" then return true
+        else return false
+
+    toggle:->
+        if @is_hide() then @show()
+        else @hide()
 
 
 class ComboBox extends Widget
@@ -322,21 +333,20 @@ class ComboBox extends Widget
                 else if @menu.id is "desktop_menuchoose"
                     #if _current_user?.is_logined then return
                     $("#power_menuchoose")?.style.display = "none"
-
             catch e
                 echo "#{e}"
         if !@menu.animation_end then return
-        if @menu.element.style.display isnt "none"
-            @menu.hide()
-        else
-            @menu.show()
+        @menu.toggle()
     
     hide:->
         @element.style.display = "none"
 
     show:->
         @element.style.display = "block"
-
+    
+    is_hide:->
+        if @element.style.display = "none" then return true
+        else return false
 
     get_current: ->
         menu_current_id = localStorage.getItem("menu_current_id")

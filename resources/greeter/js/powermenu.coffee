@@ -63,21 +63,20 @@ class PowerMenu extends Widget
         echo "new_power_menu"
         @get_power_dict()
 
-        @power_menu = new ComboBox("power", @menuChoose_click_cb)
+        @ComboBox = new ComboBox("power", @menuChoose_click_cb)
         for key, title of @power_title
             img_normal = @img_before + "#{key}_normal.png"
             img_hover = @img_before + "#{key}_hover.png"
             img_click = @img_before + "#{key}_press.png"
-            @power_menu.insert(key, title, img_normal,img_hover,img_click)
+            @ComboBox.insert(key, title, img_normal,img_hover,img_click)
         
-        @power_menu.frame_build()
-        @element.appendChild(@power_menu.element)
+        @ComboBox.frame_build()
+        @element.appendChild(@ComboBox.element)
         
-        @power_menu.current_img.src = @img_before + "powermenu.png"
+        @ComboBox.current_img.src = @img_before + "powermenu.png"
     
     keydown_listener:(e)->
-        @power_menu.menu.keydown(e)
-
+        @ComboBox.menu.keydown(e)
 
 
     confirm_shutdown_show:(powervalue)=>
