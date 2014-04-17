@@ -2,9 +2,10 @@ dockedAppManager
 try
     dockedAppManager = get_dbus(
         "session",
-        name:"com.deepin.daemon.Dock"
-        path:"/dde/dock/DockedAppManager"
-        interface:"dde.dock.DockedAppManager"
+        name:"com.deepin.daemon.Dock",
+        path:"/dde/dock/DockedAppManager",
+        interface:"dde.dock.DockedAppManager",
+        "DockedAppList"
     )
 catch e
     console.log e

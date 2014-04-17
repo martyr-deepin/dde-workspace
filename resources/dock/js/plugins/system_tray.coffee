@@ -13,7 +13,8 @@ class SystemTray extends SystemItem
             'session',
             name:"com.deepin.dde.TrayManager",
             path:"/com/deepin/dde/TrayManager",
-            interface: "com.deepin.dde.TrayManager"
+            interface: "com.deepin.dde.TrayManager",
+            "TrayIcons"
         )
 
         @core.connect("Added", (xid)=>

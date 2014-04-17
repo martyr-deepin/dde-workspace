@@ -173,25 +173,35 @@ JSValueRef signal_connect(JSContextRef ctx, JSObjectRef function, JSObjectRef th
     char* s_name = jsvalue_to_cstr(ctx, arguments[0]);
     struct Signal *signal = g_hash_table_lookup(obj_info->signals, s_name);
     if (signal == NULL) {
-        js_fill_exception(ctx, exception, "the interface hasn't this signal");
-        return NULL;
+        char* desc = g_strdup_printf("dbus(\"%s:%s:%s\") hasn't signal \"%s\"",
+                                     obj_info->name,
+                                     obj_info->path,
+                                     obj_info->iface,
+                                     s_name);
+        js_fill_exception(ctx, exception, desc);
+        g_free(desc);
+        goto errout;
     }
 
     JSObjectRef callback = JSValueToObject(ctx, arguments[1], NULL);
     if (!JSObjectIsFunction(ctx, callback)) {
         js_fill_exception(ctx, exception, "the params two must be an function!");
-        return NULL;
+        goto errout;
     }
 
     SIGNAL_CALLBACK_ID id = add_signal_callback(obj_info, signal, callback);
     if (id == -1) {
         js_fill_exception(ctx, exception, "you have aleady watch the signal with this callback?");
-        return NULL;
+        goto errout;
     }
     add_watch(obj_info->connection, obj_info->path, obj_info->iface, s_name);
     g_free(s_name);
 
     return JSValueMakeNumber(ctx, id);
+
+errout:
+    g_free(s_name);
+    return NULL;
 }
 
 static
@@ -299,7 +309,7 @@ bool dynamic_set (JSContextRef ctx, JSObjectRef object,
     struct Property *p = g_hash_table_lookup(obj_info->properties, prop_name);
 
     GVariantType* sig = g_variant_type_new(p->signature->data);
-    g_dbus_connection_call_sync(obj_info->connection, obj_info->name, obj_info->path, "org.freedesktop.DBus.Properties", "Set", 
+    g_dbus_connection_call_sync(obj_info->connection, obj_info->name, obj_info->path, "org.freedesktop.DBus.Properties", "Set",
             g_variant_new("(ssv)", obj_info->iface, prop_name, js_to_dbus(ctx, jsvalue, sig, exception)), NULL,
             G_DBUS_CALL_FLAGS_NONE, -1, NULL, &error);
     g_variant_type_free(sig);
@@ -324,7 +334,7 @@ JSValueRef dynamic_get (JSContextRef ctx,
     GVariantType* sig_out = g_variant_type_new("(v)");
     char* prop_name = jsstring_to_cstr(ctx, propertyName);
 
-    GVariant * v = g_dbus_connection_call_sync(obj_info->connection, obj_info->name, obj_info->path, "org.freedesktop.DBus.Properties", "Get", 
+    GVariant * v = g_dbus_connection_call_sync(obj_info->connection, obj_info->name, obj_info->path, "org.freedesktop.DBus.Properties", "Get",
             g_variant_new("(ss)", obj_info->iface, prop_name), sig_out,
             G_DBUS_CALL_FLAGS_NONE, -1, NULL, &error);
 
@@ -427,8 +437,8 @@ JSValueRef dynamic_function(JSContextRef ctx, JSObjectRef function, JSObjectRef 
             JSValueProtect(get_global_context(), ok_callback);
             info->on_ok = ok_callback;
         }
-        g_dbus_connection_call(obj_info->connection, obj_info->name, obj_info->path, obj_info->iface, func_name, 
-                g_variant_builder_end(&args), sigs_out, 
+        g_dbus_connection_call(obj_info->connection, obj_info->name, obj_info->path, obj_info->iface, func_name,
+                g_variant_builder_end(&args), sigs_out,
                 G_DBUS_CALL_FLAGS_NONE, -1, NULL,
                 (GAsyncReadyCallback)async_callback, info);
     } else {
@@ -605,3 +615,4 @@ void add_watch(GDBusConnection* con, const char* path, const char* ifc, const ch
     g_free(rule);
     g_object_unref(proxy);
 }
+
