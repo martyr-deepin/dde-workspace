@@ -2,6 +2,8 @@ class Trash extends PostfixedItem
     constructor:(@id, icon, title)->
         super
         @set_tooltip(title)
+        @w_id = 0
+        @is_opened = false
         @entry = DCore.DEntry.get_trash_entry()
         DCore.signal_connect("trash_count_changed", (info)=>
             @update(info.value)
@@ -29,7 +31,6 @@ class Trash extends PostfixedItem
         # super
         calc_app_item_size()
         id = parseInt(id)
-        console.log(id)
         switch id
             when 1
                 d = get_dbus("session",
@@ -41,7 +42,7 @@ class Trash extends PostfixedItem
                 d.EmptyTrash()
                 @update()
             when 2
-                DCore.Dock.close_window(@id)
+                clientManager?.CloseWindow(@w_id)
 
     on_click: (e)=>
         super

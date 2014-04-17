@@ -54,13 +54,25 @@ EntryManager =
     name:"com.deepin.daemon.Dock"
     path:"/dde/dock/EntryManager"
     interface:"dde.dock.EntryManager"
+
 entryManager = get_dbus('session', EntryManager, "Entries")
 entries = entryManager.Entries
+
+trash = null
+
 for entry in entries
     console.log(entry)
     d = get_dbus("session", itemDBus(entry), "Data")
     console.log("init add: #{d.Id}")
-    if !Widget.look_up(d.Id)
+    if d.Id == TRASH_ID
+        trash = new Trash(TRASH_ID, Trash.get_icon(DCore.DEntry.get_trash_count()), _("Trash"))
+        trash.core = d
+        trash.is_opened = true
+        xids = JSON.parse(d.Data[ITEM_DATA_FIELD.xids])
+        console.log(xids[0])
+        trash.w_id = xids[0].Xid
+        trash.show_indicator()
+    else if !Widget.look_up(d.Id)
         createItem(d)
 
 initDockedAppPosition()
@@ -81,9 +93,12 @@ entryManager.connect("Added", (path)->
     d = get_dbus("session", itemDBus(path), "Data")
     console.log("try to Add #{d.Id}, #{TRASH_ID}")
     if d.Id == TRASH_ID
-        t = Widget.look_up(d.Id)
-        t.core = d
-        t.show_indicator()
+        trash.is_opened = true
+        trash.core = d
+        xids = JSON.parse(d.Data[ITEM_DATA_FIELD.xids])
+        console.log(xids[0])
+        trash.w_id = xids[0].Xid
+        trash.show_indicator()
         return
 
     if Widget.look_up(d.Id)
@@ -121,8 +136,8 @@ try
     icon_launcher = DCore.get_theme_icon("start-here", 48)
 
 show_launcher = new LauncherItem("show_launcher", icon_launcher, _("Launcher"))
-# clock = create_clock(DCore.Dock.clock_type())
-trash = new Trash(TRASH_ID, Trash.get_icon(DCore.DEntry.get_trash_count()), _("Trash"))
+if not trash
+    trash = new Trash(TRASH_ID, Trash.get_icon(DCore.DEntry.get_trash_count()), _("Trash"))
 show_desktop = new ShowDesktop()
 
 DCore.Dock.emit_webview_ok()
