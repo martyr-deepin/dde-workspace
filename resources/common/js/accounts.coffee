@@ -41,13 +41,17 @@ class Accounts
     getDBus:->
         try
             @Dbus_Account = DCore.DBus.sys(ACCOUNTS_DAEMON)
+            echo "ACCOUNTS_DAEMON succeed and then connect path"
             for path in @Dbus_Account.UserList
+                echo path
                 ACCOUNTS_USER.path = path
                 user_dbus = DCore.DBus.sys_object(
                     ACCOUNTS_USER.obj,
                     ACCOUNTS_USER.path,
                     ACCOUNTS_USER.interface
                 )
+                echo "Uid:#{user_dbus.Uid}"
+                echo "UserName:#{user_dbus.UserName}"
                 @users_id.push(user_dbus.Uid)
                 @users_name.push(user_dbus.UserName)
                 @users_id_dbus[user_dbus.Uid] = user_dbus
