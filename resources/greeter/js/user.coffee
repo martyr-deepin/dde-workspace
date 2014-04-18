@@ -113,6 +113,7 @@ class User extends Widget
 
 
     switch_userinfo :(direc) =>
+        if @userinfo_all.length < 2 then return
         if !_current_user.animation_end then return
         echo "switch_userinfo ---#{direc}--- from #{@current_user_index}: #{_current_user.username}"
         _current_user.hide_animation()
@@ -127,6 +128,7 @@ class User extends Widget
 
     prev_next_userinfo_create:->
         opacity = "0.8"
+        if @userinfo_all.length < 2 then return
         @switchuser_div = create_element("div","switchuser_div",@element)
         @prevuserinfo = create_element("div","prevuserinfo",@switchuser_div)
         @prevuserinfo_img = create_img("prevuserinfo_img",img_src_before + "left_normal.png",@prevuserinfo)

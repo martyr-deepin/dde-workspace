@@ -100,13 +100,14 @@ document.body.addEventListener("keydown",(e)->
     try
         if is_greeter
             echo "greeter keydown"
+            powermenu?.keydown_listener(e)
+            desktopmenu?.keydown_listener(e)
+            if user.userinfo_all.length < 2 then return
             if powermenu.ComboBox.menu.is_hide()
                 if not desktopmenu?
                     greeter.keydown_listener(e,user)
                 else if desktopmenu.ComboBox.menu.is_hide()
                     greeter.keydown_listener(e,user)
-            powermenu?.keydown_listener(e)
-            desktopmenu?.keydown_listener(e)
     catch e
         echo "#{e}"
 )
