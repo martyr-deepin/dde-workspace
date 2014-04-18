@@ -50,7 +50,7 @@ void background_info_set_background_by_drawable(BackgroundInfo* info, guint32 dr
     g_mutex_unlock(&info->m);
 
     if (gtk_widget_get_realized(info->container)) {
-	gdk_window_invalidate_rect(gtk_widget_get_window(info->container), NULL, FALSE);
+	gdk_window_invalidate_rect(gtk_widget_get_window(info->container), NULL, TRUE);
     }
 }
 
@@ -73,7 +73,7 @@ void background_info_set_background_by_file(BackgroundInfo* info, const char* fi
     g_mutex_unlock(&info->m);
     g_object_unref(pb);
     if (gtk_widget_get_realized(info->container)) {
-	gdk_window_invalidate_rect(gtk_widget_get_window(info->container), NULL, FALSE);
+	gdk_window_invalidate_rect(gtk_widget_get_window(info->container), NULL, TRUE);
     }
 }
 
@@ -81,7 +81,7 @@ void background_info_change_alpha(BackgroundInfo* info, double alpha)
 {
     info->alpha = alpha;
     if (gtk_widget_get_realized(info->container)) {
-	gdk_window_invalidate_rect(gtk_widget_get_window(info->container), NULL, FALSE);
+	gdk_window_invalidate_rect(gtk_widget_get_window(info->container), NULL, TRUE);
     }
 }
 

@@ -16,3 +16,13 @@
   max-width: none;
   -webkit-transition : width 400ms;
 }
+.TrayFoldButton{
+  position: absolute;
+  top: 24px;
+  right: 10px;
+  background: url("../img/fold-button.png");
+  background-position: 100% 0;
+  width: 16px;
+  height: 16px;
+  visibility: hidden;
+}
