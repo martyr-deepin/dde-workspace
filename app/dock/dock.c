@@ -307,6 +307,7 @@ void dock_emit_webview_ok()
 {
     static gboolean inited = FALSE;
     if (!inited) {
+	gtk_widget_show_all(container);
         if (!is_compiz_plugin_valid()) {
             gtk_widget_hide(container);
             GtkWidget* dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL,
@@ -536,13 +537,10 @@ int main(int argc, char* argv[])
 
     gtk_widget_realize(container);
     gtk_widget_realize(webview);
-
     update_display_info(&dock);
-    gtk_window_move(GTK_WINDOW(container), dock.x, dock.y);
-    gtk_widget_show_all(container);
 
-    update_dock_size(dock.x, dock.y, dock.width, dock.height);
     listen_primary_changed_signal(primary_changed_handler);
+    update_dock_size(dock.x, dock.y, dock.width, dock.height);
 
     set_wmspec_dock_hint(DOCK_GDK_WINDOW());
 
@@ -551,9 +549,6 @@ int main(int argc, char* argv[])
 // #endif
 
     /*gdk_window_set_debug_updates(TRUE);*/
-
-    GdkRGBA rgba = { 0, 0, 0, 0.0 };
-    gdk_window_set_background_rgba(DOCK_GDK_WINDOW(), &rgba);
 
     setup_dock_dbus_service();
     GFileMonitor* m G_GNUC_UNUSED = monitor_trash();

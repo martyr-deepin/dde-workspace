@@ -157,3 +157,8 @@ setTimeout(->
     # apps are moved up, so add 8
     DCore.Dock.change_workarea_height(ITEM_HEIGHT * ICON_SCALE + 8)
 , 100)
+
+setTimeout(->
+    $("#containerWarp").style.bottom = "5px"
+    $("#panel").style.bottom = "0px"
+, 1000)

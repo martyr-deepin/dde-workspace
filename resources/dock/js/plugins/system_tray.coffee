@@ -7,8 +7,14 @@ class SystemTray extends SystemItem
         @hood.style.height = '48px'
         @hood.addEventListener("mouseover", @on_mouseover)
         @img.style.display = 'none'
-        @imgWarp.addEventListener("mouseout", @on_mouseout)
+        # @imgWarp.addEventListener("mouseout", @on_mouseout)
+        @element.addEventListener("mouseout", @on_mouseout)
         @openIndicator.style.display = 'none'
+        @isFolded = true
+        @button = create_element(tag:'div', class:'TrayFoldButton', @imgWarp)
+        @button.addEventListener('mouseover', @on_mouseover)
+        @button.addEventListener('click', @on_button_click)
+
         @core = get_dbus(
             'session',
             name:"com.deepin.dde.TrayManager",
@@ -17,12 +23,21 @@ class SystemTray extends SystemItem
             "TrayIcons"
         )
 
+        @items = []
+        if Array.isArray @core.TrayIcons
+            @items = @core.TrayIcons.slice(0) || []
+        # console.log("TrayIcons: #{@items}")
+        for item, i in @items
+            # console.log("#{item} add to SystemTray")
+            $EW.create(item, false)
+            $EW.hide(item)
+
         @core.connect("Added", (xid)=>
-            # console.log("#{xid} is Added")
+            console.log("#{xid} is Added")
             @items.unshift(xid)
             $EW.create(xid, true)
             if @isShowing
-                # console.log("added show")
+                console.log("added show")
                 $EW.show(xid)
             else
                 $EW.hide(xid)
@@ -38,9 +53,6 @@ class SystemTray extends SystemItem
             @items.remove(xid)
             @items.unshift(xid)
             @updateTrayIcon()
-            setTimeout(=>
-                @updateTrayIcon()
-            , 100)
         )
         @core.connect("Removed", (xid)=>
             # console.log("#{xid} is Removed")
@@ -52,38 +64,28 @@ class SystemTray extends SystemItem
             , ANIMATION_TIME)
         )
 
-        if Array.isArray @core.TrayIcons
-            @items = @core.TrayIcons.slice(0) || []
-        else
-            @items = []
-        # @ews = new EmbedWindow(@items, false)
-        # @ews.show()
-        # console.log("TrayIcons: #{@items}")
-        for item, i in @items
-            # console.log("#{item} add to SystemTray")
-            $EW.create(item, false)
-            $EW.hide(item)
 
         @updateTrayIcon()
 
     updateTrayIcon:=>
         #console.log("update the order: #{@items}")
         @upperItemNumber = Math.max(Math.ceil(@items.length / 2), 2)
-        # if @items.length % 2 == 0
-        #     @upperItemNumber += 1
+        if @items.length % 2 == 0
+            @upperItemNumber += 1
 
         iconSize = 16
         itemSize = 18
 
-        if @isShowing && @upperItemNumber >= 2
+        if not @isFolded && @upperItemNumber > 2
             newWidth = @upperItemNumber * itemSize
             # console.log("set width to #{newWidth}")
             @img.style.width = "#{newWidth}px"
             @element.style.width = "#{newWidth + 18}px"
-        else if not @isShowing && @upperItemNumber > 2
+        else if @isFolded
             newWidth = 2 * itemSize
             @img.style.width = "#{newWidth}px"
             @element.style.width = "#{newWidth + 18}px"
+
         xy = get_page_xy(@element)
         for item, i in @items
             x = xy.x + 10
@@ -101,16 +103,48 @@ class SystemTray extends SystemItem
         DCore.Dock.require_all_region()
         @calcTimer = webkitRequestAnimationFrame(@updatePanel)
 
+
+    showButton:->
+        @button.style.visibility = 'visible'
+
+    hideButton:->
+        @button.style.visibility = 'hidden'
+
     on_mouseover: (e)=>
+        Preview_close_now(_lastCliengGroup)
+        @isShowing = true
         @img.style.display = 'block'
         @hood.style.display = 'none'
+        @updateTrayIcon()
+        @showButton()
+        super
+        $EW.show(@items[0]) if @items[0]
+        $EW.show(@items[1]) if @items[1]
+        $EW.show(@items[@upperItemNumber]) if @items[@upperItemNumber]
+
+    on_mouseout: (e)=>
+        @isShowing = false
+        super
+        if @isFolded
+            @img.style.display = 'none'
+            @hood.style.display = ''
+            for item in @items
+                $EW.hide(item)
+            $EW.hide(@items[0]) if @items[0]
+            $EW.hide(@items[1]) if @items[1]
+            $EW.hide(@items[@upperItemNumber]) if @items[@upperItemNumber]
+            @hideButton()
+
+    unfold:=>
+        console.log("unfold")
+        @isFolded = false
+        @button.style.backgroundPosition = '0 0'
         clearTimeout(@hideTimer)
         webkitCancelAnimationFrame(@calcTimer || null)
         @updatePanel()
-        # console.log("mouseover")
-        @isShowing = true
+        for item in @items
+            $EW.hide(item)
         @updateTrayIcon()
-        Preview_close_now(_lastCliengGroup)
         if @upperItemNumber > 2
             @showTimer = setTimeout(=>
                 webkitCancelAnimationFrame(@calcTimer)
@@ -124,30 +158,37 @@ class SystemTray extends SystemItem
             DCore.Dock.require_all_region()
             for item in @items
                 $EW.show(item)
-        super
 
-    on_mouseout: (e)=>
-        console.log("systray mouseout")
-        clearTimeout(@showTimer)
-        webkitCancelAnimationFrame(@calcTimer)
-        @updatePanel()
-        @isShowing = false
+    fold: (e)=>
+        @isFolded = true
+        @button.style.backgroundPosition = '100% 0'
+        console.log("fold")
         if @items
             for item in @items
                 $EW.hide(item)
+        clearTimeout(@showTimer)
+        webkitCancelAnimationFrame(@calcTimer)
+        @updatePanel()
         @updateTrayIcon()
         if @upperItemNumber > 2
             @hideTimer = setTimeout(=>
                 @img.style.display = 'none'
                 @hood.style.display = 'block'
                 webkitCancelAnimationFrame(@calcTimer)
-                super
             , ANIMATION_TIME)
         else
             @img.style.display = 'none'
             @hood.style.display = 'block'
             webkitCancelAnimationFrame(@calcTimer)
-            super
+
+        @hideButton()
+
+    on_button_click:(e)=>
+        e.stopPropagation()
+        if @isFolded
+            @unfold()
+        else
+            @fold()
 
     on_rightclick: (e)=>
         e.preventDefault()
