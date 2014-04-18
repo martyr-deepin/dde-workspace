@@ -22,7 +22,7 @@
 class Panel
     constructor: (@id)->
         @panel = $("##{@id}")
-        @panel.width = screen.width
+        @panel.width = 0
         @panel.height = PANEL_HEIGHT
 
         @panel.addEventListener("click", @on_click)
