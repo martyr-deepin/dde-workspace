@@ -10,7 +10,7 @@ class SystemTray extends SystemItem
         # @imgWarp.addEventListener("mouseout", @on_mouseout)
         @element.addEventListener("mouseout", @on_mouseout)
         @openIndicator.style.display = 'none'
-        @isFolded = true
+        @isUnfolded = false
         @button = create_element(tag:'div', class:'TrayFoldButton', @imgWarp)
         @button.addEventListener('mouseover', @on_mouseover)
         @button.addEventListener('click', @on_button_click)
@@ -36,23 +36,24 @@ class SystemTray extends SystemItem
             console.log("#{xid} is Added")
             @items.unshift(xid)
             $EW.create(xid, true)
-            if @isShowing
+            if @isUnfolded
                 console.log("added show")
                 $EW.show(xid)
+                # creat will take a while.
+                @updateTrayIcon()
+                setTimeout(=>
+                    @updateTrayIcon()
+                    calc_app_item_size()
+                , ANIMATION_TIME)
             else
                 $EW.hide(xid)
-            # creat will take a while.
-            @updateTrayIcon()
-            setTimeout(=>
-                @updateTrayIcon()
-                calc_app_item_size()
-            , ANIMATION_TIME)
         )
         @core.connect("Changed", (xid)=>
-            # console.log("#{xid} is Changed")
-            @items.remove(xid)
-            @items.unshift(xid)
-            @updateTrayIcon()
+            if not @isShowing || @isUnfolded
+                console.log("#{xid} is Changed")
+                @items.remove(xid)
+                @items.unshift(xid)
+                @updateTrayIcon()
         )
         @core.connect("Removed", (xid)=>
             # console.log("#{xid} is Removed")
@@ -70,18 +71,18 @@ class SystemTray extends SystemItem
     updateTrayIcon:=>
         #console.log("update the order: #{@items}")
         @upperItemNumber = Math.max(Math.ceil(@items.length / 2), 2)
-        if @items.length % 2 == 0
+        if @items.length > 2 && @items.length % 2 == 0
             @upperItemNumber += 1
 
         iconSize = 16
         itemSize = 18
 
-        if not @isFolded && @upperItemNumber > 2
-            newWidth = @upperItemNumber * itemSize
+        if @isUnfolded && @upperItemNumber > 2
+            newWidth = (@upperItemNumber) * itemSize
             # console.log("set width to #{newWidth}")
             @img.style.width = "#{newWidth}px"
             @element.style.width = "#{newWidth + 18}px"
-        else if @isFolded
+        else if not @isUnfolded
             newWidth = 2 * itemSize
             @img.style.width = "#{newWidth}px"
             @element.style.width = "#{newWidth + 18}px"
@@ -112,6 +113,8 @@ class SystemTray extends SystemItem
 
     on_mouseover: (e)=>
         Preview_close_now(_lastCliengGroup)
+        if @isUnfolded
+            return
         @isShowing = true
         @img.style.display = 'block'
         @hood.style.display = 'none'
@@ -123,9 +126,11 @@ class SystemTray extends SystemItem
         $EW.show(@items[@upperItemNumber]) if @items[@upperItemNumber]
 
     on_mouseout: (e)=>
+        if @isUnfolded
+            return
         @isShowing = false
         super
-        if @isFolded
+        if not @isunfolded
             @img.style.display = 'none'
             @hood.style.display = ''
             for item in @items
@@ -137,7 +142,7 @@ class SystemTray extends SystemItem
 
     unfold:=>
         console.log("unfold")
-        @isFolded = false
+        @isUnfolded = true
         @button.style.backgroundPosition = '0 0'
         clearTimeout(@hideTimer)
         webkitCancelAnimationFrame(@calcTimer || null)
@@ -160,7 +165,7 @@ class SystemTray extends SystemItem
                 $EW.show(item)
 
     fold: (e)=>
-        @isFolded = true
+        @isUnfolded = false
         @button.style.backgroundPosition = '100% 0'
         console.log("fold")
         if @items
@@ -185,10 +190,12 @@ class SystemTray extends SystemItem
 
     on_button_click:(e)=>
         e.stopPropagation()
-        if @isFolded
-            @unfold()
-        else
+        if @upperItemNumber <= 2
+            return
+        if @isUnfolded
             @fold()
+        else
+            @unfold()
 
     on_rightclick: (e)=>
         e.preventDefault()
