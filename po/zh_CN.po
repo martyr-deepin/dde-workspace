@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-11 14:35+0800\n"
+"POT-Creation-Date: 2014-04-18 09:05+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Deepin Translation Team <support@linuxdeepin.com>\n"
 "Language-Team: Deepin Translation Team <support@linuxdeepin.com>\n"
@@ -17,27 +17,164 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../resources/greeter/js/powermenu.coffee:46
-msgid "Shut down"
-msgstr "关机"
+#: ../resources/desktop/js/invalidlink.coffee:34
+#: ../resources/desktop/js/desktopentry.coffee:107
+#: ../resources/desktop/js/richdir.coffee:137
+#: ../resources/desktop/js/richdir.coffee:476
+msgid "_Delete"
+msgstr "删除(_D)"
 
-#: ../resources/greeter/js/powermenu.coffee:47
-msgid "Restart"
-msgstr "重启"
+#: ../resources/desktop/js/application.coffee:177
+#: ../resources/desktop/js/richdir.coffee:357
+#: ../resources/desktop/js/richdir.coffee:491
+msgid "The link is invalid. Do you want to delete it?"
+msgstr "该链接已经失效，是否要删除？"
 
-#: ../resources/greeter/js/powermenu.coffee:48
-msgid "Suspend"
-msgstr "待机"
+#: ../resources/desktop/js/application.coffee:177
+#: ../resources/desktop/js/desktopentry.coffee:151
+#: ../resources/desktop/js/richdir.coffee:357
+#: ../resources/desktop/js/richdir.coffee:491
+msgid "Warning"
+msgstr "警告"
 
-#: ../resources/greeter/js/powermenu.coffee:84
-msgid "Enter your password to %1"
-msgstr "请输入密码以完成%1"
+#: ../resources/desktop/js/desktopentry.coffee:101
+#: ../resources/desktop/js/specialitem.coffee:51
+#: ../resources/desktop/js/specialitem.coffee:139
+#: ../resources/desktop/js/specialitem.coffee:234
+#: ../resources/desktop/js/specialitem.coffee:288
+#: ../resources/desktop/js/richdir.coffee:131
+#: ../resources/desktop/js/richdir.coffee:471
+#: ../resources/launcher/js/item.coffee:266
+msgid "_Open"
+msgstr "打开(_O)"
+
+#: ../resources/desktop/js/desktopentry.coffee:103
+#: ../resources/desktop/js/richdir.coffee:473
+msgid "Cu_t"
+msgstr "剪切(_T)"
+
+#: ../resources/desktop/js/desktopentry.coffee:104
+#: ../resources/desktop/js/richdir.coffee:474
+msgid "_Copy"
+msgstr "复制(_C)"
+
+#: ../resources/desktop/js/desktopentry.coffee:106
+#: ../resources/desktop/js/richdir.coffee:133
+msgid "_Rename"
+msgstr "重命名(_R)"
+
+#: ../resources/desktop/js/desktopentry.coffee:109
+#: ../resources/desktop/js/specialitem.coffee:53
+#: ../resources/desktop/js/specialitem.coffee:141
+#: ../resources/desktop/js/richdir.coffee:478
+msgid "_Properties"
+msgstr "属性(_P)"
+
+#: ../resources/desktop/js/desktopentry.coffee:115
+#: ../resources/desktop/js/desktopentry.coffee:122
+msgid "Co_mpress"
+msgstr "压缩(_M)"
+
+#: ../resources/desktop/js/desktopentry.coffee:118
+#: ../resources/desktop/js/desktopentry.coffee:123
+msgid "_Extract"
+msgstr "解压(_E)"
+
+#: ../resources/desktop/js/desktopentry.coffee:119
+#: ../resources/desktop/js/desktopentry.coffee:124
+msgid "Extract _Here"
+msgstr "解压到此处(_H)"
+
+#: ../resources/desktop/js/desktopentry.coffee:151
+msgid "Can not open this file."
+msgstr "无法打开此文件"
+
+#: ../resources/desktop/js/specialitem.coffee:34
+msgid "Computer"
+msgstr "计算机"
+
+#: ../resources/desktop/js/specialitem.coffee:84
+msgid "Home"
+msgstr "主文件夹"
+
+#: ../resources/desktop/js/specialitem.coffee:175
+#: ../resources/dock/js/main.coffee:68 ../resources/dock/js/main.coffee:140
+msgid "Trash"
+msgstr "回收站"
+
+#: ../resources/desktop/js/specialitem.coffee:239
+msgid "_Clean up %1 items"
+msgstr "清空%1项(_C)"
+
+#: ../resources/desktop/js/specialitem.coffee:241
+msgid "_Clean up 1 item"
+msgstr "清空1项(_C)"
+
+#: ../resources/desktop/js/specialitem.coffee:243
+msgid "_Clean up"
+msgstr "清空(_C)"
+
+#: ../resources/desktop/js/specialitem.coffee:272
+msgid "Software Center"
+msgstr "软件中心"
+
+#: ../resources/desktop/js/grid.coffee:71 ../lib/dentry/fileops.c:403
+msgid "Untitled"
+msgstr "未命名"
+
+#: ../resources/desktop/js/grid.coffee:995
+msgid "_Name"
+msgstr "名称(_N)"
+
+#: ../resources/desktop/js/grid.coffee:996
+msgid "Last modified _time"
+msgstr "最近修改时间(_T)"
+
+#: ../resources/desktop/js/grid.coffee:1001
+msgid "_Folder"
+msgstr "文件夹(_F)"
+
+#: ../resources/desktop/js/grid.coffee:1002
+msgid "_Text document"
+msgstr "文本文档(_T)"
+
+#: ../resources/desktop/js/grid.coffee:1016
+msgid "_Sort by"
+msgstr "排序方式(_S)"
+
+#: ../resources/desktop/js/grid.coffee:1017
+msgid "_New"
+msgstr "新建(_N)"
+
+#: ../resources/desktop/js/grid.coffee:1018
+msgid "Open in _terminal"
+msgstr "在终端中打开(_T)"
+
+#: ../resources/desktop/js/grid.coffee:1019
+msgid "_Paste"
+msgstr "粘贴(_P)"
+
+#: ../resources/desktop/js/grid.coffee:1021
+msgid "_Display settings"
+msgstr "显示设置(_D)"
+
+#: ../resources/desktop/js/grid.coffee:1022
+msgid "_Corner navigation"
+msgstr "热区设置(_C)"
+
+#: ../resources/desktop/js/grid.coffee:1023
+msgid "Pe_rsonalize"
+msgstr "个性化(_R)"
+
+#: ../resources/desktop/js/richdir.coffee:135
+msgid "_Ungroup"
+msgstr "解散(_U)"
 
 #: ../resources/greeter/js/user.coffee:25
 msgid "Guest"
 msgstr "来宾"
 
-#: ../resources/greeter/js/user.coffee:439
+#: ../resources/greeter/js/user.coffee:435
 msgid "click login button to log in"
 msgstr ""
 
@@ -117,234 +254,50 @@ msgstr "星期五"
 msgid "Sat"
 msgstr "星期六"
 
-#: ../resources/desktop/js/specialitem.coffee:34
-msgid "Computer"
-msgstr "计算机"
+#: ../resources/greeter/js/powermenu.coffee:47
+msgid "Shut down"
+msgstr "关机"
 
-#: ../resources/desktop/js/specialitem.coffee:51
-#: ../resources/desktop/js/specialitem.coffee:139
-#: ../resources/desktop/js/specialitem.coffee:234
-#: ../resources/desktop/js/specialitem.coffee:288
-#: ../resources/desktop/js/richdir.coffee:131
-#: ../resources/desktop/js/richdir.coffee:471
-#: ../resources/desktop/js/desktopentry.coffee:101
-#: ../resources/launcher/js/item.coffee:266
-msgid "_Open"
-msgstr "打开(_O)"
+#: ../resources/greeter/js/powermenu.coffee:48
+msgid "Restart"
+msgstr "重启"
 
-#: ../resources/desktop/js/specialitem.coffee:53
-#: ../resources/desktop/js/specialitem.coffee:141
-#: ../resources/desktop/js/richdir.coffee:478
-#: ../resources/desktop/js/desktopentry.coffee:109
-msgid "_Properties"
-msgstr "属性(_P)"
+#: ../resources/greeter/js/powermenu.coffee:49
+msgid "Suspend"
+msgstr "待机"
 
-#: ../resources/desktop/js/specialitem.coffee:84
-msgid "Home"
-msgstr "主文件夹"
+#: ../resources/greeter/js/powermenu.coffee:87
+msgid "Enter your password to %1"
+msgstr "请输入密码以完成%1"
 
-#: ../resources/desktop/js/specialitem.coffee:175
-#: ../resources/dock/js/main.coffee:131
-msgid "Trash"
-msgstr "回收站"
-
-#: ../resources/desktop/js/specialitem.coffee:239
-msgid "_Clean up %1 items"
-msgstr "清空%1项(_C)"
-
-#: ../resources/desktop/js/specialitem.coffee:241
-msgid "_Clean up 1 item"
-msgstr "清空1项(_C)"
-
-#: ../resources/desktop/js/specialitem.coffee:243
-#: ../resources/dock/js/deepin_item.coffee:105
-msgid "_Clean up"
-msgstr "清空(_C)"
-
-#: ../resources/desktop/js/specialitem.coffee:272
-msgid "Software Center"
-msgstr "软件中心"
-
-#: ../resources/desktop/js/richdir.coffee:133
-#: ../resources/desktop/js/desktopentry.coffee:106
-msgid "_Rename"
-msgstr "重命名(_R)"
-
-#: ../resources/desktop/js/richdir.coffee:135
-msgid "_Ungroup"
-msgstr "解散(_U)"
-
-#: ../resources/desktop/js/richdir.coffee:137
-#: ../resources/desktop/js/richdir.coffee:476
-#: ../resources/desktop/js/desktopentry.coffee:107
-#: ../resources/desktop/js/invalidlink.coffee:34
-msgid "_Delete"
-msgstr "删除(_D)"
-
-#: ../resources/desktop/js/richdir.coffee:357
-#: ../resources/desktop/js/richdir.coffee:491
-#: ../resources/desktop/js/application.coffee:177
-msgid "The link is invalid. Do you want to delete it?"
-msgstr "该链接已经失效，是否要删除？"
-
-#: ../resources/desktop/js/richdir.coffee:357
-#: ../resources/desktop/js/richdir.coffee:491
-#: ../resources/desktop/js/desktopentry.coffee:151
-#: ../resources/desktop/js/application.coffee:177
-#: ../resources/dock/js/deepin_item.coffee:137
-msgid "Warning"
-msgstr "警告"
-
-#: ../resources/desktop/js/richdir.coffee:473
-#: ../resources/desktop/js/desktopentry.coffee:103
-msgid "Cu_t"
-msgstr "剪切(_T)"
-
-#: ../resources/desktop/js/richdir.coffee:474
-#: ../resources/desktop/js/desktopentry.coffee:104
-msgid "_Copy"
-msgstr "复制(_C)"
-
-#: ../resources/desktop/js/desktopentry.coffee:115
-#: ../resources/desktop/js/desktopentry.coffee:122
-msgid "Co_mpress"
-msgstr "压缩(_M)"
-
-#: ../resources/desktop/js/desktopentry.coffee:118
-#: ../resources/desktop/js/desktopentry.coffee:123
-msgid "_Extract"
-msgstr "解压(_E)"
-
-#: ../resources/desktop/js/desktopentry.coffee:119
-#: ../resources/desktop/js/desktopentry.coffee:124
-msgid "Extract _Here"
-msgstr "解压到此处(_H)"
-
-#: ../resources/desktop/js/desktopentry.coffee:151
-#: ../resources/dock/js/deepin_item.coffee:137
-msgid "Can not open this file."
-msgstr "无法打开此文件"
-
-#: ../resources/desktop/js/grid.coffee:71 ../lib/dentry/fileops.c:403
-msgid "Untitled"
-msgstr "未命名"
-
-#: ../resources/desktop/js/grid.coffee:995
-msgid "_Name"
-msgstr "名称(_N)"
-
-#: ../resources/desktop/js/grid.coffee:996
-msgid "Last modified _time"
-msgstr "最近修改时间(_T)"
-
-#: ../resources/desktop/js/grid.coffee:1001
-msgid "_Folder"
-msgstr "文件夹(_F)"
-
-#: ../resources/desktop/js/grid.coffee:1002
-msgid "_Text document"
-msgstr "文本文档(_T)"
-
-#: ../resources/desktop/js/grid.coffee:1016
-msgid "_Sort by"
-msgstr "排序方式(_S)"
-
-#: ../resources/desktop/js/grid.coffee:1017
-msgid "_New"
-msgstr "新建(_N)"
-
-#: ../resources/desktop/js/grid.coffee:1018
-msgid "Open in _terminal"
-msgstr "在终端中打开(_T)"
-
-#: ../resources/desktop/js/grid.coffee:1019
-msgid "_Paste"
-msgstr "粘贴(_P)"
-
-#: ../resources/desktop/js/grid.coffee:1021
-msgid "_Display settings"
-msgstr "显示设置(_D)"
-
-#: ../resources/desktop/js/grid.coffee:1022
-msgid "_Corner navigation"
-msgstr "热区设置(_C)"
-
-#: ../resources/desktop/js/grid.coffee:1023
-msgid "Pe_rsonalize"
-msgstr "个性化(_R)"
-
-#: ../resources/dock/js/global_menu.coffee:12
-msgid "keep _showing"
+#: ../resources/greeter/js/greeter.coffee:58
+msgid ""
+"Your system has no session! Please go to tty and install session:'sudo apt-"
+"get install deepin-desktop-environment'"
 msgstr ""
 
-#: ../resources/dock/js/global_menu.coffee:13
-msgid "keep _hidden"
-msgstr ""
+#: ../resources/launcher/js/item.coffee:269
+msgid "Send to d_esktop"
+msgstr "发送到桌面(_E)"
 
-#: ../resources/dock/js/global_menu.coffee:14
-msgid "_auto hide"
-msgstr ""
+#: ../resources/launcher/js/item.coffee:272
+msgid "Send to do_ck"
+msgstr "添加到 Dock(_C)"
 
-#: ../resources/dock/js/clientgroup.coffee:111
-msgid "_New Window"
-msgstr "新建窗口(_N)"
+#: ../resources/launcher/js/item.coffee:275
+msgid "_Uninstall"
+msgstr "卸载"
 
-#: ../resources/dock/js/clientgroup.coffee:124
-msgid "Close _All"
-msgstr "关闭所有(_A)"
+#: ../resources/launcher/js/item.coffee:331
+msgid ""
+"The operation may also remove other applications that depends on the item. "
+"Are you sure you want to uninstall the item?"
+msgstr "该操作可能会同时卸载其他相关软件，您确定要卸载该项吗？"
 
-#: ../resources/dock/js/clientgroup.coffee:128
-msgid "_Dock me"
-msgstr "驻留(_D)"
-
-#: ../resources/dock/js/item.coffee:308
-msgid "The item is invalid. Do you want to remove it from Dock?"
-msgstr "该项无效。要把它从Dock上删除吗？"
-
-#: ../resources/dock/js/launcher.coffee:29 ../lib/dentry/mime_actions.c:213
-msgid "_Run"
-msgstr "运行(_R)"
-
-#: ../resources/dock/js/launcher.coffee:38
-msgid "_Undock"
-msgstr "移除驻留(_U)"
-
-#: ../resources/dock/js/deepin_item.coffee:108
-msgid "_Close"
-msgstr "关闭(_C)"
-
-#: ../resources/dock/js/deepin_item.coffee:291
-msgid "_View as analog"
-msgstr "显示模拟时钟(_V)"
-
-#: ../resources/dock/js/deepin_item.coffee:292
-#: ../resources/dock/js/deepin_item.coffee:340
-msgid "_Time settings"
-msgstr "时间设置(_T)"
-
-#: ../resources/dock/js/deepin_item.coffee:339
-msgid "_View as digit"
-msgstr "显示数字时钟(_V)"
-
-#: ../resources/dock/js/main.coffee:129 ../resources/zone/js/utils.coffee:10
-msgid "Launcher"
+#: ../resources/launcher/js/item.coffee:331
+#, fuzzy
+msgid "launcher"
 msgstr "启动器"
-
-#: ../resources/zone/js/utils.coffee:10
-msgid "System Settings"
-msgstr "系统设置"
-
-#: ../resources/zone/js/utils.coffee:10
-msgid "Workspace"
-msgstr "工作区"
-
-#: ../resources/zone/js/utils.coffee:10
-msgid "Desktop"
-msgstr "桌面"
-
-#: ../resources/zone/js/utils.coffee:10
-msgid "None"
-msgstr "无"
 
 #: ../resources/launcher/js/softwaremanager.coffee:78
 msgid "Uninstall failed"
@@ -387,23 +340,62 @@ msgstr "添加至常用项(_F)"
 msgid "Remove from _favorites"
 msgstr "从常用项中删除(_F)"
 
-#: ../resources/launcher/js/item.coffee:269
-msgid "Send to d_esktop"
-msgstr "发送到桌面(_E)"
+#: ../resources/zone/js/utils.coffee:10
+msgid "System Settings"
+msgstr "系统设置"
 
-#: ../resources/launcher/js/item.coffee:272
-msgid "Send to do_ck"
-msgstr "添加到 Dock(_C)"
+#: ../resources/zone/js/utils.coffee:10
+msgid "Show All Windows"
+msgstr "显示所有窗口"
 
-#: ../resources/launcher/js/item.coffee:275
-msgid "_Uninstall"
-msgstr "卸载"
+#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:138
+msgid "Launcher"
+msgstr "启动器"
 
-#: ../resources/launcher/js/item.coffee:330
-msgid ""
-"The operation may also remove other applications that depends on the item. "
-"Are you sure you want to uninstall the item?"
-msgstr "该操作可能会同时卸载其他相关软件，您确定要卸载该项吗？"
+#: ../resources/zone/js/utils.coffee:10
+msgid "Desktop"
+msgstr "桌面"
+
+#: ../resources/zone/js/utils.coffee:10
+msgid "None"
+msgstr "无"
+
+#: ../resources/dock/js/global_menu.coffee:12
+msgid "keep _showing"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:13
+msgid "keep _hidden"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:14
+msgid "_auto hide"
+msgstr ""
+
+#: ../resources/dock/js/deepin_item.coffee:139
+msgid "_View as analog"
+msgstr "显示模拟时钟(_V)"
+
+#: ../resources/dock/js/deepin_item.coffee:140
+#: ../resources/dock/js/deepin_item.coffee:188
+msgid "_Time settings"
+msgstr "时间设置(_T)"
+
+#: ../resources/dock/js/deepin_item.coffee:187
+msgid "_View as digit"
+msgstr "显示数字时钟(_V)"
+
+#: ../app/desktop/desktop.c:221
+msgid "New file"
+msgstr "新建文件"
+
+#: ../app/desktop/desktop.c:232
+msgid "New directory"
+msgstr "新建目录"
+
+#: ../app/greeter/mutils.c:84
+msgid "%a, %b %d, %Y"
+msgstr "%Y年%b%d日 %A"
 
 #: ../app/greeter/camera.c:47
 msgid "Oops...I can't recognize your face. "
@@ -418,23 +410,11 @@ msgstr "请使用密码登录或点击头像重试。"
 msgid "%sRetry automatically in %ds"
 msgstr "%s%d秒后自动重试"
 
-#: ../app/greeter/mutils.c:84
-msgid "%a, %b %d, %Y"
-msgstr "%Y年%b%d日 %A"
-
-#: ../app/greeter/greeter.c:181 ../app/greeter/lock.c:130
+#: ../app/greeter/lock.c:131 ../app/greeter/greeter.c:182
 msgid "Invalid Password"
 msgstr "密码错误"
 
-#: ../app/desktop/desktop.c:214
-msgid "New file"
-msgstr "新建文件"
-
-#: ../app/desktop/desktop.c:225
-msgid "New directory"
-msgstr "新建目录"
-
-#: ../app/dock/dock.c:300
+#: ../app/dock/dock.c:315
 #, fuzzy
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr "因Compiz未启用，Dock未能启动。"
@@ -492,118 +472,118 @@ msgstr "删除"
 msgid "File conflict"
 msgstr "文件冲突"
 
-#: ../lib/dentry/fileops_error_dialog.c:107
+#: ../lib/dentry/fileops_error_dialog.c:106
 msgid "_Select a new name for the destination"
 msgstr "为目标选择新的名称(_S)"
 
-#: ../lib/dentry/fileops_error_dialog.c:118
+#: ../lib/dentry/fileops_error_dialog.c:117
 msgid "Reset"
 msgstr "重置"
 
-#: ../lib/dentry/fileops_error_dialog.c:127
+#: ../lib/dentry/fileops_error_dialog.c:126
 msgid "Apply this action to all files"
 msgstr "将该动作应用到全部文件"
 
-#: ../lib/dentry/fileops_error_dialog.c:134
+#: ../lib/dentry/fileops_error_dialog.c:133
 msgid "_Skip"
 msgstr "跳过(_S)"
 
-#: ../lib/dentry/fileops_error_dialog.c:137
+#: ../lib/dentry/fileops_error_dialog.c:136
 msgid "Re_name"
 msgstr "重命名(_N)"
 
-#: ../lib/dentry/fileops_error_dialog.c:142
+#: ../lib/dentry/fileops_error_dialog.c:141
 msgid "Replace"
 msgstr "替换"
 
-#: ../lib/dentry/fileops_error_dialog.c:220
+#: ../lib/dentry/fileops_error_dialog.c:219
 #, c-format
 msgid "Do you want to merge with folder \"%s\"?"
 msgstr "你确定要与文件夹“%s”合并吗？"
 
-#: ../lib/dentry/fileops_error_dialog.c:222
+#: ../lib/dentry/fileops_error_dialog.c:221
 msgid ""
 "You will be asked before replacing any files in the folder that conflict "
 "with the files being copied."
 msgstr "合并操作将会在替换冲突文件时请求确认。"
 
-#: ../lib/dentry/fileops_error_dialog.c:226
+#: ../lib/dentry/fileops_error_dialog.c:225
 #, c-format
 msgid "An older folder with the same name already exists in \"%s\"."
 msgstr "在“%s”中有相同名称的一个较旧文件夹已存在。"
 
-#: ../lib/dentry/fileops_error_dialog.c:230
+#: ../lib/dentry/fileops_error_dialog.c:229
 #, c-format
 msgid "A newer folder with the same name already exists in \"%s\"."
 msgstr "在“%s”中有相同名称的一个较新文件夹已存在。"
 
-#: ../lib/dentry/fileops_error_dialog.c:234
+#: ../lib/dentry/fileops_error_dialog.c:233
 #, c-format
 msgid "Another folder with the same name already exists in \"%s\"."
 msgstr "在“%s”中有相同名称的一个文件夹已存在。"
 
-#: ../lib/dentry/fileops_error_dialog.c:240
+#: ../lib/dentry/fileops_error_dialog.c:239
 msgid "Replacing it will remove all files in the folder."
 msgstr "替换将移除文件夹中的所有文件。"
 
-#: ../lib/dentry/fileops_error_dialog.c:242
+#: ../lib/dentry/fileops_error_dialog.c:241
 #, fuzzy, c-format
 msgid "Do you want to replace folder \"%s\"?"
 msgstr "您确定要替换文件“%s”吗？"
 
-#: ../lib/dentry/fileops_error_dialog.c:244
+#: ../lib/dentry/fileops_error_dialog.c:243
 #, c-format
 msgid "A folder with the same name already exists in \"%s\"."
 msgstr "在“%s”中已存在相同文件名的文件夹。"
 
-#: ../lib/dentry/fileops_error_dialog.c:250
+#: ../lib/dentry/fileops_error_dialog.c:249
 #, fuzzy, c-format
 msgid "Do you want to replace file \"%s\"?"
 msgstr "您确定要替换文件“%s”吗？"
 
-#: ../lib/dentry/fileops_error_dialog.c:251
+#: ../lib/dentry/fileops_error_dialog.c:250
 msgid "Replacing it will overwrite its content."
 msgstr "替换将覆盖它的内容。"
 
-#: ../lib/dentry/fileops_error_dialog.c:253
+#: ../lib/dentry/fileops_error_dialog.c:252
 #, c-format
 msgid "An older file with the same name already exists in \"%s\"."
 msgstr "在“%s”中已存在较旧的相同文件名的文件。"
 
-#: ../lib/dentry/fileops_error_dialog.c:257
+#: ../lib/dentry/fileops_error_dialog.c:256
 #, c-format
 msgid "A newer file with the same name already exists in \"%s\"."
 msgstr "在“%s”中已存在更新的相同文件名的文件。"
 
-#: ../lib/dentry/fileops_error_dialog.c:261
+#: ../lib/dentry/fileops_error_dialog.c:260
 #, c-format
 msgid "Another file with the same name already exists in \"%s\"."
 msgstr "在“%s”中已存在相同文件名的文件。"
 
-#: ../lib/dentry/fileops_error_dialog.c:333
+#: ../lib/dentry/fileops_error_dialog.c:332
 msgid "Original file"
 msgstr "原始文件"
 
-#: ../lib/dentry/fileops_error_dialog.c:334
-#: ../lib/dentry/fileops_error_dialog.c:362
+#: ../lib/dentry/fileops_error_dialog.c:333
+#: ../lib/dentry/fileops_error_dialog.c:361
 msgid "Size:"
 msgstr "大小："
 
-#: ../lib/dentry/fileops_error_dialog.c:338
-#: ../lib/dentry/fileops_error_dialog.c:366
+#: ../lib/dentry/fileops_error_dialog.c:337
+#: ../lib/dentry/fileops_error_dialog.c:365
 msgid "Type:"
 msgstr "类型："
 
-#: ../lib/dentry/fileops_error_dialog.c:342
-#: ../lib/dentry/fileops_error_dialog.c:370
+#: ../lib/dentry/fileops_error_dialog.c:341
+#: ../lib/dentry/fileops_error_dialog.c:369
 msgid "Last modified:"
 msgstr "最近修改："
 
-#: ../lib/dentry/fileops_error_dialog.c:361
+#: ../lib/dentry/fileops_error_dialog.c:360
 msgid "Replace with"
 msgstr "替换为"
 
-#: ../lib/dentry/fileops_error_dialog.c:387
+#: ../lib/dentry/fileops_error_dialog.c:386
 msgid "Merge"
 msgstr "合并"
 
@@ -646,6 +626,10 @@ msgstr "在终端中打开(_T)"
 #: ../lib/dentry/mime_actions.c:211
 msgid "_Display"
 msgstr "显示(_D)"
+
+#: ../lib/dentry/mime_actions.c:213
+msgid "_Run"
+msgstr "运行(_R)"
 
 #: ../lib/category.c:45
 msgid "all"
@@ -694,6 +678,27 @@ msgstr "实用工具"
 #: ../lib/category.c:56
 msgid "other"
 msgstr "其他"
+
+#~ msgid "_New Window"
+#~ msgstr "新建窗口(_N)"
+
+#~ msgid "Close _All"
+#~ msgstr "关闭所有(_A)"
+
+#~ msgid "_Dock me"
+#~ msgstr "驻留(_D)"
+
+#~ msgid "The item is invalid. Do you want to remove it from Dock?"
+#~ msgstr "该项无效。要把它从Dock上删除吗？"
+
+#~ msgid "_Undock"
+#~ msgstr "移除驻留(_U)"
+
+#~ msgid "_Close"
+#~ msgstr "关闭(_C)"
+
+#~ msgid "Workspace"
+#~ msgstr "工作区"
 
 #~ msgid "Log out"
 #~ msgstr "注销"
