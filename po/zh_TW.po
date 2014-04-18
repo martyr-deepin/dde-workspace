@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-18 09:05+0800\n"
+"POT-Creation-Date: 2014-04-18 11:08+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Wang Dianjin <wangdianjin@linuxdeepin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -347,12 +347,13 @@ msgstr "從「自動啟動」中移除(_R)"
 
 #: ../resources/zone/js/utils.coffee:10
 #, fuzzy
-msgid "System Settings"
-msgstr "桌面設定(_E)"
+msgid "Control Center"
+msgstr "軟體中心"
 
 #: ../resources/zone/js/utils.coffee:10
-msgid "Show All Windows"
-msgstr ""
+#, fuzzy
+msgid "All Windows"
+msgstr "新建视窗(_N)"
 
 #: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:138
 msgid "Launcher"
@@ -689,8 +690,9 @@ msgstr "公用程式"
 msgid "other"
 msgstr "其他"
 
-#~ msgid "_New Window"
-#~ msgstr "新建视窗(_N)"
+#, fuzzy
+#~ msgid "System Settings"
+#~ msgstr "桌面設定(_E)"
 
 #~ msgid "Close _All"
 #~ msgstr "關閉全部(_A)"

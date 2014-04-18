@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Destkop Environment\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-18 09:05+0800\n"
+"POT-Creation-Date: 2014-04-18 11:08+0800\n"
 "PO-Revision-Date: 2013-12-13 06:57+0000\n"
 "Last-Translator: lihongwu <lihongwu1987@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/deepin-destkop-"
@@ -351,12 +351,13 @@ msgstr "_Eliminar del autoarranque"
 
 #: ../resources/zone/js/utils.coffee:10
 #, fuzzy
-msgid "System Settings"
-msgstr "Ajustes de _Escritorio"
+msgid "Control Center"
+msgstr "Centro de Software"
 
 #: ../resources/zone/js/utils.coffee:10
-msgid "Show All Windows"
-msgstr ""
+#, fuzzy
+msgid "All Windows"
+msgstr "_Nueva ventana"
 
 #: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:138
 msgid "Launcher"
@@ -702,8 +703,9 @@ msgstr "Utilidades"
 msgid "other"
 msgstr "Otros"
 
-#~ msgid "_New Window"
-#~ msgstr "_Nueva ventana"
+#, fuzzy
+#~ msgid "System Settings"
+#~ msgstr "Ajustes de _Escritorio"
 
 #~ msgid "Close _All"
 #~ msgstr "Cerrar _Todo"

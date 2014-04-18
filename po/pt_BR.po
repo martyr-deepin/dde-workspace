@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Destkop Environment\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-18 09:05+0800\n"
+"POT-Creation-Date: 2014-04-18 11:08+0800\n"
 "PO-Revision-Date: 2013-12-11 04:44+0000\n"
 "Last-Translator: 648trindade <rafaelgt.mbin@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/"
@@ -348,12 +348,13 @@ msgstr "_Remover do início automático"
 
 #: ../resources/zone/js/utils.coffee:10
 #, fuzzy
-msgid "System Settings"
-msgstr "Configurações de D_esktop"
+msgid "Control Center"
+msgstr "Central de Aplicativos"
 
 #: ../resources/zone/js/utils.coffee:10
-msgid "Show All Windows"
-msgstr ""
+#, fuzzy
+msgid "All Windows"
+msgstr "_Nova Janela"
 
 #: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:138
 msgid "Launcher"
@@ -697,8 +698,9 @@ msgstr "utilitários"
 msgid "other"
 msgstr "outros"
 
-#~ msgid "_New Window"
-#~ msgstr "_Nova Janela"
+#, fuzzy
+#~ msgid "System Settings"
+#~ msgstr "Configurações de D_esktop"
 
 #~ msgid "Close _All"
 #~ msgstr "Fechar _Tudo"

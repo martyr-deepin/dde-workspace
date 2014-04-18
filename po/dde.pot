@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-18 09:05+0800\n"
+"POT-Creation-Date: 2014-04-18 11:08+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -339,11 +339,11 @@ msgid "Remove from _favorites"
 msgstr ""
 
 #: ../resources/zone/js/utils.coffee:10
-msgid "System Settings"
+msgid "Control Center"
 msgstr ""
 
 #: ../resources/zone/js/utils.coffee:10
-msgid "Show All Windows"
+msgid "All Windows"
 msgstr ""
 
 #: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:138

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-18 09:05+0800\n"
+"POT-Creation-Date: 2014-04-18 11:08+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Deepin Translation Team <support@linuxdeepin.com>\n"
 "Language-Team: Deepin Translation Team <support@linuxdeepin.com>\n"
@@ -341,12 +341,12 @@ msgid "Remove from _favorites"
 msgstr "从常用项中删除(_F)"
 
 #: ../resources/zone/js/utils.coffee:10
-msgid "System Settings"
-msgstr "系统设置"
+msgid "Control Center"
+msgstr "控制中心"
 
 #: ../resources/zone/js/utils.coffee:10
-msgid "Show All Windows"
-msgstr "显示所有窗口"
+msgid "All Windows"
+msgstr "所有窗口"
 
 #: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:138
 msgid "Launcher"
@@ -362,15 +362,15 @@ msgstr "无"
 
 #: ../resources/dock/js/global_menu.coffee:12
 msgid "keep _showing"
-msgstr ""
+msgstr "一直显示"
 
 #: ../resources/dock/js/global_menu.coffee:13
 msgid "keep _hidden"
-msgstr ""
+msgstr "一直隐藏"
 
 #: ../resources/dock/js/global_menu.coffee:14
 msgid "_auto hide"
-msgstr ""
+msgstr "自动隐藏"
 
 #: ../resources/dock/js/deepin_item.coffee:139
 msgid "_View as analog"
@@ -678,6 +678,9 @@ msgstr "实用工具"
 #: ../lib/category.c:56
 msgid "other"
 msgstr "其他"
+
+#~ msgid "System Settings"
+#~ msgstr "系统设置"
 
 #~ msgid "_New Window"
 #~ msgstr "新建窗口(_N)"
