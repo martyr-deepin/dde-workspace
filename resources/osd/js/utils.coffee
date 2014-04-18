@@ -19,10 +19,9 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 _b = document.body
+FOCUS = null
 
-DEBUG = false
-FOCUS = false
-
+DEBUG = true
 setFocus = (focus)->
     FOCUS = focus
     FOCUS = true if DEBUG

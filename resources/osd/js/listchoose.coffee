@@ -21,16 +21,24 @@ class ListChoose extends Widget
     constructor:(@id)->
         super
         echo "New ListChoose :#{@id}"
+        @list = []
+        
         @Listul = []
-
+        @li = []
+        @li_span = []
+        @currentIndex = 0
+        @show()
+    
     hide:->
         @element.style.display = "none"
     
     show:->
         @element.style.display = "-webkit-box"
     
-    setPosition:(parent = document.body,left,bottom,position = "absolute")->
+    setParent:(parent = document.body)->
         parent.appendChild(@element)
+
+    setPosition:(left,bottom,position = "absolute")->
         @element.style.position = position
         @element.style.left = left
         @element.style.bottom = bottom
@@ -39,42 +47,56 @@ class ListChoose extends Widget
         @element.style.width = @whole_w
         @element.style.height = @whole_h
 
-    ListAllBuild:(@Listul,@current) ->
-        @li = []
-        @li_span = []
+    ListAllBuild:(@list,@current) ->
+        echo "ListAllBuild @current: #{@current}"
+        if not @current in @list
+            echo "#{@current} isnt is #{@list.toString()} ,and then return"
+            return
+
         @Listul = create_element("ul","Listul",@element)
-        for each,i in @Listul
+        for each,i in @list
             @li[i] = create_element("li","li",@Listul)
             @li_span[i] = create_element("span","li_span",@li[i])
             @li_span[i].textContent = each
-            if each is @current  then @currentIndex = i
+            @currentIndex = i if each is @current
         
+        echo "@currentIndex:#{@currentIndex}"
         @setBackground(@currentIndex)
 
     setBackground: (index)=>
         # @ListAll(@UserLayoutList,@getCurrent())
-        return if not @li[0]
-
-        if index > @Listul.length - 1 then index = @Listul.length - 1
-        else if index < 0 then index = 0
+        return if not @li[0]?
+        echo "setBackground:#{index}"
+        
+        @show()
+        
+        @currentIndex = @checkIndex(index)
         
         for li,i in @li
-            if i == Index
+            if i == @currentIndex
                 li.style.border = "rgba(255,255,255,0.5) 2px solid"
                 li.style.backgroundColor = "rgb(0,0,0)"
             else
                 li.style.border = "rgba(255,255,255,0.0) 2px solid"
                 li.style.backgroundColor = null
+    
+    checkIndex:(index)->
+        max = @list.length - 1
+        echo "checkIndex max:#{max} ; index:#{index}"
+        if index > max then index = 0
+        else if index < 0 then index = max
+        return index
 
     ChooseIndex: =>
         clearTimeout(timeout_osdHide)
         @prevIndex = @currentIndex
         @currentIndex++
-
-        if @currentIndex > @Listul.length - 1 then @currentIndex = @Listul.length - 1
-        else if @currentIndex < 0 then @currentIndex = 0
         
-        @current = @Listul[@currentIndex]
+        @currentIndex = @checkIndex(@currentIndex)
+        @current = @list[@currentIndex]
+        
+        echo "ChooseIndex from #{@prevIndex} to #{@currentIndex}"
+        osdShow()
         @setBackground(@currentIndex)
         
         timeout_osdHide = setTimeout(osdHide,TIME_HIDE)
