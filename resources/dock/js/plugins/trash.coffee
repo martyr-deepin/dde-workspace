@@ -5,6 +5,10 @@ class Trash extends PostfixedItem
         @w_id = 0
         @is_opened = false
         @entry = DCore.DEntry.get_trash_entry()
+        @img.style.background = "url(#{Trash.get_icon(0)}) no-repeat"
+        @imgFull = create_element(tag:'div', class:"AppItemImg", @imgWarp)
+        @imgFull.style.background = "url(#{Trash.get_icon(1)}) no-repeat"
+        @update()
         DCore.signal_connect("trash_count_changed", (info)=>
             @update(info.value)
         )
@@ -104,5 +108,10 @@ class Trash extends PostfixedItem
 
     update: (n=null)->
         n = DCore.DEntry.get_trash_count() if n == null
-        @img.style.backgroundImage = "url(file://#{Trash.get_icon(n)})"
+        if n == 0
+            @img.style.display = ''
+            @imgFull.style.display = 'none'
+        else
+            @img.style.display = 'none'
+            @imgFull.style.display = ''
 

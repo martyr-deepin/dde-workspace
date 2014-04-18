@@ -33,16 +33,7 @@ GVariant* js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue, const GVariantT
 
         const GVariantType* child_sig = g_variant_type_element(sig);
 
-        if (g_variant_type_is_basic(child_sig) || g_variant_type_is_variant(child_sig)) {
-
-            for (size_t i=0; i < JSPropertyNameArrayGetCount(array); i++) {
-                if (filter_array_child(ctx, array, i)) continue;
-                g_variant_builder_add_value(&builder, js_to_dbus(ctx, JSObjectGetPropertyAtIndex(ctx, (JSObjectRef)jsvalue, i, NULL), child_sig, exception));
-            }
-            JSPropertyNameArrayRelease(array);
-            return g_variant_builder_end(&builder);
-
-        } else if (g_variant_type_is_dict_entry(child_sig)) {
+        if (g_variant_type_is_dict_entry(child_sig)) {
 
             const GVariantType* key_sig = g_variant_type_first(child_sig);
             const GVariantType* value_sig = g_variant_type_next(key_sig);
@@ -58,9 +49,30 @@ GVariant* js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue, const GVariantT
             }
             return g_variant_builder_end(&builder);
 
-        } else {
-            g_assert_not_reached();
-        }
+	} else {
+	    GVariantBuilder builder;
+	    g_variant_builder_init(&builder, sig);
+	    JSPropertyNameArrayRef array = JSObjectCopyPropertyNames(ctx, (JSObjectRef)jsvalue);
+	    const GVariantType* child_sig = g_variant_type_element(sig);
+	    for (size_t i=0; i < JSPropertyNameArrayGetCount(array); i++) {
+		if (filter_array_child(ctx, array, i)) continue;
+		g_variant_builder_add_value(&builder, js_to_dbus(ctx, JSObjectGetPropertyAtIndex(ctx, (JSObjectRef)jsvalue, i, NULL), child_sig, exception));
+	    }
+	    JSPropertyNameArrayRelease(array);
+	    return g_variant_builder_end(&builder);
+	}
+    } else if (g_variant_type_is_tuple(sig)) {
+	    GVariantBuilder builder;
+	    g_variant_builder_init(&builder, sig);
+	    JSPropertyNameArrayRef array = JSObjectCopyPropertyNames(ctx, (JSObjectRef)jsvalue);
+	    const GVariantType* current_sig = g_variant_type_first(sig);
+            for (size_t i=0; i < JSPropertyNameArrayGetCount(array); i++) {
+                if (filter_array_child(ctx, array, i)) continue;
+                g_variant_builder_add_value(&builder, js_to_dbus(ctx, JSObjectGetPropertyAtIndex(ctx, (JSObjectRef)jsvalue, i, NULL), current_sig, exception));
+		current_sig = g_variant_type_next(current_sig);
+            }
+            JSPropertyNameArrayRelease(array);
+            return g_variant_builder_end(&builder);
     } else {
         switch (g_variant_type_peek_string(sig)[0]) {
             case 'y':
