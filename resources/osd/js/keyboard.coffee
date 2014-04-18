@@ -41,7 +41,7 @@ SwitchLayout = (keydown)->
         keyboardList.setSize("100%","100%")
         keyboardList.ListAllBuild(keyboard.UserLayoutList,keyboard.getCurrentLayout())
 
-    keyboardList.ChooseIndex()
-    keyboard.setCurrentLayout(keyboard.current)
+    current = keyboardList.ChooseIndex()
+    keyboard.setCurrentLayout(current)
 
 DBusMediaKey.connect("SwitchLayout",SwitchLayout) if DBusMediaKey?
