@@ -243,9 +243,7 @@ get_dbus = (type, opt, testProperty)->
 
     d = null
     try
-        for dump in [0..20]
-            if (d = func.apply(null, dbusArg))?
-                break
+        d = func.apply(null, dbusArg)
     catch e
         console.log "Get DBus \"#{opt.name} #{opt.path} #{opt.interface}\" failed: #{e}"
         return null
