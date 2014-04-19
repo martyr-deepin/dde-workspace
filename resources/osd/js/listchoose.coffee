@@ -87,7 +87,7 @@ class ListChoose extends Widget
         else if index < 0 then index = max
         return index
 
-    ChooseIndex: =>
+    chooseOption: =>
         clearTimeout(timeout_osdHide)
         @prevIndex = @currentIndex
         @currentIndex++
@@ -100,4 +100,4 @@ class ListChoose extends Widget
         @setBackground(@currentIndex)
         
         timeout_osdHide = setTimeout(osdHide,TIME_HIDE)
-        return @currentIndex
+        return @current

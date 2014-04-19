@@ -43,6 +43,15 @@ class Display extends Widget
 
         _b.appendChild(@element)
         @getDBus()
+        
+        @DisplayModeList = [
+            _("Copy"),
+            _("Expand"),
+            _("Only the first Screen"),
+            _("Only the second Screen")
+        ]
+        @DisplayModeValue = [-1,0,1,2]
+        
         _b.addEventListener("keyup",(e)=>
             if e.which == KEYCODE.WIN and @FromSwitchMonitors
                 @switchDisplayMode(@ModeChoose)
@@ -92,6 +101,30 @@ class Display extends Widget
             echo "getPrimarBrightnessValue: ERROR: #{e}"
         finally
             return value
+    
+    getCurrentMode:->
+        @DisplayMode = @DBusDisplay.DisplayMode
+        if @DisplayMode is null then @DisplayMode = 0
+        @currentMode = @DisplayModeList[i] for each,i in @DisplayModeValue when vale == @DisplayMode
+        return @currentMode
+
+    setCurrentMode:(current)->
+        @FromSwitchMonitors = true
+        Modei = i for each,i in @DisplayModeList when each is current
+        ModeChoose = @DisplayModeValue[Modei]
+        @switchDisplayMode2(ModeChoose)
+    
+    switchDisplayMode2:(ModeChoose)->
+        setFocus(true)
+        osdHide()
+
+        if @DBusMonitors.length < 2 then return
+        if ModeChoose > @DBusMonitors.length then ModeChoose = -1
+
+        echo "SwitchMode to (#{ModeChoose})"
+        @DBusDisplay.SwitchMode_sync(ModeChoose)
+        @FromSwitchMonitors = false
+
 
     switchDisplayMode:(ModeChoose)->
         setFocus(false)
@@ -123,6 +156,7 @@ class Display extends Widget
             # @DisplayMode = @DBusDisplay.DisplayMode
             #@SwitchMode++
             #if @SwitchMode > @DBusMonitors.length then @DisplayMode = -1
+            @DisplayMode = @DBusDisplay.DisplayMode
             ImgIndex = @DisplayMode
             if ImgIndex >= 2 then ImgIndex = 2
             imgName = "#{@id}_#{ImgIndex}"
@@ -155,6 +189,7 @@ class Display extends Widget
 
 
 BrightCls = null
+displayModeList = null
 
 BrightnessUp = (keydown)->
     if keydown then return
@@ -178,7 +213,25 @@ DisplaySwitch = (keydown)->
     echo "SwitchMonitors"
     BrightCls  = new Display("DisplaySwitch") if not BrightCls?
     BrightCls.id = "DisplaySwitch"
-    BrightCls.showDisplayMode()
+    if BrightCls.DBusMonitors.length < 2 then return
+    
+    if not DEBUG
+        BrightCls.showDisplayMode()
+        return
+    
+    if not displayModeList?
+        displayModeList = new ListChoose("displayModeList")
+        displayModeList.setParent(_b)
+        displayModeList.setSize("100%","100%")
+        displayModeList.ListAllBuild(BrightCls.DisplayModeList,BrightCls.getCurrentMode())
+
+    current = displayModeList.chooseIndex()
+    echo "6"
+    BrightCls.setCurrentMode(current)
+    echo "7"
+
+
+    
 
 DBusMediaKey.connect("BrightnessDown",BrightnessDown) if DBusMediaKey?
 DBusMediaKey.connect("BrightnessUp",BrightnessUp) if DBusMediaKey?
