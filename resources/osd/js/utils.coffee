@@ -78,7 +78,9 @@ _b.addEventListener("click",(e)=>
     e.stopPropagation()
     echo click_time
     click_time++
-    if click_time % 1 == 0
+    times = 1
+    times = 3 if DEBUG
+    if click_time % times == 0
         click_time = 0
         DCore.Osd.hide()
 )
@@ -105,8 +107,11 @@ set_bg = (cls,imgName,prevImgName)->
     cls.bg1.style.height = "100%"
     cls.bg2.style.height = "100%"
 
-    cls.bg1.style.backgroundImage = "url(img/#{prevImgName}.png)"
-    cls.bg2.style.backgroundImage = "url(img/#{imgName}.png)"
+    try
+        cls.bg1.style.backgroundImage = "url(img/#{prevImgName}.png)"
+        cls.bg2.style.backgroundImage = "url(img/#{imgName}.png)"
+    catch e
+        echo "#{e}"
     cls.bg1.style.display = "block"
     cls.bg2.style.display = "block"
 

@@ -39,7 +39,7 @@ class ListChoose extends Widget
         parent.appendChild(@element)
 
     setPosition:(left,bottom,position = "absolute")->
-        @element.style.position = position
+        #@element.style.position = position
         @element.style.left = left
         @element.style.bottom = bottom
 
