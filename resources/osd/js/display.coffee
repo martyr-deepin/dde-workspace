@@ -137,17 +137,10 @@ class Display extends Widget
     showDisplayMode:->
         clearTimeout(@timepress)
         clearTimeout(timeout_osdHide)
-
         @timepress = setTimeout(=>
-            @FromSwitchMonitors = true
-            @valueDiv.style.display = "none" if @valueDiv
-            if @Monitors.length < 2 then return
-
             osdShow()
             @element.style.display = "block"
-            # @DisplayMode = @DBusDisplay.DisplayMode
-            #@SwitchMode++
-            #if @SwitchMode > @DBusMonitors.length then @DisplayMode = -1
+            
             @DisplayMode = @DBusDisplay.DisplayMode
             ImgIndex = @DisplayMode
             if ImgIndex >= 2 then ImgIndex = 2
@@ -160,9 +153,9 @@ class Display extends Widget
 
 
     showBrightness:->
-        clearTimeout(@timepress) if @timepress
+        clearTimeout(@timepress)
+        clearTimeout(timeout_osdHide)
         @timepress = setTimeout(=>
-            clearTimeout(timeout_osdHide) if timeout_osdHide?
 
             echo "#{@id} Class  show"
             osdShow()
@@ -174,9 +167,7 @@ class Display extends Widget
             @prebgImg = @id
 
             showValue(value,0,1,@,"Brightness_bar")
-            timeout_osdHide = setTimeout(=>
-                osdHide()
-            ,TIME_HIDE)
+            timeout_osdHide = setTimeout(osdHide,TIME_HIDE)
         ,TIME_PRESS)
 
 
@@ -200,15 +191,16 @@ BrightnessDown = (keydown)->
     BrightCls.showBrightness()
 
 DisplaySwitch = (keydown)->
+    CHOOSEMODE = false
     if keydown then return
-    setFocus(true)
+    if CHOOSEMODE then setFocus(true)
+    else setFocus(false)
     echo "SwitchMonitors"
     BrightCls  = new Display("DisplaySwitch") if not BrightCls?
     BrightCls.id = "DisplaySwitch"
     echo BrightCls.Monitors
     if BrightCls.Monitors.length < 2 then return
     
-    CHOOSEMODE = false
     if not CHOOSEMODE
         BrightCls.showDisplayMode()
         return
