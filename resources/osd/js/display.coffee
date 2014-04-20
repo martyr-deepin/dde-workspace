@@ -205,12 +205,11 @@ DisplaySwitch = (keydown)->
     echo "SwitchMonitors"
     BrightCls  = new Display("DisplaySwitch") if not BrightCls?
     BrightCls.id = "DisplaySwitch"
-    echo "1"
     echo BrightCls.Monitors
     if BrightCls.Monitors.length < 2 then return
-    echo "2"
     
-    if not DEBUG
+    CHOOSEMODE = false
+    if not CHOOSEMODE
         BrightCls.showDisplayMode()
         return
     

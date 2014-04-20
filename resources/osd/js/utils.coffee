@@ -21,7 +21,7 @@
 _b = document.body
 FOCUS = null
 
-DEBUG = true
+DEBUG = false
 setFocus = (focus)->
     FOCUS = focus
     FOCUS = true if DEBUG
