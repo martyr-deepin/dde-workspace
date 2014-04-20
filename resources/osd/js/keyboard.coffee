@@ -11,16 +11,6 @@ class Keyboard
 
         @CurrentLayout = null
         @getDBus()
-        @setKeyupListener(KEYCODE.WIN)
-    
-    setKeyupListener:(KeyCode)->
-        @isFromList = false
-        _b.addEventListener("keyup",(e)=>
-            if e.which == KeyCode and @isFromList is true
-                @isFromList = false
-                @setCurrentLayout(@CurrentLayout)
-        )
-    
 
     getDBus: ->
         try
@@ -51,7 +41,7 @@ keyboardList = null
 
 SwitchLayout = (keydown)->
     if keydown then return
-    setFocus(false)
+    setFocus(true)
     echo "SwitchLayout"
     
     keyboard = new Keyboard() if not keyboard?
@@ -65,9 +55,9 @@ SwitchLayout = (keydown)->
         #keyboardList.setPosition(0,0,"absolute")
         keyboardList.setSize("100%","100%")
         keyboardList.ListAllBuild(keyboard.UserLayoutList,keyboard.getCurrentLayout())
-
-    current = keyboardList.chooseOption()
-    keyboard.isFromList = true
-    keyboard.CurrentLayout = current
+        keyboardList.setKeyupListener(KEYCODE.WIN,=>
+            keyboard.setCurrentLayout(keyboard.CurrentLayout)
+        )
+    keyboard.CurrentLayout = keyboardList.chooseOption()
 
 DBusMediaKey.connect("SwitchLayout",SwitchLayout) if DBusMediaKey?

@@ -50,16 +50,7 @@ class Display extends Widget
         
         _b.appendChild(@element)
         @getDBus()
-        @setKeyupListener(KEYCODE.WIN)
     
-    setKeyupListener:(KeyCode)->
-        @isFromList = false
-        _b.addEventListener("keyup",(e)=>
-            if e.which == KeyCode and @isFromList is true
-                @isFromList = false
-                @setCurrentMode(@currentMode)
-        )
-
     hide:->
         @element.style.display = "none"
 
@@ -228,11 +219,10 @@ DisplaySwitch = (keydown)->
         displayModeList.setParent(_b)
         displayModeList.setSize("100%","100%")
         displayModeList.ListAllBuild(BrightCls.DisplayModeList,BrightCls.getCurrentMode())
-
-    current = displayModeList.chooseIndex()
-    BrightCls.isFromList = true
-    BrightCls.currentMode = current
-
+        displayModeList.setKeyupListener(KEYCODE.WIN,=>
+            BrightCls.setCurrentMode(BrightCls.currentMode)
+        )
+    BrightCls.currentMode = displayModeList.chooseIndex()
 
     
 
