@@ -25,10 +25,6 @@ class Display extends Widget
         name: DISPLAY
         path: "/com/deepin/daemon/Display/MonitorLVDS1"
         interface: "com.deepin.daemon.Display.Monitor"
-    #-1 copy
-    #0 expand
-    #1 onlyCurrentScreen
-    #2 onlySecondScreen
     DEFAULT_DISPLAY_MODE = 0
 
     constructor:(@id)->
@@ -39,10 +35,6 @@ class Display extends Widget
         @DBusOpenedMonitors = []
         @OpenedMonitorsName = []
         @valueEach = []
-        @ModeChoose = DEFAULT_DISPLAY_MODE
-
-        _b.appendChild(@element)
-        @getDBus()
         
         @DisplayModeList = [
             _("Copy"),
@@ -51,10 +43,21 @@ class Display extends Widget
             _("Only the second Screen")
         ]
         @DisplayModeValue = [-1,0,1,2]
+        #-1 copy
+        #0 expand
+        #1 onlyCurrentScreen
+        #2 onlySecondScreen
         
+        _b.appendChild(@element)
+        @getDBus()
+        @setKeyupListener(KEYCODE.WIN)
+    
+    setKeyupListener:(KeyCode)->
+        @isFromList = false
         _b.addEventListener("keyup",(e)=>
-            if e.which == KEYCODE.WIN and @FromSwitchMonitors
-                @switchDisplayMode(@ModeChoose)
+            if e.which == KeyCode and @isFromList is true
+                @isFromList = false
+                @setCurrentMode(@currentMode)
         )
 
     hide:->
@@ -109,7 +112,6 @@ class Display extends Widget
         return @currentMode
 
     setCurrentMode:(current)->
-        @FromSwitchMonitors = true
         Modei = i for each,i in @DisplayModeList when each is current
         ModeChoose = @DisplayModeValue[Modei]
         @switchDisplayMode2(ModeChoose)
@@ -118,12 +120,11 @@ class Display extends Widget
         setFocus(true)
         osdHide()
 
-        if @DBusMonitors.length < 2 then return
-        if ModeChoose > @DBusMonitors.length then ModeChoose = -1
+        if @Monitors.length < 2 then return
+        if ModeChoose > @Monitors.length then ModeChoose = -1
 
         echo "SwitchMode to (#{ModeChoose})"
         @DBusDisplay.SwitchMode_sync(ModeChoose)
-        @FromSwitchMonitors = false
 
 
     switchDisplayMode:(ModeChoose)->
@@ -149,7 +150,7 @@ class Display extends Widget
         @timepress = setTimeout(=>
             @FromSwitchMonitors = true
             @valueDiv.style.display = "none" if @valueDiv
-            if @DBusMonitors.length == 1 then return
+            if @Monitors.length < 2 then return
 
             osdShow()
             @element.style.display = "block"
@@ -213,7 +214,10 @@ DisplaySwitch = (keydown)->
     echo "SwitchMonitors"
     BrightCls  = new Display("DisplaySwitch") if not BrightCls?
     BrightCls.id = "DisplaySwitch"
-    if BrightCls.DBusMonitors.length < 2 then return
+    echo "1"
+    echo BrightCls.Monitors
+    if BrightCls.Monitors.length < 2 then return
+    echo "2"
     
     if not DEBUG
         BrightCls.showDisplayMode()
@@ -226,9 +230,8 @@ DisplaySwitch = (keydown)->
         displayModeList.ListAllBuild(BrightCls.DisplayModeList,BrightCls.getCurrentMode())
 
     current = displayModeList.chooseIndex()
-    echo "6"
-    BrightCls.setCurrentMode(current)
-    echo "7"
+    BrightCls.isFromList = true
+    BrightCls.currentMode = current
 
 
     

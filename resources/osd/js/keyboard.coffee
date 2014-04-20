@@ -8,11 +8,24 @@ class Keyboard
     constructor:->
         echo "New Keyboard"
         @UserLayoutList = []
+
+        @CurrentLayout = null
         @getDBus()
+        @setKeyupListener(KEYCODE.WIN)
     
+    setKeyupListener:(KeyCode)->
+        @isFromList = false
+        _b.addEventListener("keyup",(e)=>
+            if e.which == KeyCode and @isFromList is true
+                @isFromList = false
+                @setCurrentLayout(@CurrentLayout)
+        )
+    
+
     getDBus: ->
         try
             @DBusKeyboard = get_dbus("session",KEYBOARD,"UserLayoutList")
+            @CurrentLayout = @getCurrentLayout()
         catch e
             echo " DBusKeyboard :#{KEYBOARD} ---#{e}---"
 
@@ -28,6 +41,8 @@ class Keyboard
         return j for each ,j in @UserLayoutList when @getCurrentLayout() is each
 
     setCurrentLayout: (layout)->
+        echo "setCurrentLayout:#{layout}"
+        @CurrentLayout = layout
         @DBusKeyboard?.CurrentLayout = layout
 
 
@@ -52,8 +67,7 @@ SwitchLayout = (keydown)->
         keyboardList.ListAllBuild(keyboard.UserLayoutList,keyboard.getCurrentLayout())
 
     current = keyboardList.chooseOption()
-    echo "6"
-    keyboard.setCurrentLayout(current)
-    echo "7"
+    keyboard.isFromList = true
+    keyboard.CurrentLayout = current
 
 DBusMediaKey.connect("SwitchLayout",SwitchLayout) if DBusMediaKey?
