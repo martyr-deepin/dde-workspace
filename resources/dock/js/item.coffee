@@ -194,12 +194,6 @@ class AppItem extends Item
             console.log("is runtime")
             @init_clientgroup()
 
-
-        # if app_list._insert_anchor_item
-        #     app_list.append(@)
-        # else
-        #     app_list.append_app_item?(@)
-
         @core?.connect("DataChanged", (name, value)=>
             console.log("#{name} is changed to #{value}")
 
@@ -338,7 +332,8 @@ class AppItem extends Item
             Preview_close_now(Preview_container._current_group)
             clearTimeout(hide_id)
         else
-            _lastCliengGroup?.embedWindows?.hide?()
+            if _lastCliengGroup and _lastCliengGroup.id != @id
+                _lastCliengGroup.embedWindows?.hide?()
             super
             xy = get_page_xy(@element)
             w = @element.clientWidth || 0
@@ -404,6 +399,7 @@ class AppItem extends Item
         else
             _lastCliengGroup = @
             super
+            __clear_timeout()
             if not Preview_container.is_showing
                 # console.log "Preview_container is not showing"
                 # update_dock_region()

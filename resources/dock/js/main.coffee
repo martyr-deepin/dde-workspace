@@ -62,7 +62,7 @@ trash = null
 
 for entry in entries
     console.log(entry)
-    d = get_dbus("session", itemDBus(entry), "Data")
+    d = DCore.DBus.session_object("com.deepin.daemon.Dock", entry, "dde.dock.EntryProxyer")
     console.log("init add: #{d.Id}")
     if d.Id == TRASH_ID
         trash = new Trash(TRASH_ID, Trash.get_icon(DCore.DEntry.get_trash_count()), _("Trash"))
@@ -90,7 +90,7 @@ entryManager.connect("TrayInited",->
 )
 
 entryManager.connect("Added", (path)->
-    d = get_dbus("session", itemDBus(path), "Data")
+    d = DCore.DBus.session_object("com.deepin.daemon.Dock", entry, "dde.dock.EntryProxyer")
     console.log("try to Add #{d.Id}, #{TRASH_ID}")
     if d.Id == TRASH_ID
         trash.is_opened = true
