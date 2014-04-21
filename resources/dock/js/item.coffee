@@ -187,12 +187,15 @@ class AppItem extends Item
 
         @tooltip = null
 
-        if @isNormal()
+        if @isNormal() || @isNormalApplet()
             console.log("is normal")
             @init_activator()
         else
             console.log("is runtime")
             @init_clientgroup()
+
+        if @isRuntimeApplet()
+            @openIndicator.style.display = 'none'
 
         @core?.connect("DataChanged", (name, value)=>
             console.log("#{name} is changed to #{value}")
@@ -326,9 +329,15 @@ class AppItem extends Item
     isApplet:->
         @core.isApplet?()
 
+    isRuntimeApplet:->
+        @core?.isRuntimeApplet()
+
+    isNormalApplet:->
+        @core?.isNormalApplet()
+
     on_mouseover:(e)=>
         super
-        if @isNormal()
+        if @isNormal() || @isNormalApplet()
             Preview_close_now(Preview_container._current_group)
             clearTimeout(hide_id)
         else
