@@ -129,7 +129,6 @@ GdkWindow* wrapper(Window xid)
     } else {
 	parent = child;
     }
-    gdk_window_show(child);
 
     gdk_window_add_filter(child, __monitor_embed_window, NULL);
     gdk_window_show(child);
@@ -248,7 +247,6 @@ void exwindow_draw_to_canvas(double _xid, JSValueRef canvas)
     if (cr != NULL){
         GdkWindow* window = g_hash_table_lookup(__EMBEDED_WINDOWS__, (gpointer)xid);
         if (window != NULL) {
-            cairo_save(cr);
             gdk_window_show(window);
             gdk_window_flush(window);
             gdk_flush();
@@ -261,8 +259,6 @@ void exwindow_draw_to_canvas(double _xid, JSValueRef canvas)
             /*cairo_surface_t* s = cairo_get_target(cr);*/
             /*cairo_surface_write_to_png(s, "/tmp/draw_to_canvas.png");*/
 
-            cairo_restore(cr);
-
             canvas_custom_draw_did(cr, NULL);
         }
     }
@@ -272,10 +268,9 @@ void exwindow_draw_to_canvas(double _xid, JSValueRef canvas)
 gboolean draw_embed_windows(GtkWidget* _w, cairo_t *cr)
 {
     _w = _w;
-    if (__EMBEDED_WINDOWS__ == NULL) {
+    if (__EMBEDED_WINDOWS__ == NULL || g_hash_table_size(__EMBEDED_WINDOWS__) == 0) {
 	return FALSE;
     }
-    cairo_save(cr);
     GHashTableIter iter;
     gpointer child = NULL;
     g_hash_table_iter_init (&iter, __EMBEDED_WINDOWS__);
@@ -296,12 +291,20 @@ gboolean draw_embed_windows(GtkWidget* _w, cairo_t *cr)
             !has_target) {
 	    int x = 0;
 	    int y = 0;
-	    gdk_window_get_geometry(win, &x, &y, NULL, NULL); //gdk_window_get_position will get error value when dock is hidden!
+	    int width, height;
+	    gdk_window_get_geometry(win, &x, &y, &width, &height); //gdk_window_get_position will get error value when dock is hidden!
 	    gdk_cairo_set_source_window(cr, win, x, y);
+
+	    cairo_save(cr);
+	    cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
+	    cairo_rectangle(cr, x, y, width, height);
+	    cairo_clip(cr);
+	    cairo_paint(cr);
+	    cairo_restore(cr);
+
 	    cairo_paint(cr);
 	}
     }
-    cairo_restore(cr);
     return FALSE;
 }
 
