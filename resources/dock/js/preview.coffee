@@ -72,10 +72,10 @@ class PWContainer extends Widget
                 id = @_current_group.id
                 infos = @_current_group.client_infos
                 # console.log("create PreviewWindow, #{id}##{infos[w_id].id}")
-                pw = new PreviewWindow("pw"+w_id, w_id, infos[w_id].title)
+                pw = new PreviewWindow("pw"+w_id, w_id, infos[w_id].title, cb)
 
             setTimeout(->
-                pw.update_content()
+                pw.update_content?()
                 cb?(pw.canvas)
             , 10)
             @_current_pws[w_id] = false
@@ -323,7 +323,7 @@ Preview_active_window_changed = (w_id) ->
     _current_active_pw_window?.to_active()
 
 class PreviewWindow extends Widget
-    constructor: (@id, @w_id, @title_str)->
+    constructor: (@id, @w_id, @title_str, @applet)->
         super
         @innerBorder = create_element(tag:'div', class:'PreviewWindowInner', @element)
         container = @innerBorder
@@ -331,33 +331,34 @@ class PreviewWindow extends Widget
         @canvas_container = create_element("div", "PWCanvas", container)
         @canvas = create_element("canvas", "", @canvas_container)
 
-        @close_button = create_element("div", "PWClose", @canvas_container)
-        @normalImg = create_img(src:"img/close_normal.png", @close_button)
-        @hoverImg = create_img(src:"img/close_hover.png", @close_button)
-        @hoverImg.style.display = 'none'
-        @close_button.addEventListener('click', (e)=>
-            e.stopPropagation()
-            clientManager?.CloseWindow(@w_id)
-        )
-        @close_button.addEventListener("mouseover", (e)=>
-            @hoverImg.style.display = 'inline'
-            @normalImg.style.display = 'none'
-        )
-        @close_button.addEventListener("mouseout", (e)=>
+        if not @applet
+            @close_button = create_element("div", "PWClose", @canvas_container)
+            @normalImg = create_img(src:"img/close_normal.png", @close_button)
+            @hoverImg = create_img(src:"img/close_hover.png", @close_button)
             @hoverImg.style.display = 'none'
-            @normalImg.style.display = 'inline'
-        )
+            @close_button.addEventListener('click', (e)=>
+                e.stopPropagation()
+                clientManager?.CloseWindow(@w_id)
+            )
+            @close_button.addEventListener("mouseover", (e)=>
+                @hoverImg.style.display = 'inline'
+                @normalImg.style.display = 'none'
+            )
+            @close_button.addEventListener("mouseout", (e)=>
+                @hoverImg.style.display = 'none'
+                @normalImg.style.display = 'inline'
+            )
 
-        @titleContainer = create_element(tag:"div", class:"PWTitleContainer", container)
-        @title = create_element(tag:"div", class:"PWTitle", @titleContainer)
-        @title.setAttribute("title", @title_str)
-        @title.innerText = @title_str
-        @update_size()
+            @titleContainer = create_element(tag:"div", class:"PWTitleContainer", container)
+            @title = create_element(tag:"div", class:"PWTitle", @titleContainer)
+            @title.setAttribute("title", @title_str)
+            @title.innerText = @title_str
+            @update_size()
 
-        if get_active_window() == @w_id
-            @to_active()
-        else
-            @to_normal()
+            if get_active_window() == @w_id
+                @to_active()
+            else
+                @to_normal()
 
         Preview_container.append(@)
         Preview_container._calc_size()
@@ -392,7 +393,7 @@ class PreviewWindow extends Widget
         @canvas.setAttribute("height", @canvas_height)
         @canvas_container.style.width = @canvas_width
         @canvas_container.style.height = @canvas_height
-        @titleContainer.style.width = @canvas_width - PREVIEW_WINDOW_BORDER_WIDTH * 2
+        @titleContainer?.style.width = @canvas_width - PREVIEW_WINDOW_BORDER_WIDTH * 2
 
     to_active: ->
         _current_active_pw_window = @
@@ -410,7 +411,8 @@ class PreviewWindow extends Widget
 
     do_mouseover: (e)=>
         clearTimeout(launcher_mouseout_id)
-        Preview_active_window_changed(@w_id)
+        if not @applet
+            Preview_active_window_changed(@w_id)
 
     update_content: ->
         if @scale != Preview_container.scale
