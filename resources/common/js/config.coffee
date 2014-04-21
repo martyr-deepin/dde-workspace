@@ -34,4 +34,5 @@ KEYCODE =
     UP_ARROW:38
     DOWN_ARROW:40
     WIN:0
+    SUPER:0
     ALT:18

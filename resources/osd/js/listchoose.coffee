@@ -26,7 +26,9 @@ class ListChoose extends Widget
         @Listul = []
         @li = []
         @li_span = []
+        @isFromList = false
         @currentIndex = 0
+        
         @show()
     
     hide:->
@@ -76,9 +78,11 @@ class ListChoose extends Widget
             if i == @currentIndex
                 li.style.border = "rgba(255,255,255,0.5) 2px solid"
                 li.style.backgroundColor = "rgb(0,0,0)"
+                li.focus()
             else
                 li.style.border = "rgba(255,255,255,0.0) 2px solid"
                 li.style.backgroundColor = null
+                li.blur()
     
     checkIndex:(index)->
         max = @list.length - 1
@@ -100,4 +104,14 @@ class ListChoose extends Widget
         @setBackground(@currentIndex)
         
         timeout_osdHide = setTimeout(osdHide,TIME_HIDE)
+        @isFromList = true
         return @current
+    
+    setKeyupListener:(KeyCode,cb)->
+        @isFromList = false
+        document.body.addEventListener("keyup",(e)=>
+            if e.which == KeyCode and @isFromList is true
+                @isFromList = false
+                cb?()
+        )
+ 
