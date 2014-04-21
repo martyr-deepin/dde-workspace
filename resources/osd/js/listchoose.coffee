@@ -93,6 +93,7 @@ class ListChoose extends Widget
 
     chooseOption: =>
         setFocus(true)
+        document.body.style.maxLength = "180px"
         clearTimeout(timeout_osdHide)
         @prevIndex = @currentIndex
         @currentIndex++
@@ -114,6 +115,7 @@ class ListChoose extends Widget
                 @isFromList = false
                 setFocus(false)
                 clearTimeout(timeout_osdHide)
+                document.body.style.maxLength = "160px"
                 osdHide()
                 cb?()
         )
