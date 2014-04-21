@@ -1,19 +1,20 @@
 .ListChoose{
     /*position:absolute;*/
     width:160px;
-    max-height:320px;
+    max-height:180px;
     
     display:-webkit-box;
     -webkit-box-pack:center;
     -webkit-box-align:center;
 
+    overflow:scroll;
 }
 
 .Listul{
     margin:0;
     padding:0;
-    width:150px;
-    max-height:320px;
+    width:130px;
+    max-height:160px;
 }
 
 .li{
@@ -24,7 +25,6 @@
     text-align:center;
 
     border-radius:6px; 
-
 }
 .li span{
     height:100%;
@@ -38,4 +38,5 @@
     color:#afafaf;
 
     overflow:hidden;
+    text-overflow:ellipsis;
 }
