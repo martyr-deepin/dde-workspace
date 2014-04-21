@@ -227,7 +227,7 @@ inject_css = (el,src)->
     css_element.href = src
 
 get_dbus = (type, opt, testProperty)->
-    throw "require 3 arguments" if not testProperty
+    throw "get_dbus requires 3 arguments" if not testProperty
     type = type.toLowerCase()
     if type == "system"
         type = "sys"
