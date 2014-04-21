@@ -92,6 +92,7 @@ class ListChoose extends Widget
         return index
 
     chooseOption: =>
+        setFocus(true)
         clearTimeout(timeout_osdHide)
         @prevIndex = @currentIndex
         @currentIndex++
@@ -103,7 +104,6 @@ class ListChoose extends Widget
         osdShow()
         @setBackground(@currentIndex)
         
-        timeout_osdHide = setTimeout(osdHide,TIME_HIDE)
         @isFromList = true
         return @current
     
@@ -112,6 +112,9 @@ class ListChoose extends Widget
         document.body.addEventListener("keyup",(e)=>
             if e.which == KeyCode and @isFromList is true
                 @isFromList = false
+                setFocus(false)
+                clearTimeout(timeout_osdHide)
+                osdHide()
                 cb?()
         )
  

@@ -34,6 +34,7 @@ class Keyboard
         echo "setCurrentLayout:#{layout}"
         @CurrentLayout = layout
         @DBusKeyboard?.CurrentLayout = layout
+        setFocus(false)
 
 
 keyboard = null
