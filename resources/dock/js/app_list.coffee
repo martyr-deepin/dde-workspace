@@ -65,12 +65,15 @@ class AppList
             step = 6
             x = e.x
             el = null
+            y = if e.y > screen.height - DOCK_HEIGHT + ITEM_HEIGHT then e.y else e.y - ITEM_HEIGHT/2
             while 1
                 x -= step
-                el = document.elementFromPoint(x, e.y)
-                if el.classList.contains("AppItemImg")
-                    console.log(el.parentNode.parentNode.id)
-                    if el.parentNode.parentNode.id == try_insert_id
+                el = document.elementFromPoint(x, y)
+                return if not el
+                if el.classList?.contains("AppItemImg")
+                    id = el.parentNode.parentNode.parentNode.id
+                    console.log(id)
+                    if id == try_insert_id
                         return
                     break
                 # else if el.tagName = "BODY"
@@ -78,12 +81,12 @@ class AppList
             x = e.x
             while 1
                 x += step
-                el = document.elementFromPoint(x, e.y)
+                el = document.elementFromPoint(x, y)
                 if el.classList.contains("AppItemImg")
                     break
                 else if el.tagName == "BODY"
                     el = null
-            el = el.parentNode.parentNode if el
+            el = el.parentNode.parentNode.parentNode if el
             if el.parentNode.id != "app_list"
                 el = null
             if el == null or el.id != try_insert_id
