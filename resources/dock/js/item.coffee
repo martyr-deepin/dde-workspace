@@ -469,6 +469,8 @@ class AppItem extends Item
             "RegisterMenu"
         )
 
+        return if not manager
+
         menu_dbus_path = manager.RegisterMenu_sync()
         # echo "menu path is: #{menu_dbus_path}"
         dbus = get_dbus(

@@ -190,6 +190,8 @@ class Menu
             "RegisterMenu"
         )
 
+        return if not manager
+
         menu_dbus_path = manager.RegisterMenu_sync()
         # echo "menu path is: #{menu_dbus_path}"
         @dbus = get_dbus(
@@ -211,7 +213,7 @@ class Menu
             @menu.isDockMenu = true
             @menu.cornerDirection = ori
         # echo @menu
-        @dbus.ShowMenu("#{@menu}")
+        @dbus?.ShowMenu("#{@menu}")
 
     toString: ->
         "#{@menu}"

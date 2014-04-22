@@ -55,6 +55,8 @@ EntryManager =
     path:"/dde/dock/EntryManager"
     interface:"dde.dock.EntryManager"
 
+blockJS(1000)
+
 entryManager = get_dbus('session', EntryManager, "Entries")
 entries = entryManager.Entries
 
