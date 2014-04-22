@@ -1,28 +1,36 @@
-launcher_mouseout_id = null
+normal_mouseout_id = null
 _lastCliengGroup = null
 pop_id = null
 hide_id = null
+_showGroup = []
+
+_clear_item_timeout = ->
+    clearTimeout(normal_mouseout_id)
+    for i in _showGroup
+        clearTimeout(i)
+
 class Item extends Widget
     constructor:(@id, icon, title, @container)->
         super()
         @imgWarp = create_element(tag:'div', class:"imgWarp", @element)
-        @img = create_element(tag:'div',class:"AppItemImg", @imgWarp)
+        @imgContainer = create_element(tag:'div', class:"imgWarp", @imgWarp)
+        @img = create_element(tag:'div',class:"AppItemImg", @imgContainer)
         # @img.src = icon || NOT_FOUND_ICON
         @iconObj = create_img(src:icon || NOT_FOUND_ICON)
         @img.style.backgroundImage = "url(#{icon || NOT_FOUND_ICON})"
         @img.style.backgroundRepeat = 'no-repeat'
         @img.style.backgroundSize = '48px 48px'
-        @img.classList.add("ReflectImg")
-        @img.style.pointerEvents = "auto"
-        @img.addEventListener("mouseover", @on_mouseover)
-        @img.addEventListener("mouseout", @on_mouseout)
-        @img.addEventListener("click", @on_click)
-        @img.addEventListener("contextmenu", @on_rightclick)
-        @img.addEventListener("dragstart", @on_dragstart)
-        @img.addEventListener("dragenter", @on_dragenter)
-        @img.addEventListener("dragover", @on_dragover)
-        @img.addEventListener("dragleave", @on_dragleave)
-        @img.addEventListener("drop", @on_drop)
+        @imgWarp.classList.add("ReflectImg")
+        @imgContainer.style.pointerEvents = "auto"
+        @imgContainer.addEventListener("mouseover", @on_mouseover)
+        @imgContainer.addEventListener("mouseout", @on_mouseout)
+        @imgContainer.addEventListener("click", @on_click)
+        @imgContainer.addEventListener("contextmenu", @on_rightclick)
+        @imgContainer.addEventListener("dragstart", @on_dragstart)
+        @imgContainer.addEventListener("dragenter", @on_dragenter)
+        @imgContainer.addEventListener("dragover", @on_dragover)
+        @imgContainer.addEventListener("dragleave", @on_dragleave)
+        @imgContainer.addEventListener("drop", @on_drop)
 
         calc_app_item_size()
         @tooltip = null
@@ -57,12 +65,12 @@ class Item extends Widget
     on_mouseover:(e)=>
         # console.log("mouseover, require_all_region")
         DCore.Dock.require_all_region()
-        @imgWarp.style.webkitTransform = 'translateY(-5px)'
-        @imgWarp.style.webkitTransition = 'all 100ms'
+        @imgContainer.style.webkitTransform = 'translateY(-5px)'
+        @imgContainer.style.webkitTransition = 'all 100ms'
 
     on_mouseout:(e)=>
-        @imgWarp.style.webkitTransform = 'translateY(0px)'
-        @imgWarp.style.webkitTransition = 'all 400ms'
+        @imgContainer.style.webkitTransform = 'translateY(0px)'
+        @imgContainer.style.webkitTransition = 'all 400ms'
         #calc_app_item_size()
         update_dock_region()
 
@@ -187,12 +195,15 @@ class AppItem extends Item
 
         @tooltip = null
 
-        if @isNormal()
+        if @isNormal() || @isNormalApplet()
             console.log("is normal")
             @init_activator()
         else
             console.log("is runtime")
             @init_clientgroup()
+
+        if @isRuntimeApplet()
+            @openIndicator.style.display = 'none'
 
         @core?.connect("DataChanged", (name, value)=>
             console.log("#{name} is changed to #{value}")
@@ -326,15 +337,23 @@ class AppItem extends Item
     isApplet:->
         @core.isApplet?()
 
+    isRuntimeApplet:->
+        @core?.isRuntimeApplet?()
+
+    isNormalApplet:->
+        @core?.isNormalApplet?()
+
     on_mouseover:(e)=>
         super
-        if @isNormal()
+        if @isNormal() || @isNormalApplet()
             Preview_close_now(Preview_container._current_group)
             clearTimeout(hide_id)
         else
             if _lastCliengGroup and _lastCliengGroup.id != @id
                 _lastCliengGroup.embedWindows?.hide?()
             super
+
+            _lastCliengGroup = @
             xy = get_page_xy(@element)
             w = @element.clientWidth || 0
             # console.log("mouseover: "+xy.y + ","+xy.x, +"clientWidth"+w)
@@ -342,7 +361,7 @@ class AppItem extends Item
             __clear_timeout()
             clearTimeout(hide_id)
             clearTimeout(tooltip_hide_id)
-            clearTimeout(launcher_mouseout_id)
+            clearTimeout(normal_mouseout_id)
             DCore.Dock.require_all_region()
             # console.log("ClientGroup mouseover")
             # console.log(@core.type())
@@ -369,10 +388,10 @@ class AppItem extends Item
                     ew.show()
                     ew.draw_to_canvas(c)
                     for i in [1..3]
-                        setTimeout(->
+                        _showGroup[i] = setTimeout(->
                             ew.draw_to_canvas(c)
                         , 100*i)
-                    setTimeout(->
+                    _showGroup[4] = setTimeout(->
                         ew.draw_to_canvas(null)
                         ew.show()
                     , 500)
@@ -386,7 +405,7 @@ class AppItem extends Item
                 __clear_timeout()
                 clearTimeout(tooltip_hide_id)
                 DCore.Dock.require_all_region()
-                launcher_mouseout_id = setTimeout(->
+                normal_mouseout_id = setTimeout(->
                     calc_app_item_size()
                     # update_dock_region()
                 , 1000)
@@ -397,9 +416,9 @@ class AppItem extends Item
                     DCore.Dock.update_hide_mode()
                 , 500)
         else
-            _lastCliengGroup = @
             super
             __clear_timeout()
+            _clear_item_timeout()
             if not Preview_container.is_showing
                 # console.log "Preview_container is not showing"
                 # update_dock_region()
@@ -421,13 +440,16 @@ class AppItem extends Item
 
     on_rightclick:(e)=>
         super
+        _clear_item_timeout()
         Preview_close_now()
-        _lastCliengGroup?.embedWindows?.hide?()
         # console.log("rightclick")
         xy = get_page_xy(@element)
 
         clientHalfWidth = @element.clientWidth / 2
         menuContent = @core.menuContent?()
+        if not menuContent
+            return
+
         menu =
             x: xy.x + clientHalfWidth
             y: xy.y

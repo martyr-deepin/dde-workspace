@@ -6,7 +6,7 @@ class Trash extends PostfixedItem
         @is_opened = false
         @entry = DCore.DEntry.get_trash_entry()
         @img.style.background = "url(#{Trash.get_icon(0)}) no-repeat"
-        @imgFull = create_element(tag:'div', class:"AppItemImg", @imgWarp)
+        @imgFull = create_element(tag:'div', class:"AppItemImg", @imgContainer)
         @imgFull.style.background = "url(#{Trash.get_icon(1)}) no-repeat"
         @update()
         DCore.signal_connect("trash_count_changed", (info)=>
@@ -49,6 +49,7 @@ class Trash extends PostfixedItem
                 clientManager?.CloseWindow(@w_id)
 
     on_click: (e)=>
+        e.stopPropagation()
         super
         if  @is_opened
             @core.Activate(0,0)

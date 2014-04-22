@@ -62,6 +62,12 @@ class EntryProxy
     isApplet:->
         @type() == ITEM_TYPE.applet
 
+    isNormalApplet:->
+        @isApplet() and not @xids()
+
+    isRuntimeApplet:->
+        @isApplet() and @xids()
+
     isApp:->
         @type() == ITEM_TYPE.app
 

@@ -410,7 +410,7 @@ class PreviewWindow extends Widget
         clientManager?.ActiveWindow(@w_id)
 
     do_mouseover: (e)=>
-        clearTimeout(launcher_mouseout_id)
+        clearTimeout(normal_mouseout_id)
         if not @applet
             Preview_active_window_changed(@w_id)
 

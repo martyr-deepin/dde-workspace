@@ -23,7 +23,7 @@ class Applet extends Item
             __clear_timeout()
             clearTimeout(tooltip_hide_id)
             DCore.Dock.require_all_region()
-            launcher_mouseout_id = setTimeout(->
+            normal_mouseout_id = setTimeout(->
                 calc_app_item_size()
                 # update_dock_region()
             , 1000)
