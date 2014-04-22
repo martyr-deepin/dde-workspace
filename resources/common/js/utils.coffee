@@ -264,4 +264,6 @@ get_dbus = (type, opt, testProperty)->
 
 
 blockJS = (t)->
-    `for (var s = +new Date(); s + t > +new Date();) {}`
+    s = +new Date()
+    while s + t > +new Date()
+        ;
