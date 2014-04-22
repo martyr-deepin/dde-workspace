@@ -128,6 +128,7 @@ enableZoneDetect = (enable) ->
         echo "zoneDBus #{ZONE} error : #{e}"
  #-------------------------------------------
 
+is_guest = false
 
 
 

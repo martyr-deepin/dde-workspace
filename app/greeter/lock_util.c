@@ -102,6 +102,7 @@ void lock_draw_background (JSValueRef canvas)
     draw_user_background (canvas, username);
 }
 
+JS_EXPORT_API
 gboolean lock_is_guest ()
 {
     gboolean is_guest = FALSE;

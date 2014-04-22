@@ -49,7 +49,7 @@ JS_EXPORT_API void lock_switch_user ();
 
 JS_EXPORT_API void lock_draw_background (JSValueRef canvas);
 
-gboolean lock_is_guest ();
+JS_EXPORT_API gboolean lock_is_guest ();
 
 gboolean lock_is_running ();
 

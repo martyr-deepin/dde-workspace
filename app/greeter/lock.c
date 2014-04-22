@@ -285,7 +285,8 @@ int main (int argc, char **argv)
     }
 
     if (lock_is_guest ()) {
-        return 1;
+        g_warning("you are the guest!!!");
+        /*return 1;*/
     }
 
     lock_report_pid ();

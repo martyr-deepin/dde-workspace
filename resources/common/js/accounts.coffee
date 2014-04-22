@@ -134,7 +134,8 @@ class Accounts
             else
                 @_default_username = DCore[APP].get_username()
         catch e
-            echo "get_default_username:#{e}"
+            echo "#{APP}get_default_username:#{e}"
+        echo "#{APP} get_default_username:---------#{@_default_username}-------------"
         return @_default_username
 
     get_current_user_background:->

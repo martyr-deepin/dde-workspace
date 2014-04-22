@@ -39,9 +39,10 @@ class Lock extends Widget
             DCore.Lock.try_unlock("")
         )
 
-
 lock = new Lock()
 setBodyWallpaper("sky_move")
+
+is_guest = DCore.Lock.is_guest()
 
 user = new User()
 $("#div_users").appendChild(user.element)
