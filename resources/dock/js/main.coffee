@@ -60,9 +60,9 @@ entries = entryManager.Entries
 
 trash = null
 
-for entry in entries
-    console.log(entry)
-    d = DCore.DBus.session_object("com.deepin.daemon.Dock", entry, "dde.dock.EntryProxyer")
+for path in entries
+    console.log(path)
+    d = DCore.DBus.session_object("com.deepin.daemon.Dock", path, "dde.dock.EntryProxyer")
     console.log("init add: #{d.Id}")
     if d.Id == TRASH_ID
         trash = new Trash(TRASH_ID, Trash.get_icon(DCore.DEntry.get_trash_count()), _("Trash"))
@@ -90,8 +90,9 @@ entryManager.connect("TrayInited",->
 )
 
 entryManager.connect("Added", (path)->
-    d = DCore.DBus.session_object("com.deepin.daemon.Dock", entry, "dde.dock.EntryProxyer")
-    console.log("try to Add #{d.Id}, #{TRASH_ID}")
+    console.log("entry manager Added signal is emited: #{path}")
+    d = DCore.DBus.session_object("com.deepin.daemon.Dock", path, "dde.dock.EntryProxyer")
+    console.log("try to Add #{d.Id}")
     if d.Id == TRASH_ID
         trash.is_opened = true
         trash.core = d
@@ -120,8 +121,7 @@ entryManager.connect("Added", (path)->
 )
 
 entryManager.connect("Removed", (id)->
-    # TODO: change id to the real id
-    console.log("Removed #{id}")
+    console.log("entry manager Removed signal is emited: #{id}")
     if id == TRASH_ID
         t = Widget.look_up(id)
         t.core = null
