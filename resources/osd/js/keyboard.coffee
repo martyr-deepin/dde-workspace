@@ -7,8 +7,11 @@ class Keyboard
 
     constructor:->
         echo "New Keyboard"
+        @AlllayoutList = []
+        @UserLayoutList_en = []
         @UserLayoutList = []
 
+        @CurrentLayout_en = null
         @CurrentLayout = null
         @getDBus()
 
@@ -16,24 +19,35 @@ class Keyboard
         try
             @DBusKeyboard = get_dbus("session",KEYBOARD,"UserLayoutList")
             @CurrentLayout = @getCurrentLayout()
+            @getAllLayoutList()
         catch e
             echo " DBusKeyboard :#{KEYBOARD} ---#{e}---"
 
     updateUserLayoutList:->
-        @UserLayoutList = @DBusKeyboard?.UserLayoutList
+        @UserLayoutList_en = []
+        @UserLayoutList_en = @DBusKeyboard?.UserLayoutList
+        @UserLayoutList = []
+        for l in @UserLayoutList_en
+           @UserLayoutList.push(@AlllayoutList[l])
         return @UserLayoutList
 
+    getAllLayoutList: ->
+        @AlllayoutList = @DBusKeyboard.LayoutList_sync()
+        echo @AlllayoutList
 
     getCurrentLayout: ->
-        return @DBusKeyboard?.CurrentLayout
+        @CurrentLayout_en = @DBusKeyboard?.CurrentLayout
+        @CurrentLayout = @AlllayoutList[@CurrentLayout_en]?
+        return @CurrentLayout
 
     getCurrentLayoutIndex: ->
         return j for each ,j in @UserLayoutList when @getCurrentLayout() is each
 
     setCurrentLayout: (layout)->
-        echo "setCurrentLayout:#{layout}"
         @CurrentLayout = layout
-        @DBusKeyboard?.CurrentLayout = layout
+        @CurrentLayout_en = @UserLayoutList_en[i] for l,i in @UserLayoutList when l is @CurrentLayout
+        @DBusKeyboard?.CurrentLayout = @CurrentLayout_en
+        echo "setCurrentLayout:#{@CurrentLayout_en}:#{layout}"
         setFocus(false)
 
 
