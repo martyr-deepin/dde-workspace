@@ -1,6 +1,5 @@
 /**
- * Copyright (c) 2011 ~ 2013 Deepin, Inc.
- *               2011 ~ 2012 snyh
+ * Copyright (c) 2011 ~ 2013 Deepin, Inc.  *               2011 ~ 2012 snyh
  *               2013 ~ 2013 Liqiang Lee
  *
  * Author:      snyh <snyh@snyh.org>
@@ -36,6 +35,7 @@
 #include "DBUS_dock.h"
 #include "monitor.h"
 #include "display_info.h"
+#include "trayicons.h"
 
 #define DOCK_CONFIG "dock/config.ini"
 #define DOCKED_ITEM_KEY_NAME "Position"
@@ -553,6 +553,7 @@ int main(int argc, char* argv[])
     setup_dock_dbus_service();
     GFileMonitor* m G_GNUC_UNUSED = monitor_trash();
 
+    require_manager_trayicons();
     gtk_main();
     return 0;
 }
