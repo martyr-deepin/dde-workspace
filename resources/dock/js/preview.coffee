@@ -330,6 +330,7 @@ class PreviewWindow extends Widget
 
         @canvas_container = create_element("div", "PWCanvas", container)
         @canvas = create_element("canvas", "", @canvas_container)
+        @canvas.width = @canvas.height = 1
 
         if not @applet
             @close_button = create_element("div", "PWClose", @canvas_container)
