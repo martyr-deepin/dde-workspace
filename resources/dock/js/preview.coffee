@@ -92,7 +92,7 @@ class PWContainer extends Widget
             if v == true
                 Widget.look_up("pw"+k)?.destroy()
 
-    drawPanel:->
+    drawPanel:(triX)->
         ctx = @bg.getContext('2d')
         ctx.clearRect(0, 0, @bg.width, @bg.height)
         ctx.save()
@@ -154,14 +154,23 @@ class PWContainer extends Widget
                 arch['BottomRight'].startAngle, arch['BottomRight'].endAngle)
 
         # bottom line
-        ctx.lineTo(leftX + (contentWidth + PREVIEW_TRIANGLE.width) / 2,
+        halfWidth = leftX + contentWidth / 2
+        triOffset = 0
+        if triX < halfWidth
+            console.log("left overflow")
+            triOffset = triX - halfWidth
+        else if halfWidth + triX > screen.width
+            console.log("right overflow")
+            triOffset = (halfWidth + triX) - screen.width
+
+        ctx.lineTo(halfWidth + triOffset + PREVIEW_TRIANGLE.width / 2,
                    bottomY + radius)
 
         # triangle
-        ctx.lineTo(leftX + contentWidth / 2,
+        ctx.lineTo(halfWidth + triOffset,
                    bottomY + radius + PREVIEW_TRIANGLE.height)
 
-        ctx.lineTo(leftX + (contentWidth - PREVIEW_TRIANGLE.width)/2,
+        ctx.lineTo(halfWidth + triOffset - PREVIEW_TRIANGLE.width / 2,
                    bottomY + radius)
 
         # bottom line
@@ -225,21 +234,24 @@ class PWContainer extends Widget
         @border.style.width = @bg.width - PREVIEW_SHADOW_BLUR * 2 - 2 * PREVIEW_CONTAINER_BORDER_WIDTH
         @border.style.height = @bg.height
 
-        @drawPanel()
-
         group_element = @_current_group.element
         x = get_page_xy(group_element, 0, 0).x + group_element.clientWidth / 2
 
-        center_position = x - window_width * n / 2
-        offset = clamp(center_position, 5, screen.width - @pw_width)
-        console.log("get offset: #{offset}")
+        @drawPanel(x)
 
-        if @element.clientWidth == screen.width
-            # console.log '0'
-            @border.style.webkitTransform = "translateX(0)"
+        halfWidth = window_width * n / 2
+        offset = x - halfWidth
+        if halfWidth > x
+            console.log("_calc:: left overflow")
+            offset = PREVIEW_SHADOW_BLUR
+        else if halfWidth + x > screen.width
+            console.log("_calc:: right overflow")
+            offset -= (halfWidth + x - screen.width) + PREVIEW_SHADOW_BLUR
         else
-            # console.log 'offset'
-            @border.style.webkitTransform = "translateX(#{offset}px)"
+            offset = clamp(offset, 5, screen.width - @pw_width)
+
+        console.log("get offset: #{offset}")
+        @border.style.webkitTransform = "translateX(#{offset}px)"
 
     append: (pw)->
         @_current_pws[pw.w_id] = true
