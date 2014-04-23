@@ -35,16 +35,21 @@ class PWContainer extends Widget
         @_current_group = null
         @_update_id = -1
         @_current_pws = {}
+        @hide_border_id = null
 
     hide: ->
         @is_showing = false
         @border.style.opacity = 0
+        @cancelHide()
         @hide_border_id = setTimeout(=>
             @border.style.display = 'none'
         , 500)
 
-    show: ->
+    cancelHide:->
         clearTimeout(@hide_border_id)
+
+    show: ->
+        @cancelHide()
         PWContainer._need_move_animation = true
         @is_showing = true
         @border.style.opacity = 1
@@ -58,7 +63,7 @@ class PWContainer extends Widget
             @show()
         , 5)
         @_update_id = setInterval(=>
-            @_update_once()
+            @_update_once(cb)
         , 500)
 
     _update_once: (cb)=>
@@ -75,8 +80,10 @@ class PWContainer extends Widget
                 pw = new PreviewWindow("pw"+w_id, w_id, infos[w_id].title, cb)
 
             setTimeout(->
-                pw.update_content?()
-                cb?(pw.canvas)
+                if cb
+                    cb(pw.canvas)
+                else
+                    pw.update_content?()
             , 10)
             @_current_pws[w_id] = false
         )
@@ -178,30 +185,30 @@ class PWContainer extends Widget
         # console.log("@_current_group != null")
 
         if PWContainer._need_move_animation
-            # echo 'need move animation'
+            # console.log 'need move animation'
             @border.classList.add('moveAnimation')
             @border.style.display = "block"
         else
             @border.classList.remove('moveAnimation')
             @border.style.display = "none"
 
-        # console.log(allocation)
+        console.log("allocation: #{allocation}")
 
         @pw_width = 0
         @pw_height = 0
         @scale = -1
         if allocation
-            # echo 'use pw-width'
+            # console.log 'use pw-width'
             @pw_width = allocation.width
             @pw_height = allocation.height || 0
             n = 1
         else
-            # echo 'calculate'
+            # console.log 'calculate'
             n = @_current_group.n_clients.length
             @pw_width = clamp(screen.width / n, 0, PREVIEW_WINDOW_WIDTH)
 
             new_scale = @pw_width / PREVIEW_WINDOW_WIDTH
-            echo "@pw_width: #{@pw_width}, new_scale: #{new_scale}"
+            # console.log "@pw_width: #{@pw_width}, new_scale: #{new_scale}"
             @scale = new_scale
         window_width = @pw_width + (PREVIEW_WINDOW_MARGIN + PREVIEW_WINDOW_BORDER_WIDTH) * 2
 
@@ -213,7 +220,7 @@ class PWContainer extends Widget
         else
             @bg.height = PREVIEW_CONTAINER_HEIGHT * @scale + extraHeight
 
-        # console.log("canvas width: #{@bg.width}, height: #{@bg.height}")
+        console.log("canvas width: #{@bg.width}, height: #{@bg.height}")
         # the container must not contain the shadow and the border
         @border.style.width = @bg.width - PREVIEW_SHADOW_BLUR * 2 - 2 * PREVIEW_CONTAINER_BORDER_WIDTH
         @border.style.height = @bg.height
@@ -225,15 +232,14 @@ class PWContainer extends Widget
 
         center_position = x - window_width * n / 2
         offset = clamp(center_position, 5, screen.width - @pw_width)
+        console.log("get offset: #{offset}")
 
         if @element.clientWidth == screen.width
-            # echo '0'
+            # console.log '0'
             @border.style.webkitTransform = "translateX(0)"
         else
-            # echo 'offset'
+            # console.log 'offset'
             @border.style.webkitTransform = "translateX(#{offset}px)"
-
-        DCore.Dock.require_all_region()
 
     append: (pw)->
         @_current_pws[pw.w_id] = true
@@ -252,20 +258,18 @@ class PWContainer extends Widget
         Object.keys(@_current_pws).forEach((w_id)->
             Widget.look_up("pw"+w_id)?.destroy()
         )
-        calc_app_item_size()
-        # update_dock_region()
+        update_dock_region()
         @is_showing = false
-        #DCore.Dock.set_compiz_workaround_preview(false)
 
     show_group: (group, allocation, cb)->
         # console.log("show_group")
         clearTimeout(PWContainer._cancel_move_animation_id)
         PWContainer._cancel_move_animation_id = -1
-        #DCore.Dock.set_compiz_workaround_preview(true)
         return if @_current_group == group
         # console.log("different current_group")
         @hide()
         @_current_group = group
+        # console.log(allocation)
         @_update(allocation, cb)
 
     on_mouseover: (e)=>
@@ -292,6 +296,8 @@ __clear_timeout = ->
 Preview_show = (group, allocation, cb) ->
     __clear_timeout()
     __SHOW_PREVIEW_ID = setTimeout(->
+        # console.log(allocation)
+        # console.log("Preview_show: show group")
         Preview_container.show_group(group, allocation, cb)
     , 300)
 
@@ -299,8 +305,9 @@ Preview_close_now = (client)->
     __clear_timeout()
     # calc_app_item_size()
     # return
-    _lastCliengGroup?.embedWindows?.hide?()
     return if Preview_container.is_showing == false
+    _lastCliengGroup?.embedWindows?.hide?()
+    console.log("Preview_close_now")
     Preview_container.hide()
     setTimeout(->
         Preview_container.close()
@@ -313,6 +320,7 @@ Preview_close = ->
     __clear_timeout()
     if Preview_container.is_showing
         __CLOSE_PREVIEW_ID = setTimeout(->
+            # console.log("Preview_close")
             Preview_close_now(Preview_container._current_group)
         , 500)
 
@@ -384,11 +392,11 @@ class PreviewWindow extends Widget
             @canvas_height = Preview_container.pw_height
         else
             @scale = Preview_container.scale || 1
-            console.log("PWWindow scale: #{@scale}")
+            # console.log("PWWindow scale: #{@scale}")
             @element.style.width = PREVIEW_WINDOW_WIDTH * @scale
             @element.style.height = PREVIEW_WINDOW_HEIGHT * @scale
             @canvas_width = PREVIEW_CANVAS_WIDTH * @scale
-            console.log("canvas width: #{@canvas_width}")
+            # console.log("canvas width: #{@canvas_width}")
             @canvas_height = PREVIEW_CANVAS_HEIGHT * @scale
         @canvas.setAttribute("width", @canvas_width)
         @canvas.setAttribute("height", @canvas_height)

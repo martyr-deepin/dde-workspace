@@ -1,4 +1,5 @@
 normal_mouseout_id = null
+closePreviewWindowTimer = null
 _lastCliengGroup = null
 pop_id = null
 hide_id = null
@@ -72,7 +73,7 @@ class Item extends Widget
         @imgContainer.style.webkitTransform = 'translateY(0px)'
         @imgContainer.style.webkitTransition = 'all 400ms'
         #calc_app_item_size()
-        update_dock_region()
+        # update_dock_region()
 
     on_rightclick:(e)=>
         e.preventDefault()
@@ -348,22 +349,24 @@ class AppItem extends Item
     on_mouseover:(e)=>
         super
         if @isNormal() || @isNormalApplet()
-            Preview_close_now(Preview_container._current_group)
             clearTimeout(hide_id)
+            closePreviewWindowTimer = setTimeout(->
+                Preview_close_now(Preview_container._current_group)
+            , 200)
         else
             if _lastCliengGroup and _lastCliengGroup.id != @id
                 _lastCliengGroup.embedWindows?.hide?()
-            super
 
-            _lastCliengGroup = @
-            xy = get_page_xy(@element)
-            w = @element.clientWidth || 0
-            # console.log("mouseover: "+xy.y + ","+xy.x, +"clientWidth"+w)
             e.stopPropagation()
             __clear_timeout()
             clearTimeout(hide_id)
             clearTimeout(tooltip_hide_id)
             clearTimeout(normal_mouseout_id)
+
+            _lastCliengGroup = @
+            xy = get_page_xy(@element)
+            w = @element.clientWidth || 0
+            # console.log("mouseover: "+xy.y + ","+xy.x, +"clientWidth"+w)
             DCore.Dock.require_all_region()
             # console.log("ClientGroup mouseover")
             # console.log(@core.type())
@@ -400,32 +403,31 @@ class AppItem extends Item
                 )
 
     on_mouseout:(e)=>
-        # super
+        super
         if @isNormal()
-            super
             if Preview_container.is_showing
                 __clear_timeout()
+                clearTimeout(closePreviewWindowTimer)
                 clearTimeout(tooltip_hide_id)
                 DCore.Dock.require_all_region()
                 normal_mouseout_id = setTimeout(->
-                    calc_app_item_size()
-                    # update_dock_region()
+                    console.log("showing, update dock region")
+                    update_dock_region()
                 , 1000)
             else
-                calc_app_item_size()
-                # update_dock_region()
-                setTimeout(->
+                console.log("normal mouseout, preview window is NOT showing")
+                update_dock_region()
+                normal_mouseout_id = setTimeout(->
                     DCore.Dock.update_hide_mode()
                 , 500)
         else
-            super
             __clear_timeout()
             _clear_item_timeout()
             if not Preview_container.is_showing
                 # console.log "Preview_container is not showing"
-                # update_dock_region()
-                calc_app_item_size()
+                # calc_app_item_size()
                 hide_id = setTimeout(=>
+                    update_dock_region()
                     DCore.Dock.update_hide_mode()
                     @embedWindows?.hide()
                 , 300)
@@ -434,8 +436,7 @@ class AppItem extends Item
                 DCore.Dock.require_all_region()
                 hide_id = setTimeout(=>
                     @embedWindows?.hide()
-                    calc_app_item_size()
-                    # update_dock_region()
+                    update_dock_region()
                     Preview_close_now(@)
                     DCore.Dock.update_hide_mode()
                 , 1000)

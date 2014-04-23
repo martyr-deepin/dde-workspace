@@ -20,7 +20,7 @@
 }
 
 .PreviewWindow {
-  float: left;
+  /* float: left; */
   display: -webkit-box;
   -webkit-box-pack:center;
   -webkit-box-align:center;
@@ -60,7 +60,7 @@
 }
 
 .PWCanvas {
-  background: rgba(0,0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.4);
   display: block;
   margin-left:auto;
   margin-right: auto;
