@@ -3,12 +3,9 @@ closePreviewWindowTimer = null
 _lastCliengGroup = null
 pop_id = null
 hide_id = null
-_showGroup = []
 
 _clear_item_timeout = ->
     clearTimeout(normal_mouseout_id)
-    for i in _showGroup
-        clearTimeout(i)
 
 class Item extends Widget
     constructor:(@id, icon, title, @container)->
@@ -190,7 +187,6 @@ class AppItem extends Item
         @openingIndicator.addEventListener("webkitAnimationEnd", ->
             this.style.display = 'none'
             this.style.webkitAnimationName = ''
-            # @swap_to_clientgroup()
         )
         @openIndicator = create_img(src:OPEN_INDICATOR, class:"indicator OpenIndicator", @indicatorWarp)
 
@@ -245,16 +241,19 @@ class AppItem extends Item
         # console.log("init_clientgroup #{@core.id()}")
         @n_clients = []
         @client_infos = {}
-        if @core
-            # console.log "#{@id}: #{@core.type()}, #{@core.xids()}"
-            if (xids = JSON.parse(@core.xids()))
-                for xidInfo in xids
-                    @n_clients.push(xidInfo.Xid)
-                    @update_client(xidInfo.Xid, xidInfo.Title)
-                    # console.log "ClientGroup:: Key: #{xidInfo.Xid}, Valvue:#{xidInfo.Title}"
-                if @isApplet()
-                    @embedWindows = new EmbedWindow(xids)
         @leader = null
+
+        if not @core or not (xids = JSON.parse(@core.xids()))
+            return
+
+        # console.log "#{@id}: #{@core.type()}, #{@core.xids()}"
+        for xidInfo in xids
+            @n_clients.push(xidInfo.Xid)
+            @update_client(xidInfo.Xid, xidInfo.Title)
+            # console.log "ClientGroup:: Key: #{xidInfo.Xid}, Valvue:#{xidInfo.Title}"
+
+        if @isApplet()
+            @embedWindows = new EmbedWindow(xids)
 
     init_activator:->
         # console.log("init_activator #{@core.id()}")
@@ -361,7 +360,7 @@ class AppItem extends Item
             __clear_timeout()
             clearTimeout(hide_id)
             clearTimeout(tooltip_hide_id)
-            clearTimeout(normal_mouseout_id)
+            _clear_item_timeout()
 
             _lastCliengGroup = @
             xy = get_page_xy(@element)
@@ -371,33 +370,28 @@ class AppItem extends Item
             # console.log("ClientGroup mouseover")
             # console.log(@core.type())
             if @core && @isApp()
-                # console.log("App show preview")
+                console.log("App show preview")
                 if @n_clients.length != 0
+                    console.log("length is not 0")
                     Preview_show(@)
             else if @embedWindows
-                # console.log("Applet show preview")
-                size = @embedWindows.window_size(@embedWindows.xids[0])
-                # console.log size
-                width = size.width
-                height = size.height
-                # console.log("size: #{width}x#{height}")
-                Preview_show(@, width:width, height:height, (c)=>
+                console.log("Applet show preview")
+                try
+                    size = @embedWindows.window_size(@embedWindows.xids[0])
+                    console.log size
+                    console.log("size: #{size.width}x#{size.height}")
+                catch e
+                    console.log(e)
+                Preview_show(@, size, (c)=>
                     ew = @embedWindows
                     # 6 for container's blur
-                    extraHeight = PREVIEW_TRIANGLE.height + 6 + PREVIEW_WINDOW_MARGIN + PREVIEW_WINDOW_BORDER_WIDTH + PREVIEW_CONTAINER_BORDER_WIDTH + height
+                    extraHeight = PREVIEW_TRIANGLE.height + 6 + PREVIEW_WINDOW_MARGIN + PREVIEW_WINDOW_BORDER_WIDTH + PREVIEW_CONTAINER_BORDER_WIDTH + size.height
                     # console.log("Preview_show callback: #{c}")
-                    x = xy.x + w/2 - width/2
+                    x = xy.x + w/2 - size.width/2
                     y = xy.y - extraHeight
                     # console.log("Move Window to #{x}, #{y}")
                     ew.move(ew.xids[0], x, y)
-                    ew.show()
-                    ew.draw_to_canvas(c)
-                    for i in [1..3]
-                        _showGroup[i] = setTimeout(->
-                            ew.draw_to_canvas(c)
-                        , 100*i)
-                    _showGroup[4] = setTimeout(->
-                        ew.draw_to_canvas(null)
+                    setTimeout(->
                         ew.show()
                     , 500)
                 )
@@ -406,6 +400,7 @@ class AppItem extends Item
         super
         if @isNormal()
             if Preview_container.is_showing
+                console.log("normal mouseout, preview window is showing")
                 __clear_timeout()
                 clearTimeout(closePreviewWindowTimer)
                 clearTimeout(tooltip_hide_id)
@@ -429,13 +424,12 @@ class AppItem extends Item
                 hide_id = setTimeout(=>
                     update_dock_region()
                     DCore.Dock.update_hide_mode()
-                    @embedWindows?.hide()
+                    # @embedWindows?.hide()
                 , 300)
             else
                 # console.log "Preview_container is showing"
                 DCore.Dock.require_all_region()
                 hide_id = setTimeout(=>
-                    @embedWindows?.hide()
                     update_dock_region()
                     Preview_close_now(@)
                     DCore.Dock.update_hide_mode()

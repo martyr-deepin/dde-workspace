@@ -55,7 +55,7 @@ class PWContainer extends Widget
         @border.style.opacity = 1
         @border.style.display = "block"
 
-    _update: (allocation, cb)->
+    _update: (allocation=null, cb=null)->
         clearInterval(@_update_id)
         setTimeout(=>
             @_update_once(cb)
@@ -63,7 +63,7 @@ class PWContainer extends Widget
             @show()
         , 5)
         @_update_id = setInterval(=>
-            @_update_once(cb)
+            @_update_once()
         , 500)
 
     _update_once: (cb)=>
@@ -305,8 +305,8 @@ Preview_close_now = (client)->
     __clear_timeout()
     # calc_app_item_size()
     # return
-    return if Preview_container.is_showing == false
     _lastCliengGroup?.embedWindows?.hide?()
+    return if Preview_container.is_showing == false
     console.log("Preview_close_now")
     Preview_container.hide()
     setTimeout(->
@@ -336,17 +336,19 @@ class PreviewWindow extends Widget
         @innerBorder = create_element(tag:'div', class:'PreviewWindowInner', @element)
         container = @innerBorder
 
-        @canvas_container = create_element("div", "PWCanvas", container)
-        @canvas = create_element("canvas", "", @canvas_container)
-        @canvas.width = @canvas.height = 1
-
         if not @applet
+            @canvas_container = create_element("div", "PWCanvas", container)
+            @canvas = create_element("canvas", "", @canvas_container)
+            @canvas.width = @canvas.height = 1
+
             @close_button = create_element("div", "PWClose", @canvas_container)
             @normalImg = create_img(src:"img/close_normal.png", @close_button)
             @hoverImg = create_img(src:"img/close_hover.png", @close_button)
             @hoverImg.style.display = 'none'
             @close_button.addEventListener('click', (e)=>
                 e.stopPropagation()
+                @canvas = null
+                clearInterval(@_update_id)
                 clientManager?.CloseWindow(@w_id)
             )
             @close_button.addEventListener("mouseover", (e)=>
@@ -370,7 +372,9 @@ class PreviewWindow extends Widget
                 @to_normal()
 
         Preview_container.append(@)
-        Preview_container._calc_size()
+        if @applet
+        else
+            Preview_container._calc_size()
 
     delay_destroy: ->
         setTimeout(=>
@@ -386,22 +390,28 @@ class PreviewWindow extends Widget
     update_size: ->
         # console.log("PreviewWindow::update_size: #{Preview_container.scale}")
         if Preview_container.scale == -1
+            @element.style.margin = "15px"
             @element.style.width = Preview_container.pw_width + PREVIEW_WINDOW_BORDER_WIDTH * 2
             @element.style.height = Preview_container.pw_height + PREVIEW_WINDOW_BORDER_WIDTH * 2
             @canvas_width = Preview_container.pw_width
             @canvas_height = Preview_container.pw_height
         else
             @scale = Preview_container.scale || 1
+            @element.style.margin = "#{15*@scale}px"
             # console.log("PWWindow scale: #{@scale}")
             @element.style.width = PREVIEW_WINDOW_WIDTH * @scale
             @element.style.height = PREVIEW_WINDOW_HEIGHT * @scale
             @canvas_width = PREVIEW_CANVAS_WIDTH * @scale
             # console.log("canvas width: #{@canvas_width}")
             @canvas_height = PREVIEW_CANVAS_HEIGHT * @scale
-        @canvas.setAttribute("width", @canvas_width)
-        @canvas.setAttribute("height", @canvas_height)
-        @canvas_container.style.width = @canvas_width
-        @canvas_container.style.height = @canvas_height
+        if not @applet
+            @canvas.setAttribute("width", @canvas_width)
+            @canvas.setAttribute("height", @canvas_height)
+            @canvas_container.style.width = @canvas_width
+            @canvas_container.style.height = @canvas_height
+        if @applet
+            @innerBorder.style.width = @canvas_width
+            @innerBorder.style.height = @canvas_height
         @titleContainer?.style.width = @canvas_width - PREVIEW_WINDOW_BORDER_WIDTH * 2
 
     to_active: ->
@@ -426,6 +436,10 @@ class PreviewWindow extends Widget
     update_content: ->
         if @scale != Preview_container.scale
             @update_size()
+
+        if @applet
+            return
+
         if @w_id != 0
             # console.log("draw_window_preview: #{@canvas_width}, #{@canvas_height}")
             DCore.Dock.draw_window_preview(@canvas, @w_id, @canvas_width, @canvas_height)

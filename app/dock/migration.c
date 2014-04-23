@@ -68,6 +68,10 @@ void dock_draw_window_preview(JSValueRef canvas, double xid, double dest_width, 
     }
     cairo_t* cr =  fetch_cairo_from_html_canvas(get_global_context(), canvas);
 
+    if (cr == NULL) {
+        return;
+    }
+
     cairo_save(cr);
     //clear preview content to prevent translucency window problem
     cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);

@@ -59,7 +59,7 @@ class PrefixedItem extends FixedItem
         # $("#pre_fixed").appendChild(@element)
 
 
-class SystemItem extends AppItem#ClientGroup
+class SystemItem extends AppItem
     is_fixed_pos: true
     constructor:(@id, icon, title)->
         super(@id, icon, title, $("#system"))
