@@ -79,3 +79,7 @@ class EntryProxy
 
     onDrop: (data)->
         @dbus?.OnDragDrop(0,0,data)
+
+    showQuickWindow: ->
+        @dbus?.ShowQuickWindow?()
+

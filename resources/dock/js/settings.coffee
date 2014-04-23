@@ -10,7 +10,6 @@ class Setting
         @dbus.connect("HideModeChanged", (mode)=>
             console.log("mode changed to #{mode}")
         )
-        console.log(@dbus)
 
     hideMode:->
         mode = @dbus.GetHideMode_sync()

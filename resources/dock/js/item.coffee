@@ -203,6 +203,8 @@ class AppItem extends Item
             @init_clientgroup()
 
         if @isRuntimeApplet()
+            console.log("runtime applet: #{@id}")
+            @core?.showQuickWindow()
             @openIndicator.style.display = 'none'
 
         @core?.connect("DataChanged", (name, value)=>
