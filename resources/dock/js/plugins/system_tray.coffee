@@ -36,7 +36,10 @@ class SystemTray extends SystemItem
             console.log("#{xid} is Added")
             @items.unshift(xid)
             $EW.create(xid, true)
-            if @isUnfolded
+            if @isShowing
+                if @items.length > 4
+                    @unfold()
+                    @showButton()
                 console.log("added show")
                 $EW.show(xid)
                 # creat will take a while.
@@ -58,6 +61,15 @@ class SystemTray extends SystemItem
         @core.connect("Removed", (xid)=>
             # console.log("#{xid} is Removed")
             @items.remove(xid)
+
+            if @isShowing
+                if @items.length == 4
+                    @hideButton()
+                    if @isUnfolded
+                        @fold()
+
+                @on_mouseover()
+
             @updateTrayIcon()
             setTimeout(=>
                 @updateTrayIcon()
@@ -71,7 +83,7 @@ class SystemTray extends SystemItem
     updateTrayIcon:=>
         #console.log("update the order: #{@items}")
         @upperItemNumber = Math.max(Math.ceil(@items.length / 2), 2)
-        if @items.length > 2 && @items.length % 2 == 0
+        if @items.length > 4 && @items.length % 2 == 0
             @upperItemNumber += 1
 
         iconSize = 16
@@ -119,26 +131,28 @@ class SystemTray extends SystemItem
         @img.style.display = 'block'
         @hood.style.display = 'none'
         @updateTrayIcon()
-        @showButton()
-        super
+        if @items.length > 4
+            @showButton()
+        try
+            super
+        @imgContainer.style.webkitTransform = 'translateY(0)'
+        @imgContainer.style.webkitTransition = ''
         $EW.show(@items[0]) if @items[0]
         $EW.show(@items[1]) if @items[1]
-        $EW.show(@items[@upperItemNumber]) if @items[@upperItemNumber]
+        $EW.show(@items[2]) if @items[2] and @items.length <= 4
+        $EW.show(@items[3]) if @items[3]
 
     on_mouseout: (e)=>
+        super
         if @isUnfolded
             return
+
         @isShowing = false
-        super
-        if not @isunfolded
-            @img.style.display = 'none'
-            @hood.style.display = ''
-            for item in @items
-                $EW.hide(item)
-            $EW.hide(@items[0]) if @items[0]
-            $EW.hide(@items[1]) if @items[1]
-            $EW.hide(@items[@upperItemNumber]) if @items[@upperItemNumber]
-            @hideButton()
+        @img.style.display = 'none'
+        @hood.style.display = ''
+        for item in @items
+            $EW.hide(item)
+        @hideButton()
 
     unfold:=>
         console.log("unfold")
@@ -151,6 +165,7 @@ class SystemTray extends SystemItem
             $EW.hide(item)
         @updateTrayIcon()
         if @upperItemNumber > 2
+            clearTimeout(@showTimer)
             @showTimer = setTimeout(=>
                 webkitCancelAnimationFrame(@calcTimer)
                 DCore.Dock.require_all_region()
@@ -176,6 +191,7 @@ class SystemTray extends SystemItem
         @updatePanel()
         @updateTrayIcon()
         if @upperItemNumber > 2
+            clearTimeout(@hideTimer)
             @hideTimer = setTimeout(=>
                 @img.style.display = 'none'
                 @hood.style.display = 'block'
