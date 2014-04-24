@@ -55,112 +55,112 @@ EntryManager =
     path:"/dde/dock/EntryManager"
     interface:"dde.dock.EntryManager"
 
-blockJS(1000)
-
-entryManager = get_dbus('session', EntryManager, "Entries")
-entries = entryManager.Entries
-
-trash = null
-
-for path in entries
-    console.log(path)
-    d = DCore.DBus.session_object("com.deepin.daemon.Dock", path, "dde.dock.EntryProxyer")
-    console.log("init add: #{d.Id}")
-    if d.Id == TRASH_ID
-        trash = new Trash(TRASH_ID, Trash.get_icon(DCore.DEntry.get_trash_count()), _("Trash"))
-        trash.core = d
-        trash.is_opened = true
-        xids = JSON.parse(d.Data[ITEM_DATA_FIELD.xids])
-        console.log(xids[0])
-        trash.w_id = xids[0].Xid
-        trash.show_indicator()
-    else if !Widget.look_up(d.Id)
-        createItem(d)
-
-initDockedAppPosition()
-
 trayIcon = DCore.get_theme_icon("deepin-systray", 48) || NOT_FOUND_ICON
 systemTray = null
-# freedesktop = get_dbus("session", "org.freedesktop.DBus")
-# freedesktop.connect("NameOwnerChanged", (name, oldName, newName)->
-#     if newName != "" && name == "com.deepin.dde.TrayManager" && not systemTray
-#         systemTray = new SystemTray("system-tray", trayIcon, "")
-# )
-entryManager.connect("TrayInited",->
-    if not systemTray and not $("#system-tray")
-        systemTray = new SystemTray("system-tray", trayIcon, "")
-)
+entryManager = null
+show_launcher = null
+show_desktop = null
 
-entryManager.connect("Added", (path)->
-    console.log("entry manager Added signal is emited: #{path}")
-    d = DCore.DBus.session_object("com.deepin.daemon.Dock", path, "dde.dock.EntryProxyer")
-    console.log("try to Add #{d.Id}")
-    if d.Id == TRASH_ID
-        trash.is_opened = true
-        trash.core = d
-        xids = JSON.parse(d.Data[ITEM_DATA_FIELD.xids])
-        console.log(xids[0])
-        trash.w_id = xids[0].Xid
-        trash.show_indicator()
-        return
+initDock = ->
+    entryManager = get_dbus('session', EntryManager, "Entries")
+    entries = entryManager.Entries
 
-    if Widget.look_up(d.Id)
-        return
+    trash = null
 
-    console.log("Added #{path}")
-    createItem(d)
-    # console.log("added done")
-    calc_app_item_size()
-    if systemTray?.isShowing
-        systemTray.updateTrayIcon()
+    for path in entries
+        console.log(path)
+        d = DCore.DBus.session_object("com.deepin.daemon.Dock", path, "dde.dock.EntryProxyer")
+        console.log("init add: #{d.Id}")
+        if d.Id == TRASH_ID
+            trash = new Trash(TRASH_ID, Trash.get_icon(DCore.DEntry.get_trash_count()), _("Trash"))
+            trash.core = d
+            trash.is_opened = true
+            xids = JSON.parse(d.Data[ITEM_DATA_FIELD.xids])
+            console.log(xids[0])
+            trash.w_id = xids[0].Xid
+            trash.show_indicator()
+        else if !Widget.look_up(d.Id)
+            createItem(d)
 
     initDockedAppPosition()
-    setTimeout(->
+
+    entryManager.connect("TrayInited",->
+        if not systemTray and not $("#system-tray")
+            systemTray = new SystemTray("system-tray", trayIcon, "")
+    )
+
+    entryManager.connect("Added", (path)->
+        console.log("entry manager Added signal is emited: #{path}")
+        d = DCore.DBus.session_object("com.deepin.daemon.Dock", path, "dde.dock.EntryProxyer")
+        console.log("try to Add #{d.Id}")
+        if d.Id == TRASH_ID
+            trash.is_opened = true
+            trash.core = d
+            xids = JSON.parse(d.Data[ITEM_DATA_FIELD.xids])
+            console.log(xids[0])
+            trash.w_id = xids[0].Xid
+            trash.show_indicator()
+            return
+
+        if Widget.look_up(d.Id)
+            return
+
+        console.log("Added #{path}")
+        createItem(d)
+        # console.log("added done")
         calc_app_item_size()
         if systemTray?.isShowing
             systemTray.updateTrayIcon()
-    , 100)
-)
 
-entryManager.connect("Removed", (id)->
-    console.log("entry manager Removed signal is emited: #{id}")
-    if id == TRASH_ID
-        t = Widget.look_up(id)
-        t.core = null
-        t.hide_indicator()
-        return
-    deleteItem(id)
-    calc_app_item_size()
-    systemTray?.updateTrayIcon()
-)
+        initDockedAppPosition()
+        setTimeout(->
+            calc_app_item_size()
+            if systemTray?.isShowing
+                systemTray.updateTrayIcon()
+        , 100)
+    )
 
-try
-    icon_launcher = DCore.get_theme_icon("start-here", 48)
+    entryManager.connect("Removed", (id)->
+        console.log("entry manager Removed signal is emited: #{id}")
+        if id == TRASH_ID
+            t = Widget.look_up(id)
+            t.core = null
+            t.hide_indicator()
+            return
+        deleteItem(id)
+        calc_app_item_size()
+        systemTray?.updateTrayIcon()
+    )
 
-show_launcher = new LauncherItem("show_launcher", icon_launcher, _("Launcher"))
-if not trash
-    trash = new Trash(TRASH_ID, Trash.get_icon(DCore.DEntry.get_trash_count()), _("Trash"))
-show_desktop = new ShowDesktop()
-
-DCore.Dock.emit_webview_ok()
-DCore.Dock.test()
-
-setTimeout(->
-    IN_INIT = false
     try
-        if not systemTray and not $("#system-tray")
-            systemTray = new SystemTray("system-tray", trayIcon, "")
-    catch
-        systemTray?.destroy()
-        systemTray = null
+        icon_launcher = DCore.get_theme_icon("start-here", 48)
 
-    new Time("time", "js/plugins/time/img/time.png", "")
-    calc_app_item_size()
-    # apps are moved up, so add 8
-    DCore.Dock.change_workarea_height(ITEM_HEIGHT * ICON_SCALE + 8)
-, 100)
+    show_launcher = new LauncherItem("show_launcher", icon_launcher, _("Launcher"))
+    if not trash
+        trash = new Trash(TRASH_ID, Trash.get_icon(DCore.DEntry.get_trash_count()), _("Trash"))
+    show_desktop = new ShowDesktop()
 
-setTimeout(->
-    $("#containerWarp").style.bottom = "5px"
-    $("#panel").style.bottom = "0px"
-, 1000)
+    DCore.Dock.emit_webview_ok()
+    DCore.Dock.test()
+
+    setTimeout(->
+        IN_INIT = false
+        try
+            if not systemTray and not $("#system-tray")
+                systemTray = new SystemTray("system-tray", trayIcon, "")
+        catch
+            systemTray?.destroy()
+            systemTray = null
+
+        new Time("time", "js/plugins/time/img/time.png", "")
+        calc_app_item_size()
+        # apps are moved up, so add 8
+        DCore.Dock.change_workarea_height(ITEM_HEIGHT * ICON_SCALE + 8)
+    , 100)
+
+    setTimeout(->
+        $("#containerWarp").style.bottom = "5px"
+        $("#panel").style.bottom = "0px"
+    , 1000)
+
+setTimeout(initDock , 1000)
