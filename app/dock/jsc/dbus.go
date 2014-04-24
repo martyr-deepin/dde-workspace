@@ -8,7 +8,11 @@ func main() {
 		SessionDBUS("com.deepin.dde.dock"),
 		Method("ToggleShow", Callback("dock_toggle_show")),
 		Method("ShowInspector", Callback("dock_show_inspector")),
-		Method("MessageNotify", Callback("dock_bus_message_notify"), Arg("appid:gchar*"), Arg("itemid:gchar*")),
+		Method("MessageNotify",
+			Callback("dock_bus_message_notify"),
+			Arg("appid:gchar*"),
+			Arg("itemid:gchar*"),
+		),
 		Method("Show", Callback("dock_show_now")),
 		Method("Hide", Callback("dock_hide_now")),
 	)
