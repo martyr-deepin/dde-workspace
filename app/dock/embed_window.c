@@ -295,13 +295,6 @@ gboolean draw_embed_windows(GtkWidget* _w, cairo_t *cr)
 	    gdk_window_get_geometry(win, &x, &y, &width, &height); //gdk_window_get_position will get error value when dock is hidden!
 	    gdk_cairo_set_source_window(cr, win, x, y);
 
-	    cairo_save(cr);
-	    cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
-	    cairo_rectangle(cr, x, y, width, height);
-	    cairo_clip(cr);
-	    cairo_paint(cr);
-	    cairo_restore(cr);
-
 	    cairo_paint(cr);
 	}
     }

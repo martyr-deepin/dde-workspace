@@ -233,7 +233,7 @@ class AppItem extends Item
                 when ITEM_DATA_FIELD.icon
                     # TODO:
                     # use a big images, and change the position.
-                    @img.style.backgroundImage = value || NOT_FOUND_ICON
+                    @img.style.backgroundImage =  "url(#{value || NOT_FOUND_ICON})"
                     @iconObj.src = value || NOT_FOUND_ICON
         )
 
