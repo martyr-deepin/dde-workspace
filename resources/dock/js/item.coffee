@@ -179,6 +179,9 @@ class AppItem extends Item
     is_fixed_pos: false
     constructor:(@id, icon, @title, @container)->
         super
+        @changeImgTimer = null
+        @imgs = {icon: @img}
+        @currentImg = @img
 
         @core = new EntryProxy($DBus[@id])
 
@@ -231,10 +234,17 @@ class AppItem extends Item
                     else if @isNormal()
                         @swap_to_activator()
                 when ITEM_DATA_FIELD.icon
-                    # TODO:
-                    # use a big images, and change the position.
-                    @img.style.backgroundImage =  "url(#{value || NOT_FOUND_ICON})"
-                    @iconObj.src = value || NOT_FOUND_ICON
+                    if not @imgs[value]
+                        @imgs[value] = create_element(tag:"div", class:"AppItemImg", @imgContainer)
+                        @imgs[value].style.backgroundImage = "url(#{value})"
+                        @imgs[value].style.display = 'none'
+                    clearTimeout(@changeImgTimer)
+                    @changeImgTimer = setTimeout(=>
+                        @currentImg.style.display = 'none'
+                        @currentImg = @imgs[value]
+                        @currentImg.style.display = ''
+                        @iconObj.src = value || NOT_FOUND_ICON
+                    , 10)
         )
 
     init_clientgroup:->
