@@ -140,7 +140,8 @@ class SystemTray extends SystemItem
         $EW.show(@items[0]) if @items[0]
         $EW.show(@items[1]) if @items[1]
         $EW.show(@items[2]) if @items[2] and @items.length <= 4
-        $EW.show(@items[3]) if @items[3]
+        i = if @upperItemNumber == 2 then @upperItemNumber + 1 else @upperItemNumber
+        $EW.show(@items[i]) if @items[i]
 
     on_mouseout: (e)=>
         super
