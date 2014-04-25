@@ -282,7 +282,7 @@ msgstr "发送到桌面(_E)"
 
 #: ../resources/launcher/js/item.coffee:272
 msgid "Send to do_ck"
-msgstr "添加到 Dock(_C)"
+msgstr "添加到任务栏(_C)"
 
 #: ../resources/launcher/js/item.coffee:275
 msgid "_Uninstall"
