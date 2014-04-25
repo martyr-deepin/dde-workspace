@@ -24,6 +24,7 @@ class Panel
         @panel = $("##{@id}")
         @panel.width = 0
         @panel.height = PANEL_HEIGHT
+        # @panel.addEventListener("resize", @redraw)
 
         @panel.addEventListener("click", @on_click)
         $("#containerWarp").addEventListener("click", @on_click)
@@ -58,6 +59,7 @@ class Panel
         img
 
     redraw: =>
+        # console.log("panel redraw")
         @draw()
 
     draw: =>
@@ -107,11 +109,11 @@ class Panel
             else
                 Widget.look_up("le_#{appid}")?.notify()
 
-# does not work fine.
-#     updateWithAnimation:=>
-#         calc_app_item_size()
-#         DCore.Dock.require_all_region()
-#         @calcTimer = webkitRequestAnimationFrame(@updateWithAnimation)
-#
-#     cancelAnimation:->
-#         webkitCancelAnimationFrame(@calcTimer)
+    updateWithAnimation:=>
+        calc_app_item_size()
+        DCore.Dock.require_all_region()
+        @cancelAnimation()
+        @calcTimer = webkitRequestAnimationFrame(@updateWithAnimation)
+
+    cancelAnimation:=>
+        webkitCancelAnimationFrame(@calcTimer || null)

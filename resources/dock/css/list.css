@@ -66,6 +66,7 @@
     border-radius: 5px;
     pointer-events: none;
     /* background: rgba(255, 255, 255, 0.3); */
+    -webkit-transition: width 300ms;
 }
 .ItemSwapIndicator {
     -webkit-transition: border 0.3s;
