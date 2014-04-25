@@ -333,11 +333,11 @@ class AppItem extends Item
 
     destroyWidthAnimation:->
         @img.classList.remove("ReflectImg")
-        calc_app_item_size()
-        @rotate()
+        @rotate(300)
         setTimeout(=>
             @destroy()
-        ,500)
+            dockedAppManager.Undock(@id)
+        ,300)
 
     rotate: (time) ->
         apply_animation(@img, "rotateOut", time or 1000)

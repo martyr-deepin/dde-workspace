@@ -25,7 +25,6 @@ document.body.addEventListener("drop", (e)->
         t.style.top = (e.y + s_widget.element.clientHeight/2)+ "px"
         document.body.appendChild(t)
         s_widget.destroyWidthAnimation()
-        dockedAppManager.Undock(s_id)
 )
 document.body.addEventListener("dragenter", (e)->
     clearTimeout(cancelInsertTimer)
