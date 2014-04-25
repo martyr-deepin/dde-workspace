@@ -417,7 +417,7 @@ msgstr "密码错误"
 #: ../app/dock/dock.c:315
 #, fuzzy
 msgid "Dock failed to start, because Compiz is not enabled."
-msgstr "因Compiz未启用，Dock未能启动。"
+msgstr "因Compiz未启用，任务栏未能启动。"
 
 #: ../lib/dentry/entry.c:747
 #, c-format
