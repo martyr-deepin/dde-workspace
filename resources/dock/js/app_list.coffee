@@ -68,6 +68,8 @@ class AppList
         e.preventDefault()
         e.stopPropagation()
         if dnd_is_deepin_item(e) or dnd_is_desktop(e)
+            if e.y < screen.height - DOCK_HEIGHT + ITEM_HEIGHT / 4
+                return
             console.log("effective dragover on applist")
             clearTimeout(showIndicatorTimer)
             try_insert_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
@@ -106,10 +108,13 @@ class AppList
             console.log(el)
             if el == null or el.id != try_insert_id
                 console.log(el)
+                clearTimeout(showIndicatorTimer || null)
+                # to avoid insert to indicator
+                # FIXME: why???
                 showIndicatorTimer = setTimeout(=>
                     console.log("show indicator")
                     @show_indicator(el, try_insert_id)
-                , 100)
+                , 10)
 
     do_dragleave: (e)=>
         clearTimeout(showIndicatorTimer)
