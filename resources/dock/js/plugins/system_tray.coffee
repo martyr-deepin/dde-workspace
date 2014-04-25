@@ -93,15 +93,15 @@ class SystemTray extends SystemItem
             newWidth = (@upperItemNumber) * itemSize
             # console.log("set width to #{newWidth}")
             @img.style.width = "#{newWidth}px"
-            @element.style.width = "#{newWidth + 18}px"
+            @element.style.width = "#{newWidth + 12}px"
         else if not @isUnfolded
             newWidth = 2 * itemSize
             @img.style.width = "#{newWidth}px"
-            @element.style.width = "#{newWidth + 18}px"
+            @element.style.width = "#{newWidth + 12}px"
 
         xy = get_page_xy(@element)
         for item, i in @items
-            x = xy.x + 10
+            x = xy.x + 7
             y = xy.y + 6
             if i < @upperItemNumber
                 x += i * itemSize
