@@ -5,7 +5,7 @@ html{
 body{
     margin:0;
     width:160px;
-    height:160px;
+    max-height:180px;
     
     border-radius:18px;
     background-color:rgba(0,0,0,1.0);
