@@ -63,12 +63,8 @@ class Item extends Widget
     on_mouseover:(e)=>
         # console.log("mouseover, require_all_region")
         DCore.Dock.require_all_region()
-        @imgContainer.style.webkitTransform = 'translateY(-5px)'
-        @imgContainer.style.webkitTransition = 'all 100ms'
 
     on_mouseout:(e)=>
-        @imgContainer.style.webkitTransform = 'translateY(0px)'
-        @imgContainer.style.webkitTransition = 'all 400ms'
         #calc_app_item_size()
         # update_dock_region()
 
@@ -187,9 +183,19 @@ class AppItem extends Item
 
         @indicatorWarp = create_element(tag:'div', class:"indicatorWarp", @element)
         @openingIndicator = create_img(src:OPENING_INDICATOR, class:"indicator OpeningIndicator", @indicatorWarp)
-        @openingIndicator.addEventListener("webkitAnimationEnd", ->
-            this.style.display = 'none'
-            this.style.webkitAnimationName = ''
+        @openingIndicator.addEventListener("webkitAnimationEnd", =>
+            @openingIndicator.style.display = 'none'
+            @openingIndicator.style.webkitAnimationName = ''
+            @openingIndicator.style.webkitAnimationIterationCount = 2
+            if @statusChanged = true
+                if @isActive()
+                    @swap_to_clientgroup()
+                else if @isNormal()
+                    @swap_to_activator()
+                @statusChanged = false
+                return
+            @openingIndicator.style.webkitAnimationIterationCount = 1
+            @openingIndicator.style.webkitAnimationName = 'Breath'
         )
         @openIndicator = create_img(src:OPEN_INDICATOR, class:"indicator OpenIndicator", @indicatorWarp)
 
@@ -229,9 +235,8 @@ class AppItem extends Item
 
                     return
                 when ITEM_DATA_FIELD.status
-                    if @isActive()
-                        @swap_to_clientgroup()
-                    else if @isNormal()
+                    @statusChanged = true
+                    if @isNormal()
                         @swap_to_activator()
                 when ITEM_DATA_FIELD.icon
                     if not @imgs[value]
@@ -328,11 +333,11 @@ class AppItem extends Item
 
     destroyWidthAnimation:->
         @img.classList.remove("ReflectImg")
-        calc_app_item_size()
-        @rotate()
+        @rotate(300)
         setTimeout(=>
             @destroy()
-        ,500)
+            dockedAppManager.Undock(@id)
+        ,300)
 
     rotate: (time) ->
         apply_animation(@img, "rotateOut", time or 1000)

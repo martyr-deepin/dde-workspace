@@ -7,7 +7,8 @@
 
 .AppItem {
     position:relative;
-    width: 54px;
+    margin: 0 3px;
+    width: 48px;
     height:54px;
     max-height: 60px;
     -webkit-box-flex: 1;
@@ -54,21 +55,18 @@
 }
 .OpeningIndicator {
   display: none;
-  bottom:8px;
+  bottom: 8px;
   -webkit-animation-duration: 1s;
   -webkit-animation-timing-function: ease-in-out;
   -webkit-animation-iteration-count: 2;
 }
 
-@-webkit-keyframes showOut{
-    0% {width: 0px; opacity: 0;}
-}
 .InsertIndicator {
-    border: 1px solid rgba(0, 0, 0, 0.5);
+    /* border: 1px solid rgba(0, 0, 0, 0.5); */
     border-radius: 5px;
     pointer-events: none;
-    background: rgba(255, 255, 255, 0.3);
-    -webkit-animation: showOut 0.1s ease-out;
+    /* background: rgba(255, 255, 255, 0.3); */
+    -webkit-transition: width 300ms;
 }
 .ItemSwapIndicator {
     -webkit-transition: border 0.3s;
