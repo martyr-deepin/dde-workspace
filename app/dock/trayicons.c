@@ -7,7 +7,7 @@ void require_manager_trayicons()
     GDBusProxy* proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SESSION,
                                                       G_DBUS_PROXY_FLAGS_NONE,
                                                       NULL,
-                                                      "com.deepin.daemon.DockAppsBuilder",
+                                                      "com.deepin.dde.TrayManager",
                                                       "/com/deepin/dde/TrayManager",
                                                       "com.deepin.dde.TrayManager",
                                                       NULL,
@@ -21,7 +21,7 @@ void require_manager_trayicons()
     }
 
     g_dbus_proxy_call_sync(proxy,
-                           "RequireManagerTrayIcons",
+                           "RequireManageTrayIcons",
                            NULL,
                            G_DBUS_CALL_FLAGS_NONE,
                            -1,
@@ -33,7 +33,6 @@ void require_manager_trayicons()
         g_warning("[%s:%s] call RequireManagerTrayIcons failed: %s", __FILE__,
                   __func__, err->message);
         g_error_free(err);
-        return;
     }
 }
 
