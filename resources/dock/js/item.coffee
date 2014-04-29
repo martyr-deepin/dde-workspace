@@ -238,6 +238,8 @@ class AppItem extends Item
                     @statusChanged = true
                     if @isNormal()
                         @swap_to_activator()
+                    else if @isActive() and @openingIndicator.style.webkitAnimationName == ''
+                        @swap_to_clientgroup()
                 when ITEM_DATA_FIELD.icon
                     if not @imgs[value]
                         @imgs[value] = create_element(tag:"div", class:"AppItemImg", @imgContainer)
