@@ -85,8 +85,6 @@ SOFTWARE_STATE =
     UNINSTALLING: 1
     INSTALLING: 2
 
-_b = document.body
-
 UNINSTALL_STATUS =
     FAILED: "action-failed"
     SUCCESS: "action-finish"

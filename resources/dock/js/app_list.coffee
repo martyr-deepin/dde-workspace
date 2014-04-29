@@ -4,10 +4,10 @@ class AppList
     constructor: (@id) ->
         @element = $("#app_list")
         @element.classList.add("AppList")
-        @element.addEventListener("dragenter", @do_dragenter)
-        @element.addEventListener("dragover", @do_dragover)
-        @element.addEventListener("dragleave", @do_dragleave)
-        @element.addEventListener("drop", @do_drop)
+        @element.addEventListener("dragenter", @on_dragenter)
+        @element.addEventListener("dragover", @on_dragover)
+        @element.addEventListener("dragleave", @on_dragleave)
+        @element.addEventListener("drop", @on_drop)
         @element.draggable = true
         @insert_indicator = create_element(tag:"div", class:"InsertIndicator")
         @insert_indicator.addEventListener("webkitTransitionEnd", (e)=>
@@ -37,7 +37,7 @@ class AppList
     record_last_over_item: (item)->
         @_insert_anchor_item = item
 
-    do_drop: (e)=>
+    on_drop: (e)=>
         e.stopPropagation()
         e.preventDefault()
         console.log("do drop on app_list")
@@ -62,7 +62,7 @@ class AppList
         @hide_indicator()
         calc_app_item_size()
 
-    do_dragover: (e) =>
+    on_dragover: (e) =>
         console.log("start applist dragover")
         clearTimeout(cancelInsertTimer)
         e.preventDefault()
@@ -116,7 +116,7 @@ class AppList
                     @show_indicator(el, try_insert_id)
                 , 10)
 
-    do_dragleave: (e)=>
+    on_dragleave: (e)=>
         clearTimeout(showIndicatorTimer)
         console.log("app_list dragleave")
         @hide_indicator()
@@ -129,12 +129,12 @@ class AppList
                 update_dock_region()
             , 100)
 
-    do_dragenter: (e)=>
+    on_dragenter: (e)=>
         console.log("applist dragenter")
         e.stopPropagation()
         e.preventDefault()
         DCore.Dock.require_all_region()
-        # @do_dragover(e)
+        # @on_dragover(e)
 
     swap_item: (src, dest)->
         swap_element(src.element, dest.element)

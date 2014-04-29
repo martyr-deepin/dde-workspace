@@ -48,5 +48,13 @@ gridScrollCallback = (e)->
     return
 
 
-grid = $('#grid')
-grid.addEventListener("scroll", gridScrollCallback)
+grid.addEventListener("mousewheel", (e)->
+    gridOffset += e.wheelDeltaY / 2
+    offset = grid.clientHeight - grid.firstElementChild.clientHeight
+    if gridOffset < offset
+        gridOffset = offset
+    else if gridOffset > 0
+        gridOffset = 0
+    old = grid.firstElementChild.style.webkitTransition
+    grid.firstElementChild.style.webkitTransform = "translateY(#{gridOffset}px)"
+)

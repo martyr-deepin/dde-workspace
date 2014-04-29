@@ -5,6 +5,7 @@ com_coffee = ${com_dir}/strict_mode.coffee ${com_dir}/config.coffee \
 	     ${com_dir}/animation.coffee ${com_dir}/menu.coffee
 all: ${com_coffee} \
 	const.coffee \
+	global.coffee \
 	utils.coffee \
 	dbus.coffee \
 	search_result.coffee \
