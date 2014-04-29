@@ -11,7 +11,6 @@ class EntryProxy
         @dbus?.connect(signal, (name, value)=>
             if name == ITEM_DATA_FIELD.status
                 @updateCache = true
-                @status()
             cb(name, value)
         )
 

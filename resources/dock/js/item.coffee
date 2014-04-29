@@ -3,6 +3,8 @@ closePreviewWindowTimer = null
 _lastCliengGroup = null
 pop_id = null
 hide_id = null
+# dragCanvas = create_element(tag:"canvas")
+# dragCanvas.width = dragCanvas = 48
 
 _clear_item_timeout = ->
     clearTimeout(normal_mouseout_id)
@@ -25,10 +27,10 @@ class Item extends Widget
         @imgContainer.addEventListener("click", @on_click)
         @imgContainer.addEventListener("contextmenu", @on_rightclick)
         @imgContainer.addEventListener("dragstart", @on_dragstart)
-        @imgContainer.addEventListener("dragenter", @on_dragenter)
+        # @imgContainer.addEventListener("dragenter", @on_dragenter)
         @imgContainer.addEventListener("dragover", @on_dragover)
         @imgContainer.addEventListener("dragleave", @on_dragleave)
-        @imgContainer.addEventListener("drop", @on_drop)
+        # @imgContainer.addEventListener("drop", @on_drop)
 
         calc_app_item_size()
         @tooltip = null
@@ -93,13 +95,18 @@ class Item extends Widget
         return if @is_fixed_pos
         if @isNormal()
             @tooltip?.hide()
-        e.dataTransfer.setDragImage(@iconObj, 24, 24)
-        e.dataTransfer.setData(DEEPIN_ITEM_ID, @id)
+        dt = e.dataTransfer
+        # ctx = dragCanvas.getContext('2d')
+        # ctx.dratImage(@iconObj,0,0,48,48)
+        # dt.setDragCanvas(dragCanvas, 24, 24)
+        # dt.setDragCanvas(@iconObj, 24, 24)
+        dt.setData(DEEPIN_ITEM_ID, @id)
         console.log("DEEPIN_ITEM_ID: #{@id}")
 
         # flag for doing swap between items
-        e.dataTransfer.setData("text/plain", "swap")
-        e.dataTransfer.effectAllowed = "copyMove"
+        dt.setData("text/plain", "swap")
+        dt.effectAllowed = "copyMove"
+        dt.dropEffect = 'none'
 
     on_dragenter: (e)=>
         console.log("dragenter image #{@id}")
@@ -115,15 +122,16 @@ class Item extends Widget
         app_list.hide_indicator()
         # panel.set_width(panel.width() + ITEM_WIDTH)
 
-        @_try_swaping_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
+        dt = e.dataTransfer
+        @_try_swaping_id = dt.getData(DEEPIN_ITEM_ID)
         if @_try_swaping_id == @id
-            e.dataTransfer.dropEffect = "none"
+            dt.dropEffect = "none"
             return
         else if dnd_is_deepin_item(e)
-            e.dataTransfer.dropEffect="copy"
+            dt.dropEffect="copy"
             @show_swap_indicator()
         else
-            e.dataTransfer.dropEffect="move"
+            dt.dropEffect="move"
 
     on_dragleave: (e)=>
         console.log("dragleave")
@@ -195,7 +203,7 @@ class AppItem extends Item
                 @statusChanged = false
                 return
             @openingIndicator.style.webkitAnimationIterationCount = 1
-            @openingIndicator.style.webkitAnimationName = 'Breath'
+            @openNotify()
         )
         @openIndicator = create_img(src:OPEN_INDICATOR, class:"indicator OpenIndicator", @indicatorWarp)
 
@@ -299,7 +307,6 @@ class AppItem extends Item
     add_client: (id)->
         if @n_clients.indexOf(id) == -1
             @n_clients.unshift(id)
-            apply_rotate(@img, 1)
 
             if @leader != id
                 @leader = id
@@ -335,14 +342,10 @@ class AppItem extends Item
 
     destroyWidthAnimation:->
         @img.classList.remove("ReflectImg")
-        @rotate(300)
         setTimeout(=>
             @destroy()
             dockedAppManager.Undock(@id)
         ,300)
-
-    rotate: (time) ->
-        apply_animation(@img, "rotateOut", time or 1000)
 
     isNormal:->
         @core.isNormal?()
@@ -527,6 +530,7 @@ class AppItem extends Item
         clearTimeout(pop_id) if e.dataTransfer.getData('text/plain') != "swap"
 
     on_dragenter: (e) =>
+        return
         clearTimeout(showIndicatorTimer)
         e.preventDefault()
         flag = e.dataTransfer.getData("text/plain")

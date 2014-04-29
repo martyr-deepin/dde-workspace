@@ -14,6 +14,8 @@ document.body.addEventListener("contextmenu", (e)->
 )
 document.body.addEventListener("drop", (e)->
     console.log("drop on body")
+    if e.y > screen.height - DOCK_HEIGHT - ITEM_HEIGHT
+        return
     s_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
     s_widget = Widget.look_up(s_id)
     if s_widget and s_widget.isNormal()
@@ -32,10 +34,22 @@ document.body.addEventListener("dragenter", (e)->
 document.body.addEventListener("dragover", (e)->
     clearTimeout(cancelInsertTimer)
     app_list.hide_indicator()
-    console.log("dragover on body")
     s_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
-    if Widget.look_up(s_id)?.isNormal()
+    console.log("dragover #{s_id} on body")
+    t = Widget.look_up(s_id)
+    if not t
+        return
+
+    if t.isNormal()
         e.preventDefault()
+
+    console.log("set cursor")
+    if e.y > screen.height - DOCK_HEIGHT - ITEM_HEIGHT
+        console.log("set to auto")
+        e.dataTransfer.dropEffect = 'none'
+    else
+        console.log("set to cancel pointer")
+        e.dataTransfer.dropEffect = 'move'
 )
 
 settings = new Setting()
