@@ -8,6 +8,7 @@ class AppList
         @element.addEventListener("dragover", @on_dragover)
         @element.addEventListener("dragleave", @on_dragleave)
         @element.addEventListener("drop", @on_drop)
+        @element.addEventListener("dragstart", (e)->e.preventDefault())
         @element.draggable = true
         @insert_indicator = create_element(tag:"div", class:"InsertIndicator")
         @insert_indicator.addEventListener("webkitTransitionEnd", (e)=>
