@@ -21,7 +21,10 @@
 class CategoryList
     constructor:(infos)->
         @categories = {}
-        @container = $("#grid")
+        @container = create_element(tag:"div", class:"categoryListWarp", $("#grid"))
+        @container.addEventListener("webkitTransitionEnd", =>
+            @container.style.webkitTransition = ''
+        )
 
         frag = document.createDocumentFragment()
         for info in infos
@@ -34,7 +37,8 @@ class CategoryList
                 @categories[id].hide()
 
         @blank = create_element(tag:'div', id:'blank', frag)
-        $("#grid").appendChild(frag)
+        @container.appendChild(frag)
+        @finalOffset = 0
 
     updateNameDecoration:->
         for id in @categories
@@ -152,28 +156,9 @@ class CategoryList
 
         return null
 
-    doListScroll:=>
-        if @direction == "up"
-            if @currentOffset >= @finalOffset
-                @finishScroll()
-                return
-        else
-            if @currentOffset <= @finalOffset
-                @finishScroll()
-                return
-
-        $("#grid").scrollTop = @currentOffset - SEARCH_BAR_HEIGHT
-        # @currentOffset += @step
-        if @direction == "up"
-            @currentOffset += @step
-        else
-            @currentOffset -= @step
-
-        @scrollId = webkitRequestAnimationFrame(@doListScroll)
-
     fixOffset:(id)->
         console.log "fixOffset"
-        children = $("#grid").childNodes
+        children = $("#grid").firstElementChild.childNodes
         offset = 0
         for i in [0...children.length]
             if children[i].style.display == 'none'
@@ -187,22 +172,9 @@ class CategoryList
 
     scroll: (currentId, targetId)->
         @currentOffset = $("##{Category.PREFIX}#{currentId}").offsetTop
-        if "#{currentId}" == "#{targetId}"
-            @fixOffset(targetId)
-        else
-            @finalOffset = $("##{Category.PREFIX}#{targetId}").offsetTop
+        @fixOffset(targetId)
         offset = @finalOffset - @currentOffset
-        if Math.abs(offset) > ITEM_HEIGHT*2 then @step = 80 else @step = 40
-        # @step = offset / 40
-        @direction = if offset > 0 then "up" else "down"
-        @doListScroll()
-
-    cancelScroll:->
-        if @scrollId
-            webkitCancelAnimationFrame(@scrollId)
-            @scrollId = null
-
-    finishScroll:->
-        @cancelScroll()
-        if @currentOffset != @finalOffset
-            $("#grid").scrollTop = @finalOffset - SEARCH_BAR_HEIGHT
+        console.log("finalOffset: #{@finalOffset}")
+        @container.style.webkitTransition = '-webkit-transform 350ms cubic-bezier(0,0.58,0.15,1.4)'
+        @container.style.webkitTransform = "translateY(#{-@finalOffset}px)"
+        gridOffset = -@finalOffset

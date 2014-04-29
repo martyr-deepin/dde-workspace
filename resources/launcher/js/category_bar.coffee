@@ -74,14 +74,13 @@ class CategoryBar
             target = e.target.parentNode
             id = parseInt(target.getAttribute("catId"))
             if !isNaN(id)
-                categoryList.cancelScroll()
+                console.log("selected id: #{@selectedId}, click id: #{id}")
                 categoryList.scroll(@selectedId, id)
+                @focusCategory(id)
         )
 
         @category_items = {}
         @load(infos)
-
-        @update_scroll_bar()
 
     load: (infos)->
         frag = document.createDocumentFragment()
@@ -104,16 +103,6 @@ class CategoryBar
     hide: ->
         if @category.style.display != 'none'
             @category.style.display = 'none'
-        @
-
-    update_scroll_bar: ->
-        warp = @category.parentNode
-        # top/bottom margin
-        categories_height = @category.children.length * (@category.lastElementChild.clientHeight + 2*CATEGORY_BAR_ITEM_MARGIN)
-        warp_height = window.screen.height - SEARCH_BAR_HEIGHT - GRID_MARGIN_BOTTOM  # height of search bar
-        if categories_height > warp_height
-            warp.style.overflowY = "scroll"
-            warp.style.marginBottom = "#{GRID_MARGIN_BOTTOM}px"
         @
 
     focusCategory: (id) =>
