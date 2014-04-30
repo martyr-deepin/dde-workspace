@@ -12,7 +12,6 @@
 
     <schema path="/com/deepin/dde/dock/" id="com.deepin.dde.dock">
         <key name="hide-mode" enum="com.deepin.dde.dock.HideMode">
-            <default>'keep-showing'</default>
             <summary>the hideen mode</summary>
             <description>The value will influence when the dock is shown or hidden.</description>
         </key>
@@ -22,7 +21,6 @@
             <description>The dock clock plugin has two types of view, one is digit, the other is analog.</description>
         </key>
         <key type="as" name="docked-apps">
-            <default>['deepin-software-center','deepin-game-center','deepin-music-player','dtalk','deepin-media-player','google-chrome','nautilus', 'dde-control-center']</default>
             <summary>The default apps on dock.</summary>
             <description>The default apps which is docked when dock is started.</description>
         </key>
