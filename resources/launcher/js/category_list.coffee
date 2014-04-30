@@ -175,6 +175,6 @@ class CategoryList
         @fixOffset(targetId)
         offset = @finalOffset - @currentOffset
         console.log("finalOffset: #{@finalOffset}")
-        @container.style.webkitTransition = '-webkit-transform 200ms cubic-bezier(0.28,0.9,7,1.1)'
-        @container.style.webkitTransform = "translateY(#{-@finalOffset}px)"
         gridOffset = -@finalOffset
+        @container.style.webkitTransition = '-webkit-transform 200ms cubic-bezier(0.28,0.9,0.7,1.1)'
+        @container.style.webkitTransform = "translateY(#{gridOffset}px)"
