@@ -189,22 +189,12 @@ class AppItem extends Item
 
         @core = new EntryProxy($DBus[@id])
 
+        @lastStatus = @core.status()
+        @clientgroupInited = @isActive()
+        console.log("#{@id} init status: #{@lastStatus}")
         @indicatorWarp = create_element(tag:'div', class:"indicatorWarp", @element)
         @openingIndicator = create_img(src:OPENING_INDICATOR, class:"indicator OpeningIndicator", @indicatorWarp)
-        @openingIndicator.addEventListener("webkitAnimationEnd", =>
-            @openingIndicator.style.display = 'none'
-            @openingIndicator.style.webkitAnimationName = ''
-            @openingIndicator.style.webkitAnimationIterationCount = 2
-            if @statusChanged = true
-                if @isActive()
-                    @swap_to_clientgroup()
-                else if @isNormal()
-                    @swap_to_activator()
-                @statusChanged = false
-                return
-            @openingIndicator.style.webkitAnimationIterationCount = 1
-            @openNotify()
-        )
+        @openingIndicator.addEventListener("webkitAnimationEnd", @on_animationend)
         @openIndicator = create_img(src:OPEN_INDICATOR, class:"indicator OpenIndicator", @indicatorWarp)
 
         @tooltip = null
@@ -226,6 +216,8 @@ class AppItem extends Item
 
             switch name
                 when ITEM_DATA_FIELD.xids
+                    if not @clientgroupInited
+                        return
                     # [{Xid:0, Title:""}]
                     xids = JSON.parse(value)
                     for info in xids
@@ -243,11 +235,17 @@ class AppItem extends Item
 
                     return
                 when ITEM_DATA_FIELD.status
-                    @statusChanged = true
+                    if @lastStatus == value
+                        return
+                    console.log("old status: #{@lastStatus}, new status #{value}")
+                    @lastStatus = value
                     if @isNormal()
+                        console.log("is normal")
                         @swap_to_activator()
-                    else if @isActive() and @openingIndicator.style.webkitAnimationName == ''
-                        @swap_to_clientgroup()
+                    else if @isActive()
+                        if @openingIndicator.style.webkitAnimationName == ''
+                            console.log("open from somewhere else")
+                            @swap_to_clientgroup()
                 when ITEM_DATA_FIELD.icon
                     if not @imgs[value]
                         @imgs[value] = create_element(tag:"div", class:"AppItemImg", @imgContainer)
@@ -280,13 +278,17 @@ class AppItem extends Item
         if @isApplet()
             @embedWindows = new EmbedWindow(xids)
 
+        @clientgroupInited = true
+
     init_activator:->
         # console.log("init_activator #{@core.id()}")
         @openIndicator.style.display = 'none'
         @title = @core.title() || "Unknow"
         @set_tooltip(@title)
+        @clientgroupInited = false
 
     swap_to_clientgroup:->
+        # console.log('swap to clientgroup')
         @openingIndicator.style.display = 'none'
         @openingIndicator.style.webkitAnimationName = ''
         @openIndicator.style.display = 'inline'
@@ -523,6 +525,11 @@ class AppItem extends Item
     openNotify:->
         @openingIndicator.style.display = 'inline'
         @openingIndicator.style.webkitAnimationName = 'Breath'
+
+    on_animationend: (e)=>
+        console.log("open notify animation is end")
+        @openingIndicator.style.webkitAnimationName = ''
+        @swap_to_clientgroup()
 
     to_active_status : (id)->
         @leader = id
