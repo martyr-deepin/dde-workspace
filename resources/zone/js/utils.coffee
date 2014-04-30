@@ -9,7 +9,7 @@ cfgKey = ["left-up","left-down","right-up","right-down"]
 # option_text must be one-to-one with cfgValue
 option_text = [_("Control Center"),_("All Windows"),_("Launcher"),_("Desktop"),_("None")]
 cfgValue = [
-    "dbus-send --type=method_call --dest=com.deepin.dde.ControlCenter /com/deepin/dde/ControlCenter com.deepin.dde.ControlCenter.Toggle",
+    "dbus-send --print-reply --dest=com.deepin.dde.ControlCenter /com/deepin/dde/ControlCenter com.deepin.dde.ControlCenter.Toggle",
     "/usr/bin/xdotool key Super+w",
     "/usr/bin/dde-launcher"
     "/usr/lib/deepin-daemon/desktop-toggle",
