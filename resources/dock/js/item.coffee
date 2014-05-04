@@ -181,7 +181,7 @@ class Item extends Widget
 
 class AppItem extends Item
     is_fixed_pos: false
-    constructor:(@id, icon, @title, @container)->
+    constructor:(@id, icon, title, @container)->
         super
         @changeImgTimer = null
         @imgs = {icon: @img}
@@ -258,6 +258,8 @@ class AppItem extends Item
                         @currentImg.style.display = ''
                         @iconObj.src = value || NOT_FOUND_ICON
                     , 10)
+                when ITEM_DATA_FIELD.title
+                    @set_tooltip(value)
         )
 
     init_clientgroup:->
@@ -283,8 +285,8 @@ class AppItem extends Item
     init_activator:->
         # console.log("init_activator #{@core.id()}")
         @openIndicator.style.display = 'none'
-        @title = @core.title() || "Unknow"
-        @set_tooltip(@title)
+        title = @core.title() || "Unknow"
+        @set_tooltip(title)
         @clientgroupInited = false
 
     swap_to_clientgroup:->
