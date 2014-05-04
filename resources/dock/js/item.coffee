@@ -70,10 +70,14 @@ class Item extends Widget
     on_mouseover:(e)=>
         # console.log("mouseover, require_all_region")
         DCore.Dock.require_all_region()
+        @img.style.display = 'none'
+        @imgs["hoverIcon"].style.display = ''
 
     on_mouseout:(e)=>
         #calc_app_item_size()
         # update_dock_region()
+        @img.style.display = ''
+        @imgs["hoverIcon"].style.display = 'none'
 
     on_rightclick:(e)=>
         e.preventDefault()
@@ -379,8 +383,6 @@ class AppItem extends Item
 
     on_mouseover:(e)=>
         super
-        @img.style.display = 'none'
-        @imgs["hoverIcon"].style.display = ''
         # dataUrl = bright_image(@iconObj, 40)
         # @oldImg = @img.style.backgroundImage
         # @img.style.backgroundImage = "url(#{dataUrl})"
@@ -435,8 +437,6 @@ class AppItem extends Item
 
     on_mouseout:(e)=>
         super
-        @img.style.display = ''
-        @imgs["hoverIcon"].style.display = 'none'
         if @isNormal()
             if Preview_container.is_showing
                 console.log("normal mouseout, preview window is showing")
