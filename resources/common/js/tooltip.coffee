@@ -110,9 +110,9 @@ class ArrowToolTip extends ToolTipBase
         padding =
             horizontal: 5
             vertical: 0
-        radius = 8
+        radius = 4
         offsetForShadow = 5
-        offsetForRadius = 4
+        offsetForRadius = 0
         height = content.clientHeight - offsetForRadius * 2
 
         canvas.width = content.clientWidth + 2 * (padding.horizontal + radius + offsetForShadow)

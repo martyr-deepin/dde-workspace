@@ -104,7 +104,7 @@ class PWContainer extends Widget
         ctx.strokeStyle = 'rgba(255,255,255,0.4)'
         ctx.lineWidth = PREVIEW_CONTAINER_BORDER_WIDTH
 
-        ctx.fillStyle = "rgba(0,0,0,0.4)"
+        ctx.fillStyle = "rgba(0,0,0,0.75)"
 
         radius = PREVIEW_CORNER_RADIUS
         contentWidth = @bg.width - radius * 2 - ctx.lineWidth * 2 - ctx.shadowBlur * 2
