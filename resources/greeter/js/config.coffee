@@ -35,7 +35,7 @@ try
     is_greeter = true
     APP_NAME = "Greeter"
 catch error
-    echo "check is_greeter error:#{error}"
+    echo "check is_greeter false"
     is_greeter = false
     APP_NAME = "Lock"
 
@@ -73,6 +73,7 @@ enable_detection = (enabled)->
         return null
 
 hideFaceLogin = ->
+    return false
     try
         face = DCore[APP_NAME].enable_detection()
         return face
