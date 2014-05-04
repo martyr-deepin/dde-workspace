@@ -1,7 +1,7 @@
 class LauncherItem extends PrefixedItem
-    constructor: (@id, icon, @title)->
+    constructor: (@id, icon, title)->
         super
-        @set_tooltip(@title)
+        @set_tooltip(title)
         DCore.signal_connect("launcher_running", =>
             @show(true)
         )

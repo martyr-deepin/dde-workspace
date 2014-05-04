@@ -20,5 +20,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
+#ifndef DOMINANT_COLOR_H_AHUGBX7Z
+#define DOMINANT_COLOR_H_AHUGBX7Z
+
 #include <gdk-pixbuf/gdk-pixbuf.h>
 void calc_dominant_color_by_pixbuf(GdkPixbuf* pixbuf, double *r, double *g, double *b);
+void rgb2hsv(int r, int g, int b, double *h, double* s, double* v);
+void hsv2rgb(double h, double s, double v, double* r, double*g, double *b);
+
+#endif /* end of include guard: DOMINANT_COLOR_H_AHUGBX7Z */
+

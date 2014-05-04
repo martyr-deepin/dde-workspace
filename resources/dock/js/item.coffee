@@ -16,10 +16,15 @@ class Item extends Widget
         @imgContainer = create_element(tag:'div', class:"imgWarp", @imgWarp)
         @img = create_element(tag:'div',class:"AppItemImg", @imgContainer)
         # @img.src = icon || NOT_FOUND_ICON
-        @iconObj = create_img(src:icon || NOT_FOUND_ICON)
         @img.style.backgroundImage = "url(#{icon || NOT_FOUND_ICON})"
         @img.style.backgroundRepeat = 'no-repeat'
         @img.style.backgroundSize = '48px 48px'
+        @iconObj = create_img(src:icon || NOT_FOUND_ICON)
+        @iconObj.onload = =>
+            dataUrl = bright_image(@iconObj, 40)
+            hoverImg = create_img(src: dataUrl, @imgContainer)
+            hoverImg.style.display = 'none'
+            @imgs = {icon: @img, "hoverIcon": hoverImg}
         @imgWarp.classList.add("ReflectImg")
         @imgContainer.style.pointerEvents = "auto"
         @imgContainer.addEventListener("mouseover", @on_mouseover)
@@ -65,10 +70,14 @@ class Item extends Widget
     on_mouseover:(e)=>
         # console.log("mouseover, require_all_region")
         DCore.Dock.require_all_region()
+        @img.style.display = 'none'
+        @imgs["hoverIcon"].style.display = ''
 
     on_mouseout:(e)=>
         #calc_app_item_size()
         # update_dock_region()
+        @img.style.display = ''
+        @imgs["hoverIcon"].style.display = 'none'
 
     on_rightclick:(e)=>
         e.preventDefault()
@@ -181,10 +190,9 @@ class Item extends Widget
 
 class AppItem extends Item
     is_fixed_pos: false
-    constructor:(@id, icon, @title, @container)->
+    constructor:(@id, icon, title, @container)->
         super
         @changeImgTimer = null
-        @imgs = {icon: @img}
         @currentImg = @img
 
         @core = new EntryProxy($DBus[@id])
@@ -258,6 +266,8 @@ class AppItem extends Item
                         @currentImg.style.display = ''
                         @iconObj.src = value || NOT_FOUND_ICON
                     , 10)
+                when ITEM_DATA_FIELD.title
+                    @set_tooltip(value)
         )
 
     init_clientgroup:->
@@ -283,8 +293,8 @@ class AppItem extends Item
     init_activator:->
         # console.log("init_activator #{@core.id()}")
         @openIndicator.style.display = 'none'
-        @title = @core.title() || "Unknow"
-        @set_tooltip(@title)
+        title = @core.title() || "Unknow"
+        @set_tooltip(title)
         @clientgroupInited = false
 
     swap_to_clientgroup:->
@@ -373,6 +383,9 @@ class AppItem extends Item
 
     on_mouseover:(e)=>
         super
+        # dataUrl = bright_image(@iconObj, 40)
+        # @oldImg = @img.style.backgroundImage
+        # @img.style.backgroundImage = "url(#{dataUrl})"
         if @isNormal() || @isNormalApplet()
             clearTimeout(hide_id)
             closePreviewWindowTimer = setTimeout(->

@@ -133,8 +133,7 @@ class SystemTray extends SystemItem
         @updateTrayIcon()
         if @items.length > 4
             @showButton()
-        try
-            super
+        DCore.Dock.require_all_region()
         @imgContainer.style.webkitTransform = 'translateY(0)'
         @imgContainer.style.webkitTransition = ''
         $EW.show(@items[0]) if @items[0]

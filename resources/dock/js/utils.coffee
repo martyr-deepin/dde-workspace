@@ -32,3 +32,22 @@ deleteItem = (id)->
         i.destroy()
     else
         # console.log("#{id} not eixst")
+
+
+bright_image = do ->
+    brightnessCanvas = create_element(tag:'canvas', document.body)
+    brightnessCanvas.width = brightnessCanvas.height = 48
+    brightnessCanvas.style.position = 'absolute'
+    brightnessCanvas.style.top = -screen.height
+    (img, adjustment)->
+        ctx = brightnessCanvas.getContext("2d")
+        # clear the last icon.
+        ctx.clearRect(0, 0, brightnessCanvas.width, brightnessCanvas.height)
+        ctx.drawImage(img, 0, 0, brightnessCanvas.width, brightnessCanvas.height)
+        origDataUrl = brightnessCanvas.toDataURL()
+        dataUrl = DCore.Dock.bright_image(origDataUrl, adjustment)
+        # i = new Image()
+        # i.src = dataUrl
+        # i.onload = ->
+        #     ctx.drawImage(i, 0, 0)
+        return dataUrl

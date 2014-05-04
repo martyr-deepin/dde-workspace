@@ -1,7 +1,7 @@
 class Time extends SystemItem
     constructor:->
         super
-        @time = create_element('div', 'DigitClockTime', @img)
+        @time = create_element('div', 'DigitClockTime', @imgWarp)
 
         for name in ['hourHeight', 'hourLow', 'minHeight', 'minLow']
             @loadBit(name)

@@ -9,9 +9,9 @@ class GlobalMenu
         @menu?.destroy()
         @menu = null
         items = [
-            new RadioBoxMenuItem('keep-showing', _("keep _showing")),
-            new RadioBoxMenuItem('keep-hidden', _("keep _hidden"))
-            new RadioBoxMenuItem('auto-hide', _("_auto hide")),
+            new RadioBoxMenuItem('dockHideMode:radio:keep-showing', _("keep _showing")),
+            new RadioBoxMenuItem('dockHideMode:radio:keep-hidden', _("keep _hidden"))
+            new RadioBoxMenuItem('dockHideMode:radio:auto-hide', _("_auto hide")),
         ]
         # console.log(settings)
         items[@map[settings.hideMode()]].setChecked(true)
@@ -21,4 +21,6 @@ class GlobalMenu
         @menu.addListener(@on_itemselected).showMenu(x, y)
 
     on_itemselected:(id)->
-        settings.setHideMode(id)
+        realId = id.split(":")[2]
+        console.log(realId)
+        settings.setHideMode(realId)

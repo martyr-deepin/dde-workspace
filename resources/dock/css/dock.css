@@ -22,6 +22,7 @@
 @import url("preview.css");
 @import url("list.css");
 @import url("trayicon.css");
+@import url("plugins.css");
 
 body {
     -webkit-user-select: none;
