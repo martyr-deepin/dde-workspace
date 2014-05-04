@@ -1,14 +1,12 @@
 class SystemTray extends SystemItem
     constructor:(@id, icon, title)->
         super
-        @hood = create_element(tag:"div", class:"ReflectImg", @imgWarp)
-        @hood.style.backgroundImage = "url(\"#{icon}\")"
-        @hood.style.width = '48px'
-        @hood.style.height = '48px'
-        @hood.addEventListener("mouseover", @on_mouseover)
-        @img.style.display = 'none'
-        # @imgWarp.addEventListener("mouseout", @on_mouseout)
-        @element.addEventListener("mouseout", @on_mouseout)
+        @img.addEventListener("mouseover", @on_mouseover)
+        @img.removeEventListener("mouseout", @on_mouseout)
+        @panel = create_element(tag:"div", class:"SystemTrayPanel", @imgWarp)
+        @panel.style.display = 'none'
+        @panel.addEventListener("mouseover", @on_mouseover)
+        @panel.addEventListener("mouseout", @on_mouseout)
         @openIndicator.style.display = 'none'
         @isUnfolded = false
         @button = create_element(tag:'div', class:'TrayFoldButton', @imgWarp)
@@ -92,11 +90,11 @@ class SystemTray extends SystemItem
         if @isUnfolded && @upperItemNumber > 2
             newWidth = (@upperItemNumber) * itemSize
             # console.log("set width to #{newWidth}")
-            @img.style.width = "#{newWidth}px"
+            @panel.style.width = "#{newWidth}px"
             @element.style.width = "#{newWidth + 12}px"
         else if not @isUnfolded
             newWidth = 2 * itemSize
-            @img.style.width = "#{newWidth}px"
+            @panel.style.width = "#{newWidth}px"
             @element.style.width = "#{newWidth + 12}px"
 
         xy = get_page_xy(@element)
@@ -128,8 +126,8 @@ class SystemTray extends SystemItem
         if @isUnfolded
             return
         @isShowing = true
-        @img.style.display = 'block'
-        @hood.style.display = 'none'
+        @img.style.display = 'none'
+        @panel.style.display = ''
         @updateTrayIcon()
         if @items.length > 4
             @showButton()
@@ -148,8 +146,9 @@ class SystemTray extends SystemItem
             return
 
         @isShowing = false
-        @img.style.display = 'none'
-        @hood.style.display = ''
+        console.log("tray mouseout")
+        @img.style.display = ''
+        @panel.style.display = 'none'
         for item in @items
             $EW.hide(item)
         @hideButton()
@@ -193,13 +192,13 @@ class SystemTray extends SystemItem
         if @upperItemNumber > 2
             clearTimeout(@hideTimer)
             @hideTimer = setTimeout(=>
-                @img.style.display = 'none'
-                @hood.style.display = 'block'
+                @img.style.display = ''
+                @panel.style.display = 'none'
                 webkitCancelAnimationFrame(@calcTimer)
             , ANIMATION_TIME)
         else
-            @img.style.display = 'none'
-            @hood.style.display = 'block'
+            @img.style.display = ''
+            @panel.style.display = 'none'
             webkitCancelAnimationFrame(@calcTimer)
 
         @hideButton()

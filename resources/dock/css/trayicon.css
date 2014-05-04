@@ -7,8 +7,10 @@
   pointer-events: auto;
 }
 
-.SystemTray .imgWarp .AppItemImg {
+.SystemTrayPanel {
   background: none !important;
+  position:relative;
+  top: 1px;
   width: 36px;
   height: 36px;
   border-width: 5px 6px 7px;
