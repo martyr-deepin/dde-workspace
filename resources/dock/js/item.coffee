@@ -16,10 +16,15 @@ class Item extends Widget
         @imgContainer = create_element(tag:'div', class:"imgWarp", @imgWarp)
         @img = create_element(tag:'div',class:"AppItemImg", @imgContainer)
         # @img.src = icon || NOT_FOUND_ICON
-        @iconObj = create_img(src:icon || NOT_FOUND_ICON)
         @img.style.backgroundImage = "url(#{icon || NOT_FOUND_ICON})"
         @img.style.backgroundRepeat = 'no-repeat'
         @img.style.backgroundSize = '48px 48px'
+        @iconObj = create_img(src:icon || NOT_FOUND_ICON)
+        @iconObj.onload = =>
+            dataUrl = bright_image(@iconObj, 40)
+            hoverImg = create_img(src: dataUrl, @imgContainer)
+            hoverImg.style.display = 'none'
+            @imgs = {icon: @img, "hoverIcon": hoverImg}
         @imgWarp.classList.add("ReflectImg")
         @imgContainer.style.pointerEvents = "auto"
         @imgContainer.addEventListener("mouseover", @on_mouseover)
@@ -184,7 +189,6 @@ class AppItem extends Item
     constructor:(@id, icon, title, @container)->
         super
         @changeImgTimer = null
-        @imgs = {icon: @img}
         @currentImg = @img
 
         @core = new EntryProxy($DBus[@id])
@@ -375,6 +379,11 @@ class AppItem extends Item
 
     on_mouseover:(e)=>
         super
+        @img.style.display = 'none'
+        @imgs["hoverIcon"].style.display = ''
+        # dataUrl = bright_image(@iconObj, 40)
+        # @oldImg = @img.style.backgroundImage
+        # @img.style.backgroundImage = "url(#{dataUrl})"
         if @isNormal() || @isNormalApplet()
             clearTimeout(hide_id)
             closePreviewWindowTimer = setTimeout(->
@@ -426,6 +435,8 @@ class AppItem extends Item
 
     on_mouseout:(e)=>
         super
+        @img.style.display = ''
+        @imgs["hoverIcon"].style.display = 'none'
         if @isNormal()
             if Preview_container.is_showing
                 console.log("normal mouseout, preview window is showing")
