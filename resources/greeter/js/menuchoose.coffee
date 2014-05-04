@@ -45,6 +45,7 @@ class MenuChoose extends Widget
         @current = @id
         
         @option = []
+        @option_disable = []
         @option_text = []
         @img_url_normal = []
         @img_url_hover = []
@@ -178,8 +179,9 @@ class MenuChoose extends Widget
             animation_opt_move_hide(i,j * t_delay)
 
 
-    insert: (id, title, img_normal,img_hover,img_click)->
+    insert: (id, title, img_normal,img_hover,img_click,disable = false)->
         @option.push(id)
+        @option_disable.push(disable) if disable
         @option_text.push(title)
         @img_url_normal.push(img_normal)
         @img_url_hover.push(img_hover)
@@ -196,7 +198,11 @@ class MenuChoose extends Widget
             else
                 @frame_click = false
         )
- 
+    
+    showMessage:(text)->
+        @message_div.style.display = "-webkit-box"
+        @message_text_div.textContent = text
+
 
     frame_build:(id,title,img)->
         @frame = create_element("div", "frame", @element)
@@ -207,6 +213,12 @@ class MenuChoose extends Widget
             @frame_click = true
         )
         @body_click_to_hide()
+        
+        @message_div = create_element("div","message_div",@element)
+        @message_img_div = create_element("div","message_img_div",@message_div)
+        @message_img_div.style.backgroundImage = "url(images/waring.png)"
+        @message_text_div = create_element("div","message_text_div",@message_div)
+        @message_div.style.display = "none"
 
         for tmp ,i in @option
             @opt[i] = create_element("div","opt",@button)
@@ -250,13 +262,28 @@ class MenuChoose extends Widget
 
     set_callback: (@cb)->
 
-       
     fade:(i)->
         echo "--------------fade:#{@option[i]}---------------"
         @hide()
         @cb(@option[i], @option_text[i])
 
     
+    css_disable:(i)->
+        disable = @is_disable(@option(i))
+        if disable is true
+            @opt[i].disable = "true"
+            #@opt[i].disable = "disable"
+            @opt[i].style.opacity = "0.3"
+            @opt[i].style.cursor = "default"
+        else
+            @opt[i].disable = "false"
+            @opt[i].style.opacity = "1.0"
+            @opt[i].style.cursor = "pointer"
+
+    is_disable: (option) ->
+        if option in @option_disable then return true
+        else return false
+
     hover_state:(i)->
         choose_num = i
         if select_state_confirm then @select_state(i)
@@ -319,10 +346,14 @@ class ComboBox extends Widget
     
     frame_build:->
         @menu.frame_build()
+    
+    showMessage:(msg)->
+        @menu.showMessage(msg)
+
 
     insert_noimg: (id, title)->
         @menu.insert_noimg(id, title)
-
+    
     do_click: (e)->
         e.stopPropagation()
         echo "current_img do_click:#{@id}"
