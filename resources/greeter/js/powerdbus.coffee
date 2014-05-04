@@ -22,14 +22,17 @@ power_request = (power) ->
         when "shutdown" then dbus_login1.PowerOff(true)
         else return
 
+
+
 power_get_inhibit = (power) ->
     result = null
     if not dbus_login1? then return result
     
     inhibitorsList = dbus_login1.ListInhibitors_sync()
-    echo "inhibitorsList.lengt:" + inhibitorsList.length
+    echo inhibitorsList
     cannot_excute = []
     for inhibit,i in inhibitorsList
+        echo inhibit
         if inhibit is undefined then break
         try
             if inhibit[3] is "block"
@@ -44,7 +47,6 @@ power_get_inhibit = (power) ->
                         cannot_excute.push({type:"logout",inhibit:inhibit})
         catch e
             echo "#{e}"
-
 
     if cannot_excute.length == 0 then return result
     for tmp in cannot_excute
@@ -64,16 +66,18 @@ power_can = (power)->
 inhibit_test = ->
     echo "--------inhibit_test-------"
     if not dbus_login1? then return
-    
+    echo "1"
     dsc_update_inhibits = []
     dsc_update_inhibits = ["shutdown","sleep","idle","handle-power-key","handle-suspend-key","handle-hibernate-key","handle-lid-switch"]
+    echo "2"
     for inhibit in dsc_update_inhibits
-        dbus_login1.Inhibit_sync(
+        dbus_login1?.Inhibit_sync(
             inhibit,
             "DeepinSoftCenter",
             "Please wait a moment while system update is being performed... Do not turn off your computer.",
             "block"
         )
+    echo "3"
 
 #inhibit_test()
 
