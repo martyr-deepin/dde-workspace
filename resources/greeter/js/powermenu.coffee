@@ -165,10 +165,5 @@ class PowerMenu extends Widget
             if not power.value? then return
             if power_can(power.value)
                 power_force(power.value)
-            else
-                confirmdialog = new ConfirmDialog(power.value)
-                confirmdialog.frame_build()
-                document.body.appendChild(confirmdialog.element)
-                confirmdialog.interval(60)
 
 

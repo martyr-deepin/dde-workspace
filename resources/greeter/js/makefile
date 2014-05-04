@@ -8,7 +8,7 @@ common_coffee = ${com_coffee} ${init_coffee} ${power_coffee} ${com_module_coffee
 
 
 greeter_coffee = ${common_coffee} desktopmenu.coffee greeter.coffee
-lock_coffee = ${common_coffee} powerchoose.coffee switchuser.coffee mediacontrol.coffee lock.coffee 
+lock_coffee = ${common_coffee} switchuser.coffee mediacontrol.coffee lock.coffee 
 
 all: ${greeter_coffee} ${lock_coffee}
 	coffee -cj greeter.js ${greeter_coffee}
