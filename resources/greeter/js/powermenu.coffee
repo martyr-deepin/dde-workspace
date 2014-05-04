@@ -68,16 +68,16 @@ class PowerMenu extends Widget
             img_normal = @img_before + "#{key}_normal.png"
             img_hover = @img_before + "#{key}_hover.png"
             img_click = @img_before + "#{key}_press.png"
+            inhibit = power_get_inhibit(key)
+            if power_can(key) is false then @ComboBox.showMessage(inhibit?[2],key)
             @ComboBox.insert(key, title, img_normal,img_hover,img_click)
         
         @ComboBox.frame_build()
         @element.appendChild(@ComboBox.element)
-        
         @ComboBox.current_img.src = @img_before + "powermenu.png"
-    
+
     keydown_listener:(e)->
         @ComboBox.menu.keydown(e)
-
 
     confirm_shutdown_show:(powervalue)=>
         power = {"lock":true,"value":powervalue}
