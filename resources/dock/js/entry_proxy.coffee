@@ -82,3 +82,5 @@ class EntryProxy
     showQuickWindow: ->
         @dbus?.ShowQuickWindow?()
 
+    onMouseWheel: (x, y, delta)->
+        @dbus?.OnMouseWheel?(x, y, delta)

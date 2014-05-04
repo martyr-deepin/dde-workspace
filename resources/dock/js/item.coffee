@@ -32,6 +32,7 @@ class Item extends Widget
         @imgContainer.addEventListener("dragover", @on_dragover)
         @imgContainer.addEventListener("dragleave", @on_dragleave)
         # @imgContainer.addEventListener("drop", @on_drop)
+        @imgContainer.addEventListener("mousewheel", @on_mousewheel)
 
         calc_app_item_size()
         @tooltip = null
@@ -78,6 +79,10 @@ class Item extends Widget
         # update_dock_region()
         @img.style.display = ''
         @imgHover.style.display = 'none'
+
+    on_mousewheel:(e)=>
+        console.log(e)
+        @core?.onMouseWheel(e.x, e.y, e.wheelDeltaY)
 
     on_rightclick:(e)=>
         e.preventDefault()
