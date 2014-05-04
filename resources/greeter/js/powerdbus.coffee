@@ -28,11 +28,9 @@ power_get_inhibit = (power) ->
     
     inhibitorsList = dbus_login1.ListInhibitors_sync()
     echo "inhibitorsList.lengt:" + inhibitorsList.length
-    echo inhibitorsList
     cannot_excute = []
     for inhibit,i in inhibitorsList
         if inhibit is undefined then break
-        echo inhibit
         try
             if inhibit[3] is "block"
                 type = inhibit[0]

@@ -68,9 +68,10 @@ class PowerMenu extends Widget
             img_normal = @img_before + "#{key}_normal.png"
             img_hover = @img_before + "#{key}_hover.png"
             img_click = @img_before + "#{key}_press.png"
+            message_text = null
             inhibit = power_get_inhibit(key)
-            if power_can(key) is false then @ComboBox.showMessage(inhibit?[2],key)
-            @ComboBox.insert(key, title, img_normal,img_hover,img_click)
+            if power_can(key) is false then message_text = inhibit?[2]
+            @ComboBox.insert(key, title, img_normal,img_hover,img_click,!power_can(key),message_text)
         
         @ComboBox.frame_build()
         @element.appendChild(@ComboBox.element)

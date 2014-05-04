@@ -46,6 +46,7 @@ class MenuChoose extends Widget
         
         @option = []
         @option_disable = []
+        @message_text = []
         @option_text = []
         @img_url_normal = []
         @img_url_hover = []
@@ -179,9 +180,10 @@ class MenuChoose extends Widget
             animation_opt_move_hide(i,j * t_delay)
 
 
-    insert: (id, title, img_normal,img_hover,img_click,disable = false)->
+    insert: (id, title, img_normal,img_hover,img_click,disable = false,message = null)->
         @option.push(id)
-        @option_disable.push(disable) if disable
+        @option_disable.push(id) if disable
+        @message_text.push(message)
         @option_text.push(title)
         @img_url_normal.push(img_normal)
         @img_url_hover.push(img_hover)
@@ -200,9 +202,30 @@ class MenuChoose extends Widget
         )
     
     showMessage:(text)->
-        @message_div.style.display = "-webkit-box"
-        @message_text_div.textContent = text
+        @message_div?.style.display = "-webkit-box"
+        @message_text_div?.textContent = text
+    
+    hideMessage: ->
+        @message_div?.style.display = "none"
 
+    setOptionDefault:(option_default)->
+        #this key must get From system
+        GetinFromKey = false
+        for tmp,i in @option
+            if tmp is option_default
+                if GetinFromKey
+                    @select_state(i)
+                else
+                    choose_num = i
+                    @hover_state(i)
+                @opt[i].focus()
+
+    message_div_build:->
+        @message_div = create_element("div","message_div",@element)
+        @message_img_div = create_element("div","message_img_div",@message_div)
+        @message_img_div.style.backgroundImage = "url(images/waring.png)"
+        @message_text_div = create_element("div","message_text_div",@message_div)
+        @message_div.style.display = "none"
 
     frame_build:(id,title,img)->
         @frame = create_element("div", "frame", @element)
@@ -213,13 +236,8 @@ class MenuChoose extends Widget
             @frame_click = true
         )
         @body_click_to_hide()
+        @message_div_build()
         
-        @message_div = create_element("div","message_div",@element)
-        @message_img_div = create_element("div","message_img_div",@message_div)
-        @message_img_div.style.backgroundImage = "url(images/waring.png)"
-        @message_text_div = create_element("div","message_text_div",@message_div)
-        @message_div.style.display = "none"
-
         for tmp ,i in @option
             @opt[i] = create_element("div","opt",@button)
             @opt[i].style.backgroundColor = "rgba(255,255,255,0.0)"
@@ -229,32 +247,26 @@ class MenuChoose extends Widget
             @opt_img[i] = create_img("opt_img",@img_url_normal[i],@opt[i])
             @opt_text[i] = create_element("div","opt_text",@opt[i])
             @opt_text[i].textContent = @option_text[i]
+                
+            @check_disable_state(i)
             
             that = @
             #hover
             @opt[i].addEventListener("mouseover",->
-                i = this.value
-                choose_num = i
-                that.opt_img[i].src = that.img_url_hover[i]
-                that.hover_state(i)
+                that.hover_state(this.value)
             )
             
             #normal
             @opt[i].addEventListener("mouseout",->
-                i = this.value
-                that.opt_img[i].src = that.img_url_normal[i]
+                that.normal_state(this.value)
             )
 
             #click
-            @opt[i].addEventListener("mousedown",->
-                i = this.value
-                that.opt_img[i].src = that.img_url_click[i]
-            )
             @opt[i].addEventListener("click",(e)->
                 e.stopPropagation()
                 i = this.value
                 that.frame_click = true
-                that.opt_img[i].src = that.img_url_click[i]
+                that.click_state(i)
                 that.current = that.option[i]
                 that.fade(i)
             )
@@ -268,30 +280,44 @@ class MenuChoose extends Widget
         @cb(@option[i], @option_text[i])
 
     
-    css_disable:(i)->
-        disable = @is_disable(@option(i))
+    is_disable: (option) ->
+        if @option_disable.length == 0 then return false
+        if option in @option_disable then return true
+        else return false
+
+    check_disable_state:(i)->
+        disable = @is_disable(@option[i])
         if disable is true
             @opt[i].disable = "true"
             #@opt[i].disable = "disable"
             @opt[i].style.opacity = "0.3"
             @opt[i].style.cursor = "default"
+            @showMessage(@message_text[i])
         else
             @opt[i].disable = "false"
             @opt[i].style.opacity = "1.0"
             @opt[i].style.cursor = "pointer"
+            @hideMessage()
+        return disable
+    
+    normal_state:(i)->
+        @check_disable_state(i)
+        @opt_img[i].src = @img_url_normal[i]
 
-    is_disable: (option) ->
-        if option in @option_disable then return true
-        else return false
+    click_state:(i)->
+        if @check_disable_state(i) then return
+        @opt_img[i].src = @img_url_click[i]
 
     hover_state:(i)->
-        choose_num = i
+        if @check_disable_state(i) then return
+        #choose_num = i
         if select_state_confirm then @select_state(i)
         for tmp,j in @opt_img
             if j == i then tmp.src = @img_url_hover[i]
             else tmp.src = @img_url_normal[j]
    
     select_state:(i)->
+        if @check_disable_state(i) then return
         select_state_confirm = true
         choose_num = i
         for tmp,j in @opt
