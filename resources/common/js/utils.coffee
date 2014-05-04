@@ -266,3 +266,8 @@ get_dbus = (type, opt, testProperty)->
 blockJS = (t)->
     `for (var s = +new Date(); s + t > +new Date();){}`
     return
+
+getRandomInt = (min,max) ->
+    c = max - min + 1
+    return Math.floor(Math.random() * c + min)
+
