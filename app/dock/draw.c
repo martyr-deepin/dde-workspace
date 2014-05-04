@@ -22,6 +22,8 @@
  **/
 #include "dwebview.h"
 #include "dock_config.h"
+#include "pixbuf.h"
+#include "dominant_color.h"
 
 #include <math.h>
 
@@ -35,6 +37,11 @@
 #define GET_G(c) TO_DOUBLE(c >> 16 & 0xff)
 #define GET_B(c) TO_DOUBLE(c >> 8 & 0xff)
 #define GET_A(c) ((c & 0xff) / 100.0)
+#define INC_BRIGHTNESS(newColor, oldColor, inc) \
+    do {\
+        newColor = (oldColor) + (inc); \
+        if (newColor < (oldColor)) { newColor = 255; }\
+    } while(0)
 
 
 GdkPixbuf* image_path(char const* name, double width, double height)
@@ -114,5 +121,60 @@ void draw_app_icon(JSValueRef canvas, double id, double number)
     (void)canvas;
     (void)id;
     (void)number;
+}
+
+
+void save_to_file(const guchar* pix, gsize size, char const* file)
+{
+    FILE* f = fopen(file, "wb");
+    fwrite(pix, sizeof(gchar), size, f);
+    fclose(f);
+}
+
+
+char* dock_bright_image(char const* origDataUrl, double _adj)
+{
+    guchar adj = (guchar)_adj;
+    gchar* spt = g_strstr_len(origDataUrl, 100, ",");
+    gsize size = 0;
+    guchar* data = g_base64_decode((const gchar*)(spt + 1), &size);
+    save_to_file(data, size, "/tmp/origin.png");
+
+    GError* err = NULL;
+    GdkPixbuf* pixbuf = gdk_pixbuf_new_from_file("/tmp/origin.png", &err);
+    if (err != NULL) {
+        g_warning("%s", err->message);
+        g_clear_error(&err);
+        return NULL;
+    }
+
+
+    int width = gdk_pixbuf_get_width(pixbuf);
+    int height = gdk_pixbuf_get_height(pixbuf);
+    int stride = gdk_pixbuf_get_rowstride(pixbuf);
+    int offset = 0;
+    guchar* pix = gdk_pixbuf_get_pixels(pixbuf);
+    guchar r=0, g=0, b=0;
+    for (int i = 0; i < height; ++i) {
+        for (int j = 0; j < width; ++j) {
+            if (i < 1 || i > 45 || j < 2 || j > 45) {
+                // filter shadow
+                continue;
+            }
+            // canvas use rgba, 4 bytes.
+            offset = i * stride + j * 4;
+            INC_BRIGHTNESS(r, pix[offset], adj);
+            INC_BRIGHTNESS(g, pix[1+offset], adj);
+            INC_BRIGHTNESS(b, pix[2+offset], adj);
+            pix[offset] = r;
+            pix[1+offset] = g;
+            pix[2+offset] = b;
+        }
+    }
+
+    gdk_pixbuf_save(pixbuf, "/tmp/bright.png", "png", NULL, NULL);
+    char* dataUrl = get_data_uri_by_pixbuf(pixbuf);
+    g_object_unref(pixbuf);
+    return dataUrl;
 }
 
