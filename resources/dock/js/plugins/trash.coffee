@@ -5,9 +5,12 @@ class Trash extends PostfixedItem
         @w_id = 0
         @is_opened = false
         @entry = DCore.DEntry.get_trash_entry()
-        @img.style.background = "url(#{Trash.get_icon(0)}) no-repeat"
-        @imgFull = create_element(tag:'div', class:"AppItemImg", @imgContainer)
-        @imgFull.style.background = "url(#{Trash.get_icon(1)}) no-repeat"
+        @emptyIcon = Trash.get_icon(0)
+        @fullIcon = Trash.get_icon(1)
+        @change_icon(icon)
+        @imgHover.style.display = 'none'
+        @imgContainer.addEventListener("drop", @on_drop)
+        @isEmpty = false
         @update()
         DCore.signal_connect("trash_count_changed", (info)=>
             @update(info.value)
@@ -33,7 +36,6 @@ class Trash extends PostfixedItem
 
     on_itemselected: (id)=>
         # super
-        calc_app_item_size()
         id = parseInt(id)
         switch id
             when 1
@@ -73,17 +75,17 @@ class Trash extends PostfixedItem
     on_dragenter : (evt) =>
         evt.stopPropagation()
         evt.preventDefault()
+        @oldEffect = evt.dataTransfer.dropEffect
         evt.dataTransfer.dropEffect = "move"
 
     on_dragover : (evt) =>
         evt.stopPropagation()
         evt.preventDefault()
-        evt.dataTransfer.dropEffect = "move"
 
     on_dragleave : (evt) =>
         evt.stopPropagation()
         evt.preventDefault()
-        evt.dataTransfer.dropEffect = "move"
+        evt.dataTransfer.dropEffect = @oldEffect
 
     show_indicator: ->
         console.log("show_indicator")
@@ -110,9 +112,8 @@ class Trash extends PostfixedItem
     update: (n=null)->
         n = DCore.DEntry.get_trash_count() if n == null
         if n == 0
-            @img.style.display = ''
-            @imgFull.style.display = 'none'
+            @isEmpty = true
+            @change_icon(@emptyIcon)
         else
-            @img.style.display = 'none'
-            @imgFull.style.display = ''
-
+            @isEmpty = false
+            @change_icon(@fullIcon)

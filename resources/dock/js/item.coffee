@@ -14,17 +14,13 @@ class Item extends Widget
         super()
         @imgWarp = create_element(tag:'div', class:"imgWarp", @element)
         @imgContainer = create_element(tag:'div', class:"imgWarp", @imgWarp)
-        @img = create_element(tag:'div',class:"AppItemImg", @imgContainer)
-        # @img.src = icon || NOT_FOUND_ICON
-        @img.style.backgroundImage = "url(#{icon || NOT_FOUND_ICON})"
-        @img.style.backgroundRepeat = 'no-repeat'
-        @img.style.backgroundSize = '48px 48px'
-        @iconObj = create_img(src:icon || NOT_FOUND_ICON)
-        @iconObj.onload = =>
-            dataUrl = bright_image(@iconObj, 40)
-            hoverImg = create_img(src: dataUrl, @imgContainer)
-            hoverImg.style.display = 'none'
-            @imgs = {icon: @img, "hoverIcon": hoverImg}
+        @img = create_img(src:icon || NOT_FOUND_ICON, class:"AppItemImg", @imgContainer)
+        @imgHover = create_img(src:"", class:"AppItemImg", @imgContainer)
+        @imgHover.style.display = 'none'
+        @img.onload = =>
+            dataUrl = bright_image(@img, 40)
+            @imgHover.src = dataUrl
+        # @imgs = {icon:@img, imgHover: @imgHover}
         @imgWarp.classList.add("ReflectImg")
         @imgContainer.style.pointerEvents = "auto"
         @imgContainer.addEventListener("mouseover", @on_mouseover)
@@ -36,6 +32,7 @@ class Item extends Widget
         @imgContainer.addEventListener("dragover", @on_dragover)
         @imgContainer.addEventListener("dragleave", @on_dragleave)
         # @imgContainer.addEventListener("drop", @on_drop)
+        @imgContainer.addEventListener("mousewheel", @on_mousewheel)
 
         calc_app_item_size()
         @tooltip = null
@@ -51,6 +48,10 @@ class Item extends Widget
             sortDockedItem()
         else
             @container?.appendChild?(@element)
+    change_icon: (src)->
+        @img.src = src
+        @img.onload = =>
+            @imgHover.src = bright_image(@img, 40)
 
     set_tooltip: (text) ->
         if @tooltip == null
@@ -71,13 +72,17 @@ class Item extends Widget
         # console.log("mouseover, require_all_region")
         DCore.Dock.require_all_region()
         @img.style.display = 'none'
-        @imgs["hoverIcon"].style.display = ''
+        @imgHover.style.display = ''
 
     on_mouseout:(e)=>
         #calc_app_item_size()
         # update_dock_region()
         @img.style.display = ''
-        @imgs["hoverIcon"].style.display = 'none'
+        @imgHover.style.display = 'none'
+
+    on_mousewheel:(e)=>
+        console.log(e)
+        @core?.onMouseWheel(e.x, e.y, e.wheelDeltaY)
 
     on_rightclick:(e)=>
         e.preventDefault()
@@ -105,10 +110,6 @@ class Item extends Widget
         if @isNormal()
             @tooltip?.hide()
         dt = e.dataTransfer
-        # ctx = dragCanvas.getContext('2d')
-        # ctx.dratImage(@iconObj,0,0,48,48)
-        # dt.setDragCanvas(dragCanvas, 24, 24)
-        # dt.setDragCanvas(@iconObj, 24, 24)
         dt.setData(DEEPIN_ITEM_ID, @id)
         console.log("DEEPIN_ITEM_ID: #{@id}")
 
@@ -129,7 +130,6 @@ class Item extends Widget
         e.stopPropagation()
         return if @is_fixed_pos
         app_list.hide_indicator()
-        # panel.set_width(panel.width() + ITEM_WIDTH)
 
         dt = e.dataTransfer
         @_try_swaping_id = dt.getData(DEEPIN_ITEM_ID)
@@ -255,17 +255,7 @@ class AppItem extends Item
                             console.log("open from somewhere else")
                             @swap_to_clientgroup()
                 when ITEM_DATA_FIELD.icon
-                    if not @imgs[value]
-                        @imgs[value] = create_element(tag:"div", class:"AppItemImg", @imgContainer)
-                        @imgs[value].style.backgroundImage = "url(#{value})"
-                        @imgs[value].style.display = 'none'
-                    clearTimeout(@changeImgTimer)
-                    @changeImgTimer = setTimeout(=>
-                        @currentImg.style.display = 'none'
-                        @currentImg = @imgs[value]
-                        @currentImg.style.display = ''
-                        @iconObj.src = value || NOT_FOUND_ICON
-                    , 10)
+                    @change_icon(value)
                 when ITEM_DATA_FIELD.title
                     @set_tooltip(value)
         )
