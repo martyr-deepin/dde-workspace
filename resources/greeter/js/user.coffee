@@ -377,7 +377,7 @@ class UserInfo extends Widget
         if username is guest_name then @username = guest_id
         @password = password
         if is_greeter
-            @session = localStorage.getItem("menu_current_id")
+            @session = localStorage.getItem("menu_current_id_desktop")
             echo "#{username} start session #{@session}"
             @loginAnimation()
             DCore.Greeter.start_session(@username, @password, @session)

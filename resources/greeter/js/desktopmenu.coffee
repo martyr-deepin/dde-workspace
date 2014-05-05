@@ -48,7 +48,7 @@ class DesktopMenu extends Widget
             @current_img_src = "images/desktopmenu/current/unkown.png"
         finally
             echo @current_img_src
-            localStorage.setItem("menu_current_id",@current)
+            localStorage.setItem("menu_current_id_desktop",@current)
             @ComboBox.current_img.src = @current_img_src
 
     menuChoose_click_cb : (current, title)=>
