@@ -20,6 +20,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
+#include <glib/gstdio.h>
 #include "dwebview.h"
 #include "dock_config.h"
 #include "pixbuf.h"
@@ -134,14 +135,15 @@ void save_to_file(const guchar* pix, gsize size, char const* file)
 
 char* dock_bright_image(char const* origDataUrl, double _adj)
 {
+#define IMG_PATH "/tmp/origin.png"
     guchar adj = (guchar)_adj;
     gchar* spt = g_strstr_len(origDataUrl, 100, ",");
     gsize size = 0;
     guchar* data = g_base64_decode((const gchar*)(spt + 1), &size);
-    save_to_file(data, size, "/tmp/origin.png");
+    save_to_file(data, size,IMG_PATH);
 
     GError* err = NULL;
-    GdkPixbuf* pixbuf = gdk_pixbuf_new_from_file("/tmp/origin.png", &err);
+    GdkPixbuf* pixbuf = gdk_pixbuf_new_from_file(IMG_PATH, &err);
     if (err != NULL) {
         g_warning("%s", err->message);
         g_clear_error(&err);
@@ -172,7 +174,9 @@ char* dock_bright_image(char const* origDataUrl, double _adj)
         }
     }
 
-    gdk_pixbuf_save(pixbuf, "/tmp/bright.png", "png", NULL, NULL);
+    g_remove(IMG_PATH);
+#undef IMG_PATH
+    // gdk_pixbuf_save(pixbuf, "/tmp/bright.png", "png", NULL, NULL);
     char* dataUrl = get_data_uri_by_pixbuf(pixbuf);
     g_object_unref(pixbuf);
     return dataUrl;
