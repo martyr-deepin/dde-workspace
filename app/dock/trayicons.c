@@ -30,7 +30,7 @@ void require_manager_trayicons()
                           );
     g_object_unref(proxy);
     if (err != NULL) {
-        g_warning("[%s:%s] call RequireManagerTrayIcons failed: %s", __FILE__,
+        g_warning("[%s:%s] call RequireManageTrayIcons failed: %s", __FILE__,
                   __func__, err->message);
         g_error_free(err);
     }

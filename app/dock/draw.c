@@ -140,7 +140,7 @@ char* dock_bright_image(char const* origDataUrl, double _adj)
     gchar* spt = g_strstr_len(origDataUrl, 100, ",");
     gsize size = 0;
     guchar* data = g_base64_decode((const gchar*)(spt + 1), &size);
-    save_to_file(data, size,IMG_PATH);
+    save_to_file(data, size, IMG_PATH);
 
     GError* err = NULL;
     GdkPixbuf* pixbuf = gdk_pixbuf_new_from_file(IMG_PATH, &err);
