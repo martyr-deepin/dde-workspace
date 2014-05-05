@@ -420,13 +420,15 @@ class AppItem extends Item
                     y = xy.y - extraHeight
                     # console.log("Move Window to #{x}, #{y}")
                     ew.move(ew.xids[0], x, y)
-                    setTimeout(->
+                    clearTimeout(@showEmWindowTimer || null)
+                    @showEmWindowTimer = setTimeout(->
                         ew.show()
-                    , 500)
+                    , 400)
                 )
 
     on_mouseout:(e)=>
         super
+        clearTimeout(@showEmWindowTimer)
         if @isNormal()
             if Preview_container.is_showing
                 console.log("normal mouseout, preview window is showing")
