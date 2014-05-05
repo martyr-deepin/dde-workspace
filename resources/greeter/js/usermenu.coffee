@@ -18,17 +18,17 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-class DesktopMenu extends Widget
+class UserMenu extends Widget
     constructor: (parent_el) ->
         super
         @parent = parent_el
-        @img_before = "images/desktopmenu/"
+        @img_before = null
         @user_session = []
         @current_img_src = null
         if not @parent? then @parent = document.body
         @parent.appendChild(@element)
-   
-
+        @accounts = new Accounts(APP_NAME)
+        
     hide:->
         @element.style.display = "none"
         @ComboBox?.hide()
@@ -37,43 +37,26 @@ class DesktopMenu extends Widget
         @element.style.display = "block"
         @ComboBox?.show()
 
-    update_current_icon:(@current)->
-        @show()
-        try
-            echo "set_current(@current) :----#{@current}----"
-            icon = DCore.Greeter.get_session_icon(@current)
-            @current_img_src = "images/desktopmenu/current/#{icon}.png"
-        catch error
-            echo "set_current(#{@current}) error:#{error}"
-            @current_img_src = "images/desktopmenu/current/unkown.png"
-        finally
-            echo @current_img_src
-            localStorage.setItem("menu_current_id_desktop",@current)
-            @ComboBox.current_img.src = @current_img_src
-
     menuChoose_click_cb : (current, title)=>
         @current = @ComboBox.set_current(current)
-        @update_current_icon(@current)
 
-    new_desktop_menu: ->
-        echo "new_desktop_menu"
+
+    new_user_menu: ->
+        echo "new_user_menu"
         
-        @ComboBox = new ComboBox("desktop", @menuChoose_click_cb)
-        @sessions = DCore.Greeter.get_sessions()
-        if @sessions.length == 0 then return
-        for session in @sessions
-            id = session.toLowerCase()
-            name = id
-            #name = DCore.Greeter.get_session_name(id)
-            icon = DCore.Greeter.get_session_icon(session)
-            icon_path_normal = @img_before + "#{icon}_normal.png"
-            icon_path_hover = @img_before + "#{icon}_hover.png"
-            icon_path_press = @img_before + "#{icon}_press.png"
-            @ComboBox.insert(id, name, icon_path_normal,icon_path_hover,icon_path_press)
+        @ComboBox = new ComboBox("user", @menuChoose_click_cb)
+        @ComboBox.hide()
+        @users_id = @accounts.users_id
+        if @users_id.length < 2 then return
+        for uid in @users_id
+            if not @accounts.is_disable_user(uid)
+                username = @accounts.users_id_dbus[uid].UserName
+                usericon = @accounts.users_id_dbus[uid].IconFile
+                @ComboBox.insert(uid, username, usericon,usericon,usericon)
         @ComboBox.frame_build()
-        @ComboBox.currentTextShow()
         @element.appendChild(@ComboBox.element)
         
 
     keydown_listener:(e)->
         @ComboBox.menu.keydown(e)
+

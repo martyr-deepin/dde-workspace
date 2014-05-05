@@ -208,11 +208,11 @@ class MenuChoose extends Widget
     hideMessage: ->
         @message_div?.style.display = "none"
 
-    setOptionDefault:(option_default)->
+    setOptionDefault:(option_id_default)->
         #this key must get From system
         GetinFromKey = false
         for tmp,i in @option
-            if tmp is option_default
+            if tmp is option_id_default
                 if GetinFromKey
                     @select_state(i)
                 else
@@ -238,7 +238,7 @@ class MenuChoose extends Widget
         @body_click_to_hide()
         @message_div_build()
         
-        for tmp ,i in @option
+        for tmp ,i in @option_text
             @opt[i] = create_element("div","opt",@button)
             @opt[i].style.backgroundColor = "rgba(255,255,255,0.0)"
             @opt[i].style.border = "1px solid rgba(255,255,255,0.0)"
@@ -406,15 +406,15 @@ class ComboBox extends Widget
         else return false
 
     get_current: ->
-        menu_current_id = localStorage.getItem("menu_current_id")
-        @menu.current = menu_current_id
+        @menu_current_id = localStorage.getItem("menu_current_id_#{@id}")
+        @menu.current = @menu_current_id
         return @menu.current
 
     currentTextShow: ->
         @current_text = create_element("div","current_text",@element) if not @current_text?
         
-        menu_current_id = localStorage.getItem("menu_current_id")
-        @current_text.textContent = menu_current_id
+        @menu_current_id = localStorage.getItem("menu_current_id_#{@id}")
+        @current_text.textContent = @menu_current_id
         @current_text.style.display = "block"
         
         XInit = -30
@@ -423,8 +423,8 @@ class ComboBox extends Widget
         @current_text.style.right = XInit
         t = 100
         mouseenter = =>
-            menu_current_id = localStorage.getItem("menu_current_id")
-            @current_text.textContent = menu_current_id
+            @menu_current_id = localStorage.getItem("menu_current_id_#{@id}")
+            @current_text.textContent = @menu_current_id
             jQuery(@current_text).animate(
                 {opacity:'1.0';right:XMove;},t
             )
@@ -439,7 +439,7 @@ class ComboBox extends Widget
         current = current.toLowerCase()
         @menu.current = current
         @current_text?.textContent = current
-
-        localStorage.setItem("menu_current_id",current)
+        
+        localStorage.setItem("menu_current_id_#{@id}",current)
         return current
 
