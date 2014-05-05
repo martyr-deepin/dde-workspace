@@ -159,10 +159,10 @@ char* dock_bright_image(char const* origDataUrl, double _adj)
     guchar r=0, g=0, b=0;
     for (int i = 0; i < height; ++i) {
         for (int j = 0; j < width; ++j) {
-            if (i < 1 || i > 45 || j < 2 || j > 45) {
-                // filter shadow
-                continue;
-            }
+            // filter shadow
+            // if (i < 1 || i > 45 || j < 2 || j > 45) {
+            //     continue;
+            // }
             // canvas use rgba, 4 bytes.
             offset = i * stride + j * 4;
             INC_BRIGHTNESS(r, pix[offset], adj);
