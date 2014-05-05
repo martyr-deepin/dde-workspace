@@ -55,6 +55,7 @@ GdkWindow* GET_CONTAINER_WINDOW() { return DOCK_GDK_WINDOW(); }
 gboolean dock_has_maximize_client();
 JS_EXPORT_API void dock_change_workarea_height(double height);
 
+static gboolean primary_changed_handler(gpointer data);
 GdkWindow* get_dock_guard_window();
 
 gboolean mouse_pointer_leave(int x, int y)
@@ -152,7 +153,7 @@ void size_workaround(GtkWidget* container, GdkRectangle* allocation)
     if (gtk_widget_get_realized(container) && (dock.width != allocation->width || dock.height != allocation->height)) {
         GdkWindow* w = DOCK_GDK_WINDOW();
         XSelectInput(gdk_x11_get_default_xdisplay(), GDK_WINDOW_XID(w), NoEventMask);
-        gdk_window_move_resize(w, 0, 0, dock.width, dock.height);
+        gdk_window_move_resize(w, dock.x, dock.y, dock.width, dock.height);
         gdk_flush();
         gdk_window_set_events(w, gdk_window_get_events(w));
 
@@ -308,7 +309,6 @@ void dock_emit_webview_ok()
 {
     static gboolean inited = FALSE;
     if (!inited) {
-	gtk_widget_show_all(container);
         if (!is_compiz_plugin_valid()) {
             gtk_widget_hide(container);
             GtkWidget* dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL,
@@ -330,7 +330,14 @@ void dock_emit_webview_ok()
     } else {
         update_dock_size_mode();
     }
+
+    update_display_info(&dock);
+    listen_primary_changed_signal(primary_changed_handler);
+    update_dock_size(dock.x, dock.y, dock.width, dock.height);
+    gtk_widget_show_all(container);
+
     GD.is_webview_loaded = TRUE;
+
     if (GD.config.hide_mode == ALWAYS_HIDE_MODE) {
         dock_hide_now();
     } else {
@@ -538,10 +545,6 @@ int main(int argc, char* argv[])
 
     gtk_widget_realize(container);
     gtk_widget_realize(webview);
-    update_display_info(&dock);
-
-    listen_primary_changed_signal(primary_changed_handler);
-    update_dock_size(dock.x, dock.y, dock.width, dock.height);
 
     set_wmspec_dock_hint(DOCK_GDK_WINDOW());
 
