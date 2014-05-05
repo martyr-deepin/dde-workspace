@@ -30,8 +30,12 @@ class SwitchUser extends Widget
         clearInterval(draw_camera_id)
         draw_camera_id = null
         document.body.style.fontSize = "62.5%"
+        @accounts = new Accounts(APP_NAME)
 
     button_switch:->
+        @users_id = @accounts.users_id
+        if @users_id.length < 2 then return
+        
         @switch = create_img("switch", "images/userswitch/acount_switch_hover.png", @element)
         @switch.style.cursor = "pointer"
         @switch.style.width = "5em"
