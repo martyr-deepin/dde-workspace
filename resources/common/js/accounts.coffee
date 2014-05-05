@@ -159,4 +159,6 @@ class Accounts
         @AllowGuest = @Dbus_Account.AllowGuest
     
     getRandUserIcon:->
-        return @Dbus_Account.RandUserIcon_sync()
+        icon = @Dbus_Account.RandUserIcon_sync()
+        echo icon
+        return icon
