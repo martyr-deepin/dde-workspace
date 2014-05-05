@@ -157,4 +157,6 @@ class Accounts
 
     isAllowGuest:->
         @AllowGuest = @Dbus_Account.AllowGuest
-
+    
+    getRandUserIcon:->
+        return @Dbus_Account.RandUserIcon_sync()
