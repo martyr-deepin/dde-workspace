@@ -34,7 +34,7 @@ class SwitchUser extends Widget
 
     button_switch:->
         @users_id = @accounts.users_id
-        if @users_id.length < 2 then return
+        if @users_id.length < 2 and @accounts.isAllowGuest() is false then return
         
         @switch = create_img("switch", "images/userswitch/acount_switch_hover.png", @element)
         @switch.style.cursor = "pointer"
