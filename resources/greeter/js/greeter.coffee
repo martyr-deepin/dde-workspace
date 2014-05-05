@@ -96,6 +96,12 @@ powermenu = null
 powermenu = new PowerMenu($("#div_power"))
 powermenu.new_power_menu()
 
+usermenu = null
+if user.userinfo_all.length >= 2
+    usermenu = new UserMenu(document.body)
+    usermenu.new_user_menu()
+
+
 document.body.addEventListener("keydown",(e)->
     try
         if is_greeter
@@ -103,6 +109,7 @@ document.body.addEventListener("keydown",(e)->
             powermenu?.keydown_listener(e)
             desktopmenu?.keydown_listener(e)
             if user.userinfo_all.length < 2 then return
+            usermenu?.keydown_listener(e)
             if powermenu.ComboBox.menu.is_hide()
                 if not desktopmenu?
                     greeter.keydown_listener(e,user)
