@@ -111,7 +111,7 @@ class ArrowToolTip extends ToolTipBase
             horizontal: 5
             vertical: 0
         radius = 4
-        offsetForShadow = 5
+        offsetForShadow = 6
         offsetForRadius = 0
         height = content.clientHeight - offsetForRadius * 2
 
@@ -188,9 +188,9 @@ class ArrowToolTip extends ToolTipBase
                 arch['BottomLeft'].startAngle, arch['BottomLeft'].endAngle)
         ctx.closePath()
 
-        ctx.shadowBlur = 7
-        ctx.shadowColor = 'rgba(0,0,0,0.5)'
-        ctx.shadowOffsetY = 1
+        ctx.shadowBlur = offsetForShadow
+        ctx.shadowColor = 'black'
+        ctx.shadowOffsetY = 2
 
         ctx.strokeStyle = 'rgba(255,255,255, 0.7)'
         ctx.lineWidth = 1
@@ -234,5 +234,5 @@ class ArrowToolTip extends ToolTipBase
 
         x = parseInt((page_xy.x + offset).toFixed())
         x = 0 if x < 0
-        y = document.body.clientHeight - page_xy.y - 2 # 7 for subtle
+        y = document.body.clientHeight - page_xy.y
         ArrowToolTip.move_to(@, x, y)

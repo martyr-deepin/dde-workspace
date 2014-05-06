@@ -1,6 +1,6 @@
 .PWBorder {
   position: fixed;
-  bottom:68px;
+  bottom:64px;
   opacity: 0;
   -webkit-transition: 0.5s left, 0.2s opacity, 0.5s top;
   pointer-events:none;

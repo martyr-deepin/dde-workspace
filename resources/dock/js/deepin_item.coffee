@@ -61,7 +61,7 @@ class PrefixedItem extends FixedItem
 
 class SystemItem extends AppItem
     is_fixed_pos: true
-    position: ['AppletDss', 'AppletNetwork', 'AppletDiskMount', 'AppletPower', 'AppletSound', "system-tray", "time"]
+    position: ['AppletDss', 'AppletNetwork', 'AppletDiskMount', 'AppletPower', 'AppletSound']
     constructor:(@id, icon, title)->
         super(@id, icon, title, $("#system"))
         @img.draggable = false
@@ -70,6 +70,8 @@ class SystemItem extends AppItem
         for id in @position.slice(0).reverse()
             if item = $("##{id}")
                 parentNode.insertBefore(item, parentNode.firstChild)
+        parentNode.appendChild($("#system-tray")) if $("#system-tray")
+        parentNode.appendChild($("#time")) if $("#time")
 
 
 class PostfixedItem extends FixedItem

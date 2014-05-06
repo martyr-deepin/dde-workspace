@@ -35,6 +35,7 @@ GtkWidget* create_web_container(bool normal, bool above)
 {
     NOUSED(above);
     GtkWidget* window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_resize(window, 1, 1);
     workaround_gtk_theme();
 
     g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
