@@ -176,7 +176,7 @@ class User extends Widget
 
 
 class UserInfo extends Widget
-    constructor: (@id, @username, @img_src)->
+    constructor: (@id, @username, @usericon)->
         super
         echo "new UserInfo :#{@username}"
         
@@ -200,7 +200,7 @@ class UserInfo extends Widget
         @userimg_div = create_element("div","userimg_div",@userbase)
         @userimg_border = create_element("div","userimg_border",@userimg_div)
         @userimg_background = create_element("div","userimg_background",@userimg_border)
-        @userimg = create_img("userimg", @img_src, @userimg_background)
+        @userimg = create_img("userimg", @usericon, @userimg_background)
         @userimg_div.style.display = "none"
 
         @username_div = create_element("div", "username_div", @userbase)
