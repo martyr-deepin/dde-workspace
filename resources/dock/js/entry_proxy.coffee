@@ -77,10 +77,10 @@ class EntryProxy
         @dbus?.HandleMenuItem(itemId)
 
     onDrop: (data)->
-        @dbus?.OnDragDrop(0,0,data)
+        @dbus?.HandleDragDrop(0,0,data)
 
     showQuickWindow: ->
         @dbus?.ShowQuickWindow?()
 
     onMouseWheel: (x, y, delta)->
-        @dbus?.OnMouseWheel?(x, y, delta)
+        @dbus?.HandleMouseWheel?(x, y, delta)

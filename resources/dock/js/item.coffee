@@ -29,7 +29,7 @@ class Item extends Widget
         @imgContainer.addEventListener("dragenter", @on_dragenter)
         @imgContainer.addEventListener("dragover", @on_dragover)
         @imgContainer.addEventListener("dragleave", @on_dragleave)
-        # @imgContainer.addEventListener("drop", @on_drop)
+        @imgContainer.addEventListener("drop", @on_drop)
         @imgContainer.addEventListener("mousewheel", @on_mousewheel)
 
         calc_app_item_size()
@@ -167,24 +167,18 @@ class Item extends Widget
     on_drop: (e) =>
         e.preventDefault()
         e.stopPropagation()
+        dt = e.dataTransfer
         console.log("do drop, #{@id}")
-        console.log("deepin item id: #{e.dataTransfer.getData(DEEPIN_ITEM_ID)}")
-        if dnd_is_deepin_item(e)
-            console.log("id deepin item")
-            if @_try_swaping_id != @id
-                console.log("swap")
-                w_s = Widget.look_up(@_try_swaping_id) or Widget.look_up("le_" + @_try_swaping_id)
-                app_list.swap_item(w_s, @)
-        else
-            tmp_list = []
-            for file in e.dataTransfer.files
-                console.log(file)
-                path = decodeURI(file.path)
-                tmp_list.push(path)
-            if tmp_list.length > 0
-                fileList = tmp_list.join()
-                console.log("drop to open: #{fileList}")
-                @core?.onDrop(fileList)
+        console.log("deepin item id: #{dt.getData(DEEPIN_ITEM_ID)}")
+        tmp_list = []
+        for file in dt.files
+            console.log(file)
+            path = decodeURI(file.path)
+            tmp_list.push(path)
+        if tmp_list.length > 0
+            fileList = tmp_list.join()
+            console.log("drop to open: #{fileList}")
+            @core?.onDrop(fileList)
 
 
 class AppItem extends Item

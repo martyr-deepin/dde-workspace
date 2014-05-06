@@ -22,7 +22,7 @@
 class Panel
     constructor: (@id)->
         @panel = $("##{@id}")
-        @panel.width = 0
+        @panel.width = ITEM_WIDTH * 3
         @panel.height = PANEL_HEIGHT
         # @panel.addEventListener("resize", @redraw)
 
