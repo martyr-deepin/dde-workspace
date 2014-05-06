@@ -29,7 +29,7 @@ class Item extends Widget
         @imgContainer.addEventListener("dragenter", @on_dragenter)
         @imgContainer.addEventListener("dragover", @on_dragover)
         @imgContainer.addEventListener("dragleave", @on_dragleave)
-        # @imgContainer.addEventListener("drop", @on_drop)
+        @imgContainer.addEventListener("drop", @on_drop)
         @imgContainer.addEventListener("mousewheel", @on_mousewheel)
 
         calc_app_item_size()

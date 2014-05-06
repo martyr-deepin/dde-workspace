@@ -24,9 +24,9 @@ document.body.addEventListener("drop", (e)->
         calc_app_item_size()
 
         t.style.position = "fixed"
-        t.style.left = (e.x + s_widget.element.clientWidth/2)+ "px"
-        t.style.top = (e.y + s_widget.element.clientHeight/2)+ "px"
         document.body.appendChild(t)
+        t.style.left = (e.x - s_widget.element.clientWidth/2)+ "px"
+        t.style.top = (e.y - s_widget.element.clientHeight/2)+ "px"
         s_widget.destroyWidthAnimation()
 )
 document.body.addEventListener("dragenter", (e)->
