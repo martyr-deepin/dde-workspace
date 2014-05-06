@@ -80,7 +80,7 @@ PRIVATE void enter_show()
 
     set_state(StateShow);
     _change_workarea_height(_dock_height);
-    gdk_window_move(DOCK_GDK_WINDOW(), 0, 0);
+    gdk_window_move(DOCK_GDK_WINDOW(), dock.x, dock.y);
 }
 PRIVATE void enter_hide()
 {
@@ -88,7 +88,7 @@ PRIVATE void enter_hide()
 
     set_state(StateHidden);
     _change_workarea_height(0);
-    gdk_window_move(DOCK_GDK_WINDOW(), 0, _dock_height);
+    gdk_window_move(DOCK_GDK_WINDOW(), dock.x, dock.y+_dock_height);
     js_post_message("dock_hidden", NULL);
 }
 
@@ -193,7 +193,7 @@ PRIVATE gboolean do_show_animation(int current_height)
     if (CURRENT_STATE != StateShowing) return FALSE;
 
     if (current_height <= _dock_height) {
-        gdk_window_move(DOCK_GDK_WINDOW(), 0, _dock_height - current_height);
+        gdk_window_move(DOCK_GDK_WINDOW(), dock.x, dock.y + _dock_height - current_height);
         _change_workarea_height(current_height);
         _animation_show_id = g_timeout_add(SHOW_HIDE_ANIMATION_INTERVAL, (GSourceFunc)do_show_animation,
                 GINT_TO_POINTER(current_height + SHOW_HIDE_ANIMATION_STEP));
@@ -208,7 +208,7 @@ PRIVATE gboolean do_hide_animation(int current_height)
     if (CURRENT_STATE != StateHidding) return FALSE;
 
     if (current_height >= 0) {
-        gdk_window_move(DOCK_GDK_WINDOW(), 0, _dock_height - current_height);
+        gdk_window_move(DOCK_GDK_WINDOW(), dock.x, dock.y + _dock_height - current_height);
         _change_workarea_height(current_height);
         _animation_hide_id = g_timeout_add(SHOW_HIDE_ANIMATION_INTERVAL, (GSourceFunc)do_hide_animation,
                 GINT_TO_POINTER(current_height - SHOW_HIDE_ANIMATION_STEP));
@@ -360,8 +360,8 @@ void update_dock_guard_window_position(double width)
         width = dock.width;
     dock_panel_width = width;
     gdk_window_move_resize(win,
-                           (dock.width - width) / 2,
-                           dock.height - GUARD_WINDOW_HEIGHT,
+                           dock.x + (dock.width - width) / 2,
+                           dock.y + dock.height - GUARD_WINDOW_HEIGHT,
                            width,
                            GUARD_WINDOW_HEIGHT);
 }
