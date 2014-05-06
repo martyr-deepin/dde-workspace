@@ -20,7 +20,7 @@
 }
 .TrayFoldButton{
   position: absolute;
-  top: 24px;
+  top: 26px;
   right: 7px;
   background: url("../img/fold-button-new.png");
   background-position: 100% 0;

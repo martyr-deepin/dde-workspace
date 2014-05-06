@@ -25,23 +25,23 @@
 @import url("plugins.css");
 
 body {
-    -webkit-user-select: none;
+  -webkit-user-select: none;
 }
 
 .fixed_center {
-    left: 0px;
-    right: 0px;
-    margin: auto;
-    -webkit-transition: all 400ms;
+  left: 0px;
+  right: 0px;
+  margin: auto;
+  -webkit-transition: bottom 400ms;
 }
 
 #containerWarp{
-    position:fixed;
-    bottom: -60px;
-    display: -webkit-box;
-    -webkit-box-pack:center;
-    min-height: 60px;
-    max-height: 60px;
+  position:fixed;
+  bottom: -60px;
+  display: -webkit-box;
+  -webkit-box-pack:center;
+  min-height: 60px;
+  max-height: 60px;
 }
 #container {
   display: -webkit-box;
@@ -56,9 +56,9 @@ body {
 }
 
 #panel {
-    /* border: solid 2px black; */
-    position: fixed;
-    bottom: -48px;
-    min-height: 30px;
-    max-height: 60px;
+  /* border: solid 2px black; */
+  position: fixed;
+  bottom: -48px;
+  min-height: 30px;
+  max-height: 60px;
 }
