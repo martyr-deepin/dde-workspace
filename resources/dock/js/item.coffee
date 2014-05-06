@@ -3,8 +3,6 @@ closePreviewWindowTimer = null
 _lastCliengGroup = null
 pop_id = null
 hide_id = null
-# dragCanvas = create_element(tag:"canvas")
-# dragCanvas.width = dragCanvas = 48
 
 _clear_item_timeout = ->
     clearTimeout(normal_mouseout_id)
@@ -94,10 +92,10 @@ class Item extends Widget
         e.stopPropagation()
 
     on_dragstart: (e)=>
+        _lastHover = null
         console.log("dragstart")
         e.stopPropagation()
         DCore.Dock.require_all_region()
-        # app_list.record_last_over_item(@)
         Preview_close_now()
         return if @is_fixed_pos
         if @isNormal()
@@ -111,39 +109,48 @@ class Item extends Widget
         dt.effectAllowed = "copyMove"
         dt.dropEffect = 'none'
 
+    move:(x, threshold)=>
+        if x < threshold
+            @element.style.marginLeft = '51px'
+            @element.style.marginRight = ''
+            app_list.insert_indicator = @element
+        else
+            @element.style.marginLeft = ''
+            @element.style.marginRight = '51px'
+            app_list.insert_indicator = @element.nextSibling
+
+        if _lastHover and _lastHover.id != @id
+            _lastHover.reset()
+        _lastHover = @
+
+        if not _is
+            _is = true
+            panel.updateWithAnimation()
+            setTimeout(->
+                panel.cancelAnimation()
+            , 150)
+
+    reset:->
+        _is = false
+        @element.style.marginLeft = ''
+        @element.style.marginRight = ''
+        panel.updateWithAnimation()
+        setTimeout(->
+            panel.cancelAnimation()
+        , 150)
+
     on_dragenter: (e)=>
         console.log("dragenter image #{@id}")
         clearTimeout(cancelInsertTimer)
-        if app_list.is_insert_indicator_shown
-            cancelInsertTimer = setTimeout(->
-                app_list.hide_indicator()
-                calc_app_item_size()
-            , 100)
         e.preventDefault()
         e.stopPropagation()
         return if @is_fixed_pos
-        app_list.hide_indicator()
-
-        dt = e.dataTransfer
-        @_try_swaping_id = dt.getData(DEEPIN_ITEM_ID)
-        if @_try_swaping_id == @id
-            dt.dropEffect = "none"
-            return
-        else if dnd_is_deepin_item(e)
-            dt.dropEffect="copy"
-        else
-            dt.dropEffect="move"
+        DCore.Dock.require_all_region()
+        @move(e.offsetX, @element.clientWidth / 2)
 
     on_dragleave: (e)=>
         console.log("dragleave")
         clearTimeout(cancelInsertTimer)
-        # @element.style.margin = '0 3px'
-        if app_list.is_insert_indicator_shown
-            cancelInsertTimer = setTimeout(->
-                app_list.hide_indicator()
-                calc_app_item_size()
-            , 100)
-        @_try_swaping_id = null
         e.preventDefault()
         e.stopPropagation()
 
@@ -152,12 +159,10 @@ class Item extends Widget
         e.preventDefault()
         return if @is_fixed_pos
         dt = e.dataTransfer
-        @move(e.x)
-        # if app_list.is_insert_indicator_shown
-        #     app_list.hide_indicator()
-        #     cancelInsertTimer = setTimeout(->
-        #         calc_app_item_size()
-        #     , 100)
+        console.log("#{e.offsetX}, #{@element.clientWidth / 2}")
+        console.log("#{e.x}, #{get_page_xy(@element).x + @element.clientWidth / 2}")
+        @move(e.offsetX, @element.clientWidth / 2)
+        # @move(e.x, get_page_xy(@element).x + @element.clientWidth / 2)
 
     on_drop: (e) =>
         e.preventDefault()

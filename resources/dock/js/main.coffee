@@ -14,6 +14,7 @@ document.body.addEventListener("contextmenu", (e)->
 )
 document.body.addEventListener("drop", (e)->
     console.log("drop on body")
+    update_dock_region()
     if e.y > screen.height - DOCK_HEIGHT - ITEM_HEIGHT
         return
     s_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
@@ -30,12 +31,14 @@ document.body.addEventListener("drop", (e)->
 )
 document.body.addEventListener("dragenter", (e)->
     clearTimeout(cancelInsertTimer)
+    # app_list.hide_indicator()
+    _lastHover?.reset()
 )
 document.body.addEventListener("dragover", (e)->
     clearTimeout(cancelInsertTimer)
     app_list.hide_indicator()
     s_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
-    console.log("dragover #{s_id} on body")
+    console.log("dragover ##{s_id}# on body")
     t = Widget.look_up(s_id)
     if not t
         return

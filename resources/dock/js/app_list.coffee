@@ -28,7 +28,7 @@ class AppList
         if @_insert_anchor_item and @_insert_anchor_item.element.parentNode == @element
             @element.insertBefore(c.element, @_insert_anchor_item.element)
             @_insert_anchor_item = null
-            @hide_indicator()
+            # @hide_indicator()
         else
             @append_app_item(c)
         run_post(calc_app_item_size)
@@ -43,43 +43,45 @@ class AppList
         e.stopPropagation()
         e.preventDefault()
         console.log("do drop on app_list")
+        _lastHover?.reset()
         dt = e.dataTransfer
         if dnd_is_desktop(e)
             console.log("is desktop")
             path = dt.getData("text/uri-list").substring("file://".length).trim()
             id = get_path_name(path)
             t = create_element(tag:'div', name:id)
-            console.log("insert tmp before insert_indicator")
-            console.log(t)
-            console.log(@insert_indicator)
-            console.log(@insert_indicator.parentNode)
-            if @insert_indicator.parentNode
+            # console.log("insert tmp before insert_indicator")
+            if @insert_indicator
                 @element.insertBefore(t, @insert_indicator)
-                dockedAppManager?.Dock(id, "", "", "")
-        else if dnd_is_deepin_item(e) and @insert_indicator.parentNode == @element
+            else
+                @element.appendChild(t)
+            dockedAppManager?.Dock(id, "", "", "")
+        else if dnd_is_deepin_item(e)# and @insert_indicator.parentNode == @element
             id = dt.getData(DEEPIN_ITEM_ID)
             item = Widget.look_up(id) or Widget.look_up("le_"+id)
-            @element.insertBefore(item.element, @insert_indicator)
+            if @insert_indicator
+                @element.insertBefore(item.element, @insert_indicator)
+            else
+                @element.appendChild(item.element)
             sortDockedItem()
             # @append(item)
-        @hide_indicator()
+        # @hide_indicator()
         calc_app_item_size()
 
     on_dragover: (e) =>
-        console.log("start applist dragover")
+        # console.log("start applist dragover")
         clearTimeout(cancelInsertTimer)
         e.preventDefault()
         e.stopPropagation()
+        return
         dt = e.dataTransfer
-        if dt.getData("text/plain") == "swap"
-            return
         if dnd_is_deepin_item(e) or dnd_is_desktop(e)
             if e.y < screen.height - DOCK_HEIGHT + ITEM_HEIGHT / 4
                 return
             console.log("effective dragover on applist")
             clearTimeout(showIndicatorTimer)
             try_insert_id = dt.getData(DEEPIN_ITEM_ID)
-            dt.dropEffect="copy"
+            dt.dropEffect = "copy"
             step = 6
             x = e.x
             el = null
@@ -110,6 +112,7 @@ class AppList
             el = el.parentNode.parentNode.parentNode if el
             if el.parentNode.id != "app_list"
                 el = null
+            return
             console.log("get element")
             console.log(el)
             if el == null or el.id != try_insert_id
@@ -153,6 +156,7 @@ class AppList
 
 
     hide_indicator: =>
+        return
         console.log("hide indicator")
         console.log(@insert_indicator.parentNode)
         if @insert_indicator.parentNode == @element
@@ -162,15 +166,12 @@ class AppList
             panel.updateWithAnimation()
 
     show_indicator: (anchor, try_insert_id)->
+        return
         if @is_insert_indicator_shown
             return
 
         return if anchor?.id == try_insert_id
         @is_insert_indicator_shown = true
-
-        # @insert_indicator.style.webkitTransition = ''
-        # @insert_indicator.style.width = '0px'
-        # @insert_indicator.style.webkitTransition = 'width 300ms'
 
         console.log("Insert Indicator")
         # console.log(@element)
