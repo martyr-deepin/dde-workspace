@@ -28,7 +28,7 @@ class Item extends Widget
         @imgContainer.addEventListener("click", @on_click)
         @imgContainer.addEventListener("contextmenu", @on_rightclick)
         @imgContainer.addEventListener("dragstart", @on_dragstart)
-        # @imgContainer.addEventListener("dragenter", @on_dragenter)
+        @imgContainer.addEventListener("dragenter", @on_dragenter)
         @imgContainer.addEventListener("dragover", @on_dragover)
         @imgContainer.addEventListener("dragleave", @on_dragleave)
         # @imgContainer.addEventListener("drop", @on_drop)
@@ -38,7 +38,7 @@ class Item extends Widget
         @tooltip = null
         @element.classList.add("AppItem")
         # @element.draggable=true
-        @img.draggable=true
+        @imgContainer.draggable=true
         e = document.getElementsByName(@id)
         if e.length != 0
             e = e[0]
@@ -93,15 +93,8 @@ class Item extends Widget
         e.preventDefault()
         e.stopPropagation()
 
-    show_swap_indicator: ->
-        @add_css_class("ItemSwapIndicator", @img)
-        @indicatorWarp.style.top = '5px'
-
-    hide_swap_indicator: ->
-        @remove_css_class("ItemSwapIndicator", @img)
-        @indicatorWarp.style.top = '9px'
-
     on_dragstart: (e)=>
+        console.log("dragstart")
         e.stopPropagation()
         DCore.Dock.require_all_region()
         # app_list.record_last_over_item(@)
@@ -138,36 +131,37 @@ class Item extends Widget
             return
         else if dnd_is_deepin_item(e)
             dt.dropEffect="copy"
-            @show_swap_indicator()
         else
             dt.dropEffect="move"
 
     on_dragleave: (e)=>
         console.log("dragleave")
         clearTimeout(cancelInsertTimer)
+        # @element.style.margin = '0 3px'
         if app_list.is_insert_indicator_shown
             cancelInsertTimer = setTimeout(->
                 app_list.hide_indicator()
                 calc_app_item_size()
             , 100)
         @_try_swaping_id = null
-        @hide_swap_indicator()
         e.preventDefault()
         e.stopPropagation()
 
     on_dragover:(e)=>
         e.stopPropagation()
         e.preventDefault()
-        if app_list.is_insert_indicator_shown
-            app_list.hide_indicator()
-            cancelInsertTimer = setTimeout(->
-                calc_app_item_size()
-            , 100)
+        return if @is_fixed_pos
+        dt = e.dataTransfer
+        @move(e.x)
+        # if app_list.is_insert_indicator_shown
+        #     app_list.hide_indicator()
+        #     cancelInsertTimer = setTimeout(->
+        #         calc_app_item_size()
+        #     , 100)
 
     on_drop: (e) =>
         e.preventDefault()
         e.stopPropagation()
-        @hide_swap_indicator()
         console.log("do drop, #{@id}")
         console.log("deepin item id: #{e.dataTransfer.getData(DEEPIN_ITEM_ID)}")
         if dnd_is_deepin_item(e)
@@ -350,8 +344,9 @@ class AppItem extends Item
             dockedAppManager.Undock(@id)
         ,300)
 
-    rotate:(time)->
-        apply_animation(@img, "rotateOut", time or 1000)
+    rotate:(time=1000)->
+        console.log("rotate")
+        apply_animation(@imgContainer, "rotateOut", time)
 
     isNormal:->
         @core.isNormal?()
@@ -373,9 +368,6 @@ class AppItem extends Item
 
     on_mouseover:(e)=>
         super
-        # dataUrl = bright_image(@iconObj, 40)
-        # @oldImg = @img.style.backgroundImage
-        # @img.style.backgroundImage = "url(#{dataUrl})"
         if @isNormal() || @isNormalApplet()
             clearTimeout(hide_id)
             closePreviewWindowTimer = setTimeout(->
@@ -469,6 +461,7 @@ class AppItem extends Item
     on_rightclick:(e)=>
         super
         _clear_item_timeout()
+        clearTimeout(@showEmWindowTimer)
         Preview_close_now()
         # console.log("rightclick")
         xy = get_page_xy(@element)
@@ -545,17 +538,18 @@ class AppItem extends Item
         super
         clearTimeout(pop_id) if e.dataTransfer.getData('text/plain') != "swap"
 
-    on_dragenter: (e) =>
-        return
-        clearTimeout(showIndicatorTimer)
-        e.preventDefault()
-        flag = e.dataTransfer.getData("text/plain")
-        if flag != "swap" and !@isNormal() and @n_clients.length == 1
-            pop_id = setTimeout(=>
-                @to_active_status(@leader)
-                pop_id = null
-            , 1000)
-        super
+    # on_dragenter: (e) =>
+    #     super
+    #     return
+    #     clearTimeout(showIndicatorTimer)
+    #     e.preventDefault()
+    #     flag = e.dataTransfer.getData("text/plain")
+    #     if flag != "swap" and !@isNormal() and @n_clients.length == 1
+    #         pop_id = setTimeout(=>
+    #             @to_active_status(@leader)
+    #             pop_id = null
+    #         , 1000)
+    #     super
 
     on_drop: (e) =>
         super
