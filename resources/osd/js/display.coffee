@@ -34,6 +34,7 @@ class Display extends Widget
         @DBusMonitors = []
         @DBusOpenedMonitors = []
         @OpenedMonitorsName = []
+        @FeaturrMonitorsName = []
         @valueEach = []
         
         @DisplayModeList = [
@@ -75,27 +76,40 @@ class Display extends Widget
                     @DBusOpenedMonitors.push(DBusMonitor)
                 if DBusMonitor.FullName is @PrimarMonitorName
                     @DBusPrimarMonitor = DBusMonitor
+            @getFeaturrMonitorsName()
         catch e
             echo "getDBusMonitors ERROR: ---#{e}---"
-
+        
     getDBusMonitor:(name)->
         return dbus = monitor for monitor in @DBusMonitors when monitor.FullName is name
 
+    getFeaturrMonitorsName: ->
+        @FeaturrMonitorsName = []
+        for name in @OpenedMonitorsName
+            if @DBusDisplay.QueryOutputFeature(name) == 1
+                @FeaturrMonitorsName.push(name)
+        return @FeaturrMonitorsName
+    
     getBrightness:(name)->
-        @getDBusMonitor(name).Brightness
-
-    getPrimarBrightnessValue:->
-        name = @PrimarMonitorName
-        bright = @getBrightness(name) if name?
+        @Brightness = @DBusDisplay.Brightness
+        echo @Brightness
         value = null
         try
-            echo "#{name}:#{bright[name]}"
-            value = bright[name]
+            for bright in @Brightness
+                echo bright
+                value = bright[name]
         catch e
-            echo "getPrimarBrightnessValue: ERROR: #{e}"
-        finally
-            return value
+            echo "getBrightness:#{e}"
+        
+        echo "getBrightness :#{name}:#{value};"
+        return value
+
+    getPrimarBrightnessValue:->
+        @getBrightness(@PrimarMonitorName)
     
+    getFeatureBrightnessValue:->
+        @getBrightness(@FeaturrMonitorsName[0])
+
     getCurrentMode:->
         @DisplayMode = @DBusDisplay.DisplayMode
         if @DisplayMode is null then @DisplayMode = 0
@@ -161,7 +175,7 @@ class Display extends Widget
             osdShow()
             @element.style.display = "block"
 
-            value = @getPrimarBrightnessValue()
+            value = @getFeatureBrightnessValue()
             echo "showBrightValue:#{value}"
             set_bg(@,@id,@prebgImg)
             @prebgImg = @id
