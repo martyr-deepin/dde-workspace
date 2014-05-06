@@ -256,7 +256,7 @@ int main (int argc, char **argv)
     GdkRGBA rgba = { 0, 0, 0, 1.0 };
     gdk_window_set_background_rgba (gdkwindow, &rgba);
     gdk_window_set_skip_taskbar_hint (gdkwindow, TRUE);
-    gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
+    gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_BLANK_CURSOR));
 
 #ifndef DEBUG
     gdk_window_set_keep_above (gdkwindow, TRUE);
