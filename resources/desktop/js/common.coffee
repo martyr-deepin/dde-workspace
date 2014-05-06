@@ -98,10 +98,4 @@ _CFG_SHOW_DSC_ICON_ = "show-dsc-icon"
 _GET_CFG_BOOL_ = (val) ->
     DCore.Desktop.get_config_boolean(val)
 
-
 DSS = "com.deepin.dde.ControlCenter"
-try
-    DSS_DBUS = get_dbus("session", DSS, "ShowModule")
-catch e
-    echo "#{DSS.obj} ERROR:#{e}"
-
