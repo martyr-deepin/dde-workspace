@@ -284,6 +284,7 @@ int main (int argc, char **argv)
 
     screen = gtk_window_get_screen (GTK_WINDOW (container));
     gdk_screen_get_monitor_geometry (screen, gdk_screen_get_primary_monitor (screen), &geometry);
+    g_message("primary monitor width:%d,height:%d;",geometry.width,geometry.height);
     gtk_window_move (GTK_WINDOW (container), geometry.x, geometry.y);
     gtk_window_resize (GTK_WINDOW (container), geometry.width, geometry.height);
 
