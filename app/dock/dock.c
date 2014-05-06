@@ -55,6 +55,8 @@ GdkWindow* GET_CONTAINER_WINDOW() { return DOCK_GDK_WINDOW(); }
 gboolean dock_has_maximize_client();
 JS_EXPORT_API void dock_change_workarea_height(double height);
 
+PRIVATE
+void update_dock_size(gint16 x, gint16 y, guint16 w, guint16 h);
 static gboolean primary_changed_handler(gpointer data);
 GdkWindow* get_dock_guard_window();
 
@@ -557,6 +559,7 @@ int main(int argc, char* argv[])
     setup_dock_dbus_service();
     GFileMonitor* m G_GNUC_UNUSED = monitor_trash();
 
+    gtk_widget_show_all(container);
     require_manager_trayicons();
     gtk_main();
     return 0;

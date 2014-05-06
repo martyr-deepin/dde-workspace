@@ -281,13 +281,13 @@ int main (int argc, char **argv)
     gtk_window_fullscreen (GTK_WINDOW (container));
     gtk_window_set_decorated (GTK_WINDOW (container), FALSE);
 
-    /*GdkScreen *screen;*/
-    /*GdkRectangle geometry;*/
-    /*screen = gtk_window_get_screen (GTK_WINDOW (container));*/
-    /*gdk_screen_get_monitor_geometry (screen, gdk_screen_get_primary_monitor (screen), &geometry);*/
-    /*g_message("container width:%d,height:%d;",geometry.width,geometry.height);*/
-    /*gtk_window_set_default_size (GTK_WINDOW (container), geometry.width, geometry.height);*/
-    /*gtk_window_move (GTK_WINDOW (container), geometry.x, geometry.y);*/
+    GdkScreen *screen;
+    GdkRectangle geometry;
+    screen = gtk_window_get_screen (GTK_WINDOW (container));
+    gdk_screen_get_monitor_geometry (screen, gdk_screen_get_primary_monitor (screen), &geometry);
+    g_message("container width:%d,height:%d;",geometry.width,geometry.height);
+    gtk_window_move (GTK_WINDOW (container), geometry.x, geometry.y);
+    gtk_window_resize(GTK_WINDOW (container), geometry.width, geometry.height);
 
     webview = d_webview_new_with_uri (GREETER_HTML_PATH);
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
