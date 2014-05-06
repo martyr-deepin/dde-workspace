@@ -98,7 +98,9 @@ detect_is_from_lock = ->
     from_lock = false
     if is_greeter
         from_lock = localStorage.getItem("from_lock")
+        echo from_lock
     localStorage.setItem("from_lock",false)
+    echo "detect_is_from_lock:#{from_lock}"
     return from_lock
 
  #-------------------------------------------

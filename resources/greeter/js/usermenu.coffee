@@ -19,7 +19,7 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class UserMenu extends Widget
-    constructor: (parent_el) ->
+    constructor: (parent_el,@userinfo_all) ->
         super
         @parent = parent_el
         @img_before = null
@@ -27,7 +27,7 @@ class UserMenu extends Widget
         @current_img_src = null
         if not @parent? then @parent = document.body
         @parent.appendChild(@element)
-        @accounts = new Accounts(APP_NAME)
+        echo "new UserMenu"
         
     hide:->
         @element.style.display = "none"
@@ -36,27 +36,32 @@ class UserMenu extends Widget
     show:->
         @element.style.display = "block"
         @ComboBox?.show()
-
+    
+    menuHide:->
+        @ComboBox?.menu.hide()
+    
+    menuShow:->
+        @ComboBox?.menu.show()
+    
     menuChoose_click_cb : (current, title)=>
         @current = @ComboBox.set_current(current)
 
 
     new_user_menu: ->
         echo "new_user_menu"
+        if @userinfo_all.length < 2 then return
         
         @ComboBox = new ComboBox("user", @menuChoose_click_cb)
         @ComboBox.hide()
-        @users_id = @accounts.users_id
-        if @users_id.length < 2 then return
-        for uid in @users_id
-            if not @accounts.is_disable_user(uid)
-                username = @accounts.users_id_dbus[uid].UserName
-                usericon = @accounts.users_id_dbus[uid].IconFile
-                @ComboBox.insert(uid, username, usericon,usericon,usericon)
+        for user in @userinfo_all
+            uid = user.id
+            username = user.username
+            usericon = user.usericon
+            @ComboBox.insert(uid, username, usericon,usericon,usericon)
         @ComboBox.frame_build()
         @element.appendChild(@ComboBox.element)
         
 
     keydown_listener:(e)->
-        @ComboBox.menu.keydown(e)
+        @ComboBox?.menu.keydown(e)
 
