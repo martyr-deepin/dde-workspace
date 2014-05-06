@@ -58,7 +58,13 @@ void background_info_set_background_by_file(BackgroundInfo* info, const char* fi
 {
     g_message("background_info_set_background_by_file:%s",file);
     GError* error = NULL;
-    GdkPixbuf* pb = gdk_pixbuf_new_from_file(file, &error);
+    
+    GdkScreen *screen;
+    screen = gtk_window_get_screen (GTK_WINDOW (info->container));
+    gint w = gdk_screen_get_width(screen);
+    gint h = gdk_screen_get_height(screen);
+    g_message("gdk_screen_get_width:%d,height:%d;",w,h);
+    GdkPixbuf* pb = gdk_pixbuf_new_from_file_at_scale(file,w,h,FALSE, &error);
     if (error != NULL) {
 	g_warning("set_background_by_file failed: %s\n", error->message);
 	g_error_free(error);
@@ -69,7 +75,7 @@ void background_info_set_background_by_file(BackgroundInfo* info, const char* fi
         cairo_surface_destroy(info->bg);
         info->bg = NULL;
     }
-    info->bg = gdk_cairo_surface_create_from_pixbuf(pb, 0, gtk_widget_get_window(info->container));
+    info->bg = gdk_cairo_surface_create_from_pixbuf(pb, 1, gtk_widget_get_window(info->container));
     g_mutex_unlock(&info->m);
     g_object_unref(pb);
     if (gtk_widget_get_realized(info->container)) {
