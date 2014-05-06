@@ -248,6 +248,9 @@ int main (int argc, char **argv)
     g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
 
 
+    GdkScreen *screen;
+    GdkRectangle geometry;
+
     init_i18n ();
     gtk_init (&argc, &argv);
 
@@ -268,7 +271,7 @@ int main (int argc, char **argv)
 
     if (g_mkdir_with_parents (greeter_dir, 0755) < 0){
         greeter_dir = "/var/cache/lightdm";
-}
+    }
 
     greeter_file = g_build_filename (greeter_dir, "deepin-greeter", NULL);
     g_free (greeter_dir);
@@ -277,17 +280,12 @@ int main (int argc, char **argv)
     g_key_file_load_from_file (greeter_keyfile, greeter_file, G_KEY_FILE_NONE, NULL);
 
     container = create_web_container (FALSE, TRUE);
-    ensure_fullscreen (container);
-    gtk_window_fullscreen (GTK_WINDOW (container));
     gtk_window_set_decorated (GTK_WINDOW (container), FALSE);
 
-    GdkScreen *screen;
-    GdkRectangle geometry;
     screen = gtk_window_get_screen (GTK_WINDOW (container));
     gdk_screen_get_monitor_geometry (screen, gdk_screen_get_primary_monitor (screen), &geometry);
-    g_message("container width:%d,height:%d;",geometry.width,geometry.height);
     gtk_window_move (GTK_WINDOW (container), geometry.x, geometry.y);
-    gtk_window_resize(GTK_WINDOW (container), geometry.width, geometry.height);
+    gtk_window_resize (GTK_WINDOW (container), geometry.width, geometry.height);
 
     webview = d_webview_new_with_uri (GREETER_HTML_PATH);
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
@@ -299,14 +297,15 @@ int main (int argc, char **argv)
     gtk_widget_realize (container);
 
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
-    /*GdkRGBA rgba = { 0, 0, 0, 0.0 };*/
-    /*gdk_window_set_background_rgba (gdkwindow, &rgba);*/
-    /*gdk_window_set_skip_taskbar_hint (gdkwindow, TRUE);*/
+    GdkRGBA rgba = { 0, 0, 0, 0.0 };
+    gdk_window_set_background_rgba (gdkwindow, &rgba);
+    gdk_window_set_skip_taskbar_hint (gdkwindow, TRUE);
     gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
+    /*gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_XTERM));*/
 
     gtk_widget_show_all (container);
 
-    //monitor_resource_file("greeter", webview);
+ //   monitor_resource_file("greeter", webview);
     /*init_camera(argc, argv);*/
     turn_numlock_on ();
     gtk_main ();
