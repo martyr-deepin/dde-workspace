@@ -30,6 +30,11 @@ class Time extends SystemItem
     on_mouseout:=>
         super
 
+    on_click:->
+        super
+        sysSettings = get_dbus('session', "com.deepin.dde.ControlCenter", "ShowModule")
+        sysSettings.ShowModule("date_time") if sysSettings
+
     update_time: =>
         # @time.textContent = "#{@hour()}:#{@min()}"
         # console.log("#{@hour(24, true)}:#{@min()}")
