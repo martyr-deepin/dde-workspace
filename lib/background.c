@@ -69,7 +69,7 @@ void background_info_set_background_by_file(BackgroundInfo* info, const char* fi
         cairo_surface_destroy(info->bg);
         info->bg = NULL;
     }
-    info->bg = gdk_cairo_surface_create_from_pixbuf(pb, 1, gtk_widget_get_window(info->container));
+    info->bg = gdk_cairo_surface_create_from_pixbuf(pb, 0, gtk_widget_get_window(info->container));
     g_mutex_unlock(&info->m);
     g_object_unref(pb);
     if (gtk_widget_get_realized(info->container)) {
