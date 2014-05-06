@@ -1,12 +1,12 @@
 class SystemTray extends SystemItem
     constructor:(@id, icon, title)->
         super
-        @img.addEventListener("mouseover", @on_mouseover)
-        @img.removeEventListener("mouseout", @on_mouseout)
+        @imgContainer.removeEventListener("mouseout", @on_mouseout)
         @panel = create_element(tag:"div", class:"SystemTrayPanel", @imgWarp)
         @panel.style.display = 'none'
         @panel.addEventListener("mouseover", @on_mouseover)
         @panel.addEventListener("mouseout", @on_mouseout)
+        @panel.addEventListener("click", (e)->e.preventDefault();e.stopPropagation())
         @openIndicator.style.display = 'none'
         @isUnfolded = false
         @button = create_element(tag:'div', class:'TrayFoldButton', @imgWarp)
@@ -32,7 +32,7 @@ class SystemTray extends SystemItem
 
         @core.connect("Added", (xid)=>
             console.log("#{xid} is Added")
-            @items.unshift(xid)
+            @items.unshift(xid) if @items.indexOf(xid) == -1
             $EW.create(xid, true)
             if @isShowing
                 if @items.length > 4
@@ -141,7 +141,9 @@ class SystemTray extends SystemItem
         $EW.show(@items[i]) if @items[i]
 
     on_mouseout: (e)=>
-        super
+        # super
+        clearTimeout(@showEmWindowTimer)
+        update_dock_region()
         if @isUnfolded
             return
 
