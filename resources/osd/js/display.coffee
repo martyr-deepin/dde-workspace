@@ -90,11 +90,12 @@ class Display extends Widget
         for name in @MonitorsName
             if @DBusDisplay.QueryOutputFeature_sync(name) == 1
                 echo "FeaturrMonitorsName.push(#{name})"
+                @FeaturrMonitorsName.push(name)
+        echo @FeaturrMonitorsName
         return @FeaturrMonitorsName
     
     getBrightness:(name)->
         @Brightness = @DBusDisplay.Brightness
-        echo @Brightness
         value = null
         try
             value = @Brightness[name]
