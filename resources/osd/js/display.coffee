@@ -33,6 +33,7 @@ class Display extends Widget
         @Monitors = []
         @DBusMonitors = []
         @DBusOpenedMonitors = []
+        @MonitorsName = []
         @OpenedMonitorsName = []
         @FeaturrMonitorsName = []
         @valueEach = []
@@ -71,6 +72,7 @@ class Display extends Widget
                 DBusMonitor = get_dbus("session", DISPLAY_MONITORS, "FullName")
                 echo DBusMonitor
                 @DBusMonitors.push(DBusMonitor)
+                @MonitorsName.push(DBusMonitor.FullName)
                 if DBusMonitor.Opened
                     @OpenedMonitorsName.push(DBusMonitor.FullName)
                     @DBusOpenedMonitors.push(DBusMonitor)
@@ -85,9 +87,9 @@ class Display extends Widget
 
     getFeaturrMonitorsName: ->
         @FeaturrMonitorsName = []
-        for name in @OpenedMonitorsName
-            if @DBusDisplay.QueryOutputFeature(name) == 1
-                @FeaturrMonitorsName.push(name)
+        for name in @MonitorsName
+            if @DBusDisplay.QueryOutputFeature_sync(name) == 1
+                echo "FeaturrMonitorsName.push(#{name})"
         return @FeaturrMonitorsName
     
     getBrightness:(name)->
@@ -95,12 +97,9 @@ class Display extends Widget
         echo @Brightness
         value = null
         try
-            for bright in @Brightness
-                echo bright
-                value = bright[name]
+            value = @Brightness[name]
         catch e
             echo "getBrightness:#{e}"
-        
         echo "getBrightness :#{name}:#{value};"
         return value
 
