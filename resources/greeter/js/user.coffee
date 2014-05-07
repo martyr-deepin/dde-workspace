@@ -116,17 +116,20 @@ class User extends Widget
         _current_user.hide_animation()
         _current_user = user for user in @userinfo_all when user.id is uid
         _current_user.show_animation()
+        echo "@current_user_index=#{@current_user_index}; _current_user.index=#{_current_user.index}"
 
     switch_userinfo :(direc) =>
         if @userinfo_all.length < 2 then return
         if !_current_user.animation_end then return
         echo "switch_userinfo ---#{direc}--- from #{@current_user_index}: #{_current_user.username}"
+        echo "@current_user_index=#{@current_user_index}; _current_user.index=#{_current_user.index}"
         _current_user.hide_animation()
         if direc is "prev" then index = @current_user_index - 1
         else if direc is "next" then index = @current_user_index + 1
         @current_user_index = @check_index(index)
         _current_user = @userinfo_all[@current_user_index]
         echo "to #{@current_user_index}: #{_current_user.username}"
+        echo "@current_user_index=#{@current_user_index}; _current_user.index=#{_current_user.index}"
         _current_user.show_animation()
         _current_user.animate_prev()
 
