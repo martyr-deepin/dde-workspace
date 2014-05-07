@@ -56,6 +56,7 @@ class AppList
                 @element.appendChild(t)
             dockedAppManager?.Dock(id, "", "", "")
         else if dnd_is_deepin_item(e)# and @insert_indicator.parentNode == @element
+            _dragToBack = false
             id = dt.getData(DEEPIN_ITEM_ID)
             item = Widget.look_up(id) or Widget.look_up("le_"+id)
             if @insert_indicator

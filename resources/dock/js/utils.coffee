@@ -53,7 +53,7 @@ bright_image = do ->
         return dataUrl
 
 updatePanel = ->
-    _is = false
+    _isDragging = false
     panel.updateWithAnimation()
     setTimeout(->
         panel.cancelAnimation()
