@@ -56,10 +56,7 @@ class User extends Widget
      
      isSupportGuest:->
         if is_support_guest and @accounts.isAllowGuest() is true
-            icon = @accounts.getRandUserIcon()
-            if icon[1] then guest_image = icon[0]
-            else guest_image = "images/#{getRandomInt(1,20)}.jpg"
-            #guest_image = "/var/lib/AccountsService/icons/guest.jpg"
+            guest_image = "/var/lib/AccountsService/icons/guest.jpg"
             echo "guest_image:#{guest_image}"
             u = new UserInfo(guest_id, guest_name, guest_image)
             @userinfo_all.push(u)
