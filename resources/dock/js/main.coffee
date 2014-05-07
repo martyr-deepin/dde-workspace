@@ -42,7 +42,7 @@ _b.addEventListener("drop", (e)->
         console.log("not working area")
         _dragTarget?.back()
         return
-    _dragToUndock = true
+    _dragToBack = false
     s_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
     s_widget = Widget.look_up(s_id)
     if s_widget and s_widget.isNormal()

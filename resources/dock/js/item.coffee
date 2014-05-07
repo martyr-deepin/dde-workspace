@@ -89,8 +89,9 @@ class Item extends Widget
         e.stopPropagation()
 
     on_dragend:(e)=>
-        _dragTarget?.back() if not _dragToUndock
-        _dragToUndock = false
+        _dragTarget.reset()
+        _dragTarget?.back() if _dragToBack
+        _dragToBack = true
 
     on_dragstart: (e)=>
         _dragTarget = new DragTarget(@)

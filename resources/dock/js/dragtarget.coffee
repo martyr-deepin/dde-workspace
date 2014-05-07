@@ -3,10 +3,13 @@ class DragTarget
         @el = @target.element
         @indicator = @el.nextSibling
 
-    back:->
-        console.log("back")
+    reset:->
         @el.style.position = ''
         @el.style.webkitTransform = ''
+
+    back:->
+        console.log("back")
+        @reset()
         parent = @indicator.parentNode
         if @indicator
             parent.insertBefore(@el, @indicator)
