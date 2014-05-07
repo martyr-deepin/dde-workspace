@@ -245,18 +245,27 @@ get_dbus = (type, opt, testProperty)->
     try
         d = func.apply(null, dbusArg)
     catch e
-        console.log "Get DBus \"#{opt.name} #{opt.path} #{opt.interface}\" failed: #{e}"
+        if typeof opt == 'string'
+            console.log "Get DBus \"#{opt}\" failed: #{e}"
+        else
+            console.log "Get DBus \"#{opt.name} #{opt.path} #{opt.interface}\" failed: #{e}"
         return null
 
     if !d
-        console.log "Get DBus \"#{opt.name} #{opt.path} #{opt.interface}\" failed"
+        if typeof opt == 'string'
+            console.log "Get DBus \"#{opt}\" failed: #{e}"
+        else
+            console.log "Get DBus \"#{opt.name} #{opt.path} #{opt.interface}\" failed: #{e}"
         return null
 
     count = 0
     while d and not d[testProperty]
         try
             d = func.apply(null, dbusArg)
-            console.log "DBus \"#{opt.name} #{opt.path} #{opt.interface}\" starts incompletely"
+            if typeof opt == 'string'
+                console.log "Get DBus \"#{opt}\" failed: #{e}"
+            else
+                console.log "Get DBus \"#{opt.name} #{opt.path} #{opt.interface}\" failed: #{e}"
             count += 1
             if count == 50
                 return null

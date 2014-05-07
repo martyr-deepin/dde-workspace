@@ -40,8 +40,9 @@ class Accounts
 
     getDBus:->
         try
+            console.log(ACCOUNTS_DAEMON)
             @Dbus_Account = get_dbus("system", ACCOUNTS_DAEMON, "UserList")
-            echo "ACCOUNTS_DAEMON succeed and then connect path"
+            echo "ACCOUNTS_DAEMON succeed and then connect path" if @Dbus_Account
             for path in @Dbus_Account.UserList
                 echo path
                 ACCOUNTS_USER.path = path
@@ -157,7 +158,7 @@ class Accounts
 
     isAllowGuest:->
         @AllowGuest = @Dbus_Account.AllowGuest
-    
+
     getRandUserIcon:->
         icon = @Dbus_Account.RandUserIcon_sync()
         echo icon

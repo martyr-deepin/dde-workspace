@@ -56,7 +56,12 @@ class FixedItem extends Applet
 class PrefixedItem extends FixedItem
     constructor:(@id, icon, title)->
         super(@id, icon, title, $("#pre_fixed"))
+        @imgContainer.draggable = false
         # $("#pre_fixed").appendChild(@element)
+
+    on_dragover:(e)=>
+        super
+        e.dataTransfer.dropEffect = 'none'
 
 
 class SystemItem extends AppItem
@@ -67,16 +72,26 @@ class SystemItem extends AppItem
         @img.draggable = false
         parentNode = $("#system")
         parentNode.appendChild(@element)
+        @imgContainer.draggable = false
         for id in @position.slice(0).reverse()
             if item = $("##{id}")
                 parentNode.insertBefore(item, parentNode.firstChild)
         parentNode.appendChild($("#system-tray")) if $("#system-tray")
         parentNode.appendChild($("#time")) if $("#time")
 
+    on_dragover:(e)=>
+        super
+        e.dataTransfer.dropEffect = 'none'
+
 
 class PostfixedItem extends FixedItem
     constructor:(@id, icon, title)->
         super(@id, icon, title, $("#post_fixed"))
+        @imgContainer.draggable = false
+
+    on_dragover:(e)=>
+        super
+        e.dataTransfer.dropEffect = 'none'
 
 
 class ClockBase extends SystemItem
