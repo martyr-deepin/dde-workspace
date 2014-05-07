@@ -76,7 +76,6 @@ class Item extends Widget
         @imgHover.style.display = 'none'
 
     on_mousewheel:(e)=>
-        console.log(e)
         @core?.onMouseWheel(e.x, e.y, e.wheelDeltaY)
 
     on_rightclick:(e)=>
@@ -96,6 +95,7 @@ class Item extends Widget
     on_dragstart: (e)=>
         _dragTarget = new DragTarget(@)
         _lastHover = null
+        app_list.insert_indicator = @element.nextSibling
         if el = @element.nextSibling
             el.style.marginLeft = '51px'
         else if el = @element.previousSibling

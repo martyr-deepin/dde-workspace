@@ -11,16 +11,17 @@ class AppList
         # prevent the whole list is dragged.
         @element.addEventListener("dragstart", (e)->e.preventDefault())
         @element.draggable = true
-        @insert_indicator = create_element(tag:"div", class:"InsertIndicator")
-        @insert_indicator.addEventListener("webkitTransitionEnd", (e)=>
-            panel.cancelAnimation()
-            console.log("transition end")
-            update_dock_region()
-            if @is_insert_indicator_shown
-                return
-            console.log("remove child from app list")
-            @element.removeChild(@insert_indicator)
-        )
+        @insert_indicator = null
+        # @insert_indicator = create_element(tag:"div", class:"InsertIndicator")
+        # @insert_indicator.addEventListener("webkitTransitionEnd", (e)=>
+        #     panel.cancelAnimation()
+        #     console.log("transition end")
+        #     update_dock_region()
+        #     if @is_insert_indicator_shown
+        #         return
+        #     console.log("remove child from app list")
+        #     @element.removeChild(@insert_indicator)
+        # )
         @_insert_anchor_item = null
         @is_insert_indicator_shown = false
 
