@@ -18,7 +18,6 @@ class Item extends Widget
         @img.onload = =>
             dataUrl = bright_image(@img, 40)
             @imgHover.src = dataUrl
-        # @imgs = {icon:@img, imgHover: @imgHover}
         @imgWarp.classList.add("ReflectImg")
         @imgContainer.style.pointerEvents = "auto"
         @imgContainer.addEventListener("mouseover", @on_mouseover)
@@ -35,7 +34,6 @@ class Item extends Widget
         calc_app_item_size()
         @tooltip = null
         @element.classList.add("AppItem")
-        # @element.draggable=true
         @imgContainer.draggable=true
         e = document.getElementsByName(@id)
         if e.length != 0
@@ -73,8 +71,6 @@ class Item extends Widget
         @imgHover.style.display = ''
 
     on_mouseout:(e)=>
-        #calc_app_item_size()
-        # update_dock_region()
         @img.style.display = ''
         @imgHover.style.display = 'none'
 
@@ -146,7 +142,8 @@ class Item extends Widget
         e.stopPropagation()
         return if @is_fixed_pos
         DCore.Dock.require_all_region()
-        @move(e.offsetX, @element.clientWidth / 2)
+        if dnd_is_deepin_item(e) or dnd_is_desktop(e)
+            @move(e.offsetX, @element.clientWidth / 2)
 
     on_dragleave: (e)=>
         console.log("dragleave")
@@ -158,16 +155,14 @@ class Item extends Widget
         e.stopPropagation()
         e.preventDefault()
         return if @is_fixed_pos
-        dt = e.dataTransfer
-        console.log("#{e.offsetX}, #{@element.clientWidth / 2}")
-        console.log("#{e.x}, #{get_page_xy(@element).x + @element.clientWidth / 2}")
-        @move(e.offsetX, @element.clientWidth / 2)
-        # @move(e.x, get_page_xy(@element).x + @element.clientWidth / 2)
+        if dnd_is_deepin_item(e) or dnd_is_desktop(e)
+            @move(e.offsetX, @element.clientWidth / 2)
 
     on_drop: (e) =>
         e.preventDefault()
         e.stopPropagation()
         dt = e.dataTransfer
+        _lastHover?.reset()
         console.log("do drop, #{@id}")
         console.log("deepin item id: #{dt.getData(DEEPIN_ITEM_ID)}")
         tmp_list = []
@@ -179,6 +174,7 @@ class Item extends Widget
             fileList = tmp_list.join()
             console.log("drop to open: #{fileList}")
             @core?.onDrop(fileList)
+        update_dock_region()
 
 
 class AppItem extends Item
@@ -536,19 +532,6 @@ class AppItem extends Item
     on_dragleave: (e) =>
         super
         clearTimeout(pop_id) if e.dataTransfer.getData('text/plain') != "swap"
-
-    # on_dragenter: (e) =>
-    #     super
-    #     return
-    #     clearTimeout(showIndicatorTimer)
-    #     e.preventDefault()
-    #     flag = e.dataTransfer.getData("text/plain")
-    #     if flag != "swap" and !@isNormal() and @n_clients.length == 1
-    #         pop_id = setTimeout(=>
-    #             @to_active_status(@leader)
-    #             pop_id = null
-    #         , 1000)
-    #     super
 
     on_drop: (e) =>
         super

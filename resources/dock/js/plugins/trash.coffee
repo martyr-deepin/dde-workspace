@@ -64,9 +64,15 @@ class Trash extends PostfixedItem
     on_drop: (evt)=>
         evt.stopPropagation()
         evt.preventDefault()
+        dt = evt.dataTransfer
+        if dnd_is_deepin_item(evt) and dt.getData("operation") == "uninstall"
+            # TODO: uninstall
+            console.log("TODO: uninstall")
+            return
+
         if dnd_is_file(evt) or dnd_is_desktop(evt)
             tmp_list = []
-            for file in evt.dataTransfer.files
+            for file in dt.files
                 e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
                 if not e? then continue
                 tmp_list.push(e)
