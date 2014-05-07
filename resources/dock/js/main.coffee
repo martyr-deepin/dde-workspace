@@ -9,31 +9,15 @@ DCore.signal_connect("embed_window_destroyed", (info)->console.log(info))
 DCore.signal_connect("embed_window_enter", (info)->console.log(info))
 DCore.signal_connect("embed_window_leave", (info)->console.log(info))
 
-document.body.addEventListener("contextmenu", (e)->
+_b.addEventListener("contextmenu", (e)->
     e.preventDefault()
 )
-document.body.addEventListener("drop", (e)->
-    console.log("drop on body")
-    update_dock_region()
-    if e.y > screen.height - DOCK_HEIGHT - ITEM_HEIGHT
-        return
-    s_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
-    s_widget = Widget.look_up(s_id)
-    if s_widget and s_widget.isNormal()
-        t = app_list.element.removeChild(s_widget.element)
-        calc_app_item_size()
-
-        t.style.position = "fixed"
-        document.body.appendChild(t)
-        t.style.left = (e.x - s_widget.element.clientWidth/2)+ "px"
-        t.style.top = (e.y - s_widget.element.clientHeight/2)+ "px"
-        s_widget.destroyWidthAnimation()
-)
-document.body.addEventListener("dragenter", (e)->
+_b.addEventListener("dragenter", (e)->
     clearTimeout(cancelInsertTimer)
     _lastHover?.reset()
+    updatePanel()
 )
-document.body.addEventListener("dragover", (e)->
+_b.addEventListener("dragover", (e)->
     clearTimeout(cancelInsertTimer)
     s_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
     console.log("dragover ##{s_id}# on body")
@@ -51,6 +35,25 @@ document.body.addEventListener("dragover", (e)->
     else
         console.log("set to cancel pointer")
         e.dataTransfer.dropEffect = 'move'
+)
+_b.addEventListener("drop", (e)->
+    console.log("drop on body")
+    # _is = false
+    update_dock_region()
+    if e.y > screen.height - DOCK_HEIGHT - ITEM_HEIGHT
+        return
+    s_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
+    s_widget = Widget.look_up(s_id)
+    if s_widget and s_widget.isNormal()
+        # t = app_list.element.removeChild(s_widget.element)
+        calc_app_item_size()
+
+        t = s_widget.element
+        t.style.position = "fixed"
+        _b.appendChild(t)
+        t.style.left = (e.x - s_widget.element.clientWidth/2)+ "px"
+        t.style.top = (e.y - s_widget.element.clientHeight/2)+ "px"
+        s_widget.destroyWidthAnimation()
 )
 
 settings = new Setting()

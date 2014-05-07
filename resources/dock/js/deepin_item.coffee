@@ -52,16 +52,20 @@ class FixedItem extends Applet
     set_status: (status)=>
         @show(status)
 
+    on_dragover:(e)=>
+        super
+        e.dataTransfer.dropEffect = 'none'
+
+    on_dragenter:(e)=>
+        super
+        updatePanel()
+
 
 class PrefixedItem extends FixedItem
     constructor:(@id, icon, title)->
         super(@id, icon, title, $("#pre_fixed"))
         @imgContainer.draggable = false
         # $("#pre_fixed").appendChild(@element)
-
-    on_dragover:(e)=>
-        super
-        e.dataTransfer.dropEffect = 'none'
 
 
 class SystemItem extends AppItem
@@ -83,15 +87,15 @@ class SystemItem extends AppItem
         super
         e.dataTransfer.dropEffect = 'none'
 
+    on_dragenter:(e)=>
+        super
+        updatePanel()
+
 
 class PostfixedItem extends FixedItem
     constructor:(@id, icon, title)->
         super(@id, icon, title, $("#post_fixed"))
         @imgContainer.draggable = false
-
-    on_dragover:(e)=>
-        super
-        e.dataTransfer.dropEffect = 'none'
 
 
 class ClockBase extends SystemItem

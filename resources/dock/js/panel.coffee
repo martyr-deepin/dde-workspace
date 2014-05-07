@@ -110,10 +110,13 @@ class Panel
                 Widget.look_up("le_#{appid}")?.notify()
 
     updateWithAnimation:=>
-        calc_app_item_size()
-        DCore.Dock.require_all_region()
+        # return
         @cancelAnimation()
+        # calc_app_item_size()
+        update_dock_region($("#container").clientWidth)
+        DCore.Dock.require_all_region()
         @calcTimer = webkitRequestAnimationFrame(@updateWithAnimation)
 
     cancelAnimation:=>
+        # return
         webkitCancelAnimationFrame(@calcTimer || null)

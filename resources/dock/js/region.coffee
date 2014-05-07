@@ -46,6 +46,6 @@ update_dock_region = do->
             panel_width = ICON_SCALE * ITEM_WIDTH * apps.length + PANEL_MARGIN * 2
             DCore.Dock.force_set_region(left_offset, 0, ICON_SCALE * ITEM_WIDTH * apps.length, panel_width, DOCK_HEIGHT)
 
-document.body.onresize = ->
+_b.onresize = ->
     calc_app_item_size()
 

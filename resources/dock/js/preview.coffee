@@ -25,7 +25,7 @@ class PWContainer extends Widget
     _cancel_move_animation_id: -1
     constructor: (@id)->
         super
-        @border = create_element("div", "PWBorder", document.body)
+        @border = create_element("div", "PWBorder", _b)
         @bg = create_element(tag:'canvas', class:"bg", @border)
         @element.style.maxWidth = screen.width - 30
         @border.appendChild(@element)
@@ -461,16 +461,16 @@ DCore.signal_connect("leave-notify", ->
     Preview_close()
 )
 
-document.body.addEventListener("click", (e)->
+_b.addEventListener("click", (e)->
     return if e.target.classList.contains("PWClose") or e.target.classList.contains("PreviewWindow")
     Preview_close_now(Preview_container._current_group)
 )
-document.body.addEventListener("contextmenu", (e)->
+_b.addEventListener("contextmenu", (e)->
     return if e.target.classList.contains("PWClose") or e.target.classList.contains("PreviewWindow")
     Preview_close_now(Preview_container._current_group)
 )
 
-document.body.addEventListener("mouseover", (e)->
-    if (e.target == document.body)
+_b.addEventListener("mouseover", (e)->
+    if (e.target == _b)
         Preview_close()
 )

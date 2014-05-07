@@ -51,3 +51,10 @@ bright_image = do ->
         # i.onload = ->
         #     ctx.drawImage(i, 0, 0)
         return dataUrl
+
+updatePanel = ->
+    _is = false
+    panel.updateWithAnimation()
+    setTimeout(->
+        panel.cancelAnimation()
+    , 150)

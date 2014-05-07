@@ -64,7 +64,8 @@ class AppList
                 @element.appendChild(item.element)
             sortDockedItem()
             # @append(item)
-        calc_app_item_size()
+        # calc_app_item_size()
+        updatePanel()
 
     on_dragover: (e) =>
         # console.log("start applist dragover")

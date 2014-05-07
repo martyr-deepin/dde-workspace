@@ -106,6 +106,10 @@ class Item extends Widget
         dt.dropEffect = 'none'
 
     move:(x, threshold)=>
+        if _lastHover and _lastHover.id != @id
+            _lastHover.reset()
+        _lastHover = @
+
         if x < threshold
             @element.style.marginLeft = '51px'
             @element.style.marginRight = ''
@@ -115,10 +119,6 @@ class Item extends Widget
             @element.style.marginRight = '51px'
             app_list.insert_indicator = @element.nextSibling
 
-        if _lastHover and _lastHover.id != @id
-            _lastHover.reset()
-        _lastHover = @
-
         if not _is
             _is = true
             panel.updateWithAnimation()
@@ -127,13 +127,9 @@ class Item extends Widget
             , 150)
 
     reset:->
-        _is = false
+        # updatePanel()
         @element.style.marginLeft = ''
         @element.style.marginRight = ''
-        panel.updateWithAnimation()
-        setTimeout(->
-            panel.cancelAnimation()
-        , 150)
 
     on_dragenter: (e)=>
         console.log("dragenter image #{@id}")
@@ -159,6 +155,7 @@ class Item extends Widget
             @move(e.offsetX, @element.clientWidth / 2)
 
     on_drop: (e) =>
+        updatePanel()
         e.preventDefault()
         e.stopPropagation()
         dt = e.dataTransfer
