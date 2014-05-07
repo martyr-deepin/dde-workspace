@@ -100,7 +100,7 @@ class SystemTray extends SystemItem
         xy = get_page_xy(@element)
         for item, i in @items
             x = xy.x + 7
-            y = xy.y + 8
+            y = xy.y + 7
             if i < @upperItemNumber
                 x += i * itemSize
             else
