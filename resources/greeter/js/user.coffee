@@ -110,7 +110,12 @@ class User extends Widget
         if index > @userinfo_all.length - 1 then index = 0
         else if index < 0 then index = @userinfo_all.length - 1
         return index
-
+        
+    switch_to_userinfo :(uid) =>
+        if _current_user.id is uid then return
+        _current_user.hide_animation()
+        _current_user = user for user in @userinfo_all when user.id is uid
+        _current_user.show_animation()
 
     switch_userinfo :(direc) =>
         if @userinfo_all.length < 2 then return
