@@ -111,13 +111,21 @@ class Item extends Widget
         _lastHover = @
 
         if x < threshold
+            if t = @element.nextSibling
+                t.style.marginLeft = ''
+                t.style.marginRight = ''
             @element.style.marginLeft = '51px'
             @element.style.marginRight = ''
             app_list.insert_indicator = @element
         else
-            @element.style.marginLeft = ''
-            @element.style.marginRight = '51px'
-            app_list.insert_indicator = @element.nextSibling
+            @reset()
+            if t = @element.nextSibling
+                t.style.marginLeft = '51px'
+                t.style.marginRight = ''
+            else
+                @element.style.marginLeft = ''
+                @element.style.marginRight = '51px'
+            app_list.insert_indicator = t
 
         if not _is
             _is = true
