@@ -97,8 +97,7 @@ powermenu = new PowerMenu($("#div_power"))
 powermenu.new_power_menu()
 
 usermenu = null
-if user.userinfo_all.length > 1 and detect_is_from_lock() is true
-#if true
+if user.userinfo_all.length > 1 and _current_user.is_logined
     echo "can new UserMenu"
     usermenu = new UserMenu(document.body,user.userinfo_all)
     usermenu.new_user_menu()
