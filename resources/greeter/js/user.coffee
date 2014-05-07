@@ -30,7 +30,6 @@ class User extends Widget
     constructor:->
         super
         
-        @current_user_index = 0
         @user_session = []
         @userinfo_all = []
         @accounts = new Accounts(APP_NAME)
@@ -52,7 +51,6 @@ class User extends Widget
             @userinfo_all[center_index] = _current_user
             @userinfo_all[_current_user.index] = center_old
             _current_user.index = center_index
-        _current_user.index =_current_user.index
      
      isSupportGuest:->
         if is_support_guest and @accounts.isAllowGuest() is true
@@ -80,13 +78,11 @@ class User extends Widget
         if not _current_user?
             _current_user = @userinfo_all[0]
             _current_user.index = 0
-            @current_user_index = 0
         
         for user in @userinfo_all
             @element.appendChild(user.element)
             if user.index is _current_user.index
                 _current_user.show()
-                @current_user_index = _current_user.index
             else
                 user.hide()
         
@@ -110,26 +106,23 @@ class User extends Widget
         if index > @userinfo_all.length - 1 then index = 0
         else if index < 0 then index = @userinfo_all.length - 1
         return index
-        
+
     switch_to_userinfo :(uid) =>
         if _current_user.id is uid then return
         _current_user.hide_animation()
         _current_user = user for user in @userinfo_all when user.id is uid
         _current_user.show_animation()
-        echo "@current_user_index=#{@current_user_index}; _current_user.index=#{_current_user.index}"
 
     switch_userinfo :(direc) =>
         if @userinfo_all.length < 2 then return
         if !_current_user.animation_end then return
-        echo "switch_userinfo ---#{direc}--- from #{@current_user_index}: #{_current_user.username}"
-        echo "@current_user_index=#{@current_user_index}; _current_user.index=#{_current_user.index}"
+        echo "switch_userinfo ---#{direc}--- from #{_current_user.index}: #{_current_user.username}"
         _current_user.hide_animation()
-        if direc is "prev" then index = @current_user_index - 1
-        else if direc is "next" then index = @current_user_index + 1
-        @current_user_index = @check_index(index)
-        _current_user = @userinfo_all[@current_user_index]
-        echo "to #{@current_user_index}: #{_current_user.username}"
-        echo "@current_user_index=#{@current_user_index}; _current_user.index=#{_current_user.index}"
+        if direc is "prev" then index = _current_user.index - 1
+        else if direc is "next" then index = _current_user.index + 1
+        index = @check_index(index)
+        _current_user = @userinfo_all[index]
+        echo "to #{_current_user.index}: #{_current_user.username}"
         _current_user.show_animation()
         _current_user.animate_prev()
 
