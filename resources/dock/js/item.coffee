@@ -29,6 +29,7 @@ class Item extends Widget
         @imgContainer.addEventListener("dragover", @on_dragover)
         @imgContainer.addEventListener("dragleave", @on_dragleave)
         @imgContainer.addEventListener("drop", @on_drop)
+        @imgContainer.addEventListener("dragend", @on_dragend)
         @imgContainer.addEventListener("mousewheel", @on_mousewheel)
 
         calc_app_item_size()
@@ -87,8 +88,31 @@ class Item extends Widget
         e.preventDefault()
         e.stopPropagation()
 
+    on_dragend:(e)=>
+        _dragTarget?.back() if not _dragToUndock
+        _dragToUndock = false
+
     on_dragstart: (e)=>
+        _dragTarget = new DragTarget(@)
         _lastHover = null
+        if el = @element.nextSibling
+            el.style.marginLeft = '51px'
+        else if el = @element.previousSibling
+            el.style.marginRight = '51px'
+
+        if el
+            if not _isDragging
+                _isDragging = true
+                panel.updateWithAnimation()
+                setTimeout(->
+                    panel.cancelAnimation()
+                , 150)
+            _lastHover = Widget.look_up(el.getAttribute('id')) || null
+        setTimeout(=>
+            _b.appendChild(@element)
+            @element.style.position = 'absolute'
+            @element.style.webkitTransform = "translateY(-#{ITEM_HEIGHT}px)"
+        , 10)
         console.log("dragstart")
         e.stopPropagation()
         DCore.Dock.require_all_region()
@@ -110,6 +134,7 @@ class Item extends Widget
             _lastHover.reset()
         _lastHover = @
 
+        @reset()
         if x < threshold
             if t = @element.nextSibling
                 t.style.marginLeft = ''
@@ -118,7 +143,6 @@ class Item extends Widget
             @element.style.marginRight = ''
             app_list.insert_indicator = @element
         else
-            @reset()
             if t = @element.nextSibling
                 t.style.marginLeft = '51px'
                 t.style.marginRight = ''
@@ -127,8 +151,8 @@ class Item extends Widget
                 @element.style.marginRight = '51px'
             app_list.insert_indicator = t
 
-        if not _is
-            _is = true
+        if not _isDragging
+            _isDragging = true
             panel.updateWithAnimation()
             setTimeout(->
                 panel.cancelAnimation()
@@ -138,6 +162,9 @@ class Item extends Widget
         # updatePanel()
         @element.style.marginLeft = ''
         @element.style.marginRight = ''
+        if t = @element.nextSibling
+            t.style.marginRight = ''
+            t.style.marginLeft = ''
 
     on_dragenter: (e)=>
         console.log("dragenter image #{@id}")

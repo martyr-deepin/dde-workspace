@@ -13,9 +13,11 @@ _b.addEventListener("contextmenu", (e)->
     e.preventDefault()
 )
 _b.addEventListener("dragenter", (e)->
+    console.log("dragenter to body")
     clearTimeout(cancelInsertTimer)
     _lastHover?.reset()
     updatePanel()
+    DCore.Dock.require_all_region()
 )
 _b.addEventListener("dragover", (e)->
     clearTimeout(cancelInsertTimer)
@@ -28,20 +30,19 @@ _b.addEventListener("dragover", (e)->
     if t.isNormal()
         e.preventDefault()
 
-    console.log("set cursor")
     if e.y > screen.height - DOCK_HEIGHT - ITEM_HEIGHT
-        console.log("set to auto")
         e.dataTransfer.dropEffect = 'none'
     else
-        console.log("set to cancel pointer")
         e.dataTransfer.dropEffect = 'move'
 )
 _b.addEventListener("drop", (e)->
     console.log("drop on body")
-    # _is = false
     update_dock_region()
     if e.y > screen.height - DOCK_HEIGHT - ITEM_HEIGHT
+        console.log("not working area")
+        _dragTarget?.back()
         return
+    _dragToUndock = true
     s_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
     s_widget = Widget.look_up(s_id)
     if s_widget and s_widget.isNormal()
@@ -51,8 +52,8 @@ _b.addEventListener("drop", (e)->
         t = s_widget.element
         t.style.position = "fixed"
         _b.appendChild(t)
-        t.style.left = (e.x - s_widget.element.clientWidth/2)+ "px"
-        t.style.top = (e.y - s_widget.element.clientHeight/2)+ "px"
+        t.style.left = "#{e.x - ITEM_WIDTH / 2}px"
+        t.style.top = "#{e.y + ITEM_HEIGHT / 2}px"
         s_widget.destroyWidthAnimation()
 )
 

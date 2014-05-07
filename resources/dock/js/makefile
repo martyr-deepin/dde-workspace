@@ -3,6 +3,7 @@ com_coffee = ${com_dir}/config.coffee ${com_dir}/utils.coffee ${com_dir}/animati
 plugin_dir=plugins
 all: ${com_coffee} \
 	global.coffee\
+	dragtarget.coffee\
 	config.coffee \
 	utils.coffee\
 	region.coffee\
