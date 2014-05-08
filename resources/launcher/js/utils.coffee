@@ -24,6 +24,8 @@ reset = ->
     selector.clean()
     searchResult?.hide()
     switcher.switchToFavor()
+    gridOffset = 0
+    grid.firstElementChild.style.webkitTransform = "translateY(0px)"
 
     if selector.selectedItem
         item = selector.selectedItem
