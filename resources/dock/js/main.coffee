@@ -11,13 +11,14 @@ DCore.signal_connect("embed_window_leave", (info)->console.log(info))
 
 _b.addEventListener("contextmenu", (e)->
     e.preventDefault()
+    console.log("rightclick on body")
 )
 _b.addEventListener("dragenter", (e)->
     console.log("dragenter to body")
     clearTimeout(cancelInsertTimer)
     _lastHover?.reset()
     updatePanel()
-    DCore.Dock.require_all_region()
+    # DCore.Dock.require_all_region()
 )
 _b.addEventListener("dragover", (e)->
     clearTimeout(cancelInsertTimer)

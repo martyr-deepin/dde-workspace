@@ -45,38 +45,38 @@ class AppList
             # console.log("is desktop")
             path = dt.getData("text/uri-list").substring("file://".length).trim()
             id = get_path_name(path)
-            t = document.getElementsByName(id)
-            # FIXME: why trigger twice drop event???
-            if t.length == 0
-                t = create_element(tag:'div', class: 'AppItem', name:id)
-            else
-                t = t[0]
-            console.log("insert_indicator: #{@insert_indicator}")
-            if @insert_indicator
-                @element.insertBefore(t, @insert_indicator)
-            else
-                @element.appendChild(t)
+            if not Widget.look_up(id)
+                t = document.getElementsByName(id)
+                # FIXME: why trigger twice drop event???
+                if t.length == 0
+                    t = create_element(tag:'div', class: 'AppItem', name:id)
+                else
+                    t = t[0]
+                console.log("insert_anchor_item: #{@insert_anchor_item}")
+                if @insert_anchor_item
+                    @element.insertBefore(t, @insert_anchor_item)
+                else
+                    @element.appendChild(t)
 
-            # # FIXME: why using @insert_indicator will insert two item???
-            # @insert_indicator.setAttribute('name', id)
-            # console.log(@insert_indicator)
-            # if @insert_anchor_item
-            #     @element.insertBefore(@insert_indicator, @insert_anchor_item)
-            # else
-            #     @element.appendChild(@insert_indicator)
-            dockedAppManager?.Dock(id, "", "", "")
+                # # FIXME: why using @insert_indicator will insert two item???
+                # @insert_indicator.setAttribute('name', id)
+                # console.log(@insert_indicator)
+                # if @insert_anchor_item
+                #     @element.insertBefore(@insert_indicator, @insert_anchor_item)
+                # else
+                #     @element.appendChild(@insert_indicator)
+                dockedAppManager?.Dock(id, "", "", "")
         else if dnd_is_deepin_item(e)# and @insert_indicator.parentNode == @element
             _dragToBack = false
             id = dt.getData(DEEPIN_ITEM_ID)
-            item = Widget.look_up(id) or Widget.look_up("le_"+id)
+            item = Widget.look_up(id)
             if @insert_anchor_item
                 @element.insertBefore(item.element, @insert_anchor_item)
             else
                 @element.appendChild(item.element)
             sortDockedItem()
-            # @append(item)
-        # calc_app_item_size()
         updatePanel()
+        update_dock_region()
 
     on_dragover: (e) =>
         # console.log("start applist dragover")
@@ -94,34 +94,15 @@ class AppList
             try_insert_id = dt.getData(DEEPIN_ITEM_ID)
 
             dt.dropEffect = "copy"
-            step = 6
+            # step = 6
             x = e.x
             y = e.y
             if e.y > screen.height - DOCK_HEIGHT + ITEM_HEIGHT
                 y -= ITEM_HEIGHT / 2
 
-            el = null
-            while 1
-                x -= step
-                el = document.elementFromPoint(x, y)
-                return if not el
-                if el.classList?.contains("AppItemImg")
-                    id = el.parentNode.parentNode.parentNode.id
-                    console.log(id)
-                    if id == try_insert_id
-                        return
-                    break
-                # else if el.tagName = "BODY"
-                #     return
+            el = getPreviousSiblingFromPoint(x, y, try_insert_id)
             x = e.x
-            while 1
-                x += step
-                el = document.elementFromPoint(x, y)
-                if el.classList.contains("AppItemImg")
-                    break
-                else if el.tagName == "BODY"
-                    el = null
-                    break
+            el = getNextSiblingFromPoint(x, y, try_insert_id)
             el = el.parentNode.parentNode.parentNode if el
             if el.parentNode.id != "app_list"
                 el = null
