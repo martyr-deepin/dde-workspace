@@ -55,11 +55,9 @@ class Greeter extends Widget
         @is_one_session = false
         if @sessions.length == 0
             echo "your system has no session!!!"
-            warning_text = _("Your system has no session! Please go to tty and install session:'sudo apt-get install deepin-desktop-environment'")
-            noSessionText = create_element("div","noSessionText",@element)
-            noSessionText.innerText = warning_text
+            new NoSessionMessage()
         else if @sessions.length == 1 then @is_one_session = true
-       
+        return @is_one_session
 
 
 greeter = new Greeter()

@@ -1,0 +1,17 @@
+
+.Message{
+    color: #fff;
+    text-shadow:0 0 0.2em #333;
+
+}
+
+.title_p{
+    font-size:2em;
+    text-indent:2em;
+    padding-top:2em;
+}
+
+.title_li{
+    margin-top:2em;
+    font-size:1.8em;
+}

@@ -30,7 +30,6 @@ class Lock extends Widget
     webview_ok:(_current_user)->
         DCore.Lock.webview_ok(_current_user.id) if hide_face_login
 
-
     start_login_connect:(userinfo)->
         DCore.signal_connect("start-login", ->
             echo "receive start login"
@@ -41,6 +40,8 @@ class Lock extends Widget
 
 lock = new Lock()
 setBodyWallpaper("sky_move")
+
+#new NoSessionMessage()
 
 is_guest = DCore.Lock.is_guest()
 
