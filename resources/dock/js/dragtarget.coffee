@@ -2,6 +2,7 @@ class DragTarget
     constructor: (@target)->
         @el = @target.element
         @indicator = @el.nextSibling
+        @parentNode = @el.parentNode
 
     reset:->
         @el.style.position = ''
@@ -10,10 +11,9 @@ class DragTarget
     back:->
         console.log("back")
         @reset()
-        parent = @indicator.parentNode
         if @indicator
-            parent.insertBefore(@el, @indicator)
+            @parentNode.insertBefore(@el, @indicator)
             updatePanel()
             return
-        parent.appendChild(@el)
+        @parentNode.appendChild(@el)
         updatePanel()

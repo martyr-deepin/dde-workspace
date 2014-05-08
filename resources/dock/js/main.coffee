@@ -53,7 +53,7 @@ _b.addEventListener("drop", (e)->
         t.style.position = "fixed"
         _b.appendChild(t)
         t.style.left = "#{e.x - ITEM_WIDTH / 2}px"
-        t.style.top = "#{e.y + ITEM_HEIGHT / 2}px"
+        t.style.top = "#{e.y - ITEM_HEIGHT / 2}px"
         s_widget.destroyWidthAnimation()
 )
 

@@ -55,6 +55,7 @@ class FixedItem extends Applet
     on_dragover:(e)=>
         super
         e.dataTransfer.dropEffect = 'none'
+        _isDragging = false
 
     on_dragenter:(e)=>
         super
@@ -86,6 +87,7 @@ class SystemItem extends AppItem
     on_dragover:(e)=>
         super
         e.dataTransfer.dropEffect = 'none'
+        _isDragging = false
 
     on_dragenter:(e)=>
         super

@@ -103,11 +103,8 @@ class Item extends Widget
 
         if el
             if not _isDragging
+                updatePanel()
                 _isDragging = true
-                panel.updateWithAnimation()
-                setTimeout(->
-                    panel.cancelAnimation()
-                , 150)
             _lastHover = Widget.look_up(el.getAttribute('id')) || null
         setTimeout(=>
             _b.appendChild(@element)
@@ -153,11 +150,8 @@ class Item extends Widget
             app_list.insert_indicator = t
 
         if not _isDragging
+            updatePanel()
             _isDragging = true
-            panel.updateWithAnimation()
-            setTimeout(->
-                panel.cancelAnimation()
-            , 150)
 
     reset:->
         # updatePanel()
