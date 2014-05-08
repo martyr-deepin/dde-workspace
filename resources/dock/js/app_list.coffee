@@ -69,14 +69,19 @@ class AppList
             _dragToBack = false
             id = dt.getData(DEEPIN_ITEM_ID)
             item = Widget.look_up(id) or Widget.look_up("le_"+id)
+            # img = item.img.cloneNode(true)
+            # _b.appendChild(img)
+            # x = 0
+            # y = 0
+            # img.style.webkitTransform = "translate(#{x}px, #{y}px)"
+            # img.style.display = ''
             if @insert_anchor_item
                 @element.insertBefore(item.element, @insert_anchor_item)
             else
                 @element.appendChild(item.element)
             sortDockedItem()
-            # @append(item)
-        # calc_app_item_size()
         updatePanel()
+        update_dock_region()
 
     on_dragover: (e) =>
         # console.log("start applist dragover")
