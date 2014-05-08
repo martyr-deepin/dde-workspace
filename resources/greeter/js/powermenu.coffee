@@ -54,10 +54,10 @@ class PowerMenu extends Widget
         if is_greeter
             @power_dict[id]()
         else
-            if id isnt "suspend"
-                @confirm_shutdown_show(id)
+            if id is "suspend"
+                @power_dict["suspend"]()
             else
-                @power_dict[id]()
+                @confirm_shutdown_show(id)
 
     new_power_menu:->
         echo "new_power_menu"

@@ -126,7 +126,7 @@ class MenuChoose extends Widget
 
 
    
-    hide:->
+    hide: ->
         echo "hide"
         
         @animation_end = false
@@ -135,7 +135,7 @@ class MenuChoose extends Widget
             if i != 0 then return
             echo "animation_user_show(#{i})"
             @element.style.display = "none"
-            if @frame_click
+            if @frame_click and @id is "user_menuchoose"
                 uid = localStorage.getItem("menu_current_id_user")
                 user?.switch_to_userinfo(uid)
             $("#div_users").style.display = "-webkit-box"
