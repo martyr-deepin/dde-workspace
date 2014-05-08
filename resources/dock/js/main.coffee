@@ -27,25 +27,30 @@ _b.addEventListener("dragover", (e)->
     if not t
         return
 
-    if t.isNormal()
-        e.preventDefault()
+    e.preventDefault()
 
     if e.y > screen.height - DOCK_HEIGHT - ITEM_HEIGHT
-        e.dataTransfer.dropEffect = 'none'
+        e.dataTransfer.dropEffect = 'copy'
     else
         e.dataTransfer.dropEffect = 'move'
 )
 _b.addEventListener("drop", (e)->
+    e.stopPropagation()
+    e.preventDefault()
     console.log("drop on body")
     update_dock_region()
     if e.y > screen.height - DOCK_HEIGHT - ITEM_HEIGHT
         console.log("not working area")
-        _dragTarget?.back()
+        _dragToBack = false
+        _dragTarget?.back(e.x, e.y)
         return
-    _dragToBack = false
     s_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
     s_widget = Widget.look_up(s_id)
-    if s_widget and s_widget.isNormal()
+    if not s_widget
+        return
+
+    if s_widget.isNormal()
+        _dragToBack = false
         # t = app_list.element.removeChild(s_widget.element)
         calc_app_item_size()
 
@@ -55,6 +60,9 @@ _b.addEventListener("drop", (e)->
         t.style.left = "#{e.x - ITEM_WIDTH / 2}px"
         t.style.top = "#{e.y - ITEM_HEIGHT / 2}px"
         s_widget.destroyWidthAnimation()
+    else
+        _dragToBack = true
+        _dragTarget?.back(e.x, e.y)
 )
 
 settings = new Setting()

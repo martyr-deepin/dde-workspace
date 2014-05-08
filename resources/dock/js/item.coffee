@@ -88,14 +88,17 @@ class Item extends Widget
         e.stopPropagation()
 
     on_dragend:(e)=>
-        _dragTarget.reset()
-        _dragTarget?.back() if _dragToBack
+        e.preventDefault()
+        _dragTarget?.reset()
+        _dragTarget?.back(e.x, e.y) if _dragToBack
         _dragToBack = true
 
     on_dragstart: (e)=>
         _dragTarget = new DragTarget(@)
+        pos = get_page_xy(@element)
+        _dragTarget.setOrigin(pos.x, pos.y)
         _lastHover = null
-        app_list.insert_indicator = @element.nextSibling
+        app_list.setInsertAnchor(@element.nextSibling)
         if el = @element.nextSibling
             el.style.marginLeft = '51px'
         else if el = @element.previousSibling
@@ -139,7 +142,7 @@ class Item extends Widget
                 t.style.marginRight = ''
             @element.style.marginLeft = '51px'
             @element.style.marginRight = ''
-            app_list.insert_indicator = @element
+            app_list.setInsertAnchor(@element)
         else
             if t = @element.nextSibling
                 t.style.marginLeft = '51px'
@@ -147,7 +150,7 @@ class Item extends Widget
             else
                 @element.style.marginLeft = ''
                 @element.style.marginRight = '51px'
-            app_list.insert_indicator = t
+            app_list.setInsertAnchor(t)
 
         if not _isDragging
             updatePanel()
@@ -163,6 +166,10 @@ class Item extends Widget
 
     on_dragenter: (e)=>
         console.log("dragenter image #{@id}")
+        # if dnd_is_deepin_item(e) or dnd_is_desktop(e)
+        #     dataUrl = e.dataTransfer.getData("ItemIcon")
+        #     console.log("#{dataUrl}")
+        #     app_list.setInsertIndicator(dataUrl)
         clearTimeout(cancelInsertTimer)
         e.preventDefault()
         e.stopPropagation()
@@ -185,9 +192,9 @@ class Item extends Widget
             @move(e.offsetX, @element.clientWidth / 2)
 
     on_drop: (e) =>
-        updatePanel()
         e.preventDefault()
         e.stopPropagation()
+        updatePanel()
         dt = e.dataTransfer
         _lastHover?.reset()
         console.log("do drop, #{@id}")
