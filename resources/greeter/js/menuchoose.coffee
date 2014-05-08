@@ -401,18 +401,18 @@ class ComboBox extends Widget
     insert_noimg: (id, title)->
         @menu.insert_noimg(id, title)
     
+
+    only_show_current_Menuchoose: ->
+       echo "only_show_current_Menuchoose"
+       menuchoose = []
+       menuchoose = jQuery(".MenuChoose")
+       for menu in menuchoose
+           if menu?.id isnt @id then menu?.style.display = "none"
+
     do_click: (e)->
         e.stopPropagation()
         echo "current_img do_click:#{@id}"
-        if is_greeter
-            try
-                if @menu.id is "power_menuchoose"
-                    $("#desktop_menuchoose")?.style.display = "none"
-                else if @menu.id is "desktop_menuchoose"
-                    #if _current_user?.is_logined then return
-                    $("#power_menuchoose")?.style.display = "none"
-            catch e
-                echo "#{e}"
+        @only_show_current_Menuchoose()
         if !@menu.animation_end then return
         @menu.toggle()
     
