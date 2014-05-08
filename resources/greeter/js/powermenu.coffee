@@ -112,7 +112,9 @@ class PowerMenu extends Widget
     confirm_shutdown_hide:=>
         if @check_is_shutdown_from_lock()
             power = @clear_shutdown_from_lock()
-                
+        else
+            return
+        
         input_password_again = =>
             $(".password").style.color = "rgba(255,255,255,0.5)"
             $(".password").style.fontSize = "2.0em"
