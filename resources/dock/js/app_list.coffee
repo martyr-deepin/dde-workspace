@@ -47,10 +47,18 @@ class AppList
         dt = e.dataTransfer
         if dnd_is_desktop(e)
             console.log("is desktop")
+            # icon = dt.getData("ItemIcon")
+            # console.log("get icon: #{icon}")
             path = dt.getData("text/uri-list").substring("file://".length).trim()
             id = get_path_name(path)
-            t = create_element(tag:'div', name:id)
-            # console.log("insert tmp before insert_indicator")
+            t = document.getElementsByName(id)
+            # FIXME: why trigger twice drop event???
+            if t.length == 0
+                t = create_element(tag:'div', class: 'AppItem', name:id)
+                # create_img(src:icon, class:"AppItemImg", t)
+            else
+                t = t[0]
+            console.log("insert_indicator: #{@insert_indicator}")
             if @insert_indicator
                 @element.insertBefore(t, @insert_indicator)
             else
