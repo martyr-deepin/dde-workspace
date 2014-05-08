@@ -57,4 +57,4 @@ updatePanel = ->
     panel.updateWithAnimation()
     setTimeout(->
         panel.cancelAnimation()
-    , 150)
+    , 300)
