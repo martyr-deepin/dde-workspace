@@ -54,7 +54,7 @@ class User extends Widget
      
      isSupportGuest:->
         if is_support_guest and @accounts.isAllowGuest() is true
-            guest_image = "/var/lib/AccountsService/icons/guest.jpg"
+            guest_image = "/var/lib/AccountsService/icons/guest.png"
             echo "guest_image:#{guest_image}"
             u = new UserInfo(guest_id, guest_name, guest_image)
             @userinfo_all.push(u)

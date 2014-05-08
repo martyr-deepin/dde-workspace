@@ -112,7 +112,9 @@
 
 .userimg {
     border-radius:50%; 
-    overflow:hidden;
+    /*width:8em;*/
+    /*height:8em;*/
+    /*overflow:hidden;*/
 }
 
 .username_div {
