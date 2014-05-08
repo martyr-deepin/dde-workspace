@@ -21,13 +21,13 @@
 class UserMenu extends Widget
     constructor: (parent_el,@userinfo_all) ->
         super
+        echo "new UserMenu"
         @parent = parent_el
         @img_before = null
         @user_session = []
         @current_img_src = null
         if not @parent? then @parent = document.body
         @parent.appendChild(@element)
-        echo "new UserMenu"
         
     hide:->
         @element.style.display = "none"

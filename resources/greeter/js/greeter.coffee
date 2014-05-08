@@ -99,7 +99,7 @@ powermenu.new_power_menu()
 usermenu = null
 if user.userinfo_all.length > 1 and _current_user.is_logined
     echo "can new UserMenu"
-    _current_user.hide()
+    $("#div_users").style.display = "none"
     usermenu = new UserMenu(document.body,user.userinfo_all)
     usermenu.new_user_menu()
     usermenu.menuShow()

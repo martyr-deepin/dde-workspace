@@ -135,8 +135,9 @@ class MenuChoose extends Widget
             if i != 0 then return
             echo "animation_user_show(#{i})"
             @element.style.display = "none"
-            uid = localStorage.getItem("menu_current_id_user")
-            user?.switch_to_userinfo(uid)
+            if @frame_click
+                uid = localStorage.getItem("menu_current_id_user")
+                user?.switch_to_userinfo(uid)
             $("#div_users").style.display = "-webkit-box"
             jQuery('.div_users').delay(t_userinfo_show_delay).animate(
                 {opacity:'1.0';},
