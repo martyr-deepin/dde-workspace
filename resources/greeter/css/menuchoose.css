@@ -106,10 +106,43 @@
     cursor: pointer;
 }
 
-.opt_img{
+.opt_img_m0{
     margin-top:1em;
     width:8em;
     height:8em;
+}
+
+.img_div{
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+}
+
+
+.img_border{
+    border-radius:50%; 
+    overflow:hidden;
+    border:rgba(0,0,0,0.3) 0.2em solid;
+
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+}
+
+.img_background{
+    border-radius:50%; 
+    overflow:hidden;
+    border:white 0.3em solid;
+    /*background-color:white;*/
+    
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+}
+
+.opt_img_m1 {
+    border-radius:50%; 
+    overflow:hidden;
 }
 
 .opt_text{

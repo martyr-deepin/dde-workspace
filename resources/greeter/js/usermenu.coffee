@@ -58,7 +58,7 @@ class UserMenu extends Widget
             username = user.username
             usericon = user.usericon
             @ComboBox.insert(uid, username, usericon,usericon,usericon)
-        @ComboBox.frame_build()
+        @ComboBox.frame_build(1)
         @element.appendChild(@ComboBox.element)
         
 

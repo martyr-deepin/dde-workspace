@@ -229,7 +229,8 @@ class MenuChoose extends Widget
         @message_text_div = create_element("div","message_text_div",@message_div)
         @message_div.style.display = "none"
 
-    frame_build:(id,title,img)->
+
+    frame_build:(img_method)->
         @frame = create_element("div", "frame", @element)
         @button = create_element("div","button",@frame)
        
@@ -246,7 +247,24 @@ class MenuChoose extends Widget
             @opt[i].style.border = "1px solid rgba(255,255,255,0.0)"
             @opt[i].value = i
             
-            @opt_img[i] = create_img("opt_img",@img_url_normal[i],@opt[i])
+            switch img_method
+                when 0
+                    @opt_img[i] = create_img("opt_img_m0",@img_url_normal[i],@opt[i])
+                when 1
+                    img_div = create_element("div","img_div",@opt[i])
+                    img_border = create_element("div","img_border",img_div)
+                    img_background = create_element("div","img_background",img_border)
+                    @opt_img[i] = create_img("opt_img_m1", @img_url_normal[i], img_background)
+                    @opt_img[i].style.width = 110 * scaleFinal
+                    @opt_img[i].style.height = 110 * scaleFinal
+                    img_border.style.width = @opt_img[i].style.width + 16 * scaleFinal
+                    img_border.style.height = @opt_img[i].style.height + 16 * scaleFinal
+                    img_background.style.width = img_border.style.width - 3
+                    img_background.style.height = img_border.style.height - 3
+                else
+                    @opt_img[i] = create_img("opt_img_m0",@img_url_normal[i],@opt[i])
+
+            
             @opt_text[i] = create_element("div","opt_text",@opt[i])
             @opt_text[i].textContent = @option_text[i]
                 
@@ -372,8 +390,8 @@ class ComboBox extends Widget
     insert: (id, title, img_normal,img_hover,img_click)->
         @menu.insert(id, title, img_normal,img_hover,img_click)
     
-    frame_build:->
-        @menu.frame_build()
+    frame_build:(img_method = 0)->
+        @menu.frame_build(img_method)
     
     showMessage:(msg)->
         @menu.showMessage(msg)
