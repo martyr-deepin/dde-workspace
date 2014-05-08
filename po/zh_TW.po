@@ -79,7 +79,7 @@ msgstr "壓縮(_M)"
 #: ../resources/desktop/js/desktopentry.coffee:118
 #: ../resources/desktop/js/desktopentry.coffee:123
 msgid "_Extract"
-msgstr "解開(_E)"
+msgstr "解壓縮(_E)"
 
 #: ../resources/desktop/js/desktopentry.coffee:119
 #: ../resources/desktop/js/desktopentry.coffee:124
@@ -179,7 +179,7 @@ msgstr "訪客"
 
 #: ../resources/greeter/js/user.coffee:435
 msgid "click login button to log in"
-msgstr ""
+msgstr "點選登入按鈕以登入"
 
 #: ../resources/greeter/js/time.coffee:42
 msgid "Jan"
@@ -271,7 +271,7 @@ msgstr "暫停"
 
 #: ../resources/greeter/js/powermenu.coffee:87
 msgid "Enter your password to %1"
-msgstr ""
+msgstr "將您的密碼輸入到 %1"
 
 #: ../resources/greeter/js/greeter.coffee:58
 msgid ""
@@ -281,15 +281,15 @@ msgstr ""
 
 #: ../resources/launcher/js/item.coffee:269
 msgid "Send to d_esktop"
-msgstr "發送到桌面(_E)"
+msgstr "傳送到桌面(_E)"
 
 #: ../resources/launcher/js/item.coffee:272
 msgid "Send to do_ck"
-msgstr "添加到 Dock(_C)"
+msgstr "傳送到 Dock(_C)"
 
 #: ../resources/launcher/js/item.coffee:275
 msgid "_Uninstall"
-msgstr ""
+msgstr "解除安裝"
 
 #: ../resources/launcher/js/item.coffee:331
 msgid ""
@@ -304,12 +304,12 @@ msgstr "啟動器"
 
 #: ../resources/launcher/js/softwaremanager.coffee:78
 msgid "Uninstall failed"
-msgstr ""
+msgstr "移除失敗"
 
 #: ../resources/launcher/js/softwaremanager.coffee:78
 #, fuzzy
 msgid "Cannot find Deepin Software Center."
-msgstr "軟體中心"
+msgstr "找不到Deepin軟體中心"
 
 #: ../resources/launcher/js/const.coffee:64
 msgid "_Hide hidden icons"
@@ -353,7 +353,7 @@ msgstr "軟體中心"
 #: ../resources/zone/js/utils.coffee:10
 #, fuzzy
 msgid "All Windows"
-msgstr "新建视窗(_N)"
+msgstr "所有视窗(_N)"
 
 #: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:138
 msgid "Launcher"
@@ -361,23 +361,23 @@ msgstr "啟動器"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "Desktop"
-msgstr ""
+msgstr "桌面"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "None"
-msgstr ""
+msgstr "無"
 
 #: ../resources/dock/js/global_menu.coffee:12
 msgid "keep _showing"
-msgstr ""
+msgstr "持續顯示(_S)"
 
 #: ../resources/dock/js/global_menu.coffee:13
 msgid "keep _hidden"
-msgstr ""
+msgstr "持續隱藏(_H)"
 
 #: ../resources/dock/js/global_menu.coffee:14
 msgid "_auto hide"
-msgstr ""
+msgstr "自動隱藏(_A)"
 
 #: ../resources/dock/js/deepin_item.coffee:139
 msgid "_View as analog"
@@ -386,7 +386,7 @@ msgstr "顯示模擬時鍾"
 #: ../resources/dock/js/deepin_item.coffee:140
 #: ../resources/dock/js/deepin_item.coffee:188
 msgid "_Time settings"
-msgstr "时间設定(_D)"
+msgstr "時間設定(_D)"
 
 #: ../resources/dock/js/deepin_item.coffee:187
 msgid "_View as digit"
@@ -406,11 +406,11 @@ msgstr "%Y年%b%d日 %A"
 
 #: ../app/greeter/camera.c:47
 msgid "Oops...I can't recognize your face. "
-msgstr "糟糕～無法識別您的面部信息"
+msgstr "糟糕～無法識別您的臉部資訊"
 
 #: ../app/greeter/camera.c:175
 msgid "Please login with your password or click your picture to retry."
-msgstr "請使用密碼登入或點擊頭像重試"
+msgstr "請使用密碼登入或點選頭像重試"
 
 #: ../app/greeter/camera.c:235
 #, c-format
@@ -454,7 +454,7 @@ msgstr "程式啟動組"
 
 #: ../lib/dentry/fileops.c:568
 msgid "Move"
-msgstr ""
+msgstr "移動"
 
 #: ../lib/dentry/fileops.c:776
 msgid "Copy"
@@ -540,7 +540,7 @@ msgstr "替換將移除資料夾中的所有檔案。"
 #: ../lib/dentry/fileops_error_dialog.c:241
 #, fuzzy, c-format
 msgid "Do you want to replace folder \"%s\"?"
-msgstr "替換檔案「%s」？"
+msgstr "取代檔案「%s」？"
 
 #: ../lib/dentry/fileops_error_dialog.c:243
 #, c-format
@@ -718,7 +718,7 @@ msgstr "其他"
 
 #, fuzzy
 #~ msgid "_Time as settings"
-#~ msgstr "时间設定(_D)"
+#~ msgstr "時間設定(_D)"
 
 #~ msgid "suspend"
 #~ msgstr "暫停"
@@ -730,14 +730,14 @@ msgstr "其他"
 #~ msgstr "該連結已經失效，是否要刪除？"
 
 #~ msgid "another systray is already running..."
-#~ msgstr "另一個託盤程式正在運行..."
+#~ msgstr "另一個託盤程式正在執行..."
 
 #~ msgid "another instance of dock is running...\n"
-#~ msgstr "已有一個應用程式Dock例程正在運行...\n"
+#~ msgstr "已有一個應用程式Dock例程正在執行...\n"
 
 #, fuzzy
 #~ msgid "another instance of launcher is running..."
-#~ msgstr "已有一個應用程式啟動器例程正在運行...\n"
+#~ msgstr "已有一個應用程式啟動器例程正在執行...\n"
 
 #~ msgid ""
 #~ "This *.desktop file cannot be changed to the name \"%s\".You may not have "
@@ -748,7 +748,7 @@ msgstr "其他"
 #~ msgstr "移動"
 
 #~ msgid "Replace folder \"%s\"?"
-#~ msgstr "替換資料夾「%s」？"
+#~ msgstr "取代資料夾「%s」？"
 
 #, fuzzy
 #~ msgid "shut down"
@@ -758,7 +758,7 @@ msgstr "其他"
 #~ msgstr "顯示/隱藏桌面"
 
 #~ msgid "Type to search..."
-#~ msgstr "鍵入要搜尋的關鍵字..."
+#~ msgstr "輸入要搜尋的關鍵字..."
 
 #~ msgid "Sort By _Frequency"
 #~ msgstr "依使用頻率排序(_F)"
