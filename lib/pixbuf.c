@@ -71,9 +71,19 @@ static void change_corner_alpha (GdkPixbuf* pixbuf, float fa)
 
 char* generate_directory_icon(const char* p1, const char* p2, const char* p3, const char* p4)
 {
-#define write_to_canvas(dest, src, x, y) \
+
+#define width_rd 16//richdir小图像的width height 相同
+#define height_rd 16
+#define center 2//四个图像中间的 "+" 字间距
+#define border 3//上下左右的空白区域
+#define offset_xy 4//richdir_background 白色border的width*2,导致xy需要偏移一下
+
+#define write_to_canvas(src, dest, x, y) \
     change_corner_alpha (src, 0.1); \
-    gdk_pixbuf_composite(src, dest, x+1, y+1, 17-2, 17-2, x, y, 1, 1, GDK_INTERP_HYPER, 255);
+    gdk_pixbuf_composite(src, dest, \
+            x+offset_xy, y+offset_xy, width_rd, height_rd, \
+            x+offset_xy, y+offset_xy, 1, 1, \
+            GDK_INTERP_HYPER, 255);
 
     GError* error = NULL;
     
@@ -95,7 +105,7 @@ char* generate_directory_icon(const char* p1, const char* p2, const char* p3, co
         error = NULL;
         GdkPixbuf* icon = gdk_pixbuf_new_from_file_at_scale(p1, 17, -1, TRUE, &error);
         if (error==NULL) {
-            write_to_canvas(bg, icon, 6+1, 6);
+            write_to_canvas(icon, bg, border, border);
             g_object_unref(icon);
         } else {
             g_debug("generate_directory_icon: %s", error->message);
@@ -107,7 +117,7 @@ char* generate_directory_icon(const char* p1, const char* p2, const char* p3, co
         error = NULL;
         GdkPixbuf* icon = gdk_pixbuf_new_from_file_at_scale(p2, 17, -1, TRUE, &error);
         if (error==NULL) {
-            write_to_canvas(bg, icon, 6+17 + 1, 6);
+            write_to_canvas(icon, bg, border+width_rd+center, border);
             g_object_unref(icon);
         } else {
             g_debug("generate_directory_icon icon 2: %s fail\n", p2);
@@ -119,7 +129,7 @@ char* generate_directory_icon(const char* p1, const char* p2, const char* p3, co
         error = NULL;
         GdkPixbuf* icon = gdk_pixbuf_new_from_file_at_scale(p3, 17, -1, TRUE, &error);
         if (error==NULL) {
-            write_to_canvas(bg, icon, 6+1, 6+17);
+            write_to_canvas(icon, bg, border, border + height_rd + center);
             g_object_unref(icon);
         } else {
             g_debug("generate_directory_icon icon 3: %s fail\n", p3);
@@ -131,7 +141,7 @@ char* generate_directory_icon(const char* p1, const char* p2, const char* p3, co
         error = NULL;
         GdkPixbuf* icon = gdk_pixbuf_new_from_file_at_scale(p4, 17, -1, TRUE, &error);
         if (error==NULL) {
-            write_to_canvas(bg, icon, 6+17 + 1, 6+17);
+            write_to_canvas(icon, bg, border+width_rd+center, border + height_rd + center);
             g_object_unref(icon);
         } else {
             g_debug("generate_directory_icon icon 4: %s fail\n", p4);
