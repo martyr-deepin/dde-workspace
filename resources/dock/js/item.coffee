@@ -39,7 +39,7 @@ class Item extends Widget
         e = document.getElementsByName(@id)
         if e.length != 0
             e = e[0]
-            console.log("find indicator")
+            console.log("find insert indicator")
             e.parentNode.insertBefore(@element, e)
             e.parentNode.removeChild(e)
             sortDockedItem()

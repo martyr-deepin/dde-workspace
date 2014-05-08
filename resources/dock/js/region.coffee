@@ -44,6 +44,7 @@ update_dock_region = do->
             app_len = ICON_SCALE * ITEM_WIDTH * apps.length
             left_offset = (screen.width - app_len) / 2
             panel_width = ICON_SCALE * ITEM_WIDTH * apps.length + PANEL_MARGIN * 2
+            console.log("set dock region height to #{DOCK_HEIGHT}")
             DCore.Dock.force_set_region(left_offset, 0, ICON_SCALE * ITEM_WIDTH * apps.length, panel_width, DOCK_HEIGHT)
 
 _b.onresize = ->
