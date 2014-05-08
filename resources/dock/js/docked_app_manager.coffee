@@ -35,7 +35,7 @@ dockedAppManager?.connect("Docked", (id)->
 )
 dockedAppManager?.connect("Undocked", (id)->
     console.log("Undocked #{id}")
-    Widget.look_up(id).destroy()
+    Widget.look_up(id)?.destroy()
     delete $DBus[id]
     # $("#app_list").removeChild($("##{id}"))
     calc_app_item_size()

@@ -8,22 +8,18 @@ class AppList
         @element.addEventListener("dragover", @on_dragover)
         @element.addEventListener("dragleave", @on_dragleave)
         @element.addEventListener("drop", @on_drop)
-        # prevent the whole list is dragged.
-        @element.addEventListener("dragstart", (e)->e.preventDefault())
-        @element.draggable = true
-        @insert_indicator = null
-        # @insert_indicator = create_element(tag:"div", class:"InsertIndicator")
-        # @insert_indicator.addEventListener("webkitTransitionEnd", (e)=>
-        #     panel.cancelAnimation()
-        #     console.log("transition end")
-        #     update_dock_region()
-        #     if @is_insert_indicator_shown
-        #         return
-        #     console.log("remove child from app list")
-        #     @element.removeChild(@insert_indicator)
-        # )
+        # @insert_indicator = create_element(tag:"div", id:'insert_indicator', class:"AppItem")
+        # create_img(src:'', @insert_indicator)
+        @insert_anchor_item = null
         @_insert_anchor_item = null
         @is_insert_indicator_shown = false
+
+    # setInsertIndicator: (dataUrl)->
+    #     console.log("setInsertIndicator")
+    #     $("#insert_indicator").firstChild.src = dataUrl
+
+    setInsertAnchor: (el)->
+        @insert_anchor_item = el
 
     append: (c)->
         if @_insert_anchor_item and @_insert_anchor_item.element.parentNode == @element
@@ -46,16 +42,13 @@ class AppList
         _lastHover?.reset()
         dt = e.dataTransfer
         if dnd_is_desktop(e)
-            console.log("is desktop")
-            # icon = dt.getData("ItemIcon")
-            # console.log("get icon: #{icon}")
+            # console.log("is desktop")
             path = dt.getData("text/uri-list").substring("file://".length).trim()
             id = get_path_name(path)
             t = document.getElementsByName(id)
             # FIXME: why trigger twice drop event???
             if t.length == 0
                 t = create_element(tag:'div', class: 'AppItem', name:id)
-                # create_img(src:icon, class:"AppItemImg", t)
             else
                 t = t[0]
             console.log("insert_indicator: #{@insert_indicator}")
@@ -63,13 +56,21 @@ class AppList
                 @element.insertBefore(t, @insert_indicator)
             else
                 @element.appendChild(t)
+
+            # # FIXME: why using @insert_indicator will insert two item???
+            # @insert_indicator.setAttribute('name', id)
+            # console.log(@insert_indicator)
+            # if @insert_anchor_item
+            #     @element.insertBefore(@insert_indicator, @insert_anchor_item)
+            # else
+            #     @element.appendChild(@insert_indicator)
             dockedAppManager?.Dock(id, "", "", "")
         else if dnd_is_deepin_item(e)# and @insert_indicator.parentNode == @element
             _dragToBack = false
             id = dt.getData(DEEPIN_ITEM_ID)
             item = Widget.look_up(id) or Widget.look_up("le_"+id)
-            if @insert_indicator
-                @element.insertBefore(item.element, @insert_indicator)
+            if @insert_anchor_item
+                @element.insertBefore(item.element, @insert_anchor_item)
             else
                 @element.appendChild(item.element)
             sortDockedItem()
@@ -125,17 +126,6 @@ class AppList
             if el.parentNode.id != "app_list"
                 el = null
             return
-            # console.log("get element")
-            # console.log(el)
-            # if el == null or el.id != try_insert_id
-            #     console.log(el)
-            #     clearTimeout(showIndicatorTimer || null)
-            #     # to avoid insert to indicator
-            #     # FIXME: why???
-            #     showIndicatorTimer = setTimeout(=>
-            #         console.log("show indicator")
-            #         # @show_indicator(el, try_insert_id)
-            #     , 10)
 
     on_dragleave: (e)=>
         clearTimeout(showIndicatorTimer)
@@ -148,7 +138,10 @@ class AppList
         e.stopPropagation()
         e.preventDefault()
         DCore.Dock.require_all_region()
-        # @on_dragover(e)
+        # if dnd_is_deepin_item(e) or dnd_is_desktop(e)
+        #     dataUrl = e.dataTransfer.getData("ItemIcon")
+        #     console.log(dataUrl)
+        #     @setInsertIndicator(dataUrl)
 
     swap_item: (src, dest)->
         swap_element(src.element, dest.element)
