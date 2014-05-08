@@ -142,7 +142,9 @@
 
 .opt_img_m1 {
     border-radius:50%; 
-    overflow:hidden;
+    width:8em;
+    height:8em;
+    /*overflow:hidden;*/
 }
 
 .opt_text{
