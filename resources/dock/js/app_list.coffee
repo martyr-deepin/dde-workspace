@@ -51,9 +51,9 @@ class AppList
                 t = create_element(tag:'div', class: 'AppItem', name:id)
             else
                 t = t[0]
-            console.log("insert_indicator: #{@insert_indicator}")
-            if @insert_indicator
-                @element.insertBefore(t, @insert_indicator)
+            console.log("insert_anchor_item: #{@insert_anchor_item}")
+            if @insert_anchor_item
+                @element.insertBefore(t, @insert_anchor_item)
             else
                 @element.appendChild(t)
 
@@ -99,34 +99,36 @@ class AppList
             try_insert_id = dt.getData(DEEPIN_ITEM_ID)
 
             dt.dropEffect = "copy"
-            step = 6
+            # step = 6
             x = e.x
             y = e.y
             if e.y > screen.height - DOCK_HEIGHT + ITEM_HEIGHT
                 y -= ITEM_HEIGHT / 2
 
-            el = null
-            while 1
-                x -= step
-                el = document.elementFromPoint(x, y)
-                return if not el
-                if el.classList?.contains("AppItemImg")
-                    id = el.parentNode.parentNode.parentNode.id
-                    console.log(id)
-                    if id == try_insert_id
-                        return
-                    break
+            el = getPreviousSiblingFromPoint(x, y, try_insert_id)
+            # el = null
+            # while 1
+            #     x -= step
+            #     el = document.elementFromPoint(x, y)
+            #     return if not el
+            #     if el.classList?.contains("AppItemImg")
+            #         id = el.parentNode.parentNode.parentNode.id
+            #         console.log(id)
+            #         if id == try_insert_id
+            #             return
+            #         break
                 # else if el.tagName = "BODY"
                 #     return
             x = e.x
-            while 1
-                x += step
-                el = document.elementFromPoint(x, y)
-                if el.classList.contains("AppItemImg")
-                    break
-                else if el.tagName == "BODY"
-                    el = null
-                    break
+            el = getNextSiblingFromPoint(x, y, try_insert_id)
+            # while 1
+            #     x += step
+            #     el = document.elementFromPoint(x, y)
+            #     if el.classList.contains("AppItemImg")
+            #         break
+            #     else if el.tagName == "BODY"
+            #         el = null
+            #         break
             el = el.parentNode.parentNode.parentNode if el
             if el.parentNode.id != "app_list"
                 el = null

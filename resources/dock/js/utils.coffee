@@ -58,3 +58,31 @@ updatePanel = ->
     setTimeout(->
         panel.cancelAnimation()
     , 300)
+
+
+getSiblingFromPoint = (x, y, sentinel, step, stepHandler)->
+    el = null
+    while 1
+        x = stepHandler(x, step)
+        el = document.elementFromPoint(x, y)
+        console.log("#{x}, #{y}")
+        console.log(el)
+        if not el
+            console.log("failed")
+            return null if not el
+        if el.classList?.contains("AppItemImg")
+            id = el.parentNode.parentNode.parentNode.id
+            console.log(id)
+            if id == sentinel
+                console.log("get self")
+                return null
+            return el
+        else if el.tagName == "BODY"
+            console.log("FOUND BODY")
+            return null
+
+getPreviousSiblingFromPoint = (x, y, sentinel, step=6)->
+    getSiblingFromPoint(x, y, sentinel, step, (x, step)->x - step)
+
+getNextSiblingFromPoint = (x, y, sentinel, step=6)->
+    getSiblingFromPoint(x, y, sentinel, step, (x, step)->x + step)
