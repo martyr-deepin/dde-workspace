@@ -20,7 +20,7 @@
  **/
 #include "pixbuf.h"
 #include <gdk-pixbuf/gdk-pixbuf.h>
-#include "bg_pixbuf.c"
+/*#include "bg_pixbuf.c"*/
 
 static void change_corner_alpha (GdkPixbuf* pixbuf, float fa)
 {
