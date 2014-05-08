@@ -29,6 +29,7 @@ class Application extends DesktopEntry
 
 
     set_icon : (src = null) =>
+        echo "set_icon:#{src}"
         if src == null
             if (icon = DCore.DEntry.get_icon(@_entry)) == null
                 icon = DCore.get_theme_icon("invalid-dock_app", D_ICON_SIZE_NORMAL)
@@ -130,6 +131,7 @@ class Application extends DesktopEntry
 
 
     animate_combining : =>
+        echo "animate_combining"
         @animate_background = document.createElement("div")
         @animate_background.style.position = "absolute"
         @animate_background.style.pointerEvents = "none"
@@ -147,6 +149,7 @@ class Application extends DesktopEntry
         img_item.style.position = "absolute"
         img_item.style.webkitTransition = "width 0.2s, height 0.2s"
         img_item.src = @item_icon.src
+        echo img_item.src
         @animate_background.appendChild(img_item)
         img_item.addEventListener("load", =>
             img_item.style.width = "20px"

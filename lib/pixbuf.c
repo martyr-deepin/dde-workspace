@@ -75,9 +75,21 @@ char* generate_directory_icon(const char* p1, const char* p2, const char* p3, co
     change_corner_alpha (src, 0.1); \
     gdk_pixbuf_composite(src, dest, x+1, y+1, 17-2, 17-2, x, y, 1, 1, GDK_INTERP_HYPER, 255);
 
-    GdkPixbuf *bg = gdk_pixbuf_new_from_inline(-1, dir_bg_4, TRUE, NULL);
-
     GError* error = NULL;
+    
+    const char *bg_name="/usr/share/dde/resources/desktop/img/richdir_background.png";
+    //method 1:
+    GdkPixbuf *bg = gdk_pixbuf_new_from_file_at_scale(bg_name, 48, -1, TRUE, &error);
+    //method 2:
+    //can use gdk_pixbuf_csource to get dir_bg_4 
+    //and write it to bg_pixbuf.c
+    /*GdkPixbuf *bg = gdk_pixbuf_new_from_inline(-1, dir_bg_4, TRUE, &error);*/
+    if (error!=NULL) {
+        g_debug("generate_directory_icon richdir_background: %s", error->message);
+        g_debug("generate_directory_icon icon bg: %s fail\n", bg_name);
+        return NULL;
+    }
+
     g_assert(bg !=NULL);
     if (p1 != NULL) {
         error = NULL;

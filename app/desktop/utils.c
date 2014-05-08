@@ -105,11 +105,14 @@ Entry* desktop_get_computer_entry()
 }
 char* desktop_get_transient_icon (Entry* p1)
 {
+    g_message("desktop_get_transient_icon");
     char* ticon_path = NULL;
     char* p1_path = dentry_get_icon_path(p1);
+    g_message("p1_path:%s",p1_path);
     ticon_path = generate_directory_icon(p1_path, NULL, NULL, NULL);
     g_free (p1_path);
 
+    g_message("return ticon_path:%s",ticon_path);
     return ticon_path;
 }
 
