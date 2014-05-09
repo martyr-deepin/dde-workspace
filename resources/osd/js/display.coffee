@@ -58,7 +58,7 @@ class Display extends Widget
 
     getDBus:->
         try
-            @DBusDisplay = get_dbus("session", DISPLAY, "Monitors")
+            @DBusDisplay = DCore.DBus.session(DISPLAY)
             @Monitors = @DBusDisplay.Monitors
             @DisplayMode = @DBusDisplay.DisplayMode
             @HasChanged = @DBusDisplay.HasChanged
@@ -69,8 +69,11 @@ class Display extends Widget
         try
             for path in @Monitors
                 DISPLAY_MONITORS.path = path
-                DBusMonitor = get_dbus("session", DISPLAY_MONITORS, "FullName")
-                echo DBusMonitor
+                DBusMonitor = DCore.DBus.session_object(
+                    DISPLAY_MONITORS.name,
+                    DISPLAY_MONITORS.path,
+                    DISPLAY_MONITORS.interface
+                )
                 @DBusMonitors.push(DBusMonitor)
                 @MonitorsName.push(DBusMonitor.FullName)
                 if DBusMonitor.Opened

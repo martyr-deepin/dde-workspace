@@ -17,7 +17,11 @@ class Keyboard
 
     getDBus: ->
         try
-            @DBusKeyboard = get_dbus("session",KEYBOARD,"UserLayoutList")
+            @DBusKeyboard = DCore.DBus.session_object(
+                KEYBOARD.name,
+                KEYBOARD.path,
+                KEYBOARD.interface
+            )
             @CurrentLayout = @getCurrentLayout()
             @getAllLayoutList()
         catch e

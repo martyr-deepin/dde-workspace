@@ -22,7 +22,7 @@ zoneDBus = null
 getZoneDBus = ->
     ZONE = "com.deepin.daemon.Zone"
     try
-        zoneDBus = get_dbus("session", ZONE, "EnableZoneDetected")
+        zoneDBus = DCore.DBus.session(ZONE)
     catch e
         echo "zoneDBus #{ZONE} error : #{e}"
 

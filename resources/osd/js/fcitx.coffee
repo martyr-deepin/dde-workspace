@@ -44,12 +44,20 @@ class Fcitx
 
     getDBus:->
         try
-            @DBusStatus = get_dbus("session", FCITX_STATUS, "Menu")
+            @DBusStatus = DCore.DBus.session_object(
+                FCITX_STATUS.name,
+                FCITX_STATUS.path,
+                FCITX_STATUS.interface
+            )
         catch e
             echo "DBusStatus :#{FCITX_STATUS.interface} ---#{e}---"
 
         try
-            @DBusIM = get_dbus("session", FCITX_INPUTMETHOD, "IMList")
+            @DBusIM = DCore.DBus.session_object(
+                FCITX_INPUTMETHOD.name,
+                FCITX_INPUTMETHOD.path,
+                FCITX_INPUTMETHOD.interface
+            )
             @IMList = @DBusIM.IMList
             @IMTrueList.push(im) for im in @IMList when im[3]
             echo @IMTrueList
@@ -59,7 +67,11 @@ class Fcitx
             echo "DBusIM :#{FCITX_INPUTMETHOD.interface} ---#{e}---"
 
         try
-            @DBusLayout = get_dbus("session", FCITX_KEYBOARD, "GetLayouts_sync")
+            @DBusLayout = DCore.DBus.session_object(
+                FCITX_KEYBOARD.name,
+                FCITX_KEYBOARD.path,
+                FCITX_KEYBOARD.interface
+            )
             @Layouts = @DBusLayout.GetLayouts_sync()
         catch e
             echo "DBusLayout :#{FCITX_KEYBOARD.interface} ---#{e}---"

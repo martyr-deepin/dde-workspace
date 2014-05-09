@@ -31,6 +31,7 @@ class SwitchUser extends Widget
         draw_camera_id = null
         document.body.style.fontSize = "62.5%"
         @accounts = new Accounts(APP_NAME)
+        @switch_dbus = get_dbus("system",DisplayManager,"CanSwitch")
 
     button_switch:->
         @users_id = @accounts.users_id
@@ -55,9 +56,8 @@ class SwitchUser extends Widget
         echo "SwitchToGreeter"
         try
             enableZoneDetect(true)
-            switch_dbus = get_dbus("system",DisplayManager,"CanSwitch")
-            if switch_dbus.CanSwitch
-                switch_dbus.SwitchToGreeter()
+            if @switch_dbus?.CanSwitch
+                @switch_dbus.SwitchToGreeter()
             else
                 DCore.Lock.switch_user()
         catch error
@@ -67,9 +67,7 @@ class SwitchUser extends Widget
 
     SwitchToUser:(username,session_name)->
         try
-            switch_dbus = get_dbus("system",DisplayManager,"SwitchToUser")
-            switch_dbus.SwitchToUser_sync(username,session_name)
-            echo switch_dbus
+            @switch_dbus.SwitchToUser_sync(username,session_name)
         catch error
             echo "can not find the switch dbus,perhaps you only have one userAccount!"
             return false

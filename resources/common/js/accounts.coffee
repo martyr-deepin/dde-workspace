@@ -57,7 +57,7 @@ class Accounts
             echo "Dbus_Account #{ACCOUNTS_DAEMON} ERROR: #{e}"
 
         try
-            @Dbus_Graphic = get_dbus("session", GRAPHIC, "BackgroundBlurPictPath_sync")
+            @Dbus_Graphic = get_dbus("session", GRAPHIC, "BackgroundBlurPictPath")
         catch e
             echo "#{GRAPHIC} dbus ERROR: #{e}"
 
