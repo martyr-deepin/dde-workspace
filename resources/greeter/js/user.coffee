@@ -213,23 +213,27 @@ class UserInfo extends Widget
         ###------set width height left top--------####
         @face_recognize_div.style.display = "block"
         div_users_width = $("#div_users").clientWidth
-        face_recognize_width = 135 * scaleFinal
-        face_recognize_height = 135 * scaleFinal
+        face_recognize_width = 135
+        face_recognize_height = 135
+        
+        face_recognize_width = @face_recognize_div.style.width
+        face_recognize_height = @face_recognize_div.style.height
+
         face_recognize_left = (div_users_width - face_recognize_width) / 2
-        face_recognize_top = -7.5 * scaleFinal
+        face_recognize_top = -7.5
         echo "(#{div_users_width} - #{face_recognize_width})/2 = #{face_recognize_left}"
-        @face_recognize_div.style.width = face_recognize_width
-        @face_recognize_div.style.height = face_recognize_height
-        @face_recognize_div.style.left = face_recognize_left
-        @face_recognize_div.style.top = face_recognize_top
+        #@face_recognize_div.style.width = face_recognize_width
+        #@face_recognize_div.style.height = face_recognize_height
+        @face_recognize_div.style.left = "#{face_recognize_left / 10}em"
+        @face_recognize_div.style.top = "-0.75em"
         @face_recognize_div.style.display = "none"
         
-        @userimg.style.width = 110 * scaleFinal
-        @userimg.style.height = 110 * scaleFinal
-        @userimg_border.style.width = @userimg.style.width + 16 * scaleFinal
-        @userimg_border.style.height = @userimg.style.height + 16 * scaleFinal
-        @userimg_background.style.width = @userimg_border.style.width - 3
-        @userimg_background.style.height = @userimg_border.style.height - 3
+        #@userimg.style.width = 110 * scaleFinal
+        #@userimg.style.height = 110 * scaleFinal
+        #@userimg_border.style.width = @userimg.style.width + 16 * scaleFinal
+        #@userimg_border.style.height = @userimg.style.height + 16 * scaleFinal
+        #@userimg_background.style.width = @userimg_border.style.width - 3
+        #@userimg_background.style.height = @userimg_border.style.height - 3
 
         #@loginAnimation()
     
