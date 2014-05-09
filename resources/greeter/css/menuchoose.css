@@ -120,9 +120,11 @@
 
 
 .img_border{
+    width:8.96em;
+    height:8.96em;
     border-radius:50%; 
     overflow:hidden;
-    border:rgba(0,0,0,0.3) 0.2em solid;
+    /*border:rgba(0,0,0,0.3) 0.2em solid;*/
 
     display:-webkit-box;
     -webkit-box-pack:center;
