@@ -42,7 +42,8 @@ class Message extends Widget
         for text,i in @text
             echo text
             @text_li[i] = create_element("li","text_li",@title_ol)
-            @text_li.innerText = text
+            jQuery(@text_li).attr("title",text)
+            #@text_li.title = text
     
     setZIndex: (zIndex = 65530) ->
         @element.style.position = "relative"

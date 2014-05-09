@@ -68,10 +68,6 @@ desktopmenu = null
 if greeter.sessions.length > 1
     desktopmenu = new DesktopMenu($("#div_desktop"))
     desktopmenu.new_desktop_menu()
-else if greeter.session.length == 1
-    $("#div_desktop").style.display = "none"
-else if greeter.session.length == 0
-    return
 
 user = new User()
 $("#div_users").appendChild(user.element)
@@ -105,7 +101,7 @@ else
     $("#div_userswitch").style.display = "none"
     $("#div_desktop").style.right = "11em"
 
-dcument.body.addEventListener("keydown",(e)->
+document.body.addEventListener("keydown",(e)->
     try
         if is_greeter
             echo "greeter keydown"
