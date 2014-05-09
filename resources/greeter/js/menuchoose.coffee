@@ -256,12 +256,12 @@ class MenuChoose extends Widget
                     img_border = create_element("div","img_border",img_div)
                     img_background = create_element("div","img_background",img_border)
                     @opt_img[i] = create_img("opt_img_m1", @img_url_normal[i], img_background)
-                    @opt_img[i].style.width = 110 * scaleFinal
-                    @opt_img[i].style.height = 110 * scaleFinal
-                    img_border.style.width = @opt_img[i].style.width + 16 * scaleFinal
-                    img_border.style.height = @opt_img[i].style.height + 16 * scaleFinal
-                    img_background.style.width = img_border.style.width - 3
-                    img_background.style.height = img_border.style.height - 3
+                    #@opt_img[i].style.width = 110 * scaleFinal
+                    #@opt_img[i].style.height = 110 * scaleFinal
+                    #img_border.style.width = @opt_img[i].style.width + 16 * scaleFinal
+                    #img_border.style.height = @opt_img[i].style.height + 16 * scaleFinal
+                    #img_background.style.width = img_border.style.width - 3
+                    #img_background.style.height = img_border.style.height - 3
                 else
                     @opt_img[i] = create_img("opt_img_m0",@img_url_normal[i],@opt[i])
 

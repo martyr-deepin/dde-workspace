@@ -195,7 +195,7 @@ class UserInfo extends Widget
         #@face_recognize_border = create_img("face_recognize_div","images/userinfo/facelogin_boder.png",@face_recognize_div)
         @face_recognize_img = create_img("face_recognize_img","images/userinfo/facelogin_animation.png",@face_recognize_div)
         
-        @userimg_div = create_element("div","userimg_div",@userbase)
+        @userimg_div = create_element("div","userimg_div",@face_recognize_div)
         @userimg_border = create_element("div","userimg_border",@userimg_div)
         @userimg_background = create_element("div","userimg_background",@userimg_border)
         @userimg = create_img("userimg", @usericon, @userimg_background)
@@ -209,27 +209,31 @@ class UserInfo extends Widget
         @element.appendChild(@login.element)
         @login.hide()
 
+        @face_recognize_div.style.display = "block"
+        @face_recognize_img.style.display = "none"
 
         ###------set width height left top--------####
-        @face_recognize_div.style.display = "block"
-        div_users_width = $("#div_users").clientWidth
-        face_recognize_width = 135 * scaleFinal
-        face_recognize_height = 135 * scaleFinal
-        face_recognize_left = (div_users_width - face_recognize_width) / 2
-        face_recognize_top = -7.5 * scaleFinal
-        echo "(#{div_users_width} - #{face_recognize_width})/2 = #{face_recognize_left}"
-        @face_recognize_div.style.width = face_recognize_width
-        @face_recognize_div.style.height = face_recognize_height
-        @face_recognize_div.style.left = face_recognize_left
-        @face_recognize_div.style.top = face_recognize_top
-        @face_recognize_div.style.display = "none"
+        #div_users_width = $("#div_users").clientWidth
+        #face_recognize_width = 135 * scaleFinal
+        #face_recognize_height = 135 *  scaleFinal
         
-        @userimg.style.width = 110 * scaleFinal
-        @userimg.style.height = 110 * scaleFinal
-        @userimg_border.style.width = @userimg.style.width + 16 * scaleFinal
-        @userimg_border.style.height = @userimg.style.height + 16 * scaleFinal
-        @userimg_background.style.width = @userimg_border.style.width - 3
-        @userimg_background.style.height = @userimg_border.style.height - 3
+        #face_recognize_width = @face_recognize_div.style.width
+        #face_recognize_height = @face_recognize_div.style.height
+
+        #face_recognize_left = (div_users_width - face_recognize_width) / 2
+        #face_recognize_top = -7.5
+        #echo "(#{div_users_width} - #{face_recognize_width})/2 = #{face_recognize_left}"
+        #@face_recognize_div.style.width = face_recognize_width
+        #@face_recognize_div.style.height = face_recognize_height
+        #@face_recognize_div.style.left = face_recognize_left
+        #@face_recognize_div.style.top = face_recognize_left 
+        
+        #@userimg.style.width = 110 * scaleFinal
+        #@userimg.style.height = 110 * scaleFinal
+        #@userimg_border.style.width = @userimg.style.width + 16 * scaleFinal
+        #@userimg_border.style.height = @userimg.style.height + 16 * scaleFinal
+        #@userimg_background.style.width = @userimg_border.style.width - 3
+        #@userimg_background.style.height = @userimg_border.style.height - 3
 
         #@loginAnimation()
     
@@ -294,9 +298,9 @@ class UserInfo extends Widget
         echo "loginAnimation"
         rotate = 0
         rotate_animation = =>
-            @face_recognize_div.style.display = "block"
+            @face_recognize_img.style.display = "block"
             @face_animation_interval = setInterval(=>
-                rotate = (rotate + 5 * scaleFinal) % 360
+                rotate = (rotate + 10 * scaleFinal) % 360
                 animation_rotate(@face_recognize_img,rotate)
             ,20)
         
@@ -305,7 +309,7 @@ class UserInfo extends Widget
     
     loginAnimationClear: ->
         echo "loginAnimationClear"
-        @face_recognize_div.style.display = "none"
+        @face_recognize_img.style.display = "none"
         clearTimeout(@auth_timeout) if @auth_timeout
         clearInterval(@face_animation_interval) if @face_animation_interval
 

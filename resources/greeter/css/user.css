@@ -67,21 +67,29 @@
 }
 
 .face_recognize_div{
-    position:absolute;
-
-}
-
-.face_recognize_border{
+    width:13.0em;
+    height:13.0em;
+    
+    display:-webkit-box;
+    -webkit-box-align:center;
+    -webkit-box-orient:vertical;
 }
 
 .face_recognize_img{
+    position:fixed;
+    z-index:10;
+
+    width:13.0em;
+    height:13.0em;
 }
 
 
 
 .userimg_div{
-    position:relative;
-    /*width 100%;*/
+    position:fixed;
+    z-index:20;
+    width:13.0em;
+    height:13.0em;
     
     display:-webkit-box;
     -webkit-box-pack:center;
@@ -90,9 +98,11 @@
 
 
 .userimg_border{
+    width:12.2em;
+    height:12.2em;
     border-radius:50%; 
     overflow:hidden;
-    border:rgba(0,0,0,0.3) 0.2em solid;
+    /*border:rgba(0,0,0,0.3) 0.2em solid;*/
 
     display:-webkit-box;
     -webkit-box-pack:center;
@@ -100,6 +110,8 @@
 }
 
 .userimg_background{
+    /*width:11.6em;*/
+    /*height:11.6em;*/
     border-radius:50%; 
     overflow:hidden;
     border:white 0.3em solid;
@@ -112,8 +124,8 @@
 
 .userimg {
     border-radius:50%; 
-    /*width:8em;*/
-    /*height:8em;*/
+    width:11em;
+    height:11em;
     /*overflow:hidden;*/
 }
 
