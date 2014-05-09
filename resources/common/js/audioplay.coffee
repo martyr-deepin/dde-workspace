@@ -18,77 +18,100 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class AudioPlay
-    default_audio_player_name = null
-    default_audio_player_icon = null
-    Metadata = null
-    launched_status = false
+
+    MPRIS_DBUS_MIN = "org.mpris.MediaPlayer2."
+
+    DBUS =
+        name:"org.freedesktop.DBus"
+        path:"/"
+        interface:"org.freedesktop.DBus"
+
+    MPRIS_DBUS =
+        name:"org.mpris.MediaPlayer2.dmusic"
+        path:"/org/mpris/MediaPlayer2"
+        interface:"org.mpris.MediaPlayer2.Player"
 
     constructor: ->
-        try
-            mpris = @get_mpris_dbus()
-            if not mpris? then return
-            echo mpris
-            @mpris_dbus = get_dbus("session",
-                name:"#{mpris}",
-                path:"/org/mpris/MediaPlayer2",
-                interface:"org.mpris.MediaPlayer2.Player",
-                "PlaybackStatus"
-            )
-            launched_status = true
-        catch error
-            launched_status = false
-            echo "@mpris_dbus is null ,the player isnt launched!"
+        @mpris_all = []
+        @mpris_dbus = null
+        @launched_status = false
+        
+        @now_mpris = @get_mpris_now()
+        @now_mpris_dbus_name = @now_mpris.mpris
+        @now_mpris_name = @now_mpris.name
+        echo "@now_mpris:#{@now_mpris_name}:#{@now_mpris_dbus_name}"
+        @mpris_dbus = @get_mpris_dbus(@now_mpris_dbus_name)
 
-
-    get_mpris_dbus:->
-        @mpris_dbus_min = "org.mpris.MediaPlayer2."
-        dbus_all = []
-        @mpris_dbus_all = []
-        freedesktop_dbus = get_dbus("session",
-            name:"org.freedesktop.DBus",
-            path:"/",
-            interface:"org.freedesktop.DBus",
-            "ListNames_sync"
+    get_mpris_now:->
+        #1.get all dbus_name_all and then search for MPRIS_DBUS_MIN
+        freedesktop_dbus = DCore.DBus.session_object(
+            DBUS.name,
+            DBUS.path,
+            DBUS.interface
         )
-        dbus_all = freedesktop_dbus.ListNames_sync()
-        for dbus in dbus_all
-            index = dbus.indexOf(@mpris_dbus_min)
+        dbus_name_all = []
+        dbus_name_all = freedesktop_dbus.ListNames_sync()
+        for dbus in dbus_name_all
+            index = dbus.indexOf(MPRIS_DBUS_MIN)
             if index != -1
-                name = dbus.substring(index + @mpris_dbus_min.length)
-                @mpris_dbus_all.push({"mpris":dbus,"name":name})
-        echo @mpris_dbus_all
+                name = dbus.substring(index + MPRIS_DBUS_MIN.length)
+                mpris = {"name":name,"mpris":dbus}
+                @mpris_all.push(mpris)
+        
+        echo @mpris_all
 
-        switch(@mpris_dbus_all.length)
+        #2.check which mpris is now playing
+        switch(@mpris_all.length)
             when 0 then return null
-            when 1 then return @mpris_dbus_all[0].mpris
+            when 1 then return @mpris_all[0]
             else
-                for dbus in @mpris_dbus_all
-                    if dbus.name is "dmusic" then return dbus.mpris
-
-                for dbus in @mpris_dbus_all
+                #1.if is dmusic then directly return
+                for dbus in @mpris_all
+                    if dbus.name is "dmusic" then return dbus
+                
+                #2.if isnt Stopped then return
+                for dbus in @mpris_all
                     mpris = dbus.mpris
+                    MPRIS_DBUS.name = mpris
                     try
-                        mpris_dbus = get_dbus("session",
-                            name:"#{mpris}",
-                            path:"/org/mpris/MediaPlayer2",
-                            interface:"org.mpris.MediaPlayer2.Player",
-                            "PlaybackStatus"
+                        mpris_dbus = DCore.DBus.session_object(
+                            MPRIS_DBUS.name,
+                            MPRIS_DBUS.path,
+                            MPRIS_DBUS.interface
                         )
-                        #if dbus.name is DCore.DEntry.get_default_audio_player_name().toLowerCase() return dbus.mpris
-                        if mpris_dbus.PlaybackStatus isnt "Stopped" then return mpris
+                        #if dbus.name is @get_default_audio_player_name return dbus
+                        if mpris_dbus.PlaybackStatus isnt "Stopped" then return dbus
                     catch e
-                        echo "get_mpris_dbus #{e}"
+                        echo "get_mpris_dbus_name #{e}"
                         return null
+                
+                #3. else return null
                 return null
 
+
+    get_mpris_dbus:(dbus_name) ->
+        try
+            MPRIS_DBUS.name = dbus_name
+            mpris_dbus = DCore.DBus.session_object(
+                MPRIS_DBUS.name,
+                MPRIS_DBUS.path,
+                MPRIS_DBUS.interface
+            )
+            @launched_status = true
+            return mpris_dbus
+        catch e
+            @launched_status = false
+            echo "@mpris_dbus is null ,the player isnt launched!:#{e}"
+            return null
+
     get_launched_status:->
-        return launched_status
+        return @launched_status
 
     get_default_audio_player_name:->
-        default_audio_player_name = DCore.DEntry.get_default_audio_player_name()
+        DCore.DEntry.get_default_audio_player_name().toLowerCase
 
     get_default_audio_player_icon:->
-        default_audio_player_icon = DCore.DEntry.get_default_audio_player_icon()
+        DCore.DEntry.get_default_audio_player_icon()
 
     getPlaybackStatus:->
         @mpris_dbus.PlaybackStatus
@@ -129,7 +152,7 @@ class AudioPlay
         @mpris_dbus.Volume = val
 
     getMetadata:->
-        Metadata = @mpris_dbus.Metadata
+        @mpris_dbus.Metadata
 
     getTitle:->
         @mpris_dbus.Metadata['xesam:title']
