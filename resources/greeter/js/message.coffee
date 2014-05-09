@@ -25,6 +25,7 @@ class Message extends Widget
         super
         @text = []
         @text_li = []
+        @text_span = []
 
     hide:->
         @element.style.display = "none"
@@ -36,14 +37,14 @@ class Message extends Widget
 
     frame_build: ->
         @element.style.width = WindowWidth / 2
-        @title_p = create_element("p","title_p",@element)
+        @title_p = create_element("ul","title_p",@element)
         @title_p.textContent = @title
-        @title_ol = create_element("ol","title_ol",@title_p)
         for text,i in @text
+            echo i
             echo text
-            @text_li[i] = create_element("li","text_li",@title_ol)
-            jQuery(@text_li).attr("title",text)
-            #@text_li.title = text
+            @text_li[i] = create_element("li","text_li",@title_p)
+            @text_span[i]= create_element("span","text_span",@text_li[i])
+            @text_span.textContent = text
     
     setZIndex: (zIndex = 65530) ->
         @element.style.position = "relative"
@@ -73,5 +74,18 @@ class NoSessionMessage
         @message.show()
         document.body.appendChild(@message.element)
         
+
+class NoAccountServiceMessage
+
+    constructor: ->
+        
+        @title = _("The daemon of accounts has not started.\n
+            Please reboot your computer.")
+        @message = new Message("NoAccountService")
+        @message.title_text(@title,null)
+        @message.frame_build()
+        @message.setZIndex(65530)
+        @message.show()
+        document.body.appendChild(@message.element)
 
 

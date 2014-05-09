@@ -1,17 +1,19 @@
 
 .Message{
-    color: #fff;
-    text-shadow:0 0 0.2em #333;
-
+    color:#fff;
 }
 
 .title_p{
-    font-size:2em;
-    text-indent:2em;
-    padding-top:2em;
+    text-shadow:0 0 0.2em #333;
+    font-weight:normal; 
+    font-size:1.5em;
 }
 
 .title_li{
+    list-style:none;
     margin-top:2em;
-    font-size:1.8em;
+}
+.title_li span{
+    text-shadow:0 0.2em 0.2em rgba(0,0,0,0.4);
+    font-size:1.3em;
 }
