@@ -26,6 +26,7 @@ class UserMenu extends Widget
         @img_before = null
         @user_session = []
         @current_img_src = null
+        
         if not @parent? then @parent = document.body
         @parent.appendChild(@element)
         
@@ -52,7 +53,7 @@ class UserMenu extends Widget
         if @userinfo_all.length < 2 then return
         
         @ComboBox = new ComboBox("user", @menuChoose_click_cb)
-        @ComboBox.hide()
+        #@ComboBox.hide()
         for user in @userinfo_all
             uid = user.id
             username = user.username
@@ -60,6 +61,7 @@ class UserMenu extends Widget
             @ComboBox.insert(uid, username, usericon,usericon,usericon)
         @ComboBox.frame_build(1)
         @element.appendChild(@ComboBox.element)
+        @ComboBox.current_img.src = "images/userswitch/acount_switch_hover.png"
         
 
     keydown_listener:(e)->

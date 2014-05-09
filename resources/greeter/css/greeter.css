@@ -38,8 +38,19 @@ body{
     -webkit-box-align:center;
 }
 
-
 .div_desktop{
+    /*background-color:rgba(125,255,120,0.2);*/
+    position:absolute;
+    bottom:3.0em;
+    right:19em;
+    
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+
+}
+
+.div_userswitch{
     /*background-color:rgba(125,255,120,0.2);*/
     position:absolute;
     bottom:3.0em;
@@ -49,7 +60,9 @@ body{
     -webkit-box-pack:center;
     -webkit-box-align:center;
 
+
 }
+
 
 .div_power {
     /*background-color:rgba(125,255,120,0.2);*/

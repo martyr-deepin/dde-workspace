@@ -65,16 +65,17 @@ setBodyWallpaper("sky_move")
 greeter.isOnlyOneSession()
 
 desktopmenu = null
-if greeter.sessions.length == 0 then return
-else if greeter.sessions.length > 1
+if greeter.sessions.length > 1
     desktopmenu = new DesktopMenu($("#div_desktop"))
     desktopmenu.new_desktop_menu()
-
+else if greeter.session.length == 1
+    $("#div_desktop").style.display = "none"
+else if greeter.session.length == 0
+    return
 
 user = new User()
 $("#div_users").appendChild(user.element)
 user.new_userinfo_for_greeter()
-user.prev_next_userinfo_create() if user.userinfo_all.length > 1
 
 left = (screen.width  - $("#div_users").clientWidth) / 2
 top = (screen.height  - $("#div_users").clientHeight) / 2 * 0.8
@@ -95,15 +96,16 @@ powermenu = new PowerMenu($("#div_power"))
 powermenu.new_power_menu()
 
 usermenu = null
-if user.userinfo_all.length > 1 and _current_user.is_logined
-    echo "can new UserMenu"
-    $("#div_users").style.display = "none"
-    usermenu = new UserMenu(document.body,user.userinfo_all)
+#user.prev_next_userinfo_create() if user.userinfo_all.length > 1
+if user.userinfo_all.length > 1
+    usermenu = new UserMenu($("#div_userswitch"),user.userinfo_all)
     usermenu.new_user_menu()
-    usermenu.menuShow()
+    if _current_user.is_logined then usermenu.menuShow()
+else
+    $("#div_userswitch").style.display = "none"
+    $("#div_desktop").style.right = "11em"
 
-
-document.body.addEventListener("keydown",(e)->
+dcument.body.addEventListener("keydown",(e)->
     try
         if is_greeter
             echo "greeter keydown"
