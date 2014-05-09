@@ -21,11 +21,11 @@
 class Audio extends Widget
     #Audio DBus
     AUDIO = "com.deepin.daemon.Audio"
+    DEFAULT_SINK = "/com/deepin/daemon/Audio/Sink0"
     AUDIO_SINKS =
         name: AUDIO
-        path: "/com/deepin/daemon/Audio/Sink0"
+        path: DEFAULT_SINK
         interface: "com.deepin.daemon.Audio.Sink"
-    DEFAULT_SINK = "/com/deepin/daemon/Audio/Sink0"
 
     constructor:(@id)->
         super
@@ -62,7 +62,7 @@ class Audio extends Widget
         @getDBusDefaultSink(@DefaultSink)
 
     getVolume:->
-        volume = @DBusDefaultSink.Volume
+        volume = @DBusDefaultSink.Volume * 100
 
     setVolume:(volume)->
         @DBusDefaultSink.SetSinkVolume_sync(volume)
