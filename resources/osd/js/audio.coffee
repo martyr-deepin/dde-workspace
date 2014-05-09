@@ -40,7 +40,7 @@ class Audio extends Widget
 
     getDBusAudio:->
         try
-            @DBusAudio = get_dbus("session", AUDIO, "GetDefaultSink")
+            @DBusAudio = DCore.DBus.session(AUDIO)
             @DefaultSink = @DBusAudio.GetDefaultSink_sync()
             if not @DefaultSink? then @DefaultSink = DEFAULT_SINK
         catch e
@@ -50,7 +50,11 @@ class Audio extends Widget
         echo "GetDefaultSink:#{DefaultSink}"
         try
             AUDIO_SINKS.path = DefaultSink
-            @DBusDefaultSink = get_dbus("session", AUDIO_SINKS, "SetSinkVolume")
+            @DBusDefaultSink = DCore.DBus.session_object(
+                AUDIO_SINKS.name,
+                AUDIO_SINKS.path,
+                AUDIO_SINKS.interface
+            )
         catch e
             echo "getDBusSinks ERROR: ---#{e}---"
 
