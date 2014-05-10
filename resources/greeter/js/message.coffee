@@ -27,6 +27,18 @@ class Message extends Widget
         @text_li = []
         @text_span = []
 
+    append: (el)->
+        el.style.display = "-webkit-box"
+        el.style.WebkitBoxPack = "center"
+        el.style.WebkitBoxAlign = "center"
+        el.appendChild(@element)
+        @show()
+        left = (el.clientWidth - @element.clientWidth) / 2
+        top = (el.clientHeight - @element.clientHeight) / 2 * 0.8
+        @element.style.position = "absolute"
+        @element.style.left = left
+        @element.style.top = top
+
     hide:->
         @element.style.display = "none"
 
@@ -37,29 +49,29 @@ class Message extends Widget
 
     frame_build: ->
         @element.style.width = WindowWidth / 2
-        @title_p = create_element("ul","title_p",@element)
+        @title_p = create_element("p","title_p",@element)
         @title_p.textContent = @title
+        if not @text? then return
+        @title_ol = create_element("ol","title_ol",@title_p)
         for text,i in @text
-            echo i
-            echo text
-            @text_li[i] = create_element("li","text_li",@title_p)
-            @text_span[i]= create_element("span","text_span",@text_li[i])
-            @text_span.textContent = text
+            @text_li[i] = create_element("li","text_li",@title_ol)
+            @text_li[i].textContent = text
     
     setZIndex: (zIndex = 65530) ->
-        @element.style.position = "relative"
+        @element.style.position = "absolute"
         @element.style.zIndex = "#{zIndex}"
 
 class NoSessionMessage
 
     constructor: ->
         
-        @title = _("No desktop sessions available.\n
+        @title = _("\t\t\t\tNo desktop sessions available!\n
             You can try the following steps and install the Deepin Desktop Environment.")
         @text = []
         @text = [
             _("Switch to a virtual console.\n
-                \tYou can do this by pressing the Ctrl + Alt + F1~F6 key combination (press and hold \"Ctrl\" and \"Alt\" at the same time and press the \"F(x)\" key corresponding to the TTY you want to switch to. For example, press  \"F1\" to switch to TTY 1 or \"F2\" to switch to TTY 2."),
+                \tYou can do this by pressing the Ctrl + Alt + F1~F6 key combination (press and hold \"Ctrl\" and \"Alt\" at the same time and press the \"F(x)\" key corresponding to the TTY you want to switch to. \nFor example, press  \"F1\" to switch to TTY 1 or \"F2\" to switch to TTY 2.
+                \tAnd you can press \"Ctrl\" and \"Alt\" and \"F7\ to return this Page."),
             _("Install Deepin Desktop Environment:\n
                 \t$ sudo apt-get install deepin-desktop-Environment
                 "),
@@ -71,8 +83,7 @@ class NoSessionMessage
         @message.title_text(@title,@text)
         @message.frame_build()
         @message.setZIndex(65530)
-        @message.show()
-        document.body.appendChild(@message.element)
+        @message.append(document.body)
         
 
 class NoAccountServiceMessage
@@ -82,10 +93,10 @@ class NoAccountServiceMessage
         @title = _("The daemon of accounts has not started.\n
             Please reboot your computer.")
         @message = new Message("NoAccountService")
+        @message.element.style.textAlign = "center"
         @message.title_text(@title,null)
         @message.frame_build()
         @message.setZIndex(65530)
-        @message.show()
-        document.body.appendChild(@message.element)
+        @message.append(document.body)
 
 
