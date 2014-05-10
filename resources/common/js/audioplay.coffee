@@ -37,8 +37,8 @@ class AudioPlay
         @launched_status = false
         
         @now_mpris = @get_mpris_now()
-        @now_mpris_dbus_name = @now_mpris.mpris
-        @now_mpris_name = @now_mpris.name
+        @now_mpris_dbus_name = @now_mpris?.mpris
+        @now_mpris_name = @now_mpris?.name
         echo "@now_mpris:#{@now_mpris_name}:#{@now_mpris_dbus_name}"
         @mpris_dbus = @get_mpris_dbus(@now_mpris_dbus_name)
 
@@ -67,11 +67,11 @@ class AudioPlay
             else
                 #1.if is dmusic then directly return
                 for dbus in @mpris_all
-                    if dbus.name is "dmusic" then return dbus
+                    if dbus?.name is "dmusic" then return dbus
                 
                 #2.if isnt Stopped then return
                 for dbus in @mpris_all
-                    mpris = dbus.mpris
+                    mpris = dbus?.mpris
                     MPRIS_DBUS.name = mpris
                     try
                         mpris_dbus = DCore.DBus.session_object(
