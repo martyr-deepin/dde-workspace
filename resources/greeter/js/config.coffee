@@ -131,7 +131,9 @@ enableZoneDetect = (enable) ->
         echo "zoneDBus #{ZONE} error : #{e}"
  #-------------------------------------------
 
-is_guest = false
 
-
-
+is_guest = ->
+    if APP_NAME is "Lock" then return DCore[APP_NAME].is_guest()
+    else return false
+is_guest = is_guest()
+echo "is_guest:#{is_guest}"
