@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-18 11:08+0800\n"
+"POT-Creation-Date: 2014-05-11 23:54+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Deepin Translation Team <support@linuxdeepin.com>\n"
 "Language-Team: Deepin Translation Team <support@linuxdeepin.com>\n"
@@ -24,13 +24,13 @@ msgstr ""
 msgid "_Delete"
 msgstr "删除(_D)"
 
-#: ../resources/desktop/js/application.coffee:177
+#: ../resources/desktop/js/application.coffee:180
 #: ../resources/desktop/js/richdir.coffee:357
 #: ../resources/desktop/js/richdir.coffee:491
 msgid "The link is invalid. Do you want to delete it?"
 msgstr "该链接已经失效，是否要删除？"
 
-#: ../resources/desktop/js/application.coffee:177
+#: ../resources/desktop/js/application.coffee:180
 #: ../resources/desktop/js/desktopentry.coffee:151
 #: ../resources/desktop/js/richdir.coffee:357
 #: ../resources/desktop/js/richdir.coffee:491
@@ -98,7 +98,7 @@ msgid "Home"
 msgstr "主文件夹"
 
 #: ../resources/desktop/js/specialitem.coffee:175
-#: ../resources/dock/js/main.coffee:68 ../resources/dock/js/main.coffee:140
+#: ../resources/dock/js/main.coffee:102 ../resources/dock/js/main.coffee:167
 msgid "Trash"
 msgstr "回收站"
 
@@ -170,13 +170,40 @@ msgstr "个性化(_R)"
 msgid "_Ungroup"
 msgstr "解散(_U)"
 
+#: ../resources/greeter/js/message.coffee:93
+msgid "The daemon of accounts has not started.\n"
+msgstr ""
+
+#: ../resources/greeter/js/message.coffee:78
+msgid "Restart your system:\n"
+msgstr ""
+
+#: ../resources/greeter/js/message.coffee:75
+msgid "Install Deepin Desktop Environment:\n"
+msgstr ""
+
+#: ../resources/greeter/js/message.coffee:72
+msgid "Switch to a virtual console.\n"
+msgstr ""
+
+#: ../resources/greeter/js/message.coffee:68
+msgid "\t\t\t\tNo desktop sessions available!\n"
+msgstr ""
+
 #: ../resources/greeter/js/user.coffee:25
+#: ../resources/greeter/js/usermenu.coffee:61
 msgid "Guest"
 msgstr "来宾"
 
-#: ../resources/greeter/js/user.coffee:435
+#: ../resources/greeter/js/user.coffee:466
+#: ../resources/greeter/js/user.coffee:468
 msgid "click login button to log in"
-msgstr ""
+msgstr "点击登录按钮来登录"
+
+#: ../resources/greeter/js/user.coffee:467
+#, fuzzy
+msgid "click login button to unlock"
+msgstr "点击登录按钮来登录"
 
 #: ../resources/greeter/js/time.coffee:42
 msgid "Jan"
@@ -266,14 +293,24 @@ msgstr "重启"
 msgid "Suspend"
 msgstr "待机"
 
-#: ../resources/greeter/js/powermenu.coffee:87
+#: ../resources/greeter/js/powermenu.coffee:88
 msgid "Enter your password to %1"
 msgstr "请输入密码以完成%1"
 
-#: ../resources/greeter/js/greeter.coffee:58
-msgid ""
-"Your system has no session! Please go to tty and install session:'sudo apt-"
-"get install deepin-desktop-environment'"
+#: ../resources/osd/js/display.coffee:42 ../lib/dentry/fileops.c:776
+msgid "Copy"
+msgstr "复制"
+
+#: ../resources/osd/js/display.coffee:43
+msgid "Expand"
+msgstr ""
+
+#: ../resources/osd/js/display.coffee:44
+msgid "Only the first Screen"
+msgstr ""
+
+#: ../resources/osd/js/display.coffee:45
+msgid "Only the second Screen"
 msgstr ""
 
 #: ../resources/launcher/js/item.coffee:269
@@ -348,7 +385,7 @@ msgstr "控制中心"
 msgid "All Windows"
 msgstr "所有窗口"
 
-#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:138
+#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:165
 msgid "Launcher"
 msgstr "启动器"
 
@@ -372,16 +409,16 @@ msgstr "一直隐藏"
 msgid "_auto hide"
 msgstr "自动隐藏"
 
-#: ../resources/dock/js/deepin_item.coffee:139
+#: ../resources/dock/js/deepin_item.coffee:167
 msgid "_View as analog"
 msgstr "显示模拟时钟(_V)"
 
-#: ../resources/dock/js/deepin_item.coffee:140
-#: ../resources/dock/js/deepin_item.coffee:188
+#: ../resources/dock/js/deepin_item.coffee:168
+#: ../resources/dock/js/deepin_item.coffee:216
 msgid "_Time settings"
 msgstr "时间设置(_T)"
 
-#: ../resources/dock/js/deepin_item.coffee:187
+#: ../resources/dock/js/deepin_item.coffee:215
 msgid "_View as digit"
 msgstr "显示数字时钟(_V)"
 
@@ -414,7 +451,7 @@ msgstr "%s%d秒后自动重试"
 msgid "Invalid Password"
 msgstr "密码错误"
 
-#: ../app/dock/dock.c:315
+#: ../app/dock/dock.c:319
 #, fuzzy
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr "因Compiz未启用，任务栏未能启动。"
@@ -447,10 +484,6 @@ msgstr "程序启动组"
 #: ../lib/dentry/fileops.c:568
 msgid "Move"
 msgstr "移动"
-
-#: ../lib/dentry/fileops.c:776
-msgid "Copy"
-msgstr "复制"
 
 #: ../lib/dentry/fileops_delete.c:29
 msgid "Delete Files"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Destkop Environment\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-18 11:08+0800\n"
+"POT-Creation-Date: 2014-05-11 23:54+0800\n"
 "PO-Revision-Date: 2013-12-11 04:44+0000\n"
 "Last-Translator: 648trindade <rafaelgt.mbin@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/"
@@ -25,14 +25,14 @@ msgstr ""
 msgid "_Delete"
 msgstr "_Excluir"
 
-#: ../resources/desktop/js/application.coffee:177
+#: ../resources/desktop/js/application.coffee:180
 #: ../resources/desktop/js/richdir.coffee:357
 #: ../resources/desktop/js/richdir.coffee:491
 #, fuzzy
 msgid "The link is invalid. Do you want to delete it?"
 msgstr "O link expirou. Deseja excluí-lo?"
 
-#: ../resources/desktop/js/application.coffee:177
+#: ../resources/desktop/js/application.coffee:180
 #: ../resources/desktop/js/desktopentry.coffee:151
 #: ../resources/desktop/js/richdir.coffee:357
 #: ../resources/desktop/js/richdir.coffee:491
@@ -100,7 +100,7 @@ msgid "Home"
 msgstr "Pasta Principal"
 
 #: ../resources/desktop/js/specialitem.coffee:175
-#: ../resources/dock/js/main.coffee:68 ../resources/dock/js/main.coffee:140
+#: ../resources/dock/js/main.coffee:102 ../resources/dock/js/main.coffee:167
 msgid "Trash"
 msgstr "Lixeira"
 
@@ -173,13 +173,39 @@ msgstr "Pe_rsonalizar"
 msgid "_Ungroup"
 msgstr "Desgr_upar"
 
+#: ../resources/greeter/js/message.coffee:93
+msgid "The daemon of accounts has not started.\n"
+msgstr ""
+
+#: ../resources/greeter/js/message.coffee:78
+msgid "Restart your system:\n"
+msgstr ""
+
+#: ../resources/greeter/js/message.coffee:75
+msgid "Install Deepin Desktop Environment:\n"
+msgstr ""
+
+#: ../resources/greeter/js/message.coffee:72
+msgid "Switch to a virtual console.\n"
+msgstr ""
+
+#: ../resources/greeter/js/message.coffee:68
+msgid "\t\t\t\tNo desktop sessions available!\n"
+msgstr ""
+
 #: ../resources/greeter/js/user.coffee:25
+#: ../resources/greeter/js/usermenu.coffee:61
 #, fuzzy
 msgid "Guest"
 msgstr "convidado"
 
-#: ../resources/greeter/js/user.coffee:435
+#: ../resources/greeter/js/user.coffee:466
+#: ../resources/greeter/js/user.coffee:468
 msgid "click login button to log in"
+msgstr ""
+
+#: ../resources/greeter/js/user.coffee:467
+msgid "click login button to unlock"
 msgstr ""
 
 #: ../resources/greeter/js/time.coffee:42
@@ -270,14 +296,24 @@ msgstr "Reiniciar"
 msgid "Suspend"
 msgstr "Suspender"
 
-#: ../resources/greeter/js/powermenu.coffee:87
+#: ../resources/greeter/js/powermenu.coffee:88
 msgid "Enter your password to %1"
 msgstr ""
 
-#: ../resources/greeter/js/greeter.coffee:58
-msgid ""
-"Your system has no session! Please go to tty and install session:'sudo apt-"
-"get install deepin-desktop-environment'"
+#: ../resources/osd/js/display.coffee:42 ../lib/dentry/fileops.c:776
+msgid "Copy"
+msgstr "Copiar"
+
+#: ../resources/osd/js/display.coffee:43
+msgid "Expand"
+msgstr ""
+
+#: ../resources/osd/js/display.coffee:44
+msgid "Only the first Screen"
+msgstr ""
+
+#: ../resources/osd/js/display.coffee:45
+msgid "Only the second Screen"
 msgstr ""
 
 #: ../resources/launcher/js/item.coffee:269
@@ -356,7 +392,7 @@ msgstr "Central de Aplicativos"
 msgid "All Windows"
 msgstr "_Nova Janela"
 
-#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:138
+#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:165
 msgid "Launcher"
 msgstr "Lançador"
 
@@ -380,17 +416,17 @@ msgstr ""
 msgid "_auto hide"
 msgstr ""
 
-#: ../resources/dock/js/deepin_item.coffee:139
+#: ../resources/dock/js/deepin_item.coffee:167
 msgid "_View as analog"
 msgstr ""
 
-#: ../resources/dock/js/deepin_item.coffee:140
-#: ../resources/dock/js/deepin_item.coffee:188
+#: ../resources/dock/js/deepin_item.coffee:168
+#: ../resources/dock/js/deepin_item.coffee:216
 #, fuzzy
 msgid "_Time settings"
 msgstr "Configurações de _Tela"
 
-#: ../resources/dock/js/deepin_item.coffee:187
+#: ../resources/dock/js/deepin_item.coffee:215
 msgid "_View as digit"
 msgstr ""
 
@@ -424,7 +460,7 @@ msgstr "%sTentar de novo automaticamente em %ds"
 msgid "Invalid Password"
 msgstr "Senha Inválida"
 
-#: ../app/dock/dock.c:315
+#: ../app/dock/dock.c:319
 #, fuzzy
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr ""
@@ -461,10 +497,6 @@ msgstr "Grupo de Aplicativos"
 #: ../lib/dentry/fileops.c:568
 msgid "Move"
 msgstr ""
-
-#: ../lib/dentry/fileops.c:776
-msgid "Copy"
-msgstr "Copiar"
 
 #: ../lib/dentry/fileops_delete.c:29
 #, fuzzy
