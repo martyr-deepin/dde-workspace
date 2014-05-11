@@ -30,13 +30,24 @@ class Accounts
 
     constructor:(@id)->
         APP = @id#APP_NAME for DCore[APP]
-
+        @guest_id = "1100"
+        @guest_name = "Guest"
+        @guest_icon = "/var/lib/AccountsService/icons/guest.png"
+        @guest_bg = "/usr/share/backgrounds/default_background.jpg"
+        
         @users_id = []
         @users_name = []
         @users_id_dbus = []
         @users_name_dbus = []
+    
 
         @getDBus()
+
+    push_guest : ->
+        @users_id.push(@guest_id)
+        @users_name.push(@guest_name)
+        @users_id_dbus[@guest_id] = null
+        @users_name_dbus[@guest_name] = null
 
     getDBus:->
         try
@@ -60,11 +71,22 @@ class Accounts
             @Dbus_Graphic = get_dbus("session", GRAPHIC, "BackgroundBlurPictPath")
         catch e
             echo "#{GRAPHIC} dbus ERROR: #{e}"
+        @push_guest()
+
+    get_guest_id : ->
+        @guest_id
+    
+    get_guest_name : ->
+        @guest_name
+
+    get_guest_icon : ->
+        @guest_icon
 
 
     is_user_logined:(uid)->
         is_logined = false
-        LoginTime = @users_id_dbus[uid].LoginTime
+        if uid is @guest_id then LoginTime = null
+        else LoginTime = @users_id_dbus[uid].LoginTime
         echo "LoginTime:#{LoginTime}"
         if LoginTime is null or LoginTime == 0 or LoginTime is undefined then is_logined = false
         else is_logined = true
@@ -72,8 +94,8 @@ class Accounts
 
     is_user_sessioned_on:(uid)->
         if APP isnt "Greeter" then return true
-
-        username = @users_id_dbus[uid].UserName
+        if uid is @guest_id then username = @guest_name
+        else username = @users_id_dbus[uid].UserName
         try
             is_sessioned_on = DCore.Greeter.get_user_session_on(username)
         catch e
@@ -83,9 +105,11 @@ class Accounts
 
 
     get_user_id:(user)->
+        echo "get_user_id:#{user}"
         id = null
         try
-            id = @users_name_dbus[user].Uid
+            if user is @guest_name then id = @guest_id
+            else id = @users_name_dbus[user].Uid
         catch e
             echo "get_user_id #{e}"
         if not id? then id = "1000"
@@ -94,7 +118,8 @@ class Accounts
     get_user_icon:(uid)->
         icon = null
         try
-            icon = @users_id_dbus[uid].IconFile
+            if uid is @guest_id then icon = @guest_icon
+            else icon = @users_id_dbus[uid].IconFile
         catch e
             echo "get_user_bg #{e}"
         return icon
@@ -103,6 +128,7 @@ class Accounts
     get_user_bg:(uid)->
         bg = null
         try
+            if uid is @guest_id then bg = @guest_bg
             bg = @users_id_dbus[uid].BackgroundFile
         catch e
             echo "get_user_bg #{e}"
@@ -133,7 +159,8 @@ class Accounts
             if APP is "Greeter"
                 @_default_username = DCore[APP].get_default_user()
             else
-                @_default_username = DCore[APP].get_username()
+                if DCore[APP].is_guest() then @_default_username = @guest_name
+                else @_default_username = DCore[APP].get_username()
         catch e
             echo "#{APP}get_default_username:#{e}"
         echo "#{APP} get_default_username:---------#{@_default_username}-------------"
@@ -150,6 +177,7 @@ class Accounts
         return @get_blur_background(@_current_userid)
 
     is_disable_user :(uid)->
+        if uid is @guest_id then return @isAllowGuest()
         disable = false
         user_dbus = @users_id_dbus[uid]
         if user_dbus.Locked is null then disable = false
