@@ -289,7 +289,7 @@ int main (int argc, char **argv)
     }
 
     if (lock_is_guest ()) {
-        g_warning("you are the guest!!!");
+        g_message("you are the guest!!!");
         /*return 1;*/
     }
 

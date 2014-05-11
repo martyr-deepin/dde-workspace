@@ -31,7 +31,6 @@ JS_EXPORT_API
 const gchar* lock_get_username ()
 {
     username = g_get_user_name ();
-
     return username;
 }
 
@@ -110,12 +109,12 @@ gboolean lock_is_guest ()
     if (username == NULL) {
         username = lock_get_username ();
     }
-
+    g_message("username:%s",username);
     if (g_str_has_prefix (username, "guest")) {
         gchar * name = get_user_realname (username);
-
+        g_message("realname:%s",name);
         if (g_ascii_strncasecmp ("Guest", name, 5) == 0) {
-            g_warning ("lock is guest:can't lock for guest\n");
+            g_message ("lock is guest\n");
             is_guest = TRUE;
         }
         g_free (name);
