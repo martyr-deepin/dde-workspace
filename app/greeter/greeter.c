@@ -248,9 +248,6 @@ int main (int argc, char **argv)
     g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
 
 
-    GdkScreen *screen;
-    GdkRectangle geometry;
-
     init_i18n ();
     gtk_init (&argc, &argv);
 
@@ -282,15 +279,10 @@ int main (int argc, char **argv)
     container = create_web_container (FALSE, TRUE);
     gtk_window_set_decorated (GTK_WINDOW (container), FALSE);
 
-    screen = gtk_window_get_screen (GTK_WINDOW (container));
-    gdk_screen_get_monitor_geometry (screen, gdk_screen_get_primary_monitor (screen), &geometry);
-    g_message("primary monitor width:%d,height:%d;",geometry.width,geometry.height);
-    gtk_window_move (GTK_WINDOW (container), geometry.x, geometry.y);
-    gtk_window_resize (GTK_WINDOW (container), geometry.width, geometry.height);
-
     webview = d_webview_new_with_uri (GREETER_HTML_PATH);
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
 
+    monitors_adaptive(container,webview);
     BackgroundInfo* bg_info = create_background_info(container, webview);
     background_info_set_background_by_file(bg_info, "/usr/share/backgrounds/default_background.jpg");
     

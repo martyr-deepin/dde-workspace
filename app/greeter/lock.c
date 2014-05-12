@@ -44,11 +44,11 @@
 
 /*#include "settings.h"*/
 /*#include "camera.h"*/
-#include "background.h"
 
 #include "X_misc.h"
 #include "gs-grab.h"
 #include "lock_util.h"
+#include "background.h"
 
 /*#define DEBUG*/
 
@@ -276,9 +276,6 @@ int main (int argc, char **argv)
 
     init_i18n ();
     
-    GdkScreen *screen;
-    GdkRectangle geometry;
-
 
     gtk_init (&argc, &argv);
 
@@ -296,13 +293,11 @@ int main (int argc, char **argv)
     lock_report_pid ();
 
     container = create_web_container (FALSE, TRUE);
-    ensure_fullscreen (container);
 
     gtk_window_set_decorated (GTK_WINDOW(container), FALSE);
     gtk_window_set_skip_taskbar_hint (GTK_WINDOW (container), TRUE);
     gtk_window_set_skip_pager_hint (GTK_WINDOW (container), TRUE);
 
-    gtk_window_fullscreen (GTK_WINDOW (container));
     gtk_widget_set_events (GTK_WIDGET (container),
                            gtk_widget_get_events (GTK_WIDGET (container))
                            | GDK_POINTER_MOTION_MASK
@@ -315,15 +310,10 @@ int main (int argc, char **argv)
                            | GDK_ENTER_NOTIFY_MASK
                            | GDK_LEAVE_NOTIFY_MASK);
 
-    screen = gtk_window_get_screen (GTK_WINDOW (container));
-    gdk_screen_get_monitor_geometry (screen, gdk_screen_get_primary_monitor (screen), &geometry);
-    g_message("primary monitor width:%d,height:%d;",geometry.width,geometry.height);
-    gtk_window_move (GTK_WINDOW (container), geometry.x, geometry.y);
-    gtk_window_resize (GTK_WINDOW (container), geometry.width, geometry.height);
-    
     GtkWidget *webview = d_webview_new_with_uri (LOCK_HTML_PATH);
     gtk_container_add (GTK_CONTAINER (container), GTK_WIDGET (webview));
 
+    monitors_adaptive(container,webview);
     BackgroundInfo* bg_info = create_background_info(container, webview);
     background_info_set_background_by_file(bg_info, "/usr/share/backgrounds/default_background.jpg");
 
