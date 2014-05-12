@@ -21,13 +21,8 @@
 draw_camera_id = null
 _current_user = null
 password_error_msg = null
-
-guest_name_text = _("Guest")
-
-guest_id = null
-guest_name = null
-guest_icon = null
-
+guest_id = "guest"
+guest_name = _("Guest")
 
 class User extends Widget
     img_src_before = "images/userswitch/"
@@ -38,14 +33,8 @@ class User extends Widget
         @user_session = []
         @userinfo_all = []
         @accounts = new Accounts(APP_NAME)
-        @get_guest()
         @get_default_userid()
    
-    get_guest : ->
-        guest_id = @accounts.get_guest_id()
-        guest_name = @accounts.get_guest_name()
-        guest_icon = @accounts.get_guest_icon()
-
     get_default_userid:->
         @_default_username = @accounts.get_default_username()
         if @_default_username is null then @_default_username = @accounts.users_name[0]
@@ -65,10 +54,9 @@ class User extends Widget
      
      isSupportGuest:->
         if is_support_guest and @accounts.isAllowGuest() is true
-            userid = @accounts.get_guest_id()
-            username = @accounts.get_guest_name()
-            usericon = @accounts.get_guest_icon()
-            u = new UserInfo(userid, username, usericon)
+            guest_image = "/var/lib/AccountsService/icons/guest.png"
+            echo "guest_image:#{guest_image}"
+            u = new UserInfo(guest_id, guest_name, guest_image)
             @userinfo_all.push(u)
             #if DCore.Greeter.is_guest_default() then u.show()
             #else u.hide()
@@ -102,19 +90,11 @@ class User extends Widget
 
    
     new_userinfo_for_lock:->
-        if is_guest
-            echo "new_userinfo_for_lock is_guest"
-            userid = @accounts.get_guest_id()
-            username = @accounts.get_guest_name()
-            usericon = @accounts.get_guest_icon()
-        else
-            username = @accounts.users_id_dbus[@_default_userid].UserName
-            userid = username
-            usericon = @accounts.users_id_dbus[@_default_userid].IconFile
-        echo "new_userinfo_for_lock:#{userid},#{username},#{usericon}"
-        _current_user = new UserInfo(userid, username, usericon)
+        echo "new_userinfo_for_lock"
+        username = @accounts.users_id_dbus[@_default_userid].UserName
+        usericon = @accounts.users_id_dbus[@_default_userid].IconFile
+        _current_user = new UserInfo(username, username, usericon)
         _current_user.index = 0
-        @userinfo_all.push(_current_user)
         @element.appendChild(_current_user.element)
         _current_user.show()
     
@@ -222,9 +202,7 @@ class UserInfo extends Widget
         @userimg_div.style.display = "none"
 
         @username_div = create_element("div", "username_div", @userbase)
-        name = @username
-        if @id is guest_id then name = guest_name_text
-        @username_div.innerText = name
+        @username_div.innerText = @username
         @username_div.style.display = "none"
         
         @login = new LoginEntry("login", @username, (u, p)=>@on_verify(u, p))
@@ -258,6 +236,7 @@ class UserInfo extends Widget
         #@userimg_background.style.height = @userimg_border.style.height - 3
 
         #@loginAnimation()
+    
     
     hide:=>
         @username_div.style.display = "none"
@@ -399,6 +378,7 @@ class UserInfo extends Widget
     on_verify: (username, password)->
         echo "on_verify:#{username}"
         echo  "--------#{new Date().getTime()}-----------"
+        if username is guest_name then @username = guest_id
         @password = password
         if is_greeter
             @session = localStorage.getItem("menu_current_id_desktop")
@@ -409,11 +389,7 @@ class UserInfo extends Widget
         else
             echo "#{username} try_unlock "
             @loginAnimation()
-            if is_guest
-                enableZoneDetect(true)
-                DCore.Lock.quit()
-                echo "dlock exit"
-            else DCore.Lock.try_unlock(@username,@password)
+            DCore.Lock.try_unlock(@username,@password)
     
     auth_failed: (msg) =>
         @loginAnimationClear()
@@ -463,8 +439,6 @@ class LoginEntry extends Widget
         @password_eventlistener()
         
         if @username is guest_name
-            if @id is "login" then @password_error(_("click login button to log in"))
-            else if @id is "lock" then @password_error(_("click login button to unlock"))
             @password_error(_("click login button to log in"))
             @loginbutton.disable = false
             @loginbutton.style.pointer = "cursor"

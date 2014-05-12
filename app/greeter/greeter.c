@@ -96,7 +96,7 @@ start_authentication (struct AuthHandler *handler)
     gchar *username = g_strdup (handler->username);
     g_warning ("start authentication:%s\n", username);
 
-    if (g_strcmp0 (username, "Guest") == 0) {
+    if (g_strcmp0 (username, "guest") == 0) {
         lightdm_greeter_authenticate_as_guest (greeter);
         g_warning ("start authentication for guest\n");
 
