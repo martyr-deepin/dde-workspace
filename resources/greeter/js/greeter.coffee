@@ -37,9 +37,8 @@ class Greeter extends Widget
 
     mousewheel_listener:(user)->
         document.body.addEventListener("mousewheel", (e) =>
-            if not is_volume_control
-                if e.wheelDelta >= 120 then user?.switchtonext_userinfo()
-                else if e.wheelDelta <= -120 then user?.switchtoprev_userinfo()
+            if e.wheelDelta >= 120 then user?.switchtonext_userinfo()
+            else if e.wheelDelta <= -120 then user?.switchtoprev_userinfo()
         )
 
 

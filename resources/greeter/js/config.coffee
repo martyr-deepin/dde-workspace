@@ -48,22 +48,6 @@ catch error
 
  #-------------------------------------------
 
-audio_play_status = null
-is_volume_control = null
-try
-    audioplay = new AudioPlay()
-    audio_play_status = audioplay.get_launched_status()
-    if audio_play_status
-        if audioplay.getTitle() is undefined then audio_play_status = false
-    is_volume_control = false
-    echo "audio_play_status:#{audio_play_status}"
-catch e
-    echo "#{e}"
-    audio_play_status = false
-    is_volume_control = false
-
-
- #-------------------------------------------
 enable_detection = (enabled)->
     try
         DCore[APP_NAME].enable_detection(enabled)

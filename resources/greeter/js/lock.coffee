@@ -38,6 +38,9 @@ class Lock extends Widget
             DCore.Lock.try_unlock("")
         )
 
+
+
+
 lock = new Lock()
 setBodyWallpaper("sky_move")
 
@@ -70,11 +73,27 @@ powermenu = null
 powermenu = new PowerMenu($("#div_power"))
 powermenu.new_power_menu()
 
+
+audio_play_status = null
+is_volume_control = null
+try
+    audioplay = new AudioPlay()
+    audio_play_status = audioplay.get_launched_status()
+    if audio_play_status
+        if audioplay.getTitle() is undefined then audio_play_status = false
+    is_volume_control = false
+    echo "audio_play_status:#{audio_play_status}"
+catch e
+    echo "#{e}"
+    audio_play_status = false
+    is_volume_control = false
+
 mediacontrol = null
 if audio_play_status
     mediacontrol = new MediaControl()
     $("#div_media_control").appendChild(mediacontrol.element)
 
+ #-------------------------------------------
 
 if not is_livecd
     s = new SwitchUser()
