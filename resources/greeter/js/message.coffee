@@ -65,18 +65,23 @@ class NoSessionMessage
 
     constructor: ->
         
-        @title = _("\t\t\t\tNo desktop sessions available!\n
-            You can try the following steps and install the Deepin Desktop Environment.")
+        @title = _("\t\t\t\t-----No desktop sessions available!-----\n
+            You can try the following steps and install the Deepin Desktop Environment.\n
+            ")
         @text = []
         @text = [
-            _("Switch to a virtual console.\n
-                \tYou can do this by pressing the Ctrl + Alt + F1~F6 key combination (press and hold \"Ctrl\" and \"Alt\" at the same time and press the \"F(x)\" key corresponding to the TTY you want to switch to. \nFor example, press  \"F1\" to switch to TTY 1 or \"F2\" to switch to TTY 2.
-                \tAnd you can press \"Ctrl\" and \"Alt\" and \"F7\ to return this Page."),
-            _("Install Deepin Desktop Environment:\n
-                \t$ sudo apt-get install deepin-desktop-Environment
+            _("Press Ctrl + Alt + F1\n
+                \tSwitch to a virtual console.\n
+                \tYou can do this by pressing the Ctrl + Alt + F1~F6 key combination (press and hold \"Ctrl\" and \"Alt\" at the same time and press the \"F(x)\" key corresponding to the TTY you want to switch to.\n
+                \tFor example, press  \"F1\" to switch to TTY 1 or \"F2\" to switch to TTY 2.\n
+                \tAnd you can press \"Ctrl\" and \"Alt\" and \"F7\ to return this Page.\n
                 "),
-            _("Restart your system:\n
-                \t$ sudo reboot")
+            _("$ sudo apt-get install deepin-desktop-Environment\n
+                \tInstall Deepin Desktop Environment.\n
+                "),
+            _("$ sudo reboot\n
+                \tRestart your system.\n
+                ")
         ]
         
         @message = new Message("NoSession")
@@ -90,11 +95,23 @@ class NoAccountServiceMessage
 
     constructor: ->
         
-        @title = _("The daemon of accounts has not started.\n
-            Please reboot your computer.")
+        @title = _("\t\t\t\t-----The daemon of accounts has not started!-----\n
+                    ")
+        @text = []
+        @text = [
+            _("Press Ctrl + Alt + F1\n
+                \tSwitch to a virtual console.\n
+                \tYou can do this by pressing the Ctrl + Alt + F1~F6 key combination (press and hold \"Ctrl\" and \"Alt\" at the same time and press the \"F(x)\" key corresponding to the TTY you want to switch to.\n
+                \tFor example, press  \"F1\" to switch to TTY 1 or \"F2\" to switch to TTY 2.\n
+                \tAnd you can press \"Ctrl\" and \"Alt\" and \"F7\ to return this Page.\n
+                "),
+            _("$ sudo reboot\n
+                \tRestart your system.\n
+                ")
+        ]
         @message = new Message("NoAccountService")
-        @message.element.style.textAlign = "center"
-        @message.title_text(@title,null)
+        #@message.element.style.textAlign = "center"
+        @message.title_text(@title,@text)
         @message.frame_build()
         @message.setZIndex(65530)
         @message.append(document.body)
