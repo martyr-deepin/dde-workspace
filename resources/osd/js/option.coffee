@@ -50,16 +50,16 @@ isCapsLockToggle = ->
         KEYBOARD.path,
         KEYBOARD.interface
     )
-    if not Keyboard? then return true
-    result = Keyboard?.CapsLockToggle
-    if result is undefined or result is null then result = false
+    result = Keyboard?.CapslockToggle
+    if result isnt true then result = false
+    echo "isCapsLockToggle:#{result}"
     return result
 
 OptionCls = null
 
 CapsLockOn = (keydown)->
     if !keydown then return
-    if not isCapsLockToggle then return
+    if isCapsLockToggle() isnt true then return
     setFocus(false)
     echo "CapsLockOn"
     OptionCls = new Option("CapsLockOn") if not OptionCls?
@@ -68,7 +68,7 @@ CapsLockOn = (keydown)->
 
 CapsLockOff = (keydown)->
     if !keydown then return
-    if not isCapsLockToggle then return
+    if isCapsLockToggle() isnt true then return
     setFocus(false)
     echo "CapsLockOff"
     OptionCls = new Option("CapsLockOff") if not OptionCls?
