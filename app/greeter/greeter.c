@@ -308,7 +308,7 @@ int main (int argc, char **argv)
 
  //   monitor_resource_file("greeter", webview);
     /*init_camera(argc, argv);*/
-    turn_numlock_on ();
+    /*turn_numlock_on ();*/
     gtk_main ();
     /*destroy_camera();*/
     return 0;

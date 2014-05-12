@@ -358,7 +358,7 @@ int main (int argc, char **argv)
     gdk_window_stick (gdkwindow);
 
     /*init_camera(argc, argv);*/
-    turn_numlock_on ();
+    /*turn_numlock_on ();*/
     gtk_main ();
     /*destroy_camera();*/
 
