@@ -477,6 +477,8 @@ class RichDir extends DesktopEntry
             
         arrow_outer_y = -7 * SCALE
         border_y = Math.abs(arrow_outer_y)
+        angel = 1.0
+        border_x = border_y / angel
         if arrow_pos_at_bottom == true
             arrow_outer.setAttribute("id", "pop_arrow_up_outer")
             arrow_mid.setAttribute("id", "pop_arrow_up_mid")
@@ -487,9 +489,9 @@ class RichDir extends DesktopEntry
             arrow_inner.style.bottom = arrow_outer_y + 2
             
             # top right bottom left
-            arrow_outer.style.borderWidth = "#{border_y}px #{border_y}px 0px #{border_y}px"
-            arrow_mid.style.borderWidth = "#{border_y}px #{border_y}px 0px #{border_y}px"
-            arrow_inner.style.borderWidth = "#{border_y - 1}px #{border_y - 1}px 0px #{border_y - 1}px"
+            arrow_outer.style.borderWidth = "#{border_y}px #{border_x}px 0px #{border_x}px"
+            arrow_mid.style.borderWidth = "#{border_y}px #{border_x}px 0px #{border_x}px"
+            arrow_inner.style.borderWidth = "#{border_y - 1}px #{border_x - 1}px 0px #{border_x - 1}px"
             
             @div_pop.appendChild(arrow_outer)
             @div_pop.appendChild(arrow_mid)
@@ -503,9 +505,9 @@ class RichDir extends DesktopEntry
             arrow_inner.style.top = arrow_outer_y + 2
             
             # top right down left
-            arrow_outer.style.borderWidth = "0px #{border_y}px #{border_y}px #{border_y}px"
-            arrow_mid.style.borderWidth = "0px #{border_y}px #{border_y}px #{border_y}px"
-            arrow_inner.style.borderWidth = "0px #{border_y - 1}px #{border_y - 1}px #{border_y - 1}px"
+            arrow_outer.style.borderWidth = "0px #{border_x}px #{border_y}px #{border_x}px"
+            arrow_mid.style.borderWidth = "0px #{border_x}px #{border_y}px #{border_x}px"
+            arrow_inner.style.borderWidth = "0px #{border_x - 1}px #{border_y - 1}px #{border_x - 1}px"
             
             @div_pop.insertBefore(arrow_outer, ele_ul)
             @div_pop.insertBefore(arrow_mid, ele_ul)
