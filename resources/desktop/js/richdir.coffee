@@ -453,6 +453,8 @@ class RichDir extends DesktopEntry
         SCALE = 1.5
         echo "SCALE:#{SCALE}"
         
+        #---------1.check is left or center or right----------#
+        #---------and set style.left or right----------#
         arrow_outer_x = null
         left = null
         is_right = false
@@ -475,10 +477,14 @@ class RichDir extends DesktopEntry
             arrow_mid.style.left = "#{left - arrow_outer_x}px"
             arrow_inner.style.left = "#{left - arrow_outer_x + 1}px"
             
+        #---------2.check arrow_pos_at_bottom or at top----------#
+        #---------and set style.top or left----------#
+        #---------and set style.borderWidth----------#
         arrow_outer_y = -7 * SCALE
         border_y = Math.abs(arrow_outer_y)
         angel = 1.0
         border_x = border_y / angel
+        
         if arrow_pos_at_bottom == true
             arrow_outer.setAttribute("id", "pop_arrow_up_outer")
             arrow_mid.setAttribute("id", "pop_arrow_up_mid")
