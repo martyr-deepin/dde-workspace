@@ -33,6 +33,7 @@ class User extends Widget
         @user_session = []
         @userinfo_all = []
         @accounts = new Accounts(APP_NAME)
+        if @accounts.get_dbus_failed then new NoAccountServiceMessage()
         @get_default_userid()
    
     get_default_userid:->

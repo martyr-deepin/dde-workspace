@@ -30,7 +30,7 @@ class Accounts
 
     constructor:(@id)->
         APP = @id#APP_NAME for DCore[APP]
-
+        @get_dbus_failed = false
         @users_id = []
         @users_name = []
         @users_id_dbus = []
@@ -55,11 +55,13 @@ class Accounts
                 @users_name_dbus[user_dbus.UserName] = user_dbus
         catch e
             echo "Dbus_Account #{ACCOUNTS_DAEMON} ERROR: #{e}"
+            @get_dbus_failed = true
 
         try
             @Dbus_Graphic = get_dbus("session", GRAPHIC, "BackgroundBlurPictPath")
         catch e
             echo "#{GRAPHIC} dbus ERROR: #{e}"
+            @get_dbus_failed = true
 
 
     is_user_logined:(uid)->

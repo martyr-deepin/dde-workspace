@@ -261,12 +261,14 @@ get_dbus = (type, opt, testProperty)->
     count = 0
     while d and not d[testProperty]
         try
-            d = func.apply(null, dbusArg)
+            setTimeout(->
+                d = func.apply(null, dbusArg)
+                count += 1
+            ,400)
             if typeof opt == 'string'
                 console.log "Get DBus \"#{opt}\" failed: #{e}"
             else
                 console.log "Get DBus \"#{opt.name} #{opt.path} #{opt.interface}\" failed: #{e}"
-            count += 1
             if count == 50
                 return null
     d
