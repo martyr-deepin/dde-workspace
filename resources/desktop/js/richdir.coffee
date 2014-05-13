@@ -455,18 +455,25 @@ class RichDir extends DesktopEntry
         
         arrow_outer_x = null
         left = null
+        is_right = false
         if p < n
             arrow_outer_x = 8 * SCALE
             left = p
         else if p + n > s_width
             arrow_outer_x = 14 * SCALE
             left = s_width - p
+            is_right = true
         else
             arrow_outer_x = 9 * SCALE
             left = n
-        arrow_outer.style.left = "#{left - arrow_outer_x}px"
-        arrow_mid.style.left = "#{left - arrow_outer_x}px"
-        arrow_inner.style.left = "#{left - arrow_outer_x + 1}px"
+        if is_right
+            arrow_outer.style.right = "#{left - arrow_outer_x}px"
+            arrow_mid.style.right = "#{left - arrow_outer_x}px"
+            arrow_inner.style.right = "#{left - arrow_outer_x + 1}px"
+        else
+            arrow_outer.style.left = "#{left - arrow_outer_x}px"
+            arrow_mid.style.left = "#{left - arrow_outer_x}px"
+            arrow_inner.style.left = "#{left - arrow_outer_x + 1}px"
             
         arrow_outer_y = -7 * SCALE
         border_y = Math.abs(arrow_outer_y)
