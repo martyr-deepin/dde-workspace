@@ -462,11 +462,18 @@ class RichDir extends DesktopEntry
             arrow_outer.style.left  = "#{n - 9}px"
             arrow_mid.style.left     = "#{n - 9}px"
             arrow_inner.style.left   = "#{n - 8}px"
-
+            
+        arrow_outer_y = -7
+        arrow_mid_y = arrow_outer_y + 1
+        arrow_inner_y = arrow_mid_y + 1
         if arrow_pos_at_bottom == true
             arrow_outer.setAttribute("id", "pop_arrow_up_outer")
             arrow_mid.setAttribute("id", "pop_arrow_up_mid")
             arrow_inner.setAttribute("id", "pop_arrow_up_inner")
+            
+            arrow_outer.style.bottom = arrow_outer_y
+            arrow_mid.style.bottom = arrow_mid_y
+            arrow_inner.style.bottom = arrow_inner_y
             @div_pop.appendChild(arrow_outer)
             @div_pop.appendChild(arrow_mid)
             @div_pop.appendChild(arrow_inner)
@@ -474,6 +481,9 @@ class RichDir extends DesktopEntry
             arrow_outer.setAttribute("id", "pop_arrow_down_outer")
             arrow_mid.setAttribute("id", "pop_arrow_down_mid")
             arrow_inner.setAttribute("id", "pop_arrow_down_inner")
+            arrow_outer.style.top = arrow_outer_y
+            arrow_mid.style.top = arrow_mid_y
+            arrow_inner.style.top = arrow_inner_y
             @div_pop.insertBefore(arrow_outer, ele_ul)
             @div_pop.insertBefore(arrow_mid, ele_ul)
             @div_pop.insertBefore(arrow_inner, ele_ul)
