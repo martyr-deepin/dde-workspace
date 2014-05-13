@@ -433,7 +433,7 @@ class RichDir extends DesktopEntry
         
         pop_size_pos =
             pop_width:pop_width
-            pop_height:pop_height
+            pop_height:ele_ul.offsetHeight
             pop_top:pop_top
             pop_left:pop_left
         
@@ -483,7 +483,13 @@ class RichDir extends DesktopEntry
     drawPanel:(ele_ul)->
         
         @bg = create_element(tag:'canvas', class:"bg", @div_pop)
-        @bg.appendChild(ele_ul)
+        @bg.style.position = "absolute"
+        @bg.style.top = @bg.style.left = 0
+        #@bg.style.zIndex = 21000
+        ele_ul.style.position = "absolute"
+        ele_ul.style.top = @bg.style.left = 0
+        #ele_ul.style.zIndex = 22000
+        @div_pop.appendChild(ele_ul)
         size = @set_div_pop_size_pos(ele_ul)
         
         PREVIEW_CORNER_RADIUS = 4
@@ -501,8 +507,8 @@ class RichDir extends DesktopEntry
             width: 18
             height: 10
        
-        @bg.style.width = PREVIEW_CANVAS_WIDTH
-        @bg.style.height = PREVIEW_CANVAS_HEIGHT
+        @bg.style.width = size.pop_width
+        @bg.style.height = size.pop_height
 
         triX = size.pop_left + size.pop_width / 2
 
@@ -520,7 +526,7 @@ class RichDir extends DesktopEntry
         ctx.fillStyle = "rgba(0,0,0,0.75)"
 
         radius = PREVIEW_CORNER_RADIUS
-        contentWidth = @bg.width - radius * 2 - ctx.lineWidth * 2 - ctx.shadowBlur * 2
+        contentWidth = @bg.width + radius * 2 + ctx.lineWidth * 2 + ctx.shadowBlur * 2
         topY = radius + ctx.lineWidth
         bottomY = @bg.height - PREVIEW_TRIANGLE.height - ctx.lineWidth * 2 - ctx.shadowBlur
         leftX = radius + ctx.shadowBlur
@@ -594,12 +600,13 @@ class RichDir extends DesktopEntry
 
         ctx.lineTo(ctx.shadowBlur, topY)
 
+        if arrow_pos_at_bottom then ctx.rotate(Math.PI)
         ctx.stroke()
         ctx.fill()
 
         ctx.restore()
 
-
+        @bg.style.display = "block"
 
     hide_pop_block : =>
         echo "hide_pop_block"
