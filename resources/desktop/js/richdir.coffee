@@ -414,7 +414,7 @@ class RichDir extends DesktopEntry
         if arrow_pos_at_bottom == true
             pop_top = @element.offsetTop - @div_pop.offsetHeight
         else
-            pop_top = n + 25#default 14
+            pop_top = n + 30#default 14
 
         # calc and make the arrow
         n = @div_pop.offsetWidth / 2 + 1
@@ -428,8 +428,8 @@ class RichDir extends DesktopEntry
         else
             pop_left = p - n + 6
         
-        @div_pop.style.top = "#{pop_top}px"
-        @div_pop.style.left = "#{pop_left}px"
+        @div_pop.style.top = pop_top
+        @div_pop.style.left = pop_left
         
         pop_size_pos =
             pop_width:pop_width
@@ -445,9 +445,6 @@ class RichDir extends DesktopEntry
         # calc and make the arrow
         n = @div_pop.offsetWidth / 2 + 1
         p = @element.offsetLeft + @element.offsetWidth / 2
-        arrow_outer = document.createElement("div")
-        arrow_mid = document.createElement("div")
-        arrow_inner = document.createElement("div")
         
         echo "p:#{p};n:#{n};s_width:#{s_width};arrow_pos_at_bottom:#{arrow_pos_at_bottom}"
         SCALE = 1.5
@@ -460,22 +457,14 @@ class RichDir extends DesktopEntry
         is_right = false
         if p < n
             arrow_outer_x = 8 * SCALE
-            left = p
+            left = p - arrow_outer_x
         else if p + n > s_width
             arrow_outer_x = 14 * SCALE
-            left = s_width - p
+            left = s_width - p - arrow_outer_x
             is_right = true
         else
             arrow_outer_x = 9 * SCALE
-            left = n
-        if is_right
-            arrow_outer.style.right = "#{left - arrow_outer_x}px"
-            arrow_mid.style.right = "#{left - arrow_outer_x}px"
-            arrow_inner.style.right = "#{left - arrow_outer_x + 1}px"
-        else
-            arrow_outer.style.left = "#{left - arrow_outer_x}px"
-            arrow_mid.style.left = "#{left - arrow_outer_x}px"
-            arrow_inner.style.left = "#{left - arrow_outer_x + 1}px"
+            left = n - arrow_outer_x
             
         #---------2.check arrow_pos_at_bottom or at top----------#
         #---------and set style.top or left----------#
@@ -485,39 +474,74 @@ class RichDir extends DesktopEntry
         angel = 1.0
         border_x = border_y / angel
         
-        if arrow_pos_at_bottom == true
-            arrow_outer.setAttribute("id", "pop_arrow_up_outer")
-            arrow_mid.setAttribute("id", "pop_arrow_up_mid")
-            arrow_inner.setAttribute("id", "pop_arrow_up_inner")
-            
-            arrow_outer.style.bottom = arrow_outer_y
-            arrow_mid.style.bottom = arrow_outer_y + 1
-            arrow_inner.style.bottom = arrow_outer_y + 2
-            
-            # top right bottom left
-            arrow_outer.style.borderWidth = "#{border_y}px #{border_x}px 0px #{border_x}px"
-            arrow_mid.style.borderWidth = "#{border_y}px #{border_x}px 0px #{border_x}px"
-            arrow_inner.style.borderWidth = "#{border_y - 1}px #{border_x - 1}px 0px #{border_x - 1}px"
-            
-            @div_pop.appendChild(arrow_outer)
-            @div_pop.appendChild(arrow_mid)
-            @div_pop.appendChild(arrow_inner)
-        else
-            arrow_outer.setAttribute("id", "pop_arrow_down_outer")
-            arrow_mid.setAttribute("id", "pop_arrow_down_mid")
-            arrow_inner.setAttribute("id", "pop_arrow_down_inner")
-            arrow_outer.style.top = arrow_outer_y
-            arrow_mid.style.top = arrow_outer_y + 1
-            arrow_inner.style.top = arrow_outer_y + 2
-            
-            # top right down left
-            arrow_outer.style.borderWidth = "0px #{border_x}px #{border_y}px #{border_x}px"
-            arrow_mid.style.borderWidth = "0px #{border_x}px #{border_y}px #{border_x}px"
-            arrow_inner.style.borderWidth = "0px #{border_x - 1}px #{border_y - 1}px #{border_x - 1}px"
-            
-            @div_pop.insertBefore(arrow_outer, ele_ul)
-            @div_pop.insertBefore(arrow_mid, ele_ul)
-            @div_pop.insertBefore(arrow_inner, ele_ul)
+        #---------3.choose method for arrow----------#
+        #---------method 1: use arrow_img----------#
+        #---------method 2: use arrow outer mid inner and borderWidth----------#
+        #---------method 3: use canvas----------#
+        method = 2
+        switch method
+            when 1
+                @arrow_img = create_img("arrow_img","",@div_pop)
+                w = 26
+                h = 18
+                @arrow_img.style.width = w
+                @arrow_img.style.height = h
+                if is_right then @arrow_img.style.right = left
+                else @arrow_img.style.left = left
+                if arrow_pos_at_bottom
+                    @div_pop.style.top = size.pop_top - 5
+                    @arrow_img.src = "img/arrow_bottom.png"
+                    @arrow_img.style.bottom = -1 * h
+                else
+                    @div_pop.style.top = size.pop_top + 5
+                    @arrow_img.src = "img/arrow_top.png"
+                    @arrow_img.style.top = -1 * h
+            when 2
+                arrow_outer = document.createElement("div")
+                arrow_mid = document.createElement("div")
+                arrow_inner = document.createElement("div")
+                if is_right
+                    arrow_outer.style.right = "#{left}px"
+                    arrow_mid.style.right = "#{left}px"
+                    arrow_inner.style.right = "#{left + 1}px"
+                else
+                    arrow_outer.style.left = "#{left}px"
+                    arrow_mid.style.left = "#{left}px"
+                    arrow_inner.style.left = "#{left + 1}px"
+       
+                if arrow_pos_at_bottom == true
+                    arrow_outer.setAttribute("id", "pop_arrow_up_outer")
+                    arrow_mid.setAttribute("id", "pop_arrow_up_mid")
+                    arrow_inner.setAttribute("id", "pop_arrow_up_inner")
+                    
+                    arrow_outer.style.bottom = arrow_outer_y
+                    arrow_mid.style.bottom = arrow_outer_y + 1
+                    arrow_inner.style.bottom = arrow_outer_y + 2
+                    
+                    # top right bottom left
+                    arrow_outer.style.borderWidth = "#{border_y}px #{border_x}px 0px #{border_x}px"
+                    arrow_mid.style.borderWidth = "#{border_y}px #{border_x}px 0px #{border_x}px"
+                    arrow_inner.style.borderWidth = "#{border_y - 1}px #{border_x - 1}px 0px #{border_x - 1}px"
+                    
+                    @div_pop.appendChild(arrow_outer)
+                    @div_pop.appendChild(arrow_mid)
+                    @div_pop.appendChild(arrow_inner)
+                else
+                    arrow_outer.setAttribute("id", "pop_arrow_down_outer")
+                    arrow_mid.setAttribute("id", "pop_arrow_down_mid")
+                    arrow_inner.setAttribute("id", "pop_arrow_down_inner")
+                    arrow_outer.style.top = arrow_outer_y
+                    arrow_mid.style.top = arrow_outer_y + 1
+                    arrow_inner.style.top = arrow_outer_y + 2
+                    
+                    # top right down left
+                    arrow_outer.style.borderWidth = "0px #{border_x}px #{border_y}px #{border_x}px"
+                    arrow_mid.style.borderWidth = "0px #{border_x}px #{border_y}px #{border_x}px"
+                    arrow_inner.style.borderWidth = "0px #{border_x - 1}px #{border_y - 1}px #{border_x - 1}px"
+                    
+                    @div_pop.insertBefore(arrow_outer, ele_ul)
+                    @div_pop.insertBefore(arrow_mid, ele_ul)
+                    @div_pop.insertBefore(arrow_inner, ele_ul)
 
 
 

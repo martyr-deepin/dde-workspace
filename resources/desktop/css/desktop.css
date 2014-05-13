@@ -220,6 +220,10 @@ body {
 }
 
 
+.arrow_img{
+    position: absolute;
+}
+
 #pop_arrow_up_outer {
     position: absolute;
     border-top: 7px solid rgba(0,0,0,0.64);
