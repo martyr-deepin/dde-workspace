@@ -26,6 +26,8 @@ richdir_drag_canvas = document.createElement("canvas")
 richdir_drag_context = richdir_drag_canvas.getContext('2d')
 
 class RichDir extends DesktopEntry
+    
+    arrow_pos_at_bottom = false
     constructor : (entry) ->
         super(entry, true, true)
         @div_pop = null
@@ -271,29 +273,7 @@ class RichDir extends DesktopEntry
     fill_pop_block : =>
         ele_ul = document.createElement("ul")
         ele_ul.setAttribute("id", @id)
-        @div_pop.appendChild(ele_ul)
 
-        # how many we can hold per line due to workarea width
-        # 20px for ul padding, 2px for border, 8px for scrollbar
-        num_max = Math.floor((s_width - 30) / _ITEM_WIDTH_)
-        # calc ideal columns
-        if @sub_items_count <= 3
-            col = @sub_items_count
-        else if @sub_items_count <= 6
-            col = 3
-        else if @sub_items_count <= 12
-            col = 4
-        else if @sub_items_count <= 20
-            col = 5
-        else
-            col = 6
-        # restrict the col item number
-        if col > num_max then col = num_max
-
-        # calc ideal rows
-        row = col - 1
-        if row < 1 then row = 1
-        if row > 4 then row = 4
 
         for i, e of @sub_items
             ele = document.createElement("li")
@@ -378,9 +358,37 @@ class RichDir extends DesktopEntry
 
             ele_ul.appendChild(ele)
 
+        @drawPanel_old(ele_ul)
+        #@drawPanel(ele_ul)
+        return
+
+    set_div_pop_size_pos :(ele_ul) ->
+        echo "set_div_pop_size"
+        #-----------------------size-----------------------#
+        # how many we can hold per line due to workarea width
+        # 20px for ul padding, 2px for border, 8px for scrollbar
+        num_max = Math.floor((s_width - 30) / _ITEM_WIDTH_)
+        # calc ideal columns
+        if @sub_items_count <= 3
+            col = @sub_items_count
+        else if @sub_items_count <= 6
+            col = 3
+        else if @sub_items_count <= 12
+            col = 4
+        else if @sub_items_count <= 20
+            col = 5
+        else
+            col = 6
+        # restrict the col item number
+        if col > num_max then col = num_max
+
+        # calc ideal rows
+        row = col - 1
+        if row < 1 then row = 1
+        if row > 4 then row = 4
         #calc ideal pop div width
-        @div_pop.style.width = "#{col * _ITEM_WIDTH_ + 22}px"
-        ele_ul.style.maxHeight = "#{row * _ITEM_HEIGHT_}px"
+        pop_width = col * _ITEM_WIDTH_ + 22
+        pop_height = row * _ITEM_HEIGHT_
 
         n = @element.offsetTop + Math.min(_ITEM_HEIGHT_, @element.offsetHeight)
         num_max = s_height - n
@@ -396,16 +404,46 @@ class RichDir extends DesktopEntry
         # restrict the real pop div size
         if @sub_items_count > col * row
             pop_width = col * _ITEM_WIDTH_ + 30
-            @div_pop.style.width = "#{pop_width}px"
         pop_height = row * _ITEM_HEIGHT_
+        
+        @div_pop.style.width = "#{pop_width}px"
         ele_ul.style.maxHeight = "#{pop_height}px"
+        
 
+        #-----------------------pos-----------------------#
         if arrow_pos_at_bottom == true
-            pop_top = @element.offsetTop - @div_pop.offsetHeight - 6
+            pop_top = @element.offsetTop - @div_pop.offsetHeight
         else
-            pop_top = n + 14
-        @div_pop.style.top = "#{pop_top}px"
+            pop_top = n + 25#default 14
 
+        # calc and make the arrow
+        n = @div_pop.offsetWidth / 2 + 1
+        p = @element.offsetLeft + @element.offsetWidth / 2
+        
+        pop_left = s_offset_x
+        if p < n
+            pop_left = s_offset_x
+        else if p + n > s_width
+            pop_left = s_width - 2 * n
+        else
+            pop_left = p - n + 6
+        
+        @div_pop.style.top = "#{pop_top}px"
+        @div_pop.style.left = "#{pop_left}px"
+        
+        pop_size_pos =
+            pop_width:pop_width
+            pop_height:pop_height
+            pop_top:pop_top
+            pop_left:pop_left
+        
+        echo pop_size_pos
+        return pop_size_pos
+
+    drawPanel_old:(ele_ul) ->
+        @div_pop.appendChild(ele_ul)
+        size = @set_div_pop_size_pos(ele_ul)
+        
         # calc and make the arrow
         n = @div_pop.offsetWidth / 2 + 1
         p = @element.offsetLeft + @element.offsetWidth / 2
@@ -413,17 +451,14 @@ class RichDir extends DesktopEntry
         arrow_mid = document.createElement("div")
         arrow_inner = document.createElement("div")
         if p < n
-            @div_pop.style.left      = "#{s_offset_x}px"
             arrow_outer.style.left  = "#{p - 8}px"
             arrow_mid.style.left     = "#{p - 8}px"
             arrow_inner.style.left   = "#{p - 7}px"
         else if p + n > s_width
-            @div_pop.style.left      = "#{s_width - 2 * n}px"
             arrow_outer.style.right = "#{s_width - p - 14}px"
             arrow_mid.style.right    = "#{s_width - p - 14}px"
             arrow_inner.style.right  = "#{s_width - p - 13}px"
         else
-            @div_pop.style.left      = "#{p - n + 6}px"
             arrow_outer.style.left  = "#{n - 9}px"
             arrow_mid.style.left     = "#{n - 9}px"
             arrow_inner.style.left   = "#{n - 8}px"
@@ -442,7 +477,128 @@ class RichDir extends DesktopEntry
             @div_pop.insertBefore(arrow_outer, ele_ul)
             @div_pop.insertBefore(arrow_mid, ele_ul)
             @div_pop.insertBefore(arrow_inner, ele_ul)
-        return
+
+
+
+    drawPanel:(ele_ul)->
+        
+        @bg = create_element(tag:'canvas', class:"bg", @div_pop)
+        @bg.appendChild(ele_ul)
+        size = @set_div_pop_size_pos(ele_ul)
+        
+        PREVIEW_CORNER_RADIUS = 4
+        PREVIEW_SHADOW_BLUR = 6
+        PREVIEW_CONTAINER_HEIGHT = 160
+        PREVIEW_CONTAINER_BORDER_WIDTH = 2
+        PREVIEW_BORDER_LENGTH = 5.0
+        PREVIEW_WINDOW_WIDTH = size.pop_width
+        PREVIEW_WINDOW_HEIGHT = size.pop_height
+        PREVIEW_WINDOW_MARGIN = 15
+        PREVIEW_WINDOW_BORDER_WIDTH = 1
+        PREVIEW_CANVAS_WIDTH = PREVIEW_WINDOW_WIDTH - PREVIEW_WINDOW_BORDER_WIDTH * 2
+        PREVIEW_CANVAS_HEIGHT = PREVIEW_WINDOW_HEIGHT - PREVIEW_WINDOW_BORDER_WIDTH * 2
+        PREVIEW_TRIANGLE =
+            width: 18
+            height: 10
+       
+        @bg.style.width = PREVIEW_CANVAS_WIDTH
+        @bg.style.height = PREVIEW_CANVAS_HEIGHT
+
+        triX = size.pop_left + size.pop_width / 2
+
+        ctx = @bg.getContext('2d')
+        ctx.clearRect(0, 0, @bg.width, @bg.height)
+        ctx.save()
+
+        ctx.shadowBlur = PREVIEW_SHADOW_BLUR
+        ctx.shadowColor = 'black'
+        ctx.shadowOffsetY = PREVIEW_CONTAINER_BORDER_WIDTH
+
+        ctx.strokeStyle = 'rgba(255,255,255,0.4)'
+        ctx.lineWidth = PREVIEW_CONTAINER_BORDER_WIDTH
+
+        ctx.fillStyle = "rgba(0,0,0,0.75)"
+
+        radius = PREVIEW_CORNER_RADIUS
+        contentWidth = @bg.width - radius * 2 - ctx.lineWidth * 2 - ctx.shadowBlur * 2
+        topY = radius + ctx.lineWidth
+        bottomY = @bg.height - PREVIEW_TRIANGLE.height - ctx.lineWidth * 2 - ctx.shadowBlur
+        leftX = radius + ctx.shadowBlur
+        rightX = leftX + contentWidth
+
+        arch =
+            TopLeft:
+                ox: leftX
+                oy: topY
+                radius: radius
+                startAngle: Math.PI
+                endAngle: Math.PI * 1.5
+            TopRight:
+                ox: rightX
+                oy: topY
+                radius: radius
+                startAngle: Math.PI * 1.5
+                endAngle: Math.PI * 2
+            BottomRight:
+                ox: rightX
+                oy: bottomY
+                radius: radius
+                startAngle: 0
+                endAngle: Math.PI * 0.5
+            BottomLeft:
+                ox: leftX
+                oy: bottomY
+                radius: radius
+                startAngle: Math.PI * 0.5
+                endAngle: Math.PI
+        ctx.beginPath()
+        ctx.moveTo(ctx.shadowBlur, topY)
+        ctx.arc(arch['TopLeft'].ox, arch['TopLeft'].oy, arch['TopLeft'].radius,
+                arch['TopLeft'].startAngle, arch['TopLeft'].endAngle)
+
+        ctx.lineTo(rightX, topY - radius)
+
+        ctx.arc(arch['TopRight'].ox, arch['TopRight'].oy, arch['TopRight'].radius,
+                arch['TopRight'].startAngle, arch['TopRight'].endAngle)
+
+        ctx.lineTo(rightX + radius, bottomY)
+
+        ctx.arc(arch['BottomRight'].ox, arch['BottomRight'].oy, arch['BottomRight'].radius,
+                arch['BottomRight'].startAngle, arch['BottomRight'].endAngle)
+
+        # bottom line
+        halfWidth = leftX + contentWidth / 2
+        triOffset = 0
+        if triX < halfWidth
+            console.log("left overflow")
+            triOffset = triX - halfWidth
+        else if halfWidth + triX > screen.width
+            console.log("right overflow")
+            triOffset = (halfWidth + triX) - screen.width
+
+        ctx.lineTo(halfWidth + triOffset + PREVIEW_TRIANGLE.width / 2,
+                   bottomY + radius)
+
+        # triangle
+        ctx.lineTo(halfWidth + triOffset,
+                   bottomY + radius + PREVIEW_TRIANGLE.height)
+
+        ctx.lineTo(halfWidth + triOffset - PREVIEW_TRIANGLE.width / 2,
+                   bottomY + radius)
+
+        # bottom line
+        ctx.lineTo(leftX, bottomY + radius)
+
+        ctx.arc(arch['BottomLeft'].ox, arch['BottomLeft'].oy, arch['BottomLeft'].radius,
+                arch['BottomLeft'].startAngle, arch['BottomLeft'].endAngle)
+
+        ctx.lineTo(ctx.shadowBlur, topY)
+
+        ctx.stroke()
+        ctx.fill()
+
+        ctx.restore()
+
 
 
     hide_pop_block : =>

@@ -1003,10 +1003,12 @@ grid_right_click = (evt) ->
     )
     templates_all = DCore.DEntry.get_templates_files()
     templates = DCore.DEntry.get_templates_filter(templates_all)
+    echo "templates_all.length:#{templates_all.length}"
     if templates_all.length > 0
         submenu_new.addSeparator()
         for i in [0...templates.length] by 1
             templates_name = DCore.DEntry.get_name(templates[i])
+            echo "#{i}:" + templates_name
             templates_id = i + TEMPLATES_FILE_ID_FIRST
             submenu_new.append(new MenuItem(templates_id, templates_name))
 

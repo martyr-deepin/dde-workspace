@@ -222,6 +222,14 @@ body {
     text-overflow:ellipsis;
     pointer-events:none;
 }
+
+.bg{
+    position:absolute;
+    border-radius: 4px;
+    left:-6px;
+    /*z-index:18000;*/
+}
+
 #pop_arrow_up_outer {
     bottom: -7px;
     position: absolute;
