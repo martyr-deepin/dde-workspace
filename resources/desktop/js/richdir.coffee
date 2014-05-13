@@ -444,37 +444,37 @@ class RichDir extends DesktopEntry
         @div_pop.appendChild(ele_ul)
         size = @set_div_pop_size_pos(ele_ul)
         
-
         # calc and make the arrow
         n = @div_pop.offsetWidth / 2 + 1
         p = @element.offsetLeft + @element.offsetWidth / 2
         arrow_outer = document.createElement("div")
         arrow_mid = document.createElement("div")
         arrow_inner = document.createElement("div")
+        
+        arrow_outer_x = 8
+        left = p
         if p < n
-            arrow_outer.style.left  = "#{p - 8}px"
-            arrow_mid.style.left     = "#{p - 8}px"
-            arrow_inner.style.left   = "#{p - 7}px"
+            arrow_outer_x = 8
+            left = p
         else if p + n > s_width
-            arrow_outer.style.right = "#{s_width - p - 14}px"
-            arrow_mid.style.right    = "#{s_width - p - 14}px"
-            arrow_inner.style.right  = "#{s_width - p - 13}px"
+            arrow_outer_x = 14
+            left = s_width - p
         else
-            arrow_outer.style.left  = "#{n - 9}px"
-            arrow_mid.style.left     = "#{n - 9}px"
-            arrow_inner.style.left   = "#{n - 8}px"
+            arrow_outer_x = 9
+            left = n
+        arrow_outer.style.left = "#{left - arrow_outer_x}px"
+        arrow_mid.style.left = "#{left - arrow_outer_x}px"
+        arrow_inner.style.left = "#{left - arrow_outer_x + 1}px"
             
         arrow_outer_y = -7
-        arrow_mid_y = arrow_outer_y + 1
-        arrow_inner_y = arrow_mid_y + 1
         if arrow_pos_at_bottom == true
             arrow_outer.setAttribute("id", "pop_arrow_up_outer")
             arrow_mid.setAttribute("id", "pop_arrow_up_mid")
             arrow_inner.setAttribute("id", "pop_arrow_up_inner")
             
             arrow_outer.style.bottom = arrow_outer_y
-            arrow_mid.style.bottom = arrow_mid_y
-            arrow_inner.style.bottom = arrow_inner_y
+            arrow_mid.style.bottom = arrow_outer_y + 1
+            arrow_inner.style.bottom = arrow_outer_y + 2
             @div_pop.appendChild(arrow_outer)
             @div_pop.appendChild(arrow_mid)
             @div_pop.appendChild(arrow_inner)
@@ -483,8 +483,8 @@ class RichDir extends DesktopEntry
             arrow_mid.setAttribute("id", "pop_arrow_down_mid")
             arrow_inner.setAttribute("id", "pop_arrow_down_inner")
             arrow_outer.style.top = arrow_outer_y
-            arrow_mid.style.top = arrow_mid_y
-            arrow_inner.style.top = arrow_inner_y
+            arrow_mid.style.top = arrow_outer_y + 1
+            arrow_inner.style.top = arrow_outer_y + 2
             @div_pop.insertBefore(arrow_outer, ele_ul)
             @div_pop.insertBefore(arrow_mid, ele_ul)
             @div_pop.insertBefore(arrow_inner, ele_ul)
