@@ -26,7 +26,8 @@ class Message extends Widget
         @text = []
         @text_li = []
         @text_span = []
-
+        echo "new #{@id} Message"
+    
     append: (el)->
         el.style.display = "-webkit-box"
         el.style.WebkitBoxPack = "center"
