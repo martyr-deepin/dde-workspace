@@ -444,6 +444,7 @@ class RichDir extends DesktopEntry
         @div_pop.appendChild(ele_ul)
         size = @set_div_pop_size_pos(ele_ul)
         
+
         # calc and make the arrow
         n = @div_pop.offsetWidth / 2 + 1
         p = @element.offsetLeft + @element.offsetWidth / 2
