@@ -599,6 +599,12 @@ class RichDir extends DesktopEntry
                 ctx.lineTo(halfWidth + triOffset - PREVIEW_TRIANGLE.width / 2,
                            bottomY + radius)
 
+                ctx.stroke()
+                ctx.fill()
+
+                #ctx.restore()
+
+                @bg.style.display = "block"
 
     drawPanel:(ele_ul)->
         
