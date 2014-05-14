@@ -206,7 +206,7 @@ char* dentry_get_name(Entry* e)
     TEST_GFILE(e, f)
         return g_file_get_basename(f);
     TEST_GAPP(e, app)
-        return g_strdup(g_app_info_get_name(app));
+        return g_strdup(g_app_info_get_display_name(app));
     TEST_END
         return g_strdup("");
 }
