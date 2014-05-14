@@ -278,8 +278,12 @@ class AppItem extends Item
                             console.log("open from somewhere else")
                             @swap_to_clientgroup()
                 when ITEM_DATA_FIELD.icon
-                    value = DCore.get_theme_icon(value, 48)
-                    @change_icon(value)
+                    #TODO: datauri?
+                    if value.substring(0, 7) == "file://"
+                        @change_icon(value)
+                    else
+                        v = DCore.get_theme_icon(value, 48)
+                        @change_icon(v)
                 when ITEM_DATA_FIELD.title
                     @set_tooltip(value)
         )
