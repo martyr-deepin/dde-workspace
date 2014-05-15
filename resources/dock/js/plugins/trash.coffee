@@ -53,9 +53,10 @@ class Trash extends PostfixedItem
     on_click: (e)=>
         e.stopPropagation()
         super
-        if  @is_opened
+        if @is_opened
             @core.Activate(0,0)
             return
+        @is_opened = true
         @openingIndicator.style.display = 'inline'
         @openingIndicator.style.webkitAnimationName = 'Breath'
         if !DCore.DEntry.launch(@entry, [])
