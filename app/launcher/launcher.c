@@ -344,13 +344,20 @@ gboolean can_be_restart()
 }
 
 
+static
+void restart_launcher()
+{
+    g_spawn_command_line_async("dde-launcher -rd", NULL);
+}
+
+
 gboolean _launcher_size_monitor(gpointer user_data)
 {
     NOUSED(user_data);
     struct rusage usg;
     getrusage(RUSAGE_SELF, &usg);
     if (usg.ru_maxrss > RES_IN_MB(180) && can_be_restart()) {
-        g_spawn_command_line_async("launcher -r", NULL);
+        restart_launcher();
         return FALSE;
     }
 
@@ -410,6 +417,33 @@ void signal_handler(int signum)
         break;
     }
 }
+
+
+static
+gboolean change_resolution_later(gpointer user_data G_GNUC_UNUSED)
+{
+    if (can_be_restart()) {
+        // restart_launcher();
+        launcher_quit();
+        return G_SOURCE_REMOVE;
+    }
+
+    return G_SOURCE_CONTINUE;
+}
+
+
+static
+void reslution_changed(GdkScreen* screen G_GNUC_UNUSED,
+                       gpointer user_data G_GNUC_UNUSED)
+{
+    if (can_be_restart()) {
+        // restart_launcher();
+        launcher_quit();
+    } else {
+        g_timeout_add(200, change_resolution_later, NULL);
+    }
+}
+
 
 int main(int argc, char* argv[])
 {
@@ -495,6 +529,8 @@ int main(int argc, char* argv[])
 
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
 
+    GdkScreen* screen = gdk_screen_get_default();
+    g_signal_connect(screen, "size-changed", G_CALLBACK(reslution_changed), NULL);
     g_signal_connect(container, "realize", G_CALLBACK(_on_realize), NULL);
     g_signal_connect (container, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect(container, "size-allocate", G_CALLBACK(resize), NULL);
