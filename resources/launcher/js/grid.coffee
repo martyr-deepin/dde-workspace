@@ -29,7 +29,7 @@ gridScrollCallback = (e)->
         candidateId = this.childNodes[i].id
         if scrollTop - offset < 0
             # console.log "less #{id} #{$("##{id}").firstChild.firstChild.textContent}"
-            $("#grid").style.webkitMaskImage = "-webkit-linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,1) 5%, rgba(0,0,0,1) 90%, rgba(0,0,0,0.3), rgba(0,0,0,0))"
+            $("#grid").style.webkitMaskImage = MASK_TOP_BOTTOM
             categoryBar.focusCategory(cid.substr(Category.PREFIX.length))
             break
         else if scrollTop - offset == 0
@@ -38,7 +38,7 @@ gridScrollCallback = (e)->
             if cid == "c-2"
                 this.style.webkitMask = "none"
             else
-                this.style.webkitMask = "-webkit-linear-gradient(top, rgba(0,0,0,1), rgba(0,0,0,1) 90%, rgba(0,0,0,0.3), rgba(0,0,0,0))"
+                this.style.webkitMask = ""
             categoryBar.focusCategory(cid.substr(Category.PREFIX.length))
             break
         else
@@ -55,6 +55,34 @@ grid.addEventListener("mousewheel", (e)->
         gridOffset = offset
     else if gridOffset > 0
         gridOffset = 0
-    old = grid.firstElementChild.style.webkitTransition
-    grid.firstElementChild.style.webkitTransform = "translateY(#{gridOffset}px)"
+    warp = grid.firstElementChild
+    old = warp.style.webkitTransition
+    warp.style.webkitTransform = "translateY(#{gridOffset}px)"
+
+    offset = 0
+    l = warp.childNodes.length
+    scrollTop = -gridOffset
+    for i in [0...l]
+        if warp.childNodes[i].style.display == 'none'
+            continue
+        candidateId = warp.childNodes[i].id
+        if scrollTop - offset < 0
+            # console.log "less #{id} #{$("##{id}").firstChild.firstChild.textContent}"
+            $("#grid").style.webkitMaskImage = "-webkit-linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,1) 5%, rgba(0,0,0,1) 90%, rgba(0,0,0,0.3), rgba(0,0,0,0))"
+            categoryBar.focusCategory(cid.substr(Category.PREFIX.length))
+            break
+        else if scrollTop - offset == 0
+            cid = warp.childNodes[i].id
+            # console.log "equal #{id} #{$("##{id}").firstChild.firstChild.textContent}"
+            if cid == "c-2"
+                this.style.webkitMask = "none"
+            else
+                this.style.webkitMask = "-webkit-linear-gradient(top, rgba(0,0,0,1), rgba(0,0,0,1) 90%, rgba(0,0,0,0.3), rgba(0,0,0,0))"
+            categoryBar.focusCategory(cid.substr(Category.PREFIX.length))
+            break
+        else
+            cid = candidateId
+            offset += warp.childNodes[i].clientHeight + CATEGORY_LIST_ITEM_MARGIN
+
+    return
 )

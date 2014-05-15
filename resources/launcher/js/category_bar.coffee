@@ -75,6 +75,7 @@ class CategoryBar
             id = parseInt(target.getAttribute("catId"))
             if !isNaN(id)
                 console.log("selected id: #{@selectedId}, click id: #{id}")
+                grid.style.webkitMask = ""
                 categoryList.scroll(@selectedId, id)
                 @focusCategory(id)
         )
