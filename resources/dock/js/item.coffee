@@ -88,6 +88,9 @@ class Item extends Widget
         e.stopPropagation()
 
     on_dragend:(e)=>
+        console.log('dragend')
+        update_dock_region()
+        _lastHover?.reset()
         e.preventDefault()
         _dragTarget?.reset()
         _dragTarget?.back(e.x, e.y) if _dragToBack
@@ -100,9 +103,9 @@ class Item extends Widget
         _lastHover = null
         app_list.setInsertAnchor(@element.nextSibling)
         if el = @element.nextSibling
-            el.style.marginLeft = '51px'
+            el.style.marginLeft = "#{INSERT_INDICATOR_WIDTH}px"
         else if el = @element.previousSibling
-            el.style.marginRight = '51px'
+            el.style.marginRight = "#{INSERT_INDICATOR_WIDTH}px"
 
         if el
             if not _isDragging
@@ -140,16 +143,16 @@ class Item extends Widget
             if t = @element.nextSibling
                 t.style.marginLeft = ''
                 t.style.marginRight = ''
-            @element.style.marginLeft = '51px'
+            @element.style.marginLeft = "#{INSERT_INDICATOR_WIDTH}px"
             @element.style.marginRight = ''
             app_list.setInsertAnchor(@element)
         else
             if t = @element.nextSibling
-                t.style.marginLeft = '51px'
+                t.style.marginLeft = "#{INSERT_INDICATOR_WIDTH}px"
                 t.style.marginRight = ''
             else
                 @element.style.marginLeft = ''
-                @element.style.marginRight = '51px'
+                @element.style.marginRight = "#{INSERT_INDICATOR_WIDTH}px"
             app_list.setInsertAnchor(t)
 
         if not _isDragging
