@@ -422,6 +422,7 @@ class PreviewWindow extends Widget
             @canvas_container.style.width = @canvas_width
             @canvas_container.style.height = @canvas_height
         if @applet
+            @element.style.margin = "#{PREVIEW_CORNER_RADIUS}px"
             @innerBorder.style.width = @canvas_width
             @innerBorder.style.height = @canvas_height
         @titleContainer?.style.width = @canvas_width - PREVIEW_WINDOW_BORDER_WIDTH * 2
