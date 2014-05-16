@@ -450,9 +450,15 @@ class AppItem extends Item
                     # console.log("Move Window to #{x}, #{y}")
                     ew.move(ew.xids[0], x, y)
                     clearTimeout(@showEmWindowTimer || null)
-                    @showEmWindowTimer = setTimeout(->
+
+                    if Preview_container.border.classList.contains("moveAnimation")
+                        console.log("show window after animation")
+                        @showEmWindowTimer = setTimeout(->
+                            ew.show()
+                        , 400)
+                    else
+                        console.log("show window immiditely")
                         ew.show()
-                    , 400)
                 )
 
     on_mouseout:(e)=>
