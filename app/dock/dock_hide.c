@@ -329,10 +329,8 @@ GdkWindow* get_dock_guard_window()
     return guard_window;
 }
 PRIVATE GdkFilterReturn _monitor_guard_window(GdkXEvent* xevent,
-        GdkEvent* event, gpointer data)
+        GdkEvent* event G_GNUC_UNUSED, gpointer data G_GNUC_UNUSED)
 {
-    NOUSED(event);
-    NOUSED(data);
     XEvent* xev = xevent;
     XGenericEvent* e = xevent;
 

@@ -253,30 +253,27 @@ get_dbus = (type, opt, testProperty)->
 
     if !d
         if typeof opt == 'string'
-            console.log "Get DBus \"#{opt}\" failed: #{e}"
+            console.log "Get DBus \"#{opt}\" failed"
         else
-            console.log "Get DBus \"#{opt.name} #{opt.path} #{opt.interface}\" failed: #{e}"
+            console.log "Get DBus \"#{opt.name} #{opt.path} #{opt.interface}\" failed"
         return null
 
     count = 0
     while d and not d[testProperty]
         try
-            setTimeout(->
-                d = func.apply(null, dbusArg)
-                count += 1
-            ,400)
+            # cannot use setTimeout, setTimeout will lead to inifite loop
+            # because the callback will get no chance to be executed.
+            d = func.apply(null, dbusArg)
+            count += 1
             if typeof opt == 'string'
-                console.log "Get DBus \"#{opt}\" failed: #{e}"
+                console.log "Get DBus \"#{opt}\" failed"
             else
-                console.log "Get DBus \"#{opt.name} #{opt.path} #{opt.interface}\" failed: #{e}"
-            if count == 50
+                console.log "Get DBus \"#{opt.name} #{opt.path} #{opt.interface}\" failed"
+
+            if count == 100
                 return null
     d
 
-
-blockJS = (t)->
-    `for (var s = +new Date(); s + t > +new Date();){}`
-    return
 
 getRandomInt = (min,max) ->
     c = max - min + 1

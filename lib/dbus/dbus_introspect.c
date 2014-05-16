@@ -86,9 +86,8 @@ gboolean handle_signal_callback(struct SignalInfo* info)
     return FALSE;
 }
 
-GDBusMessage* watch_signal(GDBusConnection* connection, GDBusMessage *msg, gboolean incoming, gpointer no_use)
+GDBusMessage* watch_signal(GDBusConnection* connection, GDBusMessage *msg, gboolean incoming, gpointer no_use G_GNUC_UNUSED)
 {
-    NOUSED(no_use);
     if (!incoming)
         return msg;
 
@@ -156,9 +155,13 @@ SIGNAL_CALLBACK_ID add_signal_callback(struct DBusObjectInfo *info, struct Signa
 
 
 static
-JSValueRef signal_connect(JSContextRef ctx, JSObjectRef function, JSObjectRef this, size_t argumentCount, const JSValueRef arguments[], JSValueRef *exception)
+JSValueRef signal_connect(JSContextRef ctx,
+                          JSObjectRef function G_GNUC_UNUSED,
+                          JSObjectRef this,
+                          size_t argumentCount,
+                          const JSValueRef arguments[],
+                          JSValueRef *exception)
 {
-    NOUSED(function);
     if (argumentCount != 2 ) {
         js_fill_exception(ctx, exception, "connect must have two params");
         return NULL;
@@ -206,13 +209,12 @@ errout:
 
 static
 JSValueRef signal_disconnect(JSContextRef ctx,
-                            JSObjectRef function,
+                            JSObjectRef function G_GNUC_UNUSED,
                             JSObjectRef this,
                             size_t argumentCount,
                             const JSValueRef arguments[],
                             JSValueRef *exception)
 {
-    NOUSED(function);
     struct DBusObjectInfo* info = JSObjectGetPrivate(this);
 
     if (argumentCount != 2) {
@@ -239,16 +241,12 @@ JSValueRef signal_disconnect(JSContextRef ctx,
 }
 static
 JSValueRef signal_emit(JSContextRef ctx,
-                            JSObjectRef function,
-                            JSObjectRef this,
-                            size_t argumentCount,
-                            const JSValueRef arguments[],
+                            JSObjectRef function G_GNUC_UNUSED,
+                            JSObjectRef this G_GNUC_UNUSED,
+                            size_t argumentCount G_GNUC_UNUSED,
+                            const JSValueRef arguments[] G_GNUC_UNUSED,
                             JSValueRef *exception)
 {
-    NOUSED(function);
-    NOUSED(this);
-    NOUSED(argumentCount);
-    NOUSED(arguments);
     /*obj_info;*/
     /*signal_name;*/
     /*signal_signature;*/
@@ -269,9 +267,8 @@ void async_info_free(struct AsyncInfo* info)
     g_free(info);
 }
 
-void async_callback(GObject *source, GAsyncResult* res, struct AsyncInfo *info)
+void async_callback(GObject *source G_GNUC_UNUSED, GAsyncResult* res, struct AsyncInfo *info)
 {
-    NOUSED(source);
     GError* error = NULL;
     GVariant* r = g_dbus_connection_call_finish(info->connection, res, &error);
     if (error != NULL) {
@@ -492,9 +489,8 @@ JSValueRef dynamic_function(JSContextRef ctx, JSObjectRef function, JSObjectRef 
     return ret;
 }
 
-JSClassRef get_cache_class(struct DBusObjectInfo* obj_info)
+JSClassRef get_cache_class(struct DBusObjectInfo* obj_info G_GNUC_UNUSED)
 {
-    NOUSED(obj_info);
     //TODO: build cache;
     return NULL;
 }

@@ -57,10 +57,8 @@ void close_launcher_window()
 }
 
 PRIVATE
-GdkFilterReturn _monitor_launcher_window(GdkXEvent* xevent, GdkEvent* event, Window win)
+GdkFilterReturn _monitor_launcher_window(GdkXEvent* xevent, GdkEvent* event G_GNUC_UNUSED, Window win G_GNUC_UNUSED)
 {
-    NOUSED(event);
-    NOUSED(win);
     XEvent* xev = xevent;
     if (xev->type == DestroyNotify) {
         js_post_signal("launcher_destroy");

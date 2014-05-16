@@ -159,35 +159,28 @@ gboolean lock_start_session(const gchar *username,const gchar *password,const gc
 }
 
 static gboolean
-prevent_exit (GtkWidget* w, GdkEvent* e)
+prevent_exit (GtkWidget* w G_GNUC_UNUSED, GdkEvent* e G_GNUC_UNUSED)
 {
-    NOUSED(w);
-    NOUSED(e);
     return TRUE;
 }
 
 static void
-sigterm_cb (int signum)
+sigterm_cb (int signum G_GNUC_UNUSED)
 {
-    NOUSED(signum);
     gtk_main_quit ();
 }
 
 
 #ifndef DEBUG
 static void
-focus_out_cb (GtkWidget* w, GdkEvent*e, gpointer user_data)
+focus_out_cb (GtkWidget* w G_GNUC_UNUSED, GdkEvent*e G_GNUC_UNUSED, gpointer user_data G_GNUC_UNUSED)
 {
-    NOUSED(w);
-    NOUSED(e);
-    NOUSED(user_data);
     gdk_window_focus (gtk_widget_get_window (container), 0);
 }
 
 static void
-lock_show_cb (GtkWindow* container, gpointer data)
+lock_show_cb (GtkWindow* container, gpointer data G_GNUC_UNUSED)
 {
-    NOUSED(data);
     gs_grab_move_to_window (grab,
                             gtk_widget_get_window (GTK_WIDGET(container)),
                             gtk_window_get_screen (container),
@@ -229,9 +222,8 @@ x11_window_is_ours (Window window)
 }
 
 static GdkFilterReturn
-xevent_filter (GdkXEvent *xevent, GdkEvent  *event, GdkWindow *window)
+xevent_filter (GdkXEvent *xevent, GdkEvent  *event G_GNUC_UNUSED, GdkWindow *window)
 {
-    NOUSED(event);
     XEvent *ev = xevent;
 
     switch (ev->type) {
@@ -275,7 +267,7 @@ int main (int argc, char **argv)
         g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
 
     init_i18n ();
-    
+
 
     gtk_init (&argc, &argv);
 
@@ -326,7 +318,7 @@ int main (int argc, char **argv)
     g_signal_connect (container, "delete-event", G_CALLBACK (prevent_exit), NULL);
     gtk_widget_realize (container);
     gtk_widget_realize (webview);
-    
+
     GdkWindow *gdkwindow = gtk_widget_get_window (container);
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba (gdkwindow, &rgba);

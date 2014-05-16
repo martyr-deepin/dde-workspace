@@ -85,17 +85,14 @@ void osd_show()
 
 G_GNUC_UNUSED
 static gboolean
-prevent_exit (GtkWidget* w, GdkEvent* e)
+prevent_exit (GtkWidget* w G_GNUC_UNUSED, GdkEvent* e G_GNUC_UNUSED)
 {
-    NOUSED(w);
-    NOUSED(e);
     return TRUE;
 }
 
 static void
-G_GNUC_UNUSED sigterm_cb (int signum)
+G_GNUC_UNUSED sigterm_cb (int signum G_GNUC_UNUSED)
 {
-    NOUSED(signum);
     gtk_main_quit ();
 }
 
@@ -131,11 +128,11 @@ void osd_set_focus(gboolean focus)
     gtk_window_set_focus_on_map (GTK_WINDOW (container), focus);
     gtk_window_set_accept_focus (GTK_WINDOW (container), focus);
     gtk_window_set_focus_visible (GTK_WINDOW (container), focus);
-    
+
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
     gdk_window_set_focus_on_map (gdkwindow, focus);
     gdk_window_set_accept_focus (gdkwindow, focus);
-    
+
     gdk_window_set_override_redirect(gdkwindow, !focus);
  }
 
@@ -167,8 +164,8 @@ int main (int argc, char **argv)
     gtk_window_set_keep_above (GTK_WINDOW (container), TRUE);
     gtk_window_set_position (GTK_WINDOW (container), GTK_WIN_POS_CENTER_ALWAYS);
     gtk_window_resize (GTK_WINDOW (container), width,height);
-    
-   
+
+
     gtk_widget_set_events (GTK_WIDGET (container),
                            gtk_widget_get_events (GTK_WIDGET (container))
                            | GDK_POINTER_MOTION_MASK
@@ -188,7 +185,7 @@ int main (int argc, char **argv)
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
     gtk_widget_realize (container);
     gtk_widget_realize (webview);
-    
+
 /*    style_context = gtk_widget_get_style_context(webview);*/
     /*gtk_style_context_add_class(style_context,GTK_STYLE_CLASS_OSD);*/
     /*gtk_style_context_add_class(style_context,GTK_STYLE_PROPERTY_BORDER_RADIUS);*/
@@ -204,17 +201,17 @@ int main (int argc, char **argv)
     /*[>cairo_destory(cr);<]*/
     /*[>cairo_surface_write_to_png(surface,"gtkbackground.png");<]*/
     /*[>cairo_surface_destory(surface);<]*/
-    
-    
+
+
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
-    
+
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba (gdkwindow, &rgba);
     gdk_window_set_opacity (gdkwindow, 0.7);
     gdk_window_set_keep_above (gdkwindow, TRUE);
-    
+
     osd_set_focus(FALSE);
-   
+
     /*gdk_window_show(gdkwindow);*/
     /*gtk_widget_show_all (container);*/
 

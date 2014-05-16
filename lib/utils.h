@@ -27,7 +27,6 @@
 
 #define GET_HTML_PATH(name) "file://"RESOURCE_DIR"/"name"/index.html"
 #define BG_BLUR_PICT_CACHE_DIR "gaussian-background"
-#define NOUSED(p) do { (void)(p); } while (0)
 
 #ifndef M_PI
 #define M_PI 3.141592653589793
@@ -68,3 +67,4 @@ gboolean is_chrome_app(char const* name);
 char* bg_blur_pict_get_dest_path (const char* src_uri);
 
 #endif
+

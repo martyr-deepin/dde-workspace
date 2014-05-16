@@ -156,9 +156,8 @@ lock_setup_dbus_service ()
 }
 
 static gboolean
-_retry_registration (gpointer user_data)
+_retry_registration (gpointer user_data G_GNUC_UNUSED)
 {
-    NOUSED(user_data);
     lock_service_owner_id = g_bus_own_name (G_BUS_TYPE_SYSTEM,
                                             LOCK_DBUS_NAME,
                                             G_BUS_NAME_OWNER_FLAGS_NONE,
@@ -171,9 +170,8 @@ _retry_registration (gpointer user_data)
 }
 
 static void
-_on_bus_acquired (GDBusConnection * connection, const gchar * name, gpointer user_data)
+_on_bus_acquired (GDBusConnection * connection, const gchar * name G_GNUC_UNUSED, gpointer user_data)
 {
-    NOUSED(name);
     GError* error = NULL;
 
     g_debug ("on_bus_acquired");
@@ -203,19 +201,16 @@ _on_bus_acquired (GDBusConnection * connection, const gchar * name, gpointer use
 }
 
 static void
-_on_name_acquired (GDBusConnection * connection, const gchar * name, gpointer user_data)
+_on_name_acquired (GDBusConnection * connection G_GNUC_UNUSED,
+                   const gchar * name G_GNUC_UNUSED,
+                   gpointer user_data G_GNUC_UNUSED)
 {
-    NOUSED(connection);
-    NOUSED(name);
-    NOUSED(user_data);
     g_debug ("Dbus name acquired");
 }
 
 static void
-_on_name_lost (GDBusConnection * connection, const gchar * name, gpointer user_data)
+_on_name_lost (GDBusConnection * connection, const gchar * name G_GNUC_UNUSED, gpointer user_data G_GNUC_UNUSED)
 {
-    NOUSED(name);
-    NOUSED(user_data);
     if (connection == NULL) {
         g_critical("Unable to get a connection to DBus");
 
@@ -230,14 +225,15 @@ _on_name_lost (GDBusConnection * connection, const gchar * name, gpointer user_d
  * 	this function implements all the methods in the Registrar interface.
  */
 static void
-_bus_method_call (GDBusConnection * connection, const gchar * sender, const gchar * object_path, const gchar * interface,
-                 const gchar * method, GVariant * params, GDBusMethodInvocation * invocation, gpointer user_data)
+_bus_method_call (GDBusConnection * connection G_GNUC_UNUSED,
+                  const gchar * sender G_GNUC_UNUSED,
+                  const gchar * object_path G_GNUC_UNUSED,
+                  const gchar * interface G_GNUC_UNUSED,
+                  const gchar * method,
+                  GVariant * params,
+                  GDBusMethodInvocation * invocation,
+                  gpointer user_data G_GNUC_UNUSED)
 {
-    NOUSED(connection);
-    NOUSED(sender);
-    NOUSED(object_path);
-    NOUSED(interface);
-    NOUSED(user_data);
     g_debug ("bus_method_call");
     GVariant * retval = NULL;
     GError * error = NULL;
@@ -560,18 +556,15 @@ _bus_handle_remove_nopwdlogin (const gchar* username)
 }
 
 static gboolean
-do_exit (gpointer user_data)
+do_exit (gpointer user_data G_GNUC_UNUSED)
 {
-    NOUSED(user_data);
     g_main_loop_quit (loop);
 
     return FALSE;
 }
 
-int main (int argc, char **argv)
+int main (int argc G_GNUC_UNUSED, char **argv G_GNUC_UNUSED)
 {
-    NOUSED(argc);
-    NOUSED(argv);
     loop = g_main_loop_new (NULL, FALSE);
 
     lock_setup_dbus_service ();

@@ -156,9 +156,8 @@ GtkWidget* fileops_error_conflict_dialog_new (GtkWindow* parent, GFile* src,
 }
 
 static void
-_setup_dialog_labels (GFile* src, GFile* dest, GtkWidget* dialog)
+_setup_dialog_labels (GFile* src, GFile* dest, GtkWidget* dialog G_GNUC_UNUSED)
 {
-    NOUSED(dialog);
     //details.handle = NULL;
     g_debug ("__setup_dialog_labels");
 
@@ -386,9 +385,8 @@ _setup_dialog_labels (GFile* src, GFile* dest, GtkWidget* dialog)
 	gtk_button_set_label (GTK_BUTTON (details.replace_button), _("Merge"));
 }
 static void
-_expander_activated_cb (GtkExpander *w, GtkWidget *dialog)
+_expander_activated_cb (GtkExpander *w, GtkWidget *dialog G_GNUC_UNUSED)
 {
-    NOUSED(dialog);
     int start_pos, end_pos;
 
     if (!gtk_expander_get_expanded (w))
@@ -434,10 +432,8 @@ _entry_text_changed_cb (GtkEditable *entry, GtkWidget *dialog)
     }
 }
 static void
-_reset_button_clicked_cb (GtkButton *w, GtkWidget*dialog)
+_reset_button_clicked_cb (GtkButton *w G_GNUC_UNUSED, GtkWidget*dialog G_GNUC_UNUSED)
 {
-    NOUSED(w);
-    NOUSED(dialog);
     int start_pos, end_pos;
 
     gtk_entry_set_text (GTK_ENTRY (details.entry), details.conflict_name);
@@ -448,9 +444,8 @@ _reset_button_clicked_cb (GtkButton *w, GtkWidget*dialog)
 				start_pos, end_pos);
 }
 static void
-_checkbox_toggled_cb (GtkToggleButton *t, GtkWidget *dialog)
+_checkbox_toggled_cb (GtkToggleButton *t, GtkWidget *dialog G_GNUC_UNUSED)
 {
-    NOUSED(dialog);
     FileOpsResponse* response = details.response;
     response->apply_to_all = gtk_toggle_button_get_active (t);
 

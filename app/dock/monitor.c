@@ -37,14 +37,12 @@ void destroy_monitor()
 }
 
 
-void trash_changed(GFileMonitor* monitor, GFile* file, GFile* other_file,
-                   GFileMonitorEvent event_type, gpointer data)
+void trash_changed(GFileMonitor* monitor G_GNUC_UNUSED,
+                   GFile* file G_GNUC_UNUSED,
+                   GFile* other_file G_GNUC_UNUSED,
+                   GFileMonitorEvent event_type G_GNUC_UNUSED,
+                   gpointer data G_GNUC_UNUSED)
 {
-    NOUSED(monitor);
-    NOUSED(file);
-    NOUSED(other_file);
-    NOUSED(event_type);
-    NOUSED(data);
     GFileInfo* info = g_file_query_info(trash_can, G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT, G_FILE_QUERY_INFO_NONE, NULL, NULL);
     int count = g_file_info_get_attribute_uint32(info, G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT);
     g_object_unref(info);

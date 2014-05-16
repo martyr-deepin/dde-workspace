@@ -31,11 +31,10 @@ void workaround_gtk_theme()
     gtk_style_context_add_provider_for_screen(gdk_screen_get_default(), (GtkStyleProvider*)provider, GTK_STYLE_PROVIDER_PRIORITY_USER);
 }
 
-GtkWidget* create_web_container(bool normal, bool above)
+GtkWidget* create_web_container(bool normal, bool above G_GNUC_UNUSED)
 {
-    NOUSED(above);
     GtkWidget* window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_resize(window, 1, 1);
+    gtk_window_resize(GTK_WINDOW(window), 1, 1);
     workaround_gtk_theme();
 
     g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
@@ -63,10 +62,8 @@ GtkWidget* create_web_container(bool normal, bool above)
     return window;
 }
 
-gboolean erase_background(GtkWidget* widget, cairo_t *cr, gpointer data)
+gboolean erase_background(GtkWidget* widget G_GNUC_UNUSED, cairo_t *cr, gpointer data G_GNUC_UNUSED)
 {
-    NOUSED(widget);
-    NOUSED(data);
     cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
     cairo_paint(cr);
 
@@ -101,25 +98,20 @@ static void setup_lang(WebKitWebView* web_view)
 
 static void add_ddesktop_class(WebKitWebView *web_view,
         WebKitWebFrame *frame,
-        gpointer context,
-        gpointer arg3,
-        gpointer user_data)
+        gpointer context G_GNUC_UNUSED,
+        gpointer arg3 G_GNUC_UNUSED,
+        gpointer user_data G_GNUC_UNUSED)
 {
-    NOUSED(context);
-    NOUSED(arg3);
-    NOUSED(user_data);
     JSGlobalContextRef jsContext = webkit_web_frame_get_global_context(frame);
     init_js_extension(jsContext, (void*)web_view);
 }
 
 
 
-WebKitWebView* inspector_create(WebKitWebInspector *inspector,
-        WebKitWebView *web_view, gpointer user_data)
+WebKitWebView* inspector_create(WebKitWebInspector *inspector G_GNUC_UNUSED,
+        WebKitWebView *web_view G_GNUC_UNUSED,
+        gpointer user_data G_GNUC_UNUSED)
 {
-    NOUSED(inspector);
-    NOUSED(web_view);
-    NOUSED(user_data);
     GtkWidget* win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_widget_set_size_request(win, 800, 500);
     GtkWidget* web = webkit_web_view_new();
@@ -141,9 +133,8 @@ void dwebview_show_inspector(GtkWidget* webview)
 
 G_GNUC_UNUSED
 static bool webview_key_release_cb(GtkWidget* webview,
-        GdkEvent* event, gpointer data)
+        GdkEvent* event, gpointer data G_GNUC_UNUSED)
 {
-    NOUSED(data);
     GdkEventKey *ev = (GdkEventKey*)event;
     switch (ev->keyval) {
         case GDK_KEY_F5:
@@ -237,12 +228,12 @@ GtkWidget* d_webview_new_with_uri(const char* uri)
 }
 
 static
-void reload_webview(GFileMonitor* m, GFile* f1, GFile* f2, GFileMonitorEvent et, WebKitWebView* webview)
+void reload_webview(GFileMonitor* m G_GNUC_UNUSED,
+                    GFile* f1 G_GNUC_UNUSED,
+                    GFile* f2 G_GNUC_UNUSED,
+                    GFileMonitorEvent et G_GNUC_UNUSED,
+                    WebKitWebView* webview)
 {
-    NOUSED(m);
-    NOUSED(f1);
-    NOUSED(f2);
-    NOUSED(et);
     webkit_web_view_reload(webview);
 }
 

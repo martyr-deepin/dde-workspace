@@ -78,9 +78,8 @@ struct {
 
 
 PRIVATE
-void _do_im_commit(GtkIMContext *context, gchar* str)
+void _do_im_commit(GtkIMContext *context G_GNUC_UNUSED, gchar* str)
 {
-    NOUSED(context);
     JSObjectRef json = json_create();
     json_append_string(json, "Content", str);
     js_post_message("im_commit", json);
@@ -351,9 +350,8 @@ void restart_launcher()
 }
 
 
-gboolean _launcher_size_monitor(gpointer user_data)
+gboolean _launcher_size_monitor(gpointer user_data G_GNUC_UNUSED)
 {
-    NOUSED(user_data);
     struct rusage usg;
     getrusage(RUSAGE_SELF, &usg);
     if (usg.ru_maxrss > RES_IN_MB(180) && can_be_restart()) {

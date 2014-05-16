@@ -243,10 +243,8 @@ int reparent_to_init ()
 	    _exit(EXIT_SUCCESS);
     }
 }
-static void _consolidate_cmd_line (int subargc, char*** subargv_ptr)
+static void _consolidate_cmd_line (int subargc G_GNUC_UNUSED, char*** subargv_ptr G_GNUC_UNUSED)
 {
-    NOUSED(subargc);
-    NOUSED(subargv_ptr);
     //recursively consolidate
 }
 void parse_cmd_line (int* argc_ptr, char*** argv_ptr)

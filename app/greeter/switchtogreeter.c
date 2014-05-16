@@ -193,10 +193,8 @@ switch_to_greeter (gchar *seat_path)
     g_object_unref (seat_proxy);
 }
 
-int main (int argc, char **argv)
+int main (int argc G_GNUC_UNUSED, char **argv G_GNUC_UNUSED)
 {
-    NOUSED(argc);
-    NOUSED(argv);
     gchar *username = NULL;
     gchar *seat_path = NULL;
 

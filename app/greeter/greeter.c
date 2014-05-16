@@ -108,10 +108,9 @@ start_authentication (struct AuthHandler *handler)
 }
 
 static void
-respond_authentication (LightDMGreeter *greeter, const gchar *text, LightDMPromptType type)
+respond_authentication (LightDMGreeter *greeter, const gchar *text G_GNUC_UNUSED, LightDMPromptType type)
 {
     g_warning("respond_authentication");
-    NOUSED(text);
     gchar *respond = NULL;
 
     if (type == LIGHTDM_PROMPT_TYPE_QUESTION) {
@@ -285,7 +284,7 @@ int main (int argc, char **argv)
     monitors_adaptive(container,webview);
     BackgroundInfo* bg_info = create_background_info(container, webview);
     background_info_set_background_by_file(bg_info, "/usr/share/backgrounds/default_background.jpg");
-    
+
     gtk_widget_realize (webview);
     gtk_widget_realize (container);
 

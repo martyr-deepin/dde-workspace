@@ -215,13 +215,10 @@ init_fileops_clipboard (GFile* file_list[], guint num, gboolean cut)
  *	we cannot use this to differentiate between ourselves and
  */
 static void
-_clipboard_owner_change_cb (GtkClipboard*		clipboard,
-			    GdkEventOwnerChange*	event,
-			    gpointer		        callback_data)
+_clipboard_owner_change_cb (GtkClipboard*		clipboard G_GNUC_UNUSED,
+			    GdkEventOwnerChange*	event G_GNUC_UNUSED,
+			    gpointer		        callback_data G_GNUC_UNUSED)
 {
-    NOUSED(clipboard);
-    NOUSED(event);
-    NOUSED(callback_data);
 #if 0
 	if (is_clipboard_owner)
 	{
@@ -241,14 +238,11 @@ _clipboard_owner_change_cb (GtkClipboard*		clipboard,
 }
 
 static void
-_get_clipboard_callback	(GtkClipboard*		clipboard,
-			 GtkSelectionData*	selection_data,
-			 guint			info,
-			 gpointer               user_data)
+_get_clipboard_callback	(GtkClipboard*		clipboard G_GNUC_UNUSED,
+			 GtkSelectionData*	selection_data G_GNUC_UNUSED,
+			 guint			info G_GNUC_UNUSED,
+			 gpointer               user_data G_GNUC_UNUSED)
 {
-    NOUSED(clipboard);
-    NOUSED(info);
-    NOUSED(user_data);
     g_debug ("_get_clipboard_callback: begin");
     GdkAtom target;
     target = gtk_selection_data_get_target (selection_data);
@@ -297,11 +291,9 @@ _get_clipboard_callback	(GtkClipboard*		clipboard,
  *	keep clipboard_info
  */
 static void
-_clear_clipboard_callback (GtkClipboard *clipboard,
-			   gpointer      user_data)
+_clear_clipboard_callback (GtkClipboard *clipboard G_GNUC_UNUSED,
+			   gpointer      user_data G_GNUC_UNUSED)
 {
-    NOUSED(clipboard);
-    NOUSED(user_data);
     g_debug ("_clear_clipboard_callback: begin");
 
     GList* file_list = NULL;
@@ -427,11 +419,10 @@ __request_clipboard_contents (FileOpsClipboardInfo* info)
     return info->num ? TRUE : FALSE;
 }
 static void
-__clipboard_contents_received_callback (GtkClipboard     *clipboard,
+__clipboard_contents_received_callback (GtkClipboard     *clipboard G_GNUC_UNUSED,
 				        GtkSelectionData *selection_data,
 				        gpointer          info)
 {
-    NOUSED(clipboard);
     g_debug ("__clipboard_contents_received_callback: begin");
     FileOpsClipboardInfo* _info = (FileOpsClipboardInfo*) info;
 

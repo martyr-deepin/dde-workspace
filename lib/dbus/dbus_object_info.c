@@ -128,16 +128,13 @@ void parse_parms(const gchar **names, const gchar **values)
 }
 
 static
-void parse_start(GMarkupParseContext* context,
+void parse_start(GMarkupParseContext* context G_GNUC_UNUSED,
         const gchar *element_name,
         const gchar **attribute_names,
         const gchar **attribute_values,
-        gpointer user_data,
-        GError **error)
+        gpointer user_data G_GNUC_UNUSED,
+        GError **error G_GNUC_UNUSED)
 {
-    NOUSED(context);
-    NOUSED(user_data);
-    NOUSED(error);
     const gchar **name_cursor = attribute_names;
     const gchar **value_cursor = attribute_values;
 
@@ -199,12 +196,11 @@ void parse_start(GMarkupParseContext* context,
 
 
 static
-void parse_end(GMarkupParseContext *context,
-        const gchar* element_name, gpointer user_data, GError **error)
+void parse_end(GMarkupParseContext *context G_GNUC_UNUSED,
+        const gchar* element_name,
+        gpointer user_data G_GNUC_UNUSED,
+        GError **error G_GNUC_UNUSED)
 {
-    NOUSED(context);
-    NOUSED(user_data);
-    NOUSED(error);
     if (g_strcmp0(element_name, "interface") == 0) {
         state = S_NONE;
     }
@@ -224,9 +220,8 @@ void parse_end(GMarkupParseContext *context,
 }
 
 static
-void build_current_object_info(const char* xml, const char* interface)
+void build_current_object_info(const char* xml, const char* interface G_GNUC_UNUSED)
 {
-    NOUSED(interface);
     g_assert(xml != NULL);
     static GMarkupParser parser = {
         .start_element = parse_start,
@@ -272,7 +267,7 @@ struct DBusObjectInfo* build_object_info( GDBusConnection* con, const char *name
     }
     g_assert(G_IS_DBUS_PROXY(proxy));
 
-    GVariant* args = g_dbus_proxy_call_sync(proxy, "Introspect", NULL, G_DBUS_PROXY_FLAGS_NONE, -1, NULL, &error); 
+    GVariant* args = g_dbus_proxy_call_sync(proxy, "Introspect", NULL, G_DBUS_PROXY_FLAGS_NONE, -1, NULL, &error);
     g_assert(G_IS_DBUS_PROXY(proxy));
 
     if (error != NULL) {
@@ -306,3 +301,4 @@ void dbus_object_info_free(struct DBusObjectInfo* info)
     g_hash_table_unref(info->signals);
     g_free(info);
 }
+
