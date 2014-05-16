@@ -35,14 +35,16 @@ class Panel
 
         @has_notifications = false
 
-    inPanelWorkarea: (x, y)=>
+    inEffectivePanelWorkarea: (x, y)=>
         margin = (screen.width - @panel.width) / 2
-        x >= margin && x <= screen.width - margin
+        itemMargin = (screen.width - $("#container").clientWidth) / 2
+        # console.log("clickPointer: (#{x}, #{y}),\nx: [#{margin}, #{itemMargin}), (#{screen.width - itemMargin}, #{screen.width - margin}]\ny:#{screen.height - DOCK_HEIGHT + ITEM_HEIGHT}")
+        y > screen.height - DOCK_HEIGHT + ICON_HEIGHT || (x >= margin && x < itemMargin || x > screen.width - itemMargin && x <= screen.width - margin)
 
     on_click: (e)=>
         e.stopPropagation()
         e.preventDefault()
-        if @inPanelWorkarea(e.clientX, e.clientY)
+        if @inEffectivePanelWorkarea(e.clientX, e.clientY)
             show_desktop.toggle()
             calc_app_item_size()
             Preview_close_now(_lastCliengGroup)
