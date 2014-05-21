@@ -21,7 +21,7 @@
 class Category
     @PREFIX:"ci"
     constructor:(@id, @name, @items)->
-        @element = create_element(tag:"div", class:"category", id:"#{Category.PREFIX}#{@id}", catId:"#{@id}")
+        @element = create_element(tag:"div", class:"category", id:"#{Category.PREFIX}#{@id}", 'data-catid':"#{@id}")
 
         @header = create_element(tag:"header", class:"categoryHeader", @element)
         @nameNode = create_element(tag:"div", id:"cat#{@id}", class:"categoryName", @header)
@@ -120,20 +120,20 @@ class Category
         return null if not el
         if el.style.display != 'none'
             return el
-            # return Widget.look_up(el.getAttribute("appid"))
+            # return Widget.look_up(el.dataset.appid)
         while (el = el.nextElementSibling)?
             if el.style.display != 'none'
                 return el
-                # return Widget.look_up(el.getAttribute("appid"))
+                # return Widget.look_up(el.dataset.appid)
         null
 
     lastItem:->
         el = @grid.lastElementChild
         if el.style.display != 'none'
             return el
-            # return Widget.look_up(el.getAttribute("appid"))
+            # return Widget.look_up(el.dataset.appid)
         while (el = el.previousElementSibling)?
             if el.style.display != 'none'
                 return el
-                # return Widget.look_up(el.getAttribute("appid"))
+                # return Widget.look_up(el.dataset.appid)
         null

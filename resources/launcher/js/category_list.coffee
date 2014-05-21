@@ -164,7 +164,7 @@ class CategoryList
             if children[i].style.display == 'none'
                 continue
 
-            if children[i].getAttribute("catId") == "#{id}"
+            if children[i].dataset.catid == "#{id}"
                 @finalOffset = offset
                 break
 

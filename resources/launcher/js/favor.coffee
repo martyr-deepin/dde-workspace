@@ -61,7 +61,7 @@ class FavorPage
             el = container.children[i]
             # console.log "save favor: "
             # console.log el
-            apps.push([el.getAttribute('appid'), i, false])
+            apps.push([el.dataset.appid, i, false])
         console.log 'save favor list'
         # console.log apps
         daemon.SaveFavors_sync(apps)
@@ -74,8 +74,8 @@ class FavorPage
         item = Widget.look_up(id)
         # console.log "add #{item.name} to favor"
         el = item.add('favor', @element)
-        el.setAttribute("index", index)
-        el.setAttribute("fixed", fixed)
+        el.dataset.index = index
+        el.dataset.fixed = fixed
         # console.log el
         @favors[id] = item
         @updateCache = true

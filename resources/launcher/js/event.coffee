@@ -69,7 +69,7 @@ keydown_callback = (e) ->
                     item = selector.selectedItem
                 else
                     item = selector.firstShown()
-                id = item.getAttribute("appid")
+                id = item.dataset.appid
                 o = target:item, originalEvent: e
                 Widget.look_up(id)?.on_click(o)
 

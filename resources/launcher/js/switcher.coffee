@@ -21,6 +21,7 @@ class Switcher
     constructor:->
         @isShowCategory = false
         @switcher = create_element(tag:'div', id:'switcher', document.body)
+        @switcherHood = create_element(tag:'div', id:"switcher_hood", document.body)
         @switcherHover = create_element(tag:'div', id:"switcher_hover", class:"notify", document.body)
         @img = create_img(src: 'img/favor_normal.png', id:'notify',class:"switcher_hover notify", document.body)
         @img.addEventListener("webkitAnimationEnd", =>
@@ -33,6 +34,7 @@ class Switcher
         @showCategory()
         @page = 'Favor'
         @isHovered = false
+        @switcherHood.addEventListener('click', @on_click)
         @switcherHover.addEventListener('click', @on_click)
         @switcherHover.addEventListener("mouseover", (e)=>
             @isHovered = true

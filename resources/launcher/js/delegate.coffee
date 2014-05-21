@@ -27,20 +27,20 @@ DEvent = (e)->
     # target is hoverBoxOutter
     if target.tagName == "IMG"
         p = parent.parentNode
-        id = p.getAttribute("appid")
+        id = p.dataset.appid
         element = p
     else if target.tagName == "DIV"
         if target.classList.contains("Item")
-            # id = target.getAttribute("appid")
+            # id = target.dataset.appid
             # element = target.firstElementChild
         else if parent.classList.contains("Item")
-            id = parent.firstElementChild.getAttribute("appid")
+            id = parent.firstElementChild.dataset.appid
             element = target
         else if target.classList.contains("hoverBox")
-            id = parent.getAttribute("appid")
+            id = parent.dataset.appid
             element = parent
         else if target.classList.contains("item_name")
-            id = parent.parentNode.getAttribute("appid")
+            id = parent.parentNode.dataset.appid
             element = parent.parentNode
 
     id: id, target: element, originalEvent: e

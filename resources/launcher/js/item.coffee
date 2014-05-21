@@ -32,9 +32,9 @@ class Item extends Widget
     constructor: (@id, @name, @path, @icon)->
         super
         @element.removeAttribute("id")
-        @element.setAttribute("appid", @id)
+        @element.dataset.appid = "#{@id}"
         @hoverBoxOutter = create_element("div", "hoverBoxOutter", @element)
-        @hoverBoxOutter.setAttribute("appid", @id)
+        @hoverBoxOutter.dataset.appid = "#{@id}"
         @hoverBox = create_element("div", "hoverBox", @hoverBoxOutter)
         @basename = get_path_name(@path) + ".desktop"
         @isAutostart = false
@@ -221,8 +221,8 @@ class Item extends Widget
         # TODO: drag between favor items
         # console.log 'drag start'
         # grid = target.parentNode.parentNode
-        # console.log grid.parentNode.getAttribute("catId")
-        # if grid.parentNode.getAttribute("catId") == "#{CATEGORY_ID.FAVOR}"
+        # console.log grid.parentNode.dataset.catId
+        # if grid.parentNode.dataset.catId == "#{CATEGORY_ID.FAVOR}"
         #     console.log 'drag favor'
         #     target = target.parentNode
         #     dt.effectAllowed = "move"

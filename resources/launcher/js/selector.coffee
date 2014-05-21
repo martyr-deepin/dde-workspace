@@ -40,7 +40,7 @@ class Selector
     getItem:->
         item = null
         if @selectedItem
-            item = Widget.look_up(@selectedItem.getAttribute("appid"))
+            item = Widget.look_up(@selectedItem.dataset.appid)
         item
 
     update:(el)->
@@ -87,7 +87,7 @@ class Selector
         el
 
     focusedCategory:(el)->
-        cid = parseInt(el.parentNode.parentNode.getAttribute("catid"))
+        cid = parseInt(el.parentNode.parentNode.dataset.catid)
         categoryList.category(cid)
 
     scroll_to_view: (el)->

@@ -25,18 +25,19 @@ class CategoryItem
             tag:'div',
             class:'category_item_base category_item',
             id: "#{CategoryItem.PREFIX}#{@id}",
-            catId: "#{@id}"
+            'data-catid': "#{@id}"
         )
         create_element(
             tag:'div',
             class:"category_item_base category_item_board category-mask",
+            'data-catid': "#{@id}",
             @element
         )
         @element.style.backgroundImage = "url(img/category/#{@name}100.png)"
         @isFocus = false
 
     categoryId: ->
-        parseInt(@element.getAttribute("catId"))
+        parseInt(@element.dataset.catid)
 
     show:->
         @element.style.display = "block"
@@ -71,8 +72,8 @@ class CategoryBar
         @category = $("#categoryBar")
         @category.addEventListener("click", (e) =>
             e.stopPropagation()
-            target = e.target.parentNode
-            id = parseInt(target.getAttribute("catId"))
+            target = e.target
+            id = parseInt(target.dataset.catid)
             if !isNaN(id)
                 console.log("selected id: #{@selectedId}, click id: #{id}")
                 grid.style.webkitMask = ""
