@@ -8,6 +8,7 @@ add_subdirectory(greeter)
 add_subdirectory(zone)
 add_subdirectory(osd)
 add_subdirectory(lowpower)
+add_subdirectory(guide)
 
 install(
     DIRECTORY ${PROJECT_SOURCE_DIR}/resources/common
