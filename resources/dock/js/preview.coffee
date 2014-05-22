@@ -219,19 +219,23 @@ class PWContainer extends Widget
             new_scale = @pw_width / PREVIEW_WINDOW_WIDTH
             # console.log "@pw_width: #{@pw_width}, new_scale: #{new_scale}"
             @scale = new_scale
-        window_width = @pw_width + (PREVIEW_WINDOW_MARGIN + PREVIEW_WINDOW_BORDER_WIDTH) * 2
 
-        @bg.width = window_width * n + PREVIEW_CONTAINER_BORDER_WIDTH * 2 + PREVIEW_SHADOW_BLUR * 2
+        if allocation
+            window_width = @pw_width
+            @bg.width = window_width * n + (PREVIEW_CONTAINER_BORDER_WIDTH + PREVIEW_CORNER_RADIUS + PREVIEW_SHADOW_BLUR) * 2
+        else
+            window_width = @pw_width + (PREVIEW_WINDOW_MARGIN + PREVIEW_WINDOW_BORDER_WIDTH) * 2
+            @bg.width = window_width * n + (PREVIEW_CONTAINER_BORDER_WIDTH + PREVIEW_SHADOW_BLUR) * 2
 
         extraHeight = PREVIEW_TRIANGLE.height + PREVIEW_CONTAINER_BORDER_WIDTH * 3
         if allocation
-            @bg.height = allocation.height + extraHeight + (PREVIEW_WINDOW_MARGIN + PREVIEW_WINDOW_BORDER_WIDTH) * 2
+            @bg.height = allocation.height + extraHeight + (PREVIEW_CORNER_RADIUS + PREVIEW_WINDOW_BORDER_WIDTH) * 2
         else
             @bg.height = PREVIEW_CONTAINER_HEIGHT * @scale + extraHeight
 
         console.log("canvas width: #{@bg.width}, height: #{@bg.height}")
         # the container must not contain the shadow and the border
-        @border.style.width = @bg.width - PREVIEW_SHADOW_BLUR * 2 - 2 * PREVIEW_CONTAINER_BORDER_WIDTH
+        @border.style.width = @bg.width - (PREVIEW_SHADOW_BLUR + PREVIEW_CONTAINER_BORDER_WIDTH) * 2
         @border.style.height = @bg.height
 
         group_element = @_current_group.element
@@ -402,6 +406,7 @@ class PreviewWindow extends Widget
     update_size: ->
         # console.log("PreviewWindow::update_size: #{Preview_container.scale}")
         if Preview_container.scale == -1
+            console.log("scale == -1")
             @element.style.margin = "15px"
             @element.style.width = Preview_container.pw_width + PREVIEW_WINDOW_BORDER_WIDTH * 2
             @element.style.height = Preview_container.pw_height + PREVIEW_WINDOW_BORDER_WIDTH * 2
@@ -422,6 +427,7 @@ class PreviewWindow extends Widget
             @canvas_container.style.width = @canvas_width
             @canvas_container.style.height = @canvas_height
         if @applet
+            console.log("set margin to #{PREVIEW_CORNER_RADIUS}")
             @element.style.margin = "#{PREVIEW_CORNER_RADIUS}px"
             @innerBorder.style.width = @canvas_width
             @innerBorder.style.height = @canvas_height
