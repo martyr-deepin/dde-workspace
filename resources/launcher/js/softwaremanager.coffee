@@ -18,86 +18,30 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-NOTIFICATIONS = "org.freedesktop.Notifications"
-
-SOFTWARE_MANAGER = "com.linuxdeepin.softwarecenter"
-
-
-uninstallReport = (status, msg)->
-    if status == UNINSTALL_STATUS.FAILED
-        message = "FAILED"
-    else if status == UNINSTALL_STATUS.SUCCESS
-        message = "SUCCESSFUL"
-
-    console.log "uninstall #{message}, #{msg}"
-    icon_launcher = DCore.get_theme_icon("start-here", 48)
-    try
-        notification = get_dbus("session", NOTIFICATIONS, "Notify")
-        notification.Notify("Deepin Launcher", -1, icon_launcher, "Uninstall #{message}", "#{msg}", [], {}, 0)
-    catch e
-        console.log e
-    if Object.keys(uninstalling_apps).length == 0
-        console.log 'uninstall: disconnect signal'
-        softwareManager.dis_connect("update_signal", uninstallSignalHandler)
-
-
-uninstallSignalHandler = (info)->
+uninstallSignalHandler = (clss, info)->
     # console.log info
     status = info[0][0]
     package_name = info[0][1][0]
-    # console.log status
+    console.log "uninstall report ##{status}#"
     if status == UNINSTALL_STATUS.FAILED
-        message = info[0][1][3]
-        for own id, item of uninstalling_apps
+        message = "uninstall #{package_name} #{info[0][1][3]}"
+        for own id, item of clss.uninstalling_apps
             if item.packages.indexOf(package_name) != -1
                 item.status = SOFTWARE_STATE.IDLE
                 item.show()
                 categoryList.showNonemptyCategories()
-                delete uninstalling_apps[item.id]
+                delete clss.uninstalling_apps[item.id]
                 break
     else if status == UNINSTALL_STATUS.SUCCESS
-        message = "success"
-        for own id, item of uninstalling_apps
-            if item.packages.indexOf(packages) != -1
-                delete uninstalling_apps[item.id]
+        message = "uninstall #{package_name} success"
+        for own id, item of clss.uninstalling_apps
+            console.log(item.packages)
+            if item.packages.indexOf(package_name) != -1
+                delete clss.uninstalling_apps[item.id]
+    console.log "uninstall: #{message}"
     if message
-        uninstallReport(status, message)
-
-
-uninstall = (opt) ->
-    console.log "#{opt.item.path}, #{opt.purge}"
-    item = opt.item
-
-    if not softwareManager?
-        try
-            softwareManager = get_dbus("system", SOFTWARE_MANAGER, "uninstall_pkg")
-        catch e
-            console.log e
-            try
-                notification = get_dbus("session", NOTIFICATIONS, "Notify")
-                notification.Notify("Deepin Launcher", -1, icon_launcher, _("Uninstall failed"), _("Cannot find Deepin Software Center."), [], {}, 0)
-            catch e
-                console.log e
-            item.status = SOFTWARE_STATE.IDLE
-            item.show()
-            delete uninstalling_apps[item.id]
-            return
-
-    if Object.keys(uninstalling_apps).length == 1
-        console.log 'uninstall: connect signal'
-        softwareManager.connect("update_signal", uninstallSignalHandler)
-
-    packages = daemon.GetPackageNames_sync(item.path)
-    if packages.length == 0
-        item.status = SOFTWARE_STATE.IDLE
-        item.show()
-        delete uninstalling_apps[item.id]
-        uninstallReport(UNINSTALL_STATUS.FAILED, "get packages failed")
-        console.log("get packages failed")
-        return
-    opt.item.packages = packages
-    console.log "packages: #{packages.join(",")}"
-    softwareManager.uninstall_pkg(packages.join(" "), opt.purge)
+        console.log "uninstall report #{status}"
+        clss.uninstallReport(status, message)
 
 
 update = (status, info, categories)->
@@ -114,6 +58,7 @@ update = (status, info, categories)->
 
     if status.match(/^deleted$/i)
         if uninstalling_apps[id]
+            console.log("delete uninstall_apps")
             delete uninstalling_apps[id]
 
         if (item = Widget.look_up(id))?

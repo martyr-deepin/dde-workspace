@@ -66,9 +66,26 @@ class Trash extends PostfixedItem
         evt.stopPropagation()
         evt.preventDefault()
         dt = evt.dataTransfer
-        if dnd_is_deepin_item(evt) and dt.getData("operation") == "uninstall"
+        if (data = dt.getData("uninstall")) != ""
+            console.log(data)
+            data = JSON.parse(data)
             # TODO: uninstall
-            console.log("TODO: uninstall")
+            console.log("TODO: uninstall #{data.id}")
+            dialog = get_dbus('session', "com.deepin.dialog.uninstall", "Show")
+            dialog.connect("ActionInvoked", (id, action)=>
+                if action == "2"
+                    console.log 'start uninstall'
+                    if not uninstaller
+                        uninstaller = new Uninstaller(data.id, "Deepin Dock",
+                        "", uninstallSignalHandler)
+                    # make sure the icon is hidden immediately
+                    setTimeout(=>
+                        uninstaller.uninstall(item:data, purge:true)
+                    , 100)
+            )
+            dialog.Show_sync("start-here",
+            _("The operation may also remove other applications that depends on the item. Are you sure you want to uninstall the item?"),
+                ["1", _("no"), "2", _("yes")])
             return
 
         if dnd_is_file(evt) or dnd_is_desktop(evt)
@@ -124,3 +141,25 @@ class Trash extends PostfixedItem
         else
             @isEmpty = false
             @change_icon(@fullIcon)
+
+
+uninstallSignalHandler = (clss, info)->
+    # console.log info
+    status = info[0][0]
+    package_name = info[0][1][0]
+    console.log "uninstall report ##{status}#"
+    if status == UNINSTALL_STATUS.FAILED
+        message = "uninstall #{package_name} #{info[0][1][3]}"
+        for own id, item of clss.uninstalling_apps
+            if item.packages.indexOf(package_name) != -1
+                delete clss.uninstalling_apps[item.id]
+                break
+    else if status == UNINSTALL_STATUS.SUCCESS
+        message = "uninstall #{package_name} success"
+        for own id, item of clss.uninstalling_apps
+            if item.packages.indexOf(package_name) != -1
+                delete clss.uninstalling_apps[item.id]
+    console.log "uninstall: #{message}"
+    if message
+        console.log "uninstall report #{status}"
+        clss.uninstallReport(status, message)

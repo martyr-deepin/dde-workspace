@@ -18,6 +18,7 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
+dialog = null
 try
     s_dock = get_dbus("session", "com.deepin.dde.dock", "ToggleShow")
 catch error
@@ -216,6 +217,8 @@ class Item extends Widget
             # dt.setDragImage(@img, ITEM_IMG_SIZE/2 + 3, ITEM_IMG_SIZE/2)
 
         dt.setData("text/uri-list", "file://#{@path}")
+        data = "{\"id\":\"#{@id}\", \"path\": \"#{@path}\"}"
+        dt.setData("uninstall", data)
         if switcher.isFavor()
             return
         # TODO: drag between favor items
@@ -328,13 +331,24 @@ class Item extends Widget
 
             when 5 then @toggle_autostart()
             when 6
-                if confirm(_("The operation may also remove other applications that depends on the item. Are you sure you want to uninstall the item?", "Launcher"), _("launcher"))
-                    @status = SOFTWARE_STATE.UNINSTALLING
-                    @hide()
-                    categoryList.hideEmptyCategories()
-                    uninstalling_apps[@id] = @
-                    console.log 'start uninstall'
-                    uninstall(item:@, purge:true)
+                if not dialog
+                    dialog = get_dbus('session', "com.deepin.dialog.uninstall", "Show")
+                    dialog.connect("ActionInvoked", (id, action)=>
+                        if action == "2"
+                            @status = SOFTWARE_STATE.UNINSTALLING
+                            @hide()
+                            categoryList.hideEmptyCategories()
+                            console.log 'start uninstall'
+                            if not uninstaller
+                                uninstaller = new Uninstaller(@id, "Deepin Launcher", DCore.get_theme_icon("start-here", 48), uninstallSignalHandler)
+                                uninstall_apps = uninstaller.uninstall_apps
+                            uninstalling_apps[@id] = @
+                            # make sure the icon is hidden immediately
+                            setTimeout(=>
+                                uninstaller.uninstall(item:@, purge:true)
+                            , 100)
+                    )
+                dialog.Show_sync("start-here", _("The operation may also remove other applications that depends on the item. Are you sure you want to uninstall the item?"), ["1", _("no"), "2", _("yes")])
             # when 100 then DCore.DEntry.report_bad_icon(@path)  # internal
         DCore.Launcher.force_show(false)
 

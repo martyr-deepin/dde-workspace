@@ -80,14 +80,4 @@ FAVOR_MESSAGE =
     false: _("Add to _favorites")
     true: _("Remove from _favorites")
 
-SOFTWARE_STATE =
-    IDLE: 0
-    UNINSTALLING: 1
-    INSTALLING: 2
-
-UNINSTALL_STATUS =
-    FAILED: "action-failed"
-    SUCCESS: "action-finish"
-
-
 MASK_TOP_BOTTOM = "-webkit-linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,1) 5%, rgba(0,0,0,1) 90%, rgba(0,0,0,0.3), rgba(0,0,0,0))"
