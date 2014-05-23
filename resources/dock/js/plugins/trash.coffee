@@ -75,7 +75,7 @@ class Trash extends PostfixedItem
                 console.log 'start uninstall'
                 if not uninstaller
                     uninstaller = new Uninstaller(@data.id, "Deepin Dock",
-                    "", uninstallSignalHandler)
+                    @data.icon, uninstallSignalHandler)
                 setTimeout(=>
                     uninstaller.uninstall(item:@data, purge:true)
                 , 100)
