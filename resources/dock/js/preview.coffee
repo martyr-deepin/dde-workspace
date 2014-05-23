@@ -221,8 +221,8 @@ class PWContainer extends Widget
             @scale = new_scale
 
         if allocation
-            window_width = @pw_width
-            @bg.width = window_width * n + (PREVIEW_CONTAINER_BORDER_WIDTH + PREVIEW_CORNER_RADIUS + PREVIEW_SHADOW_BLUR) * 2
+            window_width = @pw_width + PREVIEW_CORNER_RADIUS * 2
+            @bg.width = window_width * n + (PREVIEW_CONTAINER_BORDER_WIDTH + PREVIEW_SHADOW_BLUR) * 2
         else
             window_width = @pw_width + (PREVIEW_WINDOW_MARGIN + PREVIEW_WINDOW_BORDER_WIDTH) * 2
             @bg.width = window_width * n + (PREVIEW_CONTAINER_BORDER_WIDTH + PREVIEW_SHADOW_BLUR) * 2
