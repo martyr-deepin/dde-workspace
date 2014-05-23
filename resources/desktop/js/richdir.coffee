@@ -544,67 +544,69 @@ class RichDir extends DesktopEntry
                     @div_pop.insertBefore(arrow_inner, ele_ul)
             when 3
                 echo "canvas richdir arrow"
-                PREVIEW_CONTAINER_BORDER_WIDTH = 2
-                PREVIEW_SHADOW_BLUR = 6
-                PREVIEW_CORNER_RADIUS = 4
-                PREVIEW_TRIANGLE =
-                    width: 18
-                    height: 10
-                @bg = create_element(tag:'canvas', class:"bg", @div_pop)
-                @bg.style.position = "absolute"
-                
-                ctx = @bg.getContext('2d')
-                ctx = @bg.getContext('2d')
-
-                if is_right then @bg.style.right = left
-                else @bg.style.left = left
-                if !arrow_pos_at_bottom then ctx.rotate(Math.PI)
-                
-                ctx.clearRect(0, 0, @bg.width, @bg.height)
-                ctx.save()
-
-                ctx.shadowBlur = PREVIEW_SHADOW_BLUR
-                ctx.shadowColor = 'black'
-                ctx.shadowOffsetY = PREVIEW_CONTAINER_BORDER_WIDTH
-
-                ctx.strokeStyle = 'rgba(255,255,255,0.4)'
-                ctx.lineWidth = PREVIEW_CONTAINER_BORDER_WIDTH
-
-                ctx.fillStyle = "rgba(0,0,0,0.75)"
         
-                radius = PREVIEW_CORNER_RADIUS
-                contentWidth = @bg.width + radius * 2 + ctx.lineWidth * 2 + ctx.shadowBlur * 2
-                topY = radius + ctx.lineWidth
-                bottomY = @bg.height - PREVIEW_TRIANGLE.height - ctx.lineWidth * 2 - ctx.shadowBlur
-                leftX = radius + ctx.shadowBlur
-                rightX = leftX + contentWidth
-                
-                # bottom line
-                halfWidth = leftX + contentWidth / 2
-                triOffset = 0
-                triX = size.pop_left + size.pop_width / 2
-                if triX < halfWidth
-                    console.log("left overflow")
-                    triOffset = triX - halfWidth
-                else if halfWidth + triX > screen.width
-                    console.log("right overflow")
-                    triOffset = (halfWidth + triX) - screen.width
+        drawTriangle: (x,y,parent) ->
+            PREVIEW_CONTAINER_BORDER_WIDTH = 2
+            PREVIEW_SHADOW_BLUR = 6
+            PREVIEW_CORNER_RADIUS = 4
+            PREVIEW_TRIANGLE =
+                width: 18
+                height: 10
+            @bg = create_element(tag:'canvas', class:"bg", parent)
+            @bg.style.position = "absolute"
+            
+            ctx = @bg.getContext('2d')
+            ctx = @bg.getContext('2d')
 
-                ctx.beginPath()
-                ctx.moveTo(ctx.shadowBlur, topY)
-                # triangle
-                ctx.lineTo(halfWidth + triOffset,
-                           bottomY + radius + PREVIEW_TRIANGLE.height)
+            if is_right then @bg.style.right = left
+            else @bg.style.left = left
+            if !arrow_pos_at_bottom then ctx.rotate(Math.PI)
+            
+            ctx.clearRect(0, 0, @bg.width, @bg.height)
+            ctx.save()
 
-                ctx.lineTo(halfWidth + triOffset - PREVIEW_TRIANGLE.width / 2,
-                           bottomY + radius)
+            ctx.shadowBlur = PREVIEW_SHADOW_BLUR
+            ctx.shadowColor = 'black'
+            ctx.shadowOffsetY = PREVIEW_CONTAINER_BORDER_WIDTH
 
-                ctx.stroke()
-                ctx.fill()
+            ctx.strokeStyle = 'rgba(255,255,255,0.4)'
+            ctx.lineWidth = PREVIEW_CONTAINER_BORDER_WIDTH
 
-                #ctx.restore()
+            ctx.fillStyle = "rgba(0,0,0,0.75)"
+    
+            radius = PREVIEW_CORNER_RADIUS
+            contentWidth = @bg.width + radius * 2 + ctx.lineWidth * 2 + ctx.shadowBlur * 2
+            topY = radius + ctx.lineWidth
+            bottomY = @bg.height - PREVIEW_TRIANGLE.height - ctx.lineWidth * 2 - ctx.shadowBlur
+            leftX = radius + ctx.shadowBlur
+            rightX = leftX + contentWidth
+            
+            # bottom line
+            halfWidth = leftX + contentWidth / 2
+            triOffset = 0
+            triX = size.pop_left + size.pop_width / 2
+            if triX < halfWidth
+                console.log("left overflow")
+                triOffset = triX - halfWidth
+            else if halfWidth + triX > screen.width
+                console.log("right overflow")
+                triOffset = (halfWidth + triX) - screen.width
 
-                @bg.style.display = "block"
+            ctx.beginPath()
+            ctx.moveTo(ctx.shadowBlur, topY)
+            # triangle
+            ctx.lineTo(halfWidth + triOffset,
+                       bottomY + radius + PREVIEW_TRIANGLE.height)
+
+            ctx.lineTo(halfWidth + triOffset - PREVIEW_TRIANGLE.width / 2,
+                       bottomY + radius)
+
+            ctx.stroke()
+            ctx.fill()
+
+            #ctx.restore()
+
+            @bg.style.display = "block"
 
     drawPanel:(ele_ul)->
         
