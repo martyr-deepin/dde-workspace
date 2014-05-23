@@ -39,6 +39,7 @@ reset = ->
 
 
 exit_launcher = ->
+    DCore.Launcher.force_show(false)
     DCore.Launcher.exit_gui()
 
 

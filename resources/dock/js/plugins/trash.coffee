@@ -1,3 +1,5 @@
+dialog = null
+
 class Trash extends PostfixedItem
     constructor:(@id, icon, title)->
         super
@@ -62,28 +64,35 @@ class Trash extends PostfixedItem
         if !DCore.DEntry.launch(@entry, [])
             confirm(_("Can not open this file."), _("Warning"))
 
+    uninstallHandler: (id, action)=>
+        switch action
+            when "1"
+                try
+                    dialog.dis_connect("ActionInvoked", @uninstallHandler)
+                catch e
+                    console.log e
+            when "2"
+                console.log 'start uninstall'
+                if not uninstaller
+                    uninstaller = new Uninstaller(@data.id, "Deepin Dock",
+                    "", uninstallSignalHandler)
+                setTimeout(=>
+                    uninstaller.uninstall(item:@data, purge:true)
+                , 100)
+
+        dialog = null
+
     on_drop: (evt)=>
         evt.stopPropagation()
         evt.preventDefault()
         dt = evt.dataTransfer
         if (data = dt.getData("uninstall")) != ""
             console.log(data)
-            data = JSON.parse(data)
-            # TODO: uninstall
+            @data = JSON.parse(data)
             console.log("TODO: uninstall #{data.id}")
             dialog = get_dbus('session', "com.deepin.dialog.uninstall", "Show")
-            dialog.connect("ActionInvoked", (id, action)=>
-                if action == "2"
-                    console.log 'start uninstall'
-                    if not uninstaller
-                        uninstaller = new Uninstaller(data.id, "Deepin Dock",
-                        "", uninstallSignalHandler)
-                    # make sure the icon is hidden immediately
-                    setTimeout(=>
-                        uninstaller.uninstall(item:data, purge:true)
-                    , 100)
-            )
-            dialog.Show_sync("start-here",
+            dialog.connect("ActionInvoked", @uninstallHandler)
+            dialog.Show_sync(@data.icon,
             _("The operation may also remove other applications that depends on the item. Are you sure you want to uninstall the item?"),
                 ["1", _("no"), "2", _("yes")])
             return

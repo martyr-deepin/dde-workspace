@@ -12,7 +12,7 @@
 
 void dbus_object_info_free(struct DBusObjectInfo* info);
 
-static GHashTable *__sig_callback_hash = NULL; // hash of (path:ifc:sig_name  ---> (hash of callbackid---> callback))
+static GHashTable *__sig_callback_hash = NULL; // hash of (path:ifc:sig_name@unique_name  ---> (hash of callbackid---> callback))
 static GHashTable *__objs_cache = NULL;
 
 void reset_dbus_infos()
@@ -140,14 +140,18 @@ SIGNAL_CALLBACK_ID add_signal_callback(struct DBusObjectInfo *info, struct Signa
 
     char* key = g_strdup_printf("%s:%s:%s@%s", info->path, info->iface, sig->name, g_dbus_connection_get_unique_name(info->connection));
 
+    g_debug("add signal callback key: %s", key);
     GHashTable *cbs = g_hash_table_lookup(__sig_callback_hash, key);
     if (cbs == NULL) {
         cbs = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, (GDestroyNotify)js_value_unprotect);
         g_hash_table_insert(__sig_callback_hash, key, cbs);
+    } else {
+        g_free(key);
     }
 
     js_value_protect(func);
     SIGNAL_CALLBACK_ID id = (SIGNAL_CALLBACK_ID)GPOINTER_TO_INT(func);
+    g_debug("%u", id);
     g_hash_table_insert(cbs, GINT_TO_POINTER((int)id), func);
     return id;
 }
@@ -219,19 +223,26 @@ JSValueRef signal_disconnect(JSContextRef ctx,
 
     if (argumentCount != 2) {
         js_fill_exception(ctx, exception, "Disconnet_signal need tow paramters!");
+        return NULL;
     }
 
     char* sig_name = jsvalue_to_cstr(ctx, arguments[0]);
-    char* key = g_strdup_printf("%s%s%s", info->path, info->iface, sig_name);
+    char* key = g_strdup_printf("%s:%s:%s@%s", info->path, info->iface, sig_name, g_dbus_connection_get_unique_name(info->connection));
+    g_debug("remove signal callback: %s", key);
     g_free(sig_name);
     GHashTable *cbs = g_hash_table_lookup(__sig_callback_hash, key);
     g_free(key);
 
     if (cbs == NULL) {
+        g_debug("no callback");
         js_fill_exception(ctx, exception, "This signal hasn't connected!");
         return NULL;
     }
-    SIGNAL_CALLBACK_ID cb_id = (SIGNAL_CALLBACK_ID)(int)JSValueToNumber(ctx, arguments[1], NULL);
+    // SIGNAL_CALLBACK_ID cb_id = (SIGNAL_CALLBACK_ID)(int)JSValueToNumber(ctx, arguments[1], NULL);
+    // FIXME: this seems not to be right.
+    JSObjectRef callback = JSValueToObject(ctx, arguments[1], NULL);
+    SIGNAL_CALLBACK_ID cb_id = (SIGNAL_CALLBACK_ID)GPOINTER_TO_INT(callback);
+    g_debug("%u", cb_id);
     if (!g_hash_table_remove(cbs, GINT_TO_POINTER(cb_id))) {
         js_fill_exception(ctx, exception, "This signal hasn't connected!");
         return NULL;

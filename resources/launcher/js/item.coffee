@@ -18,6 +18,7 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
+forceShowTimer = null
 dialog = null
 try
     s_dock = get_dbus("session", "com.deepin.dde.dock", "ToggleShow")
@@ -210,14 +211,12 @@ class Item extends Widget
             new_height = ITEM_IMG_SIZE * @img.height / @img.width
             offset = (ITEM_IMG_SIZE - Math.floor(new_height)) / 2
             @setCanvas(dt, ITEM_IMG_SIZE, new_height, 0, offset)
-        # else if @img.width != 48
-        #     @setCanvas(dt, ITEM_IMG_SIZE, ITEM_IMG_SIZE)
         else
             @setCanvas(dt, ITEM_IMG_SIZE, ITEM_IMG_SIZE)
             # dt.setDragImage(@img, ITEM_IMG_SIZE/2 + 3, ITEM_IMG_SIZE/2)
 
         dt.setData("text/uri-list", "file://#{@path}")
-        data = "{\"id\":\"#{@id}\", \"path\": \"#{@path}\"}"
+        data = "{\"id\":\"#{@id}\", \"path\": \"#{@path}\", \"icon\":\"#{@icon}\"}"
         dt.setData("uninstall", data)
         if switcher.isFavor()
             return
@@ -284,6 +283,7 @@ class Item extends Widget
         #     )
 
     on_rightclick: (e)->
+        clearTimeout(forceShowTimer)
         DCore.Launcher.force_show(true)
         e = e && e.originalEvent || e
         e.preventDefault()
@@ -294,7 +294,8 @@ class Item extends Widget
         # console.log @menu
         # return
         @menu.unregisterHook(->
-            setTimeout(->
+            forceShowTimer = setTimeout(->
+                console.log("force show menu unregister")
                 DCore.Launcher.force_show(false)
             , 100)
         )
@@ -302,6 +303,7 @@ class Item extends Widget
 
     on_itemselected: (id)=>
         id = parseInt(id)
+        isNotForceShow = true
         switch id
             when 1
                 startManager.Launch(@basename)
@@ -331,26 +333,46 @@ class Item extends Widget
 
             when 5 then @toggle_autostart()
             when 6
-                if not dialog
-                    dialog = get_dbus('session', "com.deepin.dialog.uninstall", "Show")
-                    dialog.connect("ActionInvoked", (id, action)=>
-                        if action == "2"
-                            @status = SOFTWARE_STATE.UNINSTALLING
-                            @hide()
-                            categoryList.hideEmptyCategories()
-                            console.log 'start uninstall'
-                            if not uninstaller
-                                uninstaller = new Uninstaller(@id, "Deepin Launcher", DCore.get_theme_icon("start-here", 48), uninstallSignalHandler)
-                                uninstall_apps = uninstaller.uninstall_apps
-                            uninstalling_apps[@id] = @
-                            # make sure the icon is hidden immediately
-                            setTimeout(=>
-                                uninstaller.uninstall(item:@, purge:true)
-                            , 100)
-                    )
-                dialog.Show_sync("start-here", _("The operation may also remove other applications that depends on the item. Are you sure you want to uninstall the item?"), ["1", _("no"), "2", _("yes")])
+                dialog = get_dbus('session', "com.deepin.dialog.uninstall", "Show")
+                dialog.connect("ActionInvoked", @uninstallHandler)
+                clearTimeout(forceShowTimer)
+                DCore.Launcher.force_show(true)
+                dialog.Show_sync(@icon, _("The operation may also remove other applications that depends on the item. Are you sure you want to uninstall the item?"), ["1", _("no"), "2", _("yes")])
+                isNotForceShow = false
             # when 100 then DCore.DEntry.report_bad_icon(@path)  # internal
-        DCore.Launcher.force_show(false)
+        if isNotForceShow
+            console.log("force show rightclick")
+            DCore.Launcher.force_show(false)
+
+    uninstallHandler: (id, action)=>
+        DCore.Launcher.force_show(true)
+        console.log("action: #{action}")
+        switch action
+            when "1"
+                console.log("click NO")
+                try
+                    dialog.dis_connect("ActionInvoked", @uninstallHandler)
+                catch e
+                    console.log(e)
+                console.log("NO")
+            when "2"
+                @status = SOFTWARE_STATE.UNINSTALLING
+                @hide()
+                categoryList.hideEmptyCategories()
+                console.log 'start uninstall'
+                if not uninstaller
+                    uninstaller = new Uninstaller(@id, "Deepin Launcher", @icon, uninstallSignalHandler)
+                    uninstall_apps = uninstaller.uninstall_apps
+                uninstalling_apps[@id] = @
+                # make sure the icon is hidden immediately
+                setTimeout(=>
+                    uninstaller.uninstall(item:@, purge:true)
+                , 100)
+        dialog = null
+        forceShowTimer = setTimeout(->
+            console.log("force show false")
+            DCore.Launcher.force_show(false)
+        , 100)
 
     updateProperty: (fn)->
         for own k, v of @elements

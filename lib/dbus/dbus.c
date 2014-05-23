@@ -42,7 +42,7 @@ JSValueRef dbus_sys(const char* bus_name, JSData* js)
 
 JS_EXPORT_API
 JSValueRef dbus_session_object( const char* bus_name, const char* object_path, const char* interface, JSData* js)
-{ 
+{
     static GDBusConnection* session_con = NULL;
     if (session_con == NULL) {
 	GError *error = NULL;
@@ -79,3 +79,4 @@ void dbus_reload()
 {
     reset_dbus_infos();
 }
+
