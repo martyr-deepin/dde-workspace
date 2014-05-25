@@ -307,7 +307,7 @@ class Item extends Widget
 
     item_blur : =>
         @clear_delay_rename_timer()
-        if @in_rename then @item_complete_rename(true)
+        if @in_rename then @item_complete_rename(false)
 
         @display_short_name()
         @display_not_focus()
@@ -455,9 +455,7 @@ class Item extends Widget
         switch evt.keyCode
             when 13   # enter
                 evt.preventDefault()
-                echo "enter"
                 @item_complete_rename(true)
-
                 # tell grid to ingore the same event after this event handler has been unregisterd
                 ++ingore_keyup_counts
             when 27   # esc
@@ -474,30 +472,23 @@ class Item extends Widget
 
     on_item_rename_input : (evt) =>
         evt.stopPropagation()
-        echo "on_item_rename_input"
         return
 
 
     item_complete_rename : (modify = true) =>
-        echo "item_complete_rename 1"
         if modify == true
             new_name = cleanup_filename(@item_name.innerText)
-            echo new_name
             if new_name.length > 0 and new_name != @get_name()
                 rename = @on_rename(new_name)
-                echo "3 rename:#{rename}"
                 if not rename
-                    echo "4"
                     @in_rename = false
                     #move_widget_to_grid_after_rename(@)
                     #return
 
-        echo "item_complete_rename 2"
         move_widget_to_grid_after_rename(@)
         @element.draggable = true
         @item_name.contentEditable = "false"
         @item_name.className = "item_name"
-        echo @get_name()
         @item_name.innerText = @get_name()
         @item_name.removeEventListener("mousedown", @on_event_stoppropagation)
         @item_name.removeEventListener("mouseup", @on_event_stoppropagation)
