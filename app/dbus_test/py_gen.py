@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 #-*-coding:utf-8-*-
 
 import sys
@@ -9,7 +9,7 @@ def translate(value):
     return v
 
 if __name__ == "__main__":
-    print "#!/usr/bin/env python"
+    print "#!/usr/bin/env python2"
     print "#-*-coding:utf-8-*-"
     print "import gobject\nimport dbus\nimport dbus.service\nimport dbus.mainloop.glib"
 
