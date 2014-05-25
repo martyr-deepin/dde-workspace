@@ -1,6 +1,6 @@
 package main
 
-import . "make_dbus"
+import . "./make_dbus"
 
 func main() {
 	DBusInstall(
