@@ -773,6 +773,7 @@ gboolean dentry_set_name(Entry* e, const char* name)
             return FALSE;
         } else {
             g_object_unref(new_file);
+            return TRUE;
         }
     TEST_GAPP(e, app)
         const char* path = g_desktop_app_info_get_filename(G_DESKTOP_APP_INFO(app));
@@ -780,6 +781,10 @@ gboolean dentry_set_name(Entry* e, const char* name)
         {
             show_rename_error_dialog (name, TRUE);
             return FALSE;
+        }
+        else
+        {
+            return TRUE;
         }
     TEST_END
         return TRUE;

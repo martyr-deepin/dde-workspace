@@ -293,7 +293,9 @@ class Item extends Widget
 
 
     on_rename : (new_name) =>
+        echo "on_rename:#{new_name}"
         DCore.DEntry.set_name(@_entry, new_name)
+        #return false
 
 
     item_focus : =>
@@ -482,12 +484,13 @@ class Item extends Widget
             new_name = cleanup_filename(@item_name.innerText)
             echo new_name
             if new_name.length > 0 and new_name != @get_name()
-                echo "3"
-                if not @on_rename(new_name)
+                rename = @on_rename(new_name)
+                echo "3 rename:#{rename}"
+                if not rename
                     echo "4"
                     @in_rename = false
-                    move_widget_to_grid_after_rename(@)
-                    return
+                    #move_widget_to_grid_after_rename(@)
+                    #return
 
         echo "item_complete_rename 2"
         move_widget_to_grid_after_rename(@)
