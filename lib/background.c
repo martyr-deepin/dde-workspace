@@ -113,7 +113,7 @@ void monitors_adaptive(GtkWidget* container, GtkWidget* child)
     gdk_window_set_composited(gtk_widget_get_window(child), TRUE);
     
     screen = gtk_window_get_screen (GTK_WINDOW (child));
-    gdk_screen_get_monitor_geometry (screen, gdk_screen_get_primary_monitor (screen), &geometry);
+    gdk_screen_get_monitor_geometry (screen, gdk_screen_get_default(), &geometry);
     g_message("primary monitor width:%d,height:%d;",geometry.width,geometry.height);
     gtk_window_move (GTK_WINDOW (child), geometry.x, geometry.y);
     gtk_window_resize (GTK_WINDOW (child), geometry.width, geometry.height);
