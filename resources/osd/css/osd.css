@@ -1,5 +1,5 @@
 html{
-    /*border-radius:18px;*/
+    border-radius:18px;
     background-color:rgba(0,0,0,1.0);
 }
 body{
@@ -7,9 +7,6 @@ body{
     width:160px;
     max-height:180px;
     
-    border-radius:18px;
-    background-color:rgba(0,0,0,1.0);
-     
     font-size:62.5%;
     
     display:-webkit-box;
@@ -17,7 +14,6 @@ body{
     -webkit-box-align:center;
 
     overflow:hidden;
-
 }
 
 .Option{

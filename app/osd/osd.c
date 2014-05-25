@@ -53,9 +53,6 @@
 #define SHUTDOWN_VERSION G_STRINGIFY(SHUTDOWN_MAJOR_VERSION)"."G_STRINGIFY(SHUTDOWN_MINOR_VERSION)"."G_STRINGIFY(SHUTDOWN_SUBMINOR_VERSION)
 #define SHUTDOWN_CONF "osd/config.ini"
 static GKeyFile* shutdown_config = NULL;
-/*static int radius = 18;*/
-static int width = 160;
-static int height = 160;
 
 PRIVATE GtkWidget* container = NULL;
 /*PRIVATE GtkStyleContext *style_context;*/
@@ -148,72 +145,29 @@ int main (int argc, char **argv)
 
     singleton(SHUTDOWN_ID_NAME);
 
-
     check_version();
     init_i18n ();
 
     gtk_init (&argc, &argv);
     input_argv = argv;
-    gdk_window_set_cursor (gdk_get_default_root_window (), gdk_cursor_new (GDK_LEFT_PTR));
 
     container = create_web_container (FALSE, TRUE);
 
-    gtk_window_set_decorated (GTK_WINDOW (container), FALSE);
-    gtk_window_set_skip_taskbar_hint (GTK_WINDOW (container), TRUE);
-    gtk_window_set_skip_pager_hint (GTK_WINDOW (container), TRUE);
-    gtk_window_set_keep_above (GTK_WINDOW (container), TRUE);
     gtk_window_set_position (GTK_WINDOW (container), GTK_WIN_POS_CENTER_ALWAYS);
-    gtk_window_resize (GTK_WINDOW (container), width,height);
-
-
-    gtk_widget_set_events (GTK_WIDGET (container),
-                           gtk_widget_get_events (GTK_WIDGET (container))
-                           | GDK_POINTER_MOTION_MASK
-                           | GDK_BUTTON_PRESS_MASK
-                           | GDK_BUTTON_RELEASE_MASK
-                           | GDK_KEY_PRESS_MASK
-                           | GDK_KEY_RELEASE_MASK
-                           | GDK_EXPOSURE_MASK
-                           | GDK_VISIBILITY_NOTIFY_MASK
-                           | GDK_ENTER_NOTIFY_MASK
-                           | GDK_LEAVE_NOTIFY_MASK
-                           );
-
-
 
     GtkWidget *webview = d_webview_new_with_uri (CHOICE_HTML_PATH);
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
+    g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
+    
     gtk_widget_realize (container);
     gtk_widget_realize (webview);
 
-/*    style_context = gtk_widget_get_style_context(webview);*/
-    /*gtk_style_context_add_class(style_context,GTK_STYLE_CLASS_OSD);*/
-    /*gtk_style_context_add_class(style_context,GTK_STYLE_PROPERTY_BORDER_RADIUS);*/
-    /*cairo_t *cr;*/
-    /*cairo_surface_t *surface;*/
-    /*surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);*/
-    /*cr = cairo_create(surface);*/
-    /*[>cairo_set_source_rgba (cr, 1, 0, 0, 0.80);<]*/
-    /*[>cairo_fill (cr);<]*/
-    /*gtk_render_background(style_context,cr,radius,radius,width,height);*/
-    /*[>gtk_style_context_set_background(style_context,gdkwindow);<]*/
-    /*gtk_style_context_restore(style_context);*/
-    /*[>cairo_destory(cr);<]*/
-    /*[>cairo_surface_write_to_png(surface,"gtkbackground.png");<]*/
-    /*[>cairo_surface_destory(surface);<]*/
-
-
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
-
-    GdkRGBA rgba = { 0, 0, 0, 0.0 };
-    gdk_window_set_background_rgba (gdkwindow, &rgba);
     gdk_window_set_opacity (gdkwindow, 0.7);
     gdk_window_set_keep_above (gdkwindow, TRUE);
-
     osd_set_focus(FALSE);
 
-    /*gdk_window_show(gdkwindow);*/
-    /*gtk_widget_show_all (container);*/
+    gtk_widget_show_all (container);
 
     gtk_main ();
 
