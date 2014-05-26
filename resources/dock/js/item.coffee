@@ -45,6 +45,7 @@ class Item extends Widget
             sortDockedItem()
         else
             @container?.appendChild?(@element)
+
     change_icon: (src)->
         @img.src = src
         @img.onload = =>

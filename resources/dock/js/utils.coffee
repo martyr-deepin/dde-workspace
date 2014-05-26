@@ -12,15 +12,19 @@ createItem = (d)->
 
     title = d.Data[ITEM_DATA_FIELD.title] || "Unknow"
 
+    $DBus[d.Id] = d
     if d.Type == ITEM_TYPE.app
         container = app_list.element
 
-        $DBus[d.Id] = d
         console.log("AppItem #{d.Id}")
         new AppItem(d.Id, icon, title, container)
+    else if d.Id == TIME_ID
+        console.log("AppletDateTime")
+        time.core = new EntryProxy(d)
+        time.init_clientgroup()
+        time.core.showQuickWindow()
     else
         console.log("SystemItem #{d.Id}, #{icon}, #{title}")
-        $DBus[d.Id] = d
         new SystemItem(d.Id, icon, title)
 
 

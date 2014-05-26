@@ -21,6 +21,14 @@ class Time extends SystemItem
             create_img(src:"js/plugins/time/img/#{i}.png", style:"display:none", p)
 
     isNormal:->
+        # TODO
+        false
+
+    isNormalApplet: ->
+        # TODO
+        false
+
+    isRuntimeApplet: ->
         true
 
     on_mouseover:=>

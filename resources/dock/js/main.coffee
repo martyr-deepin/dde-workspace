@@ -84,6 +84,7 @@ EntryManager =
 
 trayIcon = DCore.get_theme_icon("deepin-systray", 48) || NOT_FOUND_ICON
 systemTray = null
+time = null
 entryManager = null
 show_launcher = null
 show_desktop = null
@@ -179,7 +180,6 @@ initDock = ->
             systemTray?.destroy()
             systemTray = null
 
-        new Time("time", "js/plugins/time/img/time.png", "")
         calc_app_item_size()
         # apps are moved up, so add 8
         DCore.Dock.change_workarea_height(ITEM_HEIGHT * ICON_SCALE + 8)
@@ -190,4 +190,6 @@ initDock = ->
         $("#panel").style.bottom = "0px"
     , 1000)
 
+
+time = new Time("time", "js/plugins/time/img/time.png", "")
 setTimeout(initDock , 1000)
