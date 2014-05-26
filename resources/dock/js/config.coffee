@@ -101,3 +101,5 @@ ANIMATION_TIME = 400
 TRASH_ID = "filemanager-trash"
 
 INSERT_INDICATOR_WIDTH = 57
+
+TIME_ID = "AppletDateTime"
