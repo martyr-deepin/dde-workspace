@@ -351,7 +351,7 @@ class Item extends Widget
             when "1"
                 console.log("click NO")
                 try
-                    dialog.dis_connect("ActionInvoked", @uninstallHandler)
+                    dialog?.dis_connect("ActionInvoked", @uninstallHandler)
                 catch e
                     console.log(e)
                 console.log("NO")

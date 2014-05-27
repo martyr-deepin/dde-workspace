@@ -68,7 +68,7 @@ class Trash extends PostfixedItem
         switch action
             when "1"
                 try
-                    dialog.dis_connect("ActionInvoked", @uninstallHandler)
+                    dialog?.dis_connect("ActionInvoked", @uninstallHandler)
                 catch e
                     console.log e
             when "2"

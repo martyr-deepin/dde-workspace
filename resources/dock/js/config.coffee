@@ -45,7 +45,7 @@ BOARD_IMG_MARGIN_LEFT = "#{((ITEM_WIDTH - ICON_WIDTH) / 2) / ITEM_WIDTH  * 100}%
 
 IN_INIT = true
 
-NOT_FOUND_ICON = DCore.get_theme_icon("invalid-dock_app", 48)
+NOT_FOUND_ICON = DCore.get_theme_icon("application-default-icon", 48)
 
 ICON_SCALE = MAX_SCALE  #this will be modify on runtime
 

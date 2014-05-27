@@ -26,7 +26,7 @@ uninstallSignalHandler = (clss, info)->
     if status == UNINSTALL_STATUS.FAILED
         message = "uninstall #{package_name} #{info[0][1][3]}"
         for own id, item of clss.uninstalling_apps
-            if item.packages.indexOf(package_name) != -1
+            if item.package_name == package_name
                 item.status = SOFTWARE_STATE.IDLE
                 item.show()
                 categoryList.showNonemptyCategories()
@@ -35,8 +35,8 @@ uninstallSignalHandler = (clss, info)->
     else if status == UNINSTALL_STATUS.SUCCESS
         message = "uninstall #{package_name} success"
         for own id, item of clss.uninstalling_apps
-            console.log(item.packages)
-            if item.packages.indexOf(package_name) != -1
+            console.log(item.package_name)
+            if item.package_name == package_name
                 delete clss.uninstalling_apps[item.id]
     console.log "uninstall: #{message}"
     if message

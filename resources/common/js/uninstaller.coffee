@@ -84,15 +84,15 @@ class Uninstaller
             @softwareManager.connect("update_signal", @uninstallSignalHandler)
 
         daemon = get_dbus("session", LAUNCHER_DAEMON, "GetPackageNames_sync")
-        packages = daemon.GetPackageNames_sync(item.path)
-        if packages.length == 0
+        package_name = @softwareManager.get_pkg_name_from_path_sync(item.path)
+        if package_name.length == 0
             if item.status
                 item.status = SOFTWARE_STATE.IDLE
                 item.show()
             delete @uninstalling_apps[item.id]
             uninstallReport(UNINSTALL_STATUS.FAILED, "get packages failed")
             console.log("get packages failed")
-        opt.item.packages = packages.slice(0)
-        console.log "packages: #{packages.join(",")}"
-        @softwareManager.uninstall_pkg(packages.join(" "), opt.purge)
+        opt.item.package_name = package_name.slice(0)
+        console.log "package_name: #{package_name}"
+        @softwareManager.uninstall_pkg(package_name, opt.purge)
 
