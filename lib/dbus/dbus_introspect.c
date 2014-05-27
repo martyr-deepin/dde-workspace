@@ -238,10 +238,7 @@ JSValueRef signal_disconnect(JSContextRef ctx,
         js_fill_exception(ctx, exception, "This signal hasn't connected!");
         return NULL;
     }
-    // SIGNAL_CALLBACK_ID cb_id = (SIGNAL_CALLBACK_ID)(int)JSValueToNumber(ctx, arguments[1], NULL);
-    // FIXME: this seems not to be right.
-    JSObjectRef callback = JSValueToObject(ctx, arguments[1], NULL);
-    SIGNAL_CALLBACK_ID cb_id = (SIGNAL_CALLBACK_ID)GPOINTER_TO_INT(callback);
+    SIGNAL_CALLBACK_ID cb_id = (SIGNAL_CALLBACK_ID)GPOINTER_TO_INT(arguments[1]);
     g_debug("%u", cb_id);
     if (!g_hash_table_remove(cbs, GINT_TO_POINTER(cb_id))) {
         js_fill_exception(ctx, exception, "This signal hasn't connected!");
