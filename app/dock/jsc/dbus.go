@@ -15,6 +15,7 @@ func main() {
 		),
 		Method("Show", Callback("dock_show_now")),
 		Method("Hide", Callback("dock_hide_now")),
+		Method("Xid", Callback("dock_xid"), Ret("xid:guint64")),
 	)
 	DBusCall(
 		SessionDBUS("com.deepin.dde.desktop"),
