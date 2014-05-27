@@ -107,7 +107,7 @@ void parse_parms(const gchar **names, const gchar **values)
     while (*n_c) {
         if (g_strcmp0(*n_c, "type") == 0) {
             type = *v_c;
-        } 
+        }
         if (g_strcmp0(*n_c, "direction") == 0) {
             if (g_strcmp0(*v_c, "in") == 0)
                 in = TRUE;
@@ -129,12 +129,12 @@ void parse_parms(const gchar **names, const gchar **values)
 }
 
 static
-void parse_start(GMarkupParseContext* context,
+void parse_start(GMarkupParseContext* context G_GNUC_UNUSED,
         const gchar *element_name,
         const gchar **attribute_names,
         const gchar **attribute_values,
-        gpointer user_data,
-        GError **error)
+        gpointer user_data G_GNUC_UNUSED,
+        GError **error G_GNUC_UNUSED)
 {
 
     const gchar **name_cursor = attribute_names;
@@ -198,8 +198,10 @@ void parse_start(GMarkupParseContext* context,
 
 
 static
-void parse_end(GMarkupParseContext *context,
-        const gchar* element_name, gpointer user_data, GError **error)
+void parse_end(GMarkupParseContext *context G_GNUC_UNUSED,
+        const gchar* element_name,
+        gpointer user_data G_GNUC_UNUSED,
+        GError **error G_GNUC_UNUSED)
 {
     if (g_strcmp0(element_name, "interface") == 0) {
         state = S_NONE;
@@ -220,7 +222,7 @@ void parse_end(GMarkupParseContext *context,
 }
 
 static
-void build_current_object_info(const char* xml, const char* interface)
+void build_current_object_info(const char* xml, const char* interface G_GNUC_UNUSED)
 {
     g_assert(xml != NULL);
     static GMarkupParser parser = {
@@ -290,3 +292,4 @@ void dbus_object_info_free(struct DBusObjectInfo* info)
     g_hash_table_unref(info->signals);
     g_free(info);
 }
+

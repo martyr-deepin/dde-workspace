@@ -75,7 +75,7 @@ gboolean get_leave_enter_guard()
     }
 }
 
-gboolean leave_notify(GtkWidget* w, GdkEventCrossing* e, gpointer u)
+gboolean leave_notify(GtkWidget* w G_GNUC_UNUSED, GdkEventCrossing* e, gpointer u G_GNUC_UNUSED)
 {
     if (!get_leave_enter_guard())
         return FALSE;
@@ -101,7 +101,7 @@ gboolean leave_notify(GtkWidget* w, GdkEventCrossing* e, gpointer u)
     }
     return FALSE;
 }
-gboolean enter_notify(GtkWidget* w, GdkEventCrossing* e, gpointer u)
+gboolean enter_notify(GtkWidget* w G_GNUC_UNUSED, GdkEventCrossing* e G_GNUC_UNUSED, gpointer u G_GNUC_UNUSED)
 {
     if (!get_leave_enter_guard())
         return FALSE;
@@ -138,7 +138,7 @@ void size_workaround(GtkWidget* container, GdkRectangle* allocation)
 gboolean is_compiz_plugin_valid()
 {
     gboolean is_compiz_running = false;
-    gint screen_num = gdk_display_get_n_screens(gdk_display_get_default());
+    gint screen_num = 1;//gdk_display_get_n_screens(gdk_display_get_default());
     char buf[128] = {0};
     Display* dpy = XOpenDisplay(NULL);
 
@@ -154,7 +154,7 @@ gboolean is_compiz_plugin_valid()
 
 
 static
-void is_compiz_valid(GdkScreen* screen, gpointer data)
+void is_compiz_valid(GdkScreen* screen, gpointer data G_GNUC_UNUSED)
 {
     if (!gdk_screen_is_composited(screen)) {
         GtkWidget* dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL,
@@ -173,7 +173,7 @@ void check_compiz_validity()
                      G_CALLBACK(is_compiz_valid), NULL);
 }
 
-void update_dock_size(GdkScreen* screen, GtkWidget* webview)
+void update_dock_size(GdkScreen* screen G_GNUC_UNUSED, GtkWidget* webview)
 {
     GdkGeometry geo = {0};
     geo.min_width = 0;

@@ -334,7 +334,7 @@ keep_user_background (const gchar *username)
     }
     g_free (bg_path);
 
-    for (int i = 0; i < gdk_display_get_n_screens (gdk_display_get_default ()); i++) {
+    for (int i = 0; i < 1/*gdk_display_get_n_screens (gdk_display_get_default ())*/; i++) {
         GdkScreen *screen;
         cairo_surface_t *surface;
         cairo_t *c;

@@ -41,7 +41,7 @@ void rgb2hsv(int r, int g, int b, double *h, double* s, double* v)
     }
 
     double _h = 0;
-    if (s <= 0) {
+    if (*s <= 0) {
         _h = 0;
     } else if (delta_rgb != 0){
 

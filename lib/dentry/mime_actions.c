@@ -55,7 +55,7 @@ gboolean exec_app_info (const char *executable)
 {
     GAppInfo *appinfo = NULL;
     GError *error = NULL;
-    gboolean is_ok = FALSE;
+    gboolean is_ok G_GNUC_UNUSED = FALSE;
 
     appinfo = gen_app_info (executable);
     if ( appinfo == NULL ) {
@@ -209,7 +209,7 @@ activate_file (GFile* file, const char* content_type,
             g_free (detail);
             gtk_dialog_add_button (GTK_DIALOG(dialog), _("Run in _Terminal"), RESPONSE_RUN_IN_TERMINAL);
             gtk_dialog_add_button (GTK_DIALOG(dialog), _("_Display"), RESPONSE_DISPLAY);
-            gtk_dialog_add_button (GTK_DIALOG(dialog), GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL);
+            gtk_dialog_add_button (GTK_DIALOG(dialog), "_Cancel", GTK_RESPONSE_CANCEL);
             gtk_dialog_add_button (GTK_DIALOG(dialog), _("_Run"), RESPONSE_RUN);
             gtk_dialog_set_default_response (GTK_DIALOG(dialog), GTK_RESPONSE_CANCEL);
 

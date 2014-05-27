@@ -371,7 +371,7 @@ get_xformed_gdk_pixbuf (const char* pict_path)
 
 
 PRIVATE gboolean
-on_bg_duration_tick (gpointer user_data)
+on_bg_duration_tick (gpointer user_data G_GNUC_UNUSED)
 {
     xfade_data_t* fade_data = g_slice_new(xfade_data_t);
 
@@ -413,7 +413,7 @@ on_bg_duration_tick (gpointer user_data)
 }
 
 PRIVATE void
-on_bg_duration_finished (gpointer user_data)
+on_bg_duration_finished (gpointer user_data G_GNUC_UNUSED)
 {
 }
 
@@ -560,7 +560,7 @@ destroy_picture_path (gpointer data)
  *      as the previous value. we just restart all.
  */
 PRIVATE void
-bg_settings_picture_uris_changed (GSettings *settings, gchar *key, gpointer user_data)
+bg_settings_picture_uris_changed (GSettings *settings G_GNUC_UNUSED, gchar *key G_GNUC_UNUSED, gpointer user_data G_GNUC_UNUSED)
 {
     g_hash_table_destroy (picture_paths_ht);
     g_ptr_array_free (picture_paths, TRUE);
@@ -582,7 +582,7 @@ bg_settings_picture_uris_changed (GSettings *settings, gchar *key, gpointer user
  *      handle user-selected picture uri
  */
 PRIVATE void
-bg_settings_picture_uri_changed (GSettings *settings, gchar *key, gpointer user_data)
+bg_settings_picture_uri_changed (GSettings *settings, gchar *key G_GNUC_UNUSED, gpointer user_data G_GNUC_UNUSED)
 {
     gchar* tmp_image_uri = g_settings_get_string (settings, BG_PICTURE_URI);
     if (strlen(tmp_image_uri) == 0)  return;
@@ -604,7 +604,7 @@ bg_settings_picture_uri_changed (GSettings *settings, gchar *key, gpointer user_
  *      we should reset timer and start auto
  */
 PRIVATE void
-bg_settings_bg_duration_changed (GSettings *settings, gchar *key, gpointer user_data)
+bg_settings_bg_duration_changed (GSettings *settings, gchar *key G_GNUC_UNUSED, gpointer user_data G_GNUC_UNUSED)
 {
     gsettings_background_duration = g_settings_get_int (settings, BG_BG_DURATION);
 
@@ -614,7 +614,7 @@ bg_settings_bg_duration_changed (GSettings *settings, gchar *key, gpointer user_
 }
 
 PRIVATE void
-bg_settings_xfade_manual_interval_changed (GSettings *settings, gchar *key, gpointer user_data)
+bg_settings_xfade_manual_interval_changed (GSettings *settings, gchar *key G_GNUC_UNUSED, gpointer user_data G_GNUC_UNUSED)
 {
     gsettings_xfade_manual_interval = g_settings_get_int (settings, BG_XFADE_MANUAL_INTERVAL);
 
@@ -624,7 +624,7 @@ bg_settings_xfade_manual_interval_changed (GSettings *settings, gchar *key, gpoi
 }
 
 PRIVATE void
-bg_settings_xfade_auto_interval_changed (GSettings *settings, gchar *key, gpointer user_data)
+bg_settings_xfade_auto_interval_changed (GSettings *settings, gchar *key G_GNUC_UNUSED, gpointer user_data G_GNUC_UNUSED)
 {
     gsettings_xfade_auto_interval = g_settings_get_int (settings, BG_XFADE_AUTO_INTERVAL);
 
@@ -635,7 +635,7 @@ bg_settings_xfade_auto_interval_changed (GSettings *settings, gchar *key, gpoint
 }
 
 PRIVATE void
-bg_settings_xfade_auto_mode_changed (GSettings *settings, gchar *key, gpointer user_data)
+bg_settings_xfade_auto_mode_changed (GSettings *settings, gchar *key G_GNUC_UNUSED, gpointer user_data G_GNUC_UNUSED)
 {
     gsettings_xfade_auto_mode = g_settings_get_enum (settings, BG_XFADE_AUTO_MODE);
 
@@ -645,7 +645,7 @@ bg_settings_xfade_auto_mode_changed (GSettings *settings, gchar *key, gpointer u
 }
 //TODO: draw mode: scaling, and tiling
 PRIVATE void
-bg_settings_draw_mode_changed (GSettings *settings, gchar *key, gpointer user_data)
+bg_settings_draw_mode_changed (GSettings *settings, gchar *key G_GNUC_UNUSED, gpointer user_data G_GNUC_UNUSED)
 {
     gsettings_draw_mode = g_settings_get_enum (settings, BG_DRAW_MODE);
 
@@ -732,7 +732,7 @@ register_account_service_background_path (const char* current_picture)
     }
 }
 PRIVATE void
-bg_settings_current_picture_changed (GSettings *settings, gchar *key, gpointer user_data)
+bg_settings_current_picture_changed (GSettings *settings, gchar *key G_GNUC_UNUSED, gpointer user_data G_GNUC_UNUSED)
 {
     gchar* cur_pict = g_settings_get_string (settings, BG_CURRENT_PICT);
     if (strlen(cur_pict) == 0)  return;
@@ -742,7 +742,7 @@ bg_settings_current_picture_changed (GSettings *settings, gchar *key, gpointer u
 }
 
 PRIVATE void
-screen_size_changed_cb (GdkScreen* screen, gpointer user_data)
+screen_size_changed_cb (GdkScreen* screen, gpointer user_data G_GNUC_UNUSED)
 {
     //remove early to avoid fatal X errors
     int current_root_width = gdk_screen_width();
@@ -896,7 +896,7 @@ initial_setup (GSettings *settings)
 }
 
 PRIVATE GdkFilterReturn
-expose_cb (GdkXEvent* xevent, GdkEvent* event, gpointer data)
+expose_cb (GdkXEvent* xevent, GdkEvent* event G_GNUC_UNUSED, gpointer data G_GNUC_UNUSED)
 {
     //At least first running desktop and suspend/resume will trigger expose event
     if (((XEvent*)xevent)->type == Expose)

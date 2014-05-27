@@ -52,10 +52,10 @@ static void _commandline_exec(const char *commandline, GList *list);
 
 
 #define TEST_GFILE(e, f) if (G_IS_FILE(e)) { \
-    GFile* f = e;
+    GFile* f G_GNUC_UNUSED = e;
 
 #define TEST_GAPP(e, app) } else if (G_IS_APP_INFO(e)) { \
-    GAppInfo* app = e;
+    GAppInfo* app G_GNUC_UNUSED = e;
 
 #define TEST_END } else { g_warn_if_reached();}
 
@@ -163,6 +163,8 @@ double dentry_get_type(Entry* e)
     TEST_GAPP(e, app)
         return 0;
     TEST_END
+
+    return -1;
 }
 
 //TODO:
@@ -206,6 +208,8 @@ char* dentry_get_name(Entry* e)
     TEST_GAPP(e, app)
         return g_strdup(g_app_info_get_name(app));
     TEST_END
+
+    return NULL;
 }
 
 JS_EXPORT_API
@@ -246,6 +250,8 @@ char* dentry_get_uri(Entry* e)
         return uri;
     g_message("uri:---%s---",uri);
     TEST_END
+
+    return NULL;
 }
 
 JS_EXPORT_API
@@ -323,6 +329,8 @@ gboolean dentry_can_thumbnail(Entry* e)
     TEST_GAPP(e, app)
         return FALSE;
     TEST_END
+
+    return FALSE;
 }
 
 JS_EXPORT_API
@@ -788,6 +796,8 @@ gboolean dentry_set_name(Entry* e, const char* name)
             return TRUE;
         }
     TEST_END
+
+    return FALSE;
 }
 
 static ArrayContainer _normalize_array_container(ArrayContainer pfs)
@@ -1197,7 +1207,7 @@ ArrayContainer dentry_get_templates_filter(ArrayContainer fs)
 JS_EXPORT_API
 GFile* dentry_create_templates(GFile* src, char* name_add_before)
 {
-    gboolean result = FALSE;
+    gboolean result G_GNUC_UNUSED = FALSE;
     char* basename = dentry_get_name(src);
     g_debug("choose templates name :---%s---",basename);
 
@@ -1451,7 +1461,7 @@ out:
 
 
 PRIVATE
-int _get_category_name(void* _basename, int argc, char** argv, char** columnname)
+int _get_category_name(void* _basename, int argc G_GNUC_UNUSED, char** argv, char** columnname G_GNUC_UNUSED)
 {
     char** basename = (char**)_basename;
     if (argv[0][0] != '\0')

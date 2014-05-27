@@ -10,15 +10,16 @@ void test_lib_utils()
 
     Test({
         char* c = dcore_gen_id("1000");
-        g_free(c);    
+        g_free(c);
     }, "dcore_gen_id");
 
 
     Test({
-        const char* c = dcore_gettext("1000");
-        // g_free(c);    
+        const char* c G_GNUC_UNUSED = dcore_gettext("1000");
+        // g_free(c);
     }, "dcore_gettext");
 
     tear_down_fixture();
 
 }
+

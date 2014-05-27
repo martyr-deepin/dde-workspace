@@ -20,10 +20,10 @@ static FileOpsResponse*	_show_skip_cancel_all_dialog			(const char *fileops_str,
 									 GtkWindow* parent);
 static FileOpsResponse*	_show_skip_cancel_replace_rename_all_dialog	(const char *fileops_str,
 									 const char *error_message,
-									 GFile *src, 
+									 GFile *src,
 									 GFile *dest,
 									 GtkWindow* parent);
-FileOpsResponse* 
+FileOpsResponse*
 fileops_response_dup (FileOpsResponse* response)
 {
     FileOpsResponse* _dup_response;
@@ -47,24 +47,24 @@ fileops_response_free (FileOpsResponse* response)
 }
 
 /*
- *	delete, trash error need only one GFile* parameters. 
+ *	delete, trash error need only one GFile* parameters.
  *	@fileops_str : "delete" or "trash"
  *	@error:
  *	@file: file to delete or trash.
  */
 FileOpsResponse*
-fileops_delete_trash_error_show_dialog (const char* fileops_str, GError* error, 
+fileops_delete_trash_error_show_dialog (const char* fileops_str, GError* error,
 					GFile* file, GtkWindow* parent)
 {
     FileOpsResponse* ret = NULL;
     switch (error->code)
     {
-	case G_IO_ERROR_PERMISSION_DENIED: 
+	case G_IO_ERROR_PERMISSION_DENIED:
 	     ret = _show_skip_cancel_all_dialog (fileops_str, error->message, file, parent);
 	     break;
-	case G_IO_ERROR_CANCELLED:   
+	case G_IO_ERROR_CANCELLED:
 	    /*
-	     * TODO: response: this is caused by progress_dialog. 
+	     * TODO: response: this is caused by progress_dialog.
 	     */
 	     ret = _show_simple_error_message_dialog (fileops_str, error->message, file, parent);
 	    break;
@@ -83,11 +83,11 @@ fileops_delete_trash_error_show_dialog (const char* fileops_str, GError* error,
 /*
  *	move, copy needs a src, and dest.
  *	@fileops_str : "move" or "copy"
- *	@src : source file 
+ *	@src : source file
  *	@dest: destinatin file.
  */
 FileOpsResponse*
-fileops_move_copy_error_show_dialog (const char* fileops_str, GError* error, 
+fileops_move_copy_error_show_dialog (const char* fileops_str, GError* error,
 	                             GFile* src, GFile* dest, GtkWindow* parent)
 {
     FileOpsResponse* ret = NULL;
@@ -96,9 +96,9 @@ fileops_move_copy_error_show_dialog (const char* fileops_str, GError* error,
 	case G_IO_ERROR_NOT_FOUND:
 	    {
 		GtkWidget* dialog;
-	        dialog = gtk_message_dialog_new (NULL, 
+	        dialog = gtk_message_dialog_new (NULL,
 					     GTK_DIALOG_MODAL,
-					     GTK_MESSAGE_WARNING, 
+					     GTK_MESSAGE_WARNING,
 					     GTK_BUTTONS_OK,
 					     NULL);
 	        gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
@@ -135,7 +135,7 @@ fileops_move_copy_error_show_dialog (const char* fileops_str, GError* error,
 	    break;
 	case G_IO_ERROR_CANCELLED:   //operatin was cancelled
 	    /*
-	     * TODO: response: this is caused by progress_dialog. 
+	     * TODO: response: this is caused by progress_dialog.
 	     */
 	    _show_simple_error_message_dialog (fileops_str, error->message, dest, parent);
 	    break;
@@ -159,8 +159,10 @@ fileops_move_copy_error_show_dialog (const char* fileops_str, GError* error,
  *	TODO:
  */
 static FileOpsResponse*
-_show_simple_error_message_dialog (const char* fileops_str, const char *error_message,
-				   GFile *file, GtkWindow* parent)
+_show_simple_error_message_dialog (const char* fileops_str G_GNUC_UNUSED,
+                                   const char *error_message G_GNUC_UNUSED,
+				   GFile *file,
+                                   GtkWindow* parent G_GNUC_UNUSED)
 {
     if (file == NULL)
     {
@@ -173,14 +175,14 @@ _show_simple_error_message_dialog (const char* fileops_str, const char *error_me
  *	permission denied, what we do now?
  *	TODO:
  */
-static FileOpsResponse*	
-_show_skip_cancel_all_dialog (const char* fileops_str, const char *error_message, 
-			      GFile* file, GtkWindow* parent)
+static FileOpsResponse*
+_show_skip_cancel_all_dialog (const char* fileops_str, const char *error_message,
+			      GFile* file G_GNUC_UNUSED, GtkWindow* parent G_GNUC_UNUSED)
 {
     GtkWidget* dialog;
-    dialog = gtk_message_dialog_new (NULL, 
+    dialog = gtk_message_dialog_new (NULL,
 				     GTK_DIALOG_MODAL,
-			             GTK_MESSAGE_WARNING, 
+			             GTK_MESSAGE_WARNING,
 				     GTK_BUTTONS_OK,
 			             NULL);
     gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
@@ -201,7 +203,8 @@ _show_skip_cancel_all_dialog (const char* fileops_str, const char *error_message
  *
  */
 static FileOpsResponse*
-_show_skip_cancel_replace_rename_all_dialog (const char *fileops_str, const char *error_message,
+_show_skip_cancel_replace_rename_all_dialog (const char *fileops_str G_GNUC_UNUSED,
+                                             const char *error_message G_GNUC_UNUSED,
 					     GFile *src, GFile *dest, GtkWindow* parent)
 {
     GtkWidget* dialog;
@@ -218,3 +221,4 @@ _show_skip_cancel_replace_rename_all_dialog (const char *fileops_str, const char
 
     return response;
 }
+

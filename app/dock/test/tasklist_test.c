@@ -39,8 +39,8 @@ extern GHashTable* _clients_table;
 void dock_test_tasklist()
 {
     Window xid = 0x260003b;  // ATTENTION!! change it yourself when you need to test.
-    Display *_dsp = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
-    GdkWindow* root = gdk_get_default_root_window();
+    Display *_dsp G_GNUC_UNUSED = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
+    GdkWindow* root G_GNUC_UNUSED = gdk_get_default_root_window();
 
     /* Test({ */
     /*         _update_task_list(GDK_WINDOW_XID(root)); */

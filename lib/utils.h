@@ -68,3 +68,4 @@ gboolean is_chrome_app(char const* name);
 char* bg_blur_pict_get_dest_path (const char* src_uri);
 
 #endif
+

@@ -1,159 +1,161 @@
 package make_dbus
+
 import (
-    "fmt"
-    "os"
-    "strings"
-    "text/template"
-    "flag"
-    "path/filepath"
+	"flag"
+	"fmt"
+	"os"
+	"path/filepath"
+	"strings"
+	"text/template"
 )
+
 var output_c *os.File = os.Stdout
 var output_h *os.File = os.Stdout
 
 type CallbackStruct struct {
-    Name string
+	Name string
 }
 
 const (
-    InvalidArg = ""
-    InArg = "in"
-    OutArg = "out"
+	InvalidArg = ""
+	InArg      = "in"
+	OutArg     = "out"
 )
-var type_table = map[string]string {
-    "char*": "s",
-    "gchar*": "s",
-    "char": "y",
-    "gchar": "y",
-    "gboolean": "b",
-    "gint16": "n",
-    "guint16": "q",
-    "int": "i",
-    "gint32": "i",
-    "guint32": "u",
-    "gint64": "x",
-    "guint64": "t",
-    "gdouble": "d",
+
+var type_table = map[string]string{
+	"char*":    "s",
+	"gchar*":   "s",
+	"char":     "y",
+	"gchar":    "y",
+	"gboolean": "b",
+	"gint16":   "n",
+	"guint16":  "q",
+	"int":      "i",
+	"gint32":   "i",
+	"guint32":  "u",
+	"gint64":   "x",
+	"guint64":  "t",
+	"gdouble":  "d",
 }
 
 type ArgStruct struct {
-    Name string
-    CName string
-    DName string
-    Type string
-    IsArray bool
+	Name    string
+	CName   string
+	DName   string
+	Type    string
+	IsArray bool
 }
 
 func checkArgValid(value []string) {
-    if len(value) != 2 {
-        panic(fmt.Sprintf("Ret string is not valid: %q", strings.Join(value, ":")))
-    }
-    if type_table[value[1]] == "" {
-        panic(fmt.Sprintf("Can't convert the Ctype(%s) to DBUS type", value[1]))
-    }
+	if len(value) != 2 {
+		panic(fmt.Sprintf("Ret string is not valid: %q", strings.Join(value, ":")))
+	}
+	if type_table[value[1]] == "" {
+		panic(fmt.Sprintf("Can't convert the Ctype(%s) to DBUS type", value[1]))
+	}
 }
 func Ret(input string) ArgStruct {
-    value := strings.Split(input, ":")
-    checkArgValid(value)
-    return ArgStruct{value[0], value[1], type_table[value[1]], OutArg, false}
+	value := strings.Split(input, ":")
+	checkArgValid(value)
+	return ArgStruct{value[0], value[1], type_table[value[1]], OutArg, false}
 }
 func Arg(input string) ArgStruct {
-    value := strings.Split(input, ":")
-    checkArgValid(value)
-    return ArgStruct{value[0], value[1], type_table[value[1]], InArg, false}
+	value := strings.Split(input, ":")
+	checkArgValid(value)
+	return ArgStruct{value[0], value[1], type_table[value[1]], InArg, false}
 }
 func Array(arg ArgStruct) ArgStruct {
-    arg.CName = arg.CName + "*"
-    arg.DName = "a(" + arg.DName + ")"
-    arg.IsArray = true
-    return arg
+	arg.CName = arg.CName + "*"
+	arg.DName = "a(" + arg.DName + ")"
+	arg.IsArray = true
+	return arg
 }
-
 
 type MethodStruct struct {
-    BusInfo *BusInfoStruct
-    Ret ArgStruct
-    Name string
-    CB CallbackStruct
-    Args []ArgStruct
-    IsSignal bool
+	BusInfo  *BusInfoStruct
+	Ret      ArgStruct
+	Name     string
+	CB       CallbackStruct
+	Args     []ArgStruct
+	IsSignal bool
 }
-func Signal(name string, args...ArgStruct) MethodStruct {
-    if len(args) > 0 && args[0].Type == OutArg {
-        return MethodStruct{nil, args[0], name, Callback("I'm an signal"), args[1:], true}
-    }
-    ret := ArgStruct{"", "void", "", InvalidArg, false}
-    return MethodStruct{nil, ret, name, Callback("I'm a signal"), args, true}
+
+func Signal(name string, args ...ArgStruct) MethodStruct {
+	if len(args) > 0 && args[0].Type == OutArg {
+		return MethodStruct{nil, args[0], name, Callback("I'm an signal"), args[1:], true}
+	}
+	ret := ArgStruct{"", "void", "", InvalidArg, false}
+	return MethodStruct{nil, ret, name, Callback("I'm a signal"), args, true}
 }
-func Method(name string, cb CallbackStruct, args...ArgStruct) MethodStruct {
-    if len(args) > 0 && args[0].Type == OutArg {
-        return MethodStruct{nil, args[0], name, cb, args[1:], false}
-    }
-    ret := ArgStruct{"", "void", "", InvalidArg, false}
-    return MethodStruct{nil, ret, name, cb, args, false}
+func Method(name string, cb CallbackStruct, args ...ArgStruct) MethodStruct {
+	if len(args) > 0 && args[0].Type == OutArg {
+		return MethodStruct{nil, args[0], name, cb, args[1:], false}
+	}
+	ret := ArgStruct{"", "void", "", InvalidArg, false}
+	return MethodStruct{nil, ret, name, cb, args, false}
 }
-func (m MethodStruct) joinArgs(prefix...string) string{
-    ret := make([]string, len(m.Args))
-    for i, arg := range m.Args {
-        pre := ""
-        if len(prefix) == 1 {
-            pre = prefix[0]
-        }
-        ret[i] = pre + arg.CName
-    }
-    return strings.Join(ret, ",")
+func (m MethodStruct) joinArgs(prefix ...string) string {
+	ret := make([]string, len(m.Args))
+	for i, arg := range m.Args {
+		pre := ""
+		if len(prefix) == 1 {
+			pre = prefix[0]
+		}
+		ret[i] = pre + arg.CName
+	}
+	return strings.Join(ret, ",")
 }
-func (m MethodStruct) joinCallArgs(prefix...string) string{
-    ret := make([]string, len(m.Args))
-    for i, _ := range m.Args {
-        pre := ""
-        if len(prefix) == 1 {
-            pre = prefix[0]
-        }
-        ret[i] = fmt.Sprintf("%sarg%d", pre, i)
-    }
-    return strings.Join(ret, ",")
+func (m MethodStruct) joinCallArgs(prefix ...string) string {
+	ret := make([]string, len(m.Args))
+	for i, _ := range m.Args {
+		pre := ""
+		if len(prefix) == 1 {
+			pre = prefix[0]
+		}
+		ret[i] = fmt.Sprintf("%sarg%d", pre, i)
+	}
+	return strings.Join(ret, ",")
 }
 func Callback(name string) CallbackStruct {
-    return CallbackStruct{name}
+	return CallbackStruct{name}
 }
 
 var temp_provider = template.Must(template.New("dbus_xml").Funcs(template.FuncMap{
-    "gen_arg_call": func(m MethodStruct) string {
-        return fmt.Sprintf("%s(%s);", m.CB.Name, m.joinCallArgs())
-    },
-    "get_c_content": func(m MethodStruct) string {
-        var get_variant string
-        if len(m.Args) != 0 {
-            signals := make([]string, len(m.Args))
-            for i, arg := range m.Args {
-                signals[i] = arg.DName
-            }
-            get_variant = fmt.Sprintf("g_variant_get(params, \"(%s)\", %s);\n", strings.Join(signals, ""), m.joinCallArgs("&"))
-        }
-        return get_variant;
-    },
-    "func_decl": func(method MethodStruct) string {
-        return fmt.Sprintf("%s %s(%s);", method.Ret.CName, method.CB.Name, method.joinArgs())
-    },
-    "is_string": func(ctypename string) bool {
-        return strings.HasSuffix(ctypename, "char*")
-    },
+	"gen_arg_call": func(m MethodStruct) string {
+		return fmt.Sprintf("%s(%s);", m.CB.Name, m.joinCallArgs())
+	},
+	"get_c_content": func(m MethodStruct) string {
+		var get_variant string
+		if len(m.Args) != 0 {
+			signals := make([]string, len(m.Args))
+			for i, arg := range m.Args {
+				signals[i] = arg.DName
+			}
+			get_variant = fmt.Sprintf("g_variant_get(params, \"(%s)\", %s);\n", strings.Join(signals, ""), m.joinCallArgs("&"))
+		}
+		return get_variant
+	},
+	"func_decl": func(method MethodStruct) string {
+		return fmt.Sprintf("%s %s(%s);", method.Ret.CName, method.CB.Name, method.joinArgs())
+	},
+	"is_string": func(ctypename string) bool {
+		return strings.HasSuffix(ctypename, "char*")
+	},
 }).Parse(`
 static int _service_owner_id = 0;
 static GDBusInterfaceInfo * interface_info = NULL;
 {{range .Methods}}{{if not .IsSignal}}
 {{func_decl .}}
 {{end}}{{end}}
-static void _bus_method_call (GDBusConnection * connection,
-                 const gchar * sender, const gchar * object_path, const gchar * interface,
-                 const gchar * method, GVariant * params,
-                 GDBusMethodInvocation * invocation, gpointer user_data)
+static void _bus_method_call (GDBusConnection * connection G_GNUC_UNUSED,
+                 const gchar * sender G_GNUC_UNUSED,
+		 const gchar * object_path G_GNUC_UNUSED,
+		 const gchar * interface G_GNUC_UNUSED,
+                 const gchar * method G_GNUC_UNUSED,
+		 GVariant * params G_GNUC_UNUSED,
+                 GDBusMethodInvocation * invocation G_GNUC_UNUSED,
+		 gpointer user_data G_GNUC_UNUSED)
 {
-        (void)connection;
-        (void)sender;
-        (void)object_path;
-        (void)interface;
-        (void)user_data;
         GVariant * retval = NULL;
         if (0) { {{range .Methods}}{{if not .IsSignal}}
         } else if (g_strcmp0(method, "{{.Name}}") == 0) {
@@ -178,7 +180,9 @@ static void _bus_method_call (GDBusConnection * connection,
     }
 
 }
-static void _on_bus_acquired (GDBusConnection * connection, const gchar * name, gpointer user_data)
+static void _on_bus_acquired (GDBusConnection * connection G_GNUC_UNUSED,
+			      const gchar * name G_GNUC_UNUSED,
+			      gpointer user_data G_GNUC_UNUSED)
 {
     (void)name;
     static GDBusInterfaceVTable interface_table = {
@@ -241,95 +245,94 @@ void
 }
 `))
 
-
 type InputInfo struct {
-    Setup_func_name string
-    BusInfo BusInfoStruct
-    Methods []MethodStruct
+	Setup_func_name string
+	BusInfo         BusInfoStruct
+	Methods         []MethodStruct
 }
 
 type BusInfoStruct struct {
-    Type string
-    Name string
-    Path string
-    Ifce string
-    Flags int
+	Type  string
+	Name  string
+	Path  string
+	Ifce  string
+	Flags int
 }
 
 func to_path(info string) string {
-    return strings.Replace("/" + info, ".", "/", -1)
+	return strings.Replace("/"+info, ".", "/", -1)
 }
 
 const (
-    SESSION_BUS = "G_BUS_TYPE_SESSION"
-    SYSTEM_BUS = "G_BUS_TYPE_SYSTEM"
+	SESSION_BUS = "G_BUS_TYPE_SESSION"
+	SYSTEM_BUS  = "G_BUS_TYPE_SYSTEM"
 )
 
 func DBusFull(bus_type, name, path, interfaces string, flag int) BusInfoStruct {
-    return BusInfoStruct{bus_type, name, path, interfaces, flag}
+	return BusInfoStruct{bus_type, name, path, interfaces, flag}
 }
 
 func SessionDBUS(info string) BusInfoStruct {
-    return BusInfoStruct{SESSION_BUS, info, to_path(info), info, FLAGS_NONE}
+	return BusInfoStruct{SESSION_BUS, info, to_path(info), info, FLAGS_NONE}
 }
 
 func SystemDBUS(info string) BusInfoStruct {
-    return BusInfoStruct{SYSTEM_BUS, info, to_path(info), info, FLAGS_NONE}
+	return BusInfoStruct{SYSTEM_BUS, info, to_path(info), info, FLAGS_NONE}
 }
 
-func DBusInstall(setup_func_name string, bus BusInfoStruct, methods...MethodStruct) {
-    for i, _ := range methods {
-        methods[i].BusInfo =&bus
-    }
-    output_h.WriteString(fmt.Sprintf("void %s();\n", setup_func_name))
-    err := temp_provider.Execute(output_c, InputInfo{
-        setup_func_name,
-        bus,
-        methods})
-    if err != nil {
-        panic(err)
-    }
+func DBusInstall(setup_func_name string, bus BusInfoStruct, methods ...MethodStruct) {
+	for i, _ := range methods {
+		methods[i].BusInfo = &bus
+	}
+	output_h.WriteString(fmt.Sprintf("void %s();\n", setup_func_name))
+	err := temp_provider.Execute(output_c, InputInfo{
+		setup_func_name,
+		bus,
+		methods})
+	if err != nil {
+		panic(err)
+	}
 }
 
-func temp_caller_func_decl (m MethodStruct) string {
-    var decl string
-    for i, arg := range m.Args {
-        if arg.Type == InArg {
-            decl += fmt.Sprintf("%s arg%d, ", arg.CName, i)
-        }
-    }
-    if len(m.Args) > 0 {
-        decl = decl[:len(decl)-2]
-    }
-    return fmt.Sprintf("%s %s(%s)", m.Ret.CName, m.Name, decl)
+func temp_caller_func_decl(m MethodStruct) string {
+	var decl string
+	for i, arg := range m.Args {
+		if arg.Type == InArg {
+			decl += fmt.Sprintf("%s arg%d, ", arg.CName, i)
+		}
+	}
+	if len(m.Args) > 0 {
+		decl = decl[:len(decl)-2]
+	}
+	return fmt.Sprintf("%s %s(%s)", m.Ret.CName, m.Name, decl)
 }
 
 var temp_caller_h = template.Must(template.New("dbus_call_h").Funcs(template.FuncMap{
-    "func_decl": temp_caller_func_decl,
+	"func_decl": temp_caller_func_decl,
 }).Parse(`
 {{range .Methods }}
 {{func_decl .}};
 {{end}}
 `))
 var temp_caller = template.Must(template.New("dbus_call").Funcs(template.FuncMap{
-    "func_decl": temp_caller_func_decl,
-    "get_dbus_args": func (m MethodStruct) string {
-        var decl string
-        for _, arg  := range m.Args {
-            decl += fmt.Sprintf("%s", arg.DName)
-        }
-        return decl
-    },
-    "get_c_args": func (m MethodStruct) string {
-        var decl string
-        for i, _ := range m.Args {
-            decl += fmt.Sprintf("arg%d, ", i)
-        }
-        if len(m.Args) > 0 {
-            decl = decl[:len(decl)-2]
-        }
-        return decl
-    },
+	"func_decl": temp_caller_func_decl,
+	"get_dbus_args": func(m MethodStruct) string {
+		var decl string
+		for _, arg := range m.Args {
+			decl += fmt.Sprintf("%s", arg.DName)
+		}
+		return decl
+	},
+	"get_c_args": func(m MethodStruct) string {
+		var decl string
+		for i, _ := range m.Args {
+			decl += fmt.Sprintf("arg%d, ", i)
+		}
+		if len(m.Args) > 0 {
+			decl = decl[:len(decl)-2]
+		}
+		return decl
+	},
 }).Parse(`
 {{range .Methods }}
 {{func_decl .}}
@@ -370,49 +373,50 @@ var temp_caller = template.Must(template.New("dbus_call").Funcs(template.FuncMap
 {{end}}
 `))
 
-func DBusCall(bus BusInfoStruct, flags int, methods...MethodStruct) {
-    bus.Flags = flags
-    for i, _ := range methods {
-        methods[i].BusInfo =&bus
-    }
-    info := InputInfo{
-        "",
-        bus,
-        methods,
-    }
-    err := temp_caller.Execute(output_c, info)
-    if err != nil {
-        panic(err)
-    }
-    err = temp_caller_h.Execute(output_h, info)
-    if err != nil {
-        panic(err)
-    }
+func DBusCall(bus BusInfoStruct, flags int, methods ...MethodStruct) {
+	bus.Flags = flags
+	for i, _ := range methods {
+		methods[i].BusInfo = &bus
+	}
+	info := InputInfo{
+		"",
+		bus,
+		methods,
+	}
+	err := temp_caller.Execute(output_c, info)
+	if err != nil {
+		panic(err)
+	}
+	err = temp_caller_h.Execute(output_h, info)
+	if err != nil {
+		panic(err)
+	}
 
 }
+
 const (
-    FLAGS_NONE = 0
-    FLAGS_DO_NOT_LOAD_PROPERTIES = (1<<0)
-    FLAGS_DO_NOT_CONNECT_SIGNALS = (1<<1)
-    FLAGS_DO_NOT_AUTO_START = (1<<2)
-    FLAGS_GET_INVALIDATED_PROPERTIES = (1<<3)
+	FLAGS_NONE                       = 0
+	FLAGS_DO_NOT_LOAD_PROPERTIES     = (1 << 0)
+	FLAGS_DO_NOT_CONNECT_SIGNALS     = (1 << 1)
+	FLAGS_DO_NOT_AUTO_START          = (1 << 2)
+	FLAGS_GET_INVALIDATED_PROPERTIES = (1 << 3)
 )
 
 func OUTPUT_END() {
-    output_h.WriteString("#endif")
+	output_h.WriteString("#endif")
 }
 
 func init() {
-    prefix := flag.String("prefix", "", "set up the prefix name of the generated c/h files")
-    output_dir := flag.String("out", "", "set up the directory of the generated c/h files")
-    flag.Parse()
-    if *prefix == "" {
-        panic("Must set the prefix and output_dir")
-    }
-    var ok error
-    output_c, ok = os.Create(filepath.Join(*output_dir, *prefix + ".c"))
+	prefix := flag.String("prefix", "", "set up the prefix name of the generated c/h files")
+	output_dir := flag.String("out", "", "set up the directory of the generated c/h files")
+	flag.Parse()
+	if *prefix == "" {
+		panic("Must set the prefix and output_dir")
+	}
+	var ok error
+	output_c, ok = os.Create(filepath.Join(*output_dir, *prefix+".c"))
 
-    output_c.WriteString(`
+	output_c.WriteString(`
 /*
 * THIS FILE WAS AUTOMATICALLY GENERATED, DO NOT EDIT.
 *
@@ -421,8 +425,8 @@ func init() {
 #include <glib.h>
 #include <gio/gio.h>
 `)
-    output_h, ok = os.Create(filepath.Join(*output_dir, *prefix + ".h"))
-    output_h.WriteString(fmt.Sprintf(`
+	output_h, ok = os.Create(filepath.Join(*output_dir, *prefix+".h"))
+	output_h.WriteString(fmt.Sprintf(`
 /*
 * THIS FILE WAS AUTOMATICALLY GENERATED, DO NOT EDIT.
 *
@@ -432,8 +436,8 @@ func init() {
 #define __AUTO_GEN_DBUS_%s
 #include <glib.h>
 `, *prefix, *prefix))
-    if ok != nil {
-        print(ok)
-    }
+	if ok != nil {
+		print(ok)
+	}
 
 }

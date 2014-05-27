@@ -179,7 +179,7 @@ PRIVATE void _update_task_list(Window root);
 
 
 PRIVATE
-void _update_window_viewport_callback(gpointer data, gulong n_item, gpointer res, gulong index)
+void _update_window_viewport_callback(gpointer data, gulong n_item, gpointer res, gulong index G_GNUC_UNUSED)
 {
     Client* c = (Client*)res;
     c->cross_workspace_num = (int)X_FETCH_32(data, 0);
@@ -354,7 +354,7 @@ Client* create_client_from_window(Window w)
     g_key_file_set_uint64(record_file, c->app_id, "StartNum", last_time + 1);
     save_app_config(record_file, RECORD_FILE);
 
-    g_debug("");
+    g_debug(" ");
 
     return c;
 }
@@ -407,7 +407,7 @@ void notify_desktop(DesktopFocusState current_state)
 }
 
 
-void active_window_changed(Display* dsp, Window w)
+void active_window_changed(Display* dsp G_GNUC_UNUSED, Window w)
 {
     if (active_client_id != w) {
         active_client_id = w;
@@ -910,7 +910,7 @@ void _update_current_viewport(Workspace* vp)
 }
 
 
-GdkFilterReturn monitor_root_change(GdkXEvent* xevent, GdkEvent *event, gpointer _nouse)
+GdkFilterReturn monitor_root_change(GdkXEvent* xevent, GdkEvent *event G_GNUC_UNUSED, gpointer _nouse G_GNUC_UNUSED)
 {
     switch (((XEvent*)xevent)->type) {
     case PropertyNotify: {
@@ -931,7 +931,7 @@ GdkFilterReturn monitor_root_change(GdkXEvent* xevent, GdkEvent *event, gpointer
 }
 
 
-GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window win)
+GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event G_GNUC_UNUSED, Window win)
 {
     XEvent* xev = xevent;
     if (xev->type == DestroyNotify) {
@@ -974,7 +974,7 @@ gboolean cross_workspaces_contain_current_workspace(Client* c)
 
 
 PRIVATE
-gboolean _find_maximize_client(gpointer key, Client* c)
+gboolean _find_maximize_client(gpointer key G_GNUC_UNUSED, Client* c)
 {
     return cross_workspaces_contain_current_workspace(c) && !c->is_hidden && c->is_maximize;
 }
@@ -1009,7 +1009,7 @@ void _update_is_overlay_client(Client* c)
 
 
 PRIVATE
-gboolean _find_overlay_window(gpointer key, Client* c)
+gboolean _find_overlay_window(gpointer key G_GNUC_UNUSED, Client* c)
 {
     return cross_workspaces_contain_current_workspace(c) && c->is_overlay_dock;
 }
@@ -1200,7 +1200,7 @@ gboolean dock_request_dock_by_client_id(double id)
 
 
 PRIVATE
-gboolean _find_app_id(gpointer key, Client* c, const char* app_id)
+gboolean _find_app_id(gpointer key G_GNUC_UNUSED, Client* c, const char* app_id)
 {
     return g_strcmp0(c->app_id, app_id) == 0;
 }
@@ -1232,7 +1232,7 @@ void dock_set_compiz_workaround_preview(gboolean v)
 
 
 static
-void _append(gpointer key, gpointer value, gpointer user_data)
+void _append(gpointer key G_GNUC_UNUSED, gpointer value, gpointer user_data)
 {
     gchar* appids = *(gchar**)user_data;
     if (appids == NULL)

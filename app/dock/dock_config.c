@@ -31,7 +31,7 @@ void update_dock_size_mode();
 void update_dock_color();
 void dock_update_hide_mode();
 
-void setting_changed(GSettings* s, gchar* key, gpointer user_data)
+void setting_changed(GSettings* s, gchar* key, gpointer user_data G_GNUC_UNUSED)
 {
     if (g_strcmp0(key, "active-mini-mode") == 0) {
         GD.config.mini_mode = g_settings_get_boolean(s, key);

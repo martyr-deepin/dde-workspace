@@ -198,7 +198,7 @@ char* get_name_by_pid(int pid)
     if (fd == -1) {
         return NULL;
     } else {
-        int dump = read(fd, content, LEN);
+        int dump G_GNUC_UNUSED = read(fd, content, LEN);
         close(fd);
     }
     for (int i=0; i<LEN; i++) {
@@ -280,7 +280,7 @@ int reparent_to_init ()
 	    _exit(EXIT_SUCCESS);
     }
 }
-static void _consolidate_cmd_line (int subargc, char*** subargv_ptr)
+static void _consolidate_cmd_line (int subargc G_GNUC_UNUSED, char*** subargv_ptr G_GNUC_UNUSED)
 {
     //recursively consolidate
 }

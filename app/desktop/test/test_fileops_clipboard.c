@@ -34,7 +34,7 @@ void test_fileops_clipboard()
              g_message("fileops_paste end");
          }
 
-        int dump = system("rm /tmp/skype.desktop");
+        int dump G_GNUC_UNUSED = system("rm /tmp/skype.desktop");
 
         g_message("init_fileops_clipboard start");
         GFile* src = g_file_new_for_uri("file:///tmp/test_files/skype.desktop");

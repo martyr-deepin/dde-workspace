@@ -3,11 +3,11 @@
 #include "dwebview.h"
 #include "jsextension.h"
 
-void init_js_extension(JSGlobalContextRef c, void* t)
+void init_js_extension(JSGlobalContextRef c G_GNUC_UNUSED, void* t G_GNUC_UNUSED)
 {
 }
 
-int main(int argc, char *argv[])
+int main()
 {
     gtk_init(NULL, NULL);
     GtkWidget* container = create_web_container(FALSE, TRUE);

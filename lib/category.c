@@ -36,10 +36,11 @@
 #define CATEGORY_INDEX_DB_PATH   DEEPIN_SOFTWARE_CENTER_DATA_DIR"/update/%s/category/category.db"
 
 
+G_GNUC_UNUSED
 static
-int for_translate(int argc, char *argv[])
+int for_translate(int argc G_GNUC_UNUSED, char *argv[] G_GNUC_UNUSED)
 {
-    const char* const categories[] = {
+    const char* const categories[] G_GNUC_UNUSED = {
         _("all"),
         _("internet"),
         _("multimedia"),

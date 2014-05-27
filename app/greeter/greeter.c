@@ -102,7 +102,7 @@ start_authentication (struct AuthHandler *handler)
 }
 
 static void
-respond_authentication (LightDMGreeter *greeter, const gchar *text, LightDMPromptType type)
+respond_authentication (LightDMGreeter *greeter, const gchar *text G_GNUC_UNUSED, LightDMPromptType type)
 {
     gchar *respond = NULL;
 

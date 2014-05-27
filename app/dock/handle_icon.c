@@ -85,7 +85,7 @@ char* handle_icon(GdkPixbuf* icon, gboolean use_board)
 
 guchar* __data_base64 = NULL;
 size_t __data_size = 0;
-cairo_status_t write_func(void* store, unsigned char* data, unsigned int length)
+cairo_status_t write_func(void* store G_GNUC_UNUSED, unsigned char* data, unsigned int length)
 {
     __data_size = length + __data_size;
     __data_base64 = g_renew(guchar, __data_base64, __data_size);

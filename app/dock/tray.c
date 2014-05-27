@@ -180,7 +180,7 @@ void destroy_wrapper(GdkWindow* wrapper)
 }
 
 PRIVATE GdkFilterReturn
-monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, GdkWindow* wrapper)
+monitor_icon_event(GdkXEvent* xevent, GdkEvent* event G_GNUC_UNUSED, GdkWindow* wrapper)
 {
     XEvent* xev = xevent;
     if (xev->type == DestroyNotify) {
@@ -230,7 +230,7 @@ monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, GdkWindow* wrapper)
     return GDK_FILTER_CONTINUE;
 }
 
-void tray_icon_added (NaTrayManager *manager, Window child, GtkWidget* container)
+void tray_icon_added (NaTrayManager *manager G_GNUC_UNUSED, Window child, GtkWidget* container)
 {
     GdkWindow* wrapper = create_wrapper(gtk_widget_get_window(container), child);
     if (wrapper == NULL)
@@ -282,7 +282,7 @@ void tray_init(GtkWidget* container)
 }
 
 PRIVATE void
-draw_tray_icon(GdkWindow* wrapper, gpointer no_use, cairo_t* cr)
+draw_tray_icon(GdkWindow* wrapper, gpointer no_use G_GNUC_UNUSED, cairo_t* cr)
 {
     static cairo_surface_t* left = NULL;
     static cairo_surface_t* right = NULL;
@@ -318,7 +318,7 @@ draw_tray_icon(GdkWindow* wrapper, gpointer no_use, cairo_t* cr)
     }
 }
 
-gboolean draw_tray_icons(GtkWidget* w, cairo_t *cr)
+gboolean draw_tray_icons(GtkWidget* w G_GNUC_UNUSED, cairo_t *cr)
 {
     if (_icons != NULL) {
         g_hash_table_foreach(_icons, (GHFunc)draw_tray_icon, cr);

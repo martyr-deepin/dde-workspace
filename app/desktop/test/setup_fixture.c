@@ -20,7 +20,7 @@ void setup_fixture()
     // g_mkdir("test_files");
     // g_creat("test_files/test.c");
 
-    int dump = 0;
+    int dump G_GNUC_UNUSED = 0;
     dump = system("rm -rf /tmp/test_files/");
     dump = system("rm -rf /tmp/ahsouifghasdgoiasdghah_sdgfuioashfdiosasdiafohdsoig_ashgioasdhaoisdhoifhasoi_aiosdfhasdoifhasodiufh/");
     dump = system("rm -rf /tmp/_ahdsgioahgaosidg_agioasdhgo/");

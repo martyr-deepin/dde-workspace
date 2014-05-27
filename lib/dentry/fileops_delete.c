@@ -5,7 +5,7 @@
 #include "fileops_delete.h"
 
 static gboolean
-focus_cb (GtkWidget* widget, GtkDirectionType direction, gpointer user_data)
+focus_cb (GtkWidget* widget, GtkDirectionType direction G_GNUC_UNUSED, gpointer user_data G_GNUC_UNUSED)
 {
     GdkWindow* gdk_dialog = gtk_widget_get_window (widget);
     gdk_window_raise (gdk_dialog);
@@ -19,9 +19,9 @@ void fileops_confirm_delete (GFile* file_list[], guint num, gboolean show_dialog
 
     if (show_dialog)
     {
-	dialog = gtk_message_dialog_new (NULL, 
+	dialog = gtk_message_dialog_new (NULL,
 					 GTK_DIALOG_MODAL,
-					 GTK_MESSAGE_WARNING, 
+					 GTK_MESSAGE_WARNING,
 					 GTK_BUTTONS_CANCEL,
 					 NULL);
 	gtk_window_set_title (GTK_WINDOW (dialog), _("Delete File"));
@@ -31,7 +31,7 @@ void fileops_confirm_delete (GFile* file_list[], guint num, gboolean show_dialog
 		  "secondary-text", _("If you delete an item, it will be permanently lost"),
 		  NULL);
 
-	gtk_dialog_add_buttons (GTK_DIALOG (dialog), _("Delete"), 
+	gtk_dialog_add_buttons (GTK_DIALOG (dialog), _("Delete"),
 				GTK_RESPONSE_OK, NULL);
 	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
@@ -46,3 +46,4 @@ void fileops_confirm_delete (GFile* file_list[], guint num, gboolean show_dialog
     if (result == GTK_RESPONSE_OK)
          fileops_delete (file_list, num);
 }
+

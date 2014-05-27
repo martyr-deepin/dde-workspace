@@ -31,7 +31,7 @@ void workaround_gtk_theme()
     gtk_style_context_add_provider_for_screen(gdk_screen_get_default(), (GtkStyleProvider*)provider, GTK_STYLE_PROVIDER_PRIORITY_USER);
 }
 
-GtkWidget* create_web_container(bool normal, bool above)
+GtkWidget* create_web_container(bool normal, bool above G_GNUC_UNUSED)
 {
     GtkWidget* window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     workaround_gtk_theme();
@@ -61,7 +61,7 @@ GtkWidget* create_web_container(bool normal, bool above)
     return window;
 }
 
-gboolean erase_background(GtkWidget* widget, cairo_t *cr, gpointer data)
+gboolean erase_background(GtkWidget* widget G_GNUC_UNUSED, cairo_t *cr, gpointer data G_GNUC_UNUSED)
 {
     cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
     cairo_paint(cr);
@@ -91,9 +91,9 @@ static void setup_lang(WebKitWebView* web_view)
 
 static void add_ddesktop_class(WebKitWebView *web_view,
         WebKitWebFrame *frame,
-        gpointer context,
-        gpointer arg3,
-        gpointer user_data)
+        gpointer context G_GNUC_UNUSED,
+        gpointer arg3 G_GNUC_UNUSED,
+        gpointer user_data G_GNUC_UNUSED)
 {
 
     JSGlobalContextRef jsContext = webkit_web_frame_get_global_context(frame);
@@ -102,8 +102,8 @@ static void add_ddesktop_class(WebKitWebView *web_view,
 
 
 
-WebKitWebView* inspector_create(WebKitWebInspector *inspector,
-        WebKitWebView *web_view, gpointer user_data)
+WebKitWebView* inspector_create(WebKitWebInspector *inspector G_GNUC_UNUSED,
+        WebKitWebView *web_view G_GNUC_UNUSED, gpointer user_data G_GNUC_UNUSED)
 {
     GtkWidget* win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_widget_set_size_request(win, 800, 500);
@@ -125,7 +125,7 @@ void dwebview_show_inspector(GtkWidget* webview)
 }
 
 static bool webview_key_release_cb(GtkWidget* webview,
-        GdkEvent* event, gpointer data)
+        GdkEvent* event, gpointer data G_GNUC_UNUSED)
 {
     GdkEventKey *ev = (GdkEventKey*)event;
     switch (ev->keyval) {
@@ -220,7 +220,11 @@ GtkWidget* d_webview_new_with_uri(const char* uri)
 }
 
 static
-void reload_webview(GFileMonitor* m, GFile* f1, GFile* f2, GFileMonitorEvent et, WebKitWebView* webview)
+void reload_webview(GFileMonitor* m G_GNUC_UNUSED,
+                    GFile* f1 G_GNUC_UNUSED,
+                    GFile* f2 G_GNUC_UNUSED,
+                    GFileMonitorEvent et G_GNUC_UNUSED,
+                    WebKitWebView* webview)
 {
     webkit_web_view_reload(webview);
 }

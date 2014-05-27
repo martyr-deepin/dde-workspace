@@ -9,6 +9,7 @@ GFile* _get_gfile_from_gapp(GDesktopAppInfo* info)
 }
 
 
+G_GNUC_UNUSED
 static ArrayContainer _normalize_array_container(ArrayContainer pfs)
 {
     GPtrArray* array = g_ptr_array_new();
@@ -92,3 +93,4 @@ void test_mime_actions()
 
     tear_down_fixture();
 }
+

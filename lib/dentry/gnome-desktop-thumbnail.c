@@ -226,7 +226,7 @@ thumbnailer_try_exec (Thumbnailer *thumb)
 }
 
 static gpointer
-init_thumbnailers_dirs (gpointer data)
+init_thumbnailers_dirs (gpointer data G_GNUC_UNUSED)
 {
   const gchar * const *data_dirs;
   gchar **thumbs_dirs;
@@ -518,7 +518,7 @@ gnome_desktop_thumbnail_factory_is_disabled (GnomeDesktopThumbnailFactory *facto
 }
 
 static gboolean
-remove_thumbnailer_from_mime_type_map (gchar       *key,
+remove_thumbnailer_from_mime_type_map (gchar       *key G_GNUC_UNUSED,
                                        Thumbnailer *value,
                                        gchar       *path)
 {
@@ -594,9 +594,9 @@ remove_thumbnailer (GnomeDesktopThumbnailFactory *factory,
 }
 
 static void
-thumbnailers_directory_changed (GFileMonitor                 *monitor,
+thumbnailers_directory_changed (GFileMonitor                 *monitor G_GNUC_UNUSED,
                                 GFile                        *file,
-                                GFile                        *other_file,
+                                GFile                        *other_file G_GNUC_UNUSED,
                                 GFileMonitorEvent             event_type,
                                 GnomeDesktopThumbnailFactory *factory)
 {
@@ -686,8 +686,8 @@ gnome_desktop_thumbnail_factory_load_thumbnailers (GnomeDesktopThumbnailFactory 
 }
 
 static void
-external_thumbnailers_disabled_all_changed_cb (GSettings                    *settings,
-                                               const gchar                  *key,
+external_thumbnailers_disabled_all_changed_cb (GSettings                    *settings G_GNUC_UNUSED,
+                                               const gchar                  *key G_GNUC_UNUSED,
                                                GnomeDesktopThumbnailFactory *factory)
 {
   GnomeDesktopThumbnailFactoryPrivate *priv = factory->priv;
@@ -710,8 +710,8 @@ external_thumbnailers_disabled_all_changed_cb (GSettings                    *set
 }
 
 static void
-external_thumbnailers_disabled_changed_cb (GSettings                    *settings,
-                                           const gchar                  *key,
+external_thumbnailers_disabled_changed_cb (GSettings                    *settings G_GNUC_UNUSED,
+                                           const gchar                  *key G_GNUC_UNUSED,
                                            GnomeDesktopThumbnailFactory *factory)
 {
   GnomeDesktopThumbnailFactoryPrivate *priv = factory->priv;
@@ -874,7 +874,7 @@ gnome_desktop_thumbnail_factory_lookup (GnomeDesktopThumbnailFactory *factory,
  * Since: 2.2
  **/
 gboolean
-gnome_desktop_thumbnail_factory_has_valid_failed_thumbnail (GnomeDesktopThumbnailFactory *factory,
+gnome_desktop_thumbnail_factory_has_valid_failed_thumbnail (GnomeDesktopThumbnailFactory *factory G_GNUC_UNUSED,
 							    const char            *uri,
 							    time_t                 mtime)
 {
@@ -1262,7 +1262,7 @@ make_thumbnail_dirs (GnomeDesktopThumbnailFactory *factory)
 }
 
 static gboolean
-make_thumbnail_fail_dirs (GnomeDesktopThumbnailFactory *factory)
+make_thumbnail_fail_dirs (GnomeDesktopThumbnailFactory *factory G_GNUC_UNUSED)
 {
   char *thumbnail_dir;
   char *fail_dir;

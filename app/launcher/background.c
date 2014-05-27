@@ -153,7 +153,7 @@ void set_background(GdkWindow* win, GSettings* dde_bg_g_settings, double width,
 }
 
 
-void background_changed(GSettings* settings, char* key, gpointer user_data)
+void background_changed(GSettings* settings, char* key, gpointer user_data G_GNUC_UNUSED)
 {
     char* bg_path = g_settings_get_string(settings, key);
     if (!g_file_test(bg_path, G_FILE_TEST_EXISTS)) {

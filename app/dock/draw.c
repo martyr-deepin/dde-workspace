@@ -85,7 +85,7 @@ void dock_draw_board(JSValueRef canvas)
     canvas_custom_draw_did(cr, NULL);
 }
 
-void draw_app_icon(JSValueRef canvas, double id, double number)
+void draw_app_icon(JSValueRef canvas G_GNUC_UNUSED, double id G_GNUC_UNUSED, double number G_GNUC_UNUSED)
 {
 }
 

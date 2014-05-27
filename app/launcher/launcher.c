@@ -61,7 +61,7 @@ PRIVATE gboolean not_exit = FALSE;
 
 
 PRIVATE
-void _do_im_commit(GtkIMContext *context, gchar* str)
+void _do_im_commit(GtkIMContext *context G_GNUC_UNUSED, gchar* str)
 {
     JSObjectRef json = json_create();
     json_append_string(json, "Content", str);
@@ -70,7 +70,7 @@ void _do_im_commit(GtkIMContext *context, gchar* str)
 
 
 PRIVATE
-void _update_size(GdkScreen *screen, GtkWidget* conntainer)
+void _update_size(GdkScreen *screen G_GNUC_UNUSED, GtkWidget* conntainer G_GNUC_UNUSED)
 {
     gtk_widget_set_size_request(container, gdk_screen_width(), gdk_screen_height());
 }
@@ -234,7 +234,7 @@ void check_version()
 }
 
 
-gboolean _launcher_size_monitor(gpointer user_data)
+gboolean _launcher_size_monitor(gpointer user_data G_GNUC_UNUSED)
 {
     struct rusage usg;
     getrusage(RUSAGE_SELF, &usg);

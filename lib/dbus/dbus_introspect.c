@@ -64,7 +64,7 @@ guint key_equal(struct ObjCacheKey* a, struct ObjCacheKey* b)
     return ret;
 }
 
-void handle_signal_callback(gpointer no_used_key, struct SignalInfo* info, DBusMessage *msg)
+void handle_signal_callback(gpointer no_used_key G_GNUC_UNUSED, struct SignalInfo* info, DBusMessage *msg)
 {
     DBusMessageIter iter;
     dbus_message_iter_init(msg, &iter);
@@ -83,8 +83,9 @@ void handle_signal_callback(gpointer no_used_key, struct SignalInfo* info, DBusM
     g_free(params);
 }
 
-DBusHandlerResult watch_signal(DBusConnection* connection, DBusMessage *msg,
-        void *no_use)
+DBusHandlerResult watch_signal(DBusConnection* connection G_GNUC_UNUSED,
+                               DBusMessage *msg,
+                               void *no_use G_GNUC_UNUSED)
 {
     if (dbus_message_get_type(msg) != DBUS_MESSAGE_TYPE_SIGNAL)
         return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
@@ -150,7 +151,7 @@ SIGNAL_CALLBACK_ID add_signal_callback(JSContextRef ctx, struct DBusObjectInfo *
 
 static
 JSValueRef signal_connect(JSContextRef ctx,
-                            JSObjectRef function,
+                            JSObjectRef function G_GNUC_UNUSED,
                             JSObjectRef this,
                             size_t argumentCount,
                             const JSValueRef arguments[],
@@ -204,7 +205,7 @@ JSValueRef signal_connect(JSContextRef ctx,
 
 static
 JSValueRef signal_disconnect(JSContextRef ctx,
-                            JSObjectRef function,
+                            JSObjectRef function G_GNUC_UNUSED,
                             JSObjectRef this,
                             size_t argumentCount,
                             const JSValueRef arguments[],
@@ -236,10 +237,10 @@ JSValueRef signal_disconnect(JSContextRef ctx,
 }
 static
 JSValueRef signal_emit(JSContextRef ctx,
-                            JSObjectRef function,
-                            JSObjectRef this,
-                            size_t argumentCount,
-                            const JSValueRef arguments[],
+                            JSObjectRef function G_GNUC_UNUSED,
+                            JSObjectRef this G_GNUC_UNUSED,
+                            size_t argumentCount G_GNUC_UNUSED,
+                            const JSValueRef arguments[] G_GNUC_UNUSED,
                             JSValueRef *exception)
 {
     /*obj_info;*/
@@ -543,7 +544,7 @@ JSValueRef dynamic_function(JSContextRef ctx,
     return ret;
 }
 
-JSClassRef get_cache_class(struct DBusObjectInfo* obj_info)
+JSClassRef get_cache_class(struct DBusObjectInfo* obj_info G_GNUC_UNUSED)
 {
     //TODO: build cache;
     return NULL;

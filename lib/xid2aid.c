@@ -279,7 +279,7 @@ char* get_deepin_app_id_value(const char* app_id)
 }
 
 
-char* get_exe(const char* app_id, int pid)
+char* get_exe(const char* app_id G_GNUC_UNUSED, int pid)
 {
     char buf[8095] = {0};
     char* path = g_strdup_printf("/proc/%d/exe", pid);

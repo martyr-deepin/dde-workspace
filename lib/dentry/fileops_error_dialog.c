@@ -70,7 +70,7 @@ GtkWidget* fileops_error_conflict_dialog_new (GtkWindow* parent, GFile* src,
     gtk_container_set_border_width (GTK_CONTAINER (hbox), 6);
 
     /* Setup the dialog image */
-    widget = gtk_image_new_from_stock (GTK_STOCK_DIALOG_WARNING,
+    widget = gtk_image_new_from_icon_name ("gtk-dialog-warning",
 				       GTK_ICON_SIZE_DIALOG);
     gtk_box_pack_start (GTK_BOX (hbox), widget, FALSE, FALSE, 0);
     gtk_misc_set_alignment (GTK_MISC (widget), 0.5, 0.0);
@@ -116,7 +116,7 @@ GtkWidget* fileops_error_conflict_dialog_new (GtkWindow* parent, GFile* src,
     //expander reset button
     widget = gtk_button_new_with_label (_("Reset"));
     gtk_button_set_image (GTK_BUTTON (widget),
-			 gtk_image_new_from_stock (GTK_STOCK_UNDO, GTK_ICON_SIZE_MENU));
+			 gtk_image_new_from_icon_name ("edit-undo", GTK_ICON_SIZE_MENU));
     gtk_box_pack_start (GTK_BOX (hbox), widget, FALSE, FALSE, 6);
     g_signal_connect (widget, "clicked", G_CALLBACK (_reset_button_clicked_cb), dialog);
 
@@ -129,7 +129,7 @@ GtkWidget* fileops_error_conflict_dialog_new (GtkWindow* parent, GFile* src,
     details.checkbox = widget;
 
     //buttons
-    gtk_dialog_add_buttons (GTK_DIALOG(dialog), GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+    gtk_dialog_add_buttons (GTK_DIALOG(dialog), "_Cancel", GTK_RESPONSE_CANCEL,
 			    _("_Skip"), CONFLICT_RESPONSE_SKIP,	NULL);
 
     //7. rename
@@ -156,7 +156,7 @@ GtkWidget* fileops_error_conflict_dialog_new (GtkWindow* parent, GFile* src,
 }
 
 static void
-_setup_dialog_labels (GFile* src, GFile* dest, GtkWidget* dialog)
+_setup_dialog_labels (GFile* src, GFile* dest, GtkWidget* dialog G_GNUC_UNUSED)
 {
     //details.handle = NULL;
     g_debug ("__setup_dialog_labels");
@@ -385,7 +385,7 @@ _setup_dialog_labels (GFile* src, GFile* dest, GtkWidget* dialog)
 	gtk_button_set_label (GTK_BUTTON (details.replace_button), _("Merge"));
 }
 static void
-_expander_activated_cb (GtkExpander *w, GtkWidget *dialog)
+_expander_activated_cb (GtkExpander *w, GtkWidget *dialog G_GNUC_UNUSED)
 {
     int start_pos, end_pos;
 
@@ -432,7 +432,7 @@ _entry_text_changed_cb (GtkEditable *entry, GtkWidget *dialog)
     }
 }
 static void
-_reset_button_clicked_cb (GtkButton *w, GtkWidget*dialog)
+_reset_button_clicked_cb (GtkButton *w G_GNUC_UNUSED, GtkWidget*dialog G_GNUC_UNUSED)
 {
     int start_pos, end_pos;
 
@@ -444,7 +444,7 @@ _reset_button_clicked_cb (GtkButton *w, GtkWidget*dialog)
 				start_pos, end_pos);
 }
 static void
-_checkbox_toggled_cb (GtkToggleButton *t, GtkWidget *dialog)
+_checkbox_toggled_cb (GtkToggleButton *t, GtkWidget *dialog G_GNUC_UNUSED)
 {
     FileOpsResponse* response = details.response;
     response->apply_to_all = gtk_toggle_button_get_active (t);
@@ -531,3 +531,4 @@ eel_filename_get_rename_region (const char *filename,
 
     g_free (filename_without_extension);
 }
+

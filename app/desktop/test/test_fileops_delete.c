@@ -6,7 +6,7 @@ void test_fileops_delete()
     extern void fileops_confirm_delete (GFile* file_list[], guint num, gboolean show_dialog);
     Test({
 
-         int dump = system("touch /tmp/test_files/skype.desktop");
+         int dump G_GNUC_UNUSED = system("touch /tmp/test_files/skype.desktop");
 
          g_message("fileops_confirm_delete start");
          GFile* src2 = g_file_new_for_uri("file:///tmp/test_files/skype.desktop");

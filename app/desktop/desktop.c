@@ -257,7 +257,7 @@ PRIVATE gboolean update_workarea_size(GSettings* dock_gsettings)
     return FALSE;
 }
 
-PRIVATE void dock_config_changed(GSettings* settings, char* key, gpointer usr_data)
+PRIVATE void dock_config_changed(GSettings* settings, char* key, gpointer usr_data G_GNUC_UNUSED)
 {
     if (g_strcmp0 (key, DOCK_HIDE_MODE))
         return;
@@ -267,7 +267,7 @@ PRIVATE void dock_config_changed(GSettings* settings, char* key, gpointer usr_da
 }
 
 
-PRIVATE void desktop_config_changed(GSettings* settings, char* key, gpointer usr_data)
+PRIVATE void desktop_config_changed(GSettings* settings G_GNUC_UNUSED, char* key G_GNUC_UNUSED, gpointer usr_data G_GNUC_UNUSED)
 {
     js_post_signal ("desktop_config_changed");
 }
@@ -293,7 +293,7 @@ void _change_to_json(gpointer key, gpointer value, gpointer user_data)
 }
 
 
-PRIVATE void desktop_plugins_changed(GSettings* settings, char* key, gpointer user_data)
+PRIVATE void desktop_plugins_changed(GSettings* settings, char* key G_GNUC_UNUSED, gpointer user_data G_GNUC_UNUSED)
 {
     extern gchar * get_schema_id(GSettings* gsettings);
     extern void _init_state(gpointer key, gpointer value, gpointer user_data);
@@ -379,7 +379,7 @@ gboolean desktop_file_exist_in_desktop(char* name)
     GDir* dir = g_dir_open(DESKTOP_DIR(), 0, NULL);
     gboolean result = false;
     const char* file_name = NULL;
-    for (int i=0; NULL != (file_name = g_dir_read_name(dir));) {
+    while (NULL != (file_name = g_dir_read_name(dir))) {
         if(desktop_file_filter(file_name))
             continue;
         if(0 == g_strcmp0(name,file_name))
@@ -411,7 +411,7 @@ void screen_change_size(GdkScreen *screen, GdkWindow *w)
     }
 }
 
-gboolean prevent_exit(GtkWidget* w, GdkEvent* e)
+gboolean prevent_exit(GtkWidget* w G_GNUC_UNUSED, GdkEvent* e G_GNUC_UNUSED)
 {
     return true;
 }
@@ -438,8 +438,9 @@ void desktop_focus_changed(gboolean focused)
         send_lost_focus();
 }
 
+G_GNUC_UNUSED
 PRIVATE
-void _do_im_commit(GtkIMContext *context, gchar* str)
+void _do_im_commit(GtkIMContext *context G_GNUC_UNUSED, gchar* str)
 {
     JSObjectRef json = json_create();
     json_append_string(json, "Content", str);
@@ -562,7 +563,7 @@ int main(int argc, char* argv[])
 }
 
 
-PRIVATE GdkFilterReturn watch_workarea(GdkXEvent *gxevent, GdkEvent* event, gpointer user_data)
+PRIVATE GdkFilterReturn watch_workarea(GdkXEvent *gxevent, GdkEvent* event G_GNUC_UNUSED, gpointer user_data)
 {
     XPropertyEvent *xevt = (XPropertyEvent*)gxevent;
 

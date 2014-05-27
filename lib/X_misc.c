@@ -235,7 +235,7 @@ cairo_region_t* get_window_input_region(Display* dpy, Window w)
 }
 
 
-void get_atom_value_for_index(gpointer data, gulong n_item, gpointer res, gulong index)
+void get_atom_value_for_index(gpointer data, gulong n_item G_GNUC_UNUSED, gpointer res, gulong index)
 {
     *(gulong*)res = X_FETCH_32(data, index);
 }

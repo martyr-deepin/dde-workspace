@@ -78,7 +78,7 @@ gboolean is_plugin(char const* path)
     return _is_plugin;
 }
 
-void _init_state(gpointer key, gpointer value, gpointer user_data)
+void _init_state(gpointer key, gpointer value G_GNUC_UNUSED, gpointer user_data)
 {
     g_hash_table_replace((GHashTable*)user_data, g_strdup(key), GINT_TO_POINTER(DISABLED_PLUGIN));
 }
@@ -194,7 +194,7 @@ JSValueRef dcore_get_plugins(const char* app_name)
 }
 
 
-void create_strv(gpointer key, gpointer value, gpointer user_data)
+void create_strv(gpointer key G_GNUC_UNUSED, gpointer value, gpointer user_data)
 {
     char* pos = strchr((char*)value, ':');
     char* plugin_name = g_strdup(pos + 1);
@@ -237,7 +237,7 @@ void dcore_enable_plugin(char const* id, gboolean value)
 }
 
 
-void trans_to_js_array(char** strv, gsize length, JSObjectRef json)
+void trans_to_js_array(char** strv, gsize length G_GNUC_UNUSED, JSObjectRef json)
 {
     JSContextRef ctx = get_global_context();
     for (int i = 0; strv[i] != NULL; ++i)
