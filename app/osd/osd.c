@@ -163,7 +163,7 @@ int main (int argc, char **argv)
     gtk_widget_realize (webview);
 
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
-    gdk_window_set_opacity (gdkwindow, 0.7);
+    gdk_window_set_opacity (gdkwindow, 0.5);
     gdk_window_set_keep_above (gdkwindow, TRUE);
     osd_set_focus(FALSE);
 
