@@ -495,6 +495,12 @@ gboolean primary_changed_handler(gpointer data)
 }
 
 
+guint64 dock_xid()
+{
+    return (guint64)GDK_WINDOW_XID(DOCK_GDK_WINDOW());
+}
+
+
 int main(int argc, char* argv[])
 {
     if (is_application_running(DOCK_ID_NAME)) {
