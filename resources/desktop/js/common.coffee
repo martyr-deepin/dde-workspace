@@ -78,7 +78,7 @@ D_ICON_SIZE_SMALL  = 16
 D_ICON_SIZE_NORMAL = 48
 D_ICON_SIZE_BIG    = 96
 APP_DEFAULT_ICON = "application-default-icon"
-FILE_DEFAULT_ICON = "unknown"
+FILE_DEFAULT_ICON = "file-default-icon"
 
 # icon name for file attributes
 _FAI_READ_ONLY_  = "emblem-readonly"
