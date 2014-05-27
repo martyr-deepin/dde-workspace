@@ -209,7 +209,7 @@ activate_file (GFile* file, const char* content_type,
             g_free (detail);
             gtk_dialog_add_button (GTK_DIALOG(dialog), _("Run in _Terminal"), RESPONSE_RUN_IN_TERMINAL);
             gtk_dialog_add_button (GTK_DIALOG(dialog), _("_Display"), RESPONSE_DISPLAY);
-            gtk_dialog_add_button (GTK_DIALOG(dialog), "gtk-cancel", GTK_RESPONSE_CANCEL);
+            gtk_dialog_add_button (GTK_DIALOG(dialog), "_Cancel", GTK_RESPONSE_CANCEL);
             gtk_dialog_add_button (GTK_DIALOG(dialog), _("_Run"), RESPONSE_RUN);
             gtk_dialog_set_default_response (GTK_DIALOG(dialog), GTK_RESPONSE_CANCEL);
 

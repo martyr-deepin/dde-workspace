@@ -116,7 +116,7 @@ GtkWidget* fileops_error_conflict_dialog_new (GtkWindow* parent, GFile* src,
     //expander reset button
     widget = gtk_button_new_with_label (_("Reset"));
     gtk_button_set_image (GTK_BUTTON (widget),
-			 gtk_image_new_from_icon_name ("gtk-undo", GTK_ICON_SIZE_MENU));
+			 gtk_image_new_from_icon_name ("edit-undo", GTK_ICON_SIZE_MENU));
     gtk_box_pack_start (GTK_BOX (hbox), widget, FALSE, FALSE, 6);
     g_signal_connect (widget, "clicked", G_CALLBACK (_reset_button_clicked_cb), dialog);
 
@@ -129,7 +129,7 @@ GtkWidget* fileops_error_conflict_dialog_new (GtkWindow* parent, GFile* src,
     details.checkbox = widget;
 
     //buttons
-    gtk_dialog_add_buttons (GTK_DIALOG(dialog), "gtk-cancel", GTK_RESPONSE_CANCEL,
+    gtk_dialog_add_buttons (GTK_DIALOG(dialog), "_Cancel", GTK_RESPONSE_CANCEL,
 			    _("_Skip"), CONFLICT_RESPONSE_SKIP,	NULL);
 
     //7. rename
