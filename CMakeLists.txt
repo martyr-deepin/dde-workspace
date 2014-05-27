@@ -43,9 +43,9 @@ macro(GEN_JS_FILE NAME)
         COMMAND make -C ${_DIR}
         DEPENDS ${_DIR}/makefile
     )
-    # execute_process(
-    #     COMMAND make -C ${_DIR}
-    # )
+    execute_process(
+        COMMAND make -C ${_DIR}
+    )
 endmacro()
 
 if (DEVELOP)
