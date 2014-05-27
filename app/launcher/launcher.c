@@ -520,6 +520,9 @@ int main(int argc, char* argv[])
     container = create_web_container(FALSE, TRUE);
     gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
     gtk_window_set_wmclass(GTK_WINDOW(container), "dde-launcher", "DDELauncher");
+#ifdef NDEBUG
+    gtk_window_set_title(GTK_WINDOW(container), "launcher");
+#endif
     set_default_theme("Deepin");
     set_desktop_env_name("Deepin");
 
