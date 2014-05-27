@@ -29,6 +29,7 @@ void guide_disable_dock_region()
 {
     //TODO: find the dock XID
     Window dock = 0x2a00004;
+    return;
 
     Display* dpy = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
     cairo_region_t* dock_region = get_window_input_region(dpy, dock);
