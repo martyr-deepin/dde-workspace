@@ -53,6 +53,8 @@
 #define HIDE_MODE_AUTOHIDDEN 3
 #define DESKTOP_CONFIG "desktop/config.ini"
 
+#define APP_DEFAULT_ICON "application-default-icon"
+
 PRIVATE
 GSettings* desktop_gsettings = NULL;
 GSettings* dock_gsettings = NULL;
@@ -124,9 +126,8 @@ char* desktop_get_rich_dir_icon(GFile* _dir)
             char* icon_path = dentry_get_icon_path(entry);
             if (icon_path == NULL)
             {
-                g_warning("richdir dentry %d get_icon is null use invalid-dock_app.png instead",i);
-                const char * invalid_app = "invalid-dock_app";
-                icon_path = dcore_get_theme_icon(invalid_app, 48);
+                g_warning("richdir dentry %d get_icon is null use %s.png instead",i,APP_DEFAULT_ICON);
+                icon_path = dcore_get_theme_icon(APP_DEFAULT_ICON, 48);
                 g_debug("icon_path %d :---%s---",i,icon_path);
             }
             icons[i++] = icon_path;

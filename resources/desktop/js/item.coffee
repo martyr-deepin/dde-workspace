@@ -127,13 +127,14 @@ class Item extends Widget
 
     set_icon : (src = null) =>
         if src == null
+            # TEST_GFILE
             if DCore.DEntry.can_thumbnail(@_entry)
                 if (icon = DCore.DEntry.get_thumbnail(@_entry)) == null
                     #1. first use the get_icon to show
                     if (icon = DCore.DEntry.get_icon(@_entry)) != null
                         @item_icon.className = ""
                     else
-                        icon = DCore.get_theme_icon("invalid-dock_app", D_ICON_SIZE_NORMAL)
+                        icon = DCore.get_theme_icon(APP_DEFAULT_ICON, D_ICON_SIZE_NORMAL)
                         @item_icon.className = ""
                     #2. then set the 2s timeout to check the get_thumbnail
                     that = @
@@ -149,10 +150,12 @@ class Item extends Widget
                 else
                     @item_icon.className = "previewshadow"
 
+            # TEST_GAPP
             else if (icon = DCore.DEntry.get_icon(@_entry)) != null
                 @item_icon.className = ""
+            # TEST_GAPP icon is not find
             else
-                icon = DCore.get_theme_icon("invalid-dock_app", D_ICON_SIZE_NORMAL)
+                icon = DCore.get_theme_icon(FILE_DEFAULT_ICON, D_ICON_SIZE_NORMAL)
                 @item_icon.className = ""
         else
             icon = src

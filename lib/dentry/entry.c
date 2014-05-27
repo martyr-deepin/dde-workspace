@@ -65,6 +65,7 @@ static void _commandline_exec(const char *commandline, GList *list);
 #define FILES_DECOMPRESSIBLE    2
 #define FILES_COMPRESSIBLE_ALL  3
 
+#define APP_DEFAULT_ICON "application-default-icon"
 
 JS_EXPORT_API
 Entry* dentry_get_desktop()
@@ -300,9 +301,8 @@ char* dentry_get_icon_path(Entry* e)
             ret = icon_name_to_path (icon_str, 48);
             if (ret == NULL)
             {
-                g_warning("richdir dentry  get_icon is null use invalid-dock_app.png instead");
-                const char * invalid_app = "invalid-dock_app";
-                ret = dcore_get_theme_icon(invalid_app, 48);
+                g_warning("icon is null use %s.png instead",APP_DEFAULT_ICON);
+                ret = dcore_get_theme_icon(APP_DEFAULT_ICON, 48);
             }
 
             g_free(icon_str);
@@ -320,6 +320,7 @@ gboolean dentry_can_thumbnail(Entry* e)
     TEST_GFILE(e, f)
         return gfile_can_thumbnail (f);
     TEST_GAPP(e, app)
+        return FALSE;
     TEST_END
         return FALSE;
 }
