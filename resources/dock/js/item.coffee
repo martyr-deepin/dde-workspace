@@ -87,6 +87,7 @@ class Item extends Widget
     on_click:(e)=>
         e.preventDefault()
         e.stopPropagation()
+        Preview_close_now()
 
     on_dragend:(e)=>
         console.log('dragend')

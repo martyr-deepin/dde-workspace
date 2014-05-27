@@ -4,10 +4,25 @@ DCore.signal_connect("close_window", (info)->)
 DCore.signal_connect("active_window", (info)->)
 DCore.signal_connect("message_notify", (info)->)
 
-DCore.signal_connect("embed_window_configure_changed", (info)->console.log(info))
-DCore.signal_connect("embed_window_destroyed", (info)->console.log(info))
-DCore.signal_connect("embed_window_enter", (info)->console.log(info))
-DCore.signal_connect("embed_window_leave", (info)->console.log(info))
+DCore.signal_connect("embed_window_configure_changed", (info)->
+    console.log("embed_window_configure_changed")
+    console.log(info)
+)
+DCore.signal_connect("embed_window_destroyed", (info)->
+    console.log("embed_window_destroyed")
+    console.log(info)
+)
+DCore.signal_connect("embed_window_enter", (info)->
+    console.log("embed_window_enter")
+    __clear_timeout()
+    clearTimeout(tooltip_hide_id)
+    clearTimeout(hide_id)
+    console.log(info)
+)
+DCore.signal_connect("embed_window_leave", (info)->
+    console.log("embed_window_leave")
+    console.log(info)
+)
 
 _b.addEventListener("contextmenu", (e)->
     e.preventDefault()

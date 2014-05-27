@@ -289,6 +289,7 @@ class PWContainer extends Widget
         @_update(allocation, cb)
 
     on_mouseover: (e)=>
+        console.log("preview window mouseover")
         __clear_timeout()
         clearTimeout(tooltip_hide_id)
         clearTimeout(hide_id)
