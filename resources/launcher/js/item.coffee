@@ -216,7 +216,7 @@ class Item extends Widget
             # dt.setDragImage(@img, ITEM_IMG_SIZE/2 + 3, ITEM_IMG_SIZE/2)
 
         dt.setData("text/uri-list", "file://#{@path}")
-        data = "{\"id\":\"#{@id}\", \"path\": \"#{@path}\", \"icon\":\"#{@icon}\"}"
+        data = "{\"id\":\"#{@id}\", \"name\": \"#{@name}\", \"path\": \"#{@path}\", \"icon\":\"#{@icon}\"}"
         dt.setData("uninstall", data)
         if switcher.isFavor()
             return
@@ -333,11 +333,12 @@ class Item extends Widget
 
             when 5 then @toggle_autostart()
             when 6
-                dialog = get_dbus('session', "com.deepin.dialog.uninstall", "Show")
+                dialog = get_dbus('session', "com.deepin.dialog", "ShowUninstall")
                 dialog.connect("ActionInvoked", @uninstallHandler)
                 clearTimeout(forceShowTimer)
                 DCore.Launcher.force_show(true)
-                dialog.Show_sync(@icon, _("The operation may also remove other applications that depends on the item. Are you sure you want to uninstall the item?"), ["1", _("no"), "2", _("yes")])
+                # _("The operation may also remove other applications that depends on the item. Are you sure you want to uninstall the item?")
+                dialog.ShowUninstall(@icon, _("Are you sure to remove") + " \"#{@name}\"", _("All dependences will be removed"), ["1", _("no"), "2", _("yes")])
                 isNotForceShow = false
             # when 100 then DCore.DEntry.report_bad_icon(@path)  # internal
         if isNotForceShow

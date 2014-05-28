@@ -90,10 +90,11 @@ class Trash extends PostfixedItem
             console.log(data)
             @data = JSON.parse(data)
             console.log("TODO: uninstall #{data.id}")
-            dialog = get_dbus('session', "com.deepin.dialog.uninstall", "Show")
+            dialog = get_dbus('session', "com.deepin.dialog", "ShowUninstall")
             dialog.connect("ActionInvoked", @uninstallHandler)
-            dialog.Show_sync(@data.icon,
-            _("The operation may also remove other applications that depends on the item. Are you sure you want to uninstall the item?"),
+            dialog.ShowUninstall(@data.icon,
+                _("Are you sure to remove") + " \"#{@data.name}\"",
+                _("All dependences will be removed"),
                 ["1", _("no"), "2", _("yes")])
             return
 
