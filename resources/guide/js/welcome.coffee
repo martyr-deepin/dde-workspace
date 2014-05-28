@@ -1,8 +1,9 @@
-#Copyright (c) 2011 ~ 2012 Deepin, Inc.
-#              2011 ~ 2012 yilang
+#Copyright (c) 2011 ~ 2014 Deepin, Inc.
+#              2011 ~ 2014 bluth
 #
-#Author:      LongWei <yilang2007lw@gmail.com>
-#Maintainer:  LongWei <yilang2007lw@gmail.com>
+#encoding: utf-8
+#Author:      bluth <yuanchenglu@linuxdeepin.com>
+#Maintainer:  bluth <yuanchenglu@linuxdeepin.com>
 #
 #This program is free software; you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
@@ -20,6 +21,8 @@
 class Welcome extends Widget
     constructor:(@id)->
         super
+        
+        echo "welcome #{@id}"
         
         inject_css(@element,"css/welcome.css")
         

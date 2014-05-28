@@ -13,8 +13,11 @@ class Guide
         guide = new PageContainer("guide")
         document.body.appendChild(guide.element)
 
-        welcome = new Welcome("welcome")
-        guide.add_page(welcome)
+        #welcome_page = new Welcome("welcome_page")
+        #guide.add_page(welcome_page)
+
+        start_page = new Start("start_page")
+        guide.add_page(start_page)
 
 
 
