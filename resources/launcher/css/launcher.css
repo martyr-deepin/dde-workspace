@@ -152,6 +152,11 @@ body {
   padding: 0 110px;
 }
 
+#favor{
+  height: auto;
+  -webkit-mask-image: -webkit-linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,1) 5%, rgba(0,0,0,1) 90%, rgba(0,0,0,0.3), rgba(0,0,0,0));
+}
+
 #grid {
   padding-left: 155px;
   display:none;
