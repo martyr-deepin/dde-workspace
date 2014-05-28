@@ -217,10 +217,12 @@ sortNumber = (a , b) ->
 array_sort_min2max = (arr) ->
     arr.sort(sortNumber)
 
+# demo:inject_js(@element,"js/index.js")
 inject_js = (src) ->
     js_element = create_element("script", null, document.body)
     js_element.src = src
 
+# demo:inject_css(@element,"css/index.css")
 inject_css = (el,src)->
     css_element = create_element('link', null, el)
     css_element.rel = "stylesheet"
