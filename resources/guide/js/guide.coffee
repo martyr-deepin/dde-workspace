@@ -1,13 +1,21 @@
+ 
 
-class Guide extends Widget
+
+class Guide
 
     constructor:->
-        super
         echo "Guide"
-        #document.body.style.height = window.innerHeight
-        #document.body.style.width = window.innerWidth
-        echo window.innerHeight + "," + window.innerWidth
-        document.body.appendChild(@element)
+        
+        document.body.style.height = screen.height
+        document.body.style.width = screen.width
+        echo screen.width + "*" + screen.height
+
+        guide = new PageContainer("guide")
+        document.body.appendChild(guide.element)
+
+        welcome = new Welcome("welcome")
+        guide.add_page(welcome)
+
 
 
 

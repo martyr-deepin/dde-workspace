@@ -1,0 +1,34 @@
+
+.logo{
+    display:block;
+    position:absolute;
+}
+
+.logo_img{
+    width:260px;
+    height:70px;
+    /*width:208px;*/
+    /*height:56px;*/
+}
+
+.Welcome{
+    width:100%;
+    height:100%;
+
+    text-align:center;
+    color:#fff;
+    text-shadow:0 1px 1px rgba(0,0,0,0.7);
+    font-weight:normal; 
+}
+
+
+.welcome_text{
+    margin-top:1.5em;
+    font-size:2.0em;
+}
+
+
+.readying{
+    position:absolute;
+    font-size:1.6em;
+}

@@ -17,20 +17,24 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-class Version extends Widget
-    constructor:->
+class Welcome extends Widget
+    constructor:(@id)->
         super
-        @element.style.display = "-webkit-box"
         
-        img_src_before = "img/"
-        logo_img = create_img("version_img","",@element)
-        logo_img.src = "#{img_src_before}/deepin_logo_w.png"
+        inject_css(@element,"css/welcome.css")
         
-        #ver = create_element("div","ver",@element)
-        #ver.style.display = "block"
-        #ver.style.marginLeft = "0.4em"
-        #ver.style.top = 0
-        #ver.textContent = "TM"
-        #ver.style.fontFamily = "Arial"
-        #ver.style.fontSize = "1em"
-        #ver.style.color = "rgba(255,255,255,0.9)"
+        @logo = create_element("div","logo",@element)
+        @logo_img = create_img("logo_img","",@logo)
+        @img_src_before = "img/"
+        @logo_img.src = "#{@img_src_before}/deepin_logo_w.png"
+        @welcome_text = create_element("div","welcome_text",@logo)
+        @welcome_text.textContent = _("Welcome to use Deepin OS")
+
+        @readying = create_element("div","readying",@element)
+        @readying.innerText = _("Preparing for use...")
+    
+        set_pos_center(@logo,0.7)
+        @readying.style.width = "260px"
+        @readying.style.left = @logo.style.left
+        @readying.style.bottom = "4.5em"
+
