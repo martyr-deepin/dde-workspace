@@ -77,20 +77,29 @@ class LauncherLaunch extends Page
         echo "LauncherLaunch : #{@id}"
         
         inject_css(@element,"css/launcher.css")
-        @img_src = "img/"
+        @img_src = "img"
         @dock = new Dock()
         
         @message = _("Move the mouse to Left up corner , or you can click the launcher icon to launch \" Application Launcher\"")
         @show_message(@message)
         
-        @leftup = create_element("div","leftup",@element)
-        @corner_leftup = create_img("corner_leftup","#{@img_src}/corner_leftup.png",@leftup)
-        @pointer_leftup = create_img("pointer_leftup","#{@img_src}/pointer_leftup.png",@leftup)
 
 
-        @launcher_icon = create_element("div","launcher_icon",@element)
-        @pointer_rightdown = create_img("pointer_rightdown","#{@img_src}/pointer_rightdown.png",@launcher_icon)
-        @circle = create_img("circle","#{@img_src}/circle.png",@launcher_icon)
+        @corner_leftup = new Pointer("corner_leftup",@element)
+        @corner_leftup.create_pointer(AREA_TYPE.corner,POS_TYPE.leftup)
+        @corner_leftup.set_area_pos(0,0,"fixed",POS_TYPE.leftup)
+        
+
+
+        @launcher_circle = new Pointer("launcher_circle",@element)
+        @launcher_circle.create_pointer(AREA_TYPE.circle,POS_TYPE.rightdown)
         @launcher_pos = @dock.get_launchericon_pos()
-        set_pos(@circle,@launcher_pos.x0,@launcher_pos.y0)
+        @launcher_circle_x = @launcher_pos.x0 - @launcher_circle.pointer_width
+        @launcher_circle_y = @launcher_pos.x0 - @launcher_circle.pointer_width
+        @launcher_circle.set_area_pos(@launcher_circle_x,@launcher_circle_y,"fixed",POS_TYPE.leftup)
+
+
+
+
+
 

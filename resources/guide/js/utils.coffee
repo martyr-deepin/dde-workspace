@@ -1,23 +1,32 @@
 
-set_pos = (el,x,y,type = "lefttop",position_type = "fixed")->
+POS_TYPE =
+    leftup:"leftup"
+    leftdown:"leftdown"
+    rightup:"rightup"
+    rightdown:"rightdown"
+    down:"down"
+    up:"up"
+
+AREA_TYPE =
+    circle:"circle"
+    circle_white:"circle_white"
+    corner:"corner"
+
+set_pos = (el,x,y,position_type = "fixed",type = POS_TYPE.leftup)->
     el.style.position = position_type
     switch type
-        when "lefttop"
+        when POS_TYPE.leftup
             el.style.left = x
             el.style.top = y
-        
-        when "leftbottom"
+        when POS_TYPE.leftdown
             el.style.left = x
             el.style.bottom = y
-
-        when "righttop"
+        when POS_TYPE.rightup
             el.style.right = x
             el.style.top = y
-        
-        when "rightbottom"
+        when POS_TYPE.rightdown
             el.style.right = x
             el.style.bottom = y
-
         else
             el.style.left = x
             el.style.top = y
