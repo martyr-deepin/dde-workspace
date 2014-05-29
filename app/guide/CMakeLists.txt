@@ -1,6 +1,6 @@
 SET(NAME "guide")
 
-GEN_JSC_SOURCE(JSC_GEN "jsc")
+GEN_JSC_SOURCE2(JSC_GEN "jsc" "guide" "guide.cfg" "dbus.cfg")
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS})
 

@@ -1,24 +1,34 @@
 #include <gtk/gtk.h>
 #include <X11/extensions/shape.h>
 #include "X_misc.h"
+#include "jsextension.h"
+
 
 GtkWidget* get_container();
-
+JS_EXPORT_API
+void guide_quit()
+{
+    gtk_main_quit();
+}
+JS_EXPORT_API
 void guide_disable_right_click()
 {
     Display* dpy = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
     XGrabButton(dpy, Button3, AnyModifier, DefaultRootWindow(dpy), True, ButtonPressMask | ButtonReleaseMask, GrabModeAsync, GrabModeAsync, None, None);
 }
+JS_EXPORT_API
 void guide_enable_right_click()
 {
     Display* dpy = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
     XUngrabButton(dpy, Button3, AnyModifier, DefaultRootWindow(dpy));
 }
+JS_EXPORT_API
 void guide_disable_keyboard()
 {
     Display* dpy = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
     XGrabKeyboard(dpy, DefaultRootWindow(dpy), True, GrabModeAsync, GrabModeAsync, CurrentTime);
 }
+JS_EXPORT_API
 void guide_enable_keyboard()
 {
     Display* dpy = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
@@ -78,6 +88,7 @@ Window get_dock_xid()
     return xid;
 }
 
+JS_EXPORT_API
 void guide_disable_dock_region()
 {
     //TODO: find the dock XID
@@ -92,6 +103,7 @@ void guide_disable_dock_region()
     cairo_region_destroy(dock_region);
 }
 
+JS_EXPORT_API
 void guide_enable_dock_region()
 {
     gdk_window_input_shape_combine_region(gtk_widget_get_window(get_container()), NULL, 0, 0);
