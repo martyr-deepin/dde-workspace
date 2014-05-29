@@ -13,8 +13,7 @@
 }
 
 .guide_choose{
-    /*position:absolute;*/
-    width:36.6em;
+    width:60em;
     height:30em;
     display:-webkit-box;
     -webkit-box-pack:center;
@@ -25,8 +24,7 @@
 
 .start_div{
     position:relative;
-    
-    margin-top:20em;
+    margin-top:22em;
     display:-webkit-box;
     height:6.4em;
 }
@@ -52,5 +50,4 @@
     bottom:3em;
     font-size:1.7em;
     text-shadow: 0 0.2em 0.2em rgba(0,0,0,0.5);
-
 }

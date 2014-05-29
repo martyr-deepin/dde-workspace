@@ -244,5 +244,3 @@ class Start extends Widget
         
         @older = create_element("div","older",@element)
         @older.innerText = _("I am older,exit directly")
-
-        #set_pos_center(@guide_choose,0.6)
