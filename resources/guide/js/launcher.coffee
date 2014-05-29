@@ -21,7 +21,7 @@
 
 class Dock
     DOCK_REGION =
-        name:"com.deein.daemon.Dock"
+        name:"com.deepin.daemon.Dock"
         path:"/dde/dock/DockRegion"
         interface:"dde.dock.DockRegion"
     
@@ -32,16 +32,42 @@ class Dock
                 DOCK_REGION.path,
                 DOCK_REGION.interface
             )
-            @dock_region = @dock_region_dbus.GetDockRegion_sycn()
+            @dock_region = @dock_region_dbus.GetDockRegion_sync()
             echo @dock_region
         catch e
-            echo "DOCK_REGION.path: dbus error:#{e}"
+            echo "#{DOCK_REGION}: dbus error:#{e}"
 
-    get_icon_pos: (index) ->
+    get_icon_pos: (icon_index) ->
         @x0 = @dock_region[0]
-
+        @y0 = @dock_region[1]
+        @x1 = @dock_region[2]
+        @y1 = @dock_region[3]
+        
+        DOCK_PADDING = 24
+        ICON_MARGIN_H = 6
+        ICON_MARGIN_V_TOP = 3
+        ICON_MARGIN_V_BOTTOM = 30
+        ICON_SIZE = 48
+        
+        pos =
+            x0:0
+            y0:0
+            x1:0
+            y1:0
+        pos.x0 = @x0 + DOCK_PADDING + ICON_MARGIN_H * icon_index
+        pos.y0 = @y0
+        pos.x1 = pos.x0 + ICON_SIZE
+        pos.y1 = pos.y0 + ICON_SIZE
+        
+        return pos
+    
     get_launchericon_pos: ->
+        pos = @get_icon_pos(1)
+        return pos
 
+    get_dssicon_pos: ->
+        pos = @get_icon_pos(8)
+        return pos
 
 
 class LauncherLaunch extends Page
@@ -52,6 +78,7 @@ class LauncherLaunch extends Page
         
         inject_css(@element,"css/launcher.css")
         @img_src = "img/"
+        @dock = new Dock()
         
         @message = _("Move the mouse to Left up corner , or you can click the launcher icon to launch \" Application Launcher\"")
         @show_message(@message)
@@ -64,7 +91,6 @@ class LauncherLaunch extends Page
         @launcher_icon = create_element("div","launcher_icon",@element)
         @pointer_rightdown = create_img("pointer_rightdown","#{@img_src}/pointer_rightdown.png",@launcher_icon)
         @circle = create_img("circle","#{@img_src}/circle.png",@launcher_icon)
-
-        @dock = new Dock()
-
+        @launcher_pos = @dock.get_launchericon_pos()
+        set_pos(@circle,@launcher_pos.x0,@launcher_pos.y0)
 
