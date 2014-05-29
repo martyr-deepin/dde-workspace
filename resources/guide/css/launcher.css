@@ -1,0 +1,12 @@
+.leftup{
+    position:fixed;
+    left:0;
+    top:0;
+}
+
+
+.launcher_icon{
+    position:fixed;
+    bottom:1em;
+    left:20em;
+}
