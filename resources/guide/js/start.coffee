@@ -129,7 +129,7 @@ class MenuChoose extends Widget
                 that.frame_click = true
                 that.click_state(i)
                 that.current = that.option[i]
-                that.fade(i)
+                #that.fade(i)
             )
 
 
