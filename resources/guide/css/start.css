@@ -51,3 +51,6 @@
     font-size:1.7em;
     text-shadow: 0 0.2em 0.2em rgba(0,0,0,0.5);
 }
+.older:hover{
+    color:rgba(65,105,255,0.9);
+}

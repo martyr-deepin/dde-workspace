@@ -43,11 +43,9 @@ class MenuChoose extends Widget
         @element.style.display = "none"
     
     show:->
-        echo "show"
         @element.style.display = "-webkit-box"
 
     hide: ->
-        echo "hide"
         for i in [@opt.length - 1..0]
             #delete select_state and then start animate
             @opt[i].style.backgroundColor = "rgba(255,255,255,0.0)"
@@ -244,3 +242,8 @@ class Start extends Widget
         
         @older = create_element("div","older",@element)
         @older.innerText = _("I am older,exit directly")
+        @older.addEventListener("click",(e) =>
+            e.stopPropagation()
+            #TODO:gtk_main_quit()
+            #DCore.Guide.quit()
+        )
