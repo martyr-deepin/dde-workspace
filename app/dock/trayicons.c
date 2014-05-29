@@ -3,6 +3,8 @@
 
 void require_manager_trayicons()
 {
+    return;
+    // useless
     GError* err = NULL;
     GDBusProxy* proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SESSION,
                                                       G_DBUS_PROXY_FLAGS_NONE,

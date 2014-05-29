@@ -556,7 +556,7 @@ class AppItem extends Item
     on_itemselected: (d)->
         (id)->
             # console.log("select id: #{id}")
-            d?.HandleMenuItem(parseInt(id))
+            d?.HandleMenuItem(id)
 
     on_click:(e)=>
         super
