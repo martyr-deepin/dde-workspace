@@ -25,7 +25,7 @@ all: ${com_coffee} \
 	deepin_item.coffee\
 	${plugin_dir}/show_desktop.coffee\
 	${plugin_dir}/launcher.coffee\
-	${plugin_dir}/trash.coffee\
+	${plugin_dir}/trash/trash.coffee\
 	${plugin_dir}/time/time.coffee\
 	${plugin_dir}/system_tray.coffee\
 	main.coffee
