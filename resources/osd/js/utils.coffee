@@ -33,6 +33,8 @@ setFocus = (focus)->
 TIME_HIDE = 1500
 TIME_PRESS = 5
 timeout_osdHide = null
+mediakey_signal = true
+
 
 allElsHide = ->
     els = _b.children
@@ -47,6 +49,7 @@ osdHide = ->
     allElsHide()
     DCore.Osd.hide()
     clearTimeout(timeout_osdHide)
+    DCore.Osd.quit()
     return
 
     #document.body.opacity = "1"
@@ -62,7 +65,7 @@ osdShow = ->
     document.body.opacity = "0"
     jQuery(document.body).animate({opacity:'1';},500)
 
-osdHide()
+#osdHide()
 
 click_time = 0
 _b.addEventListener("click",(e)=>

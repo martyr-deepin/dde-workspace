@@ -207,7 +207,7 @@ osd.BrightnessDown = (keydown)->
     BrightCls.id = "BrightnessUp"#the backgroundImage is same ,so the @id can equal to BrightnessUp
     BrightCls.showBrightness()
 
-osd.DisplaySwitch = (keydown)->
+osd.SwitchMonitors = (keydown)->
     CHOOSEMODE = false
     if !keydown then return if mode is "dbus"
     if CHOOSEMODE then setFocus(true)
