@@ -43,12 +43,6 @@ class Dock
         @x1 = @dock_region[2]
         @y1 = @dock_region[3]
         
-        DOCK_PADDING = 24
-        ICON_MARGIN_H = 6
-        ICON_MARGIN_V_TOP = 3
-        ICON_MARGIN_V_BOTTOM = 30
-        ICON_SIZE = 48
-        
         pos =
             x0:0
             y0:0
@@ -83,23 +77,15 @@ class LauncherLaunch extends Page
         @message = _("Move the mouse to Left up corner , or you can click the launcher icon to launch \" Application Launcher\"")
         @show_message(@message)
         
-
-
         @corner_leftup = new Pointer("corner_leftup",@element)
         @corner_leftup.create_pointer(AREA_TYPE.corner,POS_TYPE.leftup)
         @corner_leftup.set_area_pos(0,0,"fixed",POS_TYPE.leftup)
         
-
-
         @launcher_circle = new Pointer("launcher_circle",@element)
         @launcher_circle.create_pointer(AREA_TYPE.circle,POS_TYPE.rightdown)
         @launcher_pos = @dock.get_launchericon_pos()
         @launcher_circle_x = @launcher_pos.x0 - @launcher_circle.pointer_width
-        @launcher_circle_y = @launcher_pos.x0 - @launcher_circle.pointer_width
+        @launcher_circle_y = @launcher_pos.y0 - @launcher_circle.pointer_height - ICON_MARGIN_V_BOTTOM / 2
         @launcher_circle.set_area_pos(@launcher_circle_x,@launcher_circle_y,"fixed",POS_TYPE.leftup)
-
-
-
-
 
 

@@ -1,3 +1,9 @@
+DOCK_PADDING = 24
+ICON_MARGIN_H = 6
+ICON_MARGIN_V_TOP = 3
+ICON_MARGIN_V_BOTTOM = 10
+ICON_SIZE = 48
+        
 
 POS_TYPE =
     leftup:"leftup"
