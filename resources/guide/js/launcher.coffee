@@ -103,7 +103,7 @@ class LauncherAllApps extends Page
         
         @pointer = new Pointer("ClickToAllApps",@element)
         @pointer.create_pointer(AREA_TYPE.circle,POS_TYPE.leftup)
-        @pointer.set_area_pos(34,34)
+        @pointer.set_area_pos(25,25)
         
         @message = _("There are some collect applications in the first page of \"launcher\"")
         @show_message(@message)
