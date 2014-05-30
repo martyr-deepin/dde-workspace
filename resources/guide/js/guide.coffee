@@ -38,8 +38,8 @@ class Guide
         #LauncherRightclick = new LauncherRightclick("LauncherRightclick_page")
         #@guide.add_page(LauncherRightclick)
         
-        LauncherRightclick = new LauncherRightclick("LauncherRightclick_page")
-        @guide.add_page(LauncherRightclick)
+        LauncherMenu = new LauncherMenu("LauncherMenu_page")
+        @guide.add_page(LauncherMenu)
         
 
 guide = new Guide()
