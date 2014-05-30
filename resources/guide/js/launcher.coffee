@@ -107,5 +107,4 @@ class LauncherAllApps extends Page
         
         @message = _("There are some collect applications in the first page of \"launcher\"")
         @show_message(@message)
-        @message_div.style.marginTop = "150px"
 

@@ -15,17 +15,19 @@ class Guide
     create_page: ->
         #welcome = new Welcome("welcome_page")
         #@pages.push(welcome)
-        #guide.add_page(welcome)
+        #@guide.add_page(welcome)
 
-        #start_page = new Start("start_page")
-        #guide.add_page(start_page)
+        #start = new Start("start_page")
+        #@guide.add_page(start)
 
-        #launcherLaunch_page = new LauncherLaunch("launcherLaunch_page")
-        #guide.add_page(launcherLaunch_page)
+        #launcherLaunch = new LauncherLaunch("launcherLaunch_page")
+        #@guide.add_page(launcherLaunch)
 
-        #launcherCollect_page = new LauncherCollect("launcherCollect_page")
-        #guide.add_page(launcherCollect_page)
+        #launcherCollect = new LauncherCollect("launcherCollect_page")
+        #@guide.add_page(launcherCollect)
 
+        LauncherAllApps = new LauncherAllApps("LauncherAllApps_page")
+        @guide.add_page(LauncherAllApps)
         
 
 guide = new Guide()
