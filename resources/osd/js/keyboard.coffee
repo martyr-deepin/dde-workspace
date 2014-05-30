@@ -58,8 +58,8 @@ class Keyboard
 keyboard = null
 keyboardList = null
 
-SwitchLayout = (keydown)->
-    if keydown then return
+osd.SwitchLayout = (keydown)->
+    if !keydown then return if mode is "dbus"
     setFocus(true)
     echo "SwitchLayout"
     
@@ -79,4 +79,3 @@ SwitchLayout = (keydown)->
         )
     keyboard.CurrentLayout = keyboardList.chooseOption()
 
-DBusMediaKey.connect("SwitchLayout",SwitchLayout) if DBusMediaKey?

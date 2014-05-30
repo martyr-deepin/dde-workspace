@@ -21,27 +21,18 @@
 _b = document.body
 FOCUS = null
 
+osd = {}
+
 DEBUG = false
 setFocus = (focus)->
     FOCUS = focus
     FOCUS = true if DEBUG
     DCore.Osd.set_focus(FOCUS)
 
-#MediaKey DBus
-MEDIAKEY =
-    name: "com.deepin.daemon.KeyBinding"
-    path: "/com/deepin/daemon/MediaKey"
-    interface: "com.deepin.daemon.MediaKey"
 
 TIME_HIDE = 1500
 TIME_PRESS = 5
 timeout_osdHide = null
-DBusMediaKey = null
-try
-    DBusMediaKey = DCore.DBus.session_object(MEDIAKEY.name, MEDIAKEY.path, MEDIAKEY.interface)
-catch e
-    echo "Error:-----DBusMediaKey:#{e}"
-echo DBusMediaKey
 
 allElsHide = ->
     els = _b.children

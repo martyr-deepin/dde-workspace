@@ -57,8 +57,8 @@ isCapsLockToggle = ->
 
 OptionCls = null
 
-CapsLockOn = (keydown)->
-    if !keydown then return
+osd.CapsLockOn = (keydown)->
+    if !keydown then return if mode is "dbus"
     if isCapsLockToggle() isnt true then return
     setFocus(false)
     echo "CapsLockOn"
@@ -66,8 +66,8 @@ CapsLockOn = (keydown)->
     OptionCls.id = "CapsLockOn"
     OptionCls.show()
 
-CapsLockOff = (keydown)->
-    if !keydown then return
+osd.CapsLockOff = (keydown)->
+    if !keydown then return if mode is "dbus"
     if isCapsLockToggle() isnt true then return
     setFocus(false)
     echo "CapsLockOff"
@@ -75,42 +75,35 @@ CapsLockOff = (keydown)->
     OptionCls.id = "CapsLockOff"
     OptionCls.show()
 
-NumLockOn = (keydown)->
-    if !keydown then return
+osd.NumLockOn = (keydown)->
+    if !keydown then return if mode is "dbus"
     setFocus(false)
     echo "NumLockOn"
     OptionCls = new Option("NumLockOn") if not OptionCls?
     OptionCls.id = "NumLockOn"
     OptionCls.show()
 
-NumLockOff = (keydown)->
-    if !keydown then return
+osd.NumLockOff = (keydown)->
+    if !keydown then return if mode is "dbus"
     setFocus(false)
     echo "NumLockOff"
     OptionCls = new Option("NumLockOff") if not OptionCls?
     OptionCls.id = "NumLockOff"
     OptionCls.show()
 
-TouchPadOn = (keydown)->
-    if !keydown then return
+osd.TouchPadOn = (keydown)->
+    if !keydown then return if mode is "dbus"
     setFocus(false)
     echo "TouchPadOn"
     OptionCls  = new Option("TouchPadOn") if not OptionCls?
     OptionCls.id = "TouchPadOn"
     OptionCls.show()
 
-TouchPadOff = (keydown)->
-    if !keydown then return
+osd.TouchPadOff = (keydown)->
+    if !keydown then return if mode is "dbus"
     setFocus(false)
     echo "TouchPadOff"
     OptionCls  = new Option("TouchPadOff") if not OptionCls?
     OptionCls.id = "TouchPadOff"
     OptionCls.show()
 
-
-DBusMediaKey.connect("CapsLockOn",CapsLockOn) if DBusMediaKey?
-DBusMediaKey.connect("CapsLockOff",CapsLockOff) if DBusMediaKey?
-DBusMediaKey.connect("NumLockOn",NumLockOn) if DBusMediaKey?
-DBusMediaKey.connect("NumLockOff",NumLockOff) if DBusMediaKey?
-DBusMediaKey.connect("TouchPadOff",TouchPadOff) if DBusMediaKey?
-DBusMediaKey.connect("TouchPadOn",TouchPadOn) if DBusMediaKey?

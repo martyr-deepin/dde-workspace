@@ -191,25 +191,25 @@ class Display extends Widget
 BrightCls = null
 displayModeList = null
 
-BrightnessUp = (keydown)->
-    if keydown then return
+osd.BrightnessUp = (keydown)->
+    if !keydown then return if mode is "dbus"
     setFocus(false)
     echo "BrightnessUp"
     BrightCls  = new Display("Brightness") if not BrightCls?
     BrightCls.id = "BrightnessUp"
     BrightCls.showBrightness()
 
-BrightnessDown = (keydown)->
-    if keydown then return
+osd.BrightnessDown = (keydown)->
+    if !keydown then return if mode is "dbus"
     setFocus(false)
     echo "BrightnessDown"
     BrightCls  = new Display("Brightness") if not BrightCls?
     BrightCls.id = "BrightnessUp"#the backgroundImage is same ,so the @id can equal to BrightnessUp
     BrightCls.showBrightness()
 
-DisplaySwitch = (keydown)->
+osd.DisplaySwitch = (keydown)->
     CHOOSEMODE = false
-    if keydown then return
+    if !keydown then return if mode is "dbus"
     if CHOOSEMODE then setFocus(true)
     else setFocus(false)
     echo "SwitchMonitors"
@@ -232,8 +232,3 @@ DisplaySwitch = (keydown)->
         )
     BrightCls.currentMode = displayModeList.chooseIndex()
 
-    
-
-DBusMediaKey.connect("BrightnessDown",BrightnessDown) if DBusMediaKey?
-DBusMediaKey.connect("BrightnessUp",BrightnessUp) if DBusMediaKey?
-DBusMediaKey.connect("SwitchMonitors",DisplaySwitch) if DBusMediaKey?

@@ -111,7 +111,7 @@ class Audio extends Widget
 
 AudioCls = null
 
-AudioUp = (keydown) ->
+osd.AudioUp = (keydown) ->
     if keydown then return
     setFocus(false)
     echo "AudioUp"
@@ -121,7 +121,7 @@ AudioUp = (keydown) ->
     volume = AudioCls.getVolume()
     AudioCls.show(volume)
 
-AudioDown = (keydown) ->
+osd.AudioDown = (keydown) ->
     if keydown then return
     setFocus(false)
     echo "AudioDown"
@@ -131,7 +131,7 @@ AudioDown = (keydown) ->
     volume = AudioCls.getVolume()
     AudioCls.show(volume)
 
-AudioMute = (keydown) ->
+osd.AudioMute = (keydown) ->
     if keydown then return
     setFocus(false)
     echo "AudioMute"
@@ -142,6 +142,3 @@ AudioMute = (keydown) ->
     if AudioCls.getMute() then volume = 0
     AudioCls.show(volume)
 
-DBusMediaKey.connect("AudioUp",AudioUp) if DBusMediaKey?
-DBusMediaKey.connect("AudioDown",AudioDown) if DBusMediaKey?
-DBusMediaKey.connect("AudioMute",AudioMute) if DBusMediaKey?
