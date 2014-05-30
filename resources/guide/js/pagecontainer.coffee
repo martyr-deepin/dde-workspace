@@ -10,15 +10,27 @@ class Page extends Widget
         @element.style.height = "100%"
         @element.style.webkitBoxPack = "center"
         @element.style.webkitBoxAlign = "center"
-        #@element.style.webkitBoxOrient = "horizontal"
+        #@element.style.webkitBoxOrient = "vertical"
+        @msg_tips = create_element("div","msg_tips",@element)
+        @msg_tips.style.color = "#fff"
+        @msg_tips.style.textAlign = "center"
+        @msg_tips.style.textShadow = "0 1px 1px rgba(0,0,0,0.7)"
+        
 
     show_message: (@message) ->
-        @message_div = create_element("div","message_#{@id}",@element) if not @message_div?
+        @message_div = create_element("div","message_#{@id}",@msg_tips)
         @message_div.innerText = @message
-        @message_div.style.textAlign = "center"
         @message_div.style.fontSize = "2em"
-        @message_div.style.color = "#fff"
-        @message_div.style.textShadow = "0 1px 1px rgba(0,0,0,0.7)"
+        @message_div.style.lineHeight = "2.3em"
+
+    show_tips: (@tips) ->
+        @tips_div = create_element("div","tips_#{@id}",@msg_tips)
+        @tips_div.innerText = @tips
+        @tips_div.style.fontSize = "1.6em"
+        @tips_div.style.lineHeight = "1.9em"
+        @tips_div.style.position = "relative"
+        @tips_div.style.marginTop = "40px"
+
 
     set_message_pos : (x,y,position_type = "fixed",type = POS_TYPE.leftup) ->
         set_pos(@message_div,x,y,position_type,type)

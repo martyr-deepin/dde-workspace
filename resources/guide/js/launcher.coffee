@@ -141,3 +141,30 @@ class LauncherScroll extends Page
         @scroll_up.style.bottom = 0
 
 
+class LauncherSearch extends Page
+    constructor:(@id)->
+        super
+        
+        @message = _("Input by keyboard to search the application what you want\nLet\'s try to input \"deepin\"")
+        @tips = _("tips:Please input \"deepin\" directely")
+        @show_message(@message)
+        @show_tips(@tips)
+
+
+class LauncherRightclick extends Page
+    constructor:(@id)->
+        super
+        
+        @message = _("在应用图标上单击鼠标右键可以调出右键菜单\n点击菜单项将实现其功能")
+        @tips = _("tips:你也可以直接用鼠标左键拖拽图标到dock、收藏图标上或者垃圾箱上")
+        @show_message(@message)
+        @show_tips(@tips)
+
+
+class LauncherMenu extends Page
+    constructor:(@id)->
+        super
+        
+        @message = _("使用鼠标右键发送3个图标到桌面")
+        @show_message(@message)
+
