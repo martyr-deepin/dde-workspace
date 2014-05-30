@@ -3,15 +3,17 @@ dialog = null
 class Trash extends PostfixedItem
     constructor:(@id, icon, title)->
         super
+        # @imgContainer.draggable = true
         @set_tooltip(title)
         @w_id = 0
         @is_opened = false
         @entry = DCore.DEntry.get_trash_entry()
         @emptyIcon = Trash.get_icon(0)
         @fullIcon = Trash.get_icon(1)
+        @emptyOpenIcon = "js/plugins/trash/img/emptyOpenIcon.png"
+        @fullOpenIcon = "js/plugins/trash/img/fullOpenIcon.png"
         @change_icon(icon)
         @imgHover.style.display = 'none'
-        @imgContainer.addEventListener("drop", @on_drop)
         @isEmpty = false
         @update()
         DCore.signal_connect("trash_count_changed", (info)=>
@@ -106,11 +108,18 @@ class Trash extends PostfixedItem
                 tmp_list.push(e)
             if tmp_list.length > 0 then DCore.DEntry.trash(tmp_list)
 
+        @update()
+
     on_dragenter : (evt) =>
+        console.log("dragenter trash")
         evt.stopPropagation()
         evt.preventDefault()
         @oldEffect = evt.dataTransfer.dropEffect
         evt.dataTransfer.dropEffect = "move"
+        if @isEmpty
+            @change_icon(@emptyOpenIcon)
+        else
+            @change_icon(@fullOpenIcon)
 
     on_dragover : (evt) =>
         evt.stopPropagation()
@@ -120,6 +129,7 @@ class Trash extends PostfixedItem
         evt.stopPropagation()
         evt.preventDefault()
         evt.dataTransfer.dropEffect = @oldEffect
+        @update()
 
     show_indicator: ->
         console.log("show_indicator")

@@ -11,7 +11,7 @@ class Item extends Widget
     constructor:(@id, icon, title, @container)->
         super()
         @imgWarp = create_element(tag:'div', class:"imgWarp", @element)
-        @imgContainer = create_element(tag:'div', class:"imgWarp", @imgWarp)
+        @imgContainer = create_element(tag:'div', class:"imgWarp imgContainer", @imgWarp)
         @img = create_img(src:icon || NOT_FOUND_ICON, class:"AppItemImg", @imgContainer)
         @imgHover = create_img(src:"", class:"AppItemImg", @imgContainer)
         @imgHover.style.display = 'none'
