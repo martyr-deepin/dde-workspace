@@ -194,7 +194,6 @@ displayModeList = null
 osd.BrightnessUp = (keydown)->
     if !keydown then return if mode is "dbus"
     setFocus(false)
-    echo "BrightnessUp"
     BrightCls  = new Display("Brightness") if not BrightCls?
     BrightCls.id = "BrightnessUp"
     BrightCls.showBrightness()
@@ -202,7 +201,6 @@ osd.BrightnessUp = (keydown)->
 osd.BrightnessDown = (keydown)->
     if !keydown then return if mode is "dbus"
     setFocus(false)
-    echo "BrightnessDown"
     BrightCls  = new Display("Brightness") if not BrightCls?
     BrightCls.id = "BrightnessUp"#the backgroundImage is same ,so the @id can equal to BrightnessUp
     BrightCls.showBrightness()
@@ -212,7 +210,6 @@ osd.SwitchMonitors = (keydown)->
     if !keydown then return if mode is "dbus"
     if CHOOSEMODE then setFocus(true)
     else setFocus(false)
-    echo "SwitchMonitors"
     BrightCls  = new Display("DisplaySwitch") if not BrightCls?
     BrightCls.id = "DisplaySwitch"
     echo BrightCls.Monitors

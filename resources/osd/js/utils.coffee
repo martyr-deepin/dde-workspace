@@ -33,7 +33,6 @@ setFocus = (focus)->
 TIME_HIDE = 1500
 TIME_PRESS = 5
 timeout_osdHide = null
-mediakey_signal = true
 
 
 allElsHide = ->

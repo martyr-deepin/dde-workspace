@@ -61,7 +61,6 @@ osd.CapsLockOn = (keydown)->
     if !keydown then return if mode is "dbus"
     if isCapsLockToggle() isnt true then return
     setFocus(false)
-    echo "CapsLockOn"
     OptionCls = new Option("CapsLockOn") if not OptionCls?
     OptionCls.id = "CapsLockOn"
     OptionCls.show()
@@ -70,7 +69,6 @@ osd.CapsLockOff = (keydown)->
     if !keydown then return if mode is "dbus"
     if isCapsLockToggle() isnt true then return
     setFocus(false)
-    echo "CapsLockOff"
     OptionCls = new Option("CapsLockOff") if not OptionCls?
     OptionCls.id = "CapsLockOff"
     OptionCls.show()
@@ -78,7 +76,6 @@ osd.CapsLockOff = (keydown)->
 osd.NumLockOn = (keydown)->
     if !keydown then return if mode is "dbus"
     setFocus(false)
-    echo "NumLockOn"
     OptionCls = new Option("NumLockOn") if not OptionCls?
     OptionCls.id = "NumLockOn"
     OptionCls.show()
@@ -86,7 +83,6 @@ osd.NumLockOn = (keydown)->
 osd.NumLockOff = (keydown)->
     if !keydown then return if mode is "dbus"
     setFocus(false)
-    echo "NumLockOff"
     OptionCls = new Option("NumLockOff") if not OptionCls?
     OptionCls.id = "NumLockOff"
     OptionCls.show()
@@ -94,7 +90,6 @@ osd.NumLockOff = (keydown)->
 osd.TouchPadOn = (keydown)->
     if !keydown then return if mode is "dbus"
     setFocus(false)
-    echo "TouchPadOn"
     OptionCls  = new Option("TouchPadOn") if not OptionCls?
     OptionCls.id = "TouchPadOn"
     OptionCls.show()
@@ -102,7 +97,6 @@ osd.TouchPadOn = (keydown)->
 osd.TouchPadOff = (keydown)->
     if !keydown then return if mode is "dbus"
     setFocus(false)
-    echo "TouchPadOff"
     OptionCls  = new Option("TouchPadOff") if not OptionCls?
     OptionCls.id = "TouchPadOff"
     OptionCls.show()

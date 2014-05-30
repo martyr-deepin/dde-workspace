@@ -112,9 +112,8 @@ class Audio extends Widget
 AudioCls = null
 
 osd.AudioUp = (keydown) ->
-    if keydown then return
+    if keydown then return if mode is "dbus"
     setFocus(false)
-    echo "AudioUp"
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioUp"
     AudioCls.updateDBusDefaultSink()
@@ -122,9 +121,8 @@ osd.AudioUp = (keydown) ->
     AudioCls.show(volume)
 
 osd.AudioDown = (keydown) ->
-    if keydown then return
+    if keydown then return if mode is "dbus"
     setFocus(false)
-    echo "AudioDown"
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioDown"
     AudioCls.updateDBusDefaultSink()
@@ -132,9 +130,8 @@ osd.AudioDown = (keydown) ->
     AudioCls.show(volume)
 
 osd.AudioMute = (keydown) ->
-    if keydown then return
+    if keydown then return if mode is "dbus"
     setFocus(false)
-    echo "AudioMute"
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioMute"
     AudioCls.updateDBusDefaultSink()
