@@ -168,3 +168,6 @@ class LauncherMenu extends Page
         @message = _("使用鼠标右键发送3个图标到桌面")
         @show_message(@message)
 
+        @menu = create_img("menu_#{@id}","#{@img_src}/menu.png",@element)
+        set_pos(@menu,"41%","55%")
+
