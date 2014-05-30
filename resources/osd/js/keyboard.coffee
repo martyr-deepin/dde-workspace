@@ -61,7 +61,6 @@ keyboardList = null
 osd.SwitchLayout = (keydown)->
     if !keydown then return if mode is "dbus"
     setFocus(true)
-    echo "SwitchLayout"
     
     keyboard = new Keyboard() if not keyboard?
     keyboard.updateUserLayoutList()
