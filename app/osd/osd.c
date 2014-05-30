@@ -43,7 +43,7 @@
 /*#include "DBUS_shutdown.h"*/
 
 
-#define SHUTDOWN_ID_NAME "desktop.app.osd"
+#define ID_NAME "desktop.app.osd"
 
 #define CHOICE_HTML_PATH "file://"RESOURCE_DIR"/osd/osd.html"
 
@@ -58,7 +58,73 @@ PRIVATE GtkWidget* container = NULL;
 /*PRIVATE GtkStyleContext *style_context;*/
 
 PRIVATE GSettings* dde_bg_g_settings = NULL;
-PRIVATE char **input_argv = NULL;
+
+static struct {
+    gboolean is_AudioUp;
+    gboolean is_AudioDown;
+    gboolean is_AudioMute;
+    gboolean is_BrightnessDown;
+    gboolean is_BrightnessUp;
+    gboolean is_SwitchMonitors;
+    gboolean is_SwitchLayout;
+    gboolean is_CapsLockOn;
+    gboolean is_CapsLockOff;
+    gboolean is_NumLockOn;
+    gboolean is_NumLockOff;
+    gboolean is_TouchPadOn;
+    gboolean is_TouchPadOff;
+} option = {FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE};
+static GOptionEntry entries[] = {
+    {"AudioUp", 0, 0, G_OPTION_ARG_NONE, &option.is_AudioUp, "OSD AudioUp", NULL},
+    {"AudioDown", 0, 0, G_OPTION_ARG_NONE, &option.is_AudioDown, "OSD AudioDown", NULL},
+    {"AudioMute", 0, 0, G_OPTION_ARG_NONE, &option.is_AudioMute, "OSD AudioMute", NULL},
+    {"BrightnessDown", 0, 0, G_OPTION_ARG_NONE, &option.is_BrightnessDown, "OSD BrightnessDown", NULL},
+    {"BrightnessUp", 0, 0, G_OPTION_ARG_NONE, &option.is_BrightnessUp, "OSD BrightnessUp", NULL},
+    {"SwitchMonitors", 0, 0, G_OPTION_ARG_NONE, &option.is_SwitchMonitors, "OSD SwitchMonitors", NULL},
+    {"SwitchLayout", 0, 0, G_OPTION_ARG_NONE, &option.is_SwitchLayout, "OSD SwitchLayout", NULL},
+    {"CapsLockOn", 0, 0, G_OPTION_ARG_NONE, &option.is_CapsLockOn, "OSD CapsLockOn", NULL},
+    {"CapsLockOff", 0, 0, G_OPTION_ARG_NONE, &option.is_CapsLockOff, "OSD CapsLockOff", NULL},
+    {"NumLockOn", 0, 0, G_OPTION_ARG_NONE, &option.is_NumLockOn, "OSD NumLockOn", NULL},
+    {"NumLockOff", 0, 0, G_OPTION_ARG_NONE, &option.is_NumLockOff, "OSD NumLockOff", NULL},
+    {"TouchPadOn", 0, 0, G_OPTION_ARG_NONE, &option.is_TouchPadOn, "OSD TouchPadOn", NULL},
+    {"TouchPadOff", 0, 0, G_OPTION_ARG_NONE, &option.is_TouchPadOff, "OSD TouchPadOff", NULL},
+    {NULL}
+};
+
+JS_EXPORT_API
+const char* osd_get_argv()
+{
+    const char *input = NULL;
+    if (option.is_AudioUp) {
+        input = "AudioUp";
+    } else if (option.is_AudioDown) {
+        input = "AudioDown";
+    } else if (option.is_AudioMute) {
+        input = "AudioMute";
+    } else if (option.is_BrightnessDown) {
+        input = "BrightnessDown";
+    } else if (option.is_BrightnessUp) {
+        input = "BrightnessUp";
+    } else if (option.is_SwitchMonitors) {
+        input = "SwitchMonitors";
+    } else if (option.is_SwitchLayout) {
+        input = "SwitchLayout";
+    } else if (option.is_CapsLockOn) {
+        input = "CapsLockOn";
+    } else if (option.is_CapsLockOff) {
+        input = "CapsLockOff";
+    } else if (option.is_NumLockOn) {
+        input = "NumLockOn";
+    } else if (option.is_NumLockOff) {
+        input = "NumLockOff";
+    } else if (option.is_TouchPadOn) {
+        input = "TouchPadOn";
+    } else if (option.is_TouchPadOff) {
+        input = "TouchPadOff";
+    }
+    g_message("osd_get_argv :%s\n",input);
+    return input;
+}
 
 JS_EXPORT_API
 void osd_quit()
@@ -113,13 +179,6 @@ void check_version()
 }
 
 JS_EXPORT_API
-const char* osd_get_argv()
-{
-    return input_argv[1];
-}
-
-
-JS_EXPORT_API
 void osd_set_focus(gboolean focus)
 {
     gtk_window_set_focus_on_map (GTK_WINDOW (container), focus);
@@ -133,24 +192,34 @@ void osd_set_focus(gboolean focus)
     gdk_window_set_override_redirect(gdkwindow, !focus);
  }
 
-
 int main (int argc, char **argv)
 {
     if (argc == 2 && 0 == g_strcmp0(argv[1], "-d"))
         g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
-    if (is_application_running(SHUTDOWN_ID_NAME)) {
-        g_warning("another instance of application dosd is running...\n");
+    if (is_application_running(ID_NAME)) {
+        g_warning("another instance of application dde-osd is running...\n");
         return 0;
     }
 
-    singleton(SHUTDOWN_ID_NAME);
+    singleton(ID_NAME);
 
     check_version();
     init_i18n ();
+    
+    GOptionContext* ctx = g_option_context_new(NULL);
+    g_option_context_add_main_entries(ctx, entries, NULL);
+    g_option_context_add_group(ctx, gtk_get_option_group(TRUE));
+
+    GError* error = NULL;
+    if (!g_option_context_parse(ctx, &argc, &argv, &error)) {
+        g_warning("%s", error->message);
+        g_clear_error(&error);
+        g_option_context_free(ctx);
+        return 0;
+    }
 
     gtk_init (&argc, &argv);
-    input_argv = argv;
-
+    
     container = create_web_container (FALSE, TRUE);
 
     gtk_window_set_position (GTK_WINDOW (container), GTK_WIN_POS_CENTER_ALWAYS);
