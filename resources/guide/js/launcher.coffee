@@ -108,3 +108,36 @@ class LauncherAllApps extends Page
         @message = _("There are some collect applications in the first page of \"launcher\"")
         @show_message(@message)
 
+class LauncherScroll extends Page
+    constructor:(@id)->
+        super
+        
+        @rect = new Rect("collectApp",@element)
+        @rect.create_rect(64,435)#1096*316
+        @rect.set_pos(25,125)
+        
+        @pointer = new Pointer("classify",@element)
+        @pointer.create_pointer(AREA_TYPE.circle,POS_TYPE.leftup)
+        @pointer.set_area_pos(25,192)
+        
+        @message = _("Scroll the mouse to check all applications\n And you can click the left classification to locate")
+        @show_message(@message)
+
+        @scroll = create_element("div","srcoll",@element)
+        @scroll.style.position = "absolute"
+        @scroll.style.top = "37%"
+        @scroll.style.right = "200px"
+        
+        @scroll_down = create_img("scroll_down","#{@img_src}/pointer_down.png",@scroll)
+        @scroll_up = create_img("scroll_up","#{@img_src}/pointer_up.png",@scroll)
+        
+        width = height = 64
+        @scroll.style.width = width
+        @scroll.style.height = height * 2 + 50
+        @scroll_down.style.width = @scroll_up.style.width = width
+        @scroll_down.style.height = @scroll_up.style.height = height
+        @scroll_up.style.position = "absolute"
+        @scroll_up.style.left = 0
+        @scroll_up.style.bottom = 0
+
+

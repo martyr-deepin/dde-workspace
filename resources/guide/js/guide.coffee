@@ -26,8 +26,11 @@ class Guide
         #launcherCollect = new LauncherCollect("launcherCollect_page")
         #@guide.add_page(launcherCollect)
 
-        LauncherAllApps = new LauncherAllApps("LauncherAllApps_page")
-        @guide.add_page(LauncherAllApps)
+        #LauncherAllApps = new LauncherAllApps("LauncherAllApps_page")
+        #@guide.add_page(LauncherAllApps)
+        
+        LauncherScroll = new LauncherScroll("LauncherScroll_page")
+        @guide.add_page(LauncherScroll)
         
 
 guide = new Guide()
