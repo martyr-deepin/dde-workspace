@@ -121,6 +121,7 @@ body {
   /* border-radius: 50%; */
 }
 .category_item_board {
+  border-radius: 50%;
   background: rgba(0,0,0,0.05);
   width: 34px;
   height:34px;
