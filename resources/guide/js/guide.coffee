@@ -19,9 +19,12 @@ class Guide
         #start_page = new Start("start_page")
         #guide.add_page(start_page)
 
-        launcherLaunch_page = new LauncherLaunch("launcherLaunch_page")
-        guide.add_page(launcherLaunch_page)
+        #launcherLaunch_page = new LauncherLaunch("launcherLaunch_page")
+        #guide.add_page(launcherLaunch_page)
 
+        launcherCollect_page = new LauncherCollect("launcherCollect_page")
+        guide.add_page(launcherCollect_page)
 
+        
 
 new Guide()

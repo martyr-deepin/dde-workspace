@@ -34,7 +34,7 @@ class Rect extends Widget
         @ctx.lineWidth = 1.5
         @ctx.strokeRect(0,0,@width,@height)
         
-    create_rect_div : (@width,@height) ->
+    create_rect : (@width,@height) ->
         @rect = create_element("div","rect",@element)
         @rect.style.borderStyle = "dashed"
         @rect.style.borderWidth = "1px"

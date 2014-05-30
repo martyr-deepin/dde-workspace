@@ -68,10 +68,6 @@ class LauncherLaunch extends Page
     constructor:(@id)->
         super
         
-        echo "LauncherLaunch : #{@id}"
-        
-        inject_css(@element,"css/launcher.css")
-        @img_src = "img"
         @dock = new Dock()
         
         @message = _("Move the mouse to Left up corner , or you can click the launcher icon to launch \" Application Launcher\"")
@@ -88,4 +84,28 @@ class LauncherLaunch extends Page
         @launcher_circle_y = @launcher_pos.y0 - @launcher_circle.pointer_height - ICON_MARGIN_V_BOTTOM / 2
         @launcher_circle.set_area_pos(@launcher_circle_x,@launcher_circle_y,"fixed",POS_TYPE.leftup)
 
+
+class LauncherCollect extends Page
+    constructor:(@id)->
+        super
+        
+        @rect = new Rect("collectApp",@element)
+        @rect.create_rect(1096,316)#1096*316
+        @rect.set_pos(135,80)
+        
+        @message = _("There are some collect applications in the first page of \"launcher\"")
+        @show_message(@message)
+        @message_div.style.marginTop = "150px"
+
+class LauncherAllApps extends Page
+    constructor:(@id)->
+        super
+        
+        @rect = new Pointer("ClickToAllApps",@element)
+        @rect.create_rect(1096,316)#1096*316
+        @rect.set_pos(135,80)
+        
+        @message = _("There are some collect applications in the first page of \"launcher\"")
+        @show_message(@message)
+        @message_div.style.marginTop = "150px"
 

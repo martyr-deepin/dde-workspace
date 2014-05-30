@@ -1,6 +1,8 @@
 class Page extends Widget
     constructor: (@id)->
         super
+        echo "new #{@id} Page"
+        @img_src = "img"
         
         @element.style.display = "-webkit-box"
         @element.style.width = "100%"
@@ -17,8 +19,9 @@ class Page extends Widget
         @message_div.style.color = "#fff"
         @message_div.style.textShadow = "0 1px 1px rgba(0,0,0,0.7)"
 
-
-
+    set_message_pos : (x,y,position_type = "fixed",type = POS_TYPE.leftup) ->
+        set_pos(@message_div,x,y,position_type,type)
+        
 class PageContainer extends Widget
     constructor: (@id)->
         super
