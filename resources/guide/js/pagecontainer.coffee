@@ -1,3 +1,4 @@
+
 class Page extends Widget
     constructor: (@id)->
         super

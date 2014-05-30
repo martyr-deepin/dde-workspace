@@ -101,9 +101,9 @@ class LauncherAllApps extends Page
     constructor:(@id)->
         super
         
-        @rect = new Pointer("ClickToAllApps",@element)
-        @rect.create_rect(1096,316)#1096*316
-        @rect.set_pos(135,80)
+        @pointer = new Pointer("ClickToAllApps",@element)
+        @pointer.create_pointer(AREA_TYPE.circle,POS_TYPE.leftup)
+        @pointer.set_area_pos(34,34)
         
         @message = _("There are some collect applications in the first page of \"launcher\"")
         @show_message(@message)
