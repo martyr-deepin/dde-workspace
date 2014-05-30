@@ -28,12 +28,8 @@ class Pointer extends Widget
     
     create_pointer: (@area_type,@pos_type) ->
         echo "create_pointer @pos_type:#{@pos_type},@area_type:#{@area_type}"
-        if @pos_type is POS_TYPE.leftdown or POS_TYPE.rightdown
-            @pointer_img = create_img("pointer_img","",@element)
-            @area_img = create_img("area_img","",@element)
-        else
-            @area_img = create_img("area_img","",@element)
-            @pointer_img = create_img("pointer_img","",@element)
+        @pointer_img = create_img("pointer_img","",@element)
+        @area_img = create_img("area_img","",@element)
 
         @pointer_img.src = "#{@img_src}/pointer_#{@pos_type}.png"
         if @area_type isnt AREA_TYPE.corner
@@ -41,47 +37,24 @@ class Pointer extends Widget
         else
             @area_img.src = "#{@img_src}/#{@area_type}_#{@pos_type}.png"
 
-        @area_width = @area_img.getAttribute("width")
-        @area_height = @area_img.getAttribute("height")
-        @pointer_width = @pointer_img.getAttribute("width")
-        @pointer_height = @pointer_img.getAttribute("height")
+        @area_width = 64
+        @area_height = 64
+        @pointer_width = 64
+        @pointer_height = 64
         
-        echo @area_width + "," + @area_height
-        echo @pointer_width + "," + @pointer_height
+        @pointer_img.style.width = @pointer_width
+        @pointer_img.style.height = @pointer_height
+        @area_img.style.width = @area_width
+        @area_img.style.height = @area_height
         @element.style.width = @area_width + @pointer_width
         @element.style.height = @area_height + @pointer_height
+        @pointer_img.style.background = "rgba(0,10,120,0.3)"
+        @area_img.style.background = "rgba(120,125,120,0.3)"
+        @element.style.background = "rgba(0,125,120,0.3)"
 
-        
-        if @pos_type is POS_TYPE.leftdown or POS_TYPE.rightdown
-            echo "set_pos down"
-            set_pos(@pointer_img,0,0,"absolute")
-            set_pos(@area_img,@pointer_width,@pointer_height,"absolute")
-        else
-            echo "set_pos up"
-            set_pos(@area_img,0,0,"absolute")
-            set_pos(@pointer_img,@area_width,@area_height,"absolute")
+        set_pos(@area_img,0,0,"absolute",@pos_type)
+        set_pos(@pointer_img,@area_width,@area_height,"absolute",@pos_type)
 
-
-    get_el_pos : (type) ->
-        switch type
-            when POS_TYPE.leftup
-                @el_x = x
-                @el_y = y
-            when POS_TYPE.rightup
-                @el_x = x - @pointer_width
-                @el_y = y
-            when POS_TYPE.leftdown
-                @el_x = x
-                @el_y = y - @pointer_height
-            when POS_TYPE.rightdown
-                @el_x = x - @pointer_width
-                @el_y = y - @pointer_height
-        
-        @el_pos =
-            x:@el_x
-            y:@le_y
-            type:POS_TYPE.leftup
-        return @el_pos
 
     set_area_pos : (x,y,position_type = "fixed",type = POS_TYPE.leftup) ->
         set_pos(@element,x,y,position_type,type)
