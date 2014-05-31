@@ -38,8 +38,11 @@ class Guide
         #LauncherRightclick = new LauncherRightclick("LauncherRightclick_page")
         #@guide.add_page(LauncherRightclick)
         
-        LauncherMenu = new LauncherMenu("LauncherMenu_page")
-        @guide.add_page(LauncherMenu)
+        #LauncherMenu = new LauncherMenu("LauncherMenu_page")
+        #@guide.add_page(LauncherMenu)
+        
+        DesktopRichDir = new DesktopRichDir("DesktopRichDir_page")
+        @guide.add_page(DesktopRichDir)
         
 
 guide = new Guide()
