@@ -38,4 +38,19 @@ class DesktopRichDirCreated extends Page
         @show_message(@message)
         @show_tips(@tips)
         
+class DesktopCorner extends Page
+    constructor:(@id)->
+        super
+        
+        @message = _("鼠标滑动到四个顶角，可触发四个不同的事件")
+        @tips = _("tips：请按提示依次触发，点击空白区域可返回")
+        @show_message(@message)
+        @show_tips(@tips)
+        
+        @pos = ["leftup","rightup","leftdown","rightdown"]
+        @corner = []
+        for p,i in @pos
+            @corner[i] = new Pointer("corner_#{p}",@element)
+            @corner[i].create_pointer(AREA_TYPE.corner,POS_TYPE[p])
+            @corner[i].set_area_pos(0,0,"fixed",POS_TYPE[p])
 
