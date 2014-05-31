@@ -29,4 +29,13 @@ class DesktopRichDir extends Page
         @corner_leftup.create_pointer(AREA_TYPE.circle,POS_TYPE.leftup)
         @corner_leftup.set_area_pos(18,13,"fixed",POS_TYPE.leftup)
         
+class DesktopRichDirCreated extends Page
+    constructor:(@id)->
+        super
+        
+        @message = _("很好！您已经学会如何创建一个\“应用程序组\”")
+        @tips = _("tips：右键单击应用程序组将提供更多功能")
+        @show_message(@message)
+        @show_tips(@tips)
+        
 

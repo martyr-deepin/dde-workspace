@@ -41,8 +41,11 @@ class Guide
         #LauncherMenu = new LauncherMenu("LauncherMenu_page")
         #@guide.add_page(LauncherMenu)
         
-        DesktopRichDir = new DesktopRichDir("DesktopRichDir_page")
-        @guide.add_page(DesktopRichDir)
+        #DesktopRichDir = new DesktopRichDir("DesktopRichDir_page")
+        #@guide.add_page(DesktopRichDir)
+        
+        DesktopRichDirCreated = new DesktopRichDirCreated("DesktopRichDirCreated_page")
+        @guide.add_page(DesktopRichDirCreated)
         
 
 guide = new Guide()
