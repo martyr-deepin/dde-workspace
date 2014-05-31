@@ -13,7 +13,6 @@ class Dock
                 DOCK_REGION.interface
             )
             @dock_region = @dock_region_dbus.GetDockRegion_sync()
-            echo @dock_region
         catch e
             echo "#{DOCK_REGION}: dbus error:#{e}"
 

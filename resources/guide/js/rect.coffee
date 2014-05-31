@@ -30,7 +30,7 @@ class Rect extends Widget
         @myCanvas.style.width = @width
         @myCanvas.style.height = @height
         @ctx = @myCanvas.getContext("2d")
-        @ctx.strokeStyle = "rgba(0,0,0,0.8)"
+        @ctx.strokeStyle = "rgba(0,0,0,1.0)"
         @ctx.lineWidth = 1.5
         @ctx.strokeRect(0,0,@width,@height)
         

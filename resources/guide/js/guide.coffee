@@ -53,8 +53,11 @@ class Guide
         #DesktopZone = new DesktopZone("zone_page")
         #@guide.add_page(DesktopZone)
         
-        DssLaunch = new DssLaunch("dssLaunch_page")
-        @guide.add_page(DssLaunch)
+        #DssLaunch = new DssLaunch("dssLaunch_page")
+        #@guide.add_page(DssLaunch)
+        
+        DssArea = new DssArea("dssarea_page")
+        @guide.add_page(DssArea)
         
 
 guide = new Guide()
