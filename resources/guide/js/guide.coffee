@@ -47,8 +47,11 @@ class Guide
         #DesktopRichDirCreated = new DesktopRichDirCreated("DesktopRichDirCreated_page")
         #@guide.add_page(DesktopRichDirCreated)
         
-        DesktopCorner = new DesktopCorner("corner_page")
-        @guide.add_page(DesktopCorner)
+        #DesktopCorner = new DesktopCorner("corner_page")
+        #@guide.add_page(DesktopCorner)
+        
+        DesktopZone = new DesktopZone("zone_page")
+        @guide.add_page(DesktopZone)
         
 
 guide = new Guide()

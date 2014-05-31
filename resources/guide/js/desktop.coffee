@@ -54,3 +54,12 @@ class DesktopCorner extends Page
             @corner[i].create_pointer(AREA_TYPE.corner,POS_TYPE[p])
             @corner[i].set_area_pos(0,0,"fixed",POS_TYPE[p])
 
+class DesktopZone extends Page
+    constructor:(@id)->
+        super
+        
+        @message = _("在桌面上右键调出菜单，点击“桌面热区设置”可以设置刚才使用的热区")
+        @tips = _("tips：点击空白区域可返回")
+        @show_message(@message)
+        @show_tips(@tips)
+
