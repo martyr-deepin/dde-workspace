@@ -56,6 +56,7 @@ class Page extends Widget
         @element.style.webkitBoxAlign = "center"
         #@element.style.webkitBoxOrient = "vertical"
         @msg_tips = create_element("div","msg_tips",@element)
+        @msg_tips.style.position = "relative"
         @msg_tips.style.color = "#fff"
         @msg_tips.style.textAlign = "center"
         @msg_tips.style.textShadow = "0 1px 1px rgba(0,0,0,0.7)"
@@ -76,8 +77,6 @@ class Page extends Widget
         @tips_div.style.marginTop = "40px"
 
 
-    set_message_pos : (x,y,position_type = "fixed",type = POS_TYPE.leftup) ->
-        set_pos(@message_div,x,y,position_type,type)
         
 
 class PageContainer extends Widget

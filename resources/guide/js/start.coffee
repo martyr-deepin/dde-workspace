@@ -199,7 +199,7 @@ class MenuChoose extends Widget
 
 
 
-class Start extends Widget
+class Start extends Page
     constructor:(@id)->
         super
         echo "Start #{@id}"
@@ -208,7 +208,6 @@ class Start extends Widget
         @option = ["launcher","desktop","dss"]
         @option_text = [_("New Launcher"),_("New Desktop"),_("New System Settings")]
         @message_text = _("We will guide you to learn how to use some new functions")
-        @img_before = "img/"
 
         @guide_choose_build()
 
@@ -216,9 +215,9 @@ class Start extends Widget
         @guide_choose = create_element("div","guide_choose",@element)
         @menu = new MenuChoose("guide_menu")
         for option,i in @option
-            icon_path_normal = @img_before + "#{option}_normal.png"
-            icon_path_hover = @img_before + "#{option}_hover.png"
-            icon_path_press = @img_before + "#{option}_press.png"
+            icon_path_normal = @img_src + "#{option}_normal.png"
+            icon_path_hover = @img_src + "#{option}_hover.png"
+            icon_path_press = @img_src + "#{option}_press.png"
             @menu.insert(option, @option_text[i], icon_path_normal,icon_path_hover,icon_path_press,true,@message_text)
         @menu.frame_build()
         @menu.show()
@@ -227,16 +226,16 @@ class Start extends Widget
         @start_div = create_element("div","start_div",@guide_choose)
         @start_text = create_element("div","start_text",@start_div)
         @start_text.innerText = _("Start")
-        @start_img = create_img("start_img","#{@img_before}/start_normal.png",@start_div)
+        @start_img = create_img("start_img","#{@img_src}/start_normal.png",@start_div)
         @start_img.addEventListener("mouseover",=>
-            @start_img.src = "#{@img_before}/start_hover.png"
+            @start_img.src = "#{@img_src}/start_hover.png"
         )
         @start_img.addEventListener("mouseout",=>
-            @start_img.src = "#{@img_before}/start_normal.png"
+            @start_img.src = "#{@img_src}/start_normal.png"
         )
         @start_img.addEventListener("click",(e) =>
             e.stopPropagation()
-            @start_img.src = "#{@img_before}/start_press.png"
+            @start_img.src = "#{@img_src}/start_press.png"
             #TODO:switch_to_page(launcher_page)
         )
         

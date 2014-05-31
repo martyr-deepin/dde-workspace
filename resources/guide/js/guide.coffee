@@ -56,8 +56,11 @@ class Guide
         #DssLaunch = new DssLaunch("dssLaunch_page")
         #@guide.add_page(DssLaunch)
         
-        DssArea = new DssArea("dssarea_page")
-        @guide.add_page(DssArea)
+        #DssArea = new DssArea("dssarea_page")
+        #@guide.add_page(DssArea)
+        
+        End = new End("end_page")
+        @guide.add_page(End)
         
 
 guide = new Guide()
