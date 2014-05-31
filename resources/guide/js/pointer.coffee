@@ -27,7 +27,6 @@ class Pointer extends Widget
         parent?.appendChild(@element)
     
     create_pointer: (@area_type,@pos_type) ->
-        echo "create_pointer @pos_type:#{@pos_type},@area_type:#{@area_type}"
         @pointer_img = create_img("pointer_img","",@element)
         @area_img = create_img("area_img","",@element)
 

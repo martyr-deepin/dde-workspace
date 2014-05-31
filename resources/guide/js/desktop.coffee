@@ -63,3 +63,4 @@ class DesktopZone extends Page
         @show_message(@message)
         @show_tips(@tips)
 
+

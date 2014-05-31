@@ -1,4 +1,49 @@
 
+class Dock
+    DOCK_REGION =
+        name:"com.deepin.daemon.Dock"
+        path:"/dde/dock/DockRegion"
+        interface:"dde.dock.DockRegion"
+    
+    constructor: ->
+        try
+            @dock_region_dbus = DCore.DBus.session_object(
+                DOCK_REGION.name,
+                DOCK_REGION.path,
+                DOCK_REGION.interface
+            )
+            @dock_region = @dock_region_dbus.GetDockRegion_sync()
+            echo @dock_region
+        catch e
+            echo "#{DOCK_REGION}: dbus error:#{e}"
+
+    get_icon_pos: (icon_index) ->
+        @x0 = @dock_region[0]
+        @y0 = @dock_region[1]
+        @x1 = @dock_region[2]
+        @y1 = @dock_region[3]
+        
+        pos =
+            x0:0
+            y0:0
+            x1:0
+            y1:0
+        pos.x0 = @x0 + DOCK_PADDING + EACH_ICON * (icon_index - 1)
+        pos.y0 = @y0
+        pos.x1 = pos.x0 + ICON_SIZE
+        pos.y1 = pos.y0 + ICON_SIZE
+        
+        return pos
+    
+    get_launchericon_pos: ->
+        pos = @get_icon_pos(1)
+        return pos
+
+    get_dssicon_pos: ->
+        pos = @get_icon_pos(8)
+        return pos
+
+
 class Page extends Widget
     constructor: (@id)->
         super
@@ -35,6 +80,7 @@ class Page extends Widget
     set_message_pos : (x,y,position_type = "fixed",type = POS_TYPE.leftup) ->
         set_pos(@message_div,x,y,position_type,type)
         
+
 class PageContainer extends Widget
     constructor: (@id)->
         super
