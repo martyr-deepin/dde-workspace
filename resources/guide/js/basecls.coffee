@@ -94,7 +94,7 @@ class PageContainer extends Widget
             page = {}
             page.index = page_index
             page.cls = cls
-            page.cls_name = cls.id
+            page.name = cls.id
             echo page
             @pages.push(page)
         catch error

@@ -39,11 +39,11 @@ int main (int argc, char **argv)
 
 
     {
-	void guide_disable_dock_region();
-	void guide_disable_right_click();
+	/*void guide_disable_dock_region();*/
+	/*void guide_disable_right_click();*/
 	//TEST
-	guide_disable_dock_region();
-	guide_disable_right_click();
+	/*guide_disable_dock_region();*/
+	/*guide_disable_right_click();*/
     }
 
     GdkWindow* gdkwindow = gtk_widget_get_window (get_container());
