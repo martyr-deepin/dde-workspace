@@ -13,12 +13,12 @@ class Guide
         @pages = []
 
     create_page: ->
-        #welcome = new Welcome("welcome_page")
         #@pages.push(welcome)
+        #welcome = new Welcome("welcome_page")
         #@guide.add_page(welcome)
 
-        #start = new Start("start_page")
-        #@guide.add_page(start)
+        start = new Start("start_page")
+        @guide.add_page(start)
 
         #launcherLaunch = new LauncherLaunch("launcherLaunch_page")
         #@guide.add_page(launcherLaunch)
@@ -59,8 +59,8 @@ class Guide
         #DssArea = new DssArea("dssarea_page")
         #@guide.add_page(DssArea)
         
-        End = new End("end_page")
-        @guide.add_page(End)
+        #End = new End("end_page")
+        #@guide.add_page(End)
         
 
 guide = new Guide()
