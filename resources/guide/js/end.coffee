@@ -26,11 +26,27 @@ class End extends Page
         @tips = _("tips：请在深度账号内领取")
         @show_message(@message)
         @show_tips(@tips)
-        @msg_tips.style.top = "-10%"
-
+        #@msg_tips.style.top = "-10%"
+        
+        @element.style.webkitBoxOrient = "vertical"
         @choose_div = create_element("div","choose_div",@element)
-        @getReward = new ButtonNext("GetReward",_("Get"),@choose_div)
-        @getReward.create_button(=>
-            #TODO: open the deepin accounts web url
+        @get = new ButtonNext("get",_("Get"),@choose_div)
+        @get.create_button(=>
             echo "open the deepin accounts web url"
         )
+
+        @jump = create_element("div","jump_#{@id}",@get.element)
+        @jump.innerText = _("新用户直接跳到注册页面")
+        @jump.style.marginLeft = "1.6em"
+        @jump.style.fontSize = "1.6em"
+        @jump.style.lineHeight = "4.0em"
+
+        @end = new ButtonNext("end",_("End"),@choose_div)
+        @end.create_button(=>
+            echo "open the deepin accounts web url"
+        )
+
+        @choose_div.style.marginTop = "5em"
+        @end.element.style.marginTop = "2em"
+
+

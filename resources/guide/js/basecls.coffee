@@ -117,13 +117,15 @@ class ButtonNext extends Widget
     create_button:(@cb) ->
         @element.style.display = "-webkit-box"
         @element.style.height = "6.4em"
+        @element.style.color = "#fff"
+        @element.style.textShadow = "0 1px 1px rgba(0,0,0,0.7)"
         
         @bn_text = create_element("div","bn_text",@element)
         @bn_text.innerText = @text
-        @bn_text.style.lineHeight = "3.0em"
         @bn_text.style.fontSize = "2.2em"
+        @bn_text.style.lineHeight = "3.0em"
         @bn_text.style.textAlign = "right"
-        
+
         @bn_img = create_img("bn_img",@img_normal,@element)
         @bn_img.style.width = "6.4em"
         @bn_img.style.height = "6.4em"
