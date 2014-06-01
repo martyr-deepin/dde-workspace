@@ -50,7 +50,9 @@ int main (int argc, char **argv)
     gdk_window_move_resize(gdkwindow, 0, 0, gdk_screen_width(), gdk_screen_height());
 
     gdk_window_set_keep_above (gdkwindow, TRUE);
-    gdk_window_set_override_redirect (gdkwindow, TRUE);
+    gboolean focus = FALSE;
+    gdk_window_set_accept_focus (gdkwindow, focus);
+    gdk_window_set_override_redirect (gdkwindow, !focus);
 
     gtk_widget_show_all (get_container());
 
