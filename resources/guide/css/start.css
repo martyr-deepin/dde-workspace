@@ -22,28 +22,6 @@
 }
 
 
-.start_div{
-    position:relative;
-    margin-top:22em;
-    display:-webkit-box;
-    height:6.4em;
-}
-
-.start_text{
-    line-height:3.0em;
-    font-size:2.2em;
-    text-align:right;
-    text-shadow: 0 0.2em 0.2em rgba(0,0,0,0.5);
-}
-
-.start_img{
-    width:6.4em;
-    height:6.4em;
-}
-.start_img:hover{
-    cursor: pointer;
-}
-
 .older{
     position:absolute;
     right:5em;
