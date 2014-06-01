@@ -80,12 +80,23 @@ class Page extends Widget
         
 
 class PageContainer extends Widget
+    page_index = 0
+    
     constructor: (@id)->
         super
+        @pages = []
+        page_index = 0
 
-    add_page: (page_id) ->
+    add_page: (cls) ->
         try
-            @element.appendChild(page_id.element)
+            @element.appendChild(cls.element)
+            page_index++
+            page = {}
+            page.index = page_index
+            page.cls = cls
+            page.cls_name = cls.id
+            echo page
+            @pages.push(page)
         catch error
             echo error
 

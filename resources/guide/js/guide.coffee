@@ -12,57 +12,106 @@ class Guide
         document.body.appendChild(@guide.element)
         @pages = []
 
-    create_page: ->
-        #@pages.push(welcome)
-        #welcome = new Welcome("welcome_page")
-        #@guide.add_page(welcome)
+    create_page: (cls_name)->
+        switch cls_name
+            when "Welcome"
+                DCore.Guide.disable_right_click()
+                DCore.Guide.disable_keyboard()
+                DCore.Guide.disable_dock_region()
+                page = new Welcome(cls_name)
+            
+            when "Start"
+                DCore.Guide.disable_right_click()
+                DCore.Guide.disable_keyboard()
+                DCore.Guide.disable_dock_region()
+                page = new Start(cls_name)
+            
+            when "LauncherLaunch"
+                DCore.Guide.disable_right_click()
+                DCore.Guide.disable_keyboard()
+                DCore.Guide.disable_dock_region()
+                page = new LauncherLaunch(cls_name)
 
-        start = new Start("start_page")
-        @guide.add_page(start)
+            when "LauncherCollect"
+                DCore.Guide.disable_right_click()
+                DCore.Guide.disable_keyboard()
+                DCore.Guide.disable_dock_region()
+                page = new LauncherCollect(cls_name)
 
-        #launcherLaunch = new LauncherLaunch("launcherLaunch_page")
-        #@guide.add_page(launcherLaunch)
-
-        #launcherCollect = new LauncherCollect("launcherCollect_page")
-        #@guide.add_page(launcherCollect)
-
-        #LauncherAllApps = new LauncherAllApps("LauncherAllApps_page")
-        #@guide.add_page(LauncherAllApps)
-        
-        #LauncherScroll = new LauncherScroll("LauncherScroll_page")
-        #@guide.add_page(LauncherScroll)
-        
-        #LauncherSearch = new LauncherSearch("LauncherSearch_page")
-        #@guide.add_page(LauncherSearch)
-        
-        #LauncherRightclick = new LauncherRightclick("LauncherRightclick_page")
-        #@guide.add_page(LauncherRightclick)
-        
-        #LauncherMenu = new LauncherMenu("LauncherMenu_page")
-        #@guide.add_page(LauncherMenu)
-        
-        #DesktopRichDir = new DesktopRichDir("DesktopRichDir_page")
-        #@guide.add_page(DesktopRichDir)
-        
-        #DesktopRichDirCreated = new DesktopRichDirCreated("DesktopRichDirCreated_page")
-        #@guide.add_page(DesktopRichDirCreated)
-        
-        #DesktopCorner = new DesktopCorner("corner_page")
-        #@guide.add_page(DesktopCorner)
-        
-        #DesktopZone = new DesktopZone("zone_page")
-        #@guide.add_page(DesktopZone)
-        
-        #DssLaunch = new DssLaunch("dssLaunch_page")
-        #@guide.add_page(DssLaunch)
-        
-        #DssArea = new DssArea("dssarea_page")
-        #@guide.add_page(DssArea)
-        
-        #End = new End("end_page")
-        #@guide.add_page(End)
-        
+            when "LauncherAllApps"
+                DCore.Guide.disable_right_click()
+                DCore.Guide.disable_keyboard()
+                DCore.Guide.disable_dock_region()
+                page = new LauncherAllApps(cls_name)
+                
+            when "LauncherScroll"
+                DCore.Guide.disable_right_click()
+                DCore.Guide.disable_keyboard()
+                DCore.Guide.disable_dock_region()
+                page = new LauncherScroll(cls_name)
+                
+            when "LauncherSearch"
+                DCore.Guide.disable_right_click()
+                DCore.Guide.disable_keyboard()
+                DCore.Guide.disable_dock_region()
+                page = new LauncherSearch(cls_name)
+                
+            when "LauncherRightclick"
+                DCore.Guide.disable_right_click()
+                DCore.Guide.disable_keyboard()
+                DCore.Guide.disable_dock_region()
+                page = new LauncherRightclick(cls_name)
+                
+            when "LauncherMenu"
+                DCore.Guide.disable_right_click()
+                DCore.Guide.disable_keyboard()
+                DCore.Guide.disable_dock_region()
+                page = new LauncherMenu(cls_name)
+                
+            when "DesktopRichDir"
+                DCore.Guide.disable_right_click()
+                DCore.Guide.disable_keyboard()
+                DCore.Guide.disable_dock_region()
+                page = new DesktopRichDir(cls_name)
+                
+            when "DesktopRichDirCreated"
+                DCore.Guide.disable_right_click()
+                DCore.Guide.disable_keyboard()
+                DCore.Guide.disable_dock_region()
+                page = new DesktopRichDirCreated(cls_name)
+                
+            when "DesktopCorner"
+                DCore.Guide.disable_right_click()
+                DCore.Guide.disable_keyboard()
+                DCore.Guide.disable_dock_region()
+                page = new DesktopCorner(cls_name)
+                
+            when "DesktopZone"
+                DCore.Guide.disable_right_click()
+                DCore.Guide.disable_keyboard()
+                DCore.Guide.disable_dock_region()
+                page = new DesktopZone(cls_name)
+                
+            when "DssLaunch"
+                DCore.Guide.disable_right_click()
+                DCore.Guide.disable_keyboard()
+                DCore.Guide.disable_dock_region()
+                page = new DssLaunch(cls_name)
+                
+            when "DssArea"
+                DCore.Guide.disable_right_click()
+                DCore.Guide.disable_keyboard()
+                DCore.Guide.disable_dock_region()
+                page = new DssArea(cls_name)
+                
+            when "End"
+                DCore.Guide.disable_right_click()
+                DCore.Guide.disable_keyboard()
+                DCore.Guide.disable_dock_region()
+                page = new End(cls_name)
+            
+        @guide.add_page(page)
 
 guide = new Guide()
-guide.create_page()
+guide.create_page("Start")
 
