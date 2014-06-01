@@ -16,13 +16,13 @@ class Guide
         switch cls_name
             when "Welcome"
                 DCore.Guide.disable_right_click()
-                DCore.Guide.disable_keyboard()
+                #DCore.Guide.disable_keyboard()
                 DCore.Guide.disable_dock_region()
                 page = new Welcome(cls_name)
             
             when "Start"
                 DCore.Guide.disable_right_click()
-                DCore.Guide.disable_keyboard()
+                #DCore.Guide.disable_keyboard()
                 DCore.Guide.disable_dock_region()
                 page = new Start(cls_name)
             
@@ -113,5 +113,5 @@ class Guide
         @guide.add_page(page)
 
 guide = new Guide()
-guide.create_page("Start")
+guide.create_page("LauncherLaunch")
 
