@@ -28,73 +28,67 @@ class Guide
             
             when "LauncherLaunch"
                 DCore.Guide.disable_right_click()
-                DCore.Guide.disable_keyboard()
-                DCore.Guide.disable_dock_region()
+                #DCore.Guide.disable_keyboard()
+                DCore.Guide.enable_dock_region()
                 page = new LauncherLaunch(cls_name)
 
             when "LauncherCollect"
                 DCore.Guide.disable_right_click()
-                DCore.Guide.disable_keyboard()
+                #DCore.Guide.disable_keyboard()
                 DCore.Guide.disable_dock_region()
                 page = new LauncherCollect(cls_name)
 
             when "LauncherAllApps"
                 DCore.Guide.disable_right_click()
-                DCore.Guide.disable_keyboard()
+                #DCore.Guide.disable_keyboard()
                 DCore.Guide.disable_dock_region()
                 page = new LauncherAllApps(cls_name)
                 
             when "LauncherScroll"
                 DCore.Guide.disable_right_click()
-                DCore.Guide.disable_keyboard()
+                #DCore.Guide.disable_keyboard()
                 DCore.Guide.disable_dock_region()
                 page = new LauncherScroll(cls_name)
                 
             when "LauncherSearch"
                 DCore.Guide.disable_right_click()
-                DCore.Guide.disable_keyboard()
+                #DCore.Guide.disable_keyboard()
                 DCore.Guide.disable_dock_region()
                 page = new LauncherSearch(cls_name)
                 
             when "LauncherRightclick"
                 DCore.Guide.disable_right_click()
-                DCore.Guide.disable_keyboard()
-                DCore.Guide.disable_dock_region()
-                page = new LauncherRightclick(cls_name)
-                
-            when "LauncherMenu"
-                DCore.Guide.disable_right_click()
-                DCore.Guide.disable_keyboard()
+                #DCore.Guide.disable_keyboard()
                 DCore.Guide.disable_dock_region()
                 page = new LauncherMenu(cls_name)
                 
             when "DesktopRichDir"
                 DCore.Guide.disable_right_click()
-                DCore.Guide.disable_keyboard()
+                #DCore.Guide.disable_keyboard()
                 DCore.Guide.disable_dock_region()
                 page = new DesktopRichDir(cls_name)
                 
             when "DesktopRichDirCreated"
                 DCore.Guide.disable_right_click()
-                DCore.Guide.disable_keyboard()
+                #DCore.Guide.disable_keyboard()
                 DCore.Guide.disable_dock_region()
                 page = new DesktopRichDirCreated(cls_name)
                 
             when "DesktopCorner"
                 DCore.Guide.disable_right_click()
-                DCore.Guide.disable_keyboard()
+                #DCore.Guide.disable_keyboard()
                 DCore.Guide.disable_dock_region()
                 page = new DesktopCorner(cls_name)
                 
             when "DesktopZone"
                 DCore.Guide.disable_right_click()
-                DCore.Guide.disable_keyboard()
+                #DCore.Guide.disable_keyboard()
                 DCore.Guide.disable_dock_region()
                 page = new DesktopZone(cls_name)
                 
             when "DssLaunch"
                 DCore.Guide.disable_right_click()
-                DCore.Guide.disable_keyboard()
+                #DCore.Guide.disable_keyboard()
                 DCore.Guide.disable_dock_region()
                 page = new DssLaunch(cls_name)
                 
