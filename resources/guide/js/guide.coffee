@@ -13,7 +13,6 @@ class Guide
         @pages = []
 
     create_page: (cls_name)->
-        cls_name = "Start"
         switch cls_name
             when "Welcome"
                 DCore.Guide.disable_keyboard()
@@ -45,9 +44,8 @@ class Guide
                 page = new Start(cls_name)
             
             when "LauncherLaunch"
-                DCore.Guide.enable_right_click()
-                #DCore.Guide.disable_keyboard()
-                DCore.Guide.enable_dock_region()
+                DCore.Guide.disable_keyboard()
+                DCore.Guide.disable_right_click()
                 page = new LauncherLaunch(cls_name)
 
             when "LauncherCollect"
@@ -125,5 +123,5 @@ class Guide
         @guide.add_page(page)
 
 guide = new Guide()
-guide.create_page("Start")
+guide.create_page("LauncherLaunch")
 

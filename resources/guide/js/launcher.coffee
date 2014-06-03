@@ -23,6 +23,12 @@ class LauncherLaunch extends Page
     constructor:(@id)->
         super
         
+        LAUNCHER = "com.deepin.dde.launcher"
+        try
+            @launcher_dbus = DCore.DBus.session(LAUNCHER)
+        catch e
+            console.log "launcher_dbus error :#{e}"
+        
         @dock = new Dock()
         
         @message = _("Move the mouse to Left up corner , or you can click the launcher icon to launch \" Application Launcher\"")
@@ -33,7 +39,9 @@ class LauncherLaunch extends Page
         @corner_leftup.set_area_pos(0,0,"fixed",POS_TYPE.leftup)
         
         @circle = new Pointer("launcher_circle",@element)
-        @circle.create_pointer(AREA_TYPE.circle,POS_TYPE.rightdown)
+        @circle.create_pointer(AREA_TYPE.circle,POS_TYPE.rightdown,=>
+            @launcher_dbus?.Toggle()
+        )
         @pos = @dock.get_launchericon_pos()
         @circle_x = @pos.x0 - @circle.pointer_width + ICON_MARGIN_H
         @circle_y = @pos.y0 - @circle.pointer_height - ICON_MARGIN_V_BOTTOM / 2
@@ -57,7 +65,7 @@ class LauncherCollect extends Page
 class LauncherAllApps extends Page
     constructor:(@id)->
         super
-        
+
         @pointer = new Pointer("ClickToAllApps",@element)
         @pointer.create_pointer(AREA_TYPE.circle,POS_TYPE.leftup)
         @pointer.set_area_pos(25,25)

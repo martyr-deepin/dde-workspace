@@ -26,7 +26,7 @@ class Pointer extends Widget
         @img_src = "img"
         parent?.appendChild(@element)
     
-    create_pointer: (@area_type,@pos_type) ->
+    create_pointer: (@area_type,@pos_type,@cb) ->
         @pointer_img = create_img("pointer_img","",@element)
         @area_img = create_img("area_img","",@element)
 
@@ -53,10 +53,11 @@ class Pointer extends Widget
 
         set_pos(@area_img,0,0,"absolute",@pos_type)
         set_pos(@pointer_img,@area_width,@area_height,"absolute",@pos_type)
-
+        @area_img.addEventListener("click",=>
+            console.log "area #{@id} click"
+            @cb?()
+        )
 
     set_area_pos : (x,y,position_type = "fixed",type = POS_TYPE.leftup) ->
         set_pos(@element,x,y,position_type,type)
-
-
 
