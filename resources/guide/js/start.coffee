@@ -58,5 +58,5 @@ class Start extends Page
         @older.addEventListener("click",(e) =>
             e.stopPropagation()
             #TODO:gtk_main_quit()
-            #DCore.Guide.quit()
+            DCore.Guide.quit()
         )
