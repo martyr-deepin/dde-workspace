@@ -58,7 +58,7 @@ class Accounts
             @get_dbus_failed = true
 
         try
-            @Dbus_Graphic = get_dbus("session", GRAPHIC, "BackgroundBlurPictPath")
+            @Dbus_Graphic = DCore.DBus.session(GRAPHIC)
         catch e
             echo "#{GRAPHIC} dbus ERROR: #{e}"
             @get_dbus_failed = true
