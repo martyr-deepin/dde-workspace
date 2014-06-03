@@ -13,7 +13,7 @@ class Guide
         @pages = []
 
     create_page: (cls_name)->
-        cls_name = "Welcome"
+        cls_name = "Start"
         switch cls_name
             when "Welcome"
                 DCore.Guide.disable_keyboard()
@@ -21,13 +21,12 @@ class Guide
                 page = new Welcome(cls_name)
             
             when "Start"
-                #DCore.Guide.disable_keyboard()
+                DCore.Guide.disable_keyboard()
                 #DCore.Guide.enable_keyboard()
-                
 
                 # only guide has left click ,not right_click
                 # desktop launcher dock all event disable
-                #DCore.Guide.disable_right_click()
+                DCore.Guide.disable_right_click()
                 
                 # only guide has left click and right_click
                 # desktop  launcher dock all event disable
@@ -41,7 +40,7 @@ class Guide
                 
                 # guide all event enable
                 # desktop launcher dock all event disbable
-                DCore.Guide.enable_guide_region()
+                #DCore.Guide.enable_guide_region()
                 
                 page = new Start(cls_name)
             
