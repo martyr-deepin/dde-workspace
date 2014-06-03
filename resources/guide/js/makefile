@@ -3,5 +3,5 @@ com_coffee = ${com_dir}/config.coffee ${com_dir}/utils.coffee ${com_dir}/animati
 
 util = utils.coffee basecls.coffee pointer.coffee rect.coffee 
 module = welcome.coffee start.coffee launcher.coffee desktop.coffee dss.coffee end.coffee
-all: ${com_coffee} ${util} ${module} guide.coffee
+all: ${com_coffee} ${util} ${module} main.coffee
 	coffee -cj guide.js $^

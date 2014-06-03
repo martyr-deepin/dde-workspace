@@ -153,7 +153,7 @@ class ButtonNext extends Widget
         @bn_img.addEventListener("click",(e) =>
             e.stopPropagation()
             @bn_img.src = @img_press
-            #TODO:switch_to_page(launcher_page)
+            #TODO:switch_to_page
             @cb?()
         )
 
