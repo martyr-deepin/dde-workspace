@@ -45,8 +45,8 @@ class Guide
             when "LauncherLaunch"
                 DCore.Guide.disable_keyboard()
                 DCore.Guide.disable_right_click()
-                EnableZoneDetect(true)
                 page = new LauncherLaunch(cls_name)
+                enableZoneDetect(true)
 
             when "LauncherCollect"
                 DCore.Guide.disable_right_click()
@@ -123,5 +123,5 @@ class Guide
         @guide.add_page(page)
 
 guide = new Guide()
-guide.create_page("LauncherLaunch")
+guide.create_page("Start")
 
