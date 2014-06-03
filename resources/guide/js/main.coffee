@@ -1,1 +1,1 @@
-guide?.create_page("Start")
+guide?.create_page("LauncherCollect")

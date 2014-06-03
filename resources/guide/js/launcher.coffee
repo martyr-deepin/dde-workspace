@@ -41,6 +41,7 @@ class LauncherLaunch extends Page
         @circle = new Pointer("launcher_circle",@element)
         @circle.create_pointer(AREA_TYPE.circle,POS_TYPE.rightdown,=>
             @launcher_dbus?.Toggle()
+            guide?.switch_page(@,"LauncherCollect")
         )
         @pos = @dock.get_launchericon_pos()
         @circle_x = @pos.x0 - @circle.pointer_width + ICON_MARGIN_H
@@ -60,14 +61,16 @@ class LauncherCollect extends Page
         
         @message = _("There are some collect applications in the first page of \"launcher\"")
         @show_message(@message)
-        @message_div.style.marginTop = "150px"
+        @msg_tips.style.marginTop = "150px"
 
 class LauncherAllApps extends Page
     constructor:(@id)->
         super
 
         @pointer = new Pointer("ClickToAllApps",@element)
-        @pointer.create_pointer(AREA_TYPE.circle,POS_TYPE.leftup)
+        @pointer.create_pointer(AREA_TYPE.circle,POS_TYPE.leftup,=>
+                DCore.Guide.disable_guide_region()
+        )
         @pointer.set_area_pos(25,25)
         
         @message = _("There are some collect applications in the first page of \"launcher\"")
