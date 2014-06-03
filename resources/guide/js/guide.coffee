@@ -21,13 +21,34 @@ class Guide
                 page = new Welcome(cls_name)
             
             when "Start"
-                DCore.Guide.disable_right_click()
                 #DCore.Guide.disable_keyboard()
-                DCore.Guide.disable_dock_region()
+                #DCore.Guide.enable_keyboard()
+                
+
+
+                # only guide has left click ,not right_click
+                # desktop launcher dock all event diable
+                #DCore.Guide.disable_right_click()
+                
+                # only guide has left click and right_click
+                # desktop dock has nothing event
+                #DCore.Guide.enable_right_click()
+                
+
+
+                # guide all event disable
+                # desktop launcher all event enable
+                # dock all event disable
+                #DCore.Guide.disable_dock_region()
+                
+                # guide all event enable
+                # desktop launcher dock all event disbable
+                DCore.Guide.enable_dock_region()
+                
                 page = new Start(cls_name)
             
             when "LauncherLaunch"
-                DCore.Guide.disable_right_click()
+                DCore.Guide.enable_right_click()
                 #DCore.Guide.disable_keyboard()
                 DCore.Guide.enable_dock_region()
                 page = new LauncherLaunch(cls_name)
@@ -107,5 +128,5 @@ class Guide
         @guide.add_page(page)
 
 guide = new Guide()
-guide.create_page("LauncherLaunch")
+guide.create_page("Start")
 
