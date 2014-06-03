@@ -210,6 +210,13 @@ int main (int argc, char **argv)
     g_option_context_add_main_entries(ctx, entries, NULL);
     g_option_context_add_group(ctx, gtk_get_option_group(TRUE));
 
+    if (argc == 1){
+        g_warning("please input the option\n");
+        const gchar * help = g_option_context_get_help(ctx,TRUE,gtk_get_option_group(TRUE));
+        g_message("%s",help);
+        return 0;
+    }
+
     GError* error = NULL;
     if (!g_option_context_parse(ctx, &argc, &argv, &error)) {
         g_warning("%s", error->message);
@@ -217,7 +224,6 @@ int main (int argc, char **argv)
         g_option_context_free(ctx);
         return 0;
     }
-
     gtk_init (&argc, &argv);
     
     container = create_web_container (FALSE, TRUE);
