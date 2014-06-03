@@ -46,7 +46,7 @@ class Start extends Page
         @start = new ButtonNext("start",_("Start"),@guide_choose)
         @start.create_button(=>
             #TODO:switch_to_page(launcher_page)
-            echo "switch_to_page(launcher_page)"
+            guide?.switch_page(@,"LauncherLaunch")
         )
         @start.element.style.position = "relative"
         @start.element.style.marginTop = "22em"

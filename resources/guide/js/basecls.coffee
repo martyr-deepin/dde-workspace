@@ -81,39 +81,6 @@ class Page extends Widget
 
         
 
-class PageContainer extends Widget
-    page_index = 0
-    
-    constructor: (@id)->
-        super
-        @pages = []
-        page_index = 0
-
-    add_page: (cls) ->
-        try
-            @element.appendChild(cls.element)
-            page_index++
-            page = {}
-            page.index = page_index
-            page.cls = cls
-            page.name = cls.id
-            echo page
-            @pages.push(page)
-        catch error
-            echo error
-
-    remove_page: (page_id) ->
-        try
-            @element.removeChild(page_id.element)
-        catch error
-            echo error
-
-    switch_page: (old_page, new_page) ->
-        echo "switch page"
-
-    current_page: ->
-        echo "current_page"
-
 
 class ButtonNext extends Widget
     constructor: (@id,@text,@parent)->
