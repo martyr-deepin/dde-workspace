@@ -98,9 +98,7 @@ class Trash extends PostfixedItem
                 _("Are you sure to remove") + " \"#{@data.name}\"",
                 _("All dependences will be removed"),
                 ["1", _("no"), "2", _("yes")])
-            return
-
-        if dnd_is_file(evt) or dnd_is_desktop(evt)
+        else if dnd_is_file(evt) or dnd_is_desktop(evt)
             tmp_list = []
             for file in dt.files
                 e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
@@ -171,13 +169,13 @@ uninstallSignalHandler = (clss, info)->
     if status == UNINSTALL_STATUS.FAILED
         message = "uninstall #{package_name} #{info[0][1][3]}"
         for own id, item of clss.uninstalling_apps
-            if item.packages.indexOf(package_name) != -1
+            if item.package_name == package_name
                 delete clss.uninstalling_apps[item.id]
                 break
     else if status == UNINSTALL_STATUS.SUCCESS
         message = "uninstall #{package_name} success"
         for own id, item of clss.uninstalling_apps
-            if item.packages.indexOf(package_name) != -1
+            if item.package_name == package_name
                 delete clss.uninstalling_apps[item.id]
     console.log "uninstall: #{message}"
     if message
