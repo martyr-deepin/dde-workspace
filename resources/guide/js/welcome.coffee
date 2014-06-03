@@ -25,6 +25,8 @@ class Welcome extends Widget
         echo "welcome #{@id}"
         
         inject_css(@element,"css/welcome.css")
+        DEFAULT_BG = "/usr/share/backgrounds/default_background.jpg"
+        document.body.style.backgroundImage = "url(#{DEFAULT_BG})"
         
         @logo = create_element("div","logo",@element)
         @logo_img = create_img("logo_img","",@logo)

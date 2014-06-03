@@ -13,11 +13,11 @@ class Guide
         @pages = []
 
     create_page: (cls_name)->
+        cls_name = "Welcome"
         switch cls_name
             when "Welcome"
+                DCore.Guide.disable_keyboard()
                 DCore.Guide.disable_right_click()
-                #DCore.Guide.disable_keyboard()
-                DCore.Guide.disable_dock_region()
                 page = new Welcome(cls_name)
             
             when "Start"
