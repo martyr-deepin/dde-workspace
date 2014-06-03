@@ -49,6 +49,8 @@ class Page extends Widget
         echo "new #{@id} Page"
         @img_src = "img"
         
+        EnableZoneDetect(false)
+
         @element.style.display = "-webkit-box"
         @element.style.width = "100%"
         @element.style.height = "100%"

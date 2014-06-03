@@ -1,4 +1,3 @@
-
 class Guide
 
     constructor:->
@@ -46,6 +45,7 @@ class Guide
             when "LauncherLaunch"
                 DCore.Guide.disable_keyboard()
                 DCore.Guide.disable_right_click()
+                EnableZoneDetect(true)
                 page = new LauncherLaunch(cls_name)
 
             when "LauncherCollect"

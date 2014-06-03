@@ -58,5 +58,6 @@ class Start extends Page
         @older.addEventListener("click",(e) =>
             e.stopPropagation()
             #TODO:gtk_main_quit()
+            EnableZoneDetect(true)
             DCore.Guide.quit()
         )
