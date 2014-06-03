@@ -329,6 +329,7 @@ void dock_emit_webview_ok()
         init_config();
         update_dock_size_mode();
         init_dock_guard_window();
+        g_spawn_command_line_async("/usr/bin/dde-dock-applets", NULL);
     } else {
         update_dock_size_mode();
     }
