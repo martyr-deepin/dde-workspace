@@ -47,9 +47,9 @@ class Pointer extends Widget
         @area_img.style.height = @area_height
         @element.style.width = @area_width + @pointer_width
         @element.style.height = @area_height + @pointer_height
-        @pointer_img.style.background = "rgba(0,10,120,0.3)"
-        @area_img.style.background = "rgba(120,125,120,0.3)"
-        @element.style.background = "rgba(0,125,120,0.3)"
+        #@pointer_img.style.background = "rgba(0,10,120,0.3)"
+        #@area_img.style.background = "rgba(120,125,120,0.3)"
+        #@element.style.background = "rgba(0,125,120,0.3)"
 
         set_pos(@area_img,0,0,"absolute",@pos_type)
         set_pos(@pointer_img,@area_width,@area_height,"absolute",@pos_type)
