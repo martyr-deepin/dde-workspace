@@ -10,12 +10,18 @@ void guide_quit()
 {
     gtk_main_quit();
 }
+                
+// only guide has left click ,not right_click
+// desktop launcher dock all event disable
 JS_EXPORT_API
 void guide_disable_right_click()
 {
     Display* dpy = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
     XGrabButton(dpy, Button3, AnyModifier, DefaultRootWindow(dpy), True, ButtonPressMask | ButtonReleaseMask, GrabModeAsync, GrabModeAsync, None, None);
 }
+
+// only guide has left click and right_click
+// desktop launcher dock all event disable
 JS_EXPORT_API
 void guide_enable_right_click()
 {
@@ -88,8 +94,12 @@ Window get_dock_xid()
     return xid;
 }
 
+
+// guide all event disable
+// desktop launcher all event enable
+// dock all event disable
 JS_EXPORT_API
-void guide_disable_dock_region()
+void guide_disable_guide_region()
 {
     //TODO: find the dock XID
     Window dock = get_dock_xid();
@@ -103,8 +113,10 @@ void guide_disable_dock_region()
     cairo_region_destroy(dock_region);
 }
 
+// guide all event enable
+// desktop launcher dock all event disbable
 JS_EXPORT_API
-void guide_enable_dock_region()
+void guide_enable_guide_region()
 {
     gdk_window_input_shape_combine_region(gtk_widget_get_window(get_container()), NULL, 0, 0);
 }

@@ -25,25 +25,23 @@ class Guide
                 #DCore.Guide.enable_keyboard()
                 
 
-
                 # only guide has left click ,not right_click
-                # desktop launcher dock all event diable
+                # desktop launcher dock all event disable
                 #DCore.Guide.disable_right_click()
                 
                 # only guide has left click and right_click
-                # desktop dock has nothing event
+                # desktop  launcher dock all event disable
                 #DCore.Guide.enable_right_click()
                 
-
 
                 # guide all event disable
                 # desktop launcher all event enable
                 # dock all event disable
-                #DCore.Guide.disable_dock_region()
+                #DCore.Guide.disable_guide_region()
                 
                 # guide all event enable
                 # desktop launcher dock all event disbable
-                DCore.Guide.enable_dock_region()
+                DCore.Guide.enable_guide_region()
                 
                 page = new Start(cls_name)
             
