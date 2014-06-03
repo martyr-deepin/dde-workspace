@@ -28,8 +28,4 @@ install(
     DESTINATION ${RESOURCE_DIR}
     )
 
-install(
-    FILES ${CMAKE_CURRENT_SOURCE_DIR}/dde-osd.desktop
-    DESTINATION /etc/xdg/autostart/ 
-    )
 GEN_JS_FILE(${NAME_SRC})
