@@ -6,7 +6,6 @@ ICON_SIZE = 48
 
 EACH_ICON = ICON_MARGIN_H + ICON_SIZE
         
-
 POS_TYPE =
     leftup:"leftup"
     leftdown:"leftdown"
@@ -20,8 +19,15 @@ AREA_TYPE =
     circle_white:"circle_white"
     corner:"corner"
 
+CLICK_TYPE =
+    leftclick:1
+    copy:2
+    rightclick:3
+    scrollup:4
+    scrolldown:5
 
-cls_all = [
+
+pages_id = [
     "Welcome",
     "Start",
     "LauncherLaunch",

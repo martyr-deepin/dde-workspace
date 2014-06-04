@@ -27,7 +27,7 @@ class Start extends Page
         inject_css(@element,"css/start.css")
         @option = ["launcher","desktop","dss"]
         @option_text = [_("New Launcher"),_("New Desktop"),_("New System Settings")]
-        @message_text = _("We will guide you to learn how to use some new functions")
+        @message_text = _("下面将引导您学习如何使用一些新功能")
 
         @guide_choose_build()
 
@@ -36,8 +36,8 @@ class Start extends Page
         @menu = new MenuChoose("guide_menu")
         for option,i in @option
             icon_path_normal = "#{@img_src}/#{option}_normal.png"
-            icon_path_hover = "#{@img_src}/#{option}_hover.png"
-            icon_path_press = "#{@img_src}/#{option}_press.png"
+            icon_path_hover = "#{@img_src}/#{option}_normal.png"
+            icon_path_press = "#{@img_src}/#{option}_normal.png"
             @menu.insert(option, @option_text[i], icon_path_normal,icon_path_hover,icon_path_press,true,@message_text)
         @menu.frame_build()
         @menu.show()

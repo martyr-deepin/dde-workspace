@@ -50,14 +50,13 @@
 
 .opt{
     position:relative;
-    cursor: pointer;
     display:-webkit-box;
     -webkit-box-orient:vertical;
     -webkit-box-pack:center;
     -webkit-box-align:center;
 }
 .opt:hover{
-    cursor: pointer;
+    /*cursor: pointer;*/
 }
 
 .opt_img{

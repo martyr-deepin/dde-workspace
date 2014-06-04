@@ -44,3 +44,6 @@ class Rect extends Widget
     
     set_pos : (x,y,position_type = "fixed",type = POS_TYPE.leftup) ->
         set_pos(@element,x,y,position_type,type)
+
+    rect_show_animation: ->
+        @rect.style.backgroundColor = "#e0e"

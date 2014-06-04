@@ -110,8 +110,6 @@ void monitors_adaptive(GtkWidget* container, GtkWidget* child)
     GdkScreen *screen;
     GdkRectangle geometry;
 
-    gdk_window_set_composited(gtk_widget_get_window(child), TRUE);
-    
     screen = gdk_screen_get_default();
     gdk_screen_get_monitor_geometry (screen, gdk_screen_get_primary_monitor(screen), &geometry);
     g_message("primary monitor width:%d,height:%d;",geometry.width,geometry.height);
