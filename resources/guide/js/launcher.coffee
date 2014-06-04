@@ -23,13 +23,8 @@ class LauncherLaunch extends Page
     constructor:(@id)->
         super
         
-        LAUNCHER = "com.deepin.dde.launcher"
-        try
-            @launcher_dbus = DCore.DBus.session(LAUNCHER)
-        catch e
-            console.log "launcher_dbus error :#{e}"
-        
         @dock = new Dock()
+        @launcher = new Launcher()
         
         @message = _("鼠标滑动到左上角，或者点击启动器图标都可以启动\“应用程序启动器\”")
         @show_message(@message)
@@ -40,7 +35,7 @@ class LauncherLaunch extends Page
         
         @circle = new Pointer("launcher_circle",@element)
         @circle.create_pointer(AREA_TYPE.circle,POS_TYPE.rightdown,=>
-            @launcher_dbus?.Toggle()
+            @launcher?.toggle()
             guide?.switch_page(@,"LauncherCollect")
         )
         @pos = @dock.get_launchericon_pos()
@@ -128,6 +123,7 @@ class LauncherSearch extends Page
         @show_message(@message)
         @show_tips(@tips)
 
+        simulate_input(@,"deepin","LauncherMenu")
 
 class LauncherRightclick extends Page
     constructor:(@id)->
@@ -137,16 +133,25 @@ class LauncherRightclick extends Page
         @tips = _("tips:你也可以直接用鼠标左键拖拽图标到dock、收藏图标上或者垃圾箱上")
         @show_message(@message)
         @show_tips(@tips)
-        simulate_input(@,"deepin","LauncherMenu")
+        setTimeout(=>
+            guide?.switch_page(@,"LauncherMenu")
+        ,2000)
 
 class LauncherMenu extends Page
     constructor:(@id)->
         super
+        
+        @launcher = new Launcher()
         
         @message = _("使用鼠标右键发送2个图标到桌面")
         @show_message(@message)
 
         @menu = create_img("menu_#{@id}","#{@img_src}/menu.png",@element)
         set_pos(@menu,"41%","55%")
-
+        
+        setTimeout(=>
+            guide?.switch_page(@,"DesktopRichDir")
+            @launcher?.hide()
+            #DCore.Guide.show_desktop()
+        ,2000)
 

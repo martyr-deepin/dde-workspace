@@ -1,4 +1,22 @@
 
+class Launcher
+    LAUNCHER = "com.deepin.dde.launcher"
+    constructor: ->
+        try
+            @launcher_dbus = DCore.DBus.session(LAUNCHER)
+        catch e
+            console.log "launcher_dbus error :#{e}"
+ 
+    hide: ->
+        @launcher_dbus?.Hide()
+
+    toggle: ->
+        @launcher_dbus?.Toggle()
+
+    show: ->
+        @launcher_dbus?.Show()
+
+
 class Dock
     DOCK_REGION =
         name:"com.deepin.daemon.Dock"

@@ -99,6 +99,11 @@ class Guide extends Widget
             when "LauncherRightclick"
                 DCore.Guide.disable_keyboard()
                 DCore.Guide.disable_right_click()
+                page = new LauncherRightclick(cls_name)
+                
+            when "LauncherMenu"
+                DCore.Guide.disable_keyboard()
+                DCore.Guide.disable_right_click()
                 page = new LauncherMenu(cls_name)
                 
             when "DesktopRichDir"
@@ -136,7 +141,7 @@ class Guide extends Widget
                 DCore.Guide.disable_right_click()
                 page = new End(cls_name)
             else
-                echo "page_id is #{page_id}"
+                echo "cls_name is #{cls_name}"
         @add_page(page)
 
 guide = null
