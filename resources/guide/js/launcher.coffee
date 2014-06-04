@@ -35,7 +35,7 @@ class LauncherLaunch extends Page
         
         @circle = new Pointer("launcher_circle",@element)
         @circle.create_pointer(AREA_TYPE.circle,POS_TYPE.rightdown,=>
-            @launcher?.toggle()
+            @launcher?.show()
             guide?.switch_page(@,"LauncherCollect")
         )
         @pos = @dock.get_launchericon_pos()

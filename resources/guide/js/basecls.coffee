@@ -1,4 +1,21 @@
 
+class Dss
+    DSS = "com.deepin.dde.ControlCenter"
+    constructor: ->
+        try
+            @dss_dbus = DCore.DBus.session(DSS)
+        catch e
+            console.log "dss_dbus error :#{e}"
+ 
+    hide: ->
+        @dss_dbus?.Hide()
+
+    toggle: ->
+        @dss_dbus?.Toggle()
+
+    show: ->
+        @dss_dbus?.Show()
+
 class Launcher
     LAUNCHER = "com.deepin.dde.launcher"
     constructor: ->
