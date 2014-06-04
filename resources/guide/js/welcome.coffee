@@ -43,3 +43,6 @@ class Welcome extends Widget
         @readying.style.left = @logo.style.left
         @readying.style.bottom = "4.5em"
 
+        setTimeout(=>
+            guide?.switch_page(@,"Start")
+        ,4000)
