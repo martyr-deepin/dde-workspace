@@ -62,6 +62,9 @@ class LauncherCollect extends Page
         @message = _("There are some collect applications in the first page of \"launcher\"")
         @show_message(@message)
         @msg_tips.style.marginTop = "150px"
+        setTimeout(=>
+            guide?.switch_page(@,"LauncherScroll")
+        ,2000)
 
 class LauncherAllApps extends Page
     constructor:(@id)->
