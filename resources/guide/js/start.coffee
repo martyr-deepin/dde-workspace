@@ -27,7 +27,7 @@ class Start extends Page
         inject_css(@element,"css/start.css")
         @option = ["launcher","desktop","dss"]
         @option_text = [_("New Launcher"),_("New Desktop"),_("New System Settings")]
-        @message_text = _("We will guide you to learn how to use some new functions")
+        @message_text = _("下面将引导您学习如何使用一些新功能")
 
         @guide_choose_build()
 

@@ -33,10 +33,10 @@ class Welcome extends Widget
         @img_src_before = "img/"
         @logo_img.src = "#{@img_src_before}/deepin_logo_w.png"
         @welcome_text = create_element("div","welcome_text",@logo)
-        @welcome_text.textContent = _("Welcome to use Deepin OS")
-
+        @welcome_text.textContent = _("欢迎使用深度操作系统")
+        
         @readying = create_element("div","readying",@element)
-        @readying.innerText = _("Preparing for use...")
+        @readying.innerText = _("正在为运行做一些准备...")
     
         set_pos_center(@logo,0.7)
         @readying.style.width = "260px"
