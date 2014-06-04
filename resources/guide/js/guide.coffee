@@ -135,7 +135,8 @@ class Guide extends Widget
                 DCore.Guide.disable_keyboard()
                 DCore.Guide.disable_right_click()
                 page = new End(cls_name)
-            
+            else
+                echo "page_id is #{page_id}"
         @add_page(page)
 
 guide = null
