@@ -31,6 +31,7 @@ void guide_enable_right_click()
 JS_EXPORT_API
 void guide_disable_keyboard()
 {
+    return;
     Display* dpy = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
     XGrabKeyboard(dpy, DefaultRootWindow(dpy), True, GrabModeAsync, GrabModeAsync, CurrentTime);
 }
@@ -119,5 +120,26 @@ JS_EXPORT_API
 void guide_enable_guide_region()
 {
     gdk_window_input_shape_combine_region(gtk_widget_get_window(get_container()), NULL, 0, 0);
+}
+
+
+JS_EXPORT_API
+void guide_simulate_click(int type)
+{
+    /*type:
+     *1: left click
+     *2: copy
+     *3: right click
+     *4: scroll up
+     *5: scroll down
+     */
+    GError *error = NULL;
+    const gchar *cmd = g_strdup_printf ("xdotool click %d\n",type);
+    g_spawn_command_line_sync (cmd, NULL, NULL, NULL, &error);
+    if (error != NULL) {
+        g_warning ("xdotool click %d failed:%s\n",type, error->message);
+        g_error_free (error);
+        error = NULL;
+    }
 }
 
