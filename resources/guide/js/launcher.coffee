@@ -31,7 +31,7 @@ class LauncherLaunch extends Page
         
         @dock = new Dock()
         
-        @message = _("Move the mouse to Left up corner , or you can click the launcher icon to launch \" Application Launcher\"")
+        @message = _("鼠标滑动到左上角，或者点击启动器图标都可以启动\“应用程序启动器\”")
         @show_message(@message)
         
         @corner_leftup = new Pointer("corner_leftup",@element)
@@ -59,11 +59,11 @@ class LauncherCollect extends Page
         @rect.create_rect(1096,316)#1096*316
         @rect.set_pos(135,80)
         
-        @message = _("There are some collect applications in the first page of \"launcher\"")
+        @message = _("在\“启动器\”第一屏显示的是收藏的应用")
         @show_message(@message)
         @msg_tips.style.marginTop = "150px"
         setTimeout(=>
-            guide?.switch_page(@,"LauncherScroll")
+            guide?.switch_page(@,"LauncherAllApps")
         ,2000)
 
 class LauncherAllApps extends Page
@@ -71,12 +71,16 @@ class LauncherAllApps extends Page
         super
 
         @pointer = new Pointer("ClickToAllApps",@element)
-        @pointer.create_pointer(AREA_TYPE.circle,POS_TYPE.leftup,=>
-                DCore.Guide.disable_guide_region()
+        @pointer.create_pointer(AREA_TYPE.circle,POS_TYPE.leftup, (e)=>
+            DCore.Guide.disable_guide_region()
+            guide?.switch_page(@,"LauncherScroll")
+            setTimeout(=>
+                DCore.Guide.simulate_click(CLICK_TYPE.leftclick)
+            ,5)
         )
         @pointer.set_area_pos(25,25)
         
-        @message = _("There are some collect applications in the first page of \"launcher\"")
+        @message = _("请点击\“所有应用\”图标，您将看到所有应用")
         @show_message(@message)
 
 class LauncherScroll extends Page
@@ -88,10 +92,12 @@ class LauncherScroll extends Page
         @rect.set_pos(25,125)
         
         @pointer = new Pointer("classify",@element)
-        @pointer.create_pointer(AREA_TYPE.circle,POS_TYPE.leftup)
+        @pointer.create_pointer(AREA_TYPE.circle,POS_TYPE.leftup,=>
+        
+        )
         @pointer.set_area_pos(25,192)
         
-        @message = _("Scroll the mouse to check all applications\n And you can click the left classification to locate")
+        @message = _("上下滚动鼠标滚轮可以查看所有程序\n您也可以点击左侧分类导航来定位")
         @show_message(@message)
 
         @scroll = create_element("div","srcoll",@element)
@@ -116,8 +122,8 @@ class LauncherSearch extends Page
     constructor:(@id)->
         super
         
-        @message = _("Input by keyboard to search the application what you want\nLet\'s try to input \"deepin\"")
-        @tips = _("tips:Please input \"deepin\" directely")
+        @message = _("使用键盘搜索来查找你想要的应用\n我们来试试\“deepin\”这个关键字吧看会有什么")
+        @tips = _("tips：请直接输入单词\“deepin\”")
         @show_message(@message)
         @show_tips(@tips)
 
