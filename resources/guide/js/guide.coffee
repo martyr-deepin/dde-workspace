@@ -108,7 +108,7 @@ class Guide extends Widget
                 
             when "DesktopRichDir"
                 DCore.Guide.disable_keyboard()
-                DCore.Guide.disable_right_click()
+                DCore.Guide.disable_guide_region()
                 page = new DesktopRichDir(cls_name)
                 
             when "DesktopRichDirCreated"
@@ -120,10 +120,11 @@ class Guide extends Widget
                 DCore.Guide.disable_keyboard()
                 DCore.Guide.disable_right_click()
                 page = new DesktopCorner(cls_name)
+                enableZoneDetect(true)
                 
             when "DesktopZone"
                 DCore.Guide.disable_keyboard()
-                DCore.Guide.disable_right_click()
+                DCore.Guide.disable_guide_region()
                 page = new DesktopZone(cls_name)
                 
             when "DssLaunch"

@@ -1,1 +1,1 @@
-guide?.create_page("DesktopRichDir")
+guide?.create_page("DesktopZone")
