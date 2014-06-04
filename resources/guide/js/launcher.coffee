@@ -137,7 +137,7 @@ class LauncherRightclick extends Page
         @tips = _("tips:你也可以直接用鼠标左键拖拽图标到dock、收藏图标上或者垃圾箱上")
         @show_message(@message)
         @show_tips(@tips)
-
+        simulate_input(@,"deepin","LauncherMenu")
 
 class LauncherMenu extends Page
     constructor:(@id)->
