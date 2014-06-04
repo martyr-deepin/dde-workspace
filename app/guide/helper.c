@@ -124,7 +124,7 @@ void guide_enable_guide_region()
 
 
 JS_EXPORT_API
-void guide_simulate_click(int type)
+void guide_simulate_click(double type)
 {
     /*type:
      *1: left click
@@ -134,10 +134,11 @@ void guide_simulate_click(int type)
      *5: scroll down
      */
     GError *error = NULL;
-    const gchar *cmd = g_strdup_printf ("xdotool click %d\n",type);
+    const gchar *cmd = g_strdup_printf ("xdotool click %d\n",(int)type);
+    g_message ("cmd:%s",cmd);
     g_spawn_command_line_sync (cmd, NULL, NULL, NULL, &error);
     if (error != NULL) {
-        g_warning ("xdotool click %d failed:%s\n",type, error->message);
+        g_warning ("%s failed:%s\n",cmd, error->message);
         g_error_free (error);
         error = NULL;
     }

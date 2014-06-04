@@ -73,9 +73,9 @@ class LauncherAllApps extends Page
         @pointer = new Pointer("ClickToAllApps",@element)
         @pointer.create_pointer(AREA_TYPE.circle,POS_TYPE.leftup, (e)=>
             DCore.Guide.disable_guide_region()
-            guide?.switch_page(@,"LauncherScroll")
             setTimeout(=>
                 DCore.Guide.simulate_click(CLICK_TYPE.leftclick)
+                guide?.switch_page(@,"LauncherScroll")
             ,5)
         )
         @pointer.set_area_pos(25,25)

@@ -27,7 +27,7 @@ CLICK_TYPE =
     scrolldown:5
 
 
-cls_all = [
+pages_id = [
     "Welcome",
     "Start",
     "LauncherLaunch",
