@@ -25,6 +25,7 @@ class Pointer extends Widget
         echo "new Pointer #{@id}"
         @img_src = "img"
         parent?.appendChild(@element)
+        @element.style.display = "none"
     
     create_pointer: (@area_type,@pos_type,@cb) ->
         @pointer_img = create_img("pointer_img","",@element)
@@ -61,10 +62,11 @@ class Pointer extends Widget
 
     set_area_pos : (x,y,position_type = "fixed",type = POS_TYPE.leftup) ->
         set_pos(@element,x,y,position_type,type)
-        @show_animation()
+        #@show_animation()
 
 
     show_animation: (@show_cb) ->
+        @element.style.display = "block"
         @show_animation_end = false
         init_delta = @area_width
         t_show = 1000

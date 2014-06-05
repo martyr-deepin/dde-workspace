@@ -28,6 +28,7 @@ class DesktopRichDir extends Page
         @corner_leftup = new Pointer("circle_richdir",@element)
         @corner_leftup.create_pointer(AREA_TYPE.circle,POS_TYPE.leftup)
         @corner_leftup.set_area_pos(18,13,"fixed",POS_TYPE.leftup)
+        @corner_leftup.show_animation()
         
 class DesktopRichDirCreated extends Page
     constructor:(@id)->
@@ -58,6 +59,7 @@ class DesktopCorner extends Page
             @corner[i] = new Pointer("corner_#{p}",@element)
             @corner[i].create_pointer(AREA_TYPE.corner,POS_TYPE[p])
             @corner[i].set_area_pos(0,0,"fixed",POS_TYPE[p])
+            @corner[i].show_animation()
 
 class DesktopZone extends Page
     constructor:(@id)->

@@ -41,6 +41,7 @@ class DssLaunch extends Page
         @circle_x = @pos.x0 - @circle.pointer_width
         @circle_y = @pos.y0 - @circle.pointer_height - ICON_MARGIN_V_BOTTOM / 2
         @circle.set_area_pos(@circle_x,@circle_y,"fixed",POS_TYPE.leftup)
+        @circle.show_animation()
 
 
 class DssArea extends Page
@@ -53,15 +54,21 @@ class DssArea extends Page
         @show_tips(@tips)
 
         @dock = new Dock()
-        @circle = new Pointer("dss_circle",@element)
-        @circle.create_pointer(AREA_TYPE.circle_white,POS_TYPE.rightdown)
-        @pos = @dock.get_dssicon_pos()
-        @circle_x = @pos.x0 - @circle.pointer_width
-        @circle_y = @pos.y0 - @circle.pointer_height - ICON_MARGIN_V_BOTTOM / 2
-        @circle.set_area_pos(@circle_x,@circle_y,"fixed",POS_TYPE.leftup)
+        #@circle = new Pointer("dss_circle",@element)
+        #@circle.create_pointer(AREA_TYPE.circle_white,POS_TYPE.rightdown)
+        #@pos = @dock.get_dssicon_pos()
+        #@circle_x = @pos.x0 - @circle.pointer_width
+        #@circle_y = @pos.y0 - @circle.pointer_height - ICON_MARGIN_V_BOTTOM / 2
+        #@circle.set_area_pos(@circle_x,@circle_y,"fixed",POS_TYPE.leftup)
+        #@circle.show_animation()
 
         @rect = new Rect("dss_area",@element)
         @rect.create_rect(360,520)
         @rect.set_pos(0,150,"fixed",POS_TYPE.rightup)
+        @rect.show_animation(=>
+            setTimeout(=>
+                guide?.switch_page(@,"End")
+            ,t_switch_page)
+        )
         
 
