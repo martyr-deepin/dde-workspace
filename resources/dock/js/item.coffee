@@ -67,6 +67,8 @@ class Item extends Widget
     update_scale:->
 
     on_mouseover:(e)=>
+        if hideStatusManager.state == HideState.Showing || hideStatusManager.state == HideState.Hidding
+            return
         # console.log("mouseover, require_all_region")
         DCore.Dock.require_all_region()
         @img.style.display = 'none'
@@ -121,8 +123,8 @@ class Item extends Widget
         , 10)
         console.log("dragstart")
         e.stopPropagation()
-        DCore.Dock.require_all_region()
         Preview_close_now()
+        DCore.Dock.require_all_region()
         return if @is_fixed_pos
         if @isNormal()
             @tooltip?.hide()
@@ -481,7 +483,7 @@ class AppItem extends Item
                 console.log("normal mouseout, preview window is NOT showing")
                 update_dock_region()
                 normal_mouseout_id = setTimeout(->
-                    DCore.Dock.update_hide_mode()
+                    hideStatusManager.updateState()
                 , 500)
         else
             __clear_timeout()
@@ -491,7 +493,7 @@ class AppItem extends Item
                 # calc_app_item_size()
                 hide_id = setTimeout(=>
                     update_dock_region()
-                    DCore.Dock.update_hide_mode()
+                    hideStatusManager.updateState()
                     # @embedWindows?.hide()
                 , 300)
             else
@@ -500,7 +502,7 @@ class AppItem extends Item
                 hide_id = setTimeout(=>
                     update_dock_region()
                     Preview_close_now(@)
-                    DCore.Dock.update_hide_mode()
+                    hideStatusManager.updateState()
                 , 1000)
 
     on_rightclick:(e)=>

@@ -29,8 +29,8 @@ calc_app_item_size = ->
 
 update_dock_region = do->
     lastWidth = null
-    (w)->
-        # console.log("last Width: #{lastWidth}")
+    (w, h=DOCK_HEIGHT)->
+        console.log("last Width: #{lastWidth}")
         if w
             lastWidth = w
         else if lastWidth
@@ -45,7 +45,9 @@ update_dock_region = do->
             left_offset = (screen.width - app_len) / 2
             panel_width = ICON_SCALE * ITEM_WIDTH * apps.length + PANEL_MARGIN * 2
             # console.log("set dock region height to #{DOCK_HEIGHT}")
-            DCore.Dock.force_set_region(left_offset, 0, ICON_SCALE * ITEM_WIDTH * apps.length, panel_width, DOCK_HEIGHT)
+            # if setting.hideMode() != HideMode.Showing
+            #     h = 0
+            DCore.Dock.force_set_region(left_offset, 0, ICON_SCALE * ITEM_WIDTH * apps.length, panel_width, 0)
 
 _b.onresize = ->
     calc_app_item_size()

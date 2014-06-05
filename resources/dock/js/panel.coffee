@@ -52,7 +52,7 @@ class Panel
     on_rightclick: (e)=>
         e.preventDefault()
         e.stopPropagation()
-        if @inPanelWorkarea(e.clientX, e.clientY)
+        if @inEffectivePanelWorkarea(e.clientX, e.clientY)
             @globalMenu.showMenu(e.clientX, e.clientY)
 
     load_image: (src)->
