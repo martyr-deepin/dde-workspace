@@ -99,3 +99,10 @@ simulate_input = (old_page,input_str,new_page_cls_name = null) ->
     )
     
 
+body_hide = ->
+    document.body.style.opacity = 0
+
+body_show = ->
+    document.body.style.opacity = 1
+
+

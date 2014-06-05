@@ -33,6 +33,8 @@ class End extends Page
         @get = new ButtonNext("get",_("Get"),@choose_div)
         @get.create_button(=>
             echo "open the deepin accounts web url"
+            enableZoneDetect(true)
+            DCore.Guide.quit()
         )
 
         @jump = create_element("div","jump_#{@id}",@get.element)
@@ -44,6 +46,8 @@ class End extends Page
         @end = new ButtonNext("end",_("End"),@choose_div)
         @end.create_button(=>
             echo "open the deepin accounts web url"
+            enableZoneDetect(true)
+            DCore.Guide.quit()
         )
 
         @choose_div.style.marginTop = "5em"

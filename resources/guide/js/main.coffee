@@ -1,1 +1,1 @@
-guide?.create_page("DssLaunch")
+guide?.create_page("Welcome")

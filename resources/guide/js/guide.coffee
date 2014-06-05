@@ -40,19 +40,20 @@ class Guide extends Widget
         @create_page(new_page_cls_name)
     
     create_page: (cls_name)->
+        DCore.Guide.disable_keyboard()
+        DCore.Guide.disable_right_click()
+        enableZoneDetect(false)
         switch cls_name
             when "Welcome"
-                DCore.Guide.disable_keyboard()
-                DCore.Guide.disable_right_click()
                 page = new Welcome(cls_name)
             
             when "Start"
-                DCore.Guide.disable_keyboard()
+                #DCore.Guide.disable_keyboard()
                 #DCore.Guide.enable_keyboard()
 
                 # only guide has left click ,not right_click
                 # desktop launcher dock all event disable
-                DCore.Guide.disable_right_click()
+                #DCore.Guide.disable_right_click()
                 
                 # only guide has left click and right_click
                 # desktop  launcher dock all event disable
@@ -71,75 +72,48 @@ class Guide extends Widget
                 page = new Start(cls_name)
             
             when "LauncherLaunch"
-                DCore.Guide.disable_keyboard()
-                DCore.Guide.disable_right_click()
                 page = new LauncherLaunch(cls_name)
                 enableZoneDetect(true)
 
             when "LauncherCollect"
-                DCore.Guide.disable_keyboard()
-                DCore.Guide.disable_right_click()
                 page = new LauncherCollect(cls_name)
 
             when "LauncherAllApps"
-                DCore.Guide.disable_keyboard()
-                DCore.Guide.disable_right_click()
                 page = new LauncherAllApps(cls_name)
                 
             when "LauncherScroll"
-                DCore.Guide.disable_keyboard()
-                DCore.Guide.disable_right_click()
                 page = new LauncherScroll(cls_name)
                 
             when "LauncherSearch"
                 DCore.Guide.enable_keyboard()
-                DCore.Guide.disable_right_click()
                 page = new LauncherSearch(cls_name)
                 
             when "LauncherRightclick"
-                DCore.Guide.disable_keyboard()
-                DCore.Guide.disable_right_click()
                 page = new LauncherRightclick(cls_name)
                 
             when "LauncherMenu"
-                DCore.Guide.disable_keyboard()
-                DCore.Guide.disable_right_click()
                 page = new LauncherMenu(cls_name)
                 
             when "DesktopRichDir"
-                DCore.Guide.disable_keyboard()
-                DCore.Guide.disable_guide_region()
                 page = new DesktopRichDir(cls_name)
                 
             when "DesktopRichDirCreated"
-                DCore.Guide.disable_keyboard()
-                DCore.Guide.disable_right_click()
                 page = new DesktopRichDirCreated(cls_name)
                 
             when "DesktopCorner"
-                DCore.Guide.disable_keyboard()
-                DCore.Guide.disable_right_click()
                 page = new DesktopCorner(cls_name)
                 enableZoneDetect(true)
                 
             when "DesktopZone"
-                DCore.Guide.disable_keyboard()
-                DCore.Guide.disable_guide_region()
                 page = new DesktopZone(cls_name)
                 
             when "DssLaunch"
-                DCore.Guide.disable_keyboard()
-                DCore.Guide.disable_right_click()
                 page = new DssLaunch(cls_name)
                 
             when "DssArea"
-                DCore.Guide.disable_keyboard()
-                DCore.Guide.disable_right_click()
                 page = new DssArea(cls_name)
                 
             when "End"
-                DCore.Guide.disable_keyboard()
-                DCore.Guide.disable_right_click()
                 page = new End(cls_name)
             else
                 echo "cls_name is #{cls_name}"
