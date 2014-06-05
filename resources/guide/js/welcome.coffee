@@ -45,4 +45,4 @@ class Welcome extends Widget
 
         setTimeout(=>
             guide?.switch_page(@,"Start")
-        ,4000)
+        ,t_switch_page)

@@ -36,6 +36,8 @@ pages_id = [
     "LauncherScroll"
 ]
 
+t_switch_page = 4000
+
 set_pos = (el,x,y,position_type = "fixed",type = POS_TYPE.leftup)->
     el.style.position = position_type
     switch type

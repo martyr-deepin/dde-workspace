@@ -59,7 +59,7 @@ class LauncherCollect extends Page
         @msg_tips.style.marginTop = "150px"
         setTimeout(=>
             guide?.switch_page(@,"LauncherAllApps")
-        ,2000)
+        ,t_switch_page)
 
 class LauncherAllApps extends Page
     constructor:(@id)->
@@ -135,7 +135,7 @@ class LauncherRightclick extends Page
         @show_tips(@tips)
         setTimeout(=>
             guide?.switch_page(@,"LauncherMenu")
-        ,2000)
+        ,t_switch_page)
 
 class LauncherMenu extends Page
     constructor:(@id)->
@@ -153,5 +153,5 @@ class LauncherMenu extends Page
             guide?.switch_page(@,"DesktopRichDir")
             @launcher?.hide()
             #DCore.Guide.show_desktop()
-        ,2000)
+        ,t_switch_page)
 

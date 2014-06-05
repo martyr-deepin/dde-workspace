@@ -39,7 +39,7 @@ class DesktopRichDirCreated extends Page
         @show_tips(@tips)
         setTimeout(=>
             guide?.switch_page(@,"DesktopCorner")
-        ,2000)
+        ,t_switch_page)
         
 class DesktopCorner extends Page
     constructor:(@id)->
