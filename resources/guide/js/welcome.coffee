@@ -26,7 +26,7 @@ class Welcome extends Widget
         
         inject_css(@element,"css/welcome.css")
         DEFAULT_BG = "/usr/share/backgrounds/default_background.jpg"
-        document.body.style.backgroundImage = "url(#{DEFAULT_BG})"
+        @element.style.backgroundImage = "url(#{DEFAULT_BG})"
         
         @logo = create_element("div","logo",@element)
         @logo_img = create_img("logo_img","",@logo)
@@ -45,4 +45,4 @@ class Welcome extends Widget
 
         setTimeout(=>
             guide?.switch_page(@,"Start")
-        ,4000)
+        ,t_switch_page)

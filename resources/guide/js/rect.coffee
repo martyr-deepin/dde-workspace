@@ -44,6 +44,15 @@ class Rect extends Widget
     
     set_pos : (x,y,position_type = "fixed",type = POS_TYPE.leftup) ->
         set_pos(@element,x,y,position_type,type)
+        @show_animation()
 
-    rect_show_animation: ->
-        @rect.style.backgroundColor = "#e0e"
+    show_animation: ->
+        @rect.style.backgroundColor = "rgba(255,255,255,1.0)"
+        @rect.style.opacity = 0.0
+        t_show = 2000
+        jQuery(@rect).animate(
+           {opacity:0.5},t_show,"linear",=>
+               jQuery(@rect).animate({opacity:0.0},t_show)
+        )
+
+

@@ -92,7 +92,7 @@ class Uninstaller
             delete @uninstalling_apps[item.id]
             uninstallReport(UNINSTALL_STATUS.FAILED, "get packages failed")
             console.log("get packages failed")
-        opt.item.package_name = package_name.slice(0)
+        opt.item.package_name = package_name
         console.log "package_name: #{package_name}"
         @softwareManager.uninstall_pkg(package_name, opt.purge)
 
