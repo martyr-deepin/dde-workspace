@@ -3,6 +3,10 @@ class ToolTipBase extends Widget
     constructor: (@buddy, @text, @parent=document.body)->
         super
         @delay_time = 0
+        @element.addEventListener("mouseover", @hide)
+        @element.addEventListener("mousemove", @hide)
+        @element.addEventListener("mouseenter", @hide)
+        @element.addEventListener("mouseout", @hide)
 
     set_delay_time: (millseconds) ->
         @delay_time = millseconds

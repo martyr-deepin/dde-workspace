@@ -32,12 +32,13 @@ body {
   left: 0px;
   right: 0px;
   margin: auto;
-  -webkit-transition: bottom 400ms;
+  -webkit-transition: -webkit-transform 400ms;
 }
 
 #containerWarp{
   position:fixed;
-  bottom: -60px;
+  bottom: 5px;
+  -webkit-transform: translateY(110%);
   display: -webkit-box;
   -webkit-box-pack:center;
   min-height: 60px;
@@ -58,7 +59,8 @@ body {
 #panel {
   /* border: solid 2px black; */
   position: fixed;
-  bottom: -48px;
+  bottom: 0px;
+  -webkit-transform: translateY(100%);
   min-height: 30px;
   max-height: 60px;
 }

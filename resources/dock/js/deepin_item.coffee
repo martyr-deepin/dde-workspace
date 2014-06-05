@@ -31,7 +31,8 @@ class Applet extends Item
             calc_app_item_size()
             # update_dock_region()
             setTimeout(->
-                DCore.Dock.update_hide_mode()
+                # DCore.Dock.update_hide_mode()
+                hideStatusManager.updateState()
             , 500)
 
 
