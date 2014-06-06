@@ -80,8 +80,8 @@ simulate_click = (type,old_page = null,new_page_cls_name = null) ->
     ,20)
 
 simulate_input = (old_page,input_str,new_page_cls_name = null) ->
-    DCore.Guide.enable_keyboard()
-    DCore.Guide.set_focus(true)
+    #DCore.Guide.enable_keyboard()
+    #DCore.Guide.set_focus(true)
     echo "input_str:#{input_str}"
     old_page.element.addEventListener("keydown", (e)->
         echo e.which

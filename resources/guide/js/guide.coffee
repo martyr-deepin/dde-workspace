@@ -92,6 +92,7 @@ class Guide extends Widget
                 page = new LauncherRightclick(cls_name)
                 
             when "LauncherMenu"
+                DCore.Guide.enable_right_click()
                 page = new LauncherMenu(cls_name)
                 
             when "DesktopRichDir"

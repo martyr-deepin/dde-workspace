@@ -32,7 +32,8 @@ JS_EXPORT_API
 void guide_disable_keyboard()
 {
     Display* dpy = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
-    XGrabKeyboard(dpy, DefaultRootWindow(dpy), True, GrabModeAsync, GrabModeAsync, CurrentTime);
+    XGrabKeyboard(dpy, GDK_WINDOW_XID(gtk_widget_get_window (get_container())), True, GrabModeAsync, GrabModeAsync, CurrentTime);
+    /*XGrabKeyboard(dpy, DefaultRootWindow(dpy), True, GrabModeAsync, GrabModeAsync, CurrentTime);*/
 }
 JS_EXPORT_API
 void guide_enable_keyboard()

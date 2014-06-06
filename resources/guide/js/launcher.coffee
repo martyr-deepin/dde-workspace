@@ -144,6 +144,11 @@ class LauncherSearch extends Page
 
         simulate_input(@,"deepin","LauncherMenu")
 
+        setTimeout(=>
+            #guide?.switch_page(@,"LauncherRightclick")
+            echo "timeout"
+        ,t_switch_page)
+
 class LauncherRightclick extends Page
     constructor:(@id)->
         super
@@ -165,12 +170,15 @@ class LauncherMenu extends Page
         @message = _("使用鼠标右键发送2个图标到桌面")
         @show_message(@message)
 
-        @menu = create_img("menu_#{@id}","#{@img_src}/menu.png",@element)
-        set_pos(@menu,"41%","55%")
+
+        #simulate_click(CLICK_TYPE.rightclick,@,"LauncherScroll")
+
+        #@menu = create_img("menu_#{@id}","#{@img_src}/menu.png",@element)
+        #set_pos(@menu,"41%","55%")
         
         setTimeout(=>
             guide?.switch_page(@,"DesktopRichDir")
             @launcher?.hide()
-            #DCore.Guide.show_desktop()
+            DCore.Guide.show_desktop()
         ,t_switch_page)
 
