@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 
 option(DEVELOP "enable develop mode (use src's resource)" false)
 option(TEST "enable test mode (run project's test code)" false)
+option(DEBUG_DOCK_REGION "enable debug dock region" false)
 set(GOPATH "${CMAKE_CURRENT_SOURCE_DIR}/golang" CACHE PATH "set the golang path")
 
 macro(GEN_JSC_SOURCE2 JSC_GEN_SRC CFG_DIR OUTPUT)
@@ -58,6 +59,10 @@ endif()
 
 if (TEST)
     add_definitions("-D__DUI_DEBUG=1")
+endif()
+
+if (DEBUG_DOCK_REGION)
+	add_definitions("-DDEBUG_REGION")
 endif()
 
 add_definitions("-DRESOURCE_DIR=\"${RESOURCE_DIR}\"")
