@@ -82,27 +82,28 @@ simulate_click = (type,old_page = null,new_page_cls_name = null) ->
         guide?.switch_page(old_page,new_page_cls_name) if new_page_cls_name? and old_page?
     ,20)
 
+
+black_key_list = [
+    KEYCODE.ESC,
+    KEYCODE.WIN,
+    KEYCODE.ENTER
+]
+
 simulate_input = (old_page,input_str,new_page_cls_name = null) ->
-    #DCore.Guide.enable_keyboard()
-    #DCore.Guide.set_focus(true)
     echo "input_str:#{input_str}"
-    old_page.element.addEventListener("keydown", (e)->
+    document.body.addEventListener("keydown", (e)->
         echo e.which
-        switch e.which
-            when KEYCODE.ESC_KEY and KEYCODE.WIN
+        if e.which in black_key_list
+            echo "black_key_list key :#{e.which}"
+        else
+            echo e
+            input = e.which
+            DCore.Guide.disable_guide_region()
+            setTimeout(=>
+                DCore.Guide.simulate_input(input)
                 DCore.Guide.enable_guide_region()
-            when KEYCODE.ENTER
-                DCore.Guide.enable_guide_region()
-                guide?.switch_page(old_page,new_page_cls_name) if new_page_cls_name? and old_page?
-            else
-                echo e
-                input  = e.which
-                DCore.Guide.disable_guide_region()
-                setTimeout(=>
-                    DCore.Guide.simulate_input(input)
-                    DCore.Guide.enable_guide_region()
-                    DCore.Guide.disable_right_click()
-                ,20)
+                DCore.Guide.disable_right_click()
+            ,20)
     )
     
 
