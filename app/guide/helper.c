@@ -2,7 +2,7 @@
 #include <X11/extensions/shape.h>
 #include "X_misc.h"
 #include "jsextension.h"
-
+#include <X11/Xlib.h>
 
 GtkWidget* get_container();
 JS_EXPORT_API
@@ -142,10 +142,12 @@ void guide_simulate_click(double type)
 }
 
 JS_EXPORT_API
-void guide_simulate_input(const char* input)
+void guide_simulate_input(double input)
 {
     GError *error = NULL;
-    const gchar *cmd = g_strdup_printf ("xdotool key %s\n",input);
+    Display* dpy = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
+    KeyCode key = XKeysymToKeycode(dpy,(int)input);
+    const gchar *cmd = g_strdup_printf ("xdotool key %d\n",key);
     g_message ("guide_simulate_input:%s",cmd);
     g_spawn_command_line_sync (cmd, NULL, NULL, NULL, &error);
     if (error != NULL) {

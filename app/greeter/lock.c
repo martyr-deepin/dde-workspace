@@ -50,7 +50,7 @@
 #include "lock_util.h"
 #include "background.h"
 
-/*#define DEBUG*/
+#define DEBUG
 
 #define LOCK_HTML_PATH "file://"RESOURCE_DIR"/greeter/lock.html"
 
