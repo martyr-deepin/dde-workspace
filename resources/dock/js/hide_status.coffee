@@ -15,7 +15,7 @@ class HideStatusManager
         @dbus.connect("StateChanged", (state)=>
             switch settings.hideMode()
                 when HideMode.KeepShowing
-                    if state != HideState.Showing
+                    if state == HideState.Showing
                         @changeToShow()
                 when HideMode.KeepHidden
                     switch state
