@@ -162,6 +162,7 @@ body {
   padding-left: 155px;
   display:none;
   overflow: hidden;
+  -webkit-mask: -webkit-linear-gradient(top, rgba(0,0,0,1), rgba(0,0,0,1) 90%, rgba(0,0,0,0.3), rgba(0,0,0,0));
 }
 
 .categoryListWarp{
@@ -202,7 +203,6 @@ body {
   overflow-y: scroll;
   overflow: hidden;
   margin: 20px auto;
-  -webkit-mask: -webkit-linear-gradient(top, rgba(0,0,0,1), rgba(0,0,0,1) 90%, rgba(0,0,0,0.3), rgba(0,0,0,0));
 }
 #blank{
   /* background:red; */
