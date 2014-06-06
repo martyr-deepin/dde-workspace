@@ -33,6 +33,17 @@ class Launcher
     show: ->
         @launcher_dbus?.Show()
 
+    hide_signal: (@hide_signal_cb) ->
+        @launcher_dbus?.connect("Closed",@hide_signal_cb)
+
+    show_signal: (@show_signal_cb) ->
+        @launcher_dbus?.connect("Shown",@show_signal_cb)
+
+    show_signal_disconnect: ->
+        @launcher_dbus?.dis_connect("Shown",@show_signal_cb)
+
+    hide_signal_disconnect: ->
+        @launcher_dbus?.dis_connect("Closed",@hide_signal_cb)
 
 class Dock
     DOCK_REGION =

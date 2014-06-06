@@ -32,18 +32,26 @@ class LauncherLaunch extends Page
         @corner_leftup = new Pointer("corner_leftup",@element)
         @corner_leftup.create_pointer(AREA_TYPE.corner,POS_TYPE.leftup)
         @corner_leftup.set_area_pos(0,0,"fixed",POS_TYPE.leftup)
+        @corner_leftup.show_animation()
         
         @circle = new Pointer("launcher_circle",@element)
         @circle.create_pointer(AREA_TYPE.circle,POS_TYPE.rightdown,=>
             @launcher?.show()
-            guide?.switch_page(@,"LauncherCollect")
         )
         @pos = @dock.get_launchericon_pos()
         @circle_x = @pos.x0 - @circle.pointer_width + ICON_MARGIN_H
         @circle_y = @pos.y0 - @circle.pointer_height - ICON_MARGIN_V_BOTTOM / 2
         @circle.set_area_pos(@circle_x,@circle_y,"fixed",POS_TYPE.leftup)
+        @circle.show_animation()
 
-
+        @launcher.show_signal(@show_signal_cb)
+    
+    show_signal_cb:=>
+        @element.style.display = "none"
+        setTimeout(=>
+            guide?.switch_page(@,"LauncherCollect")
+            @launcher.show_signal_disconnect()
+        ,t_min_switch_page)
 
         
 class LauncherCollect extends Page
@@ -53,13 +61,15 @@ class LauncherCollect extends Page
         @rect = new Rect("collectApp",@element)
         @rect.create_rect(1096,316)#1096*316
         @rect.set_pos(135,80)
+        @rect.show_animation(=>
+            setTimeout(=>
+                guide?.switch_page(@,"LauncherAllApps")
+            ,t_min_switch_page)
+        )
         
         @message = _("在\“启动器\”第一屏显示的是收藏的应用")
         @show_message(@message)
         @msg_tips.style.marginTop = "150px"
-        setTimeout(=>
-            guide?.switch_page(@,"LauncherAllApps")
-        ,t_switch_page)
 
 class LauncherAllApps extends Page
     constructor:(@id)->
@@ -70,6 +80,7 @@ class LauncherAllApps extends Page
             simulate_click(CLICK_TYPE.leftclick,@,"LauncherScroll")
         )
         @pointer.set_area_pos(25,25)
+        @pointer.show_animation()
         
         @message = _("请点击\“所有应用\”图标，您将看到所有应用")
         @show_message(@message)
@@ -77,6 +88,8 @@ class LauncherAllApps extends Page
 class LauncherScroll extends Page
     constructor:(@id)->
         super
+        @scrollup = false
+        @scrolldown = false
         
         @rect = new Rect("collectApp",@element)
         @rect.create_rect(64,435)#1096*316
@@ -91,7 +104,7 @@ class LauncherScroll extends Page
         @message = _("上下滚动鼠标滚轮可以查看所有程序\n您也可以点击左侧分类导航来定位")
         @show_message(@message)
 
-        @scroll = create_element("div","srcoll",@element)
+        @scroll = create_element("div","scroll",@element)
         @scroll.style.position = "absolute"
         @scroll.style.top = "37%"
         @scroll.style.right = "200px"
@@ -108,10 +121,16 @@ class LauncherScroll extends Page
         @scroll_up.style.left = 0
         @scroll_up.style.bottom = 0
 
-
         @element.addEventListener("mousewheel", (e)=>
-            if e.wheelDelta >= 120 then simulate_click(CLICK_TYPE.scrollup)
-            else if e.wheelDelta <= -120 then simulate_click(CLICK_TYPE.scrolldown)
+            if @scrollup and @scrolldown
+                @pointer.show_animation()
+            
+            if e.wheelDelta >= 120
+                @scrollup = true
+                simulate_click(CLICK_TYPE.scrollup)
+            else if e.wheelDelta <= -120
+                @scrolldown = true
+                simulate_click(CLICK_TYPE.scrolldown)
         )
 
 class LauncherSearch extends Page

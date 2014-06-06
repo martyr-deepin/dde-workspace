@@ -1,4 +1,4 @@
-console.log=->
+# console.log=->
 
 cancelInsertTimer = null
 _lastHover = null
