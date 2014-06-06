@@ -31,15 +31,12 @@ void guide_enable_right_click()
 JS_EXPORT_API
 void guide_disable_keyboard()
 {
-    Display* dpy = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
-    XGrabKeyboard(dpy, GDK_WINDOW_XID(gtk_widget_get_window (get_container())), True, GrabModeAsync, GrabModeAsync, CurrentTime);
-    /*XGrabKeyboard(dpy, DefaultRootWindow(dpy), True, GrabModeAsync, GrabModeAsync, CurrentTime);*/
+    gdk_keyboard_grab(gtk_widget_get_window(get_container()), FALSE, GDK_CURRENT_TIME);
 }
 JS_EXPORT_API
 void guide_enable_keyboard()
 {
-    Display* dpy = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
-    XUngrabKeyboard(dpy, CurrentTime);
+    gdk_keyboard_ungrab(GDK_CURRENT_TIME);
 }
 
 Window get_dock_xid()
