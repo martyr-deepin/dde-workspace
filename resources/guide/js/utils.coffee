@@ -36,6 +36,9 @@ pages_id = [
     "LauncherScroll"
 ]
 
+t_switch_page = 4000
+t_min_switch_page = 500
+
 set_pos = (el,x,y,position_type = "fixed",type = POS_TYPE.leftup)->
     el.style.position = position_type
     switch type
@@ -67,5 +70,47 @@ enableZoneDetect = (enable) ->
         echo "zoneDBus #{ZONE} error : #{e}"
  #-------------------------------------------
 
+simulate_click = (type,old_page = null,new_page_cls_name = null) ->
+    DCore.Guide.disable_guide_region()
+    setTimeout(=>
+        DCore.Guide.simulate_click(type)
+        DCore.Guide.enable_guide_region()
+        if type is CLICK_TYPE.rightclick
+            DCore.Guide.enable_right_click()
+        else
+            DCore.Guide.disable_right_click()
+        guide?.switch_page(old_page,new_page_cls_name) if new_page_cls_name? and old_page?
+    ,20)
+
+
+black_key_list = [
+    KEYCODE.ESC,
+    KEYCODE.WIN,
+    KEYCODE.ENTER
+]
+
+simulate_input = (old_page,input_str,new_page_cls_name = null) ->
+    echo "input_str:#{input_str}"
+    document.body.addEventListener("keydown", (e)->
+        echo e.which
+        if e.which in black_key_list
+            echo "black_key_list key :#{e.which}"
+        else
+            echo e
+            input = e.which
+            DCore.Guide.disable_guide_region()
+            setTimeout(=>
+                DCore.Guide.simulate_input(input)
+                DCore.Guide.enable_guide_region()
+                DCore.Guide.disable_right_click()
+            ,20)
+    )
+    
+
+body_hide = ->
+    document.body.style.opacity = 0
+
+body_show = ->
+    document.body.style.opacity = 1
 
 

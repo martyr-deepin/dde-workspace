@@ -22,12 +22,13 @@ class DesktopRichDir extends Page
     constructor:(@id)->
         super
         
-        @message = _("让我们把其他两个图标重合到第一个图标上\n生成\“应用程序组\”")
+        @message = _("让我们把另外一个图标拖动到第一个图标上\n生成\“应用程序组\”")
         @show_message(@message)
         
         @corner_leftup = new Pointer("circle_richdir",@element)
         @corner_leftup.create_pointer(AREA_TYPE.circle,POS_TYPE.leftup)
         @corner_leftup.set_area_pos(18,13,"fixed",POS_TYPE.leftup)
+        @corner_leftup.show_animation()
         
 class DesktopRichDirCreated extends Page
     constructor:(@id)->
@@ -37,10 +38,15 @@ class DesktopRichDirCreated extends Page
         @tips = _("tips：右键单击应用程序组将提供更多功能")
         @show_message(@message)
         @show_tips(@tips)
+        setTimeout(=>
+            guide?.switch_page(@,"DesktopCorner")
+        ,t_switch_page)
         
 class DesktopCorner extends Page
     constructor:(@id)->
         super
+        
+        #DCore.Guide.launch_zone()
         
         @message = _("鼠标滑动到四个顶角，可触发四个不同的事件")
         @tips = _("tips：请按提示依次触发，点击空白区域可返回")
@@ -53,6 +59,7 @@ class DesktopCorner extends Page
             @corner[i] = new Pointer("corner_#{p}",@element)
             @corner[i].create_pointer(AREA_TYPE.corner,POS_TYPE[p])
             @corner[i].set_area_pos(0,0,"fixed",POS_TYPE[p])
+            @corner[i].show_animation()
 
 class DesktopZone extends Page
     constructor:(@id)->

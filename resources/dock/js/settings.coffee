@@ -1,3 +1,9 @@
+workareaTimer = null
+HideMode=
+    KeepShowing: "keep-showing"
+    KeepHidden: "keep-hidden"
+    AutoHide: "auto-hide"
+
 class Setting
     constructor:->
         @dbus = get_dbus(
@@ -8,16 +14,16 @@ class Setting
             "GetHideMode"
         )
         @dbus.connect("HideModeChanged", (mode)=>
-            console.log("mode changed to #{mode}")
+            console.warn("mode changed to #{mode}")
+            hideStatusManager.updateState()
         )
 
     hideMode:->
         mode = @dbus.GetHideMode_sync()
         if mode == "default" || mode == "intelligent"
-            return 'keep-showing'
+            return HideMode.KeepShowing
         mode
 
     setHideMode:(id)->
-        console.log(id)
+        console.log("setHideMode: #{id}")
         @dbus.SetHideMode(id)
-        DCore.Dock.update_hide_mode()

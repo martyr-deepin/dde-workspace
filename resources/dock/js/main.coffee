@@ -7,6 +7,7 @@ DCore.signal_connect("message_notify", (info)->)
 DCore.signal_connect("embed_window_configure_changed", (info)->
     console.log("embed_window_configure_changed")
     console.log(info)
+    # TODO: change the size of preview window
 )
 DCore.signal_connect("embed_window_destroyed", (info)->
     console.log("embed_window_destroyed")
@@ -82,6 +83,7 @@ _b.addEventListener("drop", (e)->
 )
 
 settings = new Setting()
+hideStatusManager = new HideStatusManager(settings.hideMode())
 
 show_desktop = new ShowDesktop()
 
@@ -196,15 +198,19 @@ initDock = ->
             systemTray = null
 
         calc_app_item_size()
-        # apps are moved up, so add 8
-        DCore.Dock.change_workarea_height(ITEM_HEIGHT * ICON_SCALE + 8)
+        DCore.Dock.change_workarea_height(DOCK_HEIGHT)
     , 100)
 
+    if settings.hideMode() == HideMode.KeepHidden
+        hideStatusManager.updateState()
+        return
+
     setTimeout(->
-        $("#containerWarp").style.bottom = "5px"
-        $("#panel").style.bottom = "0px"
+        _CW.style.webkitTransform = "translateY(0)"
+        panel.panel.style.webkitTransform = "translateY(0)"
+        hideStatusManager.updateState()
     , 1000)
 
 
 time = new Time("time", "js/plugins/time/img/time.png", "")
-setTimeout(initDock , 1000)
+initDock()

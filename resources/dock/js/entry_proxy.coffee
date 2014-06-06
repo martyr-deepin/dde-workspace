@@ -16,10 +16,13 @@ class EntryProxy
 
     getProperty:(name, data)->
         if @dbus
-            if data
-                return @dbus.Data[name] || null
-            else
-                return @dbus[name] || null
+            try
+                if data
+                    return @dbus.Data[name] || null
+                else
+                    return @dbus[name] || null
+            catch e
+                console.log "get entry proxy property failed: #{e}"
 
         null
 

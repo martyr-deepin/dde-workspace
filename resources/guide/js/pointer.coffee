@@ -25,6 +25,7 @@ class Pointer extends Widget
         echo "new Pointer #{@id}"
         @img_src = "img"
         parent?.appendChild(@element)
+        @element.style.display = "none"
     
     create_pointer: (@area_type,@pos_type,@cb) ->
         @pointer_img = create_img("pointer_img","",@element)
@@ -54,10 +55,58 @@ class Pointer extends Widget
         set_pos(@area_img,0,0,"absolute",@pos_type)
         set_pos(@pointer_img,@area_width,@area_height,"absolute",@pos_type)
         @area_img.addEventListener("click", (e)=>
+            if !@show_animation_end then return
             console.log "area #{@id} click"
             @cb?(e)
         )
 
     set_area_pos : (x,y,position_type = "fixed",type = POS_TYPE.leftup) ->
         set_pos(@element,x,y,position_type,type)
+        #@show_animation()
+
+
+    show_animation: (@show_cb) ->
+        @element.style.display = "block"
+        @show_animation_end = false
+        init_delta = @area_width
+        t_show = 1000
+        x0 = @area_width + init_delta
+        y0 = @area_height + init_delta
+        x1 = @area_width
+        y1 = @area_height
+        pos = {}
+        switch @pos_type
+            when POS_TYPE.leftup
+                pos = {left:x1;top:y1}
+            
+            when POS_TYPE.rightup
+                pos = {right:x1;top:y1}
+
+            when POS_TYPE.leftdown
+                pos = {left:x1;bottom:y1}
+
+            when POS_TYPE.rightdown
+                pos = {right:x1;bottom:y1}
+        
+        animation = (cb) =>
+            set_pos(@pointer_img,x0,y0,"absolute",@pos_type)
+            jQuery(@pointer_img).animate(
+                pos,t_show,"linear",=>
+                    cb?()
+            )
+
+        #for i in [0..times]
+        #    if i == times - 1 then animation(@show_cb)
+        #    else animation()
+        
+        set_pos(@pointer_img,x0,y0,"absolute",@pos_type)
+        jQuery(@pointer_img).animate(
+            pos,t_show,"linear",=>
+                set_pos(@pointer_img,x0,y0,"absolute",@pos_type)
+                jQuery(@pointer_img).animate(
+                    pos,t_show,"linear",=>
+                        @show_animation_end = true
+                        @show_cb?()
+                )
+        )
 

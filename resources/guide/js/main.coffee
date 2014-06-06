@@ -1,1 +1,1 @@
-guide?.create_page("LauncherAllApps")
+guide?.create_page("LauncherSearch")

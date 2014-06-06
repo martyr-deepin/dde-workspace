@@ -331,7 +331,7 @@ Preview_close_now = (client)->
         PWContainer._need_move_animation = false
     , 300)
     setTimeout(->
-        DCore.Dock.update_hide_mode()
+        hideStatusManager.updateState()
     , 500)
 Preview_close = ->
     __clear_timeout()

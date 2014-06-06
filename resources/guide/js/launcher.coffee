@@ -23,13 +23,8 @@ class LauncherLaunch extends Page
     constructor:(@id)->
         super
         
-        LAUNCHER = "com.deepin.dde.launcher"
-        try
-            @launcher_dbus = DCore.DBus.session(LAUNCHER)
-        catch e
-            console.log "launcher_dbus error :#{e}"
-        
         @dock = new Dock()
+        @launcher = new Launcher()
         
         @message = _("鼠标滑动到左上角，或者点击启动器图标都可以启动\“应用程序启动器\”")
         @show_message(@message)
@@ -37,18 +32,26 @@ class LauncherLaunch extends Page
         @corner_leftup = new Pointer("corner_leftup",@element)
         @corner_leftup.create_pointer(AREA_TYPE.corner,POS_TYPE.leftup)
         @corner_leftup.set_area_pos(0,0,"fixed",POS_TYPE.leftup)
+        @corner_leftup.show_animation()
         
         @circle = new Pointer("launcher_circle",@element)
         @circle.create_pointer(AREA_TYPE.circle,POS_TYPE.rightdown,=>
-            @launcher_dbus?.Toggle()
-            guide?.switch_page(@,"LauncherCollect")
+            @launcher?.show()
         )
         @pos = @dock.get_launchericon_pos()
         @circle_x = @pos.x0 - @circle.pointer_width + ICON_MARGIN_H
         @circle_y = @pos.y0 - @circle.pointer_height - ICON_MARGIN_V_BOTTOM / 2
         @circle.set_area_pos(@circle_x,@circle_y,"fixed",POS_TYPE.leftup)
+        @circle.show_animation()
 
-
+        @launcher.show_signal(@show_signal_cb)
+    
+    show_signal_cb:=>
+        @element.style.display = "none"
+        setTimeout(=>
+            guide?.switch_page(@,"LauncherCollect")
+            @launcher.show_signal_disconnect()
+        ,t_min_switch_page)
 
         
 class LauncherCollect extends Page
@@ -58,13 +61,15 @@ class LauncherCollect extends Page
         @rect = new Rect("collectApp",@element)
         @rect.create_rect(1096,316)#1096*316
         @rect.set_pos(135,80)
+        @rect.show_animation(=>
+            setTimeout(=>
+                guide?.switch_page(@,"LauncherAllApps")
+            ,t_min_switch_page)
+        )
         
         @message = _("在\“启动器\”第一屏显示的是收藏的应用")
         @show_message(@message)
         @msg_tips.style.marginTop = "150px"
-        setTimeout(=>
-            guide?.switch_page(@,"LauncherAllApps")
-        ,2000)
 
 class LauncherAllApps extends Page
     constructor:(@id)->
@@ -72,13 +77,10 @@ class LauncherAllApps extends Page
 
         @pointer = new Pointer("ClickToAllApps",@element)
         @pointer.create_pointer(AREA_TYPE.circle,POS_TYPE.leftup, (e)=>
-            DCore.Guide.disable_guide_region()
-            setTimeout(=>
-                DCore.Guide.simulate_click(CLICK_TYPE.leftclick)
-                guide?.switch_page(@,"LauncherScroll")
-            ,5)
+            simulate_click(CLICK_TYPE.leftclick,@,"LauncherScroll")
         )
         @pointer.set_area_pos(25,25)
+        @pointer.show_animation()
         
         @message = _("请点击\“所有应用\”图标，您将看到所有应用")
         @show_message(@message)
@@ -86,6 +88,8 @@ class LauncherAllApps extends Page
 class LauncherScroll extends Page
     constructor:(@id)->
         super
+        @scrollup = false
+        @scrolldown = false
         
         @rect = new Rect("collectApp",@element)
         @rect.create_rect(64,435)#1096*316
@@ -93,14 +97,14 @@ class LauncherScroll extends Page
         
         @pointer = new Pointer("classify",@element)
         @pointer.create_pointer(AREA_TYPE.circle,POS_TYPE.leftup,=>
-        
+            simulate_click(CLICK_TYPE.leftclick,@,"LauncherSearch")
         )
         @pointer.set_area_pos(25,192)
         
         @message = _("上下滚动鼠标滚轮可以查看所有程序\n您也可以点击左侧分类导航来定位")
         @show_message(@message)
 
-        @scroll = create_element("div","srcoll",@element)
+        @scroll = create_element("div","scroll",@element)
         @scroll.style.position = "absolute"
         @scroll.style.top = "37%"
         @scroll.style.right = "200px"
@@ -117,6 +121,17 @@ class LauncherScroll extends Page
         @scroll_up.style.left = 0
         @scroll_up.style.bottom = 0
 
+        @element.addEventListener("mousewheel", (e)=>
+            if @scrollup and @scrolldown and @pointer.element.style.display is "none"
+                @pointer.show_animation()
+            
+            if e.wheelDelta >= 120
+                @scrollup = true
+                simulate_click(CLICK_TYPE.scrollup)
+            else if e.wheelDelta <= -120
+                @scrolldown = true
+                simulate_click(CLICK_TYPE.scrolldown)
+        )
 
 class LauncherSearch extends Page
     constructor:(@id)->
@@ -127,6 +142,12 @@ class LauncherSearch extends Page
         @show_message(@message)
         @show_tips(@tips)
 
+        simulate_input(@,"deepin","LauncherMenu")
+
+        setTimeout(=>
+            #guide?.switch_page(@,"LauncherRightclick")
+            echo "timeout"
+        ,t_switch_page)
 
 class LauncherRightclick extends Page
     constructor:(@id)->
@@ -136,16 +157,30 @@ class LauncherRightclick extends Page
         @tips = _("tips:你也可以直接用鼠标左键拖拽图标到dock、收藏图标上或者垃圾箱上")
         @show_message(@message)
         @show_tips(@tips)
-
+        setTimeout(=>
+            guide?.switch_page(@,"LauncherMenu")
+        ,t_switch_page)
 
 class LauncherMenu extends Page
     constructor:(@id)->
         super
         
+        @launcher = new Launcher()
+        
         @message = _("使用鼠标右键发送2个图标到桌面")
         @show_message(@message)
 
-        @menu = create_img("menu_#{@id}","#{@img_src}/menu.png",@element)
-        set_pos(@menu,"41%","55%")
+        @element.addEventListener("contextmenu",=>
+            simulate_click(CLICK_TYPE.rightclick)
+        )
 
+        #@menu = create_img("menu_#{@id}","#{@img_src}/menu.png",@element)
+        #set_pos(@menu,"41%","55%")
+        
+        setTimeout(=>
+            echo "switch_page DesktopRichDir"
+            #guide?.switch_page(@,"DesktopRichDir")
+            #@launcher?.hide()
+            #DCore.Guide.show_desktop()
+        ,t_switch_page)
 

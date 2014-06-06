@@ -1,4 +1,50 @@
 
+class Dss
+    DSS = "com.deepin.dde.ControlCenter"
+    constructor: ->
+        try
+            @dss_dbus = DCore.DBus.session(DSS)
+        catch e
+            console.log "dss_dbus error :#{e}"
+ 
+    hide: ->
+        @dss_dbus?.Hide()
+
+    toggle: ->
+        @dss_dbus?.Toggle()
+
+    show: ->
+        @dss_dbus?.Show()
+
+class Launcher
+    LAUNCHER = "com.deepin.dde.launcher"
+    constructor: ->
+        try
+            @launcher_dbus = DCore.DBus.session(LAUNCHER)
+        catch e
+            console.log "launcher_dbus error :#{e}"
+ 
+    hide: ->
+        @launcher_dbus?.Hide()
+
+    toggle: ->
+        @launcher_dbus?.Toggle()
+
+    show: ->
+        @launcher_dbus?.Show()
+
+    hide_signal: (@hide_signal_cb) ->
+        @launcher_dbus?.connect("Closed",@hide_signal_cb)
+
+    show_signal: (@show_signal_cb) ->
+        @launcher_dbus?.connect("Shown",@show_signal_cb)
+
+    show_signal_disconnect: ->
+        @launcher_dbus?.dis_connect("Shown",@show_signal_cb)
+
+    hide_signal_disconnect: ->
+        @launcher_dbus?.dis_connect("Closed",@hide_signal_cb)
+
 class Dock
     DOCK_REGION =
         name:"com.deepin.daemon.Dock"
@@ -49,8 +95,6 @@ class Page extends Widget
         echo "new #{@id} Page"
         @img_src = "img"
         
-        enableZoneDetect(false)
-
         @element.style.display = "-webkit-box"
         @element.style.width = "100%"
         @element.style.height = "100%"
@@ -65,18 +109,20 @@ class Page extends Widget
         
 
     show_message: (@message) ->
-        @message_div = create_element("div","message_#{@id}",@msg_tips)
+        if not @message_div?
+            @message_div = create_element("div","message_#{@id}",@msg_tips)
+            @message_div.style.fontSize = "2em"
+            @message_div.style.lineHeight = "2.3em"
         @message_div.innerText = @message
-        @message_div.style.fontSize = "2em"
-        @message_div.style.lineHeight = "2.3em"
 
     show_tips: (@tips) ->
-        @tips_div = create_element("div","tips_#{@id}",@msg_tips)
+        if not @tips_div?
+            @tips_div = create_element("div","tips_#{@id}",@msg_tips)
+            @tips_div.style.fontSize = "1.6em"
+            @tips_div.style.lineHeight = "1.9em"
+            @tips_div.style.position = "relative"
+            @tips_div.style.marginTop = "40px"
         @tips_div.innerText = @tips
-        @tips_div.style.fontSize = "1.6em"
-        @tips_div.style.lineHeight = "1.9em"
-        @tips_div.style.position = "relative"
-        @tips_div.style.marginTop = "40px"
 
 
         

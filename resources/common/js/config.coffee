@@ -36,3 +36,5 @@ KEYCODE =
     WIN:0
     SUPER:0
     ALT:18
+    BACKSPACE:8
+

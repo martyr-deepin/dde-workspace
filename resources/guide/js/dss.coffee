@@ -23,6 +23,8 @@ class DssLaunch extends Page
     constructor:(@id)->
         super
         
+        @dss = new Dss()
+
         @message = _("很好！请你再次触发右下角")
         @tips = _("tips：单击dock上的设置图标也可以实现")
         @show_message(@message)
@@ -30,11 +32,16 @@ class DssLaunch extends Page
 
         @dock = new Dock()
         @circle = new Pointer("dss_circle",@element)
-        @circle.create_pointer(AREA_TYPE.circle_white,POS_TYPE.rightdown)
+        @circle.create_pointer(AREA_TYPE.circle_white,POS_TYPE.rightdown,=>
+            @dss?.show()
+            guide?.switch_page(@,"DssArea")
+        
+        )
         @pos = @dock.get_dssicon_pos()
         @circle_x = @pos.x0 - @circle.pointer_width
         @circle_y = @pos.y0 - @circle.pointer_height - ICON_MARGIN_V_BOTTOM / 2
         @circle.set_area_pos(@circle_x,@circle_y,"fixed",POS_TYPE.leftup)
+        @circle.show_animation()
 
 
 class DssArea extends Page
@@ -47,15 +54,21 @@ class DssArea extends Page
         @show_tips(@tips)
 
         @dock = new Dock()
-        @circle = new Pointer("dss_circle",@element)
-        @circle.create_pointer(AREA_TYPE.circle_white,POS_TYPE.rightdown)
-        @pos = @dock.get_dssicon_pos()
-        @circle_x = @pos.x0 - @circle.pointer_width
-        @circle_y = @pos.y0 - @circle.pointer_height - ICON_MARGIN_V_BOTTOM / 2
-        @circle.set_area_pos(@circle_x,@circle_y,"fixed",POS_TYPE.leftup)
+        #@circle = new Pointer("dss_circle",@element)
+        #@circle.create_pointer(AREA_TYPE.circle_white,POS_TYPE.rightdown)
+        #@pos = @dock.get_dssicon_pos()
+        #@circle_x = @pos.x0 - @circle.pointer_width
+        #@circle_y = @pos.y0 - @circle.pointer_height - ICON_MARGIN_V_BOTTOM / 2
+        #@circle.set_area_pos(@circle_x,@circle_y,"fixed",POS_TYPE.leftup)
+        #@circle.show_animation()
 
         @rect = new Rect("dss_area",@element)
         @rect.create_rect(360,520)
         @rect.set_pos(0,150,"fixed",POS_TYPE.rightup)
+        @rect.show_animation(=>
+            setTimeout(=>
+                guide?.switch_page(@,"End")
+            ,t_switch_page)
+        )
         
 

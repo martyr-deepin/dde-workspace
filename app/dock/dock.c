@@ -100,6 +100,9 @@ double dock_get_active_window()
 }
 
 
+void update_hide_state(int delay, gboolean data);
+
+
 gboolean leave_notify(GtkWidget* w G_GNUC_UNUSED,
                       GdkEventCrossing* e G_GNUC_UNUSED,
                       gpointer u G_GNUC_UNUSED)
@@ -113,16 +116,20 @@ gboolean leave_notify(GtkWidget* w G_GNUC_UNUSED,
     //     return FALSE;
     // }
 
+    // dbus_dock_daemon_update_hide_state(FALSE);
     if (e->detail == GDK_NOTIFY_NONLINEAR_VIRTUAL && !mouse_pointer_leave(e->x, e->y)) {
+        g_warning("leave dock");
+        update_hide_state(50, FALSE);
+
         if (GD.config.hide_mode == ALWAYS_HIDE_MODE && !is_mouse_in_dock()) {
             g_debug("always hide");
-            dock_delay_hide(500);
+            // dock_delay_hide(500);
         } else if (GD.config.hide_mode == INTELLIGENT_HIDE_MODE) {
             g_debug("intelligent leave_notify");
-            dock_update_hide_mode();
+            // dock_update_hide_mode();
         } else if (GD.config.hide_mode == AUTO_HIDE_MODE && dock_has_maximize_client() && !is_mouse_in_dock()) {
             g_debug("auto leave_notify");
-            dock_hide_real_now();
+            // dock_hide_real_now();
         }
         js_post_signal("leave-notify");
     }
@@ -135,10 +142,16 @@ gboolean enter_notify(GtkWidget* w G_GNUC_UNUSED,
     if (!get_leave_enter_guard())
         return FALSE;
 
+    // dbus_dock_daemon_update_hide_state(TRUE);
+    if (is_mouse_in_dock()) {
+        g_warning("enter dock");
+        update_hide_state(50, TRUE);
+    }
+
     if (GD.config.hide_mode == AUTO_HIDE_MODE) {
-        dock_show_real_now();
+        // dock_show_real_now();
     } else if (GD.config.hide_mode != NO_HIDE_MODE) {
-        dock_delay_show(300);
+        // dock_delay_show(300);
     }
     return FALSE;
 }
@@ -327,7 +340,7 @@ void dock_emit_webview_ok()
 
         inited = TRUE;
         init_config();
-        update_dock_size_mode();
+        // update_dock_size_mode();
         init_dock_guard_window();
         g_spawn_command_line_async("/usr/bin/dde-dock-applets", NULL);
     } else {
@@ -342,7 +355,7 @@ void dock_emit_webview_ok()
     GD.is_webview_loaded = TRUE;
 
     if (GD.config.hide_mode == ALWAYS_HIDE_MODE) {
-        dock_hide_now();
+        // dock_hide_now();
     } else {
     }
 }
@@ -352,12 +365,14 @@ void _change_workarea_height(int height)
     // update_display_info(&dock);
     int workarea_width = (dock.width - dock_panel_width) / 2;
     if (GD.config.hide_mode == NO_HIDE_MODE ) {
+        g_message("NO_HIDE_MODE, set workarea height to %d", height);
         set_struct_partial(DOCK_GDK_WINDOW(),
                            ORIENTATION_BOTTOM,
                            height,
                            dock.x + workarea_width,
                            dock.x + dock.width - workarea_width);
     } else {
+        g_message("HIDE_MODE, set workarea height to 0");
         set_struct_partial(DOCK_GDK_WINDOW(),
                            ORIENTATION_BOTTOM,
                            0,
@@ -369,13 +384,17 @@ void _change_workarea_height(int height)
 JS_EXPORT_API
 void dock_change_workarea_height(double height)
 {
-    if ((int)height == _dock_height && GD.is_webview_loaded)
-        return;
+    // if ((int)height == _dock_height && GD.is_webview_loaded) {
+    //     g_debug("no need to change workarea:\n%d ==? %d\nloaded?:%d",
+    //               (int)height, _dock_height, GD.is_webview_loaded);
+    //     return;
+    // }
 
     if (height < 30)
         _dock_height = 30;
     else
         _dock_height = height;
+
     int workarea_height = gdk_screen_height() - dock.height + height;
     _change_workarea_height(workarea_height);
     init_region(DOCK_GDK_WINDOW(), 0, dock.height - workarea_height, dock.width, workarea_height);
@@ -539,7 +558,7 @@ int main(int argc, char* argv[])
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
 
     g_signal_connect(container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
-/* #define DEBUG_REGION */
+// #define DEBUG_REGION
 #ifndef DEBUG_REGION
     g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
 #endif

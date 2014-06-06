@@ -28,6 +28,7 @@
 #include "jsextension.h"
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
+#include "DBUS_dock.h"
 
 extern int _dock_height;
 extern void _change_workarea_height(int height);
@@ -35,6 +36,7 @@ extern GdkWindow* DOCK_GDK_WINDOW();
 extern gboolean mouse_pointer_leave();
 extern gboolean dock_has_maximize_client();
 extern double dock_get_active_window();
+guint update_hide_state_timer = 0;
 
 #define GUARD_WINDOW_HEIGHT 1
 
@@ -315,12 +317,18 @@ GdkWindow* get_dock_guard_window()
         attributes.height = GUARD_WINDOW_HEIGHT;
         attributes.window_type = GDK_WINDOW_TEMP;
         attributes.wclass = GDK_INPUT_OUTPUT;
+#ifdef NDEBUG
         attributes.wclass = GDK_INPUT_ONLY;
+#endif
         attributes.event_mask = GDK_ENTER_NOTIFY_MASK;
         /*attributes.event_mask = GDK_ALL_EVENTS_MASK;*/
 
-        guard_window =  gdk_window_new(NULL, &attributes, 0);
+        guard_window = gdk_window_new(NULL, &attributes, 0);
+#ifdef NDEBUG
         GdkRGBA rgba = { 0, 0, 0, 0 };
+#else
+        GdkRGBA rgba = { 233, 233, 233, 1 };
+#endif
         set_wmspec_dock_hint(guard_window);
         gdk_window_set_background_rgba(guard_window, &rgba);
 
@@ -328,6 +336,27 @@ GdkWindow* get_dock_guard_window()
     }
     return guard_window;
 }
+
+
+gboolean update_hide_state_delay(gpointer data)
+{
+    // dbus_dock_daemon_update_hide_state(GPOINTER_TO_INT(data));
+    dbus_dock_daemon_update_hide_state();
+    update_hide_state_timer = 0;
+    return G_SOURCE_REMOVE;
+}
+
+
+void update_hide_state(int delay, gboolean data)
+{
+    if (update_hide_state_timer != 0) {
+        g_source_remove(update_hide_state_timer);
+    }
+    update_hide_state_delay(NULL);
+    // update_hide_state_timer = g_timeout_add(delay, update_hide_state_delay, GINT_TO_POINTER(data));
+}
+
+
 PRIVATE GdkFilterReturn _monitor_guard_window(GdkXEvent* xevent,
         GdkEvent* event G_GNUC_UNUSED, gpointer data G_GNUC_UNUSED)
 {
@@ -337,15 +366,25 @@ PRIVATE GdkFilterReturn _monitor_guard_window(GdkXEvent* xevent,
 
     if (xev->type == GenericEvent) {
         if (e->evtype == EnterNotify) {
-            if (GD.config.hide_mode == AUTO_HIDE_MODE)
-                dock_show_real_now();
-            else if (GD.config.hide_mode != NO_HIDE_MODE)
-                dock_delay_show(50);
+            g_warning("enter guard window");
+            // dbus_dock_daemon_update_hide_state(TRUE);
+
+            update_hide_state(50, TRUE);
+
+            // if (GD.config.hide_mode == AUTO_HIDE_MODE)
+            //     dock_show_real_now();
+            // else if (GD.config.hide_mode != NO_HIDE_MODE)
+            //     dock_delay_show(50);
         } else if (e->evtype == LeaveNotify) {
-            if (GD.config.hide_mode == ALWAYS_HIDE_MODE)
-                dock_delay_hide(50);
-            else if (GD.config.hide_mode == AUTO_HIDE_MODE && dock_has_maximize_client() && !is_mouse_in_dock())
-                dock_hide_real_now();
+            g_warning("leave guard window");
+            // dbus_dock_daemon_update_hide_state(FALSE);
+
+            update_hide_state(50, FALSE);
+
+            // if (GD.config.hide_mode == ALWAYS_HIDE_MODE)
+            //     dock_delay_hide(50);
+            // else if (GD.config.hide_mode == AUTO_HIDE_MODE && dock_has_maximize_client() && !is_mouse_in_dock())
+            //     dock_hide_real_now();
         }
     }
     return GDK_FILTER_CONTINUE;

@@ -2,7 +2,7 @@
 #include <X11/extensions/shape.h>
 #include "X_misc.h"
 #include "jsextension.h"
-
+#include <X11/Xlib.h>
 
 GtkWidget* get_container();
 JS_EXPORT_API
@@ -31,15 +31,12 @@ void guide_enable_right_click()
 JS_EXPORT_API
 void guide_disable_keyboard()
 {
-    return;
-    Display* dpy = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
-    XGrabKeyboard(dpy, DefaultRootWindow(dpy), True, GrabModeAsync, GrabModeAsync, CurrentTime);
+    gdk_keyboard_grab(gtk_widget_get_window(get_container()), FALSE, GDK_CURRENT_TIME);
 }
 JS_EXPORT_API
 void guide_enable_keyboard()
 {
-    Display* dpy = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
-    XUngrabKeyboard(dpy, CurrentTime);
+    gdk_keyboard_ungrab(GDK_CURRENT_TIME);
 }
 
 Window get_dock_xid()
@@ -135,7 +132,7 @@ void guide_simulate_click(double type)
      */
     GError *error = NULL;
     const gchar *cmd = g_strdup_printf ("xdotool click %d\n",(int)type);
-    g_message ("cmd:%s",cmd);
+    g_message ("guide_simulate_click:%s",cmd);
     g_spawn_command_line_sync (cmd, NULL, NULL, NULL, &error);
     if (error != NULL) {
         g_warning ("%s failed:%s\n",cmd, error->message);
@@ -143,4 +140,59 @@ void guide_simulate_click(double type)
         error = NULL;
     }
 }
+
+JS_EXPORT_API
+void guide_simulate_input(double input)
+{
+    GError *error = NULL;
+    Display* dpy = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
+    KeyCode key = XKeysymToKeycode(dpy,(int)input);
+    const gchar *cmd = g_strdup_printf ("xdotool key %d\n",key);
+    g_message ("guide_simulate_input:%s",cmd);
+    g_spawn_command_line_sync (cmd, NULL, NULL, NULL, &error);
+    if (error != NULL) {
+        g_warning ("%s failed:%s\n",cmd, error->message);
+        g_error_free (error);
+        error = NULL;
+    }
+}
+
+JS_EXPORT_API
+void guide_show_desktop()
+{
+    GError *error = NULL;
+    const gchar *cmd = g_strdup_printf ("/usr/lib/deepin-daemon/desktop-toggle");
+    g_message ("guide_show_desktop:%s",cmd);
+    g_spawn_command_line_sync (cmd, NULL, NULL, NULL, &error);
+    if (error != NULL) {
+        g_warning ("%s failed:%s\n",cmd, error->message);
+        g_error_free (error);
+        error = NULL;
+    }
+}
+
+
+JS_EXPORT_API
+void guide_launch_zone()
+{
+    GError *error = NULL;
+    const gchar *cmd = g_strdup_printf ("/usr/lib/deepin-daemon/dde-zone");
+    g_message ("guide_launch_zone:%s",cmd);
+    g_spawn_command_line_sync (cmd, NULL, NULL, NULL, &error);
+    if (error != NULL) {
+        g_warning ("%s failed:%s\n",cmd, error->message);
+        g_error_free (error);
+        error = NULL;
+    }
+}
+
+JS_EXPORT_API
+void guide_set_focus(gboolean focus)
+{
+    GdkWindow* gdkwindow = gtk_widget_get_window (get_container());
+    gdk_window_set_focus_on_map (gdkwindow, focus);
+    gdk_window_set_accept_focus (gdkwindow, focus);
+    gdk_window_set_override_redirect(gdkwindow, !focus);
+ }
+
 

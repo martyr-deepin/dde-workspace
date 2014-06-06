@@ -11,6 +11,7 @@ all: ${com_coffee} \
 	config.coffee \
 	utils.coffee\
 	region.coffee\
+	hide_status.coffee\
 	settings.coffee\
 	global_menu.coffee\
 	docked_app_manager.coffee\
