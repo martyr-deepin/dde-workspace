@@ -212,8 +212,11 @@ osd.SwitchMonitors = (keydown)->
     else setFocus(false)
     BrightCls  = new Display("DisplaySwitch") if not BrightCls?
     BrightCls.id = "DisplaySwitch"
-    echo BrightCls.Monitors
-    if BrightCls.Monitors.length < 2 then return
+    echo BrightCls.Monitors.length
+
+    if BrightCls.Monitors.length < 2
+        osdHide()
+        return
     
     if not CHOOSEMODE
         BrightCls.showDisplayMode()
