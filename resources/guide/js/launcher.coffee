@@ -170,15 +170,17 @@ class LauncherMenu extends Page
         @message = _("使用鼠标右键发送2个图标到桌面")
         @show_message(@message)
 
-
-        #simulate_click(CLICK_TYPE.rightclick,@,"LauncherScroll")
+        @element.addEventListener("contextmenu",=>
+            simulate_click(CLICK_TYPE.rightclick)
+        )
 
         #@menu = create_img("menu_#{@id}","#{@img_src}/menu.png",@element)
         #set_pos(@menu,"41%","55%")
         
         setTimeout(=>
-            guide?.switch_page(@,"DesktopRichDir")
-            @launcher?.hide()
-            DCore.Guide.show_desktop()
+            echo "switch_page DesktopRichDir"
+            #guide?.switch_page(@,"DesktopRichDir")
+            #@launcher?.hide()
+            #DCore.Guide.show_desktop()
         ,t_switch_page)
 

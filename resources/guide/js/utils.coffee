@@ -75,7 +75,10 @@ simulate_click = (type,old_page = null,new_page_cls_name = null) ->
     setTimeout(=>
         DCore.Guide.simulate_click(type)
         DCore.Guide.enable_guide_region()
-        DCore.Guide.disable_right_click()
+        if type is CLICK_TYPE.rightclick
+            DCore.Guide.enable_right_click()
+        else
+            DCore.Guide.disable_right_click()
         guide?.switch_page(old_page,new_page_cls_name) if new_page_cls_name? and old_page?
     ,20)
 
