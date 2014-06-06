@@ -390,11 +390,6 @@ void dock_change_workarea_height(double height)
     //     return;
     // }
 
-    if (height < 30)
-        _dock_height = 30;
-    else
-        _dock_height = height;
-
     int workarea_height = gdk_screen_height() - dock.height + height;
     _change_workarea_height(workarea_height);
     init_region(DOCK_GDK_WINDOW(), 0, dock.height - workarea_height, dock.width, workarea_height);
@@ -558,11 +553,7 @@ int main(int argc, char* argv[])
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
 
     g_signal_connect(container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
-// #define DEBUG_REGION
-#ifndef DEBUG_REGION
     g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
-#endif
-#undef DEBUG_REGION
     g_signal_connect(container, "enter-notify-event", G_CALLBACK(enter_notify), NULL);
     g_signal_connect(container, "leave-notify-event", G_CALLBACK(leave_notify), NULL);
     g_signal_connect(container, "size-allocate", G_CALLBACK(size_workaround), NULL);
