@@ -185,3 +185,14 @@ void guide_launch_zone()
         error = NULL;
     }
 }
+
+JS_EXPORT_API
+void guide_set_focus(gboolean focus)
+{
+    GdkWindow* gdkwindow = gtk_widget_get_window (get_container());
+    gdk_window_set_focus_on_map (gdkwindow, focus);
+    gdk_window_set_accept_focus (gdkwindow, focus);
+    gdk_window_set_override_redirect(gdkwindow, !focus);
+ }
+
+

@@ -85,7 +85,7 @@ class Guide extends Widget
                 page = new LauncherScroll(cls_name)
                 
             when "LauncherSearch"
-                DCore.Guide.enable_keyboard()
+                #DCore.Guide.enable_keyboard()
                 page = new LauncherSearch(cls_name)
                 
             when "LauncherRightclick"

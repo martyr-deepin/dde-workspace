@@ -81,13 +81,14 @@ simulate_click = (type,old_page = null,new_page_cls_name = null) ->
 
 simulate_input = (old_page,input_str,new_page_cls_name = null) ->
     DCore.Guide.enable_keyboard()
+    DCore.Guide.set_focus(true)
+    echo "input_str:#{input_str}"
     old_page.element.addEventListener("keydown", (e)->
+        echo e.which
         switch e.which
             when KEYCODE.ESC_KEY and KEYCODE.WIN
-                DCore.Guide.disable_keyboard()
                 DCore.Guide.enable_guide_region()
             when KEYCODE.ENTER
-                DCore.Guide.disable_keyboard()
                 DCore.Guide.enable_guide_region()
                 guide?.switch_page(old_page,new_page_cls_name) if new_page_cls_name? and old_page?
             else
