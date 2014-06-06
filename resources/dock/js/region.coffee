@@ -47,7 +47,7 @@ update_dock_region = do->
             # console.log("set dock region height to #{DOCK_HEIGHT}")
             # if setting.hideMode() != HideMode.Showing
             #     h = 0
-            DCore.Dock.force_set_region(left_offset, 0, ICON_SCALE * ITEM_WIDTH * apps.length, panel_width, 0)
+            DCore.Dock.force_set_region(left_offset, 0, ICON_SCALE * ITEM_WIDTH * apps.length, panel_width, h)
 
 _b.onresize = ->
     calc_app_item_size()
