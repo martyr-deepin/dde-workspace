@@ -122,7 +122,7 @@ class LauncherScroll extends Page
         @scroll_up.style.bottom = 0
 
         @element.addEventListener("mousewheel", (e)=>
-            if @scrollup and @scrolldown
+            if @scrollup and @scrolldown and @pointer.element.style.display is "none"
                 @pointer.show_animation()
             
             if e.wheelDelta >= 120
