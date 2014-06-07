@@ -142,7 +142,7 @@ class LauncherSearch extends Page
         @show_message(@message)
         @show_tips(@tips)
 
-        simulate_input(@,"deepin","LauncherMenu")
+        simulate_input(@,"deepin","LauncherRightclick")
 
         setTimeout(=>
             #guide?.switch_page(@,"LauncherRightclick")
