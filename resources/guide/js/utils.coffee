@@ -90,12 +90,11 @@ black_key_list = [
 ]
 
 
-deepin_keysym = [68,69,69,80,73,78]
-deepin_keysym_str = deepin_keysym.toString()
 timeout_deepin = null
 input_keysym = []
 
-simulate_input = (old_page,modle_keysym,new_page_cls_name = null) ->
+simulate_input = (modle_keysym,old_page,new_page_cls_name = null) ->
+    modle_keysym_str = modle_keysym.toString()
     document.body.addEventListener("keydown", (e)->
         echo e.which
         if e.which in black_key_list
@@ -114,8 +113,8 @@ simulate_input = (old_page,modle_keysym,new_page_cls_name = null) ->
                 DCore.Guide.disable_keyboard()
             ,2)
             
-            if input_keysym_str.indexOf(deepin_keysym_str) == 0
-                echo "deepin_keysym_str:#{deepin_keysym_str}"
+            if input_keysym_str.indexOf(modle_keysym_str) == 0
+                echo "modle_keysym_str:#{modle_keysym_str}"
                 clearTimeout(timeout_deepin)
                 timeout_deepin = setTimeout(=>
                     guide?.switch_page(old_page,new_page_cls_name)

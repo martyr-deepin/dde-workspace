@@ -142,12 +142,8 @@ class LauncherSearch extends Page
         @show_message(@message)
         @show_tips(@tips)
 
-        simulate_input(@,"deepin","LauncherRightclick")
-
-        setTimeout(=>
-            #guide?.switch_page(@,"LauncherRightclick")
-            echo "timeout"
-        ,t_switch_page)
+        deepin_keysym = [68,69,69,80,73,78]
+        simulate_input(deepin_keysym,@,"LauncherRightclick")
 
 class LauncherRightclick extends Page
     constructor:(@id)->
