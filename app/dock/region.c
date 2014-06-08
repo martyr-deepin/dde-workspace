@@ -53,9 +53,8 @@ PRIVATE
 gboolean _help_do_window_region(cairo_region_t* region)
 {
     _do_shape_timer_id  = -1;
-#ifndef DEBUG_REGION
     gdk_window_input_shape_combine_region(_win, region, 0, 0);
-#else
+#ifdef DEBUG_REGION
     gdk_window_shape_combine_region(_win, region, 0, 0);
 #endif
     return FALSE;
@@ -93,6 +92,7 @@ void dock_force_set_region(double x, double y, double items_width, double panel_
 
     cairo_region_union_rectangle(_region, &tmp);
     do_window_shape_combine_region(_region);
+    gdk_flush();
 }
 
 
