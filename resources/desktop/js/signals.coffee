@@ -54,8 +54,8 @@ do_item_update = (data) ->
     else if (w = create_item(data.entry))?
         all_item.push(w.get_id())
         move_to_anywhere(w)
-        dsc_e = DCore.DEntry.create_by_path("#{desktop_path}/deepin-software-center.desktop")
-        dsc_id = DCore.DEntry.get_id(dsc_e)
+        #dsc_e = DCore.DEntry.create_by_path("#{desktop_path}/deepin-software-center.desktop")
+        #dsc_id = DCore.DEntry.get_id(dsc_e)
         #if(id == dsc_id)
             #DCore.Desktop.set_config_boolean("show-dsc-icon",true)
 
