@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Destkop Environment\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-09 16:56+0800\n"
+"POT-Creation-Date: 2014-06-09 18:01+0800\n"
 "PO-Revision-Date: 2013-12-11 04:44+0000\n"
 "Last-Translator: 648trindade <rafaelgt.mbin@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/"
@@ -344,8 +344,9 @@ msgid "yes"
 msgstr ""
 
 #: ../resources/launcher/js/const.coffee:64
-msgid "_Hide hidden icons"
-msgstr "_Esconder ícones ocultos"
+#, fuzzy
+msgid "_Hide the icon"
+msgstr "_Esconder este ícone"
 
 #: ../resources/launcher/js/const.coffee:65
 msgid "_Display hidden icons"
@@ -443,7 +444,7 @@ msgid "Welcome to use Deepin Operating System"
 msgstr ""
 
 #: ../resources/guide/js/welcome.coffee:39
-msgid "Ready to prepare for operation ..."
+msgid "Prepare for operation ..."
 msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:25
@@ -473,12 +474,12 @@ msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:68
 msgid ""
-"Right-click on desktop to call up the menu, click on \"Desktop hot zone "
-"setting\" to set the hot zone just used"
+"Right-click on desktop black area to call up the menu, select \"Corner "
+"navigation\" to set the corner used"
 msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:69
-msgid "tips：Click on the blank area to return"
+msgid "tips：Click on the interface of corner navigation blank area to return"
 msgstr ""
 
 #: ../resources/guide/js/start.coffee:29
@@ -517,7 +518,8 @@ msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:70
 msgid ""
-"What shown in the \" launcher\" first screen is the application of collection"
+"What shown in the first screen of \" launcher\" are the applications of "
+"collection"
 msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:85
@@ -534,7 +536,7 @@ msgstr ""
 #: ../resources/guide/js/launcher.coffee:140
 msgid ""
 "Use the keyboard searching to find applications you want\n"
-"We try\"deepin\" keyword to see what will come out "
+"We try\"deepin\" keyword to see which applications shown"
 msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:141
@@ -883,6 +885,9 @@ msgstr "utilitários"
 #: ../lib/category.c:56
 msgid "other"
 msgstr "outros"
+
+#~ msgid "_Hide hidden icons"
+#~ msgstr "_Esconder ícones ocultos"
 
 #, fuzzy
 #~ msgid "launcher"

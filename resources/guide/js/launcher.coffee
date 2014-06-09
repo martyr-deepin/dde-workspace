@@ -67,7 +67,7 @@ class LauncherCollect extends Page
             ,t_min_switch_page)
         )
         
-        @message = _("What shown in the \" launcher\" first screen is the application of collection")
+        @message = _("What shown in the first screen of \" launcher\" are the applications of collection")
         @show_message(@message)
         @msg_tips.style.marginTop = "150px"
 
@@ -137,7 +137,7 @@ class LauncherSearch extends Page
     constructor:(@id)->
         super
         
-        @message = _("Use the keyboard searching to find applications you want\nWe try\"deepin\" keyword to see what will come out ")
+        @message = _("Use the keyboard searching to find applications you want\nWe try\"deepin\" keyword to see which applications shown")
         @tips = _("tips：Please directly enter the word \"deepin\"")
         @show_message(@message)
         @show_tips(@tips)

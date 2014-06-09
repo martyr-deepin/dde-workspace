@@ -1,1 +1,1 @@
-guide?.create_page("Welcome")
+guide?.create_page("LauncherMenu")

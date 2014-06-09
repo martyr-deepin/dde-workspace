@@ -61,7 +61,7 @@ KEYCODE.B = 66
 KEYCODE.F = 70
 
 HIDDEN_ICONS_MESSAGE =
-    true: _("_Hide hidden icons")
+    true: _("_Hide the icon")
     false: _("_Display hidden icons")
 
 ITEM_HIDDEN_ICON_MESSAGE =
