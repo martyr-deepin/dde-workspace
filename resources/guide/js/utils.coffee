@@ -89,21 +89,36 @@ black_key_list = [
     KEYCODE.ENTER
 ]
 
-simulate_input = (old_page,input_str,new_page_cls_name = null) ->
-    echo "input_str:#{input_str}"
+
+timeout_deepin = null
+input_keysym = []
+
+simulate_input = (modle_keysym,old_page,new_page_cls_name = null) ->
+    modle_keysym_str = modle_keysym.toString()
     document.body.addEventListener("keydown", (e)->
         echo e.which
         if e.which in black_key_list
             echo "black_key_list key :#{e.which}"
+        else if e.which is KEYCODE.BACKSPACE
+            if input_keysym.length > 0 then input_keysym.pop()
         else
-            echo e
             input = e.which
+            input_keysym.push(input)
+            input_keysym_str = input_keysym.toString()
             DCore.Guide.disable_guide_region()
             setTimeout(=>
+                DCore.Guide.enable_keyboard()
                 DCore.Guide.simulate_input(input)
                 DCore.Guide.enable_guide_region()
-                DCore.Guide.disable_right_click()
-            ,20)
+                DCore.Guide.disable_keyboard()
+            ,2)
+            
+            if input_keysym_str.indexOf(modle_keysym_str) == 0
+                echo "modle_keysym_str:#{modle_keysym_str}"
+                clearTimeout(timeout_deepin)
+                timeout_deepin = setTimeout(=>
+                    guide?.switch_page(old_page,new_page_cls_name)
+                ,t_switch_page)
     )
     
 
