@@ -22,7 +22,7 @@ class DesktopRichDir extends Page
     constructor:(@id)->
         super
         
-        @message = _("Let's overlap the other two icons on the first icon \n generate \"application group\"")
+        @message = _("Let's overlap the other two icons on the first icon \ngenerate \"application group\"")
         @show_message(@message)
         
         @corner_leftup = new Pointer("circle_richdir",@element)
