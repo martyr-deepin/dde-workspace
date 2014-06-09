@@ -22,7 +22,7 @@ class DesktopRichDir extends Page
     constructor:(@id)->
         super
         
-        @message = _("让我们把另外一个图标拖动到第一个图标上\n生成\“应用程序组\”")
+        @message = _("Let's overlap the other two icons on the first icon \n generate \"application group\"")
         @show_message(@message)
         
         @corner_leftup = new Pointer("circle_richdir",@element)
@@ -34,8 +34,8 @@ class DesktopRichDirCreated extends Page
     constructor:(@id)->
         super
         
-        @message = _("很好！您已经学会如何创建一个\“应用程序组\”")
-        @tips = _("tips：右键单击应用程序组将提供更多功能")
+        @message = _("Well, you have learned how to create a \"application group\"")
+        @tips = _("tips：Right-click on the application group will provide more functions")
         @show_message(@message)
         @show_tips(@tips)
         setTimeout(=>
@@ -48,8 +48,8 @@ class DesktopCorner extends Page
         
         #DCore.Guide.launch_zone()
         
-        @message = _("鼠标滑动到四个顶角，可触发四个不同的事件")
-        @tips = _("tips：请按提示依次触发，点击空白区域可返回")
+        @message = _("Slide the mouse to the four top corners, which can trigger four different events")
+        @tips = _("tips：Please trigger successively by hints, click on the blank area to return")
         @show_message(@message)
         @show_tips(@tips)
         
@@ -65,8 +65,8 @@ class DesktopZone extends Page
     constructor:(@id)->
         super
         
-        @message = _("在桌面上右键调出菜单，点击“桌面热区设置”可以设置刚才使用的热区")
-        @tips = _("tips：点击空白区域可返回")
+        @message = _("Right-click on desktop to call up the menu, click on \"Desktop hot zone setting\" to set the hot zone just used")
+        @tips = _("tips：Click on the blank area to return")
         @show_message(@message)
         @show_tips(@tips)
 
