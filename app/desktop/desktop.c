@@ -40,6 +40,7 @@
 #include "dcore.h"
 #include <dwebview.h>
 #include "utils.h"
+#include "session_register.h"
 #include "DBUS_desktop.h"
 #include "desktop.h"
 
@@ -702,6 +703,7 @@ void desktop_emit_webview_ok()
         setup_root_window_watcher(container, dock_gsettings);
     }
     update_workarea_size (dock_gsettings);
+    dde_session_register();
 }
 
 

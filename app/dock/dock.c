@@ -37,6 +37,7 @@
 #include "monitor.h"
 #include "display_info.h"
 #include "trayicons.h"
+#include "session_register.h"
 
 #define DOCK_CONFIG "dock/config.ini"
 #define DOCKED_ITEM_KEY_NAME "Position"
@@ -358,6 +359,7 @@ void dock_emit_webview_ok()
         // dock_hide_now();
     } else {
     }
+    dde_session_register();
 }
 
 void _change_workarea_height(int height)
