@@ -37,6 +37,7 @@
 #include "monitor.h"
 #include "display_info.h"
 #include "trayicons.h"
+#include "session_register.h"
 
 #define DOCK_CONFIG "dock/config.ini"
 #define DOCKED_ITEM_KEY_NAME "Position"
@@ -342,7 +343,6 @@ void dock_emit_webview_ok()
         init_config();
         // update_dock_size_mode();
         init_dock_guard_window();
-        g_spawn_command_line_async("/usr/bin/dde-dock-applets", NULL);
     } else {
         update_dock_size_mode();
     }
@@ -358,6 +358,7 @@ void dock_emit_webview_ok()
         // dock_hide_now();
     } else {
     }
+    dde_session_register();
 }
 
 void _change_workarea_height(int height)
