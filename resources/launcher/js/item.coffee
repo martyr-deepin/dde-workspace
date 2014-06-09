@@ -180,7 +180,7 @@ class Item extends Widget
         target?.style.cursor = "wait"
         e = e && e.originalEvent || e
         e?.stopPropagation()
-        startManager.Launch(@basename)
+        startManager.Launch(@path)
         Item.hoverItem = target.parentNode
         target?.style.cursor = "auto"
         exit_launcher()

@@ -77,7 +77,7 @@ class SearchBar
                 return
 
             for i in [searchResult.result.length-1..0]
-                if (item = Widget.look_up("#{searchResult.result[i]}"))?
+                if (item = Widget.look_up("#{searchResult.result[i]}"))? and not uninstalling_apps[item.id]
                     # console.log "search Item id: #{searchResult.result[i]}"
                     target = item.elements.search
                     res.removeChild(target)
