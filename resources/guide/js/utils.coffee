@@ -101,7 +101,6 @@ simulate_input = (modle_keysym,old_page,new_page_cls_name = null) ->
         echo "======current_page_id:#{guide?.current_page_id}======"
         echo "======keysym:#{e.which}======"
         echo "======keyCode:#{e.keyCode}======"
-        echo "======charCode:#{e.charCode}======"
         echo "======fromCharCode:#{String.fromCharCode(e.which)}======"
         if e.which in black_key_list
             echo "black_key_list key :#{e.which}"
