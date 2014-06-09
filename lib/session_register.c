@@ -6,9 +6,9 @@ static void dbus_dde_session_register(const char* arg0)
     GDBusProxy* proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SESSION,
                                                      0,
                                                      NULL,
-                                                     "org.snyh.Test",
-                                                     "/org/snyh/Test",
-                                                     "org.snyh.Test",
+                                                     "com.deepin.SessionManager",
+                                                     "/com/deepin/SessionManager",
+                                                     "com.deepin.SessionManager",
                                                      NULL,
                                                      &error);
     if (error != NULL) {
