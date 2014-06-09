@@ -22,8 +22,8 @@ class End extends Page
     constructor:(@id)->
         super
         
-        @message = _("感谢您的耐心学习！您获得了新手礼包")
-        @tips = _("tips：请在深度账号内领取")
+        @message = _("Thanks for your patience to learn.You get the novice package")
+        @tips = _("tips：Please receive in Deepin account")
         @show_message(@message)
         @show_tips(@tips)
         #@msg_tips.style.top = "-10%"
@@ -38,7 +38,7 @@ class End extends Page
         )
 
         @jump = create_element("div","jump_#{@id}",@get.element)
-        @jump.innerText = _("新用户直接跳到注册页面")
+        @jump.innerText = _("New users directly jump to the registration page")
         @jump.style.marginLeft = "1.6em"
         @jump.style.fontSize = "1.6em"
         @jump.style.lineHeight = "4.0em"

@@ -26,7 +26,7 @@ class LauncherLaunch extends Page
         @dock = new Dock()
         @launcher = new Launcher()
         
-        @message = _("鼠标滑动到左上角，或者点击启动器图标都可以启动\“应用程序启动器\”")
+        @message = _("Sliding the mouse to the upper left corner or clicking on the launcher icon both can start \"Application Launcher\"")
         @show_message(@message)
         
         @corner_leftup = new Pointer("corner_leftup",@element)
@@ -67,7 +67,7 @@ class LauncherCollect extends Page
             ,t_min_switch_page)
         )
         
-        @message = _("在\“启动器\”第一屏显示的是收藏的应用")
+        @message = _("What shown in the \" launcher\" first screen is the application of collection")
         @show_message(@message)
         @msg_tips.style.marginTop = "150px"
 
@@ -82,7 +82,7 @@ class LauncherAllApps extends Page
         @pointer.set_area_pos(25,25)
         @pointer.show_animation()
         
-        @message = _("请点击\“所有应用\”图标，您将看到所有应用")
+        @message = _("Please click on the \"All Applications\" icon , you will see all applications")
         @show_message(@message)
 
 class LauncherScroll extends Page
@@ -101,7 +101,7 @@ class LauncherScroll extends Page
         )
         @pointer.set_area_pos(25,192)
         
-        @message = _("上下滚动鼠标滚轮可以查看所有程序\n您也可以点击左侧分类导航来定位")
+        @message = _("All programs can be seen by scrolling the mouse up and down\nYou can also click on the left classification navigation to locate")
         @show_message(@message)
 
         @scroll = create_element("div","scroll",@element)
@@ -137,8 +137,8 @@ class LauncherSearch extends Page
     constructor:(@id)->
         super
         
-        @message = _("使用键盘搜索来查找你想要的应用\n我们来试试\“deepin\”这个关键字吧看会有什么")
-        @tips = _("tips：请直接输入单词\“deepin\”")
+        @message = _("Use the keyboard searching to find applications you want\nWe try\"deepin\" keyword to see what will come out ")
+        @tips = _("tips：Please directly enter the word \"deepin\"")
         @show_message(@message)
         @show_tips(@tips)
 
@@ -151,8 +151,8 @@ class LauncherRightclick extends Page
     constructor:(@id)->
         super
         
-        @message = _("在应用图标上单击鼠标右键可以调出右键菜单\n点击菜单项将实现其功能")
-        @tips = _("tips:你也可以直接用鼠标左键拖拽图标到dock、收藏图标上或者垃圾箱上")
+        @message = _("Click the right mouse button on the application icon to call up the context menu\nClicking on the menu item will achieve its function")
+        @tips = _("tips:You can also directly use the left mouse button to drag the icon to the dock, favicon or trash")
         @show_message(@message)
         @show_tips(@tips)
         setTimeout(=>
@@ -165,7 +165,7 @@ class LauncherMenu extends Page
         
         @launcher = new Launcher()
         
-        @message = _("使用鼠标右键发送2个图标到桌面")
+        @message = _("Use the right mouse button to send two icons to the desktop")
         @show_message(@message)
 
         @element.addEventListener("contextmenu",=>

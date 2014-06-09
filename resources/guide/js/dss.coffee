@@ -25,8 +25,8 @@ class DssLaunch extends Page
         
         @dss = new Dss()
 
-        @message = _("很好！请你再次触发右下角")
-        @tips = _("tips：单击dock上的设置图标也可以实现")
+        @message = _("Well, please trigger the lower right corner again")
+        @tips = _("tips：Click the setting icon on dock to implement")
         @show_message(@message)
         @show_tips(@tips)
 
@@ -51,8 +51,8 @@ class DssArea extends Page
         restack_time_out = setTimeout(->
             DCore.Guide.restack()
         ,200)
-        @message = _("此处是系统设置区域")
-        @tips = _("tips：悬停dock上的设置图标可以快捷实现一些设置功能")
+        @message = _("Here is the system setting area")
+        @tips = _("tips：Hover the setting icon on dock to quickly implement some setting functions")
         @show_message(@message)
         @show_tips(@tips)
 

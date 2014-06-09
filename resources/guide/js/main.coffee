@@ -1,1 +1,1 @@
-guide?.create_page("LauncherSearch")
+guide?.create_page("Welcome")
