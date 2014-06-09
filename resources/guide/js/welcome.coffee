@@ -36,7 +36,7 @@ class Welcome extends Widget
         @welcome_text.textContent = _("Welcome to use Deepin Operating System")
         
         @readying = create_element("div","readying",@element)
-        @readying.innerText = _("Ready to prepare for operation ...")
+        @readying.innerText = _("Prepare for operation ...")
     
         set_pos_center(@logo,0.7)
         @readying.style.width = "260px"

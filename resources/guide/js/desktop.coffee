@@ -65,8 +65,8 @@ class DesktopZone extends Page
     constructor:(@id)->
         super
         
-        @message = _("Right-click on desktop to call up the menu, click on \"Desktop hot zone setting\" to set the hot zone just used")
-        @tips = _("tips：Click on the blank area to return")
+        @message = _("Right-click on desktop black area to call up the menu, select \"Corner navigation\" to set the corner used")
+        @tips = _("tips：Click on the interface of corner navigation blank area to return")
         @show_message(@message)
         @show_tips(@tips)
 

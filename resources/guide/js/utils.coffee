@@ -57,7 +57,7 @@ set_pos = (el,x,y,position_type = "fixed",type = POS_TYPE.leftup)->
         else
             el.style.left = x
             el.style.top = y
-#-------------------------------------------
+
 
 zoneDBus = null
 enableZoneDetect = (enable) ->
@@ -68,7 +68,7 @@ enableZoneDetect = (enable) ->
         zoneDBus?.EnableZoneDetected_sync(enable)
     catch e
         echo "zoneDBus #{ZONE} error : #{e}"
- #-------------------------------------------
+
 
 simulate_click = (type,old_page = null,new_page_cls_name = null) ->
     DCore.Guide.disable_guide_region()
