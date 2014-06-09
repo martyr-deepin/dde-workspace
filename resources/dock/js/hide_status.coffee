@@ -5,6 +5,9 @@ HideState =
     Hidden: 3
 
 
+HideStateMap = ["Showing", "Shown", "Hidding", "Hidden"]
+
+
 class HideStatusManager
     constructor: (mode)->
         if mode == HideMode.KeepHidden
@@ -13,6 +16,8 @@ class HideStatusManager
             @state = HideState.Shown
         @dbus = DCore.DBus.session_object("com.deepin.daemon.Dock", "/dde/dock/HideStateManager", "dde.dock.HideStateManager")
         @dbus.connect("StateChanged", (state)=>
+            if DCore.Dock.is_hovered()
+                return
             switch settings.hideMode()
                 when HideMode.KeepShowing
                     if state == HideState.Showing
@@ -30,11 +35,11 @@ class HideStatusManager
                         when HideState.Hidding
                             @changeToHide()
 
+            @state = state
             clearTimeout(changeDockRegionTimer)
             changeDockRegionTimer = setTimeout(@changeDockRegion, 400)
 
-            console.log("StateChanged: #{state}")
-            @state = state
+            console.log("StateChanged: #{HideStateMap[state]}")
         )
 
     setState: (state)->
@@ -48,6 +53,8 @@ class HideStatusManager
         @updateState()
 
     changeState: (state, cw, panel)->
+        if DCore.Dock.is_hovered()
+            return
         # update_dock_region()
         # DCore.Dock.require_all_region()
         _CW.style.webkitTransform = cw
@@ -69,14 +76,14 @@ class HideStatusManager
         else if @state == HideState.Hidding
             @setState(HideState.Hidden)
 
-        return
+        # return
         regionHeight = DOCK_HEIGHT
         console.log($("#panel").style.webkitTransform)
         if $("#panel").style.webkitTransform == ""
-            regionHeight = 0
+            regionHeight = 1
             console.warn("hide dock region")
             # update_dock_region(null, regionHeight)
 
         console.log("set workarea height to #{regionHeight}")
-        # update_dock_region(null, regionHeight)
+        update_dock_region(null, regionHeight)
         # DCore.Dock.change_workarea_height(regionHeight)

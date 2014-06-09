@@ -338,22 +338,36 @@ GdkWindow* get_dock_guard_window()
 }
 
 
-gboolean update_hide_state_delay(gpointer data)
+gboolean update_hide_state_delay()
 {
-    // dbus_dock_daemon_update_hide_state(GPOINTER_TO_INT(data));
-    dbus_dock_daemon_update_hide_state();
+    if (!dock_is_hovered()) {
+        dbus_dock_daemon_update_hide_state();
+    }
     update_hide_state_timer = 0;
     return G_SOURCE_REMOVE;
 }
 
 
-void update_hide_state(int delay, gboolean data)
+void cancel_update_state_request()
 {
     if (update_hide_state_timer != 0) {
         g_source_remove(update_hide_state_timer);
+        update_hide_state_timer = 0;
     }
-    update_hide_state_delay(NULL);
-    // update_hide_state_timer = g_timeout_add(delay, update_hide_state_delay, GINT_TO_POINTER(data));
+}
+
+
+void _update_hide_state(int delay G_GNUC_UNUSED)
+{
+    cancel_update_state_request();
+    // update_hide_state_delay(NULL);
+    update_hide_state_timer = g_timeout_add(delay, update_hide_state_delay, NULL);
+}
+
+
+void update_hide_state()
+{
+    _update_hide_state(100);
 }
 
 
@@ -369,7 +383,7 @@ PRIVATE GdkFilterReturn _monitor_guard_window(GdkXEvent* xevent,
             g_warning("enter guard window");
             // dbus_dock_daemon_update_hide_state(TRUE);
 
-            update_hide_state(50, TRUE);
+            update_hide_state();
 
             // if (GD.config.hide_mode == AUTO_HIDE_MODE)
             //     dock_show_real_now();
@@ -379,7 +393,7 @@ PRIVATE GdkFilterReturn _monitor_guard_window(GdkXEvent* xevent,
             g_warning("leave guard window");
             // dbus_dock_daemon_update_hide_state(FALSE);
 
-            update_hide_state(50, FALSE);
+            update_hide_state();
 
             // if (GD.config.hide_mode == ALWAYS_HIDE_MODE)
             //     dock_delay_hide(50);

@@ -41,4 +41,6 @@ void update_dock_guard_window_position(double width);
 
 void init_dock_guard_window();
 gboolean is_mouse_in_dock();
+void cancel_update_state_request();
 #endif
+

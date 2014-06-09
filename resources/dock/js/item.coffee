@@ -1,3 +1,4 @@
+activeWindowTimer = null
 normal_mouseout_id = null
 closePreviewWindowTimer = null
 _lastCliengGroup = null
@@ -67,7 +68,8 @@ class Item extends Widget
     update_scale:->
 
     on_mouseover:(e)=>
-        if hideStatusManager.state == HideState.Showing || hideStatusManager.state == HideState.Hidding
+        if settings.hideMode() != HideMode.KeepShowing and hideStatusManager.state != HideState.Shown
+            console.log("hide state is not Shown")
             return
         # console.log("mouseover, require_all_region")
         DCore.Dock.require_all_region()
@@ -75,6 +77,7 @@ class Item extends Widget
         @imgHover.style.display = ''
 
     on_mouseout:(e)=>
+        DCore.Dock.set_is_hovered(false)
         @img.style.display = ''
         @imgHover.style.display = 'none'
 
@@ -87,8 +90,8 @@ class Item extends Widget
         @tooltip?.hide()
 
     on_click:(e)=>
-        e.preventDefault()
-        e.stopPropagation()
+        e?.preventDefault()
+        e?.stopPropagation()
         Preview_close_now()
 
     on_dragend:(e)=>
@@ -121,7 +124,7 @@ class Item extends Widget
             @element.style.position = 'absolute'
             @element.style.webkitTransform = "translateY(-#{ITEM_HEIGHT}px)"
         , 10)
-        console.log("dragstart")
+        consolelog("dragstart")
         e.stopPropagation()
         Preview_close_now()
         DCore.Dock.require_all_region()
@@ -184,9 +187,19 @@ class Item extends Widget
         DCore.Dock.require_all_region()
         if dnd_is_deepin_item(e) or dnd_is_desktop(e)
             @move(e.offsetX, @element.clientWidth / 2)
+        else
+            # TODO
+            # activeWindowTimer = setTimeout(=>
+            #     if @n_clients.length == 1
+            #         clientManager?.ActiveWindow(@n_clients[0])
+            #         update_dock_region()
+            #     else
+            #         @on_mouseover()
+            # , 1000)
 
     on_dragleave: (e)=>
         console.log("dragleave")
+        clearTimeout(activeWindowTimer)
         clearTimeout(cancelInsertTimer)
         e.preventDefault()
         e.stopPropagation()
@@ -408,6 +421,9 @@ class AppItem extends Item
         @core?.isNormalApplet?()
 
     on_mouseover:(e)=>
+        if settings.hideMode() != HideMode.KeepShowing and hideStatusManager.state != HideState.Shown
+            console.log("hide state is not Shon")
+            return
         super
         if @isNormal() || @isNormalApplet()
             clearTimeout(hide_id)
@@ -418,7 +434,7 @@ class AppItem extends Item
             if _lastCliengGroup and _lastCliengGroup.id != @id
                 _lastCliengGroup.embedWindows?.hide?()
 
-            e.stopPropagation()
+            e?.stopPropagation()
             __clear_timeout()
             clearTimeout(hide_id)
             clearTimeout(tooltip_hide_id)
@@ -467,6 +483,7 @@ class AppItem extends Item
 
     on_mouseout:(e)=>
         super
+        console.log("mouseout")
         clearTimeout(@showEmWindowTimer)
         if @isNormal()
             if Preview_container.is_showing

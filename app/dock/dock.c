@@ -100,7 +100,7 @@ double dock_get_active_window()
 }
 
 
-void update_hide_state(int delay, gboolean data);
+void update_hide_state();
 
 
 gboolean leave_notify(GtkWidget* w G_GNUC_UNUSED,
@@ -119,7 +119,7 @@ gboolean leave_notify(GtkWidget* w G_GNUC_UNUSED,
     // dbus_dock_daemon_update_hide_state(FALSE);
     if (e->detail == GDK_NOTIFY_NONLINEAR_VIRTUAL && !mouse_pointer_leave(e->x, e->y)) {
         g_warning("leave dock");
-        update_hide_state(50, FALSE);
+        update_hide_state();
 
         if (GD.config.hide_mode == ALWAYS_HIDE_MODE && !is_mouse_in_dock()) {
             g_debug("always hide");
@@ -145,7 +145,7 @@ gboolean enter_notify(GtkWidget* w G_GNUC_UNUSED,
     // dbus_dock_daemon_update_hide_state(TRUE);
     if (is_mouse_in_dock()) {
         g_warning("enter dock");
-        update_hide_state(50, TRUE);
+        update_hide_state();
     }
 
     if (GD.config.hide_mode == AUTO_HIDE_MODE) {

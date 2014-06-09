@@ -41,9 +41,9 @@ update_dock_region = do->
         apps = $s(".AppItem")
         last = apps[apps.length-1]
         if last and last.clientWidth != 0
-            app_len = ICON_SCALE * ITEM_WIDTH * apps.length
+            app_len = ITEM_WIDTH * apps.length
             left_offset = (screen.width - app_len) / 2
-            panel_width = ICON_SCALE * ITEM_WIDTH * apps.length + PANEL_MARGIN * 2
+            panel_width = ITEM_WIDTH * apps.length + PANEL_MARGIN * 2
             # console.log("set dock region height to #{DOCK_HEIGHT}")
             # if setting.hideMode() != HideMode.Showing
             #     h = 0

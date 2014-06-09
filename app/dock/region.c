@@ -22,12 +22,27 @@
  **/
 #include "region.h"
 #include "dwebview.h"
+#include "dock_hide.h"
 
 #define BOARD_HEIGHT 60
 
 cairo_region_t* _region = NULL;
 GdkWindow* _win = NULL;
 cairo_rectangle_int_t _base_rect;
+static gboolean _isHovered = FALSE;
+
+
+gboolean dock_is_hovered()
+{
+    return _isHovered;
+}
+
+
+gboolean dock_set_is_hovered(gboolean state)
+{
+    _isHovered = state;
+    return _isHovered;
+}
 
 
 void init_region(GdkWindow* win, double x, double y, double width, double height)
@@ -73,6 +88,8 @@ void do_window_shape_combine_region(cairo_region_t* region)
 JS_EXPORT_API
 void dock_require_all_region()
 {
+    cancel_update_state_request();
+    dock_set_is_hovered(TRUE);
     do_window_shape_combine_region(NULL);
 }
 
@@ -80,6 +97,10 @@ void dock_require_all_region()
 JS_EXPORT_API
 void dock_force_set_region(double x, double y, double items_width, double panel_width, double height)
 {
+    if (dock_is_hovered()) {
+        return;
+    }
+
     cairo_region_destroy(_region);
     cairo_rectangle_int_t tmp = {(int)x + _base_rect.x, (int)y + _base_rect.y, (int)items_width, (int)height};
 

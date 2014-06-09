@@ -33,5 +33,8 @@ void dock_release_region(double x, double y, double width, double height);
 gboolean dock_region_overlay(const cairo_rectangle_int_t* tmp);
 void region_rectangles();
 gboolean pointer_in_region(int x, int y);
+gboolean dock_is_hovered();
+gboolean dock_set_is_hovered();
 
 #endif
+

@@ -329,8 +329,11 @@ Preview_close_now = (client)->
     setTimeout(->
         Preview_container.close()
         PWContainer._need_move_animation = false
+        DCore.Dock.set_is_hovered(false)
+        update_dock_region()
     , 300)
     setTimeout(->
+        update_dock_region()
         hideStatusManager.updateState()
     , 500)
 Preview_close = ->
