@@ -19,7 +19,7 @@ class Guide extends Widget
             page.index = page_index
             page.cls = cls
             page.id = cls.id
-            #echo page
+            @current_page_id = page.id
             @pages.push(page)
         catch error
             echo error
@@ -48,7 +48,10 @@ class Guide extends Widget
                 page = new Welcome(cls_name)
             
             when "Start"
+                # only guide can get keydown
                 #DCore.Guide.disable_keyboard()
+                
+                # only guide cannot get keydown event
                 #DCore.Guide.enable_keyboard()
 
                 # only guide has left click ,not right_click
@@ -85,7 +88,6 @@ class Guide extends Widget
                 page = new LauncherScroll(cls_name)
                 
             when "LauncherSearch"
-                #DCore.Guide.enable_keyboard()
                 page = new LauncherSearch(cls_name)
                 
             when "LauncherRightclick"
@@ -112,9 +114,11 @@ class Guide extends Widget
                 page = new DssLaunch(cls_name)
                 
             when "DssArea"
+                DCore.Guide.disable_guide_region()
                 page = new DssArea(cls_name)
                 
             when "End"
+                DCore.Guide.enable_guide_region()
                 page = new End(cls_name)
             else
                 echo "cls_name is #{cls_name}"

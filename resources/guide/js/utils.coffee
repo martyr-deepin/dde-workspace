@@ -89,21 +89,38 @@ black_key_list = [
     KEYCODE.ENTER
 ]
 
-simulate_input = (old_page,input_str,new_page_cls_name = null) ->
-    echo "input_str:#{input_str}"
-    document.body.addEventListener("keydown", (e)->
-        echo e.which
-        if e.which in black_key_list
+
+timeout_deepin = null
+input_keysym = []
+
+simulate_input = (modle_keysym,old_page,new_page_cls_name = null) ->
+    modle_keysym_str = modle_keysym.toString()
+    DCore.Guide.disable_keyboard()
+    document.body.addEventListener("keyup", (e)->
+        if guide?.current_page_id isnt "LauncherSearch" then return
+        echo "======current_page_id:#{guide?.current_page_id}======"
+        echo "======keysym:#{e.which}======"
+        echo "======keyCode:#{e.keyCode}======"
+        echo "======fromCharCode:#{String.fromCharCode(e.which)}======"
+        input = e.which
+        if input in black_key_list
             echo "black_key_list key :#{e.which}"
         else
-            echo e
-            input = e.which
-            DCore.Guide.disable_guide_region()
-            setTimeout(=>
-                DCore.Guide.simulate_input(input)
-                DCore.Guide.enable_guide_region()
-                DCore.Guide.disable_right_click()
-            ,20)
+            if input is KEYCODE.BACKSPACE
+                input = 0xff08
+                input_keysym.pop()
+            input_keysym.push(input)
+            DCore.Guide.enable_keyboard()
+            DCore.Guide.simulate_input(input)
+            DCore.Guide.disable_keyboard()
+            
+            input_keysym_str = input_keysym.toString()
+            if input_keysym_str is modle_keysym_str
+                echo "modle_keysym_str:#{modle_keysym_str}"
+                clearTimeout(timeout_deepin)
+                timeout_deepin = setTimeout(=>
+                    guide?.switch_page(old_page,new_page_cls_name)
+                ,t_switch_page)
     )
     
 
