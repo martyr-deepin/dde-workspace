@@ -48,7 +48,10 @@ class Guide extends Widget
                 page = new Welcome(cls_name)
             
             when "Start"
+                # only guide can get keydown
                 #DCore.Guide.disable_keyboard()
+                
+                # only guide cannot get keydown event
                 #DCore.Guide.enable_keyboard()
 
                 # only guide has left click ,not right_click

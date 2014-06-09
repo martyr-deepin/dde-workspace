@@ -1,1 +1,1 @@
-guide?.create_page("DssArea")
+guide?.create_page("LauncherSearch")
