@@ -48,12 +48,16 @@ class DssArea extends Page
     constructor:(@id)->
         super
         
+        restack_time_out = setTimeout(->
+            DCore.Guide.restack()
+        ,200)
         @message = _("此处是系统设置区域")
         @tips = _("tips：悬停dock上的设置图标可以快捷实现一些设置功能")
         @show_message(@message)
         @show_tips(@tips)
 
         @dock = new Dock()
+        @dss = new Dss()
         #@circle = new Pointer("dss_circle",@element)
         #@circle.create_pointer(AREA_TYPE.circle_white,POS_TYPE.rightdown)
         #@pos = @dock.get_dssicon_pos()
@@ -67,6 +71,8 @@ class DssArea extends Page
         @rect.set_pos(0,150,"fixed",POS_TYPE.rightup)
         @rect.show_animation(=>
             setTimeout(=>
+                @dss?.hide()
+                clearTimeout(restack_time_out)
                 guide?.switch_page(@,"End")
             ,t_switch_page)
         )

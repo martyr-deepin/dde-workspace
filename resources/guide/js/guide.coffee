@@ -112,9 +112,11 @@ class Guide extends Widget
                 page = new DssLaunch(cls_name)
                 
             when "DssArea"
+                DCore.Guide.disable_guide_region()
                 page = new DssArea(cls_name)
                 
             when "End"
+                DCore.Guide.enable_guide_region()
                 page = new End(cls_name)
             else
                 echo "cls_name is #{cls_name}"

@@ -119,6 +119,12 @@ void guide_enable_guide_region()
     gdk_window_input_shape_combine_region(gtk_widget_get_window(get_container()), NULL, 0, 0);
 }
 
+JS_EXPORT_API
+void guide_restack()
+{
+    gdk_window_restack(gtk_widget_get_window(get_container()), NULL, TRUE);
+}
+
 
 JS_EXPORT_API
 void guide_simulate_click(double type)
