@@ -97,15 +97,19 @@ simulate_input = (modle_keysym,old_page,new_page_cls_name = null) ->
     modle_keysym_str = modle_keysym.toString()
     DCore.Guide.disable_keyboard()
     document.body.addEventListener("keyup", (e)->
-        #if old_page.id isnt "LauncherSearch" then return
+        echo "======current_page_id:#{guide?.current_page_id}======"
         echo "======keysym:#{e.which}======"
         echo "======keyCode:#{e.keyCode}======"
         echo "======charCode:#{e.charCode}======"
+        echo "======fromCharCode:#{String.fromCharCode(e.which)}======"
+        if guide?.current_page_id isnt "LauncherSearch" then return
         if e.which in black_key_list
             echo "black_key_list key :#{e.which}"
         else
-            if e.which is KEYCODE.BACKSPACE then input_keysym.pop()
             input = e.which
+            if input is KEYCODE.BACKSPACE
+                input = 0xff08
+                input_keysym.pop()
             input_keysym.push(input)
             DCore.Guide.enable_keyboard()
             DCore.Guide.simulate_input(input)

@@ -19,7 +19,7 @@ class Guide extends Widget
             page.index = page_index
             page.cls = cls
             page.id = cls.id
-            #echo page
+            @current_page_id = page.id
             @pages.push(page)
         catch error
             echo error
