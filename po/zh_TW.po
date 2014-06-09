@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-04 11:15+0800\n"
+"POT-Creation-Date: 2014-06-09 16:56+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Peter Dave Hello <hsu@peterdavehello.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -100,7 +100,7 @@ msgid "Home"
 msgstr "家目錄"
 
 #: ../resources/desktop/js/specialitem.coffee:175
-#: ../resources/dock/js/main.coffee:118 ../resources/dock/js/main.coffee:183
+#: ../resources/dock/js/main.coffee:120 ../resources/dock/js/main.coffee:185
 msgid "Trash"
 msgstr "回收筒"
 
@@ -387,7 +387,7 @@ msgstr "軟體中心"
 msgid "All Windows"
 msgstr "所有视窗(_N)"
 
-#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:181
+#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:183
 msgid "Launcher"
 msgstr "啟動器"
 
@@ -399,28 +399,30 @@ msgstr "桌面"
 msgid "None"
 msgstr "無"
 
-#: ../resources/guide/js/dss.coffee:26
-msgid "很好！请你再次触发右下角"
+#: ../resources/guide/js/dss.coffee:28
+msgid "Well, please trigger the lower right corner again"
 msgstr ""
 
-#: ../resources/guide/js/dss.coffee:27
-msgid "tips：单击dock上的设置图标也可以实现"
+#: ../resources/guide/js/dss.coffee:29
+msgid "tips：Click the setting icon on dock to implement"
 msgstr ""
 
-#: ../resources/guide/js/dss.coffee:44
-msgid "此处是系统设置区域"
+#: ../resources/guide/js/dss.coffee:54
+msgid "Here is the system setting area"
 msgstr ""
 
-#: ../resources/guide/js/dss.coffee:45
-msgid "tips：悬停dock上的设置图标可以快捷实现一些设置功能"
+#: ../resources/guide/js/dss.coffee:55
+msgid ""
+"tips：Hover the setting icon on dock to quickly implement some setting "
+"functions"
 msgstr ""
 
 #: ../resources/guide/js/end.coffee:25
-msgid "感谢您的耐心学习！您获得了新手礼包"
+msgid "Thanks for your patience to learn.You get the novice package"
 msgstr ""
 
 #: ../resources/guide/js/end.coffee:26
-msgid "tips：请在深度账号内领取"
+msgid "tips：Please receive in Deepin account"
 msgstr ""
 
 #: ../resources/guide/js/end.coffee:33
@@ -428,50 +430,55 @@ msgstr ""
 msgid "Get"
 msgstr "訪客"
 
-#: ../resources/guide/js/end.coffee:39
-msgid "新用户直接跳到注册页面"
+#: ../resources/guide/js/end.coffee:41
+msgid "New users directly jump to the registration page"
 msgstr ""
 
-#: ../resources/guide/js/end.coffee:44
+#: ../resources/guide/js/end.coffee:46
 msgid "End"
 msgstr ""
 
 #: ../resources/guide/js/welcome.coffee:36
-msgid "欢迎使用深度操作系统"
+msgid "Welcome to use Deepin Operating System"
 msgstr ""
 
 #: ../resources/guide/js/welcome.coffee:39
-msgid "正在为运行做一些准备..."
+msgid "Ready to prepare for operation ..."
 msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:25
 msgid ""
-"让我们把其他两个图标重合到第一个图标上\n"
-"生成\\“应用程序组\\”"
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:36
-msgid "很好！您已经学会如何创建一个\\“应用程序组\\”"
+"Let's overlap the other two icons on the first icon \n"
+"generate \"application group\""
 msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:37
-msgid "tips：右键单击应用程序组将提供更多功能"
+msgid "Well, you have learned how to create a \"application group\""
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:45
-msgid "鼠标滑动到四个顶角，可触发四个不同的事件"
+#: ../resources/guide/js/desktop.coffee:38
+msgid "tips：Right-click on the application group will provide more functions"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:46
-msgid "tips：请按提示依次触发，点击空白区域可返回"
+#: ../resources/guide/js/desktop.coffee:51
+msgid ""
+"Slide the mouse to the four top corners, which can trigger four different "
+"events"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:61
-msgid "在桌面上右键调出菜单，点击“桌面热区设置”可以设置刚才使用的热区"
+#: ../resources/guide/js/desktop.coffee:52
+msgid ""
+"tips：Please trigger successively by hints, click on the blank area to return"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:62
-msgid "tips：点击空白区域可返回"
+#: ../resources/guide/js/desktop.coffee:68
+msgid ""
+"Right-click on desktop to call up the menu, click on \"Desktop hot zone "
+"setting\" to set the hot zone just used"
+msgstr ""
+
+#: ../resources/guide/js/desktop.coffee:69
+msgid "tips：Click on the blank area to return"
 msgstr ""
 
 #: ../resources/guide/js/start.coffee:29
@@ -490,7 +497,7 @@ msgid "New System Settings"
 msgstr "桌面設定(_E)"
 
 #: ../resources/guide/js/start.coffee:30
-msgid "下面将引导您学习如何使用一些新功能"
+msgid "The following will guide you to learn how to use some new functions"
 msgstr ""
 
 #: ../resources/guide/js/start.coffee:46
@@ -502,46 +509,53 @@ msgstr "重新啟動"
 msgid "I am older,exit directly"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:34
-msgid "鼠标滑动到左上角，或者点击启动器图标都可以启动\\“应用程序启动器\\”"
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:62
-msgid "在\\“启动器\\”第一屏显示的是收藏的应用"
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:83
-msgid "请点击\\“所有应用\\”图标，您将看到所有应用"
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:100
+#: ../resources/guide/js/launcher.coffee:29
 msgid ""
-"上下滚动鼠标滚轮可以查看所有程序\n"
-"您也可以点击左侧分类导航来定位"
+"Sliding the mouse to the upper left corner or clicking on the launcher icon "
+"both can start \"Application Launcher\""
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:125
+#: ../resources/guide/js/launcher.coffee:70
 msgid ""
-"使用键盘搜索来查找你想要的应用\n"
-"我们来试试\\“deepin\\”这个关键字吧看会有什么"
+"What shown in the \" launcher\" first screen is the application of collection"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:126
-msgid "tips：请直接输入单词\\“deepin\\”"
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:135
+#: ../resources/guide/js/launcher.coffee:85
 msgid ""
-"在应用图标上单击鼠标右键可以调出右键菜单\n"
-"点击菜单项将实现其功能"
+"Please click on the \"All Applications\" icon , you will see all applications"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:136
-msgid "tips:你也可以直接用鼠标左键拖拽图标到dock、收藏图标上或者垃圾箱上"
+#: ../resources/guide/js/launcher.coffee:104
+msgid ""
+"All programs can be seen by scrolling the mouse up and down\n"
+"You can also click on the left classification navigation to locate"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:145
-msgid "使用鼠标右键发送2个图标到桌面"
+#: ../resources/guide/js/launcher.coffee:140
+msgid ""
+"Use the keyboard searching to find applications you want\n"
+"We try\"deepin\" keyword to see what will come out "
+msgstr ""
+
+#: ../resources/guide/js/launcher.coffee:141
+msgid "tips：Please directly enter the word \"deepin\""
+msgstr ""
+
+#: ../resources/guide/js/launcher.coffee:154
+msgid ""
+"Click the right mouse button on the application icon to call up the context "
+"menu\n"
+"Clicking on the menu item will achieve its function"
+msgstr ""
+
+#: ../resources/guide/js/launcher.coffee:155
+msgid ""
+"tips:You can also directly use the left mouse button to drag the icon to the "
+"dock, favicon or trash"
+msgstr ""
+
+#: ../resources/guide/js/launcher.coffee:168
+msgid "Use the right mouse button to send two icons to the desktop"
 msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:12
@@ -556,16 +570,16 @@ msgstr "持續隱藏(_H)"
 msgid "_auto hide"
 msgstr "自動隱藏(_A)"
 
-#: ../resources/dock/js/deepin_item.coffee:167
+#: ../resources/dock/js/deepin_item.coffee:168
 msgid "_View as analog"
 msgstr "顯示模擬時鍾"
 
-#: ../resources/dock/js/deepin_item.coffee:168
-#: ../resources/dock/js/deepin_item.coffee:216
+#: ../resources/dock/js/deepin_item.coffee:169
+#: ../resources/dock/js/deepin_item.coffee:217
 msgid "_Time settings"
 msgstr "時間設定(_D)"
 
-#: ../resources/dock/js/deepin_item.coffee:215
+#: ../resources/dock/js/deepin_item.coffee:216
 msgid "_View as digit"
 msgstr "顯示數字時鍾"
 
@@ -598,7 +612,7 @@ msgstr "%s%d秒後自動重試"
 msgid "Invalid Password"
 msgstr "密碼錯誤"
 
-#: ../app/dock/dock.c:319
+#: ../app/dock/dock.c:332
 #, fuzzy
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr "無法啟用Dock，因為Compiz附加元件尚未啟用"
