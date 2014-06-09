@@ -102,10 +102,10 @@ simulate_input = (modle_keysym,old_page,new_page_cls_name = null) ->
         echo "======keysym:#{e.which}======"
         echo "======keyCode:#{e.keyCode}======"
         echo "======fromCharCode:#{String.fromCharCode(e.which)}======"
-        if e.which in black_key_list
+        input = e.which
+        if input in black_key_list
             echo "black_key_list key :#{e.which}"
         else
-            input = e.which
             if input is KEYCODE.BACKSPACE
                 input = 0xff08
                 input_keysym.pop()
