@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-09 18:01+0800\n"
+"POT-Creation-Date: 2014-06-09 22:10+0800\n"
 "PO-Revision-Date: 2014-06-09 17:59+0800\n"
 "Last-Translator: Deepin Translation Team <support@linuxdeepin.com>\n"
 "Language-Team: Deepin Translation Team <support@linuxdeepin.com>\n"
@@ -447,33 +447,33 @@ msgid ""
 "generate \"application group\""
 msgstr "让我们把其他两个图标重合到第一个图标上生成“应用程序组”"
 
-#: ../resources/guide/js/desktop.coffee:37
+#: ../resources/guide/js/desktop.coffee:43
 msgid "Well, you have learned how to create a \"application group\""
 msgstr "很好！您已经学会如何创建一个“应用程序组”"
 
-#: ../resources/guide/js/desktop.coffee:38
+#: ../resources/guide/js/desktop.coffee:44
 msgid "tips：Right-click on the application group will provide more functions"
 msgstr "提示：右键单击应用程序组将提供更多功能"
 
-#: ../resources/guide/js/desktop.coffee:51
+#: ../resources/guide/js/desktop.coffee:57
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different "
 "events"
 msgstr "鼠标滑动到四个顶角，可触发四个不同的事件"
 
-#: ../resources/guide/js/desktop.coffee:52
+#: ../resources/guide/js/desktop.coffee:58
 msgid ""
 "tips：Please trigger successively by hints, click on the blank area to return"
 msgstr "提示：请按提示依次触发，点击空白区域可返回"
 
-#: ../resources/guide/js/desktop.coffee:68
+#: ../resources/guide/js/desktop.coffee:74
 #, fuzzy
 msgid ""
 "Right-click on desktop black area to call up the menu, select \"Corner "
 "navigation\" to set the corner used"
 msgstr "在桌面空白区点击右键调出菜单，选择“热区设置”来设置刚才使用的热区"
 
-#: ../resources/guide/js/desktop.coffee:69
+#: ../resources/guide/js/desktop.coffee:75
 #, fuzzy
 msgid "tips：Click on the interface of corner navigation blank area to return"
 msgstr "提示：点击热区空白区域可返回"
@@ -552,9 +552,9 @@ msgid ""
 "dock, favicon or trash"
 msgstr "提示：你也可以直接用鼠标左键拖拽图标到dock、收藏图标或者垃圾箱上"
 
-#: ../resources/guide/js/launcher.coffee:168
-msgid "Use the right mouse button to send two icons to the desktop"
-msgstr "使用鼠标右键发送2个图标到桌面"
+#: ../resources/guide/js/launcher.coffee:169
+msgid "Use the right mouse button to send three icons to the desktop"
+msgstr "使用鼠标右键发送3个图标到桌面"
 
 #: ../resources/dock/js/global_menu.coffee:12
 msgid "keep _showing"

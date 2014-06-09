@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Destkop Environment\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-09 18:01+0800\n"
+"POT-Creation-Date: 2014-06-09 22:10+0800\n"
 "PO-Revision-Date: 2013-12-13 06:57+0000\n"
 "Last-Translator: lihongwu <lihongwu1987@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/deepin-destkop-"
@@ -456,32 +456,32 @@ msgid ""
 "generate \"application group\""
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:37
+#: ../resources/guide/js/desktop.coffee:43
 msgid "Well, you have learned how to create a \"application group\""
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:38
+#: ../resources/guide/js/desktop.coffee:44
 msgid "tips：Right-click on the application group will provide more functions"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:51
+#: ../resources/guide/js/desktop.coffee:57
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different "
 "events"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:52
+#: ../resources/guide/js/desktop.coffee:58
 msgid ""
 "tips：Please trigger successively by hints, click on the blank area to return"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:68
+#: ../resources/guide/js/desktop.coffee:74
 msgid ""
 "Right-click on desktop black area to call up the menu, select \"Corner "
 "navigation\" to set the corner used"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:69
+#: ../resources/guide/js/desktop.coffee:75
 msgid "tips：Click on the interface of corner navigation blank area to return"
 msgstr ""
 
@@ -559,8 +559,8 @@ msgid ""
 "dock, favicon or trash"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:168
-msgid "Use the right mouse button to send two icons to the desktop"
+#: ../resources/guide/js/launcher.coffee:169
+msgid "Use the right mouse button to send three icons to the desktop"
 msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:12
