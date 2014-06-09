@@ -62,10 +62,14 @@ class DesktopCorner extends Page
         @pos = ["leftup","rightup","leftdown","rightdown"]
         @corner = []
         for p,i in @pos
-            @corner[i] = new Pointer("corner_#{p}",@element)
+            @corner[i] = new Pointer("corner_#{p}",@element,=>
+                setTimeout(=>
+                    @corner[i].show_animation()
+                    guide?.switch_page(@,"DesktopCorner")
+                ,t_switch_page)
+            ,"mouseenter")
             @corner[i].create_pointer(AREA_TYPE.corner,POS_TYPE[p])
             @corner[i].set_area_pos(0,0,"fixed",POS_TYPE[p])
-            @corner[i].show_animation()
 
 class DesktopZone extends Page
     constructor:(@id)->
