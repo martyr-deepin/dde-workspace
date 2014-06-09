@@ -143,7 +143,9 @@ class LauncherSearch extends Page
         @show_tips(@tips)
 
         deepin_keysym = [68,69,69,80,73,78]
-        simulate_input(deepin_keysym,@,"LauncherRightclick")
+        setTimeout(=>
+            simulate_input(deepin_keysym,@,"LauncherRightclick")
+        ,200)
 
 class LauncherRightclick extends Page
     constructor:(@id)->
