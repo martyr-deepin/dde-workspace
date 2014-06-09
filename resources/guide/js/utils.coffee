@@ -83,12 +83,11 @@ simulate_click = (type,old_page = null,new_page_cls_name = null) ->
     ,20)
 
 
-black_key_list = [
-    KEYCODE.ESC,
-    KEYCODE.WIN,
-    KEYCODE.ENTER
-]
-
+white_key_list_num = [48...57]
+white_key_list_char = [65...90]
+white_key_list_spec_key = [KEYCODE.BACKSPACE]
+white_key_list = []
+white_key_list = white_key_list.concat(white_key_list_num,white_key_list_char,white_key_list_spec_key)
 
 timeout_deepin = null
 input_keysym = []
@@ -98,14 +97,8 @@ simulate_input = (modle_keysym,old_page,new_page_cls_name = null) ->
     DCore.Guide.disable_keyboard()
     document.body.addEventListener("keyup", (e)->
         if guide?.current_page_id isnt "LauncherSearch" then return
-        echo "======current_page_id:#{guide?.current_page_id}======"
-        echo "======keysym:#{e.which}======"
-        echo "======keyCode:#{e.keyCode}======"
-        echo "======fromCharCode:#{String.fromCharCode(e.which)}======"
         input = e.which
-        if input in black_key_list
-            echo "black_key_list key :#{e.which}"
-        else
+        if input in white_key_list
             if input is KEYCODE.BACKSPACE
                 input = 0xff08
                 input_keysym.pop()
