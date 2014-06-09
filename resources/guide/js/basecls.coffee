@@ -1,4 +1,21 @@
 
+class Desktop
+    DESKTOP = "com.deepin.dde.desktop"
+    constructor: ->
+        try
+            @dbus = DCore.DBus.session(DSS)
+        catch e
+            console.log "dbus #{DESKTOP} error :#{e}"
+
+    desktop_file_signal: (@desktop_file_signal) ->
+        echo "desktop_file_signal"
+        #@dbus?.connect("GuideDesktopFileCreate",@desktop_file_signal)
+
+    richdir_signal: (@richdir_signal) ->
+        echo "richdir_signal"
+        #@dbus?.connect("GuideRichdirCreate",@desktop_file_signal)
+    
+
 class Dss
     DSS = "com.deepin.dde.ControlCenter"
     constructor: ->

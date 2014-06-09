@@ -30,6 +30,12 @@ class DesktopRichDir extends Page
         @corner_leftup.set_area_pos(18,13,"fixed",POS_TYPE.leftup)
         @corner_leftup.show_animation()
         
+        @desktop?.richdir_signal(=>
+            setTimeout(=>
+                guide?.switch_page(@,"DesktopRichDirCreated")
+            ,t_min_switch_page)
+        )
+        
 class DesktopRichDirCreated extends Page
     constructor:(@id)->
         super

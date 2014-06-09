@@ -69,6 +69,15 @@ enableZoneDetect = (enable) ->
     catch e
         echo "zoneDBus #{ZONE} error : #{e}"
 
+simulate_rightclick = ->
+    echo "simulate_rightclick"
+    #DCore.Guide.disable_guide_region()
+    setTimeout(=>
+        DCore.Guide.simulate_click(CLICK_TYPE.rightclick)
+        DCore.Guide.enable_guide_region()
+        #DCore.Guide.enable_right_click()
+    ,200)
+
 
 simulate_click = (type,old_page = null,new_page_cls_name = null) ->
     DCore.Guide.disable_guide_region()
