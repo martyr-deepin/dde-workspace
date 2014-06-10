@@ -59,7 +59,6 @@ set_pos = (el,x,y,position_type = "fixed",type = POS_TYPE.leftup)->
             el.style.top = y
 
 
-zoneDBus = null
 enableZoneDetect = (enable) ->
     echo "enableZoneDetect :#{enable}"
     ZONE = "com.deepin.daemon.Zone"

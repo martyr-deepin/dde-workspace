@@ -7,6 +7,8 @@ func main() {
 		"setup_desktop_dbus_service",
 		SessionDBUS("com.deepin.dde.desktop"),
 		Method("FocusChanged", Callback("desktop_focus_changed"), Arg("value:gboolean")),
+		Signal("DesktopFileCreate"),
+		Signal("RichdirCreate"),
 	)
-	OUTPUT_END()
+    OUTPUT_END()
 }

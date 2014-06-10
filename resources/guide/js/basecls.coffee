@@ -7,13 +7,17 @@ class Desktop
         catch e
             console.log "dbus #{DESKTOP} error :#{e}"
 
-    desktop_file_signal: (@desktop_file_signal) ->
-        echo "desktop_file_signal"
-        #@dbus?.connect("GuideDesktopFileCreate",@desktop_file_signal)
+    desktop_file_signal: (@desktop_file_signal_cb) ->
+        @dbus?.connect("DesktopFileCreate",@desktop_file_signal_cb)
 
-    richdir_signal: (@richdir_signal) ->
-        echo "richdir_signal"
-        #@dbus?.connect("GuideRichdirCreate",@desktop_file_signal)
+    richdir_signal: (@richdir_signal_cb) ->
+        @dbus?.connect("RichdirCreate",@desktop_file_signal_cb)
+    
+    desktop_file_signal_disconnect: ->
+        @dbus?.dis_connect("DesktopFileCreate",@desktop_file_signal_cb)
+
+    richdir_signal_disconnect: ->
+        @dbus?.dis_connect("RichdirCreate",@desktop_file_signal_cb)
     
 
 class Dss

@@ -32,6 +32,7 @@ class DesktopRichDir extends Page
         
         @desktop?.richdir_signal(=>
             setTimeout(=>
+                @desktop?.richdir_signal_disconnect()
                 guide?.switch_page(@,"DesktopRichDirCreated")
             ,t_min_switch_page)
         )
