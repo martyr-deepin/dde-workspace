@@ -21,6 +21,7 @@
 class End extends Page
     constructor:(@id)->
         super
+        DCore.Guide.enable_guide_region()
         
         @message = _("Thanks for your patience to learn.You get the novice package")
         @tips = _("tips：Please receive in Deepin account")

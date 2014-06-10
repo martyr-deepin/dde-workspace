@@ -53,6 +53,7 @@ class DesktopCorner extends Page
     
     constructor:(@id)->
         super
+        enableZoneDetect(true)
         
         #DCore.Guide.launch_zone()
         
@@ -105,15 +106,15 @@ class DesktopZone extends Page
         @show_message(@message)
         @show_tips(@tips)
         
-        #@rightclick_check()
-        @pointer_create()
+        @rightclick_check()
+        #@pointer_create()
     
     rightclick_check: ->
         DCore.Guide.enable_right_click()
         DCore.Guide.disable_guide_region()
-        #@element.addEventListener("contextmenu",=>
-        #    simulate_rightclick()
-        #)
+        @element.addEventListener("contextmenu",=>
+            simulate_rightclick()
+        )
     
     pointer_create: ->
         @pos = ["leftup","leftdown","rightdown","rightup"]

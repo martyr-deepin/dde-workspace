@@ -22,6 +22,7 @@
 class LauncherLaunch extends Page
     constructor:(@id)->
         super
+        enableZoneDetect(true)
         
         @dock = new Dock()
         @launcher = new Launcher()
@@ -162,6 +163,7 @@ class LauncherRightclick extends Page
 class LauncherMenu extends Page
     constructor:(@id)->
         super
+        DCore.Guide.enable_right_click()
         
         @launcher = new Launcher()
         @desktop = new Desktop()

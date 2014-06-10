@@ -47,6 +47,7 @@ class DssLaunch extends Page
 class DssArea extends Page
     constructor:(@id)->
         super
+        DCore.Guide.disable_guide_region()
         
         restack_time_out = setTimeout(->
             DCore.Guide.restack()
