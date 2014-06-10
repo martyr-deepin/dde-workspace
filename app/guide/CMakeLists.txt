@@ -22,7 +22,7 @@ execute_process(
 
 install(
     PROGRAMS ${PROJECT_BINARY_DIR}/dde-${NAME}
-    DESTINATION bin
+    DESTINATION lib/deepin-daemon
     )
 
 install(
