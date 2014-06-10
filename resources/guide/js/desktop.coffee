@@ -104,7 +104,9 @@ class DesktopZone extends Page
         @tips = _("tips：Click on the interface of corner navigation blank area to return")
         @show_message(@message)
         @show_tips(@tips)
-        @rightclick_check()
+        
+        #@rightclick_check()
+        @pointer_create()
     
     rightclick_check: ->
         DCore.Guide.enable_right_click()
@@ -114,7 +116,6 @@ class DesktopZone extends Page
         #)
     
     pointer_create: ->
-        DCore.Guide.disable_right_click()
         @pos = ["leftup","leftdown","rightdown","rightup"]
         length = @pos.length
         @corner = []
@@ -122,18 +123,21 @@ class DesktopZone extends Page
             @corner[i] = new Pointer(p,@element)
             that = @
             @corner[i].create_pointer(AREA_TYPE.corner,POS_TYPE[p],->
-                that.corner[index].display("none")
+                this.display("none")
+                DCore.Guide.disable_guide_region()
                 
                 index = i for p,i in that.pos when this.id is p
                 echo "#{index}/#{length - 1} #{this.id} mouseenter"
                 clearTimeout(switch_page_timeout)
                 switch_page_timeout = setTimeout(=>
                     if index < length - 1
+                        DCore.Guide.enable_guide_region()
                         that.corner[index + 1].show_animation()
                     else
-                        guide?.switch_page(that,"DesktopZone")
+                        guide?.switch_page(that,"DssLaunch")
                 ,t_switch_page)
             ,"mouseover")
             @corner[i].set_area_pos(0,0,"fixed",POS_TYPE[p])
+        DCore.Guide.enable_guide_region()
         @corner[0].show_animation()
 

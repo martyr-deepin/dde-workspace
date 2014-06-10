@@ -1,1 +1,1 @@
-guide?.create_page("DesktopCorner")
+guide?.create_page("DesktopZone")
