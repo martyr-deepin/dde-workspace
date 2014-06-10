@@ -5,6 +5,7 @@
 #include "dwebview.h"
 #include "i18n.h"
 #include "utils.h"
+#include "session_register.h"
 
 #include "background.h"
 
@@ -16,6 +17,13 @@ GtkWidget* get_container()
     }
     return container;
 }
+
+JS_EXPORT_API
+void guide_emit_webview_ok()
+{
+    dde_session_register();
+}
+
 
 int main (int argc, char **argv)
 {
