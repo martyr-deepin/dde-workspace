@@ -163,18 +163,16 @@ class LauncherRightclick extends Page
 class LauncherMenu extends Page
     constructor:(@id)->
         super
-        DCore.Guide.enable_right_click()
         
         @launcher = new Launcher()
         @desktop = new Desktop()
         
         @message = _("Use the right mouse button to send three icons to the desktop")
         @show_message(@message)
+        simulate_rightclick(@)
+        @signal()
         
-        DCore.Guide.disable_guide_region()
-        @element.addEventListener("contextmenu",=>
-            simulate_rightclick()
-        )
+    signal: ->
         @launcher?.hide_signal(=>
             @launcher?.show()
         )
@@ -183,7 +181,7 @@ class LauncherMenu extends Page
                 @launcher.hide_signal_disconnect()
                 guide?.switch_page(@,"DesktopRichDir")
                 @launcher?.hide()
-                DCore.Guide.show_desktop()
+                DCore.Guide.spawn_command_sync("/usr/lib/deepin-daemon/desktop-toggle")
             ,t_min_switch_page)
         )
 

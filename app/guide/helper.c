@@ -3,6 +3,7 @@
 #include "X_misc.h"
 #include "jsextension.h"
 #include <X11/Xlib.h>
+#include "utils.h"
 
 GtkWidget* get_container();
 JS_EXPORT_API
@@ -164,26 +165,17 @@ void guide_simulate_input(double input)
 }
 
 JS_EXPORT_API
-void guide_show_desktop()
+gboolean guide_is_zone_launched()
 {
-    GError *error = NULL;
-    const gchar *cmd = g_strdup_printf ("/usr/lib/deepin-daemon/desktop-toggle");
-    g_message ("guide_show_desktop:%s",cmd);
-    g_spawn_command_line_sync (cmd, NULL, NULL, NULL, &error);
-    if (error != NULL) {
-        g_warning ("%s failed:%s\n",cmd, error->message);
-        g_error_free (error);
-        error = NULL;
-    }
+    #define ZONE_ID_NAME "desktop.app.zone"   
+    return is_application_running(ZONE_ID_NAME);
 }
 
-
 JS_EXPORT_API
-void guide_launch_zone()
-{
+void guide_spawn_command_sync (const char* command){
     GError *error = NULL;
-    const gchar *cmd = g_strdup_printf ("/usr/lib/deepin-daemon/dde-zone");
-    g_message ("guide_launch_zone:%s",cmd);
+    const gchar *cmd = g_strdup_printf ("%s",command);
+    g_message ("g_spawn_command_line_sync:%s",cmd);
     g_spawn_command_line_sync (cmd, NULL, NULL, NULL, &error);
     if (error != NULL) {
         g_warning ("%s failed:%s\n",cmd, error->message);

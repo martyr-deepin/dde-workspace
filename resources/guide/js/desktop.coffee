@@ -55,8 +55,6 @@ class DesktopCorner extends Page
         super
         enableZoneDetect(true)
         
-        #DCore.Guide.launch_zone()
-        
         @message = _("Slide the mouse to the four top corners, which can trigger four different events")
         @tips = _("tips：Please trigger successively by hints, click on the blank area to return")
         @show_message(@message)
@@ -106,16 +104,20 @@ class DesktopZone extends Page
         @show_message(@message)
         @show_tips(@tips)
         
-        @rightclick_check()
-        #@pointer_create()
-    
-    rightclick_check: ->
-        DCore.Guide.enable_right_click()
-        DCore.Guide.disable_guide_region()
-        @element.addEventListener("contextmenu",=>
-            simulate_rightclick()
+        simulate_rightclick(@,=>
+            @zone_check()
         )
     
+    
+    zone_check: ->
+        #TODO:check zone launched signal to use pointer_create function
+        echo "zone_check"
+        interval_is_zone = setInterval(=>
+            if(DCore.Guide.is_zone_launched())
+                clearInterval(interval_is_zone)
+                @pointer_create()
+        ,500)
+
     pointer_create: ->
         @pos = ["leftup","leftdown","rightdown","rightup"]
         length = @pos.length
@@ -135,6 +137,7 @@ class DesktopZone extends Page
                         DCore.Guide.enable_guide_region()
                         that.corner[index + 1].show_animation()
                     else
+                        DCore.Guide.spawn_command_sync("killall dde-zone")
                         guide?.switch_page(that,"DssLaunch")
                 ,t_switch_page)
             ,"mouseover")
