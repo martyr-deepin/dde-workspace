@@ -64,6 +64,11 @@ class Pointer extends Widget
         set_pos(@element,x,y,position_type,type)
         #@show_animation()
 
+    opacity : (value) ->
+        @element.style.opacity = value
+
+    display : (type) ->
+        @element.style.display = type
 
     show_animation: (@show_cb) ->
         @element.style.display = "block"

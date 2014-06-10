@@ -62,6 +62,7 @@ class DesktopCorner extends Page
         @show_tips(@tips)
         
         @message_righup = _("No default functions setted")
+
         @pos = ["leftup","leftdown","rightdown","rightup"]
         length = @pos.length
         @corner = []
@@ -100,4 +101,26 @@ class DesktopZone extends Page
         @element.addEventListener("contextmenu",=>
             simulate_rightclick()
         )
+        
+        @pos = ["leftup","leftdown","rightdown","rightup"]
+        length = @pos.length
+        @corner = []
+        for p,i in @pos
+            @corner[i] = new Pointer(p,@element)
+            that = @
+            @corner[i].create_pointer(AREA_TYPE.corner,POS_TYPE[p],->
+                that.corner[index].display("none")
+                
+                index = i for p,i in that.pos when this.id is p
+                echo "#{index}/#{length - 1} #{this.id} mouseenter"
+                clearTimeout(switch_page_timeout)
+                switch_page_timeout = setTimeout(=>
+                    if index < length - 1
+                        that.corner[index + 1].show_animation()
+                    else
+                        guide?.switch_page(that,"DesktopZone")
+                ,t_switch_page)
+            ,"mouseover")
+            @corner[i].set_area_pos(0,0,"fixed",POS_TYPE[p])
+        @corner[0].show_animation()
 
