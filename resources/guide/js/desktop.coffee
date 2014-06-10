@@ -60,7 +60,13 @@ class DesktopCorner extends Page
         @tips = _("tips：Please trigger successively by hints, click on the blank area to return")
         @show_message(@message)
         @show_tips(@tips)
-        
+
+
+        @dss = new Dss()
+        @launcher = new Launcher()
+        @pointer_create()
+    
+    pointer_create : ->
         @message_righup = _("No default functions setted")
 
         @pos = ["leftup","leftdown","rightdown","rightup"]
@@ -78,6 +84,8 @@ class DesktopCorner extends Page
                     that.show_tips(" ")
 
                 switch_page_timeout = setTimeout(=>
+                    if this.id is "leftup" then that.launcher.hide()
+                    else if this.id is "rightdown" then that.dss?.hide()
                     if index < length - 1
                         that.corner[index + 1].show_animation()
                     else
@@ -96,12 +104,17 @@ class DesktopZone extends Page
         @tips = _("tips：Click on the interface of corner navigation blank area to return")
         @show_message(@message)
         @show_tips(@tips)
-        
+        @rightclick_check()
+    
+    rightclick_check: ->
+        DCore.Guide.enable_right_click()
         DCore.Guide.disable_guide_region()
-        @element.addEventListener("contextmenu",=>
-            simulate_rightclick()
-        )
-        
+        #@element.addEventListener("contextmenu",=>
+        #    simulate_rightclick()
+        #)
+    
+    pointer_create: ->
+        DCore.Guide.disable_right_click()
         @pos = ["leftup","leftdown","rightdown","rightup"]
         length = @pos.length
         @corner = []
