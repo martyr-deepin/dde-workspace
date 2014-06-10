@@ -177,7 +177,8 @@ class LauncherMenu extends Page
         )
         signal_times = 0
         signal_times_switch = each_item_update_times * desktop_file_numbers
-        @desktop?.desktop_file_signal(=>
+        enableZoneDetect(true)
+        @desktop?.item_signal(=>
             signal_times++
             echo "desktop_file_signal times:#{signal_times}"
             if signal_times == signal_times_switch then signal_times = 0
@@ -185,7 +186,7 @@ class LauncherMenu extends Page
             
             setTimeout(=>
                 @launcher?.hide_signal_disconnect()
-                @desktop?.desktop_file_signal_disconnect()
+                @desktop?.item_signal_disconnect()
                 guide?.switch_page(@,"DesktopRichDir")
                 @launcher?.hide()
                 DCore.Guide.spawn_command_sync("/usr/lib/deepin-daemon/desktop-toggle")

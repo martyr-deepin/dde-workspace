@@ -23,7 +23,8 @@ class Start extends Page
     constructor:(@id)->
         super
         echo "Start #{@id}"
-        
+        DCore.Guide.set_focus(true)
+        DCore.Guide.enable_keyboard()
         inject_css(@element,"css/start.css")
         @option = ["launcher","desktop","dss"]
         @option_text = [_("New Launcher"),_("New Desktop"),_("New System Settings")]
