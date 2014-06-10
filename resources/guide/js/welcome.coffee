@@ -23,10 +23,12 @@ class Welcome extends Widget
         super
         
         echo "welcome #{@id}"
-        
         inject_css(@element,"css/welcome.css")
+        
         DEFAULT_BG = "/usr/share/backgrounds/default_background.jpg"
         @element.style.backgroundImage = "url(#{DEFAULT_BG})"
+        
+        @session = new Session()
         
         @logo = create_element("div","logo",@element)
         @logo_img = create_img("logo_img","",@logo)
@@ -43,6 +45,8 @@ class Welcome extends Widget
         @readying.style.left = @logo.style.left
         @readying.style.bottom = "4.5em"
 
-        setTimeout(=>
+        interval_switch = setInterval(=>
+            if @session.getStage() < @session.STAGE.SessionStageCoreEnd then return
+            clearInterval(interval_switch)
             guide?.switch_page(@,"Start")
-        ,t_switch_page)
+        ,200)

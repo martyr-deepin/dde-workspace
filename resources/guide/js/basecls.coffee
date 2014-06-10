@@ -1,3 +1,20 @@
+class Session
+    SESSION = "com.deepin.SessionManager"
+    constructor: ->
+        @STAGE = {
+            SessionStageInitEnd:1
+            SessionStageCoreBegin:2
+            SessionStageCoreEnd:3
+            SessionStageAppsBegin:4
+            SessionStageAppsEnd:5
+        }
+        try
+            @dbus = DCore.DBus.session(SESSION)
+        catch e
+            console.log "dbus #{SESSION} error :#{e}"
+
+    getStage : ->
+        return @dbus?.Stage
 
 class Desktop
     DESKTOP = "com.deepin.dde.desktop"
