@@ -21,8 +21,8 @@
 class DesktopRichDir extends Page
     constructor:(@id)->
         super
-        
         DCore.Guide.disable_guide_region()
+        
         @message = _("Let's overlap the other two icons on the first icon \ngenerate \"application group\"")
         @show_message(@message)
         

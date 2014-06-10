@@ -163,7 +163,6 @@ class LauncherRightclick extends Page
 class LauncherMenu extends Page
     constructor:(@id)->
         super
-        enableZoneDetect(true)
         @launcher = new Launcher()
         @desktop = new Desktop()
         
