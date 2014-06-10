@@ -135,8 +135,7 @@ void handle_update(GFile* f)
         JSObjectRef json = json_create();
         json_append_nobject(json, "entry", entry, g_object_ref, g_object_unref);
         js_post_message("item_update", json);
-        desktop_desktop_file_create();
-        desktop_richdir_create();
+        desktop_item_update();
 
         g_object_unref(entry);
     }

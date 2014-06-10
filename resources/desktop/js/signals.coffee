@@ -35,6 +35,7 @@ connect_default_signals = ->
 
 
 do_item_delete = (data) ->
+    echo "do_item_delete"
     id = DCore.DEntry.get_id(data.entry)
     if (w = Widget.look_up(id))?
         delete_item(w)
@@ -46,7 +47,7 @@ do_item_delete = (data) ->
 
 
 do_item_update = (data) ->
-    #echo "do_item_update"
+    echo "do_item_update"
     id = DCore.DEntry.get_id(data.entry)
     if (w = Widget.look_up(id))?
         w.set_entry(data.entry)

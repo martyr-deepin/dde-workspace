@@ -708,7 +708,7 @@ void desktop_emit_webview_ok()
 
 
 DBUS_EXPORT_API
-void desktop_desktop_file_create()
+void desktop_item_update()
 {
     GError* err = NULL;
     GDBusConnection* conn = g_bus_get_sync(G_BUS_TYPE_SESSION, NULL, &err);
@@ -721,19 +721,19 @@ void desktop_desktop_file_create()
                                   NULL,
                                   "/com/deepin/dde/desktop",
                                   "com.deepin.dde.desktop",
-                                  "DesktopFileCreate",
+                                  "ItemUpdate",
                                   NULL,
                                   &err
                                   );
     g_object_unref(conn);
     if (err != NULL) {
-        g_warning("desktop emit DesktopFileCreate signal failed: %s", err->message);
+        g_warning("desktop emit ItemUpdate signal failed: %s", err->message);
         g_error_free(err);
     }
 }
 
 DBUS_EXPORT_API
-void desktop_richdir_create()
+void desktop_richdir_update()
 {
     GError* err = NULL;
     GDBusConnection* conn = g_bus_get_sync(G_BUS_TYPE_SESSION, NULL, &err);
@@ -746,13 +746,13 @@ void desktop_richdir_create()
                                   NULL,
                                   "/com/deepin/dde/desktop",
                                   "com.deepin.dde.desktop",
-                                  "RichdirCreate",
+                                  "RichdirUpdate",
                                   NULL,
                                   &err
                                   );
     g_object_unref(conn);
     if (err != NULL) {
-        g_warning("desktop emit RichdirCreate signal failed: %s", err->message);
+        g_warning("desktop emit RichdirUpdate signal failed: %s", err->message);
         g_error_free(err);
     }
 }
