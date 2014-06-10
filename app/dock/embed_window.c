@@ -1,6 +1,7 @@
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
 #include <X11/X.h>
+#include <X11/Xlib.h>
 #include <gdk/gdkx.h>
 #include "jsextension.h"
 #include "dwebview.h"
@@ -21,6 +22,40 @@ GdkWindow* GET_CONTAINER_WINDOW();
 GHashTable* __EMBEDED_WINDOWS__ = NULL;
 GHashTable* __EMBEDED_WINDOWS_TARGET__ = NULL;
 
+GdkWindow* get_wrapper(GdkWindow* win) { return g_object_get_data(G_OBJECT(win), "deepin_embed_window_wrapper"); }
+
+
+GdkFilterReturn embed_window_configure_request(GdkXEvent* xevent G_GNUC_UNUSED,
+                                      GdkEvent* event G_GNUC_UNUSED,
+                                      gpointer data G_GNUC_UNUSED)
+{
+    XEvent* xev = (XEvent*)xevent;
+    if (xev->type == ConfigureRequest) {
+        XConfigureRequestEvent* xev = (XConfigureRequestEvent*)xevent;
+        XResizeWindow(xev->display, xev->window, xev->width, xev->height);
+
+        GdkWindow* find_embed_window(Window xid);
+        GdkWindow* win = find_embed_window(xev->window);
+        if (win == NULL) {
+            g_warning("not find embeded window: %u", (guint32)(xev->window));
+            return GDK_FILTER_CONTINUE;
+        }
+
+        g_message("find embeded window");
+        JSObjectRef info = json_create();
+        json_append_number(info, "XID", xev->window);
+        json_append_number(info, "x", xev->x);
+        json_append_number(info, "y", xev->y);
+        json_append_number(info, "width", xev->width);
+        json_append_number(info, "height",xev->height);
+        js_post_message("embed_window_configure_request", info);
+        return GDK_FILTER_TRANSLATE;
+    }
+
+    return GDK_FILTER_CONTINUE;
+}
+
+
 void __init__embed__()
 {
     if (__EMBEDED_WINDOWS__ == NULL) {
@@ -30,10 +65,13 @@ void __init__embed__()
     if (__EMBEDED_WINDOWS_TARGET__ == NULL) {
 	__EMBEDED_WINDOWS_TARGET__ = g_hash_table_new(g_direct_hash, g_direct_equal);
     }
+    XSelectInput(gdk_x11_get_default_xdisplay(),
+                 GDK_WINDOW_XID(GET_CONTAINER_WINDOW()),
+                 SubstructureNotifyMask|SubstructureRedirectMask);
+    gdk_window_add_filter(GET_CONTAINER_WINDOW(), embed_window_configure_request, NULL);
 }
 
 
-GdkWindow* get_wrapper(GdkWindow* win) { return g_object_get_data(G_OBJECT(win), "deepin_embed_window_wrapper"); }
 void destroy_window(GdkWindow* win)
 {
 
@@ -47,6 +85,12 @@ void destroy_window(GdkWindow* win)
 
     g_object_unref(win);
 
+}
+
+
+GdkWindow* find_embed_window(Window xid)
+{
+    return (GdkWindow*)g_hash_table_lookup(__EMBEDED_WINDOWS__, (gpointer)xid);
 }
 
 GdkFilterReturn __monitor_embed_window(GdkXEvent *xevent, GdkEvent* ev, gpointer data)

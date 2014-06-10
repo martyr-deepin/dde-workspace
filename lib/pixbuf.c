@@ -12,8 +12,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
@@ -86,12 +85,12 @@ char* generate_directory_icon(const char* p1, const char* p2, const char* p3, co
             GDK_INTERP_HYPER, 255);
 
     GError* error = NULL;
-    
+
     const char *bg_name="/usr/share/dde/resources/desktop/img/richdir_background.png";
     //method 1:
     GdkPixbuf *bg = gdk_pixbuf_new_from_file_at_scale(bg_name, 48, -1, TRUE, &error);
     //method 2:
-    //can use gdk_pixbuf_csource to get dir_bg_4 
+    //can use gdk_pixbuf_csource to get dir_bg_4
     //and write it to bg_pixbuf.c
     /*GdkPixbuf *bg = gdk_pixbuf_new_from_inline(-1, dir_bg_4, TRUE, &error);*/
     if (error!=NULL) {
@@ -253,3 +252,19 @@ char* get_data_uri_by_path(const char* path)
     return c;
 
 }
+
+
+char const* data_uri_to_file(char const* data_uri, char const* path)
+{
+    g_assert(path != NULL);
+
+    gchar* spt = g_strstr_len(data_uri, 100, ",");
+    gsize size = 0;
+    guchar* data = g_base64_decode((const gchar*)(spt + 1), &size);
+    FILE* f = fopen(path, "wb");
+    fwrite(data, sizeof(gchar), size, f);
+    fclose(f);
+    g_free(data);
+    return path;
+}
+

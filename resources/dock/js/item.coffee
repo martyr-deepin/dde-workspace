@@ -324,6 +324,9 @@ class AppItem extends Item
             # console.log "ClientGroup:: Key: #{xidInfo.Xid}, Valvue:#{xidInfo.Title}"
 
         if @isApplet()
+            for xid in xids
+                console.warn("map #{xid.Xid}")
+                $EW_MAP[xid.Xid] = @
             @embedWindows = new EmbedWindow(xids)
 
         @clientgroupInited = true

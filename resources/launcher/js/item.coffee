@@ -361,8 +361,13 @@ class Item extends Widget
                 @hide()
                 categoryList.hideEmptyCategories()
                 console.log 'start uninstall'
+                if @icon.indexOf("data:image") != -1
+                    icon = @icon
+                else
+                    icon = DCore.get_theme_icon(@icon, 48)
+                icon = DCore.backup_app_icon(icon)
                 if not uninstaller
-                    uninstaller = new Uninstaller(@id, "Deepin Launcher", @icon, uninstallSignalHandler)
+                    uninstaller = new Uninstaller(@id, "Deepin Launcher", icon, uninstallSignalHandler)
                     uninstall_apps = uninstaller.uninstall_apps
                 uninstalling_apps[@id] = @
                 # make sure the icon is hidden immediately

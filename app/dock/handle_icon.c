@@ -20,6 +20,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
+#include <glib.h>
+#include <glib/gstdio.h>
 #include <gtk/gtk.h>
 #include <string.h>
 #include "dominant_color.h"
@@ -27,6 +29,7 @@
 #include "handle_icon.h"
 #include "xdg_misc.h"
 #include "utils.h"
+#include "pixbuf.h"
 // #include "launcher.h"
 #include <gio/gdesktopappinfo.h>
 
@@ -158,5 +161,89 @@ void try_get_deepin_icon(const char* _app_id, char** icon, int* operator_code)
         g_debug("[%s] \"%s\" is not deepin app id", __func__, app_id);
         g_free(app_id);
     }
+}
+
+
+#define TO_DOUBLE(c) ( (c) / 255.0)
+#define GET_R(c) TO_DOUBLE(c >> 24)
+#define GET_G(c) TO_DOUBLE(c >> 16 & 0xff)
+#define GET_B(c) TO_DOUBLE(c >> 8 & 0xff)
+#define GET_A(c) ((c & 0xff) / 100.0)
+#define INC_BRIGHTNESS(newColor, oldColor, inc) \
+    do {\
+        newColor = (oldColor) + (inc); \
+        if (newColor < (oldColor)) { newColor = 255; }\
+    } while(0)
+#define DEC_BRIGHTNESS(newColor, oldColor, inc) \
+    do {\
+        newColor = (oldColor) - (inc); \
+        if (newColor > (oldColor)) { newColor = 0; }\
+    } while(0)
+
+
+char* brightness_handle(char const* origDataUrl, double _adj)
+{
+    gboolean inc = _adj > 0;
+    // TODO: build a tmp file name.
+#define IMG_PATH "/tmp/origin.png"
+    guchar adj = (guchar)_adj;
+    data_uri_to_file(origDataUrl, IMG_PATH);
+
+    GError* err = NULL;
+    GdkPixbuf* pixbuf = gdk_pixbuf_new_from_file(IMG_PATH, &err);
+    if (err != NULL) {
+        g_warning("%s", err->message);
+        g_clear_error(&err);
+        return NULL;
+    }
+
+
+    int width = gdk_pixbuf_get_width(pixbuf);
+    int height = gdk_pixbuf_get_height(pixbuf);
+    int stride = gdk_pixbuf_get_rowstride(pixbuf);
+    int offset = 0;
+    guchar* pix = gdk_pixbuf_get_pixels(pixbuf);
+    guchar r=0, g=0, b=0;
+    for (int i = 0; i < height; ++i) {
+        for (int j = 0; j < width; ++j) {
+            // filter shadow
+            // if (i < 1 || i > 45 || j < 2 || j > 45) {
+            //     continue;
+            // }
+            // canvas use rgba, 4 bytes.
+            offset = i * stride + j * 4;
+            if (inc) {
+                INC_BRIGHTNESS(r, pix[offset], adj);
+                INC_BRIGHTNESS(g, pix[1+offset], adj);
+                INC_BRIGHTNESS(b, pix[2+offset], adj);
+            } else {
+                DEC_BRIGHTNESS(r, pix[offset], adj);
+                DEC_BRIGHTNESS(g, pix[1+offset], adj);
+                DEC_BRIGHTNESS(b, pix[2+offset], adj);
+            }
+            pix[offset] = r;
+            pix[1+offset] = g;
+            pix[2+offset] = b;
+        }
+    }
+
+    g_remove(IMG_PATH);
+#undef IMG_PATH
+    // gdk_pixbuf_save(pixbuf, "/tmp/bright.png", "png", NULL, NULL);
+    char* dataUrl = get_data_uri_by_pixbuf(pixbuf);
+    g_object_unref(pixbuf);
+    return dataUrl;
+}
+
+
+char* dock_bright_image(char const* origDataUrl, double _adj)
+{
+    return brightness_handle(origDataUrl, _adj);
+}
+
+
+char* dock_dark_image(char const* origDataUrl, double _adj)
+{
+    return brightness_handle(origDataUrl, -_adj);
 }
 

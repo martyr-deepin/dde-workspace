@@ -75,6 +75,11 @@ class Trash extends PostfixedItem
                     console.log e
             when "2"
                 console.log 'start uninstall'
+                if @data.icon.indexOf("data:image") != -1
+                    icon = @data.icon
+                else
+                    icon = DCore.get_theme_icon(@data.icon, 48)
+                icon = DCore.backup_app_icon(icon)
                 if not uninstaller
                     uninstaller = new Uninstaller(@data.id, "Deepin Dock",
                     @data.icon, uninstallSignalHandler)

@@ -1,4 +1,5 @@
 $EW = DCore.EXWindow
+$EW_MAP = {}
 class EmbedWindow
     constructor:(xids, resize)->
         @xids = []

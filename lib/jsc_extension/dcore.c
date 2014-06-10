@@ -18,6 +18,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
+#include <glib.h>
+#include <glib/gstdio.h>
 #include <gtk/gtk.h>
 #include <string.h>
 #include <gio/gio.h>
@@ -27,6 +29,7 @@
 #include "jsextension.h"
 #include "dwebview.h"
 #include "dcore.h"
+#include "pixbuf.h"
 
 
 #define DESKTOP_SCHEMA_ID "com.deepin.dde.desktop"
@@ -363,5 +366,52 @@ gboolean dcore_open_browser(char const* origin_uri)
     g_free(uri);
 
     return launch_result;
+}
+
+
+char* dcore_backup_app_icon(char const* path)
+{
+    char* dir = g_build_filename(g_get_user_cache_dir(), "dde", "uninstall", NULL);
+    if (!g_file_test(dir, G_FILE_TEST_EXISTS)) {
+        g_mkdir_with_parents(dir, 0755);
+    }
+
+    char* backup = NULL;
+
+    if (g_str_has_prefix(path, "data:image")) {
+        char* basename = g_path_get_basename(path);
+        char* name = g_strconcat(basename, ".png", NULL);
+        g_free(basename);
+        backup = g_build_filename(dir, name, NULL);
+        g_free(name);
+        data_uri_to_file(path, backup);
+    } else {
+        char* basename = g_path_get_basename(path);
+        backup = g_build_filename(dir, basename, NULL);
+        g_free(basename);
+        GError* err = NULL;
+        GdkPixbuf* file = gdk_pixbuf_new_from_file(path, &err);
+        if (err != NULL) {
+            g_warning("load file failed: %s", err->message);
+            return NULL;
+        }
+        gdk_pixbuf_save(file, backup, "png", &err, NULL);
+        if (err != NULL) {
+            g_warning("save file failed: %s", err->message);
+            g_object_unref(file);
+            return NULL;
+        }
+        g_object_unref(file);
+    }
+
+    g_free(dir);
+
+    return backup;
+}
+
+
+void dcore_delete_backup_app_icon(char const* path)
+{
+    g_remove(path);
 }
 

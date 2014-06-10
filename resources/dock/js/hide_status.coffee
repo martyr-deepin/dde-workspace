@@ -70,7 +70,6 @@ class HideStatusManager
 
     changeDockRegion: =>
         console.log("changeDockRegion")
-        console.warn("changeDockRegion")
         if @state == HideState.Showing
             @setState(HideState.Shown)
         else if @state == HideState.Hidding

@@ -35,7 +35,17 @@ SOFTWARE_STATE =
     INSTALLING: 2
 
 
+remove_backup_app_icon = (id, reason)->
+    icon = Uninstaller.IdMap[id]
+    if not icon
+        return
+    console.log("remove backup icon: #{icon}")
+    DCore.delete_backup_app_icon(icon)
+    delete Uninstaller.IdMap[id]
+
+
 class Uninstaller
+    @IdMap: {}
     constructor: (@appid, @appName, @icon, handler)->
         @uninstalling_apps = {}
         @uninstallSignalHandler = (info)=>
@@ -50,7 +60,9 @@ class Uninstaller
         console.log "uninstall #{message}, #{msg}"
         try
             notification = get_dbus("session", NOTIFICATIONS, "Notify")
-            notification.Notify(@appName, -1, @icon, "Uninstall #{message}", "#{msg}", [], {}, 0)
+            id = notification.Notify_sync(@appName, -1, @icon, "Uninstall #{message}", "#{msg}", [], {}, 0)
+            Uninstaller.IdMap[id] = @icon
+            notification.connect("NotificationClosed", remove_backup_app_icon)
         catch e
             console.log e
         if Object.keys(@uninstalling_apps).length == 0
@@ -70,7 +82,9 @@ class Uninstaller
                 console.log e
                 try
                     notification = get_dbus("session", NOTIFICATIONS, "Notify")
-                    notification.Notify(@appName, -1, @icon, _("Uninstall failed"), _("Cannot find Deepin Software Center."), [], {}, 0)
+                    id = notification.Notify_sync(@appName, -1, @icon, _("Uninstall failed"), _("Cannot find Deepin Software Center."), [], {}, 0)
+                    Uninstaller.IdMap[id] = @icon
+                    notification.connect("NotificationClosed", remove_backup_app_icon)
                 catch e
                     console.log e
                 if item.status

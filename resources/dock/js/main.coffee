@@ -4,15 +4,32 @@ DCore.signal_connect("close_window", (info)->)
 DCore.signal_connect("active_window", (info)->)
 DCore.signal_connect("message_notify", (info)->)
 
-DCore.signal_connect("embed_window_configure_changed", (info)->
-    console.log("embed_window_configure_changed")
-    console.log(info)
-    # TODO: change the size of preview window
+# DCore.signal_connect("embed_window_configure_changed", (info)->
+#     console.log("embed_window_configure_changed")
+#     console.log(info)
+# )
+DCore.signal_connect("embed_window_configure_request", (info)->
+    console.warn(info)
     Preview_container._calc_size(info)
-    # $EW.move(info.XID, info.x, info.y)
+
+    item = $EW_MAP[info.XID]
+    if not item
+        console.error("get item from #{info.XID} failed")
+        return
+    setTimeout(->
+        console.warn(item.element)
+        xy = get_page_xy(item.element)
+        w = item.element.clientWidth || 0
+        extraHeight = PREVIEW_TRIANGLE.height + 6 + PREVIEW_WINDOW_BORDER_WIDTH + PREVIEW_CONTAINER_BORDER_WIDTH + info.height
+        x = xy.x + w/2 - info.width/2
+        y = xy.y - extraHeight
+        console.warn("Move Window to #{x}, #{y}")
+        $EW.move(info.XID, x, y)
+    , 100)
 )
 DCore.signal_connect("embed_window_destroyed", (info)->
     console.log("embed_window_destroyed")
+    delete $EW_MAP[info.XID]
     console.log(info)
 )
 DCore.signal_connect("embed_window_enter", (info)->
