@@ -3,7 +3,7 @@ class Desktop
     DESKTOP = "com.deepin.dde.desktop"
     constructor: ->
         try
-            @dbus = DCore.DBus.session(DSS)
+            @dbus = DCore.DBus.session(DESKTOP)
         catch e
             console.log "dbus #{DESKTOP} error :#{e}"
 
@@ -24,47 +24,47 @@ class Dss
     DSS = "com.deepin.dde.ControlCenter"
     constructor: ->
         try
-            @dss_dbus = DCore.DBus.session(DSS)
+            @dbus = DCore.DBus.session(DSS)
         catch e
-            console.log "dss_dbus error :#{e}"
+            console.log "dbus error :#{e}"
  
     hide: ->
-        @dss_dbus?.Hide()
+        @dbus?.Hide()
 
     toggle: ->
-        @dss_dbus?.Toggle()
+        @dbus?.Toggle()
 
     show: ->
-        @dss_dbus?.Show()
+        @dbus?.Show()
 
 class Launcher
     LAUNCHER = "com.deepin.dde.launcher"
     constructor: ->
         try
-            @launcher_dbus = DCore.DBus.session(LAUNCHER)
+            @dbus = DCore.DBus.session(LAUNCHER)
         catch e
-            console.log "launcher_dbus error :#{e}"
+            console.log "dbus error :#{e}"
  
     hide: ->
-        @launcher_dbus?.Hide()
+        @dbus?.Hide()
 
     toggle: ->
-        @launcher_dbus?.Toggle()
+        @dbus?.Toggle()
 
     show: ->
-        @launcher_dbus?.Show()
+        @dbus?.Show()
 
     hide_signal: (@hide_signal_cb) ->
-        @launcher_dbus?.connect("Closed",@hide_signal_cb)
+        @dbus?.connect("Closed",@hide_signal_cb)
 
     show_signal: (@show_signal_cb) ->
-        @launcher_dbus?.connect("Shown",@show_signal_cb)
+        @dbus?.connect("Shown",@show_signal_cb)
 
     show_signal_disconnect: ->
-        @launcher_dbus?.dis_connect("Shown",@show_signal_cb)
+        @dbus?.dis_connect("Shown",@show_signal_cb)
 
     hide_signal_disconnect: ->
-        @launcher_dbus?.dis_connect("Closed",@hide_signal_cb)
+        @dbus?.dis_connect("Closed",@hide_signal_cb)
 
 class Dock
     DOCK_REGION =

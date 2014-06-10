@@ -22,6 +22,7 @@ class DesktopRichDir extends Page
     constructor:(@id)->
         super
         
+        DCore.Guide.disable_guide_region()
         @message = _("Let's overlap the other two icons on the first icon \ngenerate \"application group\"")
         @show_message(@message)
         
@@ -30,7 +31,14 @@ class DesktopRichDir extends Page
         @corner_leftup.set_area_pos(18,13,"fixed",POS_TYPE.leftup)
         @corner_leftup.show_animation()
         
+        signal_times = 0
+        signal_times_switch = each_item_update_times * desktop_file_numbers
         @desktop?.richdir_signal(=>
+            signal_times++
+            echo "richdir_signal times:#{signal_times}"
+            if signal_times == signal_times_switch then signal_times = 0
+            else return
+            
             setTimeout(=>
                 @desktop?.richdir_signal_disconnect()
                 guide?.switch_page(@,"DesktopRichDirCreated")

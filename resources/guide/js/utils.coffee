@@ -138,4 +138,6 @@ body_hide = ->
 body_show = ->
     document.body.style.opacity = 1
 
+each_item_update_times = 3
+desktop_file_numbers = 3
 

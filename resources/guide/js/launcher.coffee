@@ -163,7 +163,7 @@ class LauncherRightclick extends Page
 class LauncherMenu extends Page
     constructor:(@id)->
         super
-        
+        enableZoneDetect(true)
         @launcher = new Launcher()
         @desktop = new Desktop()
         
@@ -176,7 +176,14 @@ class LauncherMenu extends Page
         @launcher?.hide_signal(=>
             @launcher?.show()
         )
+        signal_times = 0
+        signal_times_switch = each_item_update_times * desktop_file_numbers
         @desktop?.desktop_file_signal(=>
+            signal_times++
+            echo "desktop_file_signal times:#{signal_times}"
+            if signal_times == signal_times_switch then signal_times = 0
+            else return
+            
             setTimeout(=>
                 @launcher?.hide_signal_disconnect()
                 @desktop?.desktop_file_signal_disconnect()
