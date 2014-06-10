@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Destkop Environment\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-09 22:10+0800\n"
+"POT-Creation-Date: 2014-06-10 10:36+0800\n"
 "PO-Revision-Date: 2013-12-13 06:57+0000\n"
 "Last-Translator: lihongwu <lihongwu1987@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/deepin-destkop-"
@@ -464,24 +464,28 @@ msgstr ""
 msgid "tips：Right-click on the application group will provide more functions"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:57
+#: ../resources/guide/js/desktop.coffee:59
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different "
 "events"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:58
+#: ../resources/guide/js/desktop.coffee:60
 msgid ""
 "tips：Please trigger successively by hints, click on the blank area to return"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:74
+#: ../resources/guide/js/desktop.coffee:64
+msgid "No default functions setted"
+msgstr ""
+
+#: ../resources/guide/js/desktop.coffee:94
 msgid ""
 "Right-click on desktop black area to call up the menu, select \"Corner "
 "navigation\" to set the corner used"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:75
+#: ../resources/guide/js/desktop.coffee:95
 msgid "tips：Click on the interface of corner navigation blank area to return"
 msgstr ""
 
@@ -589,11 +593,11 @@ msgstr "Ajustes de _Pantalla"
 msgid "_View as digit"
 msgstr ""
 
-#: ../app/desktop/desktop.c:222
+#: ../app/desktop/desktop.c:223
 msgid "New file"
 msgstr "Nuevo archivo"
 
-#: ../app/desktop/desktop.c:233
+#: ../app/desktop/desktop.c:234
 msgid "New directory"
 msgstr "Nuevo directorio"
 
@@ -620,7 +624,7 @@ msgstr "%sIntentar automáticamente en %ds"
 msgid "Invalid Password"
 msgstr "Contraseña incorrecta"
 
-#: ../app/dock/dock.c:332
+#: ../app/dock/dock.c:333
 #, fuzzy
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr ""

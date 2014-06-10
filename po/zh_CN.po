@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-09 22:10+0800\n"
+"POT-Creation-Date: 2014-06-10 10:36+0800\n"
 "PO-Revision-Date: 2014-06-09 17:59+0800\n"
 "Last-Translator: Deepin Translation Team <support@linuxdeepin.com>\n"
 "Language-Team: Deepin Translation Team <support@linuxdeepin.com>\n"
@@ -455,25 +455,29 @@ msgstr "很好！您已经学会如何创建一个“应用程序组”"
 msgid "tips：Right-click on the application group will provide more functions"
 msgstr "提示：右键单击应用程序组将提供更多功能"
 
-#: ../resources/guide/js/desktop.coffee:57
+#: ../resources/guide/js/desktop.coffee:59
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different "
 "events"
 msgstr "鼠标滑动到四个顶角，可触发四个不同的事件"
 
-#: ../resources/guide/js/desktop.coffee:58
+#: ../resources/guide/js/desktop.coffee:60
 msgid ""
 "tips：Please trigger successively by hints, click on the blank area to return"
 msgstr "提示：请按提示依次触发，点击空白区域可返回"
 
-#: ../resources/guide/js/desktop.coffee:74
+#: ../resources/guide/js/desktop.coffee:64
+msgid "No default functions setted"
+msgstr "此热区默认未设置任何功能"
+
+#: ../resources/guide/js/desktop.coffee:94
 #, fuzzy
 msgid ""
 "Right-click on desktop black area to call up the menu, select \"Corner "
 "navigation\" to set the corner used"
 msgstr "在桌面空白区点击右键调出菜单，选择“热区设置”来设置刚才使用的热区"
 
-#: ../resources/guide/js/desktop.coffee:75
+#: ../resources/guide/js/desktop.coffee:95
 #, fuzzy
 msgid "tips：Click on the interface of corner navigation blank area to return"
 msgstr "提示：点击热区空白区域可返回"
@@ -581,11 +585,11 @@ msgstr "时间设置(_T)"
 msgid "_View as digit"
 msgstr "显示数字时钟(_V)"
 
-#: ../app/desktop/desktop.c:222
+#: ../app/desktop/desktop.c:223
 msgid "New file"
 msgstr "新建文件"
 
-#: ../app/desktop/desktop.c:233
+#: ../app/desktop/desktop.c:234
 msgid "New directory"
 msgstr "新建目录"
 
@@ -610,7 +614,7 @@ msgstr "%s%d秒后自动重试"
 msgid "Invalid Password"
 msgstr "密码错误"
 
-#: ../app/dock/dock.c:332
+#: ../app/dock/dock.c:333
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr "Compiz未启用致使任务栏无法启动"
 
@@ -869,9 +873,6 @@ msgstr "实用工具"
 #: ../lib/category.c:56
 msgid "other"
 msgstr "其他"
-
-#~ msgid "_Hide hidden icons"
-#~ msgstr "隐藏该图标(_H)"
 
 #, fuzzy
 #~ msgid "click login button to unlock"
