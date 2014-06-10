@@ -8,6 +8,8 @@ DCore.signal_connect("embed_window_configure_changed", (info)->
     console.log("embed_window_configure_changed")
     console.log(info)
     # TODO: change the size of preview window
+    Preview_container._calc_size(info)
+    # $EW.move(info.XID, info.x, info.y)
 )
 DCore.signal_connect("embed_window_destroyed", (info)->
     console.log("embed_window_destroyed")
