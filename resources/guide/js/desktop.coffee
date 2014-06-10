@@ -49,6 +49,8 @@ class DesktopRichDirCreated extends Page
         ,t_switch_page)
         
 class DesktopCorner extends Page
+    switch_page_timeout = null
+    
     constructor:(@id)->
         super
         
@@ -59,17 +61,31 @@ class DesktopCorner extends Page
         @show_message(@message)
         @show_tips(@tips)
         
-        @pos = ["leftup","rightup","leftdown","rightdown"]
+        @message_righup = _("No default functions setted")
+        @pos = ["leftup","leftdown","rightdown","rightup"]
+        length = @pos.length
         @corner = []
         for p,i in @pos
-            @corner[i] = new Pointer("corner_#{p}",@element,=>
-                setTimeout(=>
-                    @corner[i].show_animation()
-                    guide?.switch_page(@,"DesktopCorner")
+            @corner[i] = new Pointer(p,@element)
+            that = @
+            @corner[i].create_pointer(AREA_TYPE.corner,POS_TYPE[p],->
+                index = i for p,i in that.pos when this.id is p
+                echo "#{index}/#{length - 1} #{this.id} mouseenter"
+                clearTimeout(switch_page_timeout)
+                if index == length - 1
+                    that.show_message(that.message_righup)
+                    that.show_tips(" ")
+
+                switch_page_timeout = setTimeout(=>
+                    if index < length - 1
+                        that.corner[index + 1].show_animation()
+                    else
+                        guide?.switch_page(that,"DesktopZone")
                 ,t_switch_page)
-            ,"mouseenter")
-            @corner[i].create_pointer(AREA_TYPE.corner,POS_TYPE[p])
+            ,"mouseover")
             @corner[i].set_area_pos(0,0,"fixed",POS_TYPE[p])
+        @corner[0].show_animation()
+        
 
 class DesktopZone extends Page
     constructor:(@id)->
@@ -79,5 +95,9 @@ class DesktopZone extends Page
         @tips = _("tips：Click on the interface of corner navigation blank area to return")
         @show_message(@message)
         @show_tips(@tips)
-
+        
+        DCore.Guide.disable_guide_region()
+        @element.addEventListener("contextmenu",=>
+            simulate_rightclick()
+        )
 
