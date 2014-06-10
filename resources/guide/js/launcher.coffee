@@ -164,21 +164,24 @@ class LauncherMenu extends Page
         super
         
         @launcher = new Launcher()
+        @desktop = new Desktop()
         
-        @message = _("Use the right mouse button to send two icons to the desktop")
+        @message = _("Use the right mouse button to send three icons to the desktop")
         @show_message(@message)
-
-        @element.addEventListener("contextmenu",=>
-            simulate_click(CLICK_TYPE.rightclick)
-        )
-
-        #@menu = create_img("menu_#{@id}","#{@img_src}/menu.png",@element)
-        #set_pos(@menu,"41%","55%")
         
-        setTimeout(=>
-            echo "switch_page DesktopRichDir"
-            #guide?.switch_page(@,"DesktopRichDir")
-            #@launcher?.hide()
-            #DCore.Guide.show_desktop()
-        ,t_switch_page)
+        DCore.Guide.disable_guide_region()
+        @element.addEventListener("contextmenu",=>
+            simulate_rightclick()
+        )
+        @launcher?.hide_signal(=>
+            @launcher?.show()
+        )
+        @desktop?.desktop_file_signal(=>
+            setTimeout(=>
+                @launcher.hide_signal_disconnect()
+                guide?.switch_page(@,"DesktopRichDir")
+                @launcher?.hide()
+                DCore.Guide.show_desktop()
+            ,t_min_switch_page)
+        )
 

@@ -27,7 +27,7 @@ class Pointer extends Widget
         parent?.appendChild(@element)
         @element.style.display = "none"
     
-    create_pointer: (@area_type,@pos_type,@cb) ->
+    create_pointer: (@area_type,@pos_type,@cb,@cb_type = "click") ->
         @pointer_img = create_img("pointer_img","",@element)
         @area_img = create_img("area_img","",@element)
 
@@ -54,7 +54,7 @@ class Pointer extends Widget
 
         set_pos(@area_img,0,0,"absolute",@pos_type)
         set_pos(@pointer_img,@area_width,@area_height,"absolute",@pos_type)
-        @area_img.addEventListener("click", (e)=>
+        @area_img.addEventListener(@cb_type, (e)=>
             if !@show_animation_end then return
             console.log "area #{@id} click"
             @cb?(e)

@@ -1,1 +1,1 @@
-guide?.create_page("LauncherMenu")
+guide?.create_page("DesktopCorner")

@@ -142,6 +142,7 @@ class SystemTray extends SystemItem
 
     on_mouseout: (e)=>
         # super
+        DCore.Dock.set_is_hovered(false)
         clearTimeout(@showEmWindowTimer)
         update_dock_region()
         if @isUnfolded
