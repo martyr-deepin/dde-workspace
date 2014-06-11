@@ -13,12 +13,12 @@
 }
 
 .guide_choose{
-    width:60em;
+    width:46em;
     height:30em;
     display:-webkit-box;
     -webkit-box-pack:center;
     -webkit-box-align:center;
-    -webkit-box-orient:horizontal;
+    -webkit-box-orient:vertical;
 }
 
 

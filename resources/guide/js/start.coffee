@@ -24,7 +24,8 @@ class Start extends Page
         super
         echo "Start #{@id}"
         #DCore.Guide.set_focus(true)
-        #DCore.Guide.enable_keyboard()
+        #DCore.Guide.disable_keyboard()
+        DCore.Guide.disable_guide_region()
         inject_css(@element,"css/start.css")
         @option = ["launcher","desktop","dss"]
         @option_text = [_("New Launcher"),_("New Desktop"),_("New System Settings")]
@@ -46,19 +47,14 @@ class Start extends Page
    
         @start = new ButtonNext("start",_("Start"),@guide_choose)
         @start.create_button(=>
-            #TODO:switch_to_page(launcher_page)
             guide?.switch_page(@,"LauncherLaunch")
         )
-        @start.element.style.position = "relative"
-        @start.element.style.marginTop = "22em"
+        @start.element.style.marginTop = "2em"
 
-        
-        
         @older = create_element("div","older",@element)
         @older.innerText = _("I am older,exit directly")
         @older.addEventListener("click",(e) =>
             e.stopPropagation()
-            #TODO:gtk_main_quit()
             enableZoneDetect(true)
             DCore.Guide.quit()
         )

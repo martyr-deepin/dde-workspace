@@ -180,7 +180,7 @@ class ButtonNext extends Widget
 
     create_button:(@cb) ->
         @element.style.display = "-webkit-box"
-        @element.style.height = "6.4em"
+        @element.style.height = "64px"
         @element.style.color = "#fff"
         @element.style.textShadow = "0 1px 1px rgba(0,0,0,0.7)"
         
