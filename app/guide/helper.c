@@ -194,3 +194,19 @@ void guide_set_focus(gboolean focus)
  }
 
 
+JS_EXPORT_API
+void guide_OpenUrl(const char* url)
+{
+    if ( url == NULL || url[0] == '\0' ) {
+        g_warning ("url error\n");
+        return ;
+    }
+
+    if (!dcore_open_browser(url)) {
+        g_warning("browser url failed\n");
+        return ;
+    }
+
+    return ;
+}
+

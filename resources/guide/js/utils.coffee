@@ -143,3 +143,11 @@ each_item_update_times = 3
 each_richdir_update_times = 1
 desktop_file_numbers = 3
 
+
+if DCore
+    document.addEventListener('click',(e)->
+            e.preventDefault()
+            if e.target.tagName is "A"
+                DCore.Guide.OpenUrl(e.target.href)
+    ,false)
+
