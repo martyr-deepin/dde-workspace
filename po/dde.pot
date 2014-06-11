@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-10 10:36+0800\n"
+"POT-Creation-Date: 2014-06-11 17:43+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,13 +24,13 @@ msgstr ""
 msgid "_Delete"
 msgstr ""
 
-#: ../resources/desktop/js/application.coffee:180
+#: ../resources/desktop/js/application.coffee:179
 #: ../resources/desktop/js/richdir.coffee:337
 #: ../resources/desktop/js/richdir.coffee:782
 msgid "The link is invalid. Do you want to delete it?"
 msgstr ""
 
-#: ../resources/desktop/js/application.coffee:180
+#: ../resources/desktop/js/application.coffee:179
 #: ../resources/desktop/js/desktopentry.coffee:151
 #: ../resources/desktop/js/richdir.coffee:337
 #: ../resources/desktop/js/richdir.coffee:782
@@ -98,7 +98,7 @@ msgid "Home"
 msgstr ""
 
 #: ../resources/desktop/js/specialitem.coffee:175
-#: ../resources/dock/js/main.coffee:120 ../resources/dock/js/main.coffee:185
+#: ../resources/dock/js/main.coffee:140 ../resources/dock/js/main.coffee:205
 msgid "Trash"
 msgstr ""
 
@@ -379,7 +379,7 @@ msgstr ""
 msgid "All Windows"
 msgstr ""
 
-#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:183
+#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:203
 msgid "Launcher"
 msgstr ""
 
@@ -399,154 +399,158 @@ msgstr ""
 msgid "tips：Click the setting icon on dock to implement"
 msgstr ""
 
-#: ../resources/guide/js/dss.coffee:54
+#: ../resources/guide/js/dss.coffee:55
 msgid "Here is the system setting area"
 msgstr ""
 
-#: ../resources/guide/js/dss.coffee:55
+#: ../resources/guide/js/dss.coffee:56
 msgid ""
 "tips：Hover the setting icon on dock to quickly implement some setting "
 "functions"
 msgstr ""
 
-#: ../resources/guide/js/end.coffee:25
+#: ../resources/guide/js/end.coffee:26
 msgid "Thanks for your patience to learn.You get the novice package"
 msgstr ""
 
-#: ../resources/guide/js/end.coffee:26
+#: ../resources/guide/js/end.coffee:27
 msgid "tips：Please receive in Deepin account"
 msgstr ""
 
-#: ../resources/guide/js/end.coffee:33
+#: ../resources/guide/js/end.coffee:34
 msgid "Get"
 msgstr ""
 
-#: ../resources/guide/js/end.coffee:41
+#: ../resources/guide/js/end.coffee:42
 msgid "New users directly jump to the registration page"
 msgstr ""
 
-#: ../resources/guide/js/end.coffee:46
+#: ../resources/guide/js/end.coffee:47
 msgid "End"
 msgstr ""
 
-#: ../resources/guide/js/welcome.coffee:36
+#: ../resources/guide/js/welcome.coffee:38
 msgid "Welcome to use Deepin Operating System"
 msgstr ""
 
-#: ../resources/guide/js/welcome.coffee:39
+#: ../resources/guide/js/welcome.coffee:41
 msgid "Prepare for operation ..."
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:25
+#: ../resources/guide/js/desktop.coffee:27
 msgid ""
 "Let's overlap the other two icons on the first icon \n"
 "generate \"application group\""
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:43
+#: ../resources/guide/js/desktop.coffee:54
 msgid "Well, you have learned how to create a \"application group\""
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:44
+#: ../resources/guide/js/desktop.coffee:55
 msgid "tips：Right-click on the application group will provide more functions"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:59
+#: ../resources/guide/js/desktop.coffee:69
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different "
 "events"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:60
+#: ../resources/guide/js/desktop.coffee:70
 msgid ""
 "tips：Please trigger successively by hints, click on the blank area to return"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:64
+#: ../resources/guide/js/desktop.coffee:74
 msgid "No default functions setted"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:94
+#: ../resources/guide/js/desktop.coffee:75
+msgid "Show Desktop"
+msgstr ""
+
+#: ../resources/guide/js/desktop.coffee:117
 msgid ""
 "Right-click on desktop black area to call up the menu, select \"Corner "
 "navigation\" to set the corner used"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:95
+#: ../resources/guide/js/desktop.coffee:118
 msgid "tips：Click on the interface of corner navigation blank area to return"
 msgstr ""
 
-#: ../resources/guide/js/start.coffee:29
+#: ../resources/guide/js/start.coffee:28
 msgid "New Launcher"
 msgstr ""
 
-#: ../resources/guide/js/start.coffee:29
+#: ../resources/guide/js/start.coffee:28
 msgid "New Desktop"
 msgstr ""
 
-#: ../resources/guide/js/start.coffee:29
+#: ../resources/guide/js/start.coffee:28
 msgid "New System Settings"
 msgstr ""
 
-#: ../resources/guide/js/start.coffee:30
+#: ../resources/guide/js/start.coffee:29
 msgid "The following will guide you to learn how to use some new functions"
 msgstr ""
 
-#: ../resources/guide/js/start.coffee:46
+#: ../resources/guide/js/start.coffee:45
 msgid "Start"
 msgstr ""
 
-#: ../resources/guide/js/start.coffee:57
+#: ../resources/guide/js/start.coffee:52
 msgid "I am older,exit directly"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:29
+#: ../resources/guide/js/launcher.coffee:30
 msgid ""
 "Sliding the mouse to the upper left corner or clicking on the launcher icon "
 "both can start \"Application Launcher\""
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:70
+#: ../resources/guide/js/launcher.coffee:71
 msgid ""
 "What shown in the first screen of \" launcher\" are the applications of "
 "collection"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:85
+#: ../resources/guide/js/launcher.coffee:86
 msgid ""
 "Please click on the \"All Applications\" icon , you will see all applications"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:104
+#: ../resources/guide/js/launcher.coffee:107
 msgid ""
 "All programs can be seen by scrolling the mouse up and down\n"
 "You can also click on the left classification navigation to locate"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:140
+#: ../resources/guide/js/launcher.coffee:143
 msgid ""
 "Use the keyboard searching to find applications you want\n"
 "We try\"deepin\" keyword to see which applications shown"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:141
+#: ../resources/guide/js/launcher.coffee:144
 msgid "tips：Please directly enter the word \"deepin\""
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:154
+#: ../resources/guide/js/launcher.coffee:157
 msgid ""
 "Click the right mouse button on the application icon to call up the context "
 "menu\n"
 "Clicking on the menu item will achieve its function"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:155
+#: ../resources/guide/js/launcher.coffee:158
 msgid ""
 "tips:You can also directly use the left mouse button to drag the icon to the "
 "dock, favicon or trash"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:169
+#: ../resources/guide/js/launcher.coffee:171
 msgid "Use the right mouse button to send three icons to the desktop"
 msgstr ""
 
@@ -562,16 +566,16 @@ msgstr ""
 msgid "_auto hide"
 msgstr ""
 
-#: ../resources/dock/js/deepin_item.coffee:168
+#: ../resources/dock/js/deepin_item.coffee:170
 msgid "_View as analog"
 msgstr ""
 
-#: ../resources/dock/js/deepin_item.coffee:169
-#: ../resources/dock/js/deepin_item.coffee:217
+#: ../resources/dock/js/deepin_item.coffee:171
+#: ../resources/dock/js/deepin_item.coffee:221
 msgid "_Time settings"
 msgstr ""
 
-#: ../resources/dock/js/deepin_item.coffee:216
+#: ../resources/dock/js/deepin_item.coffee:220
 msgid "_View as digit"
 msgstr ""
 
