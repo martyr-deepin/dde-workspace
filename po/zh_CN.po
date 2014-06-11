@@ -342,7 +342,6 @@ msgid "yes"
 msgstr "是"
 
 #: ../resources/launcher/js/const.coffee:64
-#, fuzzy
 msgid "_Hide the icon"
 msgstr "隐藏该图标(_H)"
 
@@ -437,9 +436,8 @@ msgid "Welcome to use Deepin Operating System"
 msgstr "欢迎使用深度操作系统"
 
 #: ../resources/guide/js/welcome.coffee:39
-#, fuzzy
 msgid "Prepare for operation ..."
-msgstr "正在为运行做一些准备.."
+msgstr "正在为运行做一些准备..."
 
 #: ../resources/guide/js/desktop.coffee:25
 msgid ""
@@ -471,14 +469,12 @@ msgid "No default functions setted"
 msgstr "此热区默认未设置任何功能"
 
 #: ../resources/guide/js/desktop.coffee:94
-#, fuzzy
 msgid ""
 "Right-click on desktop black area to call up the menu, select \"Corner "
 "navigation\" to set the corner used"
 msgstr "在桌面空白区点击右键调出菜单，选择“热区设置”来设置刚才使用的热区"
 
 #: ../resources/guide/js/desktop.coffee:95
-#, fuzzy
 msgid "tips：Click on the interface of corner navigation blank area to return"
 msgstr "提示：点击热区空白区域可返回"
 
@@ -513,7 +509,6 @@ msgid ""
 msgstr "鼠标滑动到左上角，或者点击启动器图标都可以启动“应用程序启动器”"
 
 #: ../resources/guide/js/launcher.coffee:70
-#, fuzzy
 msgid ""
 "What shown in the first screen of \" launcher\" are the applications of "
 "collection"
@@ -531,13 +526,11 @@ msgid ""
 msgstr "上下滚动鼠标滚轮可以查看所有程序您也可以点击左侧分类导航来定位"
 
 #: ../resources/guide/js/launcher.coffee:140
-#, fuzzy
 msgid ""
 "Use the keyboard searching to find applications you want\n"
 "We try\"deepin\" keyword to see which applications shown"
 msgstr ""
-"使用键盘搜索来查找你想要的应用我们来试试“deepin”这个关键字吧，看会显示哪些应"
-"用"
+"使用键盘搜索来查找你想要的应用我们来试试“deepin”这个关键字吧，看会显示哪些应用"
 
 #: ../resources/guide/js/launcher.coffee:141
 msgid "tips：Please directly enter the word \"deepin\""
