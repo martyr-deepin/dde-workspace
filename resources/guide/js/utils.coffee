@@ -37,6 +37,7 @@ pages_id = [
 ]
 
 t_switch_page = 4000
+t_mid_switch_page = 2000
 t_min_switch_page = 500
 
 set_pos = (el,x,y,position_type = "fixed",type = POS_TYPE.leftup)->
