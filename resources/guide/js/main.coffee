@@ -1,2 +1,2 @@
 DCore.Guide.emit_webview_ok()
-guide?.create_page("Start")
+guide?.create_page("Welcome")
