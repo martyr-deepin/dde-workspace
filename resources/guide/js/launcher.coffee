@@ -91,16 +91,17 @@ class LauncherScroll extends Page
         super
         @scrollup = false
         @scrolldown = false
+        enableZoneDetect(true)
         
         @rect = new Rect("collectApp",@element)
         @rect.create_rect(64,435)#1096*316
-        @rect.set_pos(25,125)
+        @rect.set_pos(25,115)
         
         @pointer = new Pointer("classify",@element)
         @pointer.create_pointer(AREA_TYPE.circle,POS_TYPE.leftup,=>
             simulate_click(CLICK_TYPE.leftclick,@,"LauncherSearch")
         )
-        @pointer.set_area_pos(25,192)
+        @pointer.set_area_pos(25,233)
         
         @message = _("All programs can be seen by scrolling the mouse up and down\nYou can also click on the left classification navigation to locate")
         @show_message(@message)
