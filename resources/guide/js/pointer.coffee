@@ -41,13 +41,15 @@ class Pointer extends Widget
         @area_height = 64
         @pointer_width = 64
         @pointer_height = 64
+        @height = @area_height + @pointer_height
+        @width = @area_width + @pointer_width
         
         @pointer_img.style.width = @pointer_width
         @pointer_img.style.height = @pointer_height
         @area_img.style.width = @area_width
         @area_img.style.height = @area_height
-        @element.style.width = @area_width + @pointer_width
-        @element.style.height = @area_height + @pointer_height
+        @element.style.width = @width
+        @element.style.height = @height
         #@pointer_img.style.background = "rgba(0,10,120,0.3)"
         #@area_img.style.background = "rgba(120,125,120,0.3)"
         #@element.style.background = "rgba(0,125,120,0.3)"

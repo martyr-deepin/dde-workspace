@@ -60,8 +60,8 @@ class LauncherCollect extends Page
         super
         
         @rect = new Rect("collectApp",@element)
-        @rect.create_rect(1096,316)#1096*316
-        @rect.set_pos(135,80)
+        @rect.create_rect(COLLECT_WIDTH,COLLECT_HEIGHT)
+        @rect.set_pos(COLLECT_LEFT,COLLECT_TOP)
         @rect.show_animation(=>
             setTimeout(=>
                 guide?.switch_page(@,"LauncherAllApps")
@@ -80,7 +80,7 @@ class LauncherAllApps extends Page
         @pointer.create_pointer(AREA_TYPE.circle,POS_TYPE.leftup, (e)=>
             simulate_click(CLICK_TYPE.leftclick,@,"LauncherScroll")
         )
-        @pointer.set_area_pos(25,25)
+        @pointer.set_area_pos(CATE_LEFT,CATE_LEFT)
         @pointer.show_animation()
         
         @message = _("Please click on the \"All Applications\" icon , you will see all applications")
@@ -93,14 +93,16 @@ class LauncherScroll extends Page
         @scrolldown = false
         
         @rect = new Rect("collectApp",@element)
-        @rect.create_rect(64,435)#1096*316
-        @rect.set_pos(25,115)
+        @rect.create_rect(CATE_WIDTH,CATE_HEIGHT)
+        rect_top = (screen.height  - @rect.height) / 2
+        @rect.set_pos(CATE_LEFT,rect_top)
         
         @pointer = new Pointer("classify",@element)
         @pointer.create_pointer(AREA_TYPE.circle,POS_TYPE.leftup,=>
             simulate_click(CLICK_TYPE.leftclick,@,"LauncherSearch")
         )
-        @pointer.set_area_pos(25,233)
+        pointer_top = (screen.height  - @pointer.pointer_height) / 2
+        @pointer.set_area_pos(CATE_LEFT,pointer_top)
         
         @message = _("All programs can be seen by scrolling the mouse up and down\nYou can also click on the left classification navigation to locate")
         @show_message(@message)

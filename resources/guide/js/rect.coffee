@@ -36,6 +36,7 @@ class Rect extends Widget
         
     create_rect : (@width,@height) ->
         @rect = create_element("div","rect",@element)
+        @rect.style.borderColor = "#fff"
         @rect.style.borderStyle = "dashed"
         @rect.style.borderWidth = "1px"
         @rect.style.borderRadius = "5px"
