@@ -107,7 +107,7 @@ class Item extends Widget
         @displayIcon('dark')
 
     on_mouseup:(e)=>
-        @displayIcon()
+        @displayIcon('hover')
 
     # on_click:(e)=>
     #     e?.preventDefault()

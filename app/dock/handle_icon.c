@@ -241,3 +241,44 @@ char* dock_bright_image(char const* origDataUrl, double _adj)
     return brightness_handle(origDataUrl, _adj);
 }
 
+
+char* dock_dark_image(char const* origDataUrl, double _adj G_GNUC_UNUSED)
+{
+#define IMG_PATH "/tmp/origin.png"
+    data_uri_to_file(origDataUrl, IMG_PATH);
+    cairo_surface_t* surface = cairo_image_surface_create_from_png(IMG_PATH);
+    if (cairo_surface_status(surface) != CAIRO_STATUS_SUCCESS) {
+        g_warning("create surface from png failed");
+        cairo_surface_destroy(surface);
+        return NULL;
+    }
+
+    cairo_t* cr = cairo_create(surface);
+    if (cairo_status(cr) != CAIRO_STATUS_SUCCESS) {
+        cairo_destroy(cr);
+        cairo_surface_destroy(surface);
+        g_warning("create cairo from surface failed");
+        return NULL;
+    }
+
+    cairo_set_source_rgba(cr, 0,0,0,0.3);
+    cairo_paint(cr);
+
+    cairo_surface_write_to_png(surface, IMG_PATH);
+
+    cairo_surface_destroy(surface);
+
+    GError* err = NULL;
+    GdkPixbuf* pixbuf = gdk_pixbuf_new_from_file(IMG_PATH, &err);
+    if (err != NULL) {
+        g_warning("%s", err->message);
+        g_clear_error(&err);
+        return NULL;
+    }
+    char* data = get_data_uri_by_pixbuf(pixbuf);
+    g_object_unref(pixbuf);
+    // g_remove(IMG_PATH);
+
+    return data;
+}
+
