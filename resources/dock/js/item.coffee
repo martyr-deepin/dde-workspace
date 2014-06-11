@@ -602,6 +602,8 @@ class AppItem extends Item
 
     on_mouseup:(e)=>
         super
+        if e.button != 0
+            return
         @core.activate?(0,0)
         console.log("on_click")
         if @isNormal()

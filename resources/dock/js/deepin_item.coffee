@@ -122,6 +122,8 @@ class ClockBase extends SystemItem
 
     on_mouseup: (e)=>
         super
+        if e.button != 0
+            return
 
     start_time_settings: ->
         echo 'time settings'
@@ -183,6 +185,8 @@ class DigitClock extends ClockBase
 
     on_mouseup: (e) =>
         super
+        if e.button != 0
+            return
         if e.altKey
             @switch_to_analog()
 
@@ -231,6 +235,8 @@ class AnalogClock extends ClockBase
 
     on_mouseup: (e) =>
         super
+        if e.button != 0
+            return
         if e.altKey
             @switch_to_digit()
 

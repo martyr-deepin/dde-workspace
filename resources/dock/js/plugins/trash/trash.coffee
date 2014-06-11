@@ -57,6 +57,8 @@ class Trash extends PostfixedItem
     on_mouseup: (e)=>
         e.stopPropagation()
         super
+        if e.button != 0
+            return
         if @is_opened
             @core.Activate(0,0)
             return

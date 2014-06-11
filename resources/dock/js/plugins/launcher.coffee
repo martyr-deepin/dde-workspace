@@ -11,5 +11,7 @@ class LauncherItem extends PrefixedItem
 
     on_mouseup: (e)=>
         super
+        if e.button != 0
+            return
         DCore.Dock.toggle_launcher(!@__show)
 
