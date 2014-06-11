@@ -42,6 +42,7 @@ class DesktopRichDir extends Page
             
             setTimeout(=>
                 @desktop?.item_signal_disconnect()
+                DCore.Guide.enable_guide_region()
                 guide?.switch_page(@,"DesktopRichDirCreated")
             ,t_min_switch_page)
         )
@@ -70,17 +71,17 @@ class DesktopCorner extends Page
         @show_message(@message)
         @show_tips(@tips)
 
+        @message_righup = _("No default functions setted")
+        @pos = ["leftup","leftdown","rightdown","rightup"]
+        @corner = []
 
         @dss = new Dss()
         @launcher = new Launcher()
         @pointer_create()
     
     pointer_create : ->
-        @message_righup = _("No default functions setted")
-
-        @pos = ["leftup","leftdown","rightdown","rightup"]
+        if @corner.length != 0 then return
         length = @pos.length
-        @corner = []
         for p,i in @pos
             @corner[i] = new Pointer(p,@element)
             that = @
@@ -99,7 +100,7 @@ class DesktopCorner extends Page
                         that.corner[index + 1].show_animation()
                     else
                         guide?.switch_page(that,"DesktopZone")
-                ,t_switch_page)
+                ,t_mid_switch_page)
             ,"mouseover")
             @corner[i].set_area_pos(0,0,"fixed",POS_TYPE[p])
         @corner[0].show_animation()
@@ -113,6 +114,9 @@ class DesktopZone extends Page
         @tips = _("tips：Click on the interface of corner navigation blank area to return")
         @show_message(@message)
         @show_tips(@tips)
+        
+        @pos = ["leftup","leftdown","rightdown","rightup"]
+        @corner = []
         
         simulate_rightclick(@,=>
             @zone_check()
@@ -129,9 +133,8 @@ class DesktopZone extends Page
         ,500)
 
     pointer_create: ->
-        @pos = ["leftup","leftdown","rightdown","rightup"]
+        if @corner.length != 0 then return
         length = @pos.length
-        @corner = []
         for p,i in @pos
             @corner[i] = new Pointer(p,@element)
             that = @
@@ -149,7 +152,7 @@ class DesktopZone extends Page
                     else
                         DCore.Guide.spawn_command_sync("killall dde-zone")
                         guide?.switch_page(that,"DssLaunch")
-                ,t_switch_page)
+                ,t_mid_switch_page)
             ,"mouseover")
             @corner[i].set_area_pos(0,0,"fixed",POS_TYPE[p])
         DCore.Guide.enable_guide_region()
