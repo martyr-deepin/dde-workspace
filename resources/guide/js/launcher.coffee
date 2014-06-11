@@ -80,7 +80,7 @@ class LauncherAllApps extends Page
         @pointer.create_pointer(AREA_TYPE.circle,POS_TYPE.leftup, (e)=>
             simulate_click(CLICK_TYPE.leftclick,@,"LauncherScroll")
         )
-        @pointer.set_area_pos(CATE_LEFT,CATE_LEFT)
+        @pointer.set_area_pos(CATE_LEFT - 2,CATE_LEFT - 2)
         @pointer.show_animation()
         
         @message = _("Please click on the \"All Applications\" icon , you will see all applications")
@@ -102,7 +102,7 @@ class LauncherScroll extends Page
             simulate_click(CLICK_TYPE.leftclick,@,"LauncherSearch")
         )
         pointer_top = (screen.height  - @pointer.pointer_height) / 2
-        @pointer.set_area_pos(CATE_LEFT,pointer_top)
+        @pointer.set_area_pos(CATE_LEFT,pointer_top + 5)
         
         @message = _("All programs can be seen by scrolling the mouse up and down\nYou can also click on the left classification navigation to locate")
         @show_message(@message)
