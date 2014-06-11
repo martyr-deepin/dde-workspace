@@ -91,7 +91,6 @@ class LauncherScroll extends Page
         super
         @scrollup = false
         @scrolldown = false
-        enableZoneDetect(true)
         
         @rect = new Rect("collectApp",@element)
         @rect.create_rect(64,435)#1096*316

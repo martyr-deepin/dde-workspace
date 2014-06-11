@@ -109,27 +109,30 @@ timeout_deepin = null
 input_keysym = []
 
 simulate_input = (modle_keysym,old_page,new_page_cls_name = null) ->
+    #enableZoneDetect(true)
     modle_keysym_str = modle_keysym.toString()
     DCore.Guide.disable_keyboard()
     document.body.addEventListener("keyup", (e)->
         if guide?.current_page_id isnt "LauncherSearch" then return
         input = e.which
-        if input in white_key_list
-            if input is KEYCODE.BACKSPACE
-                input = 0xff08
-                input_keysym.pop()
+        if not (input in white_key_list) then return
+        if input is KEYCODE.BACKSPACE
+            input = 0xff08
+            input_keysym.pop()
+        else
             input_keysym.push(input)
-            DCore.Guide.enable_keyboard()
-            DCore.Guide.simulate_input(input)
-            DCore.Guide.disable_keyboard()
-            
-            input_keysym_str = input_keysym.toString()
-            if input_keysym_str is modle_keysym_str
-                echo "modle_keysym_str:#{modle_keysym_str}"
-                clearTimeout(timeout_deepin)
-                timeout_deepin = setTimeout(=>
-                    guide?.switch_page(old_page,new_page_cls_name)
-                ,t_switch_page)
+        DCore.Guide.enable_keyboard()
+        DCore.Guide.simulate_input(input)
+        DCore.Guide.disable_keyboard()
+        
+        input_keysym_str = input_keysym.toString()
+        #echo "input_keysym_str:#{input_keysym_str}"
+        if input_keysym_str is modle_keysym_str
+            echo "modle_keysym_str:#{modle_keysym_str}"
+            clearTimeout(timeout_deepin)
+            timeout_deepin = setTimeout(=>
+                guide?.switch_page(old_page,new_page_cls_name)
+            ,t_switch_page)
     )
     
 
