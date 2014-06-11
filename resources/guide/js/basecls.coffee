@@ -46,30 +46,32 @@ class Dss
             console.log "dbus error :#{e}"
  
     hide: ->
-        @dbus?.Hide()
+        @dbus?.Hide_sync()
 
     toggle: ->
-        @dbus?.Toggle()
+        @dbus?.Toggle_sync()
 
     show: ->
-        @dbus?.Show()
+        @dbus?.Show_sync()
 
 class Launcher
     LAUNCHER = "com.deepin.dde.launcher"
     constructor: ->
+        @dbus_error = false
         try
             @dbus = DCore.DBus.session(LAUNCHER)
         catch e
+            @dbus_error = true
             console.log "dbus error :#{e}"
  
     hide: ->
-        @dbus?.Hide()
+        @dbus?.Hide_sync()
 
     toggle: ->
-        @dbus?.Toggle()
+        @dbus?.Toggle_sync()
 
     show: ->
-        @dbus?.Show()
+        @dbus?.Show_sync()
 
     hide_signal: (@hide_signal_cb) ->
         @dbus?.connect("Closed",@hide_signal_cb)

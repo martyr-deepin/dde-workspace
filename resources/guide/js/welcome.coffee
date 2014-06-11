@@ -46,7 +46,26 @@ class Welcome extends Widget
         @readying.style.bottom = "4.5em"
 
         interval_switch = setInterval(=>
-            if @session.getStage() < @session.STAGE.SessionStageCoreEnd then return
+            if @session.getStage() < @session.STAGE.SessionStageAppsEnd then return
             clearInterval(interval_switch)
-            guide?.switch_page(@,"Start")
+            @launcher_show_hide()
         ,200)
+
+
+    launcher_show_hide: ->
+        i = 0
+        interval_launcher = setInterval(=>
+            i++
+            echo i
+            #@launcher.show()
+            DCore.Guide.spawn_command_sync("dde-launcher")
+        ,800)
+        @launcher = new Launcher()
+        @launcher?.show_signal(=>
+            echo "launcher show_signal"
+            clearInterval(interval_launcher)
+            @launcher.hide()
+            @launcher.show_signal_disconnect()
+            guide?.switch_page(@,"Start")
+        )
+
