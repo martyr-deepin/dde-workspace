@@ -72,6 +72,7 @@ class DesktopCorner extends Page
         @show_tips(@tips)
 
         @message_righup = _("No default functions setted")
+        @message_leftdown = _("Show Desktop")
         @pos = ["leftup","leftdown","rightdown","rightup"]
         @corner = []
 
@@ -89,8 +90,11 @@ class DesktopCorner extends Page
                 index = i for p,i in that.pos when this.id is p
                 echo "#{index}/#{length - 1} #{this.id} mouseenter"
                 clearTimeout(switch_page_timeout)
-                if index == length - 1
+                if this.id is "rightup"
                     that.show_message(that.message_righup)
+                    that.show_tips(" ")
+                else if this.id is "leftdown"
+                    that.show_message(that.message_leftdown)
                     that.show_tips(" ")
 
                 switch_page_timeout = setTimeout(=>

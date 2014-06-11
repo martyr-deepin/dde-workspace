@@ -50,8 +50,8 @@ class LauncherLaunch extends Page
     show_signal_cb:=>
         @element.style.display = "none"
         setTimeout(=>
-            guide?.switch_page(@,"LauncherCollect")
             @launcher.show_signal_disconnect()
+            guide?.switch_page(@,"LauncherCollect")
         ,t_min_switch_page)
 
         

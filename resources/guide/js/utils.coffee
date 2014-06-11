@@ -132,7 +132,7 @@ simulate_input = (modle_keysym,old_page,new_page_cls_name = null) ->
             clearTimeout(timeout_deepin)
             timeout_deepin = setTimeout(=>
                 guide?.switch_page(old_page,new_page_cls_name)
-            ,t_switch_page)
+            ,t_mid_switch_page)
     )
     
 

@@ -28,7 +28,16 @@ class Start extends Page
         @option_text = [_("New Launcher"),_("New Desktop"),_("New System Settings")]
         @message_text = _("The following will guide you to learn how to use some new functions")
 
+        @launcher_show_hide()
         @guide_choose_build()
+
+    launcher_show_hide: ->
+        @launcher = new Launcher()
+        @launcher.show_signal(=>
+            @launcher.hide()
+            @launcher.show_signal_disconnect()
+        )
+        @launcher.show()
 
     guide_choose_build : ->
         @guide_choose = create_element("div","guide_choose",@element)
