@@ -62,7 +62,7 @@ class Launcher
             @dbus = DCore.DBus.session(LAUNCHER)
         catch e
             @dbus_error = true
-            console.log "dbus error :#{e}"
+            console.log "#{LAUNCHER} dbus error :#{e}"
  
     hide: ->
         @dbus?.Hide_sync()
