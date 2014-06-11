@@ -79,6 +79,7 @@ _b.addEventListener("drop", (e)->
         console.log("not working area")
         _dragToBack = false
         _dragTarget?.back(e.x, e.y)
+        update_dock_region()
         return
     s_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
     s_widget = Widget.look_up(s_id)

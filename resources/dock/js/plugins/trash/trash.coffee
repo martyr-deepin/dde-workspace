@@ -54,7 +54,7 @@ class Trash extends PostfixedItem
             when 2
                 clientManager?.CloseWindow(@w_id)
 
-    on_click: (e)=>
+    on_mouseup: (e)=>
         e.stopPropagation()
         super
         if @is_opened

@@ -186,7 +186,7 @@ char* brightness_handle(char const* origDataUrl, double _adj)
     gboolean inc = _adj > 0;
     // TODO: build a tmp file name.
 #define IMG_PATH "/tmp/origin.png"
-    guchar adj = (guchar)_adj;
+    guchar adj = (guchar)abs(_adj);
     data_uri_to_file(origDataUrl, IMG_PATH);
 
     GError* err = NULL;
@@ -239,11 +239,5 @@ char* brightness_handle(char const* origDataUrl, double _adj)
 char* dock_bright_image(char const* origDataUrl, double _adj)
 {
     return brightness_handle(origDataUrl, _adj);
-}
-
-
-char* dock_dark_image(char const* origDataUrl, double _adj)
-{
-    return brightness_handle(origDataUrl, -_adj);
 }
 

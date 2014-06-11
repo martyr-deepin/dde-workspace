@@ -120,7 +120,7 @@ class ClockBase extends SystemItem
         # @element.style.webkitTransition = 'opacity 1s ease-in'
         @element.style.webkitTransition = 'all 0.2s'
 
-    on_click: (e)=>
+    on_mouseup: (e)=>
         super
 
     start_time_settings: ->
@@ -181,7 +181,7 @@ class DigitClock extends ClockBase
             when 2
                 @start_time_settings()
 
-    on_click: (e) =>
+    on_mouseup: (e) =>
         super
         if e.altKey
             @switch_to_analog()
@@ -229,7 +229,7 @@ class AnalogClock extends ClockBase
             when 2
                 @start_time_settings()
 
-    on_click: (e) =>
+    on_mouseup: (e) =>
         super
         if e.altKey
             @switch_to_digit()

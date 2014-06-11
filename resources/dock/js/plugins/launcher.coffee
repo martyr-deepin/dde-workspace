@@ -9,7 +9,7 @@ class LauncherItem extends PrefixedItem
             @show(false)
         )
 
-    on_click: (e)=>
+    on_mouseup: (e)=>
         super
         DCore.Dock.toggle_launcher(!@__show)
 

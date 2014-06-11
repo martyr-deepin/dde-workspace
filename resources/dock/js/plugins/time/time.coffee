@@ -38,7 +38,7 @@ class Time extends SystemItem
     on_mouseout:=>
         super
 
-    on_click:->
+    on_mouseup:->
         super
         sysSettings = get_dbus('session', "com.deepin.dde.ControlCenter", "ShowModule")
         sysSettings.ShowModule("date_time") if sysSettings

@@ -16,14 +16,19 @@ class Item extends Widget
         @img = create_img(src:icon || NOT_FOUND_ICON, class:"AppItemImg", @imgContainer)
         @imgHover = create_img(src:"", class:"AppItemImg", @imgContainer)
         @imgHover.style.display = 'none'
+        @imgDark = create_img(src:"", class:"AppItemImg", @imgContainer)
+        @imgDark.style.display = 'none'
         @img.onload = =>
             dataUrl = bright_image(@img, 40)
             @imgHover.src = dataUrl
+            dataUrl = bright_image(@img, -40)
+            @imgDark.src = dataUrl
         @imgWarp.classList.add("ReflectImg")
         @imgContainer.style.pointerEvents = "auto"
         @imgContainer.addEventListener("mouseover", @on_mouseover)
         @imgContainer.addEventListener("mouseout", @on_mouseout)
-        @imgContainer.addEventListener("click", @on_click)
+        @imgContainer.addEventListener("mousedown", @on_mousedown)
+        @imgContainer.addEventListener("mouseup", @on_mouseup)
         @imgContainer.addEventListener("contextmenu", @on_rightclick)
         @imgContainer.addEventListener("dragstart", @on_dragstart)
         @imgContainer.addEventListener("dragenter", @on_dragenter)
@@ -51,6 +56,7 @@ class Item extends Widget
         @img.src = src
         @img.onload = =>
             @imgHover.src = bright_image(@img, 40)
+            @imgDark.src = bright_image(@img, -40)
 
     set_tooltip: (text) ->
         if @tooltip == null
@@ -67,19 +73,25 @@ class Item extends Widget
 
     update_scale:->
 
+    displayIcon:(type="")->
+        if type
+            type = type[0].toUpperCase() + type.substr(1).toLowerCase()
+        @img.style.display = 'none'
+        @imgHover.style.display = 'none'
+        @imgDark.style.display = 'none'
+        this["img#{type}"].style.display = ''
+
     on_mouseover:(e)=>
         if settings.hideMode() != HideMode.KeepShowing and hideStatusManager.state != HideState.Shown
             console.log("hide state is not Shown")
             return
         # console.log("mouseover, require_all_region")
         DCore.Dock.require_all_region()
-        @img.style.display = 'none'
-        @imgHover.style.display = ''
+        @displayIcon('hover')
 
     on_mouseout:(e)=>
         DCore.Dock.set_is_hovered(false)
-        @img.style.display = ''
-        @imgHover.style.display = 'none'
+        @displayIcon()
 
     on_mousewheel:(e)=>
         @core?.onMouseWheel(e.x, e.y, e.wheelDeltaY)
@@ -89,10 +101,18 @@ class Item extends Widget
         e.stopPropagation()
         @tooltip?.hide()
 
-    on_click:(e)=>
-        e?.preventDefault()
-        e?.stopPropagation()
+    on_mousedown:(e)=>
         Preview_close_now()
+        @tooltip?.hide()
+        @displayIcon('dark')
+
+    on_mouseup:(e)=>
+        @displayIcon()
+
+    # on_click:(e)=>
+    #     e?.preventDefault()
+    #     e?.stopPropagation()
+    #     Preview_close_now()
 
     on_dragend:(e)=>
         console.log('dragend')
@@ -580,10 +600,10 @@ class AppItem extends Item
             # console.log("select id: #{id}")
             d?.HandleMenuItem(id)
 
-    on_click:(e)=>
+    on_mouseup:(e)=>
         super
         @core.activate?(0,0)
-        # console.log("on_click")
+        console.log("on_click")
         if @isNormal()
             @openNotify()
 
