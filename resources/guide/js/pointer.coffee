@@ -27,6 +27,8 @@ class Pointer extends Widget
         parent?.appendChild(@element)
         @element.style.display = "none"
     
+    set_area_bg_icon: (@area_bg_icon) ->
+
     create_pointer: (@area_type,@pos_type,@cb,@cb_type = "click") ->
         @pointer_img = create_img("pointer_img","",@element)
         @area_img = create_img("area_img","",@element)
@@ -51,7 +53,7 @@ class Pointer extends Widget
         @element.style.width = @width
         @element.style.height = @height
         #@pointer_img.style.background = "rgba(0,10,120,0.3)"
-        #@area_img.style.background = "rgba(120,125,120,0.3)"
+        #@area_img.style.background = "rgba(255,255,255,0.1)"
         #@element.style.background = "rgba(0,125,120,0.3)"
 
         set_pos(@area_img,0,0,"absolute",@pos_type)
