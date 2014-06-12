@@ -32,11 +32,12 @@ class DssLaunch extends Page
 
         @dock = new Dock()
         @circle = new Pointer("dss_circle",@element)
-        @circle.create_pointer(AREA_TYPE.circle_white,POS_TYPE.rightdown,=>
+        @circle.create_pointer(AREA_TYPE.circle,POS_TYPE.rightdown,=>
             @dss?.show()
             guide?.switch_page(@,"DssArea")
         
         )
+        @circle.enable_area_icon("#{@img_src}/preferences-system.png",48,48)
         @pos = @dock.get_dssicon_pos()
         @circle_x = @pos.x0 - @circle.pointer_width
         @circle_y = @pos.y0 - @circle.pointer_height - ICON_MARGIN_V_BOTTOM / 2

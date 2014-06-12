@@ -26,43 +26,49 @@ class Pointer extends Widget
         @img_src = "img"
         parent?.appendChild(@element)
         @element.style.display = "none"
-    
-    set_area_bg_icon: (@area_bg_icon) ->
 
     create_pointer: (@area_type,@pos_type,@cb,@cb_type = "click") ->
         @pointer_img = create_img("pointer_img","",@element)
-        @area_img = create_img("area_img","",@element)
+        @area_div = create_element("div","area_div",@element)
+
+        @area_div.style.display = "-webkit-box"
+        @area_div.style.webkitBoxPack = "center"
+        @area_div.style.webkitBoxAlign = "center"
 
         @pointer_img.src = "#{@img_src}/pointer_#{@pos_type}.png"
         if @area_type isnt AREA_TYPE.corner
-            @area_img.src = "#{@img_src}/#{@area_type}.png"
+            @area_div.style.backgroundImage = "url(#{@img_src}/#{@area_type}.png)"
         else
-            @area_img.src = "#{@img_src}/#{@area_type}_#{@pos_type}.png"
+            @area_div.style.backgroundImage = "url(#{@img_src}/#{@area_type}_#{@pos_type}.png)"
 
-        @area_width = 64
-        @area_height = 64
-        @pointer_width = 64
-        @pointer_height = 64
+        @area_width = @area_height = @pointer_width = @pointer_height = 64
         @height = @area_height + @pointer_height
         @width = @area_width + @pointer_width
         
         @pointer_img.style.width = @pointer_width
         @pointer_img.style.height = @pointer_height
-        @area_img.style.width = @area_width
-        @area_img.style.height = @area_height
+        @area_div.style.width = @area_width
+        @area_div.style.height = @area_height
         @element.style.width = @width
         @element.style.height = @height
         #@pointer_img.style.background = "rgba(0,10,120,0.3)"
-        #@area_img.style.background = "rgba(255,255,255,0.1)"
+        #@area_div.style.background = "rgba(255,255,255,0.1)"
         #@element.style.background = "rgba(0,125,120,0.3)"
 
-        set_pos(@area_img,0,0,"absolute",@pos_type)
+        set_pos(@area_div,0,0,"absolute",@pos_type)
         set_pos(@pointer_img,@area_width,@area_height,"absolute",@pos_type)
-        @area_img.addEventListener(@cb_type, (e)=>
+        @area_div.addEventListener(@cb_type, (e)=>
             if !@show_animation_end then return
             console.log "area #{@id} click"
             @cb?(e)
         )
+    
+    enable_area_icon: (@area_icon_path,w = 48,h = 48) ->
+        @area_icon = create_img("area_icon",@area_icon_path,@area_div)
+        if w > 64 then w = 64
+        if h > 64 then h = 64
+        @area_icon.style.width = w
+        @area_icon.style.height = h
 
     set_area_pos : (x,y,position_type = "fixed",type = POS_TYPE.leftup) ->
         set_pos(@element,x,y,position_type,type)

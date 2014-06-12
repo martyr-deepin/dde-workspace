@@ -39,6 +39,7 @@ class LauncherLaunch extends Page
         @circle.create_pointer(AREA_TYPE.circle,POS_TYPE.rightdown,=>
             @launcher?.show()
         )
+        @circle.enable_area_icon("#{@img_src}/start-here.png",48,48)
         @pos = @dock.get_launchericon_pos()
         @circle_x = @pos.x0 - @circle.pointer_width + ICON_MARGIN_H
         @circle_y = @pos.y0 - @circle.pointer_height - ICON_MARGIN_V_BOTTOM / 2
@@ -80,6 +81,7 @@ class LauncherAllApps extends Page
         @pointer.create_pointer(AREA_TYPE.circle,POS_TYPE.leftup, (e)=>
             simulate_click(CLICK_TYPE.leftclick,@,"LauncherScroll")
         )
+        @pointer.enable_area_icon("#{@img_src}/category_normal.png",64,64)
         @pointer.set_area_pos(CATE_LEFT - 2,CATE_LEFT - 2)
         @pointer.show_animation()
         
@@ -97,10 +99,11 @@ class LauncherScroll extends Page
         rect_top = (screen.height  - @rect.height) / 2
         @rect.set_pos(CATE_LEFT,rect_top - CATE_TOP_DELTA)
         
-        @pointer = new Pointer("classify",@element)
+        @pointer = new Pointer("category",@element)
         @pointer.create_pointer(AREA_TYPE.circle,POS_TYPE.leftup,=>
             simulate_click(CLICK_TYPE.leftclick,@,"LauncherSearch")
         )
+        @pointer.enable_area_icon("#{@img_src}/graphics100.png",36,36)
         pointer_top = (screen.height  - @pointer.pointer_height) / 2
         @pointer.set_area_pos(CATE_LEFT,pointer_top - CATE_TOP_DELTA)
         
