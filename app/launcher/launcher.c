@@ -45,6 +45,7 @@
 #include "bg.h"
 #include "test.h"
 #include "DBUS_launcher.h"
+#include "session_register.h"
 
 #define LAUNCHER_CONF "launcher/config.ini"
 #define HIDDEN_APP_GROUP_NAME "HiddenApps"
@@ -306,6 +307,7 @@ GFile* launcher_get_desktop_entry()
 JS_EXPORT_API
 void launcher_webview_ok()
 {
+    dde_session_register();
     is_js_already = TRUE;
 }
 
