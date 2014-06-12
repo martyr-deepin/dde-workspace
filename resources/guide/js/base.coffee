@@ -169,6 +169,9 @@ class Page extends Widget
 
 
 class ButtonNext extends Widget
+    normal_interval = null
+    normal_hover_interval = null
+    
     constructor: (@id,@text,@parent)->
         super
         
@@ -180,7 +183,7 @@ class ButtonNext extends Widget
     
     set_img:(@img_normal,@img_hover,@img_press) ->
 
-    create_button:(@cb) ->
+    create_button:(@cb,@show_animation = false) ->
         @element.style.display = "-webkit-box"
         @element.style.height = "64px"
         @element.style.color = "#fff"
@@ -195,20 +198,39 @@ class ButtonNext extends Widget
         @bn_img = create_img("bn_img",@img_normal,@element)
         @bn_img.style.width = "6.4em"
         @bn_img.style.height = "6.4em"
+        if @show_animation then @normal_animation()
         @bn_img.addEventListener("mouseover",=>
             @bn_img.style.cursor = "pointer"
+            @stop_animation()
             @bn_img.src = @img_hover
         )
         @bn_img.addEventListener("mouseout",=>
             @bn_img.style.cursor = "normal"
             @bn_img.src = @img_normal
+            @stop_animation()
+            if @show_animation then @normal_animation()
         )
         @bn_img.addEventListener("click",(e) =>
             e.stopPropagation()
             @bn_img.src = @img_press
-            #TODO:switch_to_page
             @cb?()
         )
+
+    stop_animation: ->
+        clearInterval(normal_interval)
+        clearInterval(normal_hover_interval)
+        #clearInterval(normal_press_interval)
+
+    normal_animation: ->
+        normal_interval = setInterval(=>
+            @bn_img.src = @img_normal
+        ,400)
+        normal_hover_interval = setInterval(=>
+            @bn_img.src = @img_hover
+        ,500)
+        #normal_press_interval = setInterval(=>
+        #    @bn_img.src = @img_press
+        #,600)
 
 class MenuChoose extends Widget
     choose_num = -1

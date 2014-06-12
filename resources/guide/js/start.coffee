@@ -45,7 +45,7 @@ class Start extends Page
         @start = new ButtonNext("start",_("Start"),@guide_choose)
         @start.create_button(=>
             guide?.switch_page(@,"LauncherLaunch")
-        )
+        ,true)
         @start.element.style.marginTop = "2em"
 
         @older = create_element("div","older",@element)
