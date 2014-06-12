@@ -45,13 +45,17 @@ isCapsLockToggle = ->
         name:"com.deepin.daemon.InputDevices"
         path:"/com/deepin/daemon/InputDevice/Keyboard"
         interface:"com.deepin.daemon.InputDevice.Keyboard"
-    Keyboard = DCore.DBus.session_object(
-        KEYBOARD.name,
-        KEYBOARD.path,
-        KEYBOARD.interface
-    )
-    result = Keyboard?.CapslockToggle
-    if result isnt true then result = false
+    try
+        Keyboard = DCore.DBus.session_object(
+            KEYBOARD.name,
+            KEYBOARD.path,
+            KEYBOARD.interface
+        )
+        result = Keyboard.CapslockToggle
+        if result isnt true then result = false
+    catch e
+        echo "isCapsLockToggle error:#{e}"
+    
     echo "isCapsLockToggle:#{result}"
     return result
 
