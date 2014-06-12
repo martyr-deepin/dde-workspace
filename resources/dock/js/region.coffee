@@ -30,7 +30,7 @@ calc_app_item_size = ->
 update_dock_region = do->
     lastWidth = null
     (w, h=DOCK_HEIGHT)->
-        console.log("last Width: #{lastWidth}")
+        console.log("last Width: #{lastWidth}, height: #{h}")
         if w
             lastWidth = w
         else if lastWidth

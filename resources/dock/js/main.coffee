@@ -44,9 +44,15 @@ DCore.signal_connect("embed_window_leave", (info)->
     console.log(info)
 )
 
+_b.addEventListener("click", (e)->
+    e.preventDefault()
+    console.log("click on body")
+    update_dock_region()
+)
 _b.addEventListener("contextmenu", (e)->
     e.preventDefault()
     console.log("rightclick on body")
+    update_dock_region()
 )
 _b.addEventListener("dragenter", (e)->
     console.log("dragenter to body")

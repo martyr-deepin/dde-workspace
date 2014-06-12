@@ -121,9 +121,11 @@ class Item extends Widget
         e.preventDefault()
         _dragTarget?.reset()
         _dragTarget?.back(e.x, e.y) if _dragToBack
+        _dragToBack = null
         _dragToBack = true
 
     on_dragstart: (e)=>
+        Preview_close_now()
         _dragTarget = new DragTarget(@)
         pos = get_page_xy(@element)
         _dragTarget.setOrigin(pos.x, pos.y)
@@ -144,7 +146,7 @@ class Item extends Widget
             @element.style.position = 'absolute'
             @element.style.webkitTransform = "translateY(-#{ITEM_HEIGHT}px)"
         , 10)
-        consolelog("dragstart")
+        console.log("dragstart")
         e.stopPropagation()
         Preview_close_now()
         DCore.Dock.require_all_region()
@@ -604,7 +606,10 @@ class AppItem extends Item
         super
         if e.button != 0
             return
-        @core.activate?(0,0)
+        if not @core.activate?(0,0)
+            console.log("activate failed")
+            dockedAppManager.Undock(@id)
+            return
         console.log("on_click")
         if @isNormal()
             @openNotify()

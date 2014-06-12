@@ -323,6 +323,8 @@ Preview_close_now = (client)->
     # calc_app_item_size()
     # return
     _lastCliengGroup?.embedWindows?.hide?()
+    for own xid, _ of $EW_MAP
+        $EW.hide(xid)
     return if Preview_container.is_showing == false
     console.log("Preview_close_now")
     Preview_container.hide()
