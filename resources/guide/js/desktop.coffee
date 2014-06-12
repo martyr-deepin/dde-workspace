@@ -64,15 +64,18 @@ class DesktopCorner extends Page
     
     constructor:(@id)->
         super
-        enableZoneDetect(true)
         
         @message = _("Slide the mouse to the four top corners, which can trigger four different events")
         @tips = _("tips：Please trigger successively by hints, click on the blank area to return")
         @show_message(@message)
         @show_tips(@tips)
-
-        @message_righup = _("No default functions setted")
-        @message_leftdown = _("Show Desktop")
+        
+        @message_corner =
+            leftup:_("Show/Hide Launcher")
+            leftdown:_("Show/Hide Desktop")
+            rightdown:_("Show/Hide Control Center")
+            rightup:_("No default functions setted")
+        
         @pos = ["leftup","leftdown","rightdown","rightup"]
         @corner = []
 
@@ -87,25 +90,27 @@ class DesktopCorner extends Page
             @corner[i] = new Pointer(p,@element)
             that = @
             @corner[i].create_pointer(AREA_TYPE.corner,POS_TYPE[p],->
+                enableZoneDetect(true)
                 index = i for p,i in that.pos when this.id is p
                 echo "#{index}/#{length - 1} #{this.id} mouseenter"
                 clearTimeout(switch_page_timeout)
-                if this.id is "rightup"
-                    that.show_message(that.message_righup)
-                    that.show_tips(" ")
-                else if this.id is "leftdown"
-                    that.show_message(that.message_leftdown)
-                    that.show_tips(" ")
+               
+                that.show_message(that.message_corner[this.id])
+                that.show_tips(" ")
 
                 switch_page_timeout = setTimeout(=>
                     if this.id is "leftup" then that.launcher.hide()
                     else if this.id is "rightdown" then that.dss?.hide()
                     if index < length - 1
+                        this.display("none")
                         that.corner[index + 1].show_animation()
                     else
                         guide?.switch_page(that,"DesktopZone")
                 ,t_mid_switch_page)
             ,"mouseover")
+            @corner[i].element.addEventListener("mouseout",=>
+                enableZoneDetect(false)
+            )
             @corner[i].set_area_pos(0,0,"fixed",POS_TYPE[p])
         @corner[0].show_animation()
         

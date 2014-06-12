@@ -152,14 +152,14 @@ class Page extends Widget
         if not @message_div?
             @message_div = create_element("div","message_#{@id}",@msg_tips)
             @message_div.style.fontSize = "2em"
-            @message_div.style.lineHeight = "2.3em"
+            @message_div.style.lineHeight = "200%"
         @message_div.innerText = @message
 
     show_tips: (@tips) ->
         if not @tips_div?
             @tips_div = create_element("div","tips_#{@id}",@msg_tips)
             @tips_div.style.fontSize = "1.6em"
-            @tips_div.style.lineHeight = "1.9em"
+            @tips_div.style.lineHeight = "200%"
             @tips_div.style.position = "relative"
             @tips_div.style.marginTop = "40px"
         @tips_div.innerText = @tips
