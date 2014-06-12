@@ -95,14 +95,14 @@ class LauncherScroll extends Page
         @rect = new Rect("collectApp",@element)
         @rect.create_rect(CATE_WIDTH,CATE_HEIGHT)
         rect_top = (screen.height  - @rect.height) / 2
-        @rect.set_pos(CATE_LEFT,rect_top - 5)
+        @rect.set_pos(CATE_LEFT,rect_top - CATE_TOP_DELTA)
         
         @pointer = new Pointer("classify",@element)
         @pointer.create_pointer(AREA_TYPE.circle,POS_TYPE.leftup,=>
             simulate_click(CLICK_TYPE.leftclick,@,"LauncherSearch")
         )
         pointer_top = (screen.height  - @pointer.pointer_height) / 2
-        @pointer.set_area_pos(CATE_LEFT,pointer_top - 5)
+        @pointer.set_area_pos(CATE_LEFT,pointer_top - CATE_TOP_DELTA)
         
         @message = _("All programs can be seen by scrolling the mouse up and down\nYou can also click on the left classification navigation to locate")
         @show_message(@message)
