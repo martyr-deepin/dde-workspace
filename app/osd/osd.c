@@ -57,7 +57,6 @@ static GKeyFile* shutdown_config = NULL;
 PRIVATE GtkWidget* container = NULL;
 /*PRIVATE GtkStyleContext *style_context;*/
 
-PRIVATE GSettings* dde_bg_g_settings = NULL;
 
 static struct {
     gboolean is_AudioUp;
@@ -130,7 +129,6 @@ JS_EXPORT_API
 void osd_quit()
 {
     g_key_file_free(shutdown_config);
-    g_object_unref(dde_bg_g_settings);
     gtk_main_quit();
 }
 
@@ -190,7 +188,18 @@ void osd_set_focus(gboolean focus)
     gdk_window_set_accept_focus (gdkwindow, focus);
 
     gdk_window_set_override_redirect(gdkwindow, !focus);
- }
+}
+
+#define KEYBOARD_SCHEMA_ID "com.deepin.dde.keyboard"
+gboolean osd_capslock_toggle()
+{
+    GSettings* gsettings = g_settings_new (KEYBOARD_SCHEMA_ID);
+    gboolean capslock_toggle = g_settings_get_boolean(gsettings, "capslock-toggle");
+    g_message("osd_capslock_toggle:%d",capslock_toggle);
+    g_object_unref(gsettings);
+    return capslock_toggle;
+}
+
 
 int main (int argc, char **argv)
 {
@@ -224,6 +233,12 @@ int main (int argc, char **argv)
         g_option_context_free(ctx);
         return 0;
     }
+    if(option.is_CapsLockOn || option.is_CapsLockOff){
+        if(!osd_capslock_toggle()){
+            return 0;
+        }
+    }
+    
     gtk_init (&argc, &argv);
     
     container = create_web_container (FALSE, TRUE);

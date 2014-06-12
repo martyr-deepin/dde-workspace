@@ -63,7 +63,9 @@ OptionCls = null
 
 osd.CapsLockOn = (keydown)->
     if !keydown then return if mode is "dbus"
-    if isCapsLockToggle() isnt true then return
+    if isCapsLockToggle() isnt true
+        osdHide()
+        return
     setFocus(false)
     OptionCls = new Option("CapsLockOn") if not OptionCls?
     OptionCls.id = "CapsLockOn"
@@ -71,7 +73,9 @@ osd.CapsLockOn = (keydown)->
 
 osd.CapsLockOff = (keydown)->
     if !keydown then return if mode is "dbus"
-    if isCapsLockToggle() isnt true then return
+    if isCapsLockToggle() isnt true
+        osdHide()
+        return
     setFocus(false)
     OptionCls = new Option("CapsLockOff") if not OptionCls?
     OptionCls.id = "CapsLockOff"
