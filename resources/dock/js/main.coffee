@@ -81,19 +81,22 @@ _b.addEventListener("drop", (e)->
     e.preventDefault()
     console.log("drop on body")
     update_dock_region()
+    s_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
+    _dragTarget = _dragTargetManager.getHandle(s_id)
     if e.y > screen.height - DOCK_HEIGHT - ITEM_HEIGHT
-        console.log("not working area")
-        _dragToBack = false
+        console.error("not working area")
+        _dragTarget?.dragToBack = false
         _dragTarget?.back(e.x, e.y)
+        _dragTargetManager.remove(s_id)
         update_dock_region()
         return
-    s_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
     s_widget = Widget.look_up(s_id)
     if not s_widget
         return
 
     if s_widget.isNormal()
-        _dragToBack = false
+        _dragTarget.dragToBack = false
+        _dragTarget.back(e.x, e.y)
         # t = app_list.element.removeChild(s_widget.element)
         calc_app_item_size()
 
@@ -103,9 +106,16 @@ _b.addEventListener("drop", (e)->
         t.style.left = "#{e.x - ITEM_WIDTH / 2}px"
         t.style.top = "#{e.y - ITEM_HEIGHT / 2}px"
         s_widget.destroyWidthAnimation()
+        DCore.Dock.require_all_region()
+        _dragTarget.removeImg()
+        _dragTargetManager.remove(s_id)
+        update_dock_region()
     else
-        _dragToBack = true
-        _dragTarget?.back(e.x, e.y)
+        _dragTarget.dragToBack = true
+        _dragTarget.back(e.x, e.y)
+        _dragTarget.removeImg()
+        _dragTargetManager.remove(s_id)
+        update_dock_region()
 )
 
 settings = new Setting()

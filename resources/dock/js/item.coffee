@@ -115,18 +115,24 @@ class Item extends Widget
     #     Preview_close_now()
 
     on_dragend:(e)=>
-        console.log('dragend')
+        console.error(@id + ' dragend')
         update_dock_region()
         _lastHover?.reset()
         e.preventDefault()
-        _dragTarget?.reset()
-        _dragTarget?.back(e.x, e.y) if _dragToBack
-        _dragToBack = null
-        _dragToBack = true
+        _dragTarget = _dragTargetManager.getHandle(@id)
+        if not _dragTarget
+            return
+        console.error("#{@id} dragend back")
+        _dragTarget.reset()
+        _dragTarget.back(e.x, e.y) if _dragTarget.dragToBack
+        setTimeout(=>
+            _dragTargetManager.remove(@id)
+        , 1000)
 
     on_dragstart: (e)=>
         Preview_close_now()
         _dragTarget = new DragTarget(@)
+        _dragTargetManager.add(@id, _dragTarget)
         pos = get_page_xy(@element)
         _dragTarget.setOrigin(pos.x, pos.y)
         _lastHover = null
@@ -145,6 +151,7 @@ class Item extends Widget
             _b.appendChild(@element)
             @element.style.position = 'absolute'
             @element.style.webkitTransform = "translateY(-#{ITEM_HEIGHT}px)"
+            @element.style.display = 'none'
         , 10)
         console.log("dragstart")
         e.stopPropagation()
@@ -189,13 +196,13 @@ class Item extends Widget
             _isDragging = true
 
         setTimeout(->
-            console.error("update tray icon")
+            console.log("update tray icon")
             systemTray.updateTrayIcon()
         , 100)
 
     reset:->
         setTimeout(->
-            console.error("update tray icon")
+            console.log("update tray icon")
             systemTray.updateTrayIcon()
         , 100)
         # updatePanel()
