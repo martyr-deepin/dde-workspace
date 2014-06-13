@@ -1,4 +1,5 @@
 #include <gtk/gtk.h>
+#include <X11/extensions/XTest.h>
 #include <X11/extensions/shape.h>
 #include "X_misc.h"
 #include "jsextension.h"
@@ -151,17 +152,10 @@ void guide_simulate_click(double type)
 JS_EXPORT_API
 void guide_simulate_input(double input)
 {
-    GError *error = NULL;
     Display* dpy = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
-    KeyCode key = XKeysymToKeycode(dpy,(int)input);
-    const gchar *cmd = g_strdup_printf ("xdotool key %d\n",key);
-    g_message ("guide_simulate_input:%s",cmd);
-    g_spawn_command_line_sync (cmd, NULL, NULL, NULL, &error);
-    if (error != NULL) {
-        g_warning ("%s failed:%s\n",cmd, error->message);
-        g_error_free (error);
-        error = NULL;
-    }
+    KeyCode keycode = XKeysymToKeycode(dpy,(int)input);
+    XTestFakeKeyEvent(dpy, keycode, TRUE, 0);
+    XTestFakeKeyEvent(dpy, keycode, FALSE, 0);
 }
 
 JS_EXPORT_API

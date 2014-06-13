@@ -9,7 +9,7 @@ SET(SRC_LIST  ${JSC_GEN} guide.c helper.c)
 add_executable(${NAME} ${SRC_LIST})
 add_dependencies(${NAME} ${NAME}_js)
 
-target_link_libraries(${NAME} dcom dbus ${DWEBVIEW_LIBRARIES})
+target_link_libraries(${NAME} dcom dbus Xtst ${DWEBVIEW_LIBRARIES})
 
 SET_TARGET_PROPERTIES(${NAME}
 	PROPERTIES OUTPUT_NAME dde-${NAME}
