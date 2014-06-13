@@ -148,6 +148,7 @@ class Switcher
             @showFavor()
         searchBar.show()
         @page = "Search"
+        selector.container($("#searchResult"))
 
     hide:->
         @switcher.style.visibility = 'hidden'
