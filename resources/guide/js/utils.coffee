@@ -179,6 +179,7 @@ simulate_input = (modle_keysym,old_page,new_page_cls_name = null) ->
         if input_keysym_str is modle_keysym_str
             deepin++
             echo "input_keysym_str is \"deepin\" #{deepin}!!!!!!!!!!!"
+            DCore.Guide.disable_keyboard()
             clearTimeout(timeout_deepin)
             timeout_deepin = setTimeout(=>
                 guide?.switch_page(old_page,new_page_cls_name)
