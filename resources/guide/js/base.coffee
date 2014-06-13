@@ -220,20 +220,23 @@ class ButtonNext extends Widget
 
     stop_animation: ->
         clearInterval(normal_interval)
-        clearInterval(normal_hover_interval)
-        #clearInterval(normal_press_interval)
 
     normal_animation: ->
         return
+        @bn_div.style.backgroundImage = "url(#{@img_normal})"
+        t = 500
+        animation_hover_to_normal = =>
+            jQuery(@bn_div).animate(
+                {backgroundImage:"url(#{@img_hover})"},t,"linear",=>
+                    jQuery(@bn_div).animate(
+                        {backgroundImage:"url(#{@img_normal})"},t
+                    )
+            )
+    
         normal_interval = setInterval(=>
-            @bn_div.src = @img_normal
-        ,400)
-        normal_hover_interval = setInterval(=>
-            @bn_div.src = @img_hover
-        ,500)
-        #normal_press_interval = setInterval(=>
-        #    @bn_div.src = @img_press
-        #,600)
+            animation_hover_to_normal()
+        ,t * 2)
+
 
 class MenuChoose extends Widget
     choose_num = -1
