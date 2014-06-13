@@ -66,7 +66,7 @@ class LauncherCollect extends Page
         @rect.show_animation(=>
             setTimeout(=>
                 guide?.switch_page(@,"LauncherAllApps")
-            ,t_min_switch_page)
+            ,t_mid_switch_page)
         )
         
         @message = _("What shown in the first screen of \" launcher\" are the applications of collection")
@@ -93,23 +93,14 @@ class LauncherScroll extends Page
         super
         @scrollup = false
         @scrolldown = false
-        
-        @rect = new Rect("collectApp",@element)
-        @rect.create_rect(CATE_WIDTH,CATE_HEIGHT)
-        rect_top = (screen.height  - @rect.height) / 2
-        @rect.set_pos(CATE_LEFT,rect_top - CATE_TOP_DELTA)
-        
-        @pointer = new Pointer("category",@element)
-        @pointer.create_pointer(AREA_TYPE.circle,POS_TYPE.leftup,=>
-            simulate_click(CLICK_TYPE.leftclick,@,"LauncherSearch")
-        )
-        @pointer.enable_area_icon("#{@img_src}/graphics100.png",36,36)
-        pointer_top = (screen.height  - @pointer.pointer_height) / 2
-        @pointer.set_area_pos(CATE_LEFT,pointer_top - CATE_TOP_DELTA)
-        
-        @message = _("All programs can be seen by scrolling the mouse up and down\nYou can also click on the left classification navigation to locate")
-        @show_message(@message)
 
+        @scroll_create()
+        
+
+    scroll_create: ->
+        @message_scroll = _("All programs can be seen by scrolling the mouse up and down.")
+        @show_message(@message_scroll)
+        
         @scroll = create_element("div","scroll",@element)
         @scroll.style.position = "absolute"
         @scroll.style.top = "37%"
@@ -128,8 +119,9 @@ class LauncherScroll extends Page
         @scroll_up.style.bottom = 0
 
         @element.addEventListener("mousewheel", (e)=>
-            if @scrollup and @scrolldown and @pointer.element.style.display is "none"
-                @pointer.show_animation()
+            if @scrollup and @scrolldown
+                if not @pointer? or @pointer?.element.style.display is "none"
+                    @rect_pointer_create()
             
             if e.wheelDelta >= 120
                 @scrollup = true
@@ -138,6 +130,26 @@ class LauncherScroll extends Page
                 @scrolldown = true
                 simulate_click(CLICK_TYPE.scrolldown)
         )
+
+    rect_pointer_create: ->
+        @message_pointer = _("You can also click on the left classification navigation to locate")
+        @show_message(@message_pointer)
+        
+        @rect = new Rect("collectApp",@element)
+        @rect.create_rect(CATE_WIDTH,CATE_HEIGHT)
+        rect_top = (screen.height  - @rect.height) / 2
+        @rect.set_pos(CATE_LEFT,rect_top - CATE_TOP_DELTA)
+        
+        @pointer = new Pointer("category",@element)
+        @pointer.create_pointer(AREA_TYPE.circle,POS_TYPE.leftup,=>
+            simulate_click(CLICK_TYPE.leftclick,@,"LauncherSearch")
+        )
+        @pointer.enable_area_icon("#{@img_src}/graphics100.png",36,36)
+        pointer_top = (screen.height  - @pointer.pointer_height) / 2
+        @pointer.set_area_pos(CATE_LEFT,pointer_top - CATE_TOP_DELTA)
+        @pointer.show_animation()
+        
+
 
 class LauncherSearch extends Page
     constructor:(@id)->
@@ -192,9 +204,9 @@ class LauncherMenu extends Page
             setTimeout(=>
                 @launcher?.hide_signal_disconnect()
                 @desktop?.item_signal_disconnect()
-                guide?.switch_page(@,"DesktopRichDir")
                 @launcher?.hide()
-                DCore.Guide.spawn_command_sync("/usr/lib/deepin-daemon/desktop-toggle")
+                #DCore.Guide.spawn_command_sync("/usr/lib/deepin-daemon/desktop-toggle")
+                guide?.switch_page(@,"DesktopRichDir")
             ,t_min_switch_page)
         )
 

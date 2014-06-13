@@ -205,3 +205,12 @@ if DCore
                 DCore.Guide.OpenUrl(e.target.href)
     ,false)
 
+
+show_webinspector = ->
+    DCore.Guide.enable_guide_region()
+    DCore.Guide.disable_keyboard()
+    DCore.Guide.simulate_input("F12")
+    DCore.Guide.disable_guide_region()
+    DCore.Guide.enable_keyboard()
+
+
