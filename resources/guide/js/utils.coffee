@@ -213,4 +213,10 @@ show_webinspector = ->
     DCore.Guide.disable_guide_region()
     DCore.Guide.enable_keyboard()
 
+set_center = (el,w,h,x_scale = 1,y_scale = 0.8) ->
+    top = (screen.height  - w) / 2 * y_scale
+    left = (screen.width  - h) / 2 * x_scale
+    el.style.position = "fixed"
+    el.style.top = "#{top}px"
+    el.style.left = "#{left}px"
 
