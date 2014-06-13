@@ -148,9 +148,7 @@ simulate_input = (modle_keysym,old_page,new_page_cls_name = null) ->
             input_keysym.pop()
         else
             input_keysym.push(input)
-        DCore.Guide.enable_keyboard()
         DCore.Guide.simulate_input(input)
-        DCore.Guide.disable_keyboard()
         
         if input_keysym.toString() is modle_keysym.toString()
             echo "input_keysym finish!!!!!!!!!!!"
@@ -181,18 +179,6 @@ if DCore
     ,false)
 
 
-show_webinspector = ->
-    DCore.Guide.disable_keyboard()
-    document.body.addEventListener("keyup", (e)->
-        key = e.which
-        if key is KEYCODE.F12
-            DCore.Guide.disable_guide_region()
-            DCore.Guide.enable_keyboard()
-            document.body.style.background = "rgba(0,0,0,0.0)"
-    )
-
-    
-
 set_center = (el,w,h,x_scale = 1,y_scale = 0.8) ->
     top = (screen.height  - h) / 2 * y_scale
     left = (screen.width  - w) / 2 * x_scale
@@ -200,3 +186,21 @@ set_center = (el,w,h,x_scale = 1,y_scale = 0.8) ->
     el.style.top = "#{top}px"
     el.style.left = "#{left}px"
 
+
+show_webinspector = ->
+    DCore.Guide.disable_keyboard()
+    document.body.addEventListener("keyup", (e)->
+        key = e.which
+        if key is KEYCODE.F12
+            DCore.Guide.disable_guide_region()
+            DCore.Guide.enable_keyboard()
+            #document.body.style.background = "rgba(0,0,0,0.0)"
+    )
+
+
+shadow_light = (el,border_width,radius = "50%") ->
+    #遮罩效果 
+    parent = el.parentElement
+    parent.style.overflow = "hidden"
+    el.style.border = "#{border_width}px solid rgba(0,0,0,0.3)"
+    el.style.borderRadius = "50%"

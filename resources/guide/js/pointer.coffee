@@ -55,6 +55,7 @@ class Pointer extends Widget
 
         set_pos(@area_div,0,0,"absolute",@pos_type)
         set_pos(@pointer_img,@area_width,@area_height,"absolute",@pos_type)
+        #shadow_light(@area_div,@area_width,"50%")
         @area_div.addEventListener(@cb_type, (e)=>
             #if !@show_animation_end then return
             console.log "area #{@id} click"
@@ -62,6 +63,7 @@ class Pointer extends Widget
         )
     
     enable_area_icon: (@area_icon_path,w = 48,h = 48) ->
+        #return
         @area_icon = create_img("area_icon",@area_icon_path,@area_div) if not @area_icon?
         if w > 64 then w = 64
         if h > 64 then h = 64
@@ -101,17 +103,6 @@ class Pointer extends Widget
             when POS_TYPE.rightdown
                 pos = {right:x1;bottom:y1}
         
-        animation = (cb) =>
-            set_pos(@pointer_img,x0,y0,"absolute",@pos_type)
-            jQuery(@pointer_img).animate(
-                pos,t_show,"linear",=>
-                    cb?()
-            )
-
-        #for i in [0..times]
-        #    if i == times - 1 then animation(@show_cb)
-        #    else animation()
-        
         set_pos(@pointer_img,x0,y0,"absolute",@pos_type)
         jQuery(@pointer_img).animate(
             pos,t_show,"linear",=>
@@ -119,12 +110,7 @@ class Pointer extends Widget
                 jQuery(@pointer_img).animate(
                     pos,t_show,"linear",=>
                         @show_animation_end = true
-                        #遮罩效果 
-                        #@element.style.overflow = "hidden"
-                        #@area_div.style.border = "#{@area_width}px solid rgba(0,0,0,0.0)"
-                        #@area_div.style.borderRadius = "50%"
                         @show_cb?()
-                        
                 )
         )
 
