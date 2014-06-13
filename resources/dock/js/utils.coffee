@@ -27,6 +27,10 @@ createItem = (d)->
         console.log("SystemItem #{d.Id}, #{icon}, #{title}")
         new SystemItem(d.Id, icon, title)
 
+    if not Preview_container.is_showing
+        return
+    Preview_container._current_group
+
 
 deleteItem = (id)->
     delete $DBus[id]

@@ -21,7 +21,7 @@
 forceShowTimer = null
 dialog = null
 try
-    s_dock = get_dbus("session", "com.deepin.dde.dock", "ToggleShow")
+    s_dock = get_dbus("session", "com.deepin.dde.dock", "Xid")
 catch error
     s_dock = null
 
@@ -338,7 +338,7 @@ class Item extends Widget
                 clearTimeout(forceShowTimer)
                 DCore.Launcher.force_show(true)
                 # _("The operation may also remove other applications that depends on the item. Are you sure you want to uninstall the item?")
-                dialog.ShowUninstall(@icon, _("Are you sure to remove") + " \"#{@name}\"", _("All dependences will be removed"), ["1", _("no"), "2", _("yes")])
+                dialog.ShowUninstall(@icon, _("Are you sure to remove") + " \"#{@name}\" ", _("All dependences will be removed"), ["1", _("no"), "2", _("yes")])
                 isNotForceShow = false
             # when 100 then DCore.DEntry.report_bad_icon(@path)  # internal
         if isNotForceShow
@@ -351,10 +351,6 @@ class Item extends Widget
         switch action
             when "1"
                 console.log("click NO")
-                try
-                    dialog?.dis_connect("ActionInvoked", @uninstallHandler)
-                catch e
-                    console.log(e)
                 console.log("NO")
             when "2"
                 @status = SOFTWARE_STATE.UNINSTALLING
@@ -366,14 +362,15 @@ class Item extends Widget
                 else
                     icon = DCore.get_theme_icon(@icon, 48)
                 icon = DCore.backup_app_icon(icon)
-                if not uninstaller
-                    uninstaller = new Uninstaller(@id, "Deepin Launcher", icon, uninstallSignalHandler)
-                    uninstall_apps = uninstaller.uninstall_apps
+                console.warn("set icon: #{icon} to notify icon")
+                uninstaller = new Uninstaller(@id, "Deepin Launcher", icon, uninstallSignalHandler)
+                uninstall_apps = uninstaller.uninstall_apps
                 uninstalling_apps[@id] = @
                 # make sure the icon is hidden immediately
                 setTimeout(=>
                     uninstaller.uninstall(item:@, purge:true)
                 , 100)
+        dialog.dis_connect("ActionInvoked", @uninstallHandler)
         dialog = null
         forceShowTimer = setTimeout(->
             console.log("force show false")

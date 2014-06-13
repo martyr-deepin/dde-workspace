@@ -70,11 +70,6 @@ class Trash extends PostfixedItem
 
     uninstallHandler: (id, action)=>
         switch action
-            when "1"
-                try
-                    dialog?.dis_connect("ActionInvoked", @uninstallHandler)
-                catch e
-                    console.log e
             when "2"
                 console.log 'start uninstall'
                 if @data.icon.indexOf("data:image") != -1
@@ -82,12 +77,13 @@ class Trash extends PostfixedItem
                 else
                     icon = DCore.get_theme_icon(@data.icon, 48)
                 icon = DCore.backup_app_icon(icon)
-                if not uninstaller
-                    uninstaller = new Uninstaller(@data.id, "Deepin Dock",
-                    @data.icon, uninstallSignalHandler)
+                console.warn("set icon: #{icon} to notify icon")
+                uninstaller = new Uninstaller(@data.id, "Deepin Dock", icon, uninstallSignalHandler)
                 setTimeout(=>
                     uninstaller.uninstall(item:@data, purge:true)
                 , 100)
+
+        dialog.dis_connect("ActionInvoked", @uninstallHandler)
 
         dialog = null
 
@@ -101,10 +97,13 @@ class Trash extends PostfixedItem
             console.log("TODO: uninstall #{data.id}")
             dialog = get_dbus('session', "com.deepin.dialog", "ShowUninstall")
             dialog.connect("ActionInvoked", @uninstallHandler)
-            dialog.ShowUninstall(@data.icon,
-                _("Are you sure to remove") + " \"#{@data.name}\"",
-                _("All dependences will be removed"),
-                ["1", _("no"), "2", _("yes")])
+            console.log(dialog.ShowUninstall)
+            if @data.icon.indexOf("data:image") != -1
+                icon = @data.icon
+            else
+                icon = DCore.get_theme_icon(@data.icon, 48)
+            icon = DCore.backup_app_icon(icon)
+            dialog.ShowUninstall(icon, _("Are you sure to remove") + " \"#{@data.name}\" ", _("All dependences will be removed"), ["1", _("no"), "2", _("yes")])
         else if dnd_is_file(evt) or dnd_is_desktop(evt)
             tmp_list = []
             for file in dt.files

@@ -39,17 +39,28 @@ remove_backup_app_icon = (id, reason)->
     icon = Uninstaller.IdMap[id]
     if not icon
         return
-    console.log("remove backup icon: #{icon}")
-    DCore.delete_backup_app_icon(icon)
+    console.warn("remove backup icon: #{icon}")
+    # setTimeout(->
+    #     DCore.delete_backup_app_icon(icon)
+    # , 1000)
     delete Uninstaller.IdMap[id]
 
 
 class Uninstaller
     @IdMap: {}
+    @notifyId: 0
     constructor: (@appid, @appName, @icon, handler)->
         @uninstalling_apps = {}
+        @daemon = get_dbus("session", LAUNCHER_DAEMON, "GetPackageName")
         @uninstallSignalHandler = (info)=>
+            console.warn(info)
             handler?(@, info)
+            if info[0][0] == UNINSTALL_STATUS.SUCCESS || info[0][0] == UNINSTALL_STATUS.FAILED
+                @disconnect()
+
+    disconnect: =>
+        console.warn("disconnect UpdateSignal")
+        @daemon?.dis_connect("UpdateSignal", @uninstallSignalHandler)
 
     uninstallReport: (status, msg)->
         if status == UNINSTALL_STATUS.FAILED
@@ -60,53 +71,42 @@ class Uninstaller
         console.log "uninstall #{message}, #{msg}"
         try
             notification = get_dbus("session", NOTIFICATIONS, "Notify")
-            id = notification.Notify_sync(@appName, -1, @icon, "Uninstall #{message}", "#{msg}", [], {}, 0)
+            console.warn("#{@appid} sets icon: #{@icon} to notify icon")
+            id = notification.Notify_sync(@appName, @notifyId, @icon, "Uninstall #{message}", "#{msg}", [], {}, 0)
+            @notifyId += 1
+            console.warn("notify id: #{id}")
             Uninstaller.IdMap[id] = @icon
             notification.connect("NotificationClosed", remove_backup_app_icon)
         catch e
             console.log e
         if Object.keys(@uninstalling_apps).length == 0
             console.log 'uninstall: disconnect signal'
-            @softwareManager = null
+            # @softwareManager = null
 
 
-    uninstall: (opt) ->
+    uninstall: (opt) =>
         console.log "#{opt.item.path}, #{opt.purge}"
         item = opt.item
         @uninstalling_apps[item.id] = item
 
-        if not @softwareManager
-            try
-                @softwareManager = get_dbus("system", SOFTWARE_MANAGER, "uninstall_pkg")
-            catch e
-                console.log e
-                try
-                    notification = get_dbus("session", NOTIFICATIONS, "Notify")
-                    id = notification.Notify_sync(@appName, -1, @icon, _("Uninstall failed"), _("Cannot find Deepin Software Center."), [], {}, 0)
-                    Uninstaller.IdMap[id] = @icon
-                    notification.connect("NotificationClosed", remove_backup_app_icon)
-                catch e
-                    console.log e
+        if Object.keys(@uninstalling_apps).length == 1
+            console.log 'uninstall: connect signal'
+            @daemon.connect("UpdateSignal", @uninstallSignalHandler)
+
+        @daemon.connect("PackageNameGet", (package_name)=>
+            console.log "package_name: #{package_name}"
+            if package_name.length == 0
                 if item.status
                     item.status = SOFTWARE_STATE.IDLE
                     item.show()
                 delete @uninstalling_apps[item.id]
+                @uninstallReport(UNINSTALL_STATUS.FAILED, "get packages failed")
+                console.log("get packages failed")
+                @disconnect()
                 return
 
-        if Object.keys(@uninstalling_apps).length == 1
-            console.log 'uninstall: connect signal'
-            @softwareManager.connect("update_signal", @uninstallSignalHandler)
-
-        daemon = get_dbus("session", LAUNCHER_DAEMON, "GetPackageNames_sync")
-        package_name = @softwareManager.get_pkg_name_from_path_sync(item.path)
-        if package_name.length == 0
-            if item.status
-                item.status = SOFTWARE_STATE.IDLE
-                item.show()
-            delete @uninstalling_apps[item.id]
-            uninstallReport(UNINSTALL_STATUS.FAILED, "get packages failed")
-            console.log("get packages failed")
-        opt.item.package_name = package_name
-        console.log "package_name: #{package_name}"
-        @softwareManager.uninstall_pkg(package_name, opt.purge)
-
+            opt.item.package_name = package_name
+            # @softwareManager.uninstall_pkg(package_name, opt.purge)
+            @daemon.Uninstall(package_name, opt.purge)
+        )
+        @daemon.GetPackageName(item.path)
