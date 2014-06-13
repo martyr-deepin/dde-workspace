@@ -285,7 +285,7 @@ class AppItem extends Item
             @openIndicator.style.display = 'none'
 
         @core?.connect("DataChanged", (name, value)=>
-            console.log("#{name} is changed to #{value}")
+            console.warn("#{name} is changed to #{value}")
 
             switch name
                 when ITEM_DATA_FIELD.xids
@@ -320,8 +320,7 @@ class AppItem extends Item
                             console.log("open from somewhere else")
                             @swap_to_clientgroup()
                 when ITEM_DATA_FIELD.icon
-                    #TODO: datauri?
-                    if value.substring(0, 7) == "file://"
+                    if value.substring(0, 7) == "file://" || value.substring(0, 10) == "data:image"
                         @change_icon(value)
                     else
                         v = DCore.get_theme_icon(value, 48)

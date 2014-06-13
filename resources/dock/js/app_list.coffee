@@ -75,6 +75,7 @@ class AppList
             else
                 @element.appendChild(item.element)
             sortDockedItem()
+
         updatePanel()
         update_dock_region()
 
