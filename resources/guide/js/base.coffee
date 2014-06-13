@@ -134,6 +134,7 @@ class Page extends Widget
         super
         echo "new #{@id} Page"
         @img_src = "img"
+        document.body.style.background = "rgba(0,0,0,0.8)"
         
         @element.style.display = "-webkit-box"
         @element.style.width = "100%"
