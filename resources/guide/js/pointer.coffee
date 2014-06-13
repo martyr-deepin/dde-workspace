@@ -25,6 +25,7 @@ class Pointer extends Widget
         echo "new Pointer #{@id}"
         @img_src = "img"
         parent?.appendChild(@element)
+        inject_css(@element,"css/pointer.css")
         @element.style.display = "none"
 
     create_pointer: (@area_type,@pos_type,@cb,@cb_type = "click") ->
