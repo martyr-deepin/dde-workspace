@@ -93,7 +93,7 @@ class LauncherScroll extends Page
         super
         @scrollup = false
         @scrolldown = false
-
+        new Launcher()?.show() if DEBUG
         @scroll_create()
         
 
@@ -117,6 +117,10 @@ class LauncherScroll extends Page
         @scroll_up.style.position = "absolute"
         @scroll_up.style.left = 0
         @scroll_up.style.bottom = 0
+        #@scroll_animation(@scrolldown,"top",0 + height,0 ,"absolute",=>
+            #@scroll_animation(@scrollup,"bottom", 0 - height,0,"absolute")
+        #)
+
 
         @element.addEventListener("mousewheel", (e)=>
             if @scrollup and @scrolldown
@@ -131,7 +135,9 @@ class LauncherScroll extends Page
                 simulate_click(CLICK_TYPE.scrolldown)
         )
 
+
     rect_pointer_create: ->
+        @scroll.style.display = "none"
         @message_pointer = _("You can also click on the left classification navigation to locate")
         @show_message(@message_pointer)
         
@@ -149,6 +155,23 @@ class LauncherScroll extends Page
         @pointer.set_area_pos(CATE_LEFT,pointer_top - CATE_TOP_DELTA)
         @pointer.show_animation()
         
+    scroll_animation:(el,y0,y1,type = "top",position = "absolute",cb) ->
+        el.style.position = position
+        t_show = 1000
+        switch type
+            when "top"
+                el.style.top = y0
+                pos0 = {top:y0}
+                pos1 = {top:y1}
+            when "bottom"
+                el.style.bottom = y0
+                pos0 = {bottom:y0}
+                pos1 = {bottom:y1}
+        
+        jQuery(@pointer_img).animate(
+            pos1,t_show,"linear",=>
+                jQuery(@pointer_img).animate(pos0,t_show,"linear",cb?())
+        )
 
 
 class LauncherSearch extends Page
