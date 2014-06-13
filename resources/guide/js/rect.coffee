@@ -48,13 +48,16 @@ class Rect extends Widget
         #@show_animation()
 
     show_animation: (@show_animation_cb) ->
-        @rect.style.backgroundColor = "rgba(255,255,255,1.0)"
+        @rect.style.backgroundColor = "rgba(255,255,255,0.5)"
         @rect.style.opacity = 0.0
-        t_show = 2000
+        t_show = 300
         jQuery(@rect).animate(
            {opacity:0.5},t_show,"linear",=>
                 jQuery(@rect).animate(
                     {opacity:0.0},t_show,"linear",=>
+                        #遮罩效果 
+                        #@element.style.overflow = "hidden"
+                        #@rect.style.border = "#{@area_width}px solid rgba(0,0,0,0.35)"
                         @show_animation_cb?()
                 )
         )
