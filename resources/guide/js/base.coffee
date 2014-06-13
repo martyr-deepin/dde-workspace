@@ -134,7 +134,7 @@ class Page extends Widget
         super
         echo "new #{@id} Page"
         @img_src = "img"
-        document.body.style.background = "rgba(0,0,0,0.8)"
+        document.body.style.background = "rgba(0,0,0,0.6)"
         
         @element.style.display = "-webkit-box"
         @element.style.width = "100%"
@@ -196,24 +196,25 @@ class ButtonNext extends Widget
         @bn_text.style.lineHeight = "3.0em"
         @bn_text.style.textAlign = "right"
 
-        @bn_img = create_img("bn_img",@img_normal,@element)
-        @bn_img.style.width = "6.4em"
-        @bn_img.style.height = "6.4em"
+        @bn_div = create_element("div","bn_div",@element)
+        @bn_div.style.width = "6.4em"
+        @bn_div.style.height = "6.4em"
+        @bn_div.style.backgroundImage = "url(#{@img_normal})"
         if @show_animation then @normal_animation()
-        @bn_img.addEventListener("mouseover",=>
-            @bn_img.style.cursor = "pointer"
+        @bn_div.addEventListener("mouseover",=>
+            @bn_div.style.cursor = "pointer"
             @stop_animation()
-            @bn_img.src = @img_hover
+            @bn_div.style.backgroundImage = "url(#{@img_hover})"
         )
-        @bn_img.addEventListener("mouseout",=>
-            @bn_img.style.cursor = "normal"
-            @bn_img.src = @img_normal
+        @bn_div.addEventListener("mouseout",=>
+            @bn_div.style.cursor = "normal"
+            @bn_div.style.backgroundImage = "url(#{@img_normal})"
             @stop_animation()
             if @show_animation then @normal_animation()
         )
-        @bn_img.addEventListener("click",(e) =>
+        @bn_div.addEventListener("click",(e) =>
             e.stopPropagation()
-            @bn_img.src = @img_press
+            @bn_div.style.backgroundImage = "url(#{@img_press})"
             @cb?()
         )
 
@@ -223,14 +224,15 @@ class ButtonNext extends Widget
         #clearInterval(normal_press_interval)
 
     normal_animation: ->
+        return
         normal_interval = setInterval(=>
-            @bn_img.src = @img_normal
+            @bn_div.src = @img_normal
         ,400)
         normal_hover_interval = setInterval(=>
-            @bn_img.src = @img_hover
+            @bn_div.src = @img_hover
         ,500)
         #normal_press_interval = setInterval(=>
-        #    @bn_img.src = @img_press
+        #    @bn_div.src = @img_press
         #,600)
 
 class MenuChoose extends Widget

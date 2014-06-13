@@ -204,9 +204,9 @@ class LauncherMenu extends Page
             setTimeout(=>
                 @launcher?.hide_signal_disconnect()
                 @desktop?.item_signal_disconnect()
-                guide?.switch_page(@,"DesktopRichDir")
                 @launcher?.hide()
-                DCore.Guide.spawn_command_sync("/usr/lib/deepin-daemon/desktop-toggle")
+                #DCore.Guide.spawn_command_sync("/usr/lib/deepin-daemon/desktop-toggle")
+                guide?.switch_page(@,"DesktopRichDir")
             ,t_min_switch_page)
         )
 
