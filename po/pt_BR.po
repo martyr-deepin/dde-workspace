@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Destkop Environment\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-13 13:15+0800\n"
+"POT-Creation-Date: 2014-06-13 16:59+0800\n"
 "PO-Revision-Date: 2013-12-11 04:44+0000\n"
 "Last-Translator: 648trindade <rafaelgt.mbin@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/"
@@ -100,7 +100,7 @@ msgid "Home"
 msgstr "Pasta Principal"
 
 #: ../resources/desktop/js/specialitem.coffee:175
-#: ../resources/dock/js/main.coffee:146 ../resources/dock/js/main.coffee:211
+#: ../resources/dock/js/main.coffee:156 ../resources/dock/js/main.coffee:221
 msgid "Trash"
 msgstr "Lixeira"
 
@@ -388,7 +388,7 @@ msgstr "Central de Aplicativos"
 msgid "All Windows"
 msgstr "_Nova Janela"
 
-#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:209
+#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:219
 msgid "Launcher"
 msgstr "Lançador"
 
@@ -539,49 +539,49 @@ msgid ""
 "both can start \"Application Launcher\""
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:72
+#: ../resources/guide/js/launcher.coffee:73
 msgid ""
 "What shown in the first screen of \" launcher\" are the applications of "
 "collection"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:88
+#: ../resources/guide/js/launcher.coffee:89
 msgid ""
 "Please click on the \"All Applications\" icon , you will see all applications"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:101
+#: ../resources/guide/js/launcher.coffee:102
 msgid "All programs can be seen by scrolling the mouse up and down."
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:135
+#: ../resources/guide/js/launcher.coffee:142
 msgid "You can also click on the left classification navigation to locate"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:158
+#: ../resources/guide/js/launcher.coffee:183
 msgid ""
 "Use the keyboard searching to find applications you want\n"
 "We try\"deepin\" keyword to see which applications shown"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:159
+#: ../resources/guide/js/launcher.coffee:184
 msgid "tips：Please directly enter the word \"deepin\""
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:172
+#: ../resources/guide/js/launcher.coffee:197
 msgid ""
 "Click the right mouse button on the application icon to call up the context "
 "menu\n"
 "Clicking on the menu item will achieve its function"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:173
+#: ../resources/guide/js/launcher.coffee:198
 msgid ""
 "tips:You can also directly use the left mouse button to drag the icon to the "
 "dock, favicon or trash"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:186
+#: ../resources/guide/js/launcher.coffee:211
 msgid "Use the right mouse button to send three icons to the desktop"
 msgstr ""
 

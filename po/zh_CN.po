@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-13 13:15+0800\n"
+"POT-Creation-Date: 2014-06-13 16:59+0800\n"
 "PO-Revision-Date: 2014-06-09 17:59+0800\n"
 "Last-Translator: Deepin Translation Team <support@linuxdeepin.com>\n"
 "Language-Team: Deepin Translation Team <support@linuxdeepin.com>\n"
@@ -98,7 +98,7 @@ msgid "Home"
 msgstr "主文件夹"
 
 #: ../resources/desktop/js/specialitem.coffee:175
-#: ../resources/dock/js/main.coffee:146 ../resources/dock/js/main.coffee:211
+#: ../resources/dock/js/main.coffee:156 ../resources/dock/js/main.coffee:221
 msgid "Trash"
 msgstr "回收站"
 
@@ -381,7 +381,7 @@ msgstr "控制中心"
 msgid "All Windows"
 msgstr "所有窗口"
 
-#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:209
+#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:219
 msgid "Launcher"
 msgstr "启动器"
 
@@ -524,28 +524,26 @@ msgid ""
 "both can start \"Application Launcher\""
 msgstr "鼠标滑动到左上角，或者点击启动器图标都可以启动“应用程序启动器”"
 
-#: ../resources/guide/js/launcher.coffee:72
+#: ../resources/guide/js/launcher.coffee:73
 msgid ""
 "What shown in the first screen of \" launcher\" are the applications of "
 "collection"
 msgstr "在“启动器”第一屏显示的是收藏的应用"
 
-#: ../resources/guide/js/launcher.coffee:88
+#: ../resources/guide/js/launcher.coffee:89
 msgid ""
 "Please click on the \"All Applications\" icon , you will see all applications"
 msgstr " 请点击“所有应用”图标，您将看到所有应用"
 
-#: ../resources/guide/js/launcher.coffee:101
-#, fuzzy
+#: ../resources/guide/js/launcher.coffee:102
 msgid "All programs can be seen by scrolling the mouse up and down."
-msgstr "上下滚动鼠标滚轮可以查看所有程序您也可以点击左侧分类导航来定位"
+msgstr "上下滚动鼠标滚轮可以查看所有程序"
 
-#: ../resources/guide/js/launcher.coffee:135
-#, fuzzy
+#: ../resources/guide/js/launcher.coffee:142
 msgid "You can also click on the left classification navigation to locate"
-msgstr "上下滚动鼠标滚轮可以查看所有程序您也可以点击左侧分类导航来定位"
+msgstr "您也可以点击左侧分类导航来定位"
 
-#: ../resources/guide/js/launcher.coffee:158
+#: ../resources/guide/js/launcher.coffee:183
 msgid ""
 "Use the keyboard searching to find applications you want\n"
 "We try\"deepin\" keyword to see which applications shown"
@@ -553,24 +551,24 @@ msgstr ""
 "使用键盘搜索来查找你想要的应用我们来试试“deepin”这个关键字吧，看会显示哪些应"
 "用"
 
-#: ../resources/guide/js/launcher.coffee:159
+#: ../resources/guide/js/launcher.coffee:184
 msgid "tips：Please directly enter the word \"deepin\""
 msgstr "提示：请直接输入单词“deepin”"
 
-#: ../resources/guide/js/launcher.coffee:172
+#: ../resources/guide/js/launcher.coffee:197
 msgid ""
 "Click the right mouse button on the application icon to call up the context "
 "menu\n"
 "Clicking on the menu item will achieve its function"
 msgstr "在应用图标上单击鼠标右键可以调出右键菜单点击菜单项将实现其功能"
 
-#: ../resources/guide/js/launcher.coffee:173
+#: ../resources/guide/js/launcher.coffee:198
 msgid ""
 "tips:You can also directly use the left mouse button to drag the icon to the "
 "dock, favicon or trash"
 msgstr "提示：你也可以直接用鼠标左键拖拽图标到dock、收藏图标或者垃圾箱上"
 
-#: ../resources/guide/js/launcher.coffee:186
+#: ../resources/guide/js/launcher.coffee:211
 msgid "Use the right mouse button to send three icons to the desktop"
 msgstr "使用鼠标右键发送3个图标到桌面"
 
