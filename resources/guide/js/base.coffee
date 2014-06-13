@@ -219,20 +219,24 @@ class ButtonNext extends Widget
         )
 
     stop_animation: ->
+        jQuery(@bn_div).stop(true,true)
         clearInterval(normal_interval)
 
     normal_animation: ->
-        return
+        t = 1000
+        @bn_div.style.opacity = 1.0
         @bn_div.style.backgroundImage = "url(#{@img_normal})"
-        t = 500
         animation_hover_to_normal = =>
             jQuery(@bn_div).animate(
-                {backgroundImage:"url(#{@img_hover})"},t,"linear",=>
+                {opacity:0.0},t,"linear",=>
+                    @bn_div.style.backgroundImage = "url(#{@img_hover})"
                     jQuery(@bn_div).animate(
-                        {backgroundImage:"url(#{@img_normal})"},t
+                        {opacity:1.0},t,"linear",=>
+                            @bn_div.style.backgroundImage = "url(#{@img_normal})"
                     )
             )
     
+        animation_hover_to_normal()
         normal_interval = setInterval(=>
             animation_hover_to_normal()
         ,t * 2)

@@ -37,4 +37,5 @@ KEYCODE =
     SUPER:0
     ALT:18
     BACKSPACE:8
+    F12:123
 

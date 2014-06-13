@@ -140,6 +140,7 @@ simulate_input = (modle_keysym,old_page,new_page_cls_name = null) ->
         if guide?.current_page_id isnt "LauncherSearch" then return
         if modle_keysym_finish then return
         input = e.which
+        echo input
         if not (input in white_key_list) then return
         if input is KEYCODE.BACKSPACE
             if input_keysym.length == 0 then return
@@ -181,12 +182,16 @@ if DCore
 
 
 show_webinspector = ->
-    return
-    DCore.Guide.enable_guide_region()
     DCore.Guide.disable_keyboard()
-    DCore.Guide.simulate_input("F12")
-    DCore.Guide.disable_guide_region()
-    DCore.Guide.enable_keyboard()
+    document.body.addEventListener("keyup", (e)->
+        key = e.which
+        if key is KEYCODE.F12
+            DCore.Guide.disable_guide_region()
+            DCore.Guide.enable_keyboard()
+            document.body.style.background = "rgba(0,0,0,0.0)"
+    )
+
+    
 
 set_center = (el,w,h,x_scale = 1,y_scale = 0.8) ->
     top = (screen.height  - h) / 2 * y_scale
