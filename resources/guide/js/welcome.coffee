@@ -41,8 +41,11 @@ class Welcome extends Widget
         @readying.innerText = _("Prepare for operation ...")
     
         set_pos_center(@logo,0.7)
-        @readying.style.width = "260px"
-        @readying.style.left = @logo.style.left
+        w = 260
+        left = (screen.width  - w) / 2
+        @logo.style.left = left
+        @readying.style.width = w
+        @readying.style.left = left
         @readying.style.bottom = "4.5em"
 
         interval_switch = setInterval(=>
