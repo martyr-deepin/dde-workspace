@@ -363,6 +363,12 @@ void dock_emit_webview_ok()
 
 void _change_workarea_height(int height)
 {
+    static int saved_height = -1;
+    if (saved_height == height) {
+	return;
+    }
+    saved_height = height;
+
     // update_display_info(&dock);
     int workarea_width = (dock.width - dock_panel_width) / 2;
     if (GD.config.hide_mode == NO_HIDE_MODE ) {
