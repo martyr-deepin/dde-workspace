@@ -118,9 +118,8 @@ class LauncherScroll extends Page
         @scroll_up.style.position = "absolute"
         @scroll_up.style.left = 0
         @scroll_up.style.bottom = 0
-        #@scroll_animation(@scrolldown,"top",0 + height,0 ,"absolute",=>
-            #@scroll_animation(@scrollup,"bottom", 0 - height,0,"absolute")
-        #)
+        @scroll_up.style.display = "none"
+        @scroll_animation(@scroll_down,0 + height,0,"top","absolute")
 
 
         @element.addEventListener("mousewheel", (e)=>
@@ -129,11 +128,15 @@ class LauncherScroll extends Page
                     @rect_pointer_create()
             
             if e.wheelDelta >= 120
+                if @scrolldown is false then return
                 @scrollup = true
                 simulate_click(CLICK_TYPE.scrollup)
             else if e.wheelDelta <= -120
                 @scrolldown = true
                 simulate_click(CLICK_TYPE.scrolldown)
+                @scroll_down.style.display = "none"
+                if @scroll_up.style.display is "none"
+                    @scroll_animation(@scroll_up, 0 - height,0,"bottom","absolute")
         )
 
 
@@ -156,22 +159,28 @@ class LauncherScroll extends Page
         @pointer.set_area_pos(CATE_LEFT,pointer_top - CATE_TOP_DELTA)
         @pointer.show_animation()
         
-    scroll_animation:(el,y0,y1,type = "top",position = "absolute",cb) ->
-        el.style.position = position
+    scroll_animation:(el,y0,y1,type = "top",pos = "absolute",cb) ->
+        el.style.display = "block"
+        el.style.position = pos
         t_show = 1000
-        switch type
-            when "top"
-                el.style.top = y0
-                pos0 = {top:y0}
-                pos1 = {top:y1}
-            when "bottom"
-                el.style.bottom = y0
-                pos0 = {bottom:y0}
-                pos1 = {bottom:y1}
+        pos0 = null
+        pos1 = null
+        animate_init = ->
+            switch type
+                when "top"
+                    el.style.top = y0
+                    pos0 = {top:y0}
+                    pos1 = {top:y1}
+                when "bottom"
+                    el.style.bottom = y0
+                    pos0 = {bottom:y0}
+                    pos1 = {bottom:y1}
         
-        jQuery(@pointer_img).animate(
+        animate_init()
+        jQuery(el).animate(
             pos1,t_show,"linear",=>
-                jQuery(@pointer_img).animate(pos0,t_show,"linear",cb?())
+                animate_init()
+                jQuery(el).animate(pos1,t_show,"linear",cb?())
         )
 
 
