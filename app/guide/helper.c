@@ -154,8 +154,10 @@ void guide_simulate_input(double input)
 {
     Display* dpy = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
     KeyCode keycode = XKeysymToKeycode(dpy,(int)input);
+    guide_enable_keyboard();
     XTestFakeKeyEvent(dpy, keycode, TRUE, 0);
     XTestFakeKeyEvent(dpy, keycode, FALSE, 0);
+    guide_disable_keyboard();
 }
 
 JS_EXPORT_API
