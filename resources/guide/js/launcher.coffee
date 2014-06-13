@@ -49,6 +49,7 @@ class LauncherLaunch extends Page
         @launcher.show_signal(@show_signal_cb)
     
     show_signal_cb:=>
+        enableZoneDetect(false)
         @element.style.display = "none"
         setTimeout(=>
             @launcher.show_signal_disconnect()
@@ -177,6 +178,7 @@ class LauncherScroll extends Page
 class LauncherSearch extends Page
     constructor:(@id)->
         super
+        #new Launcher()?.show() if DEBUG
         
         @message = _("Use the keyboard searching to find applications you want\nWe try\"deepin\" keyword to see which applications shown")
         @tips = _("tips：Please directly enter the word \"deepin\"")
