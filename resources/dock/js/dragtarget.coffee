@@ -1,16 +1,23 @@
 class DragTarget
     constructor: (@target)->
+        @dragToBack = true
         @el = @target.element
         @indicator = @el.nextSibling
         @parentNode = @el.parentNode
         @img = @target.img.cloneNode(true)
         _b.appendChild(@img)
         @img.style.position = 'absolute'
+        @img.style.display = 'none'
         @img.style.opacity = '0.3'
         @img.addEventListener('webkitTransitionEnd', (e)=>
+            @removeImg()
+        )
+
+    removeImg: =>
+        setTimeout(=>
             _b.removeChild(@img)
             delete @img
-        )
+        , 10)
 
     setOrigin:(x, y)->
         console.log("#{x}, #{y}")
@@ -22,7 +29,8 @@ class DragTarget
 
     back:(x, y)->
         console.log("back, #{x}, #{y}")
-        _dragToBack = false
+        @dragToBack = false
+        @el.style.display = 'block'
         @reset()
         @img.style.display = ''
         @img.style.webkitTransform = "translate(#{x - ITEM_WIDTH/2}px, #{y-ITEM_WIDTH/2}px)"
@@ -36,3 +44,20 @@ class DragTarget
             return
         @parentNode.appendChild(@el)
         updatePanel()
+
+
+class DragTargetManager
+    constructor: ->
+        @targets = {}
+
+    add:(id, obj)->
+        @targets[id] = obj
+
+    remove:(id)->
+        console.error("remove #{id} #{delete @targets[id]}")
+        delete @targets[id]
+
+    getHandle:(id)->
+        @targets[id]
+
+_dragTargetManager = new DragTargetManager()
