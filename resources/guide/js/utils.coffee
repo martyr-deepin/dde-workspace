@@ -132,24 +132,18 @@ white_key_list = white_key_list.concat(white_key_list_num,white_key_list_char,wh
 
 
 simulate_input = (modle_keysym,old_page,new_page_cls_name = null) ->
-    #enableZoneDetect(true)
-    modle_keysym_str = modle_keysym.toString()
     DCore.Guide.disable_keyboard()
     timeout_deepin = null
-    deepin = 0
     input_keysym = []
-    key_times = 0
-    backspace_times = 0
-    key_times_jump = 0
+    modle_keysym_finish = false
     document.body.addEventListener("keyup", (e)->
         if guide?.current_page_id isnt "LauncherSearch" then return
+        if modle_keysym_finish then return
         input = e.which
         if not (input in white_key_list) then return
-        key_times++
         if input is KEYCODE.BACKSPACE
             if input_keysym.length == 0 then return
             input = ESC_KEYSYM_TO_CODE
-            backspace_times++
             input_keysym.pop()
         else
             input_keysym.push(input)
@@ -157,19 +151,9 @@ simulate_input = (modle_keysym,old_page,new_page_cls_name = null) ->
         DCore.Guide.simulate_input(input)
         DCore.Guide.disable_keyboard()
         
-        length = input_keysym.length
-        input_keysym_str = input_keysym.toString()
-        if backspace_times + length != key_times
-            echo "==========================="
-            echo "key_times:#{key_times}"
-            echo "backspace_times:#{backspace_times}"
-            echo "length:#{length}"
-            echo "key_times_jump:#{key_times - backspace_times - length}"
-            
-        if input_keysym_str is modle_keysym_str
-            deepin++
-            echo "input_keysym_str is \"deepin\" #{deepin}!!!!!!!!!!!"
-            DCore.Guide.disable_keyboard()
+        if input_keysym.toString() is modle_keysym.toString()
+            echo "input_keysym finish!!!!!!!!!!!"
+            modle_keysym_finish = true
             clearTimeout(timeout_deepin)
             timeout_deepin = setTimeout(=>
                 guide?.switch_page(old_page,new_page_cls_name)

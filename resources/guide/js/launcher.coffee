@@ -178,7 +178,7 @@ class LauncherScroll extends Page
 class LauncherSearch extends Page
     constructor:(@id)->
         super
-        #new Launcher()?.show() if DEBUG
+        new Launcher()?.show() if DEBUG
         
         @message = _("Use the keyboard searching to find applications you want\nWe try\"deepin\" keyword to see which applications shown")
         @tips = _("tips：Please directly enter the word \"deepin\"")
