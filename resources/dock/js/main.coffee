@@ -14,7 +14,7 @@ DCore.signal_connect("embed_window_configure_request", (info)->
 
     item = $EW_MAP[info.XID]
     if not item
-        console.error("get item from #{info.XID} failed")
+        console.log("get item from #{info.XID} failed")
         return
     setTimeout(->
         console.warn(item.element)

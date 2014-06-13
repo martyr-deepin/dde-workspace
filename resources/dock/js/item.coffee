@@ -188,7 +188,16 @@ class Item extends Widget
             updatePanel()
             _isDragging = true
 
+        setTimeout(->
+            console.error("update tray icon")
+            systemTray.updateTrayIcon()
+        , 100)
+
     reset:->
+        setTimeout(->
+            console.error("update tray icon")
+            systemTray.updateTrayIcon()
+        , 100)
         # updatePanel()
         @element.style.marginLeft = ''
         @element.style.marginRight = ''
