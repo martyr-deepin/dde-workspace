@@ -138,15 +138,16 @@ simulate_input = (modle_keysym,old_page,new_page_cls_name = null) ->
     timeout_deepin = null
     deepin = 0
     input_keysym = []
-    key_times = null
-    backspace_times = null
-    key_times_jump = null
+    key_times = 0
+    backspace_times = 0
+    key_times_jump = 0
     document.body.addEventListener("keyup", (e)->
         if guide?.current_page_id isnt "LauncherSearch" then return
-        key_times++
         input = e.which
         if not (input in white_key_list) then return
+        key_times++
         if input is KEYCODE.BACKSPACE
+            if input_keysym.length == 0 then return
             input = ESC_KEYSYM_TO_CODE
             backspace_times++
             input_keysym.pop()
@@ -156,25 +157,14 @@ simulate_input = (modle_keysym,old_page,new_page_cls_name = null) ->
         DCore.Guide.simulate_input(input)
         DCore.Guide.disable_keyboard()
         
-        input_keysym_str = input_keysym.toString()
         length = input_keysym.length
-        #echo "length:===#{length}==="
-        if (key_times - backspace_times) != length
+        input_keysym_str = input_keysym.toString()
+        if backspace_times + length != key_times
             echo "==========================="
             echo "key_times:#{key_times}"
             echo "backspace_times:#{backspace_times}"
             echo "length:#{length}"
             echo "key_times_jump:#{key_times - backspace_times - length}"
-            input_keysym = []
-            key_times = null
-            backspace_times = null
-            key_times_jump = null
-            for i in [1...key_times]
-                DCore.Guide.enable_keyboard()
-                DCore.Guide.simulate_input(ESC_KEYSYM_TO_CODE)
-                DCore.Guide.disable_keyboard()
-
-
             
         if input_keysym_str is modle_keysym_str
             deepin++
@@ -207,6 +197,7 @@ if DCore
 
 
 show_webinspector = ->
+    return
     DCore.Guide.enable_guide_region()
     DCore.Guide.disable_keyboard()
     DCore.Guide.simulate_input("F12")
