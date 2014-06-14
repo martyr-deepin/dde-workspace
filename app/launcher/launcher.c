@@ -212,6 +212,7 @@ void launcher_show()
         g_warning("launcher emit Shown signal failed: %s", err->message);
         g_error_free(err);
     }
+    js_post_signal("launcher_shown");
 }
 
 
