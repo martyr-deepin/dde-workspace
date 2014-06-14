@@ -365,7 +365,7 @@ void _change_workarea_height(int height)
 {
     static int saved_height = -1;
     if (saved_height == height) {
-	return;
+        return;
     }
     saved_height = height;
 

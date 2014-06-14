@@ -115,23 +115,29 @@ class Item extends Widget
     #     Preview_close_now()
 
     on_dragend:(e)=>
-        console.error(@id + ' dragend')
+        console.log(@id + ' dragend')
+        clearTimeout(@removeTimer || null)
         update_dock_region()
         _lastHover?.reset()
         e.preventDefault()
+        @element.style.position = ''
+        @element.style.webkitTransform = ''
+        console.log(_dragTargetManager)
         _dragTarget = _dragTargetManager.getHandle(@id)
         if not _dragTarget
             return
-        console.error("#{@id} dragend back")
+        console.log("#{@id} dragend back")
         _dragTarget.reset()
+        _dragTarget.removeImg()
         _dragTarget.back(e.x, e.y) if _dragTarget.dragToBack
-        setTimeout(=>
+        @removeTimer = setTimeout(=>
             _dragTargetManager.remove(@id)
         , 1000)
 
     on_dragstart: (e)=>
         Preview_close_now()
         _dragTarget = new DragTarget(@)
+        clearTimeout(@removeTimer || null)
         _dragTargetManager.add(@id, _dragTarget)
         pos = get_page_xy(@element)
         _dragTarget.setOrigin(pos.x, pos.y)
@@ -301,7 +307,7 @@ class AppItem extends Item
             @openIndicator.style.display = 'none'
 
         @core?.connect("DataChanged", (name, value)=>
-            console.warn("#{name} is changed to #{value}")
+            console.log("#{name} is changed to #{value}")
 
             switch name
                 when ITEM_DATA_FIELD.xids
@@ -362,7 +368,7 @@ class AppItem extends Item
 
         if @isApplet()
             for xid in xids
-                console.warn("map #{xid.Xid}")
+                console.log("map #{xid.Xid}")
                 $EW_MAP[xid.Xid] = @
             @embedWindows = new EmbedWindow(xids)
 

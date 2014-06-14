@@ -36,7 +36,7 @@ class DragTarget
         @img.style.webkitTransform = "translate(#{x - ITEM_WIDTH/2}px, #{y-ITEM_WIDTH/2}px)"
         @img.style.webkitTransition = 'all 300ms'
         setTimeout(=>
-            @img.style.webkitTransform = "translate(#{@origin.x}px, #{@origin.y}px)"
+            @img?.style.webkitTransform = "translate(#{@origin.x}px, #{@origin.y}px)"
         , 10)
         if @indicator
             @parentNode.insertBefore(@el, @indicator)
@@ -51,13 +51,16 @@ class DragTargetManager
         @targets = {}
 
     add:(id, obj)->
+        console.log("add #{id}")
         @targets[id] = obj
 
     remove:(id)->
-        console.error("remove #{id} #{delete @targets[id]}")
+        console.log("remove #{id} #{delete @targets[id]}")
         delete @targets[id]
 
     getHandle:(id)->
+        console.log("get handle of #{id}: ")
+        console.log(@targets[id])
         @targets[id]
 
 _dragTargetManager = new DragTargetManager()

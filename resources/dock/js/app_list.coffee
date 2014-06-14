@@ -58,21 +58,19 @@ class AppList
                 else
                     @element.appendChild(t)
 
-                # # FIXME: why using @insert_indicator will insert two item???
-                # @insert_indicator.setAttribute('name', id)
-                # console.log(@insert_indicator)
-                # if @insert_anchor_item
-                #     @element.insertBefore(@insert_indicator, @insert_anchor_item)
-                # else
-                #     @element.appendChild(@insert_indicator)
                 dockedAppManager?.Dock(id, "", "", "")
         else if dnd_is_deepin_item(e)# and @insert_indicator.parentNode == @element
-            _dragToBack = false
+            console.log("deepin item")
             id = dt.getData(DEEPIN_ITEM_ID)
+            _dragTarget = _dragTargetManager.getHandle(id)
+            _dragTarget?.dragToBack = false
             item = Widget.look_up(id)
+            item?.element.style.display = ''
             if @insert_anchor_item
+                console.log("insertBefore: #{@insert_anchor_item.id}")
                 @element.insertBefore(item.element, @insert_anchor_item)
             else
+                console.log("appendChild")
                 @element.appendChild(item.element)
             sortDockedItem()
 
