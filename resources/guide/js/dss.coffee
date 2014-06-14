@@ -22,7 +22,7 @@
 class DssLaunch extends Page
     constructor:(@id)->
         super
-        
+        #enableZoneDetect(true)
         @dss = new Dss()
 
         @message = _("Well, please trigger the lower right corner again")
@@ -35,9 +35,17 @@ class DssLaunch extends Page
         @circle.create_pointer(AREA_TYPE.circle,POS_TYPE.rightdown,=>
             @dss?.show()
             guide?.switch_page(@,"DssArea")
-        
         )
         @circle.enable_area_icon("#{@img_src}/preferences-system.png",48,48)
+        
+        @corner = new Pointer("corner_rightdown",@element)
+        @corner.create_pointer(AREA_TYPE.corner,POS_TYPE.rightdown,=>
+            @dss?.show()
+            guide?.switch_page(@,"DssArea")
+        ,"mouseover")
+        @corner.set_area_pos(0,0,"fixed",POS_TYPE.rightdown)
+        @corner.show_animation()
+        
         @pos = @dock.get_dssicon_pos()
         @circle_x = @pos.x0 - @circle.pointer_width
         @circle_y = @pos.y0 - @circle.pointer_height - ICON_MARGIN_V_BOTTOM / 2
