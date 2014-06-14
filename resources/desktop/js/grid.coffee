@@ -210,13 +210,40 @@ compare_pos_top_left = (base, pos) ->
     else
         1
 
+compare_pos_rect_pixel = (base1, base2, pos) ->
+    top_left = Math.min(base1.x, base2.x)
+    top_right = Math.max(base1.x, base2.x)
+    bottom_left = Math.min(base1.y, base2.y)
+    bottom_right = Math.max(base1.y, base2.y)
+    
+    rect_x0 = top_left
+    rect_y0 = bottom_left
+    rect_x1 = top_right
+    rect_y1 = bottom_right
+
+    item_x0 = pos.x
+    item_y0 = pos.y
+    item_x1 = pos.x + pos.width
+    item_y1 = pos.y + pos.height
+
+    cross_x0 = Math.max(rect_x0,item_x0)
+    cross_x1 = Math.min(rect_x1,item_x1)
+    cross_y0 = Math.max(rect_y0,item_y0)
+    cross_y1 = Math.min(rect_y1,item_y1)
+    is_in_select_area = cross_x0 < cross_x1 and cross_y0 < cross_y1
+    if is_in_select_area then echo "==========is_in_select_area============"
+    return is_in_select_area
+
 
 compare_pos_rect = (base1, base2, pos) ->
     top_left = Math.min(base1.x, base2.x)
     top_right = Math.max(base1.x, base2.x)
     bottom_left = Math.min(base1.y, base2.y)
     bottom_right = Math.max(base1.y, base2.y)
-    return top_left <= pos.x <= top_right and bottom_left <= pos.y <= bottom_right
+    echo "#{top_left} <= #{pos.x} <= #{top_right} and #{bottom_left} <= #{pos.y} <= #{bottom_right}"
+    is_in_select_area = top_left <= pos.x <= top_right and bottom_left <= pos.y <= bottom_right
+    if is_in_select_area then echo "==========is_in_select_area============"
+    return is_in_select_area
 
 
 calc_pos_to_pos_distance = (base, pos) ->
@@ -1225,6 +1252,7 @@ create_item_grid = ->
 
 
 class Mouse_Select_Area_box
+    times = 0
     constructor : (parentElement) ->
         @parent_element = parentElement
         @element = document.createElement("div")
@@ -1245,6 +1273,7 @@ class Mouse_Select_Area_box
             @parent_element.addEventListener("contextmenu", @contextmenu_event, true)
             @start_point = evt
             @start_pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
+            @start_pos_pixel = {x:evt.clientX,y:evt.clientY,width:1*_PART_, height:1*_PART_}
             @last_pos = @start_pos
             @total_item = speical_item.concat(all_item)
 
@@ -1257,24 +1286,28 @@ class Mouse_Select_Area_box
 
 
     mousemove_event : (evt) =>
+        echo "mousemove_event: #{times++}"
         evt.stopPropagation()
         evt.preventDefault()
         sl = Math.min(Math.max(Math.min(@start_point.clientX, evt.clientX), s_offset_x), s_offset_x + s_width)
         st = Math.min(Math.max(Math.min(@start_point.clientY, evt.clientY), s_offset_y), s_offset_y + s_height)
         sw = Math.min(Math.abs(evt.clientX - @start_point.clientX), s_width - sl)
         sh = Math.min(Math.abs(evt.clientY - @start_point.clientY), s_height - st)
-        @element.style.left = "#{sl}px"
-        @element.style.top = "#{st}px"
-        @element.style.width = "#{sw}px"
-        @element.style.height = "#{sh}px"
+        @element.style.left = sl
+        @element.style.top = st
+        @element.style.width = sw
+        @element.style.height = sh
         @element.style.display = "block"
 
         new_pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
+        new_pos_pixel = {x:evt.clientX,y:evt.clientY,width:1*_PART_, height:1*_PART_}
 
         for i in @total_item
             if not (w = Widget.look_up(i))? then continue
             item_pos = w.get_pos()
-            if compare_pos_rect(new_pos, @start_pos, item_pos) == true
+            item_pos_pixel = pos_to_pixel(item_pos)
+            #if compare_pos_rect(new_pos, @start_pos, item_pos) == true
+            if compare_pos_rect_pixel(new_pos_pixel, @start_pos_pixel, item_pos_pixel) == true
                 if not w.selected and not w.is_in_select_area
                     set_item_selected(w)
                 else
@@ -1291,6 +1324,7 @@ class Mouse_Select_Area_box
 
 
     mouseup_event : (evt) =>
+        echo "mouseup_event"
         evt.stopPropagation()
         evt.preventDefault()
         for i in @total_item
