@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Destkop Environment\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-13 16:59+0800\n"
+"POT-Creation-Date: 2014-06-14 10:17+0800\n"
 "PO-Revision-Date: 2013-12-11 04:44+0000\n"
 "Last-Translator: 648trindade <rafaelgt.mbin@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/"
@@ -454,7 +454,7 @@ msgstr ""
 #: ../resources/guide/js/desktop.coffee:27
 msgid ""
 "Let's overlap the other two icons on the first icon \n"
-"generate \"application group\""
+" to generate \"application group\""
 msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:54
@@ -468,7 +468,8 @@ msgstr ""
 #: ../resources/guide/js/desktop.coffee:68
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different "
-"events"
+"events\n"
+"Please move to the left up corner first to show or hide Launcher"
 msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:69
@@ -492,16 +493,16 @@ msgid "Show/Hide Control Center"
 msgstr "Central de Aplicativos"
 
 #: ../resources/guide/js/desktop.coffee:77
-msgid "No default functions setted"
+msgid "No default functions setted in right up corner"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:122
+#: ../resources/guide/js/desktop.coffee:121
 msgid ""
 "Right-click on desktop black area to call up the menu, select \"Corner "
 "navigation\" to set the corner used"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:123
+#: ../resources/guide/js/desktop.coffee:122
 msgid "tips：Click on the interface of corner navigation blank area to return"
 msgstr ""
 
@@ -554,34 +555,34 @@ msgstr ""
 msgid "All programs can be seen by scrolling the mouse up and down."
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:142
+#: ../resources/guide/js/launcher.coffee:145
 msgid "You can also click on the left classification navigation to locate"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:183
+#: ../resources/guide/js/launcher.coffee:192
 msgid ""
 "Use the keyboard searching to find applications you want\n"
 "We try\"deepin\" keyword to see which applications shown"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:184
+#: ../resources/guide/js/launcher.coffee:193
 msgid "tips：Please directly enter the word \"deepin\""
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:197
+#: ../resources/guide/js/launcher.coffee:206
 msgid ""
 "Click the right mouse button on the application icon to call up the context "
 "menu\n"
 "Clicking on the menu item will achieve its function"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:198
+#: ../resources/guide/js/launcher.coffee:207
 msgid ""
 "tips:You can also directly use the left mouse button to drag the icon to the "
 "dock, favicon or trash"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:211
+#: ../resources/guide/js/launcher.coffee:220
 msgid "Use the right mouse button to send three icons to the desktop"
 msgstr ""
 

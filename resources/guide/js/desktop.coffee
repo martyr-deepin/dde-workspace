@@ -24,7 +24,7 @@ class DesktopRichDir extends Page
         DCore.Guide.disable_guide_region()
         @desktop = new Desktop()
         
-        @message = _("Let's overlap the other two icons on the first icon \ngenerate \"application group\"")
+        @message = _("Let's overlap the other two icons on the first icon \n to generate \"application group\"")
         @show_message(@message)
         
         @corner_leftup = new Pointer("circle_richdir",@element)
@@ -65,7 +65,7 @@ class DesktopCorner extends Page
     constructor:(@id)->
         super
         
-        @message = _("Slide the mouse to the four top corners, which can trigger four different events")
+        @message = _("Slide the mouse to the four top corners, which can trigger four different events\nPlease move to the left up corner first to show or hide Launcher")
         @tips = _("tips：Please trigger successively by hints, click on the blank area to return")
         @show_message(@message)
         @show_tips(@tips)
@@ -74,7 +74,7 @@ class DesktopCorner extends Page
             leftup:_("Show/Hide Launcher")
             leftdown:_("Show/Hide Desktop")
             rightdown:_("Show/Hide Control Center")
-            rightup:_("No default functions setted")
+            rightup:_("No default functions setted in right up corner")
         
         @pos = ["leftup","leftdown","rightdown","rightup"]
         @corner = []
@@ -95,14 +95,13 @@ class DesktopCorner extends Page
                 echo "#{index}/#{length - 1} #{this.id} mouseenter"
                 clearTimeout(switch_page_timeout)
                
-                that.show_message(that.message_corner[this.id])
-                that.show_tips(" ")
-
                 switch_page_timeout = setTimeout(=>
                     if this.id is "leftup" then that.launcher.hide()
                     else if this.id is "rightdown" then that.dss?.hide()
                     if index < length - 1
                         this.display("none")
+                        that.show_message(that.message_corner[that.corner[index + 1].id])
+                        that.show_tips(" ")
                         that.corner[index + 1].show_animation()
                     else
                         guide?.switch_page(that,"DesktopZone")

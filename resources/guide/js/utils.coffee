@@ -22,12 +22,14 @@ CATE_EACH_WIDTH = 62
 CATE_WIDTH = CATE_EACH_WIDTH
 CATE_HEIGHT = CATE_EACH_HEIGHT * CATE_NUMBERS
 
+
 #dock
 DOCK_PADDING = 24
 ICON_MARGIN_H = 7
 ICON_MARGIN_V_TOP = 3
 ICON_MARGIN_V_BOTTOM = 10
 ICON_SIZE = 48
+POINTER_AREA_SIZE = 64
 
 EACH_ICON = ICON_MARGIN_H + ICON_SIZE
         
@@ -143,12 +145,12 @@ simulate_input = (modle_keysym,old_page,new_page_cls_name = null) ->
         echo input
         if not (input in white_key_list) then return
         if input is KEYCODE.BACKSPACE
-            if input_keysym.length == 0 then return
             input = ESC_KEYSYM_TO_CODE
-            input_keysym.pop()
+            DCore.Guide.simulate_input(input)
+            input_keysym.pop() if input_keysym.length != 0
         else
             input_keysym.push(input)
-        DCore.Guide.simulate_input(input)
+            DCore.Guide.simulate_input(input)
         
         if input_keysym.toString() is modle_keysym.toString()
             echo "input_keysym finish!!!!!!!!!!!"

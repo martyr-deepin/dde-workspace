@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-13 16:59+0800\n"
+"POT-Creation-Date: 2014-06-14 10:17+0800\n"
 "PO-Revision-Date: 2014-06-09 17:59+0800\n"
 "Last-Translator: Deepin Translation Team <support@linuxdeepin.com>\n"
 "Language-Team: Deepin Translation Team <support@linuxdeepin.com>\n"
@@ -446,8 +446,10 @@ msgstr "正在为运行做一些准备..."
 #: ../resources/guide/js/desktop.coffee:27
 msgid ""
 "Let's overlap the other two icons on the first icon \n"
-"generate \"application group\""
-msgstr "让我们把其他两个图标重合到第一个图标上生成“应用程序组”"
+" to generate \"application group\""
+msgstr ""
+"让我们把其他两个图标重合到第一个图标上\n"
+"来生成“应用程序组”"
 
 #: ../resources/guide/js/desktop.coffee:54
 msgid "Well, you have learned how to create a \"application group\""
@@ -460,8 +462,11 @@ msgstr "提示：右键单击应用程序组将提供更多功能"
 #: ../resources/guide/js/desktop.coffee:68
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different "
-"events"
-msgstr "鼠标滑动到四个顶角，可触发四个不同的事件"
+"events\n"
+"Please move to the left up corner first to show or hide Launcher"
+msgstr ""
+"鼠标滑动到四个顶角，可触发四个不同的事件\n"
+"请移动到左上角以显示/隐藏启动器"
 
 #: ../resources/guide/js/desktop.coffee:69
 msgid ""
@@ -481,16 +486,16 @@ msgid "Show/Hide Control Center"
 msgstr "显示/隐藏控制中心"
 
 #: ../resources/guide/js/desktop.coffee:77
-msgid "No default functions setted"
-msgstr "此热区默认未设置任何功能"
+msgid "No default functions setted in right up corner"
+msgstr "右上角的热区默认未设置任何功能"
 
-#: ../resources/guide/js/desktop.coffee:122
+#: ../resources/guide/js/desktop.coffee:121
 msgid ""
 "Right-click on desktop black area to call up the menu, select \"Corner "
 "navigation\" to set the corner used"
 msgstr "在桌面空白区点击右键调出菜单，选择“热区设置”来设置刚才使用的热区"
 
-#: ../resources/guide/js/desktop.coffee:123
+#: ../resources/guide/js/desktop.coffee:122
 msgid "tips：Click on the interface of corner navigation blank area to return"
 msgstr "提示：点击热区空白区域可返回"
 
@@ -539,36 +544,38 @@ msgstr " 请点击“所有应用”图标，您将看到所有应用"
 msgid "All programs can be seen by scrolling the mouse up and down."
 msgstr "上下滚动鼠标滚轮可以查看所有程序"
 
-#: ../resources/guide/js/launcher.coffee:142
+#: ../resources/guide/js/launcher.coffee:145
 msgid "You can also click on the left classification navigation to locate"
 msgstr "您也可以点击左侧分类导航来定位"
 
-#: ../resources/guide/js/launcher.coffee:183
+#: ../resources/guide/js/launcher.coffee:192
 msgid ""
 "Use the keyboard searching to find applications you want\n"
 "We try\"deepin\" keyword to see which applications shown"
 msgstr ""
-"使用键盘搜索来查找你想要的应用我们来试试“deepin”这个关键字吧，看会显示哪些应"
-"用"
+"使用键盘搜索来查找你想要的应用\n"
+"我们来试试“deepin”这个关键字吧，看会显示哪些应用"
 
-#: ../resources/guide/js/launcher.coffee:184
+#: ../resources/guide/js/launcher.coffee:193
 msgid "tips：Please directly enter the word \"deepin\""
 msgstr "提示：请直接输入单词“deepin”"
 
-#: ../resources/guide/js/launcher.coffee:197
+#: ../resources/guide/js/launcher.coffee:206
 msgid ""
 "Click the right mouse button on the application icon to call up the context "
 "menu\n"
 "Clicking on the menu item will achieve its function"
-msgstr "在应用图标上单击鼠标右键可以调出右键菜单点击菜单项将实现其功能"
+msgstr ""
+"在应用图标上单击鼠标右键可以调出右键菜单\n"
+"点击菜单项将实现其功能"
 
-#: ../resources/guide/js/launcher.coffee:198
+#: ../resources/guide/js/launcher.coffee:207
 msgid ""
 "tips:You can also directly use the left mouse button to drag the icon to the "
 "dock, favicon or trash"
 msgstr "提示：你也可以直接用鼠标左键拖拽图标到dock、收藏图标或者垃圾箱上"
 
-#: ../resources/guide/js/launcher.coffee:211
+#: ../resources/guide/js/launcher.coffee:220
 msgid "Use the right mouse button to send three icons to the desktop"
 msgstr "使用鼠标右键发送3个图标到桌面"
 
