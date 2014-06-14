@@ -379,7 +379,7 @@ PRIVATE GdkFilterReturn _monitor_guard_window(GdkXEvent* xevent,
 
     if (xev->type == GenericEvent) {
         if (e->evtype == EnterNotify) {
-            g_warning("enter guard window");
+            g_debug("enter guard window");
             // dbus_dock_daemon_update_hide_state(TRUE);
 
             _update_hide_state(500);
@@ -389,7 +389,7 @@ PRIVATE GdkFilterReturn _monitor_guard_window(GdkXEvent* xevent,
             // else if (GD.config.hide_mode != NO_HIDE_MODE)
             //     dock_delay_show(50);
         } else if (e->evtype == LeaveNotify) {
-            g_warning("leave guard window");
+            g_debug("leave guard window");
             // dbus_dock_daemon_update_hide_state(FALSE);
 
             update_hide_state();

@@ -111,27 +111,11 @@ gboolean leave_notify(GtkWidget* w G_GNUC_UNUSED,
     if (!get_leave_enter_guard())
         return FALSE;
 
-    // extern Window launcher_id;
-    // if (launcher_id != 0 && dock_get_active_window() == launcher_id) {
-    //     dock_show_now();
-    //     return FALSE;
-    // }
-
-    // dbus_dock_daemon_update_hide_state(FALSE);
-    if (e->detail == GDK_NOTIFY_NONLINEAR_VIRTUAL && !mouse_pointer_leave(e->x, e->y)) {
-        g_warning("leave dock");
+    if ((e->mode == GDK_CROSSING_NORMAL || e->mode == GDK_CROSSING_TOUCH_END)
+        && e->detail == GDK_NOTIFY_NONLINEAR_VIRTUAL &&
+        !mouse_pointer_leave(e->x, e->y)) {
+        g_debug("leave dock");
         update_hide_state();
-
-        if (GD.config.hide_mode == ALWAYS_HIDE_MODE && !is_mouse_in_dock()) {
-            g_debug("always hide");
-            // dock_delay_hide(500);
-        } else if (GD.config.hide_mode == INTELLIGENT_HIDE_MODE) {
-            g_debug("intelligent leave_notify");
-            // dock_update_hide_mode();
-        } else if (GD.config.hide_mode == AUTO_HIDE_MODE && dock_has_maximize_client() && !is_mouse_in_dock()) {
-            g_debug("auto leave_notify");
-            // dock_hide_real_now();
-        }
         js_post_signal("leave-notify");
     }
     return FALSE;
@@ -143,17 +127,14 @@ gboolean enter_notify(GtkWidget* w G_GNUC_UNUSED,
     if (!get_leave_enter_guard())
         return FALSE;
 
-    // dbus_dock_daemon_update_hide_state(TRUE);
-    if (is_mouse_in_dock()) {
-        g_warning("enter dock");
-        update_hide_state();
+    if ((e->mode == GDK_CROSSING_NORMAL || e->mode == GDK_CROSSING_TOUCH_BEGIN)
+        && e->detail == GDK_NOTIFY_NONLINEAR_VIRTUAL) {
+        if (is_mouse_in_dock()) {
+            g_debug("enter dock");
+            update_hide_state();
+        }
     }
 
-    if (GD.config.hide_mode == AUTO_HIDE_MODE) {
-        // dock_show_real_now();
-    } else if (GD.config.hide_mode != NO_HIDE_MODE) {
-        // dock_delay_show(300);
-    }
     return FALSE;
 }
 

@@ -35,7 +35,12 @@ void setting_changed(GSettings* s, gchar* key, gpointer user_data G_GNUC_UNUSED)
     if (g_strcmp0(key, "hide-mode") == 0) {
         GD.config.hide_mode = g_settings_get_enum(s, key);
         void _change_workarea_height(int height);
-        _change_workarea_height(68);
+        if (GD.config.hide_mode == NO_HIDE_MODE ) {
+            extern int _dock_height;
+            _change_workarea_height(_dock_height);
+        } else {
+            _change_workarea_height(0);
+        }
         g_debug("setting_changed");
         // dock_update_hide_mode();
     }

@@ -36,6 +36,7 @@ class AppList
         @_insert_anchor_item = item
 
     on_drop: (e)=>
+        # FIXME: why drop event is triggered twice???
         e.stopPropagation()
         e.preventDefault()
         console.log("do drop on app_list")
@@ -47,7 +48,6 @@ class AppList
             id = get_path_name(path)
             if not Widget.look_up(id)
                 t = document.getElementsByName(id)
-                # FIXME: why trigger twice drop event???
                 if t.length == 0
                     t = create_element(tag:'div', class: 'AppItem', name:id)
                 else

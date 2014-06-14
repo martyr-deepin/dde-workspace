@@ -88,4 +88,7 @@ class HideStatusManager
 
         console.log("set workarea height to #{regionHeight}")
         update_dock_region(null, regionHeight)
-        # DCore.Dock.change_workarea_height(regionHeight)
+        # workareaHeight = 0
+        # if settings.hideMode() == HideMode.KeepShowing
+        #     workareaHeight = DOCK_HEIGHT
+        # DCore.Dock.change_workarea_height(workareaHeight)
