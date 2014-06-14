@@ -102,16 +102,23 @@ void dock_force_set_region(double x, double y, double items_width, double panel_
     }
 
     cairo_region_destroy(_region);
-    cairo_rectangle_int_t tmp = {(int)x + _base_rect.x, (int)y + _base_rect.y, (int)items_width, (int)height};
+    if ((int)height == 0) {
+        extern int _dock_height;
+        cairo_rectangle_int_t tmp = {(int)x + _base_rect.x, (int)y + _dock_height + _base_rect.y - 1, (int)panel_width, 1};
+        _region = cairo_region_create_rectangle(&tmp);
+        g_warning("set region to {0,0,%d,1}", (int)panel_width);
+    } else {
+        cairo_rectangle_int_t tmp = {(int)x + _base_rect.x, (int)y + _base_rect.y, (int)items_width, (int)height};
+        cairo_rectangle_int_t dock_board_rect = _base_rect;
+        dock_board_rect.x = tmp.x - (panel_width - items_width) / 2;
+        dock_board_rect.y = gdk_screen_height() - BOARD_HEIGHT;
+        dock_board_rect.height = BOARD_HEIGHT;
+        dock_board_rect.width = (int)panel_width;
+        _region = cairo_region_create_rectangle(&dock_board_rect);
 
-    cairo_rectangle_int_t dock_board_rect = _base_rect;
-    dock_board_rect.x = tmp.x - (panel_width - items_width) / 2;
-    dock_board_rect.y = gdk_screen_height() - BOARD_HEIGHT;
-    dock_board_rect.height = BOARD_HEIGHT;
-    dock_board_rect.width = (int)panel_width;
-    _region = cairo_region_create_rectangle(&dock_board_rect);
-
-    cairo_region_union_rectangle(_region, &tmp);
+        cairo_region_union_rectangle(_region, &tmp);
+        g_warning("set region to ");
+    }
     do_window_shape_combine_region(_region);
     gdk_flush();
 }

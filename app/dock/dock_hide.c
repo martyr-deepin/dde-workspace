@@ -360,7 +360,6 @@ void cancel_update_state_request()
 void _update_hide_state(int delay G_GNUC_UNUSED)
 {
     cancel_update_state_request();
-    // update_hide_state_delay(NULL);
     update_hide_state_timer = g_timeout_add(delay, update_hide_state_delay, NULL);
 }
 
@@ -383,7 +382,7 @@ PRIVATE GdkFilterReturn _monitor_guard_window(GdkXEvent* xevent,
             g_warning("enter guard window");
             // dbus_dock_daemon_update_hide_state(TRUE);
 
-            update_hide_state();
+            _update_hide_state(500);
 
             // if (GD.config.hide_mode == AUTO_HIDE_MODE)
             //     dock_show_real_now();

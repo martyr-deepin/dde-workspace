@@ -18,6 +18,7 @@ class HideStatusManager
         @dbus.connect("StateChanged", (state)=>
             if DCore.Dock.is_hovered()
                 return
+
             switch settings.hideMode()
                 when HideMode.KeepShowing
                     if state == HideState.Showing
@@ -25,12 +26,14 @@ class HideStatusManager
                 when HideMode.KeepHidden
                     switch state
                         when HideState.Showing
+                            update_dock_region()
                             @changeToShow()
                         when HideState.Hidding
                             @changeToHide()
                 when HideMode.AutoHide
                     switch state
                         when HideState.Showing
+                            update_dock_region()
                             @changeToShow()
                         when HideState.Hidding
                             @changeToHide()
@@ -77,9 +80,9 @@ class HideStatusManager
 
         # return
         regionHeight = DOCK_HEIGHT
-        console.log($("#panel").style.webkitTransform)
+        console.log("panel webkitTransform: #{$("#panel").style.webkitTransform}")
         if $("#panel").style.webkitTransform == ""
-            regionHeight = 1
+            regionHeight = 0
             console.warn("hide dock region")
             # update_dock_region(null, regionHeight)
 
