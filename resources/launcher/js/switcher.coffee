@@ -148,6 +148,7 @@ class Switcher
             @showFavor()
         searchBar.show()
         @page = "Search"
+        @isShowCategory = false
         selector.container($("#searchResult"))
 
     hide:->
