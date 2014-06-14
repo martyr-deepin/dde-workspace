@@ -54,15 +54,14 @@ body {
     font-size:small;
     color:white;
     text-shadow:1px 0 1px #000, 0 1px 1px #000, -1px 0 1px #000, 0 -1px 1px #000;
-    word-wrap:break-word;
-    word-break:break-all;
-    -webkit-line-clamp:2;
-    text-overflow:ellipsis;
+    
     display:-webkit-box;
     -webkit-box-orient:vertical;
     -webkit-box-align:center;
-    overflow:hidden;
     -webkit-transition:background-color 0.15s ease-out;
+    
+    -webkit-line-clamp:2;
+    overflow:hidden;
 }
 
 .DesktopEntry .item_icon {
@@ -106,8 +105,9 @@ body {
     outline:none;
     padding: 0 1px; /*fix the truncation when the word's length is to long*/
     
+    -webkit-line-clamp:2;
     overflow:hidden;
-    word-wrap: break-word;
+    word-wrap:break-word;
     text-overflow:ellipsis;
 }
 
@@ -209,14 +209,14 @@ body {
 #pop_grid ul li .item_name {
     max-width:90px;
     color:#FFF;
-    word-wrap:break-word;
-    /*word-break:break-all;*/
     display:-webkit-box;
     -webkit-box-orient:vertical;
+    pointer-events:none;
+    
     -webkit-line-clamp:2;
     overflow:hidden;
+    word-wrap:break-word;
     text-overflow:ellipsis;
-    pointer-events:none;
 }
 
 
