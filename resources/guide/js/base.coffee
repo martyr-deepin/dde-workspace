@@ -114,7 +114,7 @@ class Dock
             x1:0
             y1:0
         pos.x0 = @x0 + DOCK_PADDING + EACH_ICON * (icon_index - 1)
-        pos.y0 = @y0
+        pos.y0 = @y0# - 8
         pos.x1 = pos.x0 + ICON_SIZE
         pos.y1 = pos.y0 + ICON_SIZE
         
