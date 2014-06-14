@@ -556,21 +556,22 @@ int main(int argc, char* argv[])
     gdk_error_trap_push(); //we need remove this, but now it can ignore all X error so we would'nt crash.
 
     webview = d_webview_new_with_uri(GET_HTML_PATH("dock"));
-
-    gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
-
-    g_signal_connect(container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
     g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
-    g_signal_connect(container, "enter-notify-event", G_CALLBACK(enter_notify), NULL);
-    g_signal_connect(container, "leave-notify-event", G_CALLBACK(leave_notify), NULL);
-    g_signal_connect(container, "size-allocate", G_CALLBACK(size_workaround), NULL);
 
     extern gboolean draw_embed_windows(GtkWidget* w, cairo_t *cr);
     g_signal_connect_after(webview, "draw", G_CALLBACK(draw_embed_windows), NULL);
 
 
+    g_signal_connect(container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
+    g_signal_connect(container, "enter-notify-event", G_CALLBACK(enter_notify), NULL);
+    g_signal_connect(container, "leave-notify-event", G_CALLBACK(leave_notify), NULL);
+    g_signal_connect(container, "size-allocate", G_CALLBACK(size_workaround), NULL);
+    gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
+
+
+
+    gtk_widget_set_size_request(webview, gdk_screen_width(), gdk_screen_height());
     gtk_widget_realize(container);
-    gtk_widget_realize(webview);
 
     set_wmspec_dock_hint(DOCK_GDK_WINDOW());
 
