@@ -145,12 +145,12 @@ simulate_input = (modle_keysym,old_page,new_page_cls_name = null) ->
         echo input
         if not (input in white_key_list) then return
         if input is KEYCODE.BACKSPACE
-            if input_keysym.length == 0 then return
             input = ESC_KEYSYM_TO_CODE
-            input_keysym.pop()
+            DCore.Guide.simulate_input(input)
+            input_keysym.pop() if input_keysym.length != 0
         else
             input_keysym.push(input)
-        DCore.Guide.simulate_input(input)
+            DCore.Guide.simulate_input(input)
         
         if input_keysym.toString() is modle_keysym.toString()
             echo "input_keysym finish!!!!!!!!!!!"
