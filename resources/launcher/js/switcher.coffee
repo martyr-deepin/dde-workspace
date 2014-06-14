@@ -134,7 +134,7 @@ class Switcher
         else
             @showCategory()
         # container.style.marginLeft = "110px"
-        # Item.updateHorizontalMargin()
+        Item.updateHorizontalMargin()
         searchResult?.hide()
         @page = "Favor"
 

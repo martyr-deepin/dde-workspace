@@ -39,6 +39,10 @@ DCore.signal_connect("exit_launcher", ->
     reset()
 )
 
+DCore.signal_connect("launcher_shown",->
+    switcher.switchToFavor()
+)
+
 
 DCore.Launcher.notify_workarea_size()
 
