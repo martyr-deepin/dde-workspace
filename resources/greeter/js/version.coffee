@@ -30,7 +30,7 @@ class Version extends Widget
         ver.style.display = "block"
         ver.style.marginLeft = "0.4em"
         ver.style.top = 0
-        ver.textContent = "Beta"
+        ver.textContent = "RC"
         ver.style.fontFamily = "Arial"
         ver.style.fontSize = "1em"
         ver.style.color = "rgba(255,255,255,0.9)"
