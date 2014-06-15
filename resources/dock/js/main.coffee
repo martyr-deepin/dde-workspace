@@ -9,13 +9,14 @@ DCore.signal_connect("message_notify", (info)->)
 #     console.log(info)
 # )
 DCore.signal_connect("embed_window_configure_request", (info)->
-    console.warn(info)
-    Preview_container._calc_size(info)
+    console.log(info)
 
     item = $EW_MAP[info.XID]
     if not item
         console.log("get item from #{info.XID} failed")
         return
+
+    Preview_container._calc_size(info)
     setTimeout(->
         console.warn(item.element)
         xy = get_page_xy(item.element)
@@ -23,9 +24,9 @@ DCore.signal_connect("embed_window_configure_request", (info)->
         extraHeight = PREVIEW_TRIANGLE.height + 6 + PREVIEW_WINDOW_BORDER_WIDTH + PREVIEW_CONTAINER_BORDER_WIDTH + info.height
         x = xy.x + w/2 - info.width/2
         y = xy.y - extraHeight
-        console.warn("Move Window to #{x}, #{y}")
+        console.log("Move Window to #{x}, #{y}")
         $EW.move(info.XID, x, y)
-    , 100)
+    , 50)
 )
 DCore.signal_connect("embed_window_destroyed", (info)->
     console.log("embed_window_destroyed")
