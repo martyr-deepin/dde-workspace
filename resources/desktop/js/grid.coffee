@@ -1151,6 +1151,15 @@ grid_do_keydown_to_shortcut = (evt) ->
                 for i in speical_item.concat(all_item)
                     if not (w_i = Widget.look_up(i))? then continue
                     item_pos = w_i.get_pos()
+                    
+                    #pos_a_pixel = pos_to_pixel(pos_a)
+                    #pos_b_pixel = pos_to_pixel(pos_b)
+                    #item_pos_pixel = pos_to_pixel(item_pos)
+                    #
+                    #start_pos_pixel = pos_b_pixel
+                    #new_pos_pixel = {x:pos_a_pixel.x + pos_a_pixel.width / 4,y:pos_a_pixel.y + pos_a_pixel.height / 4}
+                    #
+                    #if compare_pos_rect_pixel(new_pos_pixel, start_pos_pixel, item_pos_pixel) == true
                     if compare_pos_rect(pos_a, pos_b, item_pos) == true
                         set_item_selected(w_i) if not w_i.selected
 
