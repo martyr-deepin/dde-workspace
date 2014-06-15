@@ -25,7 +25,7 @@ void guide_emit_webview_ok()
 }
 
 
-gboolean is_livecd (const char* username G_GNUC_UNUSED)
+gboolean is_livecd ()
 {
     const gchar *filename = "/proc/cmdline";
     gchar *contents = NULL;
@@ -47,9 +47,9 @@ gboolean is_livecd (const char* username G_GNUC_UNUSED)
 
 int main (int argc, char **argv)
 {
-    if (is_livecd){
+    if (is_livecd()){
         dde_session_register();
-        return;
+        return 0;
     }
     
     
