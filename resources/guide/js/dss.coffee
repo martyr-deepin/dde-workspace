@@ -22,7 +22,7 @@
 class DssLaunch extends Page
     constructor:(@id)->
         super
-        #enableZoneDetect(true)
+        enableZoneDetect(true)
         @dss = new Dss()
 
         @message = _("Well, please trigger the lower right corner again")
@@ -40,8 +40,13 @@ class DssLaunch extends Page
         
         @corner = new Pointer("corner_rightdown",@element)
         @corner.create_pointer(AREA_TYPE.corner,POS_TYPE.rightdown,=>
-            @dss?.show()
-            guide?.switch_page(@,"DssArea")
+            echo "mouseover"
+            
+            clearTimeout(switch_timeout)
+            switch_timeout = setTimeout(=>
+                @dss?.show()
+                guide?.switch_page(@,"DssArea")
+            ,t_min_switch_page)
         ,"mouseover")
         @corner.set_area_pos(0,0,"fixed",POS_TYPE.rightdown)
         @corner.show_animation()
