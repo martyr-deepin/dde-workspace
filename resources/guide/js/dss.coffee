@@ -20,6 +20,8 @@
 
 
 class DssLaunch extends Page
+    get_dssicon_pos_interval = null
+    
     constructor:(@id)->
         super
         enableZoneDetect(true)
@@ -33,6 +35,7 @@ class DssLaunch extends Page
         @dock = new Dock()
         @circle = new Pointer("dss_circle",@element)
         @circle.create_pointer(AREA_TYPE.circle,POS_TYPE.rightdown,=>
+            clearInterval(get_dssicon_pos_interval)
             @dss?.show()
             guide?.switch_page(@,"DssArea")
         )
@@ -41,6 +44,7 @@ class DssLaunch extends Page
         @corner = new Pointer("corner_rightdown",@element)
         @corner.create_pointer(AREA_TYPE.corner,POS_TYPE.rightdown,=>
             echo "mouseover"
+            clearInterval(get_dssicon_pos_interval)
             
             clearTimeout(switch_timeout)
             switch_timeout = setTimeout(=>
@@ -51,10 +55,13 @@ class DssLaunch extends Page
         @corner.set_area_pos(0,0,"fixed",POS_TYPE.rightdown)
         @corner.show_animation()
         
-        @pos = @dock.get_dssicon_pos()
-        @circle_x = @pos.x0 - @circle.pointer_width
-        @circle_y = @pos.y0 - @circle.pointer_height - ICON_MARGIN_V_BOTTOM / 2
-        @circle.set_area_pos(@circle_x,@circle_y,"fixed",POS_TYPE.leftup)
+        get_dssicon_pos_interval = setInterval(=>
+            @pos = @dock.get_dssicon_pos()
+            @circle_x = @pos.x0 - @circle.pointer_width
+            @circle_y = @pos.y0 - @circle.pointer_height - ICON_MARGIN_V_BOTTOM / 2
+            @circle.set_area_pos(@circle_x,@circle_y,"fixed",POS_TYPE.leftup)
+        ,100)
+        
         @circle.show_animation()
 
 

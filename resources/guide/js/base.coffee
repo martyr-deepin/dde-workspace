@@ -98,11 +98,11 @@ class Dock
                 DOCK_REGION.path,
                 DOCK_REGION.interface
             )
-            @dock_region = @dock_region_dbus.GetDockRegion_sync()
         catch e
             echo "#{DOCK_REGION}: dbus error:#{e}"
 
     get_icon_pos: (icon_index) ->
+        @dock_region = @dock_region_dbus?.GetDockRegion_sync()
         @x0 = @dock_region[0]
         @y0 = @dock_region[1]
         @x1 = @dock_region[2]

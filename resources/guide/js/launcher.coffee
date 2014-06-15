@@ -20,6 +20,8 @@
 
 
 class LauncherLaunch extends Page
+    get_launchericon_pos_interval = null
+    
     constructor:(@id)->
         super
         enableZoneDetect(true)
@@ -40,10 +42,14 @@ class LauncherLaunch extends Page
             @launcher?.show()
         )
         @circle.enable_area_icon("#{@img_src}/start-here.png",48,48)
-        @pos = @dock.get_launchericon_pos()
-        @circle_x = @pos.x0 - @circle.pointer_width + ICON_MARGIN_H
-        @circle_y = @pos.y0 - @circle.pointer_height - ICON_MARGIN_V_BOTTOM / 2
-        @circle.set_area_pos(@circle_x,@circle_y,"fixed",POS_TYPE.leftup)
+        
+        get_launchericon_pos_interval = setInterval(=>
+            @pos = @dock.get_launchericon_pos()
+            @circle_x = @pos.x0 - @circle.pointer_width + ICON_MARGIN_H
+            @circle_y = @pos.y0 - @circle.pointer_height - ICON_MARGIN_V_BOTTOM / 2
+            @circle.set_area_pos(@circle_x,@circle_y,"fixed",POS_TYPE.leftup)
+        ,100)
+        
         @circle.show_animation()
 
         @launcher.show_signal(@show_signal_cb)
@@ -53,6 +59,7 @@ class LauncherLaunch extends Page
         @element.style.display = "none"
         setTimeout(=>
             @launcher.show_signal_disconnect()
+            clearInterval(get_launchericon_pos_interval)
             guide?.switch_page(@,"LauncherCollect")
         ,t_min_switch_page)
 
