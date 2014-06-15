@@ -412,6 +412,7 @@ class ComboBox extends Widget
     do_click: (e)->
         e.stopPropagation()
         echo "current_img do_click:#{@id}"
+        if !@menu.is_hide() then return
         @only_show_current_Menuchoose()
         if !@menu.animation_end then return
         @menu.toggle()
