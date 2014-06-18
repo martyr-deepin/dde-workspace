@@ -8,7 +8,7 @@ static void update_proxy_envs(GSettings* s)
 #define HTTP_PROXY "http_proxy"
 #define HTTPS_PROXY "https_proxy"
 #define FTP_PROXY "ftp_proxy"
-#define SOCKS_PROXY "socks_proxy"
+#define SOCKS_PROXY "SOCKS_SERVER"
 
 #define NONE 0
 #define MANUAL 1
