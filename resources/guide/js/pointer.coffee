@@ -18,6 +18,12 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+
+AREA_TYPE =
+    circle:"circle"
+    circle_white:"circle_white"
+    corner:"corner"
+
 class Pointer extends Widget
     constructor:(@id,parent)->
         super

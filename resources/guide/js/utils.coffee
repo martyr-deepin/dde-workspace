@@ -1,4 +1,4 @@
-DEBUG = false
+DEBUG = true
 ESC_KEYSYM_TO_CODE = 0xff08
 
 #launcher
@@ -32,19 +32,6 @@ ICON_SIZE = 48
 POINTER_AREA_SIZE = 64
 
 EACH_ICON = ICON_MARGIN_H + ICON_SIZE
-        
-POS_TYPE =
-    leftup:"leftup"
-    leftdown:"leftdown"
-    rightup:"rightup"
-    rightdown:"rightdown"
-    down:"down"
-    up:"up"
-
-AREA_TYPE =
-    circle:"circle"
-    circle_white:"circle_white"
-    corner:"corner"
 
 CLICK_TYPE =
     leftclick:1
@@ -66,6 +53,14 @@ pages_id = [
 t_switch_page = 4000
 t_mid_switch_page = 2000
 t_min_switch_page = 500
+        
+POS_TYPE =
+    leftup:"leftup"
+    leftdown:"leftdown"
+    rightup:"rightup"
+    rightdown:"rightdown"
+    down:"down"
+    up:"up"
 
 set_pos = (el,x,y,position_type = "fixed",type = POS_TYPE.leftup)->
     el.style.position = position_type

@@ -1,0 +1,12 @@
+
+
+
+.menubg{ background:#FFF; border:#777 1px solid; border-radius:4px;float:left; box-shadow: rgba(0,0,0,0.7) 0 0 3px;}
+
+.menubg ul li{ margin:0; list-style:none; padding:5px 20px; font-family:Arial; font-size:12px; white-space:nowrap;}
+
+.menubg ul li.selected{ background:#333; color:#FFF;}
+
+.menubg ul{margin:0; padding:0;}
+
+.menubg ul li.cutline{height:1px; background:rgba(0,0,0,0.3); padding:0;}

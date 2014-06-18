@@ -226,28 +226,59 @@ class LauncherMenu extends Page
         
         @message = _("Use the right mouse button to send three icons to the desktop")
         @show_message(@message)
-        simulate_rightclick(@)
+        #simulate_rightclick(@)
         @signal()
         
+        if DEBUG then @launcher.show()
+        app1 = @app_x_y(1)
+        app2 = @app_x_y(2)
+        menu1 = @menu_create(app1.x,app1.y,=>
+            echo "click"
+            @element.removeChild(menu1.element)
+            @menu_create(app2.x,app2.y,@switch_page)
+        )
+
+    app_x_y: (n) ->
+        x = COLLECT_LEFT + (EACH_APP_WIDTH + EACH_APP_MARGIN_LEFT) * (n - 1) + EACH_APP_WIDTH * 0.75
+        y = COLLECT_TOP + EACH_APP_HEIGHT / 2
+        return {x:x,y:y}
+
+    menu_create: (x,y,cb) ->
+        @menu =[
+            {type:MENU.option,text:_("Open")},
+            {type:MENU.cutline,text:""},
+            {type:MENU.option,text:_("Remove from favorites")},
+            {type:MENU.selected,text:_("Send to desktop")},
+            {type:MENU.cutline,text:""},
+            {type:MENU.option,text:_("Add to autostart")},
+            {type:MENU.option,text:_("Uninstall")}
+        ]
+        @contextmenu = new ContextMenu("launcher_contextmenu",@element)
+        @contextmenu.menu_create(@menu)
+        @contextmenu.set_pos(x,y)
+        @contextmenu.selected_click(cb)
+        return @contextmenu
+
     signal: ->
         @launcher?.hide_signal(=>
             @launcher?.show()
         )
         signal_times = 0
         signal_times_switch = each_item_update_times * desktop_file_numbers
-        enableZoneDetect(true)
         @desktop?.item_signal(=>
             signal_times++
             echo "desktop_file_signal times:#{signal_times}"
             if signal_times == signal_times_switch then signal_times = 0
             else return
-            
-            setTimeout(=>
-                @launcher?.hide_signal_disconnect()
-                @desktop?.item_signal_disconnect()
-                @launcher?.hide()
-                #DCore.Guide.spawn_command_sync("/usr/lib/deepin-daemon/desktop-toggle")
-                guide?.switch_page(@,"DesktopRichDir")
-            ,t_min_switch_page)
+            @switch_page()
         )
 
+
+    switch_page: ->
+        setTimeout(=>
+            @launcher?.hide_signal_disconnect()
+            @desktop?.item_signal_disconnect()
+            @launcher?.hide()
+            #DCore.Guide.spawn_command_sync("/usr/lib/deepin-daemon/desktop-toggle")
+            guide?.switch_page(@,"DesktopRichDir")
+        ,t_min_switch_page)
