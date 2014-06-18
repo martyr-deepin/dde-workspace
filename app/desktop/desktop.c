@@ -569,9 +569,7 @@ int main(int argc, char* argv[])
     gtk_init(&argc, &argv);
     monitor_and_update_proxy();
 
-#ifndef NDEBUG
     g_log_set_default_handler((GLogFunc)log_to_file, "desktop");
-#endif
 
     set_default_theme("Deepin");
     set_desktop_env_name("Deepin");

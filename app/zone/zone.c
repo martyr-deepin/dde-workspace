@@ -43,8 +43,6 @@
 #include "background.h"
 #include "zone.h"
 
-#define DEBUG
-
 #define ZONE_SCHEMA_ID "com.deepin.dde.zone"
 #define ZONE_ID_NAME "desktop.app.zone"
 
@@ -98,7 +96,7 @@ G_GNUC_UNUSED sigterm_cb (int signum G_GNUC_UNUSED)
 }
 
 
-#ifndef DEBUG
+#ifdef NDEBUG
 static void
 focus_out_cb (GtkWidget* w G_GNUC_UNUSED, GdkEvent* e G_GNUC_UNUSED, gpointer user_data G_GNUC_UNUSED)
 {
@@ -253,7 +251,7 @@ int main (int argc, char **argv)
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
     monitors_adaptive(container,webview);
 
-#ifndef DEBUG
+#ifdef NDEBUG
     g_message(" Zone Not DEBUG");
     gtk_window_set_keep_above (GTK_WINDOW (container), TRUE);
     g_signal_connect (container, "show", G_CALLBACK (show_cb), NULL);
@@ -268,7 +266,7 @@ int main (int argc, char **argv)
     gdk_window_set_skip_taskbar_hint (gdkwindow, TRUE);
     gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
 
-#ifndef DEBUG
+#ifdef NDEBUG
     gdk_window_set_keep_above (gdkwindow, TRUE);
     gdk_window_set_override_redirect (gdkwindow, TRUE);
     select_popup_events ();

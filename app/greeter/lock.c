@@ -55,7 +55,7 @@
 #define LOCK_HTML_PATH "file://"RESOURCE_DIR"/greeter/lock.html"
 
 
-#ifndef DEBUG
+#ifdef NDEBUG
 static GSGrab* grab = NULL;
 #endif
 static GtkWidget* container = NULL;
@@ -171,7 +171,7 @@ sigterm_cb (int signum G_GNUC_UNUSED)
 }
 
 
-#ifndef DEBUG
+#ifdef NDEBUG
 static void
 focus_out_cb (GtkWidget* w G_GNUC_UNUSED, GdkEvent*e G_GNUC_UNUSED, gpointer user_data G_GNUC_UNUSED)
 {
@@ -309,7 +309,7 @@ int main (int argc, char **argv)
     BackgroundInfo* bg_info = create_background_info(container, webview);
     background_info_set_background_by_file(bg_info, "/usr/share/backgrounds/default_background.jpg");
 
-#ifndef DEBUG
+#ifdef NDEBUG
     g_message(" Lock Not DEBUG");
     gtk_window_set_keep_above (GTK_WINDOW (container), TRUE);
     g_signal_connect (container, "show", G_CALLBACK (lock_show_cb), NULL);
@@ -326,7 +326,7 @@ int main (int argc, char **argv)
     gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
 
 
-#ifndef DEBUG
+#ifdef NDEBUG
     gdk_window_set_keep_above (gdkwindow, TRUE);
     gdk_window_set_override_redirect (gdkwindow, TRUE);
     select_popup_events ();
