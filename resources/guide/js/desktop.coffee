@@ -131,7 +131,8 @@ class DesktopZone extends Page
         #)
     
         @menu_create(screen.x * 0.4, screen.y * 0.5,=>
-            DCore.Guide.spawn_command_sync("/usr/lib/deepin-daemon/dde-zone")
+            DCore.Guide.run_deepin_settings("/usr/lib/deepin-daemon/dde-zone")
+            #DCore.Guide.spawn_command_sync("/usr/lib/deepin-daemon/dde-zone")
             @pointer_create()
             #@zone_check()
         )
