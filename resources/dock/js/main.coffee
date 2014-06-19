@@ -4,10 +4,10 @@ DCore.signal_connect("close_window", (info)->)
 DCore.signal_connect("active_window", (info)->)
 DCore.signal_connect("message_notify", (info)->)
 
-# DCore.signal_connect("embed_window_configure_changed", (info)->
-#     console.log("embed_window_configure_changed")
-#     console.log(info)
-# )
+DCore.signal_connect("embed_window_configure_changed", (info)->
+    console.log("embed_window_configure_changed")
+    console.log(info)
+)
 DCore.signal_connect("embed_window_configure_request", (info)->
     console.log(info)
 

@@ -28,7 +28,8 @@ class SystemTray extends SystemItem
         for item, i in @items
             # console.log("#{item} add to SystemTray")
             $EW.create(item, false)
-            $EW.hide(item)
+            # $EW.hide(item)
+            $EW.undraw()
 
         @core.connect("Added", (xid)=>
             console.log("#{xid} is Added")
@@ -47,14 +48,23 @@ class SystemTray extends SystemItem
                     calc_app_item_size()
                 , ANIMATION_TIME)
             else
-                $EW.hide(xid)
+                $EW.undraw()
+                # $EW.hide(xid)
         )
         @core.connect("Changed", (xid)=>
-            if not @isShowing || @isUnfolded
-                console.log("#{xid} is Changed")
-                @items.remove(xid)
-                @items.unshift(xid)
-                @updateTrayIcon()
+            # if not @isShowing || @isUnfolded
+            #     console.log("#{xid} is Changed")
+            #     @items.remove(xid)
+            #     @items.unshift(xid)
+            #     @updateTrayIcon()
+            @on_mouseover()
+            update_dock_region()
+            console.warn("#{xid} is Changed")
+            @items.remove(xid)
+            @items.unshift(xid)
+            @unfold()
+            if @upperItemNumber <= 2
+                @isUnfolded = false
         )
         @core.connect("Removed", (xid)=>
             # console.log("#{xid} is Removed")
@@ -111,7 +121,7 @@ class SystemTray extends SystemItem
 
     updatePanel:=>
         calc_app_item_size()
-        DCore.Dock.require_all_region()
+        # DCore.Dock.require_all_region()
         @calcTimer = webkitRequestAnimationFrame(@updatePanel)
 
 
@@ -141,6 +151,7 @@ class SystemTray extends SystemItem
         $EW.show(@items[i]) if @items[i]
 
     on_mouseout: (e)=>
+        console.warn("system tray mouseout")
         # super
         DCore.Dock.set_is_hovered(false)
         clearTimeout(@showEmWindowTimer)
@@ -152,8 +163,9 @@ class SystemTray extends SystemItem
         console.log("tray mouseout")
         @img.style.display = ''
         @panel.style.display = 'none'
-        for item in @items
-            $EW.hide(item)
+        $EW.undraw()
+        # for item in @items
+        #     $EW.hide(item)
         @hideButton()
 
     unfold:=>
@@ -163,31 +175,35 @@ class SystemTray extends SystemItem
         clearTimeout(@hideTimer)
         webkitCancelAnimationFrame(@calcTimer || null)
         @updatePanel()
-        for item in @items
-            $EW.hide(item)
+        $EW.undraw()
+        # for item in @items
+        #     $EW.hide(item)
         @updateTrayIcon()
         if @upperItemNumber > 2
             clearTimeout(@showTimer)
             @showTimer = setTimeout(=>
                 webkitCancelAnimationFrame(@calcTimer)
-                DCore.Dock.require_all_region()
+                # DCore.Dock.require_all_region()
                 @updateTrayIcon()
                 for item in @items
                     $EW.show(item)
+                update_dock_region()
             , ANIMATION_TIME)
         else
             webkitCancelAnimationFrame(@calcTimer)
-            DCore.Dock.require_all_region()
+            # DCore.Dock.require_all_region()
             for item in @items
                 $EW.show(item)
+            update_dock_region()
 
     fold: (e)=>
         @isUnfolded = false
         @button.style.backgroundPosition = '100% 0'
         console.log("fold")
         if @items
-            for item in @items
-                $EW.hide(item)
+            $EW.undraw()
+            # for item in @items
+            #     $EW.hide(item)
         clearTimeout(@showTimer)
         webkitCancelAnimationFrame(@calcTimer)
         @updatePanel()
@@ -198,11 +214,13 @@ class SystemTray extends SystemItem
                 @img.style.display = ''
                 @panel.style.display = 'none'
                 webkitCancelAnimationFrame(@calcTimer)
+                update_dock_region()
             , ANIMATION_TIME)
         else
             @img.style.display = ''
             @panel.style.display = 'none'
             webkitCancelAnimationFrame(@calcTimer)
+            update_dock_region()
 
         @hideButton()
 

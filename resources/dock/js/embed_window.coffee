@@ -38,3 +38,6 @@ class EmbedWindow
                 $EW.draw_to_canvas(xid, canvas)
             return
         $EW.draw_to_canvas(xid, canvas)
+
+    undraw:->
+        $EW.undraw()

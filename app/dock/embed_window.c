@@ -246,6 +246,15 @@ void exwindow_move(double xid, double x, double y)
     }
 }
 
+static gboolean draw_ew = TRUE;
+
+//JS_EXPORT_API
+void exwindow_undraw()
+{
+    draw_ew = FALSE;
+}
+
+
 //JS_EXPORT_API
 void exwindow_hide(double xid)
 {
@@ -264,6 +273,7 @@ void exwindow_hide(double xid)
 //JS_EXPORT_API
 void exwindow_show(double xid)
 {
+    draw_ew = TRUE;
     SKIP_UNINIT(xid);
     GdkWindow* win = (GdkWindow*)g_hash_table_lookup(__EMBEDED_WINDOWS__, (gpointer)(Window)xid);
     if (win != NULL) {
@@ -311,36 +321,38 @@ void exwindow_draw_to_canvas(double _xid, JSValueRef canvas)
 
 gboolean draw_embed_windows(GtkWidget* _w, cairo_t *cr)
 {
+    if (!draw_ew)
+        return FALSE;
     _w = _w;
     if (__EMBEDED_WINDOWS__ == NULL || g_hash_table_size(__EMBEDED_WINDOWS__) == 0) {
-	return FALSE;
+        return FALSE;
     }
     GHashTableIter iter;
     gpointer child = NULL;
     g_hash_table_iter_init (&iter, __EMBEDED_WINDOWS__);
     while (g_hash_table_iter_next (&iter, NULL, &child)) {
-	GdkWindow* win = (GdkWindow*)child;
-	GdkWindow* wrapper = get_wrapper(win);
-	if (wrapper) {
-	    win = wrapper;
-	}
+        GdkWindow* win = (GdkWindow*)child;
+        GdkWindow* wrapper = get_wrapper(win);
+        if (wrapper) {
+            win = wrapper;
+        }
 
         Window xid = GDK_WINDOW_XID(child);
         gboolean has_target =
             GPOINTER_TO_INT(g_hash_table_lookup(__EMBEDED_WINDOWS_TARGET__,
                                                 GINT_TO_POINTER(xid)));
         // g_warning("draw_target: %d", draw_target);
-	if (win != NULL && !gdk_window_is_destroyed(win) &&
+        if (win != NULL && !gdk_window_is_destroyed(win) &&
             gdk_window_is_visible(win) &&
             !has_target) {
-	    int x = 0;
-	    int y = 0;
-	    int width, height;
-	    gdk_window_get_geometry(win, &x, &y, &width, &height); //gdk_window_get_position will get error value when dock is hidden!
-	    gdk_cairo_set_source_window(cr, win, x, y);
+            int x = 0;
+            int y = 0;
+            int width, height;
+            gdk_window_get_geometry(win, &x, &y, &width, &height); //gdk_window_get_position will get error value when dock is hidden!
+            gdk_cairo_set_source_window(cr, win, x, y);
 
-	    cairo_paint(cr);
-	}
+            cairo_paint(cr);
+        }
     }
     return FALSE;
 }

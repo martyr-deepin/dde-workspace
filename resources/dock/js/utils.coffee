@@ -30,6 +30,7 @@ createItem = (d)->
     if not Preview_container.is_showing
         return
     Preview_container._current_group
+    updateTrayIcon()
 
 
 deleteItem = (id)->
