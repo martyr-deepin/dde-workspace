@@ -26,11 +26,11 @@ class DragTarget
     reset:->
         @el.style.position = ''
         @el.style.webkitTransform = ''
+        @el.style.display = 'block'
 
     back:(x, y)->
         console.log("back, #{x}, #{y}")
         @dragToBack = false
-        @el.style.display = 'block'
         @reset()
         @img.style.display = ''
         @img.style.webkitTransform = "translate(#{x - ITEM_WIDTH/2}px, #{y-ITEM_WIDTH/2}px)"

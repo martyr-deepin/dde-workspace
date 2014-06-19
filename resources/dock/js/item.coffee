@@ -125,6 +125,7 @@ class Item extends Widget
         console.log(_dragTargetManager)
         _dragTarget = _dragTargetManager.getHandle(@id)
         if not _dragTarget
+            console.warn("get handle failed")
             return
         console.log("#{@id} dragend back")
         _dragTarget.reset()

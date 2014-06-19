@@ -97,8 +97,7 @@ _b.addEventListener("drop", (e)->
 
     if s_widget.isNormal()
         _dragTarget.dragToBack = false
-        _dragTarget.back(e.x, e.y)
-        # t = app_list.element.removeChild(s_widget.element)
+        _dragTarget.reset()
         calc_app_item_size()
 
         t = s_widget.element
@@ -107,16 +106,10 @@ _b.addEventListener("drop", (e)->
         t.style.left = "#{e.x - ITEM_WIDTH / 2}px"
         t.style.top = "#{e.y - ITEM_HEIGHT / 2}px"
         s_widget.destroyWidthAnimation()
-        DCore.Dock.require_all_region()
         _dragTarget.removeImg()
         _dragTargetManager.remove(s_id)
-        update_dock_region()
     else
         _dragTarget.dragToBack = true
-        _dragTarget.back(e.x, e.y)
-        _dragTarget.removeImg()
-        _dragTargetManager.remove(s_id)
-        update_dock_region()
 )
 
 settings = new Setting()
