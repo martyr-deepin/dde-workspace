@@ -55,8 +55,10 @@
 #define ZONE_CONF "zone/config.ini"
 static GKeyFile* zone_config = NULL;
 
-PRIVATE GtkWidget* container = NULL;
+#ifdef NDEBUG
 static GSGrab* grab = NULL;
+#endif
+PRIVATE GtkWidget* container = NULL;
 
 PRIVATE
 GSettings* zone_gsettings = NULL;
@@ -271,9 +273,9 @@ int main (int argc, char **argv)
     gdk_window_set_override_redirect (gdkwindow, TRUE);
     select_popup_events ();
     gdk_window_add_filter (NULL, (GdkFilterFunc)xevent_filter, gdkwindow);
+    grab = gs_grab_new ();
 #endif
 
-    grab = gs_grab_new ();
     gtk_widget_show_all (container);
     gtk_widget_set_opacity (container,0.9);
 
