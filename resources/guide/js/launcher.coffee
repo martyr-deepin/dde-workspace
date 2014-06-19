@@ -246,13 +246,14 @@ class LauncherMenu extends Page
 
     menu_create: (x,y,cb) ->
         @menu =[
-            {type:MENU.option,text:_("Open")},
+            {type:MENU.option,text:_("_Open")},
             {type:MENU.cutline,text:""},
-            {type:MENU.option,text:_("Remove from favorites")},
-            {type:MENU.selected,text:_("Send to desktop")},
+            {type:MENU.option,text:_("Remove from _favorites")},
+            {type:MENU.selected,text:_("Send to d_esktop")},
+            {type:MENU.selected,text:_("Send to do_ck")},
             {type:MENU.cutline,text:""},
-            {type:MENU.option,text:_("Add to autostart")},
-            {type:MENU.option,text:_("Uninstall")}
+            {type:MENU.option,text:_("_Add to autostart")},
+            {type:MENU.option,text:_("_Uninstall")}
         ]
         @contextmenu = new ContextMenu("launcher_contextmenu",@element)
         @contextmenu.menu_create(@menu)
