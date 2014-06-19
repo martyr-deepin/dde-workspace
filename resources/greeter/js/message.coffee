@@ -66,7 +66,7 @@ class NoSessionMessage
 
     constructor: ->
         
-        @title = _("\t\t\t\t-----No desktop sessions available!-----\n
+        @title = _("\t\t\t\t-----No available desktop sessions!-----\n
             You can try the following steps and install the Deepin Desktop Environment.\n
             ")
         @text = []
