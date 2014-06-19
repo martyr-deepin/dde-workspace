@@ -138,16 +138,16 @@ class DesktopZone extends Page
 
     menu_create: (x,y,cb) ->
         @menu =[
-            {type:MENU.option,text:_("_Open")},
+            {type:MENU.option,text:_("_Sort by")},
+            {type:MENU.option,text:_("_New")},
+            {type:MENU.option,text:_("Open in _terminal")},
+            {type:MENU.option,text:_("_Paste")},
             {type:MENU.cutline,text:""},
-            {type:MENU.option,text:_("Remove from _favorites")},
-            {type:MENU.selected,text:_("Send to d_esktop")},
-            {type:MENU.option,text:_("Send to do_ck")},
-            {type:MENU.cutline,text:""},
-            {type:MENU.option,text:_("_Add to autostart")},
-            {type:MENU.option,text:_("_Uninstall")}
+            {type:MENU.option,text:_("_Display settings")},
+            {type:MENU.selected,text:_("_Corner navigation")},
+            {type:MENU.option,text:_("Pe_rsonalize")}
         ]
-        @contextmenu = new ContextMenu("launcher_contextmenu",@element)
+        @contextmenu = new ContextMenu("desktop_contextmenu",@element)
         @contextmenu.menu_create(@menu)
         @contextmenu.set_pos(x,y)
         @contextmenu.selected_click(=>
