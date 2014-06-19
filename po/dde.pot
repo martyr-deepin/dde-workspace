@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-14 10:17+0800\n"
+"POT-Creation-Date: 2014-06-19 14:47+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,6 +45,7 @@ msgstr ""
 #: ../resources/desktop/js/richdir.coffee:133
 #: ../resources/desktop/js/richdir.coffee:762
 #: ../resources/launcher/js/item.coffee:268
+#: ../resources/guide/js/launcher.coffee:249
 msgid "_Open"
 msgstr ""
 
@@ -98,7 +99,7 @@ msgid "Home"
 msgstr ""
 
 #: ../resources/desktop/js/specialitem.coffee:175
-#: ../resources/dock/js/main.coffee:156 ../resources/dock/js/main.coffee:221
+#: ../resources/dock/js/main.coffee:157 ../resources/dock/js/main.coffee:222
 msgid "Trash"
 msgstr ""
 
@@ -122,47 +123,47 @@ msgstr ""
 msgid "Untitled"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:995
+#: ../resources/desktop/js/grid.coffee:1022
 msgid "_Name"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:996
+#: ../resources/desktop/js/grid.coffee:1023
 msgid "Last modified _time"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1001
+#: ../resources/desktop/js/grid.coffee:1028
 msgid "_Folder"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1002
+#: ../resources/desktop/js/grid.coffee:1029
 msgid "_Text document"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1018
+#: ../resources/desktop/js/grid.coffee:1045
 msgid "_Sort by"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1019
+#: ../resources/desktop/js/grid.coffee:1046
 msgid "_New"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1020
+#: ../resources/desktop/js/grid.coffee:1047
 msgid "Open in _terminal"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1021
+#: ../resources/desktop/js/grid.coffee:1048
 msgid "_Paste"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1023
+#: ../resources/desktop/js/grid.coffee:1050
 msgid "_Display settings"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1024
+#: ../resources/desktop/js/grid.coffee:1051
 msgid "_Corner navigation"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1025
+#: ../resources/desktop/js/grid.coffee:1052
 msgid "Pe_rsonalize"
 msgstr ""
 
@@ -312,14 +313,17 @@ msgid "Only the second Screen"
 msgstr ""
 
 #: ../resources/launcher/js/item.coffee:271
+#: ../resources/guide/js/launcher.coffee:252
 msgid "Send to d_esktop"
 msgstr ""
 
 #: ../resources/launcher/js/item.coffee:274
+#: ../resources/guide/js/launcher.coffee:253
 msgid "Send to do_ck"
 msgstr ""
 
 #: ../resources/launcher/js/item.coffee:277
+#: ../resources/guide/js/launcher.coffee:256
 msgid "_Uninstall"
 msgstr ""
 
@@ -356,6 +360,7 @@ msgid "_Display this icon"
 msgstr ""
 
 #: ../resources/launcher/js/const.coffee:72
+#: ../resources/guide/js/launcher.coffee:255
 msgid "_Add to autostart"
 msgstr ""
 
@@ -368,6 +373,7 @@ msgid "Add to _favorites"
 msgstr ""
 
 #: ../resources/launcher/js/const.coffee:81
+#: ../resources/guide/js/launcher.coffee:251
 msgid "Remove from _favorites"
 msgstr ""
 
@@ -379,7 +385,7 @@ msgstr ""
 msgid "All Windows"
 msgstr ""
 
-#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:219
+#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:220
 msgid "Launcher"
 msgstr ""
 
@@ -391,19 +397,19 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: ../resources/guide/js/dss.coffee:28
+#: ../resources/guide/js/dss.coffee:30
 msgid "Well, please trigger the lower right corner again"
 msgstr ""
 
-#: ../resources/guide/js/dss.coffee:29
+#: ../resources/guide/js/dss.coffee:31
 msgid "tips：Click the setting icon on dock to implement"
 msgstr ""
 
-#: ../resources/guide/js/dss.coffee:56
+#: ../resources/guide/js/dss.coffee:76
 msgid "Here is the system setting area"
 msgstr ""
 
-#: ../resources/guide/js/dss.coffee:57
+#: ../resources/guide/js/dss.coffee:77
 msgid ""
 "tips：Hover the setting icon on dock to quickly implement some setting "
 "functions"
@@ -517,55 +523,55 @@ msgstr ""
 msgid "I am older,exit directly"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:30
+#: ../resources/guide/js/launcher.coffee:32
 msgid ""
 "Sliding the mouse to the upper left corner or clicking on the launcher icon "
 "both can start \"Application Launcher\""
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:73
+#: ../resources/guide/js/launcher.coffee:80
 msgid ""
 "What shown in the first screen of \" launcher\" are the applications of "
 "collection"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:89
+#: ../resources/guide/js/launcher.coffee:96
 msgid ""
 "Please click on the \"All Applications\" icon , you will see all applications"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:102
+#: ../resources/guide/js/launcher.coffee:109
 msgid "All programs can be seen by scrolling the mouse up and down."
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:145
+#: ../resources/guide/js/launcher.coffee:152
 msgid "You can also click on the left classification navigation to locate"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:192
+#: ../resources/guide/js/launcher.coffee:199
 msgid ""
 "Use the keyboard searching to find applications you want\n"
 "We try\"deepin\" keyword to see which applications shown"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:193
+#: ../resources/guide/js/launcher.coffee:200
 msgid "tips：Please directly enter the word \"deepin\""
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:206
+#: ../resources/guide/js/launcher.coffee:213
 msgid ""
 "Click the right mouse button on the application icon to call up the context "
 "menu\n"
 "Clicking on the menu item will achieve its function"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:207
+#: ../resources/guide/js/launcher.coffee:214
 msgid ""
 "tips:You can also directly use the left mouse button to drag the icon to the "
 "dock, favicon or trash"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:220
+#: ../resources/guide/js/launcher.coffee:227
 msgid "Use the right mouse button to send three icons to the desktop"
 msgstr ""
 
@@ -623,7 +629,7 @@ msgstr ""
 msgid "Invalid Password"
 msgstr ""
 
-#: ../app/dock/dock.c:333
+#: ../app/dock/dock.c:314
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr ""
 

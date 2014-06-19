@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-14 10:17+0800\n"
+"POT-Creation-Date: 2014-06-19 14:47+0800\n"
 "PO-Revision-Date: 2014-06-09 17:59+0800\n"
 "Last-Translator: Deepin Translation Team <support@linuxdeepin.com>\n"
 "Language-Team: Deepin Translation Team <support@linuxdeepin.com>\n"
@@ -45,6 +45,7 @@ msgstr "警告"
 #: ../resources/desktop/js/richdir.coffee:133
 #: ../resources/desktop/js/richdir.coffee:762
 #: ../resources/launcher/js/item.coffee:268
+#: ../resources/guide/js/launcher.coffee:249
 msgid "_Open"
 msgstr "打开(_O)"
 
@@ -98,7 +99,7 @@ msgid "Home"
 msgstr "主文件夹"
 
 #: ../resources/desktop/js/specialitem.coffee:175
-#: ../resources/dock/js/main.coffee:156 ../resources/dock/js/main.coffee:221
+#: ../resources/dock/js/main.coffee:157 ../resources/dock/js/main.coffee:222
 msgid "Trash"
 msgstr "回收站"
 
@@ -122,47 +123,47 @@ msgstr "软件中心"
 msgid "Untitled"
 msgstr "未命名"
 
-#: ../resources/desktop/js/grid.coffee:995
+#: ../resources/desktop/js/grid.coffee:1022
 msgid "_Name"
 msgstr "名称(_N)"
 
-#: ../resources/desktop/js/grid.coffee:996
+#: ../resources/desktop/js/grid.coffee:1023
 msgid "Last modified _time"
 msgstr "最近修改时间(_T)"
 
-#: ../resources/desktop/js/grid.coffee:1001
+#: ../resources/desktop/js/grid.coffee:1028
 msgid "_Folder"
 msgstr "文件夹(_F)"
 
-#: ../resources/desktop/js/grid.coffee:1002
+#: ../resources/desktop/js/grid.coffee:1029
 msgid "_Text document"
 msgstr "文本文档(_T)"
 
-#: ../resources/desktop/js/grid.coffee:1018
+#: ../resources/desktop/js/grid.coffee:1045
 msgid "_Sort by"
 msgstr "排序方式(_S)"
 
-#: ../resources/desktop/js/grid.coffee:1019
+#: ../resources/desktop/js/grid.coffee:1046
 msgid "_New"
 msgstr "新建(_N)"
 
-#: ../resources/desktop/js/grid.coffee:1020
+#: ../resources/desktop/js/grid.coffee:1047
 msgid "Open in _terminal"
 msgstr "在终端中打开(_T)"
 
-#: ../resources/desktop/js/grid.coffee:1021
+#: ../resources/desktop/js/grid.coffee:1048
 msgid "_Paste"
 msgstr "粘贴(_P)"
 
-#: ../resources/desktop/js/grid.coffee:1023
+#: ../resources/desktop/js/grid.coffee:1050
 msgid "_Display settings"
 msgstr "显示设置(_D)"
 
-#: ../resources/desktop/js/grid.coffee:1024
+#: ../resources/desktop/js/grid.coffee:1051
 msgid "_Corner navigation"
 msgstr "热区设置(_C)"
 
-#: ../resources/desktop/js/grid.coffee:1025
+#: ../resources/desktop/js/grid.coffee:1052
 msgid "Pe_rsonalize"
 msgstr "个性化(_R)"
 
@@ -314,14 +315,17 @@ msgid "Only the second Screen"
 msgstr "仅在第二屏上显示"
 
 #: ../resources/launcher/js/item.coffee:271
+#: ../resources/guide/js/launcher.coffee:252
 msgid "Send to d_esktop"
 msgstr "发送到桌面(_E)"
 
 #: ../resources/launcher/js/item.coffee:274
+#: ../resources/guide/js/launcher.coffee:253
 msgid "Send to do_ck"
 msgstr "添加到任务栏(_C)"
 
 #: ../resources/launcher/js/item.coffee:277
+#: ../resources/guide/js/launcher.coffee:256
 msgid "_Uninstall"
 msgstr "卸载"
 
@@ -358,6 +362,7 @@ msgid "_Display this icon"
 msgstr "显示该图标(_D)"
 
 #: ../resources/launcher/js/const.coffee:72
+#: ../resources/guide/js/launcher.coffee:255
 msgid "_Add to autostart"
 msgstr "添加至开机启动项(_A)"
 
@@ -370,6 +375,7 @@ msgid "Add to _favorites"
 msgstr "添加至常用项(_F)"
 
 #: ../resources/launcher/js/const.coffee:81
+#: ../resources/guide/js/launcher.coffee:251
 msgid "Remove from _favorites"
 msgstr "从常用项中删除(_F)"
 
@@ -381,7 +387,7 @@ msgstr "控制中心"
 msgid "All Windows"
 msgstr "所有窗口"
 
-#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:219
+#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:220
 msgid "Launcher"
 msgstr "启动器"
 
@@ -393,19 +399,19 @@ msgstr "桌面"
 msgid "None"
 msgstr "无"
 
-#: ../resources/guide/js/dss.coffee:28
+#: ../resources/guide/js/dss.coffee:30
 msgid "Well, please trigger the lower right corner again"
 msgstr "很好！请你再次触发右下角"
 
-#: ../resources/guide/js/dss.coffee:29
+#: ../resources/guide/js/dss.coffee:31
 msgid "tips：Click the setting icon on dock to implement"
 msgstr "单击dock上的设置图标也可以实现"
 
-#: ../resources/guide/js/dss.coffee:56
+#: ../resources/guide/js/dss.coffee:76
 msgid "Here is the system setting area"
 msgstr "此处是系统设置区域"
 
-#: ../resources/guide/js/dss.coffee:57
+#: ../resources/guide/js/dss.coffee:77
 msgid ""
 "tips：Hover the setting icon on dock to quickly implement some setting "
 "functions"
@@ -523,32 +529,32 @@ msgstr "开始"
 msgid "I am older,exit directly"
 msgstr "我是老用户，直接退出"
 
-#: ../resources/guide/js/launcher.coffee:30
+#: ../resources/guide/js/launcher.coffee:32
 msgid ""
 "Sliding the mouse to the upper left corner or clicking on the launcher icon "
 "both can start \"Application Launcher\""
 msgstr "鼠标滑动到左上角，或者点击启动器图标都可以启动“应用程序启动器”"
 
-#: ../resources/guide/js/launcher.coffee:73
+#: ../resources/guide/js/launcher.coffee:80
 msgid ""
 "What shown in the first screen of \" launcher\" are the applications of "
 "collection"
 msgstr "在“启动器”第一屏显示的是收藏的应用"
 
-#: ../resources/guide/js/launcher.coffee:89
+#: ../resources/guide/js/launcher.coffee:96
 msgid ""
 "Please click on the \"All Applications\" icon , you will see all applications"
 msgstr " 请点击“所有应用”图标，您将看到所有应用"
 
-#: ../resources/guide/js/launcher.coffee:102
+#: ../resources/guide/js/launcher.coffee:109
 msgid "All programs can be seen by scrolling the mouse up and down."
 msgstr "上下滚动鼠标滚轮可以查看所有程序"
 
-#: ../resources/guide/js/launcher.coffee:145
+#: ../resources/guide/js/launcher.coffee:152
 msgid "You can also click on the left classification navigation to locate"
 msgstr "您也可以点击左侧分类导航来定位"
 
-#: ../resources/guide/js/launcher.coffee:192
+#: ../resources/guide/js/launcher.coffee:199
 msgid ""
 "Use the keyboard searching to find applications you want\n"
 "We try\"deepin\" keyword to see which applications shown"
@@ -556,11 +562,11 @@ msgstr ""
 "使用键盘搜索来查找你想要的应用\n"
 "我们来试试“deepin”这个关键字吧，看会显示哪些应用"
 
-#: ../resources/guide/js/launcher.coffee:193
+#: ../resources/guide/js/launcher.coffee:200
 msgid "tips：Please directly enter the word \"deepin\""
 msgstr "提示：请直接输入单词“deepin”"
 
-#: ../resources/guide/js/launcher.coffee:206
+#: ../resources/guide/js/launcher.coffee:213
 msgid ""
 "Click the right mouse button on the application icon to call up the context "
 "menu\n"
@@ -569,13 +575,13 @@ msgstr ""
 "在应用图标上单击鼠标右键可以调出右键菜单\n"
 "点击菜单项将实现其功能"
 
-#: ../resources/guide/js/launcher.coffee:207
+#: ../resources/guide/js/launcher.coffee:214
 msgid ""
 "tips:You can also directly use the left mouse button to drag the icon to the "
 "dock, favicon or trash"
 msgstr "提示：你也可以直接用鼠标左键拖拽图标到dock、收藏图标或者垃圾箱上"
 
-#: ../resources/guide/js/launcher.coffee:220
+#: ../resources/guide/js/launcher.coffee:227
 msgid "Use the right mouse button to send three icons to the desktop"
 msgstr "使用鼠标右键发送3个图标到桌面"
 
@@ -633,7 +639,7 @@ msgstr "%s%d秒后自动重试"
 msgid "Invalid Password"
 msgstr "密码错误"
 
-#: ../app/dock/dock.c:333
+#: ../app/dock/dock.c:314
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr "Compiz未启用致使任务栏无法启动"
 
