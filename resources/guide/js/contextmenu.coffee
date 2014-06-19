@@ -16,6 +16,7 @@ class ContextMenu extends Widget
         @ul = create_element("ul","",@menubg)
         for menu,i in @menu_text
             @li[i] = create_element("li","",@ul)
+            @li[i].style.cursor = "default"
             switch menu.type
                 when MENU.cutline then @li[i].setAttribute("class","cutline")
                 when MENU.option
@@ -24,13 +25,16 @@ class ContextMenu extends Widget
             
                 when MENU.selected
                     @selected_index = i
+                    @li[i].style.cursor = "pointer"
                     @li[i].setAttribute("class","selected")
                     @li[i].textContent = menu.text
     
     set_pos : (x,y,position_type = "fixed",type = POS_TYPE.leftup) ->
         set_pos(@element,x,y,position_type,type)
 
-    selected_click: (@cd) ->
-        @li[@selected_index].addEventListener("click",@cb?())
+    selected_click: (cb) ->
+        @li[@selected_index].addEventListener("click",=>
+            cb?()
+        )
 
 

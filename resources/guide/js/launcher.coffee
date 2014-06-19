@@ -231,12 +231,16 @@ class LauncherMenu extends Page
         
         if DEBUG then @launcher.show()
         
-        app1 = @app_x_y(1)
-        app2 = @app_x_y(2)
+        app1 = @app_x_y(2)
+        app2 = @app_x_y(7)
         menu1 = @menu_create(app1.x,app1.y,=>
-            echo "click"
-            @element.removeChild(menu1.element)
-            @menu_create(app2.x,app2.y,@switch_page)
+            src1 = "/usr/share/applications/deepin-movie.desktop"
+            DCore.Guide.copy_file_to_desktop(src1)
+            @menu_create(app2.x,app2.y,=>
+                src2 = "/usr/share/applications/deepin-music-player.desktop"
+                DCore.Guide.copy_file_to_desktop(src2)
+                @switch_page()
+            )
         )
 
     app_x_y: (n) ->
@@ -250,7 +254,7 @@ class LauncherMenu extends Page
             {type:MENU.cutline,text:""},
             {type:MENU.option,text:_("Remove from _favorites")},
             {type:MENU.selected,text:_("Send to d_esktop")},
-            {type:MENU.selected,text:_("Send to do_ck")},
+            {type:MENU.option,text:_("Send to do_ck")},
             {type:MENU.cutline,text:""},
             {type:MENU.option,text:_("_Add to autostart")},
             {type:MENU.option,text:_("_Uninstall")}
@@ -258,28 +262,19 @@ class LauncherMenu extends Page
         @contextmenu = new ContextMenu("launcher_contextmenu",@element)
         @contextmenu.menu_create(@menu)
         @contextmenu.set_pos(x,y)
-        @contextmenu.selected_click(cb)
-        return @contextmenu
-
+        @contextmenu.selected_click(=>
+            @element.removeChild(@contextmenu.element)
+            cb?()
+        )
+    
     signal: ->
         @launcher?.hide_signal(=>
             @launcher?.show()
         )
-        signal_times = 0
-        signal_times_switch = each_item_update_times * desktop_file_numbers
-        @desktop?.item_signal(=>
-            signal_times++
-            echo "desktop_file_signal times:#{signal_times}"
-            if signal_times == signal_times_switch then signal_times = 0
-            else return
-            @switch_page()
-        )
-
 
     switch_page: ->
         setTimeout(=>
             @launcher?.hide_signal_disconnect()
-            @desktop?.item_signal_disconnect()
             @launcher?.hide()
             #DCore.Guide.spawn_command_sync("/usr/lib/deepin-daemon/desktop-toggle")
             guide?.switch_page(@,"DesktopRichDir")

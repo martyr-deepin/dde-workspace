@@ -165,7 +165,7 @@ body_show = ->
 
 each_item_update_times = 3
 each_richdir_update_times = 1
-desktop_file_numbers = 3
+desktop_file_numbers = 2
 
 
 if DCore
