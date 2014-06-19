@@ -66,6 +66,7 @@ class HideStatusManager
     changeToHide:()->
         console.log("changeToHide: change to hide")
         @changeState(HideState.Hidding, "", "")
+        $EW.undraw()
 
     changeToShow:()->
         console.log("changeToShow: change to show")
