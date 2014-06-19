@@ -12,8 +12,8 @@ add_dependencies(${NAME} ${NAME}_js)
 target_link_libraries(${NAME} dcom dbus Xtst ${DWEBVIEW_LIBRARIES})
 
 SET_TARGET_PROPERTIES(${NAME}
-	PROPERTIES OUTPUT_NAME dde-${NAME}
-	)
+    PROPERTIES OUTPUT_NAME dde-${NAME}
+    )
 
 execute_process(
     COMMAND make
