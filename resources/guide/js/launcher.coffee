@@ -230,6 +230,7 @@ class LauncherMenu extends Page
         @signal()
         
         if DEBUG then @launcher.show()
+        
         app1 = @app_x_y(1)
         app2 = @app_x_y(2)
         menu1 = @menu_create(app1.x,app1.y,=>

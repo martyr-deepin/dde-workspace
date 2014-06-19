@@ -40,9 +40,11 @@ class Guide extends Widget
         @create_page(new_page_cls_name)
     
     create_page: (cls_name)->
+        echo "create_page"
         DCore.Guide.disable_keyboard()
         DCore.Guide.disable_right_click()
         enableZoneDetect(false)
+        echo "create_page #{cls_name}"
         switch cls_name
             when "Welcome"
                 page = new Welcome(cls_name)
