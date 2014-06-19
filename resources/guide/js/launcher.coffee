@@ -224,7 +224,7 @@ class LauncherMenu extends Page
         @launcher = new Launcher()
         @desktop = new Desktop()
         
-        @message = _("Use the right mouse button to send three icons to the desktop")
+        @message = _("Use the right mouse button to send two icons to the desktop")
         @show_message(@message)
         #simulate_rightclick(@)
         @signal()

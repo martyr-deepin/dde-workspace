@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Destkop Environment\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-19 14:47+0800\n"
+"POT-Creation-Date: 2014-06-19 17:04+0800\n"
 "PO-Revision-Date: 2013-12-13 06:57+0000\n"
 "Last-Translator: lihongwu <lihongwu1987@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/deepin-destkop-"
@@ -50,7 +50,7 @@ msgstr "Advertencia"
 #: ../resources/desktop/js/richdir.coffee:133
 #: ../resources/desktop/js/richdir.coffee:762
 #: ../resources/launcher/js/item.coffee:268
-#: ../resources/guide/js/launcher.coffee:249
+#: ../resources/guide/js/launcher.coffee:253
 msgid "_Open"
 msgstr "_Abrir"
 
@@ -198,7 +198,7 @@ msgid "$ sudo apt-get install deepin-desktop-Environment\n"
 msgstr ""
 
 #: ../resources/greeter/js/message.coffee:69
-msgid "\t\t\t\t-----No desktop sessions available!-----\n"
+msgid "\t\t\t\t-----No available desktop sessions!-----\n"
 msgstr ""
 
 #: ../resources/greeter/js/user.coffee:25
@@ -320,17 +320,17 @@ msgid "Only the second Screen"
 msgstr ""
 
 #: ../resources/launcher/js/item.coffee:271
-#: ../resources/guide/js/launcher.coffee:252
+#: ../resources/guide/js/launcher.coffee:256
 msgid "Send to d_esktop"
 msgstr "Enviar al _escritorio"
 
 #: ../resources/launcher/js/item.coffee:274
-#: ../resources/guide/js/launcher.coffee:253
+#: ../resources/guide/js/launcher.coffee:257
 msgid "Send to do_ck"
 msgstr "Enviar a la barra de _acoplamiento"
 
 #: ../resources/launcher/js/item.coffee:277
-#: ../resources/guide/js/launcher.coffee:256
+#: ../resources/guide/js/launcher.coffee:260
 msgid "_Uninstall"
 msgstr ""
 
@@ -368,7 +368,7 @@ msgid "_Display this icon"
 msgstr "_Mostrar este ícono"
 
 #: ../resources/launcher/js/const.coffee:72
-#: ../resources/guide/js/launcher.coffee:255
+#: ../resources/guide/js/launcher.coffee:259
 msgid "_Add to autostart"
 msgstr "_Añadir al autoarranque"
 
@@ -382,7 +382,7 @@ msgid "Add to _favorites"
 msgstr "_Añadir al autoarranque"
 
 #: ../resources/launcher/js/const.coffee:81
-#: ../resources/guide/js/launcher.coffee:251
+#: ../resources/guide/js/launcher.coffee:255
 #, fuzzy
 msgid "Remove from _favorites"
 msgstr "_Eliminar del autoarranque"
@@ -462,7 +462,7 @@ msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:27
 msgid ""
-"Let's overlap the other two icons on the first icon \n"
+"Let's overlap the other icon on the first icon \n"
 " to generate \"application group\""
 msgstr ""
 
@@ -592,7 +592,7 @@ msgid ""
 msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:227
-msgid "Use the right mouse button to send three icons to the desktop"
+msgid "Use the right mouse button to send two icons to the desktop"
 msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:12

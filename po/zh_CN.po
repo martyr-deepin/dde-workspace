@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-19 14:47+0800\n"
+"POT-Creation-Date: 2014-06-19 17:04+0800\n"
 "PO-Revision-Date: 2014-06-09 17:59+0800\n"
 "Last-Translator: Deepin Translation Team <support@linuxdeepin.com>\n"
 "Language-Team: Deepin Translation Team <support@linuxdeepin.com>\n"
@@ -45,7 +45,7 @@ msgstr "警告"
 #: ../resources/desktop/js/richdir.coffee:133
 #: ../resources/desktop/js/richdir.coffee:762
 #: ../resources/launcher/js/item.coffee:268
-#: ../resources/guide/js/launcher.coffee:249
+#: ../resources/guide/js/launcher.coffee:253
 msgid "_Open"
 msgstr "打开(_O)"
 
@@ -194,7 +194,7 @@ msgid "$ sudo apt-get install deepin-desktop-Environment\n"
 msgstr "$ sudo apt-get install deepin-desktop-Environment\n"
 
 #: ../resources/greeter/js/message.coffee:69
-msgid "\t\t\t\t-----No desktop sessions available!-----\n"
+msgid "\t\t\t\t-----No available desktop sessions!-----\n"
 msgstr "\t\t\t\t-----无可用的桌面环境!-----\n"
 
 #: ../resources/greeter/js/user.coffee:25
@@ -315,17 +315,17 @@ msgid "Only the second Screen"
 msgstr "仅在第二屏上显示"
 
 #: ../resources/launcher/js/item.coffee:271
-#: ../resources/guide/js/launcher.coffee:252
+#: ../resources/guide/js/launcher.coffee:256
 msgid "Send to d_esktop"
 msgstr "发送到桌面(_E)"
 
 #: ../resources/launcher/js/item.coffee:274
-#: ../resources/guide/js/launcher.coffee:253
+#: ../resources/guide/js/launcher.coffee:257
 msgid "Send to do_ck"
 msgstr "添加到任务栏(_C)"
 
 #: ../resources/launcher/js/item.coffee:277
-#: ../resources/guide/js/launcher.coffee:256
+#: ../resources/guide/js/launcher.coffee:260
 msgid "_Uninstall"
 msgstr "卸载"
 
@@ -362,7 +362,7 @@ msgid "_Display this icon"
 msgstr "显示该图标(_D)"
 
 #: ../resources/launcher/js/const.coffee:72
-#: ../resources/guide/js/launcher.coffee:255
+#: ../resources/guide/js/launcher.coffee:259
 msgid "_Add to autostart"
 msgstr "添加至开机启动项(_A)"
 
@@ -375,7 +375,7 @@ msgid "Add to _favorites"
 msgstr "添加至常用项(_F)"
 
 #: ../resources/launcher/js/const.coffee:81
-#: ../resources/guide/js/launcher.coffee:251
+#: ../resources/guide/js/launcher.coffee:255
 msgid "Remove from _favorites"
 msgstr "从常用项中删除(_F)"
 
@@ -451,10 +451,10 @@ msgstr "正在为运行做一些准备..."
 
 #: ../resources/guide/js/desktop.coffee:27
 msgid ""
-"Let's overlap the other two icons on the first icon \n"
+"Let's overlap the other icon on the first icon \n"
 " to generate \"application group\""
 msgstr ""
-"让我们把其他两个图标重合到第一个图标上\n"
+"让我们把另外一个图标重合到第一个图标上\n"
 "来生成“应用程序组”"
 
 #: ../resources/guide/js/desktop.coffee:54
@@ -582,8 +582,8 @@ msgid ""
 msgstr "提示：你也可以直接用鼠标左键拖拽图标到dock、收藏图标或者垃圾箱上"
 
 #: ../resources/guide/js/launcher.coffee:227
-msgid "Use the right mouse button to send three icons to the desktop"
-msgstr "使用鼠标右键发送3个图标到桌面"
+msgid "Use the right mouse button to send two icons to the desktop"
+msgstr "使用鼠标右键发送2个图标到桌面"
 
 #: ../resources/dock/js/global_menu.coffee:12
 msgid "keep _showing"
