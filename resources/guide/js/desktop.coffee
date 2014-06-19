@@ -26,12 +26,65 @@ class DesktopRichDir extends Page
         
         @message = _("Let's overlap the other icon on the first icon \n to generate \"application group\"")
         @show_message(@message)
+
+        @pointer_create()
+        @hand_create()
+        @signal()
+    
+    hand_create: ->
+        @scroll = create_element("div","scroll",@element)
+        @scroll.style.position = "absolute"
+        @scroll.style.top = "37%"
+        @scroll.style.right = "200px"
         
+        @scroll_down = create_img("scroll_down","#{@img_src}/pointer_down.png",@scroll)
+        @scroll_up = create_img("scroll_up","#{@img_src}/pointer_up.png",@scroll)
+        
+        width = height = 64
+        @scroll.style.width = width
+        @scroll.style.height = height * 2 + 50
+        @scroll_down.style.width = @scroll_up.style.width = width
+        @scroll_down.style.height = @scroll_up.style.height = height
+        @scroll_up.style.position = "absolute"
+        @scroll_up.style.left = 0
+        @scroll_up.style.bottom = 0
+        @scroll_up.style.display = "none"
+        @scroll_animation(@scroll_down,0 + height,0,"top","absolute")
+
+
+ 
+    up_animation:(el,y0,y1,type = "top",pos = "absolute",cb) ->
+        el.style.display = "block"
+        el.style.position = pos
+        t_show = 1000
+        pos0 = null
+        pos1 = null
+        animate_init = ->
+            switch type
+                when "top"
+                    el.style.top = y0
+                    pos0 = {top:y0}
+                    pos1 = {top:y1}
+                when "bottom"
+                    el.style.bottom = y0
+                    pos0 = {bottom:y0}
+                    pos1 = {bottom:y1}
+        
+        animate_init()
+        jQuery(el).animate(
+            pos1,t_show,"linear",=>
+                animate_init()
+                jQuery(el).animate(pos1,t_show,"linear",cb?())
+        )
+
+
+    pointer_create: ->
         @corner_leftup = new Pointer("circle_richdir",@element)
         @corner_leftup.create_pointer(AREA_TYPE.circle,POS_TYPE.leftup)
         @corner_leftup.set_area_pos(18,13,"fixed",POS_TYPE.leftup)
         @corner_leftup.show_animation()
-        
+    
+    signal: ->
         signal_times = 0
         signal_times_switch = 1 * (desktop_file_numbers - 1)
         @desktop?.item_signal(=>
@@ -131,10 +184,13 @@ class DesktopZone extends Page
         #)
     
         @menu_create(screen.x * 0.4, screen.y * 0.5,=>
-            DCore.Guide.run_deepin_settings("/usr/lib/deepin-daemon/dde-zone")
-            #DCore.Guide.spawn_command_sync("/usr/lib/deepin-daemon/dde-zone")
             @pointer_create()
-            #@zone_check()
+            setTimeout(=>
+                DCore.Guide.enable_keyboard()
+                DCore.Guide.spawn_command_sync("/usr/lib/deepin-daemon/dde-zone")
+                DCore.Guide.disable_keyboard()
+            
+            ,50)
         )
 
     menu_create: (x,y,cb) ->
@@ -157,7 +213,6 @@ class DesktopZone extends Page
         )
     
     zone_check: ->
-        #TODO:check zone launched signal to use pointer_create function
         echo "zone_check"
         interval_is_zone = setInterval(=>
             if(DCore.Guide.is_zone_launched())
