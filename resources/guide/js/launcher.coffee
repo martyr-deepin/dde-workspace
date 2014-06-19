@@ -233,7 +233,7 @@ class LauncherMenu extends Page
         
         app1 = @app_x_y(2)
         app2 = @app_x_y(7)
-        menu1 = @menu_create(app1.x,app1.y,=>
+        @menu_create(app1.x,app1.y,=>
             src1 = "/usr/share/applications/deepin-movie.desktop"
             DCore.Guide.copy_file_to_desktop(src1)
             @menu_create(app2.x,app2.y,=>
