@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-19 17:04+0800\n"
+"POT-Creation-Date: 2014-06-19 20:08+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -99,7 +99,7 @@ msgid "Home"
 msgstr ""
 
 #: ../resources/desktop/js/specialitem.coffee:175
-#: ../resources/dock/js/main.coffee:157 ../resources/dock/js/main.coffee:222
+#: ../resources/dock/js/main.coffee:150 ../resources/dock/js/main.coffee:215
 msgid "Trash"
 msgstr ""
 
@@ -140,30 +140,37 @@ msgid "_Text document"
 msgstr ""
 
 #: ../resources/desktop/js/grid.coffee:1045
+#: ../resources/guide/js/desktop.coffee:198
 msgid "_Sort by"
 msgstr ""
 
 #: ../resources/desktop/js/grid.coffee:1046
+#: ../resources/guide/js/desktop.coffee:199
 msgid "_New"
 msgstr ""
 
 #: ../resources/desktop/js/grid.coffee:1047
+#: ../resources/guide/js/desktop.coffee:200
 msgid "Open in _terminal"
 msgstr ""
 
 #: ../resources/desktop/js/grid.coffee:1048
+#: ../resources/guide/js/desktop.coffee:201
 msgid "_Paste"
 msgstr ""
 
 #: ../resources/desktop/js/grid.coffee:1050
+#: ../resources/guide/js/desktop.coffee:203
 msgid "_Display settings"
 msgstr ""
 
 #: ../resources/desktop/js/grid.coffee:1051
+#: ../resources/guide/js/desktop.coffee:204
 msgid "_Corner navigation"
 msgstr ""
 
 #: ../resources/desktop/js/grid.coffee:1052
+#: ../resources/guide/js/desktop.coffee:205
 msgid "Pe_rsonalize"
 msgstr ""
 
@@ -385,7 +392,7 @@ msgstr ""
 msgid "All Windows"
 msgstr ""
 
-#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:220
+#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:213
 msgid "Launcher"
 msgstr ""
 
@@ -449,53 +456,53 @@ msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:27
 msgid ""
-"Let's overlap the other icon on the first icon \n"
+"Let's drag the other icon on the first icon \n"
 " to generate \"application group\""
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:54
+#: ../resources/guide/js/desktop.coffee:107
 msgid "Well, you have learned how to create a \"application group\""
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:55
+#: ../resources/guide/js/desktop.coffee:108
 msgid "tips：Right-click on the application group will provide more functions"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:68
+#: ../resources/guide/js/desktop.coffee:121
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different "
 "events\n"
 "Please move to the left up corner first to show or hide Launcher"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:69
+#: ../resources/guide/js/desktop.coffee:122
 msgid ""
 "tips：Please trigger successively by hints, click on the blank area to return"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:74
+#: ../resources/guide/js/desktop.coffee:127
 msgid "Show/Hide Launcher"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:75
+#: ../resources/guide/js/desktop.coffee:128
 msgid "Show/Hide Desktop"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:76
+#: ../resources/guide/js/desktop.coffee:129
 msgid "Show/Hide Control Center"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:77
+#: ../resources/guide/js/desktop.coffee:130
 msgid "No default functions setted in right up corner"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:121
+#: ../resources/guide/js/desktop.coffee:174
 msgid ""
 "Right-click on desktop black area to call up the menu, select \"Corner "
 "navigation\" to set the corner used"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:122
+#: ../resources/guide/js/desktop.coffee:175
 msgid "tips：Click on the interface of corner navigation blank area to return"
 msgstr ""
 

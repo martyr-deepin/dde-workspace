@@ -24,7 +24,7 @@ class DesktopRichDir extends Page
         DCore.Guide.disable_guide_region()
         @desktop = new Desktop()
         
-        @message = _("Let's overlap the other icon on the first icon \n to generate \"application group\"")
+        @message = _("Let's drag the other icon on the first icon \n to generate \"application group\"")
         @show_message(@message)
 
         @pointer_create()
