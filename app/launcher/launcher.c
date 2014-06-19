@@ -212,7 +212,9 @@ void launcher_show()
         g_warning("launcher emit Shown signal failed: %s", err->message);
         g_error_free(err);
     }
-    js_post_signal("launcher_shown");
+    if (is_js_already) {
+        js_post_signal("launcher_shown");
+    }
 }
 
 
@@ -308,8 +310,13 @@ GFile* launcher_get_desktop_entry()
 JS_EXPORT_API
 void launcher_webview_ok()
 {
+    static gboolean inited = FALSE;
     dde_session_register();
     is_js_already = TRUE;
+    if (!is_hidden && !inited) {
+        inited = TRUE;
+        js_post_signal("launcher_shown");
+    }
 }
 
 
