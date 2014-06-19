@@ -33,9 +33,12 @@ class DesktopRichDir extends Page
     
     hand_create: ->
         @scroll = create_element("div","scroll",@element)
+        @scroll.style.display = "-webkit-box"
         @scroll.style.position = "absolute"
-        @scroll.style.top = "37%"
-        @scroll.style.right = "200px"
+        
+        _ITEM_HEIGHT_ = 84 + 4 * 2
+        @scroll.style.left = 18
+        @scroll.style.top = 13
         
         @scroll_down = create_img("scroll_down","#{@img_src}/pointer_down.png",@scroll)
         @scroll_up = create_img("scroll_up","#{@img_src}/pointer_up.png",@scroll)
@@ -49,11 +52,12 @@ class DesktopRichDir extends Page
         @scroll_up.style.left = 0
         @scroll_up.style.bottom = 0
         @scroll_up.style.display = "none"
-        @scroll_animation(@scroll_down,0 + height,0,"top","absolute")
+        @scroll_animation(@scroll_up, 0 - height,0,"bottom","absolute")
+        @scroll_animation(@scroll_down, 0 - height,0,"bottom","absolute")
 
 
  
-    up_animation:(el,y0,y1,type = "top",pos = "absolute",cb) ->
+    scroll_animation:(el,y0,y1,type = "top",pos = "absolute",cb) ->
         el.style.display = "block"
         el.style.position = pos
         t_show = 1000
