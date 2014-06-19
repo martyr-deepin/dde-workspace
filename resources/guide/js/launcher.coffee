@@ -232,7 +232,7 @@ class LauncherMenu extends Page
         if DEBUG then @launcher.show()
         
         app1 = @app_x_y(2)
-        app2 = @app_x_y(7)
+        app2 = @app_x_y(4)
         @menu_create(app1.x,app1.y,=>
             src1 = "/usr/share/applications/deepin-movie.desktop"
             DCore.Guide.copy_file_to_desktop(src1)
