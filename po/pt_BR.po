@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Destkop Environment\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-19 20:08+0800\n"
+"POT-Creation-Date: 2014-06-20 15:23+0800\n"
 "PO-Revision-Date: 2013-12-11 04:44+0000\n"
 "Last-Translator: 648trindade <rafaelgt.mbin@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/"
@@ -47,7 +47,7 @@ msgstr "Aviso"
 #: ../resources/desktop/js/richdir.coffee:133
 #: ../resources/desktop/js/richdir.coffee:762
 #: ../resources/launcher/js/item.coffee:268
-#: ../resources/guide/js/launcher.coffee:253
+#: ../resources/guide/js/launcher.coffee:236
 msgid "_Open"
 msgstr "_Abrir"
 
@@ -142,38 +142,38 @@ msgid "_Text document"
 msgstr "Documento de _Texto"
 
 #: ../resources/desktop/js/grid.coffee:1045
-#: ../resources/guide/js/desktop.coffee:198
+#: ../resources/guide/js/desktop.coffee:219
 msgid "_Sort by"
 msgstr "_Organizar por"
 
 #: ../resources/desktop/js/grid.coffee:1046
-#: ../resources/guide/js/desktop.coffee:199
+#: ../resources/guide/js/desktop.coffee:220
 msgid "_New"
 msgstr "_Novo"
 
 #: ../resources/desktop/js/grid.coffee:1047
-#: ../resources/guide/js/desktop.coffee:200
+#: ../resources/guide/js/desktop.coffee:221
 msgid "Open in _terminal"
 msgstr "Abrir no _terminal"
 
 #: ../resources/desktop/js/grid.coffee:1048
-#: ../resources/guide/js/desktop.coffee:201
+#: ../resources/guide/js/desktop.coffee:222
 msgid "_Paste"
 msgstr "Co_lar"
 
 #: ../resources/desktop/js/grid.coffee:1050
-#: ../resources/guide/js/desktop.coffee:203
+#: ../resources/guide/js/desktop.coffee:224
 msgid "_Display settings"
 msgstr "Configurações de _Tela"
 
 #: ../resources/desktop/js/grid.coffee:1051
-#: ../resources/guide/js/desktop.coffee:204
+#: ../resources/guide/js/desktop.coffee:225
 #, fuzzy
 msgid "_Corner navigation"
 msgstr "Configurações de _Tela"
 
 #: ../resources/desktop/js/grid.coffee:1052
-#: ../resources/guide/js/desktop.coffee:205
+#: ../resources/guide/js/desktop.coffee:226
 msgid "Pe_rsonalize"
 msgstr "Pe_rsonalizar"
 
@@ -324,17 +324,17 @@ msgid "Only the second Screen"
 msgstr ""
 
 #: ../resources/launcher/js/item.coffee:271
-#: ../resources/guide/js/launcher.coffee:256
+#: ../resources/guide/js/launcher.coffee:239
 msgid "Send to d_esktop"
 msgstr "Enviar para o d_esktop"
 
 #: ../resources/launcher/js/item.coffee:274
-#: ../resources/guide/js/launcher.coffee:257
+#: ../resources/guide/js/launcher.coffee:240
 msgid "Send to do_ck"
 msgstr "Enviar para a _barra"
 
 #: ../resources/launcher/js/item.coffee:277
-#: ../resources/guide/js/launcher.coffee:260
+#: ../resources/guide/js/launcher.coffee:243
 msgid "_Uninstall"
 msgstr ""
 
@@ -372,7 +372,7 @@ msgid "_Display this icon"
 msgstr "_Mostrar este ícone"
 
 #: ../resources/launcher/js/const.coffee:72
-#: ../resources/guide/js/launcher.coffee:259
+#: ../resources/guide/js/launcher.coffee:242
 msgid "_Add to autostart"
 msgstr "_Adicionar ao início automático"
 
@@ -386,7 +386,7 @@ msgid "Add to _favorites"
 msgstr "_Adicionar ao início automático"
 
 #: ../resources/launcher/js/const.coffee:81
-#: ../resources/guide/js/launcher.coffee:255
+#: ../resources/guide/js/launcher.coffee:238
 #, fuzzy
 msgid "Remove from _favorites"
 msgstr "_Remover do início automático"
@@ -421,11 +421,11 @@ msgstr ""
 msgid "tips：Click the setting icon on dock to implement"
 msgstr ""
 
-#: ../resources/guide/js/dss.coffee:76
+#: ../resources/guide/js/dss.coffee:77
 msgid "Here is the system setting area"
 msgstr ""
 
-#: ../resources/guide/js/dss.coffee:77
+#: ../resources/guide/js/dss.coffee:78
 msgid ""
 "tips：Hover the setting icon on dock to quickly implement some setting "
 "functions"
@@ -464,58 +464,58 @@ msgstr ""
 msgid "Prepare for operation ..."
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:27
+#: ../resources/guide/js/desktop.coffee:29
 msgid ""
 "Let's drag the other icon on the first icon \n"
 " to generate \"application group\""
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:107
+#: ../resources/guide/js/desktop.coffee:129
 msgid "Well, you have learned how to create a \"application group\""
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:108
+#: ../resources/guide/js/desktop.coffee:130
 msgid "tips：Right-click on the application group will provide more functions"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:121
+#: ../resources/guide/js/desktop.coffee:143
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different "
 "events\n"
 "Please move to the left up corner first to show or hide Launcher"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:122
+#: ../resources/guide/js/desktop.coffee:144
 msgid ""
 "tips：Please trigger successively by hints, click on the blank area to return"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:127
+#: ../resources/guide/js/desktop.coffee:149
 #, fuzzy
 msgid "Show/Hide Launcher"
 msgstr "Lançador"
 
-#: ../resources/guide/js/desktop.coffee:128
+#: ../resources/guide/js/desktop.coffee:150
 #, fuzzy
 msgid "Show/Hide Desktop"
 msgstr "Mostrar/Esconder Desktop"
 
-#: ../resources/guide/js/desktop.coffee:129
+#: ../resources/guide/js/desktop.coffee:151
 #, fuzzy
 msgid "Show/Hide Control Center"
 msgstr "Central de Aplicativos"
 
-#: ../resources/guide/js/desktop.coffee:130
+#: ../resources/guide/js/desktop.coffee:152
 msgid "No default functions setted in right up corner"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:174
+#: ../resources/guide/js/desktop.coffee:198
 msgid ""
 "Right-click on desktop black area to call up the menu, select \"Corner "
 "navigation\" to set the corner used"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:175
+#: ../resources/guide/js/desktop.coffee:199
 msgid "tips：Click on the interface of corner navigation blank area to return"
 msgstr ""
 
@@ -568,34 +568,38 @@ msgstr ""
 msgid "All programs can be seen by scrolling the mouse up and down."
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:152
+#: ../resources/guide/js/launcher.coffee:150
+msgid "Skip the step without scroll"
+msgstr ""
+
+#: ../resources/guide/js/launcher.coffee:159
 msgid "You can also click on the left classification navigation to locate"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:199
+#: ../resources/guide/js/launcher.coffee:182
 msgid ""
 "Use the keyboard searching to find applications you want\n"
 "We try\"deepin\" keyword to see which applications shown"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:200
+#: ../resources/guide/js/launcher.coffee:183
 msgid "tips：Please directly enter the word \"deepin\""
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:213
+#: ../resources/guide/js/launcher.coffee:196
 msgid ""
 "Click the right mouse button on the application icon to call up the context "
 "menu\n"
 "Clicking on the menu item will achieve its function"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:214
+#: ../resources/guide/js/launcher.coffee:197
 msgid ""
 "tips:You can also directly use the left mouse button to drag the icon to the "
 "dock, favicon or trash"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:227
+#: ../resources/guide/js/launcher.coffee:210
 msgid "Use the right mouse button to send two icons to the desktop"
 msgstr ""
 

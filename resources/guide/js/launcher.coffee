@@ -101,6 +101,7 @@ class LauncherScroll extends Page
         super
         @scrollup = false
         @scrolldown = false
+        inject_css(@element,"css/launcherscroll.css")
         new Launcher()?.show() if DEBUG
         @scroll_create()
         
@@ -146,7 +147,13 @@ class LauncherScroll extends Page
                     move_animation(@scroll_up, 0 - height,0,"bottom","absolute")
         )
 
-
+        @noscroll = create_element("div","noscroll",@element)
+        @noscroll.innerText = _("Skip the step without scroll")
+        @noscroll.addEventListener("click",(e) =>
+            e.stopPropagation()
+            @rect_pointer_create()
+        )
+    
     rect_pointer_create: ->
         @scroll.style.display = "none"
         @message_pointer = _("You can also click on the left classification navigation to locate")
