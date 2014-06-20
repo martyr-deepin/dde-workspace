@@ -40,19 +40,20 @@ class DesktopRichDir extends Page
         @scroll.style.left = 18
         @scroll.style.top = 13
         
-        @scroll_down = create_img("scroll_down","#{@img_src}/pointer_down.png",@scroll)
         @scroll_up = create_img("scroll_up","#{@img_src}/pointer_up.png",@scroll)
+        @scroll_down = create_img("scroll_down","#{@img_src}/fleur.png",@scroll)
         
         width = height = 64
         @scroll.style.width = width
         @scroll.style.height = height * 2 + 50
-        @scroll_down.style.width = @scroll_up.style.width = width
-        @scroll_down.style.height = @scroll_up.style.height = height
+        @scroll_down.style.width = 24
+        @scroll_down.style.height = 24
+        @scroll_up.style.width = width
+        @scroll_up.style.height = height
         @scroll_up.style.position = "absolute"
         @scroll_up.style.left = 0
         @scroll_up.style.bottom = 0
         @scroll_up.style.display = "none"
-        @scroll_animation(@scroll_up, 0 - height,0,"bottom","absolute")
         @scroll_animation(@scroll_down, 0 - height,0,"bottom","absolute")
 
 
@@ -172,6 +173,8 @@ class DesktopCorner extends Page
         
 
 class DesktopZone extends Page
+    restack_interval = null
+    
     constructor:(@id)->
         super
         
@@ -183,18 +186,15 @@ class DesktopZone extends Page
         @pos = ["leftup","leftdown","rightdown","rightup"]
         @corner = []
         
-        #simulate_rightclick(@,=>
-        #    @zone_check()
-        #)
+        simulate_rightclick(@,=>
+            @zone_check()
+        )
     
         @menu_create(screen.x * 0.4, screen.y * 0.5,=>
-            @pointer_create()
-            setTimeout(=>
-                DCore.Guide.enable_keyboard()
-                DCore.Guide.spawn_command_sync("/usr/lib/deepin-daemon/dde-zone")
-                DCore.Guide.disable_keyboard()
-            
-            ,50)
+            @zone_check()
+            DCore.Guide.enable_keyboard()
+            DCore.Guide.spawn_command_sync("/usr/lib/deepin-daemon/dde-zone",true)
+            DCore.Guide.disable_keyboard()
         )
 
     menu_create: (x,y,cb) ->
@@ -222,10 +222,19 @@ class DesktopZone extends Page
             if(DCore.Guide.is_zone_launched())
                 clearInterval(interval_is_zone)
                 @pointer_create()
-        ,500)
+        ,200)
 
     pointer_create: ->
         if @corner.length != 0 then return
+        
+        clearInterval(restack_interval)
+        interval = 0
+        restack_interval = setInterval(=>
+            interval++
+            DCore.Guide.restack()
+            clearInterval(restack_interval) if interval > 10
+        ,200)
+        
         length = @pos.length
         for p,i in @pos
             @corner[i] = new Pointer(p,@element)
@@ -242,7 +251,8 @@ class DesktopZone extends Page
                         DCore.Guide.enable_guide_region()
                         that.corner[index + 1].show_animation()
                     else
-                        DCore.Guide.spawn_command_sync("killall dde-zone")
+                        DCore.Guide.spawn_command_sync("killall dde-zone",true)
+                        clearInterval(restack_interval)
                         guide?.switch_page(that,"DssLaunch")
                 ,t_mid_switch_page)
             ,"mouseover")

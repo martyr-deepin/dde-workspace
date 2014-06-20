@@ -161,33 +161,6 @@ void guide_simulate_input(double input)
     guide_disable_keyboard();
 }
 
-JS_EXPORT_API
-void guide_run_deepin_settings(const char* cmd)
-{
-    GError* error=NULL;
-    char* cmd_line=g_strdup_printf("%s\n",cmd);
-    g_message("run_deepin_settings cmd :----%s----",cmd_line);
-    
-    GAppInfo* appinfo=g_app_info_create_from_commandline(cmd_line, NULL,
-                                                           G_APP_INFO_CREATE_NONE,
-                                                           &error);
-    g_free (cmd_line);
-    if (error!=NULL)
-    {
-        g_debug("run_deepin_settings error: %s", error->message);
-        g_error_free(error);
-    }
-    error = NULL;
-    g_app_info_launch(appinfo, NULL, NULL, &error);
-    if (error!=NULL)
-    {
-        g_debug("run_deepin_settings error: %s", error->message);
-        g_error_free(error);
-    }
-    g_object_unref(appinfo);
-}
-
-
 
 JS_EXPORT_API
 gboolean guide_is_zone_launched()
@@ -197,11 +170,15 @@ gboolean guide_is_zone_launched()
 }
 
 JS_EXPORT_API
-void guide_spawn_command_sync (const char* command){
+void guide_spawn_command_sync (const char* command,gboolean sync){
     GError *error = NULL;
     const gchar *cmd = g_strdup_printf ("%s",command);
     g_message ("g_spawn_command_line_sync:%s",cmd);
-    g_spawn_command_line_sync (cmd, NULL, NULL, NULL, &error);
+    if(sync){
+        g_spawn_command_line_sync (cmd, NULL, NULL, NULL, &error);
+    }else{
+        g_spawn_command_line_async (cmd, &error);
+    }
     if (error != NULL) {
         g_warning ("%s failed:%s\n",cmd, error->message);
         g_error_free (error);
@@ -242,6 +219,6 @@ JS_EXPORT_API
 void guide_copy_file_to_desktop(const char* src)
 {
     const char* cmd = g_strdup_printf("cp %s %s/",src,DESKTOP_DIR());
-    guide_spawn_command_sync(cmd);
+    guide_spawn_command_sync(cmd,true);
 }
 

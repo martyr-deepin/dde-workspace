@@ -55,6 +55,6 @@ class Welcome extends Widget
         ,200)
 
     prepare : =>
-        #DCore.Guide.spawn_command_sync("/usr/bin/dde-launcher --hidden")
+        #DCore.Guide.spawn_command_sync("/usr/bin/dde-launcher --hidden",true)
         guide?.switch_page(@,"Start")
 
