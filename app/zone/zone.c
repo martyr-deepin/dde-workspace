@@ -229,7 +229,6 @@ int main (int argc, char **argv)
     zone_gsettings = g_settings_new (ZONE_SCHEMA_ID);
 
     gtk_init (&argc, &argv);
-    gdk_window_set_cursor (gdk_get_default_root_window (), gdk_cursor_new (GDK_LEFT_PTR));
 
     container = create_web_container (FALSE, TRUE);
 

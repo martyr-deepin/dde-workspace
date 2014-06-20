@@ -71,15 +71,6 @@ int main (int argc, char **argv)
     gtk_widget_realize (get_container());
     gtk_widget_realize (webview);
 
-
-    {
-	/*void guide_disable_dock_region();*/
-	/*void guide_disable_right_click();*/
-	//TEST
-	/*guide_disable_dock_region();*/
-	/*guide_disable_right_click();*/
-    }
-
     GdkWindow* gdkwindow = gtk_widget_get_window (get_container());
     gdk_window_move_resize(gdkwindow, 0, 0, gdk_screen_width(), gdk_screen_height());
 

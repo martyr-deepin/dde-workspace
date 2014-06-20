@@ -207,36 +207,18 @@ int main (int argc, char **argv)
 
     check_version();
     init_i18n ();
-
     gtk_init (&argc, &argv);
-    gdk_window_set_cursor (gdk_get_default_root_window (), gdk_cursor_new (GDK_LEFT_PTR));
 
     container = create_web_container (FALSE, TRUE);
-    ensure_fullscreen (container);
-
-    gtk_window_set_decorated (GTK_WINDOW (container), FALSE);
-    gtk_window_set_skip_taskbar_hint (GTK_WINDOW (container), TRUE);
-    gtk_window_set_skip_pager_hint (GTK_WINDOW (container), TRUE);
-
-    gtk_window_fullscreen (GTK_WINDOW (container));
-    gtk_widget_set_events (GTK_WIDGET (container),
-                           gtk_widget_get_events (GTK_WIDGET (container))
-                           | GDK_POINTER_MOTION_MASK
-                           | GDK_BUTTON_PRESS_MASK
-                           | GDK_BUTTON_RELEASE_MASK
-                           | GDK_KEY_PRESS_MASK
-                           | GDK_KEY_RELEASE_MASK
-                           | GDK_EXPOSURE_MASK
-                           | GDK_VISIBILITY_NOTIFY_MASK
-                           | GDK_ENTER_NOTIFY_MASK
-                           | GDK_LEAVE_NOTIFY_MASK);
 
     GtkWidget *webview = d_webview_new_with_uri (CHOICE_HTML_PATH);
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
+    monitors_adaptive(container,webview);
 
 #ifdef NDEBUG
-    g_message(" lowpower Not DEBUG");
-    gtk_window_set_keep_above (GTK_WINDOW (container), TRUE);
+    grab = gs_grab_new ();
+    g_message("lowpower Not DEBUG");
+    g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
     g_signal_connect (container, "show", G_CALLBACK (show_cb), NULL);
     g_signal_connect (webview, "focus-out-event", G_CALLBACK( focus_out_cb), NULL);
 #endif
@@ -244,25 +226,14 @@ int main (int argc, char **argv)
     gtk_widget_realize (webview);
 
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
-    GdkRGBA rgba = { 0, 0, 0, 1.0 };
-    gdk_window_set_background_rgba (gdkwindow, &rgba);
-    gdk_window_set_skip_taskbar_hint (gdkwindow, TRUE);
-    gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_BLANK_CURSOR));
+    gdk_window_move_resize(gdkwindow, 0, 0, gdk_screen_width(), gdk_screen_height());
 
 #ifdef NDEBUG
     gdk_window_set_keep_above (gdkwindow, TRUE);
     gdk_window_set_override_redirect (gdkwindow, TRUE);
-    select_popup_events ();
-    gdk_window_add_filter (NULL, (GdkFilterFunc)xevent_filter, gdkwindow);
 #endif
 
-    grab = gs_grab_new ();
     gtk_widget_show_all (container);
-    gtk_widget_set_opacity (container,1.0);
-
-    gdk_window_focus (gtk_widget_get_window (container), 0);
-    gdk_window_stick (gdkwindow);
-
 
     gtk_main ();
 
