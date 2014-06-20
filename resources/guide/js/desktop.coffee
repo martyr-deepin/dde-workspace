@@ -21,15 +21,15 @@
 class DesktopRichDir extends Page
     
     hand_interval = null
+    timeout_check_if_done = null
     constructor:(@id)->
         super
-        DCore.Guide.disable_guide_region()
         @desktop = new Desktop()
         
         @message = _("Let's drag the other icon on the first icon \n to generate \"application group\"")
         @show_message(@message)
 
-        @pointer_create()
+        #@pointer_create()
         @pointer_hand_create()
         @signal()
     
@@ -58,13 +58,44 @@ class DesktopRichDir extends Page
         @hand_img.style.right = 0
         
         @pointer_hand_animation()
+        
+        jQuery(@pointer_hand).hover(=>
+            @stop_pointer_hand_animation()
+        ,=>
+            @pointer_hand_animation()
+        )
+        @interval_done()
+        #@pointer_hand.addEventListener("mouseover",=>
+        #    @stop_pointer_hand_animation()
+        #)
+        #@pointer_hand.addEventListener("mouseout",=>
+        #    @pointer_hand_animation()
+        #)
+
+    stop_pointer_hand_animation: ->
+        echo "stop_pointer_hand_animation"
+        DCore.Guide.disable_guide_region()
+        @pointer_up.style.display = "none"
+        @hand_img.style.display = "none"
+        clearInterval(hand_interval)
 
     pointer_hand_animation: ->
+        echo "pointer_hand_animation"
+        DCore.Guide.enable_guide_region()
         width = height = 64
         @pointer_up.style.display = "block"
+        @hand_img.style.display = "block"
+        move_animation(@hand_img, height / 2,height * 2,"bottom","absolute")
         hand_interval = setInterval(=>
             move_animation(@hand_img, height / 2,height * 2,"bottom","absolute")
         ,2100)
+
+
+    interval_done: ->
+        timeout_check_if_done = setInterval(=>
+            if @hand_img.style.display isnt "none" then return
+            @pointer_hand_animation()
+        ,t_check_if_done)
 
 
     pointer_create: ->
@@ -86,6 +117,7 @@ class DesktopRichDir extends Page
                 @desktop?.item_signal_disconnect()
                 DCore.Guide.enable_guide_region()
                 clearInterval(hand_interval)
+                clearTimeout(timeout_check_if_done)
                 guide?.switch_page(@,"DesktopRichDirCreated")
             ,t_min_switch_page)
         )

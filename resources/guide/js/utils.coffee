@@ -53,7 +53,8 @@ pages_id = [
 t_switch_page = 4000
 t_mid_switch_page = 2000
 t_min_switch_page = 500
-        
+t_check_if_done = 10000
+
 POS_TYPE =
     leftup:"leftup"
     leftdown:"leftdown"
