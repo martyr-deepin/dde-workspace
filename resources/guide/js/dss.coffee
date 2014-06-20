@@ -48,6 +48,7 @@ class DssLaunch extends Page
             
             clearTimeout(switch_timeout)
             switch_timeout = setTimeout(=>
+                @dss = new Dss()
                 @dss?.show()
                 guide?.switch_page(@,"DssArea")
             ,t_min_switch_page)
