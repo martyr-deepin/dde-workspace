@@ -110,6 +110,13 @@ void guide_disable_guide_region()
     }
     Display* dpy = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
     cairo_region_t* dock_region = get_window_input_region(dpy, dock);
+    //cairo_rectangle_int_t rectangle;
+    //cairo_region_get_rectangle(dock_region,0,&rectangle);
+    //int x0 = rectangle.x;
+    //int y0 = rectangle.y;
+    //int x1 = x0 + rectangle.width;
+    //int y1 = y0 + rectangle.height;
+    //g_message("dock_region:[%d,%d,%d,%d]",x0,y0,x1,y1);
     gdk_window_input_shape_combine_region(gtk_widget_get_window(get_container()), dock_region, 0, 0);
     cairo_region_destroy(dock_region);
 }
