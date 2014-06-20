@@ -19,6 +19,8 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class DesktopRichDir extends Page
+    
+    hand_interval = null
     constructor:(@id)->
         super
         DCore.Guide.disable_guide_region()
@@ -28,59 +30,41 @@ class DesktopRichDir extends Page
         @show_message(@message)
 
         @pointer_create()
-        @hand_create()
+        @pointer_hand_create()
         @signal()
     
-    hand_create: ->
-        @scroll = create_element("div","scroll",@element)
-        @scroll.style.display = "-webkit-box"
-        @scroll.style.position = "absolute"
+    pointer_hand_create: ->
+        @pointer_hand = create_element("div","pointer_hand",@element)
+        @pointer_hand.style.display = "-webkit-box"
+        @pointer_hand.style.position = "absolute"
         
         _ITEM_HEIGHT_ = 84 + 4 * 2
-        @scroll.style.left = 18
-        @scroll.style.top = 13
+        @pointer_hand.style.left = 18
+        @pointer_hand.style.top = 13
         
-        @scroll_up = create_img("scroll_up","#{@img_src}/pointer_up.png",@scroll)
-        @scroll_down = create_img("scroll_down","#{@img_src}/fleur.png",@scroll)
+        @pointer_up = create_img("pointer_up","#{@img_src}/pointer_up.png",@pointer_hand)
+        @hand_img = create_img("hand_img","#{@img_src}/fleur.png",@pointer_hand)
         
         width = height = 64
-        @scroll.style.width = width
-        @scroll.style.height = height * 2 + 50
-        @scroll_down.style.width = 24
-        @scroll_down.style.height = 24
-        @scroll_up.style.width = width
-        @scroll_up.style.height = height
-        @scroll_up.style.position = "absolute"
-        @scroll_up.style.left = 0
-        @scroll_up.style.bottom = 0
-        @scroll_up.style.display = "none"
-        @scroll_animation(@scroll_down, 0 - height,0,"bottom","absolute")
-
-
- 
-    scroll_animation:(el,y0,y1,type = "top",pos = "absolute",cb) ->
-        el.style.display = "block"
-        el.style.position = pos
-        t_show = 1000
-        pos0 = null
-        pos1 = null
-        animate_init = ->
-            switch type
-                when "top"
-                    el.style.top = y0
-                    pos0 = {top:y0}
-                    pos1 = {top:y1}
-                when "bottom"
-                    el.style.bottom = y0
-                    pos0 = {bottom:y0}
-                    pos1 = {bottom:y1}
+        @pointer_hand.style.width = width
+        @pointer_hand.style.height = height * 2 + 50
+        @pointer_up.style.width = @pointer_up.style.height = height
+        @pointer_up.style.position = "absolute"
+        @pointer_up.style.top = (height * 2 + 50 - height) / 2
         
-        animate_init()
-        jQuery(el).animate(
-            pos1,t_show,"linear",=>
-                animate_init()
-                jQuery(el).animate(pos1,t_show,"linear",cb?())
-        )
+        @hand_img.style.width = @hand_img.style.height = 24
+        @hand_img.style.position = "absolute"
+        @hand_img.style.bottom = height / 2
+        @hand_img.style.right = 0
+        
+        @pointer_hand_animation()
+
+    pointer_hand_animation: ->
+        width = height = 64
+        @pointer_up.style.display = "block"
+        hand_interval = setInterval(=>
+            move_animation(@hand_img, height / 2,height * 2,"bottom","absolute")
+        ,2100)
 
 
     pointer_create: ->
@@ -101,6 +85,7 @@ class DesktopRichDir extends Page
             setTimeout(=>
                 @desktop?.item_signal_disconnect()
                 DCore.Guide.enable_guide_region()
+                clearInterval(hand_interval)
                 guide?.switch_page(@,"DesktopRichDirCreated")
             ,t_min_switch_page)
         )

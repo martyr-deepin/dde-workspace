@@ -126,7 +126,7 @@ class LauncherScroll extends Page
         @scroll_up.style.left = 0
         @scroll_up.style.bottom = 0
         @scroll_up.style.display = "none"
-        @scroll_animation(@scroll_down,0 + height,0,"top","absolute")
+        move_animation(@scroll_down,0 + height,0,"top","absolute")
 
 
         @element.addEventListener("mousewheel", (e)=>
@@ -143,7 +143,7 @@ class LauncherScroll extends Page
                 simulate_click(CLICK_TYPE.scrolldown)
                 @scroll_down.style.display = "none"
                 if @scroll_up.style.display is "none"
-                    @scroll_animation(@scroll_up, 0 - height,0,"bottom","absolute")
+                    move_animation(@scroll_up, 0 - height,0,"bottom","absolute")
         )
 
 
@@ -165,30 +165,6 @@ class LauncherScroll extends Page
         pointer_top = (screen.height  - @pointer.pointer_height) / 2
         @pointer.set_area_pos(CATE_LEFT,pointer_top - CATE_TOP_DELTA)
         @pointer.show_animation()
-        
-    scroll_animation:(el,y0,y1,type = "top",pos = "absolute",cb) ->
-        el.style.display = "block"
-        el.style.position = pos
-        t_show = 1000
-        pos0 = null
-        pos1 = null
-        animate_init = ->
-            switch type
-                when "top"
-                    el.style.top = y0
-                    pos0 = {top:y0}
-                    pos1 = {top:y1}
-                when "bottom"
-                    el.style.bottom = y0
-                    pos0 = {bottom:y0}
-                    pos1 = {bottom:y1}
-        
-        animate_init()
-        jQuery(el).animate(
-            pos1,t_show,"linear",=>
-                animate_init()
-                jQuery(el).animate(pos1,t_show,"linear",cb?())
-        )
 
 
 class LauncherSearch extends Page

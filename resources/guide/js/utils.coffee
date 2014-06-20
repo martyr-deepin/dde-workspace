@@ -201,3 +201,31 @@ shadow_light = (el,border_width,radius = "50%") ->
     parent.style.overflow = "hidden"
     el.style.border = "#{border_width}px solid rgba(0,0,0,0.3)"
     el.style.borderRadius = "50%"
+
+
+ 
+move_animation = (el,y0,y1,type = "top",pos = "absolute",cb) ->
+    el.style.display = "block"
+    el.style.position = pos
+    t_show = 1000
+    pos0 = null
+    pos1 = null
+    animate_init = ->
+        switch type
+            when "top"
+                el.style.top = y0
+                pos0 = {top:y0}
+                pos1 = {top:y1}
+            when "bottom"
+                el.style.bottom = y0
+                pos0 = {bottom:y0}
+                pos1 = {bottom:y1}
+    
+    animate_init()
+    jQuery(el).animate(
+        pos1,t_show,"linear",=>
+            animate_init()
+            jQuery(el).animate(pos1,t_show,"linear",cb?())
+    )
+
+
