@@ -645,7 +645,7 @@ class AppItem extends Item
     on_animationend: (e)=>
         console.log("open notify animation is end")
         @openingIndicator.style.webkitAnimationName = ''
-        @swap_to_clientgroup()
+        # @swap_to_clientgroup()
 
     to_active_status : (id)->
         @leader = id
