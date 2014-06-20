@@ -14,10 +14,9 @@ class DragTarget
         )
 
     removeImg: =>
-        setTimeout(=>
-            _b.removeChild(@img)
-            delete @img
-        , 10)
+        try
+            @img.parentNode.removeChild(@img)
+        @img = null
 
     setOrigin:(x, y)->
         console.log("#{x}, #{y}")
@@ -29,20 +28,24 @@ class DragTarget
         @el.style.display = 'block'
 
     back:(x, y)->
-        console.log("back, #{x}, #{y}")
+        console.log("back from #{x}, #{y}")
+        # FIXME: this statement will leads to GUI block
+        # @img.style.webkitTransform = "translate(#{x - ITEM_WIDTH/2}px, #{Math.abs(y-ITEM_WIDTH/2)}px)"
         @dragToBack = false
         @reset()
-        @img.style.display = ''
-        @img.style.webkitTransform = "translate(#{x - ITEM_WIDTH/2}px, #{y-ITEM_WIDTH/2}px)"
-        @img.style.webkitTransition = 'all 300ms'
-        setTimeout(=>
-            @img?.style.webkitTransform = "translate(#{@origin.x}px, #{@origin.y}px)"
-        , 10)
+        # setTimeout(=>
+        #     @img.style.display = ''
+        #     @img.style.webkitTransition = 'all 300ms'
+        #     setTimeout(=>
+        #         @img.style.webkitTransform = "translate(#{@origin.x}px, #{Math.abs(@origin.y)}px)"
+        #     , 10)
+        # , 10)
+
         if @indicator
             @parentNode.insertBefore(@el, @indicator)
-            updatePanel()
-            return
-        @parentNode.appendChild(@el)
+        else
+            @parentNode.appendChild(@el)
+
         updatePanel()
 
 

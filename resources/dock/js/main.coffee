@@ -81,7 +81,7 @@ _b.addEventListener("drop", (e)->
     e.stopPropagation()
     e.preventDefault()
     console.log("drop on body")
-    update_dock_region()
+    # update_dock_region()
     s_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
     _dragTarget = _dragTargetManager.getHandle(s_id)
     if e.y > screen.height - DOCK_HEIGHT - ITEM_HEIGHT
@@ -108,7 +108,9 @@ _b.addEventListener("drop", (e)->
         s_widget.destroyWidthAnimation()
         _dragTarget.removeImg()
         _dragTargetManager.remove(s_id)
+        console.log("drag target is normal, remove it")
     else
+        console.log("drag target is runtime, back to applist")
         _dragTarget.dragToBack = true
 )
 

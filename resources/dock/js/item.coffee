@@ -125,12 +125,14 @@ class Item extends Widget
         console.log(_dragTargetManager)
         _dragTarget = _dragTargetManager.getHandle(@id)
         if not _dragTarget
-            console.warn("get handle failed")
+            console.log("get handle failed")
             return
-        console.log("#{@id} dragend back")
+        console.log("#{@id} dragend back? #{_dragTarget.dragToBack}")
         _dragTarget.reset()
         _dragTarget.removeImg()
-        _dragTarget.back(e.x, e.y) if _dragTarget.dragToBack
+        if _dragTarget.dragToBack
+            console.log("drag to back")
+            _dragTarget.back(e.x, e.y)
         @removeTimer = setTimeout(=>
             _dragTargetManager.remove(@id)
         , 1000)
