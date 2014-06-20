@@ -155,6 +155,7 @@ class LauncherScroll extends Page
         )
     
     rect_pointer_create: ->
+        @element.removeChild(@noscroll)
         @scroll.style.display = "none"
         @message_pointer = _("You can also click on the left classification navigation to locate")
         @show_message(@message_pointer)
