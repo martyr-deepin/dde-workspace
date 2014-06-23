@@ -3,7 +3,7 @@
 
 .menubg{ background:#FFF; border:#777 1px solid; border-radius:4px;float:left; box-shadow: rgba(0,0,0,0.7) 0 0 3px;}
 
-.menubg ul li{ margin:0; list-style:none; padding:3px 20px; font-family:Arial; font-size:12px; white-space:nowrap;}
+.menubg ul li{ margin:0; list-style:none; padding:2px 20px; font-family:Arial; font-size:12px; white-space:nowrap;}
 
 .menubg ul li.selected{ background:#333; color:#FFF;}
 
