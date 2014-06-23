@@ -67,7 +67,7 @@ struct AuthHandler {
 struct AuthHandler *handler;
 
 JS_EXPORT_API
-int greeter_get_theme()
+double greeter_get_theme()
 {
     return get_theme_config();
 }

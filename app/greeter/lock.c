@@ -67,7 +67,7 @@ void lock_quit()
 }
 
 JS_EXPORT_API
-int lock_get_theme()
+double lock_get_theme()
 {
     return get_theme_config();
 }
