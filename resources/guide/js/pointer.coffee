@@ -61,7 +61,7 @@ class Pointer extends Widget
 
         set_pos(@area_div,0,0,"absolute",@pos_type)
         set_pos(@pointer_img,@area_width,@area_height,"absolute",@pos_type)
-        #shadow_light(@area_div,@area_width,"50%")
+        #shadow_light(@area_div,"circle")
         @area_div.addEventListener(@cb_type, (e)=>
             #if !@show_animation_end then return
             console.log "area #{@id} click"

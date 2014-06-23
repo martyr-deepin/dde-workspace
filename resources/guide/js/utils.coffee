@@ -196,12 +196,22 @@ show_webinspector = ->
     )
 
 
-shadow_light = (el,border_width,radius = "50%") ->
+shadow_light = (el,type = "circle") ->
+    document.body.style.background = "rgba(0,0,0,0.0)"
     #遮罩效果 
-    parent = el.parentElement
-    parent.style.overflow = "hidden"
-    el.style.border = "#{border_width}px solid rgba(0,0,0,0.3)"
-    el.style.borderRadius = "50%"
+    cover = create_element("span","text_cover_tans",guide?.element)
+    cover.style.width =  el.style.width
+    cover.style.height =  el.style.width
+    cover.style.position = "absolute"
+    cover.style.left =  el.offsetLeft
+    cover.style.top =  el.offsetTop
+    guide.element.style.overflow = "hidden"
+    
+    border_width = screen.width
+    cover.style.border = "#{border_width}px solid rgba(0,0,0,0.3)"
+    
+    cover.style.borderRadius = "50%" if type is "circle"
+    cover.style.borderRadius = "1" if type is "rect"
 
 
  
