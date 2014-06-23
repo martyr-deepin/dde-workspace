@@ -60,7 +60,6 @@ class Greeter extends Widget
 
 
 greeter = new Greeter()
-setBodyWallpaper("sky_move")
 greeter.isOnlyOneSession()
 
 desktopmenu = null

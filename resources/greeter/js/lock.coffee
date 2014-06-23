@@ -42,10 +42,6 @@ class Lock extends Widget
 
 
 lock = new Lock()
-setBodyWallpaper("sky_move")
-
-#new NoSessionMessage()
-#new NoAccountServiceMessage()
 
 is_guest = DCore.Lock.is_guest()
 

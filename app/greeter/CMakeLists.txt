@@ -15,7 +15,7 @@ include_directories(${DWEBVIEW_INCLUDE_DIRS} ${LIGHTDM_INCLUDE_DIRS}
 
 #set(OPENCV_LIBS opencv_core opencv_imgproc opencv_objdetect)
 
-add_executable(${NAME} greeter.c user.c session.c mutils.c greeter_util.c ${JSC_GEN}
+add_executable(${NAME} greeter.c user.c session.c theme.c mutils.c greeter_util.c ${JSC_GEN}
     ${DBUS_GEN}
     #camera.c settings.c
     )
@@ -25,7 +25,7 @@ target_link_libraries(${NAME} dcom dbus ${DWEBVIEW_LIBRARIES} ${LIGHTDM_LIBRARIE
     #${OPENCV_LIBS}
     )
 
-add_executable(lock lock.c user.c lock_util.c mutils.c ${JSC_LOCK_GEN}
+add_executable(lock lock.c user.c theme.c lock_util.c mutils.c ${JSC_LOCK_GEN}
     ${DBUS_GEN}
     #camera.c settings.c
     )

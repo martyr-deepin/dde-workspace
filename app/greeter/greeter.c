@@ -48,6 +48,7 @@
 #include "session.h"
 #include "greeter_util.h"
 #include "DBUS_greeter.h"
+#include "theme.c"
 
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/greeter.html"
 
@@ -56,7 +57,6 @@ static GtkWidget* webview = NULL;
 LightDMGreeter *greeter;
 GKeyFile *greeter_keyfile;
 gchar* greeter_file;
-/*static GSettings* dde_bg_g_settings = NULL;*/
 
 struct AuthHandler {
     gchar *username;
@@ -65,6 +65,12 @@ struct AuthHandler {
 };
 
 struct AuthHandler *handler;
+
+JS_EXPORT_API
+int greeter_get_theme()
+{
+    return get_theme_config();
+}
 
 static void
 free_auth_handler (struct AuthHandler *handler)
@@ -248,6 +254,7 @@ int main (int argc, char **argv)
 
 
     init_i18n ();
+    init_theme();
     gtk_init (&argc, &argv);
 
     greeter = lightdm_greeter_new ();

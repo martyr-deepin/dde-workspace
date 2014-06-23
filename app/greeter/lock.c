@@ -49,8 +49,7 @@
 #include "gs-grab.h"
 #include "lock_util.h"
 #include "background.h"
-
-/*#define DEBUG*/
+#include "theme.c"
 
 #define LOCK_HTML_PATH "file://"RESOURCE_DIR"/greeter/lock.html"
 
@@ -67,7 +66,11 @@ void lock_quit()
     gtk_main_quit();
 }
 
-
+JS_EXPORT_API
+int lock_get_theme()
+{
+    return get_theme_config();
+}
 
 JS_EXPORT_API
 gboolean lock_try_unlock (const gchar *username,const gchar *password)
@@ -267,8 +270,7 @@ int main (int argc, char **argv)
         g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
 
     init_i18n ();
-
-
+    init_theme();
     gtk_init (&argc, &argv);
 
     signal (SIGTERM, sigterm_cb);

@@ -17,20 +17,29 @@
 #
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
-setBodyWallpaper = (wallpaper)->
-    echo "setBodyWallpaper:#{wallpaper}"
+THEME =
+    static:0
+    sky:1
+    light:2
+    rain:3
+
+setTheme = (theme)->
     _b = document.body
-    
     _b.style.height = window.innerHeight
     _b.style.width = window.innerWidth
-    switch wallpaper
-        when "sky_move"
-            #_b.style.backgroundImage = "url(/usr/share/backgrounds/default_background.jpg)"
-            inject_js("js/skyThree/sky.js")
-        when "sky_static"
+    inject_js("theme/js/three.js")
+    switch theme
+        when THEME.static
             _b.style.backgroundImage = "url(/usr/share/backgrounds/default_background.jpg)"
-        when "default"
-            _b.style.backgroundImage = "url(/usr/share/backgrounds/default_background.jpg)"
-        else
-            #_b.style.backgroundImage = "url(/usr/share/backgrounds/default_background.jpg)"
-            inject_js("js/skyThree/sky.js")
+        when THEME.sky
+            _b.style.backgroundImage = "url(theme/img/sky.jpg)"
+            inject_js("theme/js/sky.js")
+        when THEME.light
+            inject_js("theme/js/light.js")
+        when THEME.rain
+            _b.style.backgroundImage = "url(theme/img/rain.jpg)"
+            inject_js("theme/js/rain.js")
+
+theme = DCore[APP].get_theme()
+theme = THEME.sky
+setTheme(theme)
