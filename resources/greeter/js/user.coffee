@@ -332,7 +332,7 @@ class UserInfo extends Widget
             echo "Greeter.get_user_session(#{@username}):#{@session}"
             sessions = DCore.Greeter.get_sessions()
             if @session? and @session in sessions
-                echo "#{@username} session  is #{@session} "
+                echo "#{@username} session is #{@session} "
             else
                 if "deepin" in sessions
                     @session = "deepin"
@@ -353,6 +353,7 @@ class UserInfo extends Widget
             desktopmenu?.show()
             @get_session_by_lightdm()
             desktopmenu?.update_current_icon(@session)
+        localStorage.setItem("menu_current_id_desktop",@session)
 
     focus:->
         echo "#{@username} focus"

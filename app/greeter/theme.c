@@ -35,6 +35,6 @@ char* get_theme_config()
 
 void init_theme()
 {
-    s = g_settings_new(SCHEMA_ID);
+    /*s = g_settings_new(SCHEMA_ID);*/
 }
 

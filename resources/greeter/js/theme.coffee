@@ -40,6 +40,6 @@ setTheme = (theme)->
             _b.style.backgroundImage = "url(theme/img/rain.jpg)"
             inject_js("theme/js/rain.js")
 
-theme = DCore[APP].get_theme()
-#theme = THEME.sky
+#theme = DCore[APP_NAME].get_theme()
+theme = THEME.sky
 setTheme(theme)
