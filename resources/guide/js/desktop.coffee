@@ -203,11 +203,12 @@ class DesktopZone extends Page
         @pos = ["leftup","leftdown","rightdown","rightup"]
         @corner = []
         
-        simulate_rightclick(@,=>
-            @zone_check()
-        )
+        #simulate_rightclick(@,=>
+        #    DCore.Guide.enable_keyboard()
+        #    @zone_check()
+        #)
     
-        @menu_create(screen.width * 0.4, screen.height * 0.2,=>
+        @menu_create(screen.width * 0.5, screen.height * 0.2,=>
             DCore.Guide.enable_keyboard()
             DCore.Guide.spawn_command_sync("/usr/lib/deepin-daemon/dde-zone",false)
             @zone_check()
@@ -237,6 +238,8 @@ class DesktopZone extends Page
         interval_is_zone = setInterval(=>
             if(DCore.Guide.is_zone_launched())
                 clearInterval(interval_is_zone)
+                DCore.Guide.disable_keyboard()
+                DCore.Guide.enable_guide_region()
                 @pointer_create()
         ,200)
 
@@ -247,9 +250,8 @@ class DesktopZone extends Page
         interval = 0
         restack_interval = setInterval(=>
             interval++
-            echo "restack_interval #{interval}"
             DCore.Guide.restack()
-            clearInterval(restack_interval) if interval > 10
+            clearInterval(restack_interval) if interval > 20
         ,200)
         
         length = @pos.length
@@ -257,6 +259,7 @@ class DesktopZone extends Page
             @corner[i] = new Pointer(p,@element)
             that = @
             @corner[i].create_pointer(AREA_TYPE.corner,POS_TYPE[p],->
+                echo "mouseover"
                 this.display("none")
                 DCore.Guide.disable_guide_region()
                 
