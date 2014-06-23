@@ -22,8 +22,9 @@ calc_app_item_size = ->
 
         h = w * (ITEM_HEIGHT / ITEM_WIDTH)
         # apps are moved up, so add 8
-        height = h * (ITEM_HEIGHT - BOARD_IMG_MARGIN_BOTTOM) / ITEM_HEIGHT + BOARD_IMG_MARGIN_BOTTOM * ICON_SCALE + 8
-        DCore.Dock.change_workarea_height(height)
+
+    height = h * (ITEM_HEIGHT - BOARD_IMG_MARGIN_BOTTOM) / ITEM_HEIGHT + BOARD_IMG_MARGIN_BOTTOM * ICON_SCALE + 8
+    DCore.Dock.change_workarea_height(height)
 
     update_dock_region($("#container").clientWidth)
 

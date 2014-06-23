@@ -52,14 +52,9 @@ class SystemTray extends SystemItem
                 # $EW.hide(xid)
         )
         @core.connect("Changed", (xid)=>
-            # if not @isShowing || @isUnfolded
-            #     console.log("#{xid} is Changed")
-            #     @items.remove(xid)
-            #     @items.unshift(xid)
-            #     @updateTrayIcon()
             @on_mouseover()
-            update_dock_region()
-            console.warn("#{xid} is Changed")
+            DCore.Dock.set_is_hovered(false)
+            console.log("#{xid} is Changed")
             @items.remove(xid)
             @items.unshift(xid)
             @unfold()
@@ -121,7 +116,6 @@ class SystemTray extends SystemItem
 
     updatePanel:=>
         calc_app_item_size()
-        # DCore.Dock.require_all_region()
         @calcTimer = webkitRequestAnimationFrame(@updatePanel)
 
 
@@ -176,22 +170,19 @@ class SystemTray extends SystemItem
         webkitCancelAnimationFrame(@calcTimer || null)
         @updatePanel()
         $EW.undraw()
-        # for item in @items
-        #     $EW.hide(item)
         @updateTrayIcon()
         if @upperItemNumber > 2
             clearTimeout(@showTimer)
             @showTimer = setTimeout(=>
                 webkitCancelAnimationFrame(@calcTimer)
-                # DCore.Dock.require_all_region()
                 @updateTrayIcon()
                 for item in @items
                     $EW.show(item)
                 update_dock_region()
+                console.warn("update dock region")
             , ANIMATION_TIME)
         else
             webkitCancelAnimationFrame(@calcTimer)
-            # DCore.Dock.require_all_region()
             for item in @items
                 $EW.show(item)
             update_dock_region()

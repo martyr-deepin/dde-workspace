@@ -67,6 +67,16 @@ static int _do_shape_timer_id = -1;
 PRIVATE
 gboolean _help_do_window_region(cairo_region_t* region)
 {
+#ifndef NDEBUG
+    if (region != NULL) {
+        cairo_rectangle_int_t rec;
+        cairo_region_get_rectangle(region, 0, &rec);
+        g_debug("%d, %d, %d, %d", rec.x, rec.y, rec.width, rec.height);
+        cairo_region_get_rectangle(region, 1, &rec);
+        g_debug("%d, %d, %d, %d", rec.x, rec.y, rec.width, rec.height);
+    }
+#endif
+
     _do_shape_timer_id  = -1;
     gdk_window_input_shape_combine_region(_win, region, 0, 0);
 #ifdef DEBUG_REGION
@@ -74,7 +84,6 @@ gboolean _help_do_window_region(cairo_region_t* region)
 #endif
     return FALSE;
 }
-
 
 PRIVATE
 void do_window_shape_combine_region(cairo_region_t* region)
@@ -88,6 +97,7 @@ void do_window_shape_combine_region(cairo_region_t* region)
 JS_EXPORT_API
 void dock_require_all_region()
 {
+    g_debug("====%s====", __func__);
     cancel_update_state_request();
     dock_set_is_hovered(TRUE);
     do_window_shape_combine_region(NULL);
@@ -98,6 +108,7 @@ JS_EXPORT_API
 void dock_force_set_region(double x, double y, double items_width, double panel_width, double height)
 {
     if (dock_is_hovered()) {
+        g_debug("[%s] dock is hovered", __func__);
         return;
     }
 
@@ -109,18 +120,19 @@ void dock_force_set_region(double x, double y, double items_width, double panel_
         g_debug("set region to {0,0,%d,1}", (int)panel_width);
     } else {
         cairo_rectangle_int_t tmp = {(int)x + _base_rect.x, (int)y + _base_rect.y, (int)items_width, (int)height};
+        g_debug("x: %d, y: %d, width: %d, height: %d", tmp.x, tmp.y, tmp.width, tmp.height);
         cairo_rectangle_int_t dock_board_rect = _base_rect;
         dock_board_rect.x = tmp.x - (panel_width - items_width) / 2;
         dock_board_rect.y = gdk_screen_height() - BOARD_HEIGHT;
         dock_board_rect.height = BOARD_HEIGHT;
         dock_board_rect.width = (int)panel_width;
+        g_debug("x: %d, y: %d, width: %d, height: %d", dock_board_rect.x, dock_board_rect.y, dock_board_rect.width, dock_board_rect.height);
         _region = cairo_region_create_rectangle(&dock_board_rect);
 
         cairo_region_union_rectangle(_region, &tmp);
         g_debug("set region to 2 union block");
     }
     do_window_shape_combine_region(_region);
-    gdk_flush();
 }
 
 
