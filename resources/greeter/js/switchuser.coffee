@@ -30,12 +30,11 @@ class SwitchUser extends Widget
         clearInterval(draw_camera_id)
         draw_camera_id = null
         document.body.style.fontSize = "62.5%"
-        @accounts = new Accounts(APP_NAME)
         @switch_dbus = get_dbus("system",DisplayManager,"CanSwitch")
 
     button_switch:->
-        @users_id = @accounts.users_id
-        if @users_id.length < 2 and @accounts.isAllowGuest() is false then return
+        @users_id = accounts.users_id
+        if @users_id.length < 2 and accounts.isAllowGuest() is false then return
         
         @switch = create_img("switch", "images/userswitch/acount_switch_hover.png", @element)
         @switch.style.cursor = "pointer"

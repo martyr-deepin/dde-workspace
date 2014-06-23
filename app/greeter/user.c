@@ -197,7 +197,7 @@ is_need_pwd (const gchar *username)
     GDBusProxy *lock_proxy = NULL;
     GVariant *lock_need_pwd = NULL;
     GError *error = NULL;
-
+    g_message("is_need_pwd : %s",username);
     if (g_ascii_strncasecmp ("Guest", username, 5) == 0) {
         g_warning ("is need pwd:guest user don't need password\n");
         needed = FALSE;

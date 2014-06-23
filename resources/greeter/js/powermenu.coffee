@@ -57,7 +57,13 @@ class PowerMenu extends Widget
             if id is "suspend"
                 @power_dict["suspend"]()
             else
-                @confirm_shutdown_show(id)
+                @username = accounts.get_default_username()
+                name =  @username
+                if @username is guest_name then name = "guest"
+                @userid = accounts.get_user_id(name)
+                @is_need_pwd = accounts?.is_need_pwd(@userid)
+                if @is_need_pwd then @confirm_shutdown_show(id)
+                else @power_dict[id]()
 
     new_power_menu:->
         echo "new_power_menu"

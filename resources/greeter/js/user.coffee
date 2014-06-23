@@ -21,8 +21,6 @@
 draw_camera_id = null
 _current_user = null
 password_error_msg = null
-guest_id = "guest"
-guest_name = _("Guest")
 
 class User extends Widget
     img_src_before = "images/userswitch/"
@@ -32,14 +30,13 @@ class User extends Widget
         
         @user_session = []
         @userinfo_all = []
-        @accounts = new Accounts(APP_NAME)
-        if @accounts.get_dbus_failed then new NoAccountServiceMessage()
+        if accounts.get_dbus_failed then new NoAccountServiceMessage()
         @get_default_userid()
    
     get_default_userid:->
-        @_default_username = @accounts.get_default_username()
-        if @_default_username is null then @_default_username = @accounts.users_name[0]
-        @_default_userid = @accounts.get_user_id(@_default_username)
+        @_default_username = accounts.get_default_username()
+        if @_default_username is null then @_default_username = accounts.users_name[0]
+        @_default_userid = accounts.get_user_id(@_default_username)
         echo "_default_username:#{@_default_username};uid:#{@_default_userid}"
         return @_default_userid
     
@@ -54,7 +51,7 @@ class User extends Widget
             _current_user.index = center_index
      
      isSupportGuest:->
-        if is_support_guest and @accounts.isAllowGuest() is true
+        if is_support_guest and accounts.isAllowGuest() is true
             guest_image = "/var/lib/AccountsService/icons/guest.png"
             echo "guest_image:#{guest_image}"
             u = new UserInfo(guest_id, guest_name, guest_image)
@@ -64,13 +61,13 @@ class User extends Widget
 
     new_userinfo_for_greeter:->
         echo "new_userinfo_for_greeter"
-        for uid in @accounts.users_id
-            if not @accounts.is_disable_user(uid)
-                username = @accounts.users_id_dbus[uid].UserName
-                usericon = @accounts.users_id_dbus[uid].IconFile
+        for uid in accounts.users_id
+            if not accounts.is_disable_user(uid)
+                username = accounts.users_id_dbus[uid].UserName
+                usericon = accounts.users_id_dbus[uid].IconFile
                 u = new UserInfo(username, username, usericon)
                 @userinfo_all.push(u)
-                u.is_logined = @accounts.is_user_sessioned_on(uid)
+                u.is_logined = accounts.is_user_sessioned_on(uid)
                 _current_user = u if uid is @_default_userid
         
         @isSupportGuest()
@@ -92,8 +89,8 @@ class User extends Widget
    
     new_userinfo_for_lock:->
         echo "new_userinfo_for_lock"
-        username = @accounts.users_id_dbus[@_default_userid].UserName
-        usericon = @accounts.users_id_dbus[@_default_userid].IconFile
+        username = accounts.users_id_dbus[@_default_userid].UserName
+        usericon = accounts.users_id_dbus[@_default_userid].IconFile
         _current_user = new UserInfo(username, username, usericon)
         _current_user.index = 0
         @element.appendChild(_current_user.element)
@@ -417,13 +414,25 @@ class LoginEntry extends Widget
         if is_greeter then @id = "login"
         else @id = "lock"
         echo "new LoginEntry:#{@id}"
-        
+
+        name =  @username
+        if @username is guest_name then name = "guest"
+        @is_need_pwd = accounts?.is_need_pwd(accounts.get_user_id(name))
+        echo "#{@id} , #{@username} is_need_pwd is #{@is_need_pwd}"
+
+        if @is_need_pwd
+            @password_create()
+        @loginbutton_create()
+    
+    password_create: ->
         @password_div = create_element("div", "password_div", @element)
         @password = create_element("input", "password", @password_div)
         @password.type = "password"
         @password.setAttribute("maxlength", PasswordMaxlength) if PasswordMaxlength?
         @password.setAttribute("autofocus", true) if @username isnt guest_name
+        @password_eventlistener()
        
+    loginbutton_create: ->
         @loginbutton = create_img("loginbutton", "", @password_div)
         @loginbutton.type = "button"
         @loginbutton.src = "#{img_src_before}#{@id}_normal.png"
@@ -437,21 +446,21 @@ class LoginEntry extends Widget
             else
                 @loginbutton.src = "#{img_src_before}#{@id}_normal.png"
         )
-        @password_eventlistener()
+        @loginbutton_eventlistener()
         
         if @username is guest_name
             @password_error(_("click login button to log in"))
             @loginbutton.disable = false
             @loginbutton.style.pointer = "cursor"
-            @password.setAttribute("readonly","readonly")
+            @password?.setAttribute("readonly","readonly")
 
     show:->
         @element.style.display = "-webkit-box"
-        @password.focus()
+        @password?.focus()
 
     hide:->
         @element.style.display = "none"
-        @password.blur()
+        @password?.blur()
 
 
     password_eventlistener:->
@@ -473,7 +482,19 @@ class LoginEntry extends Widget
             if e.which == ENTER_KEY
                 @on_active(@username, @password.value) if @check_completeness()
         )
+        document.body.addEventListener("keydown",(e)=>
+            try
+                els = $(".MenuChoose")
+                focus = true
+                for el in els
+                    if el.style.display isnt "none" then focus = false
+                @password?.focus() if focus
+            catch e
+                echo "#{e}"
+        )
 
+
+    loginbutton_eventlistener: ->
         @loginbutton.addEventListener("click", =>
             echo "loginbutton click"
             power_flag = false
@@ -485,33 +506,27 @@ class LoginEntry extends Widget
             else
                 @loginbutton.src = "#{img_src_before}#{@id}_press.png"
             if @check_completeness
-                @on_active(@username, @password.value)
+                value = null
+                if @is_need_pwd then value = @password.value
+                else value = ""
+                @on_active(@username, value)
         )
         
-        document.body.addEventListener("keydown",(e)=>
-            try
-                els = $(".MenuChoose")
-                focus = true
-                for el in els
-                    if el.style.display isnt "none" then focus = false
-                @password.focus() if focus
-            catch e
-                echo "#{e}"
-        )
-
  
 
     check_completeness: ->
+        if !@is_need_pwd then return true
         if is_livecd then return true
-        else if not @password.value
-            @password.focus()
+        else if not @password?.value
+            @password?.focus()
             return false
-        else if @password.value is password_error_msg or @password.value is localStorage.getItem("password_value_shutdown")
+        else if @password?.value is password_error_msg or @password?.value is localStorage.getItem("password_value_shutdown")
             @input_password_again()
             return false
         return true
 
     input_password_again:->
+        if !@is_need_pwd then return
         @password.style.color = "rgba(255,255,255,0.5)"
         @password.style.fontSize = "2.0em"
         @password.style.paddingBottom = "0.2em"
@@ -522,6 +537,7 @@ class LoginEntry extends Widget
         @password.value = null
 
     password_error:(msg)->
+        if !@is_need_pwd then return
         @password.style.color = "#F4AF53"
         @password.style.fontSize = "1.5em"
         @password.style.paddingBottom = "0.4em"

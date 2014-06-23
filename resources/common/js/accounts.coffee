@@ -64,6 +64,19 @@ class Accounts
             @get_dbus_failed = true
 
 
+    get_user_name: (uid) ->
+        username = @users_id_dbus[uid].UserName
+        return username
+
+    get_user_id:(user)->
+        id = null
+        try
+            id = @users_name_dbus[user].Uid
+        catch e
+            echo "get_user_id #{e}"
+        if not id? then id = "1000"
+        return id
+
     is_user_logined:(uid)->
         is_logined = false
         LoginTime = @users_id_dbus[uid].LoginTime
@@ -82,16 +95,13 @@ class Accounts
             echo "#{e}"
             is_sessioned_on = false
         return is_sessioned_on
-
-
-    get_user_id:(user)->
-        id = null
-        try
-            id = @users_name_dbus[user].Uid
-        catch e
-            echo "get_user_id #{e}"
-        if not id? then id = "1000"
-        return id
+    
+    is_need_pwd: (uid) ->
+        username = @get_user_name(uid)
+        if APP is "Greeter"
+            DCore[APP].user_need_password(username)
+        else
+            DCore[APP].need_password(username)
 
     get_user_icon:(uid)->
         icon = null
