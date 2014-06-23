@@ -24,7 +24,7 @@
 #define THEME_H
 
 void init_theme();
-int get_theme_config();
+char* get_theme_config();
 
 #endif /* end of include guard: THEME_H */
 

@@ -22,13 +22,13 @@
  **/
 #include <gtk/gtk.h>
 
-#define SCHEMA_ID "com.deepin.dde.greeter"
+#define SCHEMA_ID "com.deepin.dde.personalization"
 GSettings* s;
 
-int get_theme_config()
+char* get_theme_config()
 {
-    const gchar* key = "theme";
-    int theme = g_settings_get_enum(s, key);
+    const gchar* key = "greeter-theme";
+    gchar* theme = g_settings_get_string(s, key);
     return theme;
 }
 

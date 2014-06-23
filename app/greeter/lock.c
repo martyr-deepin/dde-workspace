@@ -67,7 +67,7 @@ void lock_quit()
 }
 
 JS_EXPORT_API
-double lock_get_theme()
+char* lock_get_theme()
 {
     return get_theme_config();
 }
@@ -270,7 +270,7 @@ int main (int argc, char **argv)
         g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
 
     init_i18n ();
-    /*init_theme();*/
+    init_theme();
     gtk_init (&argc, &argv);
 
     signal (SIGTERM, sigterm_cb);

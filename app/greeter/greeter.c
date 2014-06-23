@@ -67,7 +67,7 @@ struct AuthHandler {
 struct AuthHandler *handler;
 
 JS_EXPORT_API
-double greeter_get_theme()
+char* greeter_get_theme()
 {
     return get_theme_config();
 }
@@ -254,7 +254,7 @@ int main (int argc, char **argv)
 
 
     init_i18n ();
-    /*init_theme();*/
+    init_theme();
     gtk_init (&argc, &argv);
 
     greeter = lightdm_greeter_new ();
