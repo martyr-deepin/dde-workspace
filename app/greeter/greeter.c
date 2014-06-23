@@ -48,7 +48,7 @@
 #include "session.h"
 #include "greeter_util.h"
 #include "DBUS_greeter.h"
-#include "theme.c"
+#include "theme.h"
 
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/greeter.html"
 

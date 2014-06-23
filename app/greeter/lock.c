@@ -49,7 +49,7 @@
 #include "gs-grab.h"
 #include "lock_util.h"
 #include "background.h"
-#include "theme.c"
+#include "theme.h"
 
 #define LOCK_HTML_PATH "file://"RESOURCE_DIR"/greeter/lock.html"
 
