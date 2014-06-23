@@ -209,8 +209,7 @@ class DesktopZone extends Page
     
         @menu_create(screen.width * 0.4, screen.height * 0.2,=>
             DCore.Guide.enable_keyboard()
-            DCore.Guide.spawn_command_sync("/usr/lib/deepin-daemon/dde-zone",true)
-            DCore.Guide.disable_keyboard()
+            DCore.Guide.spawn_command_sync("/usr/lib/deepin-daemon/dde-zone",false)
             @zone_check()
         )
 
@@ -248,6 +247,7 @@ class DesktopZone extends Page
         interval = 0
         restack_interval = setInterval(=>
             interval++
+            echo "restack_interval #{interval}"
             DCore.Guide.restack()
             clearInterval(restack_interval) if interval > 10
         ,200)
