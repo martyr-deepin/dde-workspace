@@ -207,11 +207,11 @@ class DesktopZone extends Page
             @zone_check()
         )
     
-        @menu_create(screen.x * 0.4, screen.y * 0.5,=>
-            @zone_check()
+        @menu_create(screen.width * 0.4, screen.height * 0.2,=>
             DCore.Guide.enable_keyboard()
             DCore.Guide.spawn_command_sync("/usr/lib/deepin-daemon/dde-zone",true)
             DCore.Guide.disable_keyboard()
+            @zone_check()
         )
 
     menu_create: (x,y,cb) ->
