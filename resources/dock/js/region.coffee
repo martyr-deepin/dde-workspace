@@ -26,7 +26,9 @@ calc_app_item_size = ->
     height = h * (ITEM_HEIGHT - BOARD_IMG_MARGIN_BOTTOM) / ITEM_HEIGHT + BOARD_IMG_MARGIN_BOTTOM * ICON_SCALE + 8
     DCore.Dock.change_workarea_height(height)
 
-    update_dock_region($("#container").clientWidth)
+    # update_dock_region($("#container").clientWidth)
+    if panel
+        panel.set_width($("#container").clientWidth)
 
 update_dock_region = do->
     lastWidth = null
@@ -36,8 +38,6 @@ update_dock_region = do->
             lastWidth = w
         else if lastWidth
             w = lastWidth
-        if panel
-            panel.set_width(w)
         # console.log("width: #{w}")
         apps = $s(".AppItem")
         last = apps[apps.length-1]

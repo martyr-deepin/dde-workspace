@@ -230,6 +230,7 @@ initDock = ->
             systemTray = null
 
         calc_app_item_size()
+        update_dock_region($("#container").clientWidth)
         DCore.Dock.change_workarea_height(DOCK_HEIGHT)
     , 100)
 

@@ -52,8 +52,11 @@ class SystemTray extends SystemItem
                 # $EW.hide(xid)
         )
         @core.connect("Changed", (xid)=>
-            @on_mouseover()
-            DCore.Dock.set_is_hovered(false)
+            @isShowing = true
+            @img.style.display = 'none'
+            @panel.style.display = ''
+            @imgContainer.style.webkitTransform = 'translateY(0)'
+            @imgContainer.style.webkitTransition = ''
             console.log("#{xid} is Changed")
             @items.remove(xid)
             @items.unshift(xid)
