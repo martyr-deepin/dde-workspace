@@ -18,10 +18,10 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 THEME =
-    static:0
-    sky:1
-    light:2
-    rain:3
+    static:"static"
+    sky:"sky"
+    light:"light"
+    rain:"rain"
 
 setTheme = (theme)->
     _b = document.body
@@ -40,6 +40,6 @@ setTheme = (theme)->
             _b.style.backgroundImage = "url(theme/img/rain.jpg)"
             inject_js("theme/js/rain.js")
 
-#theme = DCore[APP].get_theme()
-theme = THEME.sky
+theme = DCore[APP].get_theme()
+#theme = THEME.sky
 setTheme(theme)
