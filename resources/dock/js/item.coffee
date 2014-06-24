@@ -468,9 +468,6 @@ class AppItem extends Item
         @core?.isNormalApplet?()
 
     on_mouseover:(e)=>
-        if settings.hideMode() != HideMode.KeepShowing and hideStatusManager.state != HideState.Shown
-            console.log("hide state is not Shon")
-            return
         super
         if @isNormal() || @isNormalApplet()
             clearTimeout(hide_id)

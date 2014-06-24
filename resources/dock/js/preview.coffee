@@ -331,7 +331,8 @@ Preview_close_now = (client)->
     setTimeout(->
         Preview_container.close()
         PWContainer._need_move_animation = false
-        DCore.Dock.set_is_hovered(false)
+        if $tooltip && !$tooltip.isShown()
+            DCore.Dock.set_is_hovered(false)
         update_dock_region()
     , 300)
     setTimeout(->

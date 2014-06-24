@@ -8,9 +8,6 @@ class Applet extends Item
         @openingIndicator = create_img(src:OPENING_INDICATOR, class:"indicator OpeningIndicator", @indicatorWarp)
         @openIndicator = create_img(src:OPEN_INDICATOR, class:"indicator OpenIndicator", @indicatorWarp)
         @openIndicator.style.display = 'none'
-        # @open_indicator = create_img("OpenIndicator", OPEN_INDICATOR, @element)
-        # @open_indicator.style.left = INDICATER_IMG_MARGIN_LEFT
-        # @open_indicator.style.display = "none"
 
     on_mouseover: (e) =>
         super
