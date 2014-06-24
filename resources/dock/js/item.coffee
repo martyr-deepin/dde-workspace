@@ -341,9 +341,7 @@ class AppItem extends Item
                         console.log("is normal")
                         @swap_to_activator()
                     else if @isActive()
-                        if @openingIndicator.style.webkitAnimationName == ''
-                            console.log("open from somewhere else")
-                            @swap_to_clientgroup()
+                        @swap_to_clientgroup()
                 when ITEM_DATA_FIELD.icon
                     if value.substring(0, 7) == "file://" || value.substring(0, 10) == "data:image"
                         @change_icon(value)
