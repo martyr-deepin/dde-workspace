@@ -209,8 +209,8 @@ class DesktopZone extends Page
         #)
     
         @menu_create(screen.width * 0.5, screen.height * 0.2,=>
-            #DCore.Guide.enable_keyboard()
-            DCore.Guide.spawn_command_sync("/usr/lib/deepin-daemon/dde-zone",false)
+            DCore.Guide.enable_keyboard()
+            DCore.Guide.spawn_command_sync("/usr/lib/deepin-daemon/dde-zone -d",false)
             @zone_check()
         )
 
@@ -238,8 +238,6 @@ class DesktopZone extends Page
         interval_is_zone = setInterval(=>
             if(DCore.Guide.is_zone_launched())
                 clearInterval(interval_is_zone)
-                DCore.Guide.disable_keyboard()
-                DCore.Guide.enable_guide_region()
                 @pointer_create()
         ,200)
 
@@ -253,7 +251,6 @@ class DesktopZone extends Page
             DCore.Guide.restack()
             if interval > 10
                 clearInterval(restack_interval)
-                DCore.Guide.disable_keyboard()
                 DCore.Guide.enable_guide_region()
         ,200)
         
