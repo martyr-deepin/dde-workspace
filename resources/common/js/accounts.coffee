@@ -99,6 +99,7 @@ class Accounts
     is_need_pwd: (uid) ->
         username = @get_user_name(uid)
         dbus = null
+        return true
         try
             if APP is "Greeter"
                 LIGHTDM = "com.deepin.dde.lightdm"
