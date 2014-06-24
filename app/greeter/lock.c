@@ -182,10 +182,10 @@ focus_out_cb (GtkWidget* w G_GNUC_UNUSED, GdkEvent*e G_GNUC_UNUSED, gpointer use
 }
 
 static void
-lock_show_cb (GtkWindow* container, gpointer data G_GNUC_UNUSED)
+show_cb (GtkWindow* container, gpointer data G_GNUC_UNUSED)
 {
     gs_grab_move_to_window (grab,
-                            gtk_widget_get_window (GTK_WIDGET(container)),
+                            gtk_widget_get_window (container),
                             gtk_window_get_screen (container),
                             FALSE);
 }
@@ -314,7 +314,7 @@ int main (int argc, char **argv)
 #ifdef NDEBUG
     g_message(" Lock Not DEBUG");
     gtk_window_set_keep_above (GTK_WINDOW (container), TRUE);
-    g_signal_connect (container, "show", G_CALLBACK (lock_show_cb), NULL);
+    g_signal_connect (container, "show", G_CALLBACK (show_cb), NULL);
     g_signal_connect (webview, "focus-out-event", G_CALLBACK( focus_out_cb), NULL);
 #endif
     g_signal_connect (container, "delete-event", G_CALLBACK (prevent_exit), NULL);
