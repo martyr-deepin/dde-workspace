@@ -87,6 +87,12 @@ install(
     )
 
 install(
+    DIRECTORY ${PROJECT_SOURCE_DIR}/resources/${NAME}/greeter-theme
+    DESTINATION /usr/share/personalization/
+    )
+
+
+install(
     FILES ${PROJECT_SOURCE_DIR}/app/greeter/com.deepin.dde.lightdm.service
     DESTINATION /usr/share/dbus-1/system-services/
     )
