@@ -27,7 +27,6 @@ setTheme = (theme)->
     _b = document.body
     _b.style.height = window.innerHeight
     _b.style.width = window.innerWidth
-    inject_js("theme/js/three.js")
     switch theme
         when THEME.static
             _b.style.backgroundImage = "url(/usr/share/backgrounds/default_background.jpg)"
