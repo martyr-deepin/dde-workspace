@@ -102,7 +102,7 @@ class Accounts
         try
             if APP is "Greeter"
                 LIGHTDM = "com.deepin.dde.lightdm"
-                dbus = DCore.DBus.session(LIGHTDM)
+                dbus = DCore.DBus.sys(LIGHTDM)
             else
                 LOCK = "com.deepin.dde.lock"
                 dbus = DCore.DBus.session(LOCK)
