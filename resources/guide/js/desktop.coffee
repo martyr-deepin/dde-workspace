@@ -239,21 +239,22 @@ class DesktopZone extends Page
         interval_is_zone = setInterval(=>
             if(DCore.Guide.is_zone_launched())
                 clearInterval(interval_is_zone)
-                @pointer_create()
+                clearInterval(restack_interval)
+                interval = 0
+                restack_interval = setInterval(=>
+                    interval++
+                    DCore.Guide.restack()
+                    if interval > 10
+                        clearInterval(restack_interval)
+                        DCore.Guide.enable_guide_region()
+                        @switch_page()
+                ,200)
+        
+                #@pointer_create()
         ,200)
 
     pointer_create: ->
         if @corner.length != 0 then return
-        
-        clearInterval(restack_interval)
-        interval = 0
-        restack_interval = setInterval(=>
-            interval++
-            DCore.Guide.restack()
-            if interval > 10
-                clearInterval(restack_interval)
-                DCore.Guide.enable_guide_region()
-        ,200)
         
         length = @pos.length
         for p,i in @pos
@@ -271,13 +272,15 @@ class DesktopZone extends Page
                     if index < length - 1
                         DCore.Guide.enable_guide_region()
                         that.corner[index + 1].show_animation()
-                    else
-                        DCore.Guide.spawn_command_sync("killall dde-zone",true)
-                        clearInterval(restack_interval)
-                        guide?.switch_page(that,"DssLaunch")
+                    else that.switch_page()
                 ,t_mid_switch_page)
             ,"mouseover")
             @corner[i].set_area_pos(0,0,"fixed",POS_TYPE[p])
         DCore.Guide.enable_guide_region()
         @corner[0].show_animation()
+
+    switch_page: =>
+        DCore.Guide.spawn_command_sync("killall dde-zone",true)
+        clearInterval(restack_interval)
+        guide?.switch_page(@,"DssLaunch")
 
