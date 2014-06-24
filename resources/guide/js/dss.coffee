@@ -97,7 +97,7 @@ class DssArea extends Page
                 @dss?.hide()
                 clearTimeout(restack_time_out)
                 guide?.switch_page(@,"End")
-            ,t_switch_page)
+            ,t_mid_switch_page)
         )
         
 
