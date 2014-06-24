@@ -65,7 +65,7 @@ class HideStatusManager
     changeToHide:()->
         console.log("changeToHide: change to hide")
         @changeState(HideState.Hidding, "", "")
-        $EW.undraw()
+        systemTray?.hideAllIcons()
         $tooltip?.hide()
 
     changeToShow:()->

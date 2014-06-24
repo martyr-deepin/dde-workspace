@@ -123,6 +123,13 @@ class SystemTray extends SystemItem
         calc_app_item_size()
         @calcTimer = webkitRequestAnimationFrame(@updatePanel)
 
+    hideAllIcons:=>
+        for item in @items
+            $EW.undraw(item)
+
+    showAllIcons:=>
+        for item in @items
+            $EW.show(item)
 
     showButton:->
         @button.style.visibility = 'visible'
@@ -170,8 +177,7 @@ class SystemTray extends SystemItem
         console.log("tray mouseout")
         @img.style.display = ''
         @panel.style.display = 'none'
-        for item in @items
-            $EW.undraw(item)
+        @hideAllIcons()
         @hideButton()
 
     unfold:=>
@@ -181,32 +187,27 @@ class SystemTray extends SystemItem
         clearTimeout(@hideTimer)
         webkitCancelAnimationFrame(@calcTimer || null)
         @updatePanel()
-        for item in @items
-            $EW.undraw(item)
+        @hideAllIcons()
         @updateTrayIcon()
         if @upperItemNumber > 2
             clearTimeout(@showTimer)
             @showTimer = setTimeout(=>
                 webkitCancelAnimationFrame(@calcTimer)
                 @updateTrayIcon()
-                for item in @items
-                    $EW.show(item)
+                @showAllIcons()
                 update_dock_region()
                 console.warn("update dock region")
             , ANIMATION_TIME)
         else
             webkitCancelAnimationFrame(@calcTimer)
-            for item in @items
-                $EW.show(item)
+            @showAllIcons()
             update_dock_region()
 
     fold: (e)=>
         @isUnfolded = false
         @button.style.backgroundPosition = '100% 0'
         console.log("fold")
-        if @items
-            for item in @items
-                $EW.undraw(item)
+        @hideAllIcons()
         clearTimeout(@showTimer)
         webkitCancelAnimationFrame(@calcTimer)
         @updatePanel()
