@@ -251,7 +251,10 @@ class DesktopZone extends Page
         restack_interval = setInterval(=>
             interval++
             DCore.Guide.restack()
-            clearInterval(restack_interval) if interval > 20
+            if interval > 10
+                clearInterval(restack_interval)
+                DCore.Guide.disable_keyboard()
+                DCore.Guide.enable_guide_region()
         ,200)
         
         length = @pos.length
