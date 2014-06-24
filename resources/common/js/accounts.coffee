@@ -98,10 +98,19 @@ class Accounts
     
     is_need_pwd: (uid) ->
         username = @get_user_name(uid)
-        if APP is "Greeter"
-            DCore[APP].user_need_password(username)
-        else
-            DCore[APP].need_password(username)
+        dbus = null
+        try
+            if APP is "Greeter"
+                LIGHTDM = "com.deepin.dde.lightdm"
+                dbus = DCore.DBus.session(LIGHTDM)
+            else
+                LOCK = "com.deepin.dde.lock"
+                dbus = DCore.DBus.session(LOCK)
+            return dbus?.NeedPwd_sync(username)
+        catch e
+            echo "is_need_pwd dbus error #{e}"
+            return true
+
 
     get_user_icon:(uid)->
         icon = null
