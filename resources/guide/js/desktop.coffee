@@ -161,11 +161,12 @@ class DesktopCorner extends Page
     pointer_create : ->
         if @corner.length != 0 then return
         length = @pos.length
+        enableZoneDetect(true)
         for p,i in @pos
             @corner[i] = new Pointer(p,@element)
             that = @
             @corner[i].create_pointer(AREA_TYPE.corner,POS_TYPE[p],->
-                enableZoneDetect(true)
+                this.display("none")
                 index = i for p,i in that.pos when this.id is p
                 echo "#{index}/#{length - 1} #{this.id} mouseenter"
                 clearTimeout(switch_page_timeout)
@@ -182,9 +183,9 @@ class DesktopCorner extends Page
                         guide?.switch_page(that,"DesktopZone")
                 ,t_mid_switch_page)
             ,"mouseover")
-            @corner[i].element.addEventListener("mouseout",=>
-                enableZoneDetect(false)
-            )
+            #@corner[i].element.addEventListener("mouseout",=>
+            #    enableZoneDetect(false)
+            #)
             @corner[i].set_area_pos(0,0,"fixed",POS_TYPE[p])
         @corner[0].show_animation()
         
