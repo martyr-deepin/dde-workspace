@@ -79,9 +79,14 @@ gboolean _help_do_window_region(cairo_region_t* region)
 
     _do_shape_timer_id  = -1;
     gdk_window_input_shape_combine_region(_win, region, 0, 0);
+
 #ifdef DEBUG_REGION
     gdk_window_shape_combine_region(_win, region, 0, 0);
 #endif
+
+    extern GdkWindow* DOCK_GDK_WINDOW();
+    gdk_window_invalidate_rect(DOCK_GDK_WINDOW(), NULL, FALSE);
+
     return FALSE;
 }
 
