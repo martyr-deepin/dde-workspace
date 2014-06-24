@@ -29,17 +29,18 @@ setTheme = (theme)->
     _b = document.body
     _b.style.height = window.innerHeight
     _b.style.width = window.innerWidth
+    path = "#{THEME_PATH}/#{theme}"
     switch theme
         when THEME.static
             _b.style.backgroundImage = "url(/usr/share/backgrounds/default_background.jpg)"
         when THEME.sky
-            _b.style.backgroundImage = "url(#{THEME_PATH}/img/sky.jpg)"
-            inject_js("theme/js/sky.js")
+            _b.style.backgroundImage = "url(#{path}/bg.jpg)"
+            inject_js("#{path}/sky.js")
         when THEME.light
-            inject_js("theme/js/light.js")
+            inject_js("#{path}/light.js")
         when THEME.rain
-            _b.style.backgroundImage = "url(#{THEME_PATH}/img/rain.jpg)"
-            inject_js("theme/js/rain.js")
+            _b.style.backgroundImage = "url(#{path}/bg.jpg)"
+            inject_js("#{path}/rain.js")
 
 #theme = DCore[APP_NAME].get_theme()
 theme = THEME.sky
