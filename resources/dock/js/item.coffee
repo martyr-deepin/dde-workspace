@@ -341,7 +341,9 @@ class AppItem extends Item
                         console.log("is normal")
                         @swap_to_activator()
                     else if @isActive()
-                        @swap_to_clientgroup()
+                        if @openingIndicator.style.webkitAnimationName == ''
+                            console.log("#{@id} is slow or opened somewhere else.")
+                            @swap_to_clientgroup()
                 when ITEM_DATA_FIELD.icon
                     if value.substring(0, 7) == "file://" || value.substring(0, 10) == "data:image"
                         @change_icon(value)
@@ -641,6 +643,8 @@ class AppItem extends Item
         console.log("open notify animation is end")
         @openingIndicator.style.webkitAnimationName = ''
         @openingIndicator.style.display = 'none'
+        if @lastStatus == "active"
+            @swap_to_clientgroup()
 
     to_active_status : (id)->
         @leader = id
