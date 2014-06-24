@@ -57,9 +57,8 @@ class HideStatusManager
 
     changeState: (state, cw, panel)->
         if DCore.Dock.is_hovered()
+            console.warn("changeState dock is hovered")
             return
-        # update_dock_region()
-        # DCore.Dock.require_all_region()
         _CW.style.webkitTransform = cw
         $("#panel").style.webkitTransform = panel
 
@@ -67,6 +66,7 @@ class HideStatusManager
         console.log("changeToHide: change to hide")
         @changeState(HideState.Hidding, "", "")
         $EW.undraw()
+        $(".arrow_tooltip_container").style.display = 'none'
 
     changeToShow:()->
         console.log("changeToShow: change to show")
