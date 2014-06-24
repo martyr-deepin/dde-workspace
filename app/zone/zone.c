@@ -238,9 +238,9 @@ int main (int argc, char **argv)
 
 #ifdef NDEBUG
     grab = gs_grab_new ();
-    g_message(" Zone Not DEBUG");
+    g_message("Zone Not DEBUG");
     g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
-    g_signal_connect (container, "show", G_CALLBACK (show_cb), NULL);
+    /*g_signal_connect (container, "show", G_CALLBACK (show_cb), NULL);*/
     g_signal_connect (webview, "focus-out-event", G_CALLBACK( focus_out_cb), NULL);
 #endif
     gtk_widget_realize (container);
