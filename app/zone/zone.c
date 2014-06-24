@@ -105,14 +105,19 @@ focus_out_cb (GtkWidget* w G_GNUC_UNUSED, GdkEvent* e G_GNUC_UNUSED, gpointer us
     gdk_window_focus (gtk_widget_get_window (container), 0);
 }
 
-
-static void
-show_cb (GtkWindow* container, gpointer data G_GNUC_UNUSED)
+void gs_grab_move ()
 {
+    g_message("timeout grab==============");
     gs_grab_move_to_window (grab,
-                            gtk_widget_get_window (GTK_WIDGET(container)),
+                            gtk_widget_get_window (container),
                             gtk_window_get_screen (container),
                             FALSE);
+}
+
+static void
+show_cb ()
+{
+    g_timeout_add(6000,(GSourceFunc)gs_grab_move,NULL);
 }
 
 
@@ -240,7 +245,7 @@ int main (int argc, char **argv)
     grab = gs_grab_new ();
     g_message("Zone Not DEBUG");
     g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
-    /*g_signal_connect (container, "show", G_CALLBACK (show_cb), NULL);*/
+    g_signal_connect (container, "show", G_CALLBACK (show_cb), NULL);
     g_signal_connect (webview, "focus-out-event", G_CALLBACK( focus_out_cb), NULL);
 #endif
     gtk_widget_realize (container);
