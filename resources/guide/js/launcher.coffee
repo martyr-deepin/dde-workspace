@@ -103,13 +103,14 @@ class LauncherScroll extends Page
         @scrolldown = false
         inject_css(@element,"css/launcherscroll.css")
         new Launcher()?.show() if DEBUG
-        @scroll_create()
         
+        @message = _("All programs can be seen by scrolling the mouse up and down.\nYou can also click on the left classification navigation to locate")
+        @show_message(@message)
+        
+        @scroll_create()
+        @rect_pointer_create()
 
     scroll_create: ->
-        @message_scroll = _("All programs can be seen by scrolling the mouse up and down.")
-        @show_message(@message_scroll)
-        
         @scroll = create_element("div","scroll",@element)
         @scroll.style.position = "absolute"
         @scroll.style.top = "37%"
@@ -128,38 +129,30 @@ class LauncherScroll extends Page
         @scroll_up.style.bottom = 0
         @scroll_up.style.display = "none"
         move_animation(@scroll_down,0 + height,0,"top","absolute")
-
+        move_animation(@scroll_up, 0 - height,0,"bottom","absolute")
 
         @element.addEventListener("mousewheel", (e)=>
-            if @scrollup and @scrolldown
-                if not @pointer? or @pointer?.element.style.display is "none"
-                    @rect_pointer_create()
-            
+            if @scrollup or @scrolldown
+                return
             if e.wheelDelta >= 120
-                if @scrolldown is false then return
                 @scrollup = true
                 simulate_click(CLICK_TYPE.scrollup)
+                @switch_page()
             else if e.wheelDelta <= -120
                 @scrolldown = true
                 simulate_click(CLICK_TYPE.scrolldown)
-                @scroll_down.style.display = "none"
-                if @scroll_up.style.display is "none"
-                    move_animation(@scroll_up, 0 - height,0,"bottom","absolute")
+                @switch_page()
         )
 
+        
         @noscroll = create_element("div","noscroll",@element)
         @noscroll.innerText = _("Skip the step without scroll")
         @noscroll.addEventListener("click",(e) =>
             e.stopPropagation()
-            @rect_pointer_create()
+            @switch_page()
         )
     
     rect_pointer_create: ->
-        @element.removeChild(@noscroll)
-        @scroll.style.display = "none"
-        @message_pointer = _("You can also click on the left classification navigation to locate")
-        @show_message(@message_pointer)
-        
         @rect = new Rect("collectApp",@element)
         @rect.create_rect(CATE_WIDTH,CATE_HEIGHT)
         rect_top = (screen.height  - @rect.height) / 2
@@ -175,6 +168,11 @@ class LauncherScroll extends Page
         @pointer.show_animation()
 
 
+    switch_page: ->
+        setTimeout(=>
+            guide?.switch_page(@,"LauncherSearch")
+        ,t_mid_switch_page)
+
 class LauncherSearch extends Page
     constructor:(@id)->
         super
@@ -187,7 +185,7 @@ class LauncherSearch extends Page
 
         deepin_keysym = [68,69,69,80,73,78]
         setTimeout(=>
-            simulate_input(deepin_keysym,@,"LauncherRightclick")
+            simulate_input(deepin_keysym,@,"LauncherMenu")
         ,20)
 
 class LauncherRightclick extends Page
@@ -205,6 +203,8 @@ class LauncherRightclick extends Page
 class LauncherMenu extends Page
     constructor:(@id)->
         super
+        #if DEBUG then @launcher.show()
+        
         @launcher = new Launcher()
         @desktop = new Desktop()
         
@@ -213,10 +213,8 @@ class LauncherMenu extends Page
         #simulate_rightclick(@)
         @signal()
         
-        if DEBUG then @launcher.show()
-        
-        app1 = @app_x_y(2)
-        app2 = @app_x_y(4)
+        app1 = @app_x_y(1)
+        app2 = @app_x_y(2)
         @menu_create(app1.x,app1.y,=>
             src1 = "/usr/share/applications/deepin-movie.desktop"
             DCore.Guide.copy_file_to_desktop(src1)
