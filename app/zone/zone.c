@@ -63,6 +63,8 @@ PRIVATE GtkWidget* container = NULL;
 PRIVATE
 GSettings* zone_gsettings = NULL;
 
+PRIVATE
+gint t_id;
 
 JS_EXPORT_API
 void zone_quit()
@@ -105,19 +107,21 @@ focus_out_cb (GtkWidget* w G_GNUC_UNUSED, GdkEvent* e G_GNUC_UNUSED, gpointer us
     gdk_window_focus (gtk_widget_get_window (container), 0);
 }
 
-void gs_grab_move ()
+gboolean gs_grab_move ()
 {
     g_message("timeout grab==============");
     gs_grab_move_to_window (grab,
                             gtk_widget_get_window (container),
                             gtk_window_get_screen (container),
                             FALSE);
+    /*gtk_timeout_remove(t_id);*/
+    return FALSE;
 }
 
 static void
 show_cb ()
 {
-    g_timeout_add(6000,(GSourceFunc)gs_grab_move,NULL);
+    t_id = g_timeout_add(6000,(GSourceFunc)gs_grab_move,NULL);
 }
 
 
@@ -220,7 +224,9 @@ void check_version()
 int main (int argc, char **argv)
 {
     if (argc == 2 && 0 == g_strcmp0(argv[1], "-d"))
+        g_message("dde-zone -d");
         g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
+        
     if (is_application_running(ZONE_ID_NAME)) {
         g_warning("another instance of application dzone is running...\n");
         return 0;
@@ -245,7 +251,8 @@ int main (int argc, char **argv)
     grab = gs_grab_new ();
     g_message("Zone Not DEBUG");
     g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
-    g_signal_connect (container, "show", G_CALLBACK (show_cb), NULL);
+    if (!(argc == 2 && 0 == g_strcmp0(argv[1], "-d")))
+        g_signal_connect (container, "show", G_CALLBACK (show_cb), NULL);
     g_signal_connect (webview, "focus-out-event", G_CALLBACK( focus_out_cb), NULL);
 #endif
     gtk_widget_realize (container);
