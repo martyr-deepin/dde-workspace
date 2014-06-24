@@ -24,12 +24,16 @@ class PowerMenu extends Widget
         super
         @power_dict = {}
         @power_title = {}
+        @power_can_exe = {}
         
         @parent = parent_el
         @img_before = "images/powermenu/"
         if not @parent? then @parent = document.body
         @parent.appendChild(@element)
+
+        power_get_inhibit()
         @clear_shutdown_from_lock()
+        @get_power_can_exe()
     
     suspend_cb : ->
         power_force("suspend")
@@ -50,6 +54,12 @@ class PowerMenu extends Widget
 
         return @power_dict
 
+    get_power_can_exe: ->
+        @get_power_dict()
+        for key, title of @power_title
+            can = power_can(key)
+            @power_can_exe[key] = can
+
     menuChoose_click_cb : (id, title)=>
         if is_greeter
             @power_dict[id]()
@@ -67,8 +77,7 @@ class PowerMenu extends Widget
 
     new_power_menu:->
         echo "new_power_menu"
-        @get_power_dict()
-
+        
         @ComboBox = new ComboBox("power", @menuChoose_click_cb)
         for key, title of @power_title
             img_normal = @img_before + "#{key}_normal.png"
@@ -76,8 +85,9 @@ class PowerMenu extends Widget
             img_click = @img_before + "#{key}_press.png"
             message_text = null
             inhibit = power_get_inhibit(key)
-            if power_can(key) is false then message_text = inhibit?[2]
-            @ComboBox.insert(key, title, img_normal,img_hover,img_click,!power_can(key),message_text)
+            can_exe =  @power_can_exe[key]
+            if can_exe is false then message_text = inhibit?[2]
+            @ComboBox.insert(key, title, img_normal,img_hover,img_click,!can_exe,message_text)
         
         @ComboBox.frame_build()
         @element.appendChild(@ComboBox.element)
@@ -172,7 +182,7 @@ class PowerMenu extends Widget
         if @check_is_shutdown_from_lock()
             power = @clear_shutdown_from_lock()
             if not power.value? then return
-            if power_can(power.value)
+            if @power_can_exe[power.value]
                 power_force(power.value)
 
 

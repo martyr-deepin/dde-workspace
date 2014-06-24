@@ -22,17 +22,12 @@ power_request = (power) ->
         when "shutdown" then dbus_login1.PowerOff(true)
         else return
 
-
-
-power_get_inhibit = (power) ->
-    result = null
-    if not dbus_login1? then return result
-    
+cannot_excute = []
+power_get_inhibit = ->
+    if not dbus_login1? then return
     inhibitorsList = dbus_login1.ListInhibitors_sync()
-    echo inhibitorsList
-    cannot_excute = []
     for inhibit,i in inhibitorsList
-        echo inhibit
+        #echo i + "=====" + inhibit
         if inhibit is undefined then break
         try
             if inhibit[3] is "block"
@@ -48,14 +43,13 @@ power_get_inhibit = (power) ->
         catch e
             echo "#{e}"
 
-    if cannot_excute.length == 0 then return result
-    for tmp in cannot_excute
-        if power is tmp.type then result = tmp.inhibit
-    echo "power_get_inhibit(#{power}) result:#{result}"
-    return result
+
 
 power_can = (power)->
-    inhibit = power_get_inhibit(power)
+    inhibit = null
+    if cannot_excute.length == 0 then return true
+    for tmp in cannot_excute
+        if power is tmp.type then inhibit = tmp.inhibit
     if inhibit is null
         echo "power_can:#{power} true"
         return true
@@ -63,7 +57,7 @@ power_can = (power)->
         echo "power_can:#{power} false"
         return false
 
-inhibit_test = ->
+inhibit_set_for_test = ->
     echo "--------inhibit_test-------"
     if not dbus_login1? then return
     echo "1"
@@ -79,7 +73,7 @@ inhibit_test = ->
         )
     echo "3"
 
-#inhibit_test()
+#inhibit_set_for_test()
 
 power_can_freedesktop = (power) ->
     if not dbus_login1? then return
