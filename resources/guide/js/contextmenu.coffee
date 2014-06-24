@@ -26,20 +26,20 @@ class ContextMenu extends Widget
             _char = menu.text.substr(_index,2)
             _behind = menu.text.slice(_index + 2)
             
-            #_char = @underline(_char.slice(1))
-            _char = _char.slice(1)
+            _char = @underline(_char.slice(1))
+            #_char = _char.slice(1)
             menu.text = _before.concat(_char,_behind)
             switch menu.type
                 when MENU.cutline then @li[i].setAttribute("class","cutline")
                 when MENU.option
                     @li[i].setAttribute("class","")
-                    @li[i].textContent = menu.text
+                    @li[i].innerHTML = menu.text
             
                 when MENU.selected
                     @selected_index = i
                     @li[i].style.cursor = "pointer"
                     @li[i].setAttribute("class","selected")
-                    @li[i].textContent = menu.text
+                    @li[i].innerHTML = menu.text
     
     set_pos : (x,y,position_type = "fixed",type = POS_TYPE.leftup) ->
         set_pos(@element,x,y,position_type,type)
