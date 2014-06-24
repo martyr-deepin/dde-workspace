@@ -66,6 +66,7 @@ struct AuthHandler {
 
 struct AuthHandler *handler;
 
+
 JS_EXPORT_API
 char* greeter_get_theme()
 {
@@ -289,9 +290,8 @@ int main (int argc, char **argv)
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
 
     monitors_adaptive(container,webview);
-    BackgroundInfo* bg_info = create_background_info(container, webview);
-    background_info_set_background_by_file(bg_info, "/usr/share/backgrounds/default_background.jpg");
-
+    set_theme_background(container,webview);
+    
     gtk_widget_realize (webview);
     gtk_widget_realize (container);
 

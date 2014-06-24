@@ -21,20 +21,41 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 #include <gtk/gtk.h>
+#include "background.h"
 
 #define SCHEMA_ID "com.deepin.dde.personalization"
+#define GREETER_THEME_KEY "greeter-theme"
+#define GREETER_THEME_PATH ""RESOURCE_DIR"greeter/greeter-theme"
 GSettings* s;
 
 char* get_theme_config()
 {
-    const gchar* key = "greeter-theme";
-    gchar* theme = g_settings_get_string(s, key);
-    return theme;
+    return g_settings_get_string(s, GREETER_THEME_KEY);
 }
 
+char* get_current_bg_path()
+{
+    return g_settings_get_string(s, "current-picture");
+}
+
+void set_theme_background(GtkWidget* container,GtkWidget* child)
+{
+    char* theme = get_theme_config();
+    const char* bg_path = g_strdup_printf("%s/%s/bg.jpg",GREETER_THEME_PATH,theme);
+    g_free(theme);
+    g_message("theme_bg_path:%s",bg_path);
+    GFile* gf = g_file_new_for_path(bg_path);
+    if(g_file_query_exists(gf,NULL))
+    /*if(!g_file_test(bg_path,G_FILE_TEST_EXISTS))*/
+        bg_path = get_current_bg_path();
+        g_message("bg isnt exists and current bg:%s",bg_path);
+    g_object_unref(gf);
+    BackgroundInfo* bg_info = create_background_info(container, child);
+    background_info_set_background_by_file(bg_info, bg_path);
+}
 
 void init_theme()
 {
-    /*s = g_settings_new(SCHEMA_ID);*/
+    s = g_settings_new(SCHEMA_ID);
 }
 

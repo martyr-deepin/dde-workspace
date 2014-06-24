@@ -48,7 +48,6 @@
 #include "X_misc.h"
 #include "gs-grab.h"
 #include "lock_util.h"
-#include "background.h"
 #include "theme.h"
 
 #define LOCK_HTML_PATH "file://"RESOURCE_DIR"/greeter/lock.html"
@@ -304,12 +303,11 @@ int main (int argc, char **argv)
                            | GDK_ENTER_NOTIFY_MASK
                            | GDK_LEAVE_NOTIFY_MASK);
 
-    GtkWidget *webview = d_webview_new_with_uri (LOCK_HTML_PATH);
+    GtkWidget* webview = d_webview_new_with_uri (LOCK_HTML_PATH);
     gtk_container_add (GTK_CONTAINER (container), GTK_WIDGET (webview));
 
     monitors_adaptive(container,webview);
-    BackgroundInfo* bg_info = create_background_info(container, webview);
-    background_info_set_background_by_file(bg_info, "/usr/share/backgrounds/default_background.jpg");
+    set_theme_background(container,webview);
 
 #ifdef NDEBUG
     g_message(" Lock Not DEBUG");
