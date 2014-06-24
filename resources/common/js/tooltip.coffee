@@ -1,6 +1,10 @@
 tooltip_hide_id = null
+
+$tooltip = null
+
 class ToolTipBase extends Widget
     constructor: (@buddy, @text, @parent=document.body)->
+        $tooltip = @
         super
         @delay_time = 0
         @element.addEventListener("mouseover", @hide)
@@ -61,6 +65,9 @@ class ToolTip extends ToolTipBase
         ToolTip.tooltip.style.display = "block"
         @_move_tooltip()
 
+    isShown:=>
+        ToolTip.tooltip.style.display != "none"
+
     hide: =>
         super
         ToolTip.tooltip?.style.display = "none"
@@ -93,6 +100,9 @@ class ArrowToolTip extends ToolTipBase
         # content will show wried, have to use _hidden_content
         ArrowToolTip._hidden_content ?= create_element('div', 'arrow_tooltip_hidden_content', @parent)
         @bind_events()
+
+    isShown: =>
+        ArrowToolTip.container.style.display != 'none'
 
     draw: ->
         content = ArrowToolTip._hidden_content

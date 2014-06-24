@@ -66,7 +66,7 @@ class HideStatusManager
         console.log("changeToHide: change to hide")
         @changeState(HideState.Hidding, "", "")
         $EW.undraw()
-        $(".arrow_tooltip_container").style.display = 'none'
+        $tooltip?.hide()
 
     changeToShow:()->
         console.log("changeToShow: change to show")
