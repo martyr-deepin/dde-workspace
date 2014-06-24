@@ -188,3 +188,12 @@ void region_rectangles()
     }
 }
 
+
+void set_input_region(GdkWindow* win, cairo_rectangle_int_t* rect)
+{
+    cairo_region_t* region = cairo_region_create_rectangle(rect);
+    gdk_window_input_shape_combine_region(win, region, 0, 0);
+    cairo_region_destroy(region);
+    gdk_window_invalidate_rect(win, NULL, FALSE);
+}
+

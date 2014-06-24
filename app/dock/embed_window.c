@@ -5,6 +5,7 @@
 #include <gdk/gdkx.h>
 #include "jsextension.h"
 #include "dwebview.h"
+#include "region.h"
 
 
 GdkWindow* GET_CONTAINER_WINDOW();
@@ -21,6 +22,8 @@ GdkWindow* GET_CONTAINER_WINDOW();
 
 GHashTable* __EMBEDED_WINDOWS__ = NULL;
 GHashTable* __EMBEDED_WINDOWS_TARGET__ = NULL;
+// key: xid, value: bool
+GHashTable* __EMBEDED_WINDOWS_DRAWABLE__ = NULL;
 
 GdkWindow* get_wrapper(GdkWindow* win) { return g_object_get_data(G_OBJECT(win), "deepin_embed_window_wrapper"); }
 
@@ -65,6 +68,9 @@ void __init__embed__()
     if (__EMBEDED_WINDOWS_TARGET__ == NULL) {
 	__EMBEDED_WINDOWS_TARGET__ = g_hash_table_new(g_direct_hash, g_direct_equal);
     }
+    if (__EMBEDED_WINDOWS_DRAWABLE__ == NULL) {
+	__EMBEDED_WINDOWS_DRAWABLE__ = g_hash_table_new(g_direct_hash, g_direct_equal);
+    }
     XSelectInput(gdk_x11_get_default_xdisplay(),
                  GDK_WINDOW_XID(GET_CONTAINER_WINDOW()),
                  SubstructureNotifyMask|SubstructureRedirectMask);
@@ -74,7 +80,6 @@ void __init__embed__()
 
 void destroy_window(GdkWindow* win)
 {
-
     GdkFilterReturn __monitor_embed_window(GdkXEvent *xevent, GdkEvent* ev, gpointer data);
     gdk_window_remove_filter(win, __monitor_embed_window, NULL);
 
@@ -178,6 +183,7 @@ GdkWindow* wrapper(Window xid)
     gdk_window_show(child);
 
     g_hash_table_insert(__EMBEDED_WINDOWS__, (gpointer)xid, child);
+    g_hash_table_insert(__EMBEDED_WINDOWS_DRAWABLE__, (gpointer)xid, (gpointer)TRUE);
     return parent;
 }
 
@@ -249,9 +255,25 @@ void exwindow_move(double xid, double x, double y)
 static gboolean draw_ew = TRUE;
 
 //JS_EXPORT_API
-void exwindow_undraw()
+void exwindow_undraw_all()
 {
     draw_ew = FALSE;
+}
+
+//JS_EXPORT_API
+void exwindow_undraw(double _xid)
+{
+    Window xid = (Window)_xid;
+    SKIP_UNINIT(xid);
+    g_hash_table_replace(__EMBEDED_WINDOWS_DRAWABLE__, (gpointer)xid, (gpointer)FALSE);
+    GdkWindow* win = GDK_WINDOW(g_hash_table_lookup(__EMBEDED_WINDOWS__, (gpointer)xid));
+    GdkWindow *wrapper = get_wrapper(win);
+    cairo_rectangle_int_t rect = {0,0,1,1};
+    if (wrapper == NULL) {
+        set_input_region(win, &rect);
+    } else {
+        set_input_region(wrapper, &rect);
+    }
 }
 
 
@@ -275,14 +297,18 @@ void exwindow_show(double xid)
 {
     draw_ew = TRUE;
     SKIP_UNINIT(xid);
+    g_hash_table_replace(__EMBEDED_WINDOWS_DRAWABLE__, (gpointer)(Window)xid, (gpointer)TRUE);
     GdkWindow* win = (GdkWindow*)g_hash_table_lookup(__EMBEDED_WINDOWS__, (gpointer)(Window)xid);
     if (win != NULL) {
-	GdkWindow* wrapper = get_wrapper(win);
-	if (wrapper) {
-	    gdk_window_show(wrapper);
-	} else {
-	    gdk_window_show(win);
-	}
+        cairo_rectangle_int_t rect = {0,0,16,16};
+        GdkWindow* wrapper = get_wrapper(win);
+        if (wrapper) {
+            set_input_region(wrapper, &rect);
+            gdk_window_show(wrapper);
+        } else {
+            set_input_region(win, &rect);
+            gdk_window_show(win);
+        }
     } else {
         g_warning("window not found");
     }
@@ -338,11 +364,12 @@ gboolean draw_embed_windows(GtkWidget* _w, cairo_t *cr)
         }
 
         Window xid = GDK_WINDOW_XID(child);
+        gboolean drawable = GPOINTER_TO_INT(g_hash_table_lookup(__EMBEDED_WINDOWS_DRAWABLE__, GINT_TO_POINTER(xid)));
         gboolean has_target =
             GPOINTER_TO_INT(g_hash_table_lookup(__EMBEDED_WINDOWS_TARGET__,
                                                 GINT_TO_POINTER(xid)));
         // g_warning("draw_target: %d", draw_target);
-        if (win != NULL && !gdk_window_is_destroyed(win) &&
+        if (win != NULL && drawable && !gdk_window_is_destroyed(win) &&
             gdk_window_is_visible(win) &&
             !has_target) {
             int x = 0;
