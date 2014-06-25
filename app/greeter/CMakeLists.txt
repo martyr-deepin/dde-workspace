@@ -99,7 +99,7 @@ install(
 
 install(
     FILES ${PROJECT_SOURCE_DIR}/app/greeter/com.deepin.dde.lock.service
-    DESTINATION /usr/share/dbus-1/services/
+    DESTINATION /usr/share/dbus-1/system-services/
     )
 
 install(
