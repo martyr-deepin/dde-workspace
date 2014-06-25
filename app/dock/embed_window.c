@@ -297,18 +297,22 @@ void exwindow_show(double xid)
 {
     draw_ew = TRUE;
     SKIP_UNINIT(xid);
-    g_hash_table_replace(__EMBEDED_WINDOWS_DRAWABLE__, (gpointer)(Window)xid, (gpointer)TRUE);
     GdkWindow* win = (GdkWindow*)g_hash_table_lookup(__EMBEDED_WINDOWS__, (gpointer)(Window)xid);
     if (win != NULL) {
-        cairo_rectangle_int_t rect = {0,0,16,16};
         GdkWindow* wrapper = get_wrapper(win);
-        if (wrapper) {
+        GdkWindow* valid_window = wrapper == NULL ? win : wrapper;
+
+        gboolean drawable = GPOINTER_TO_INT(g_hash_table_lookup(__EMBEDED_WINDOWS_DRAWABLE__, (gpointer)(Window)xid));
+        if (!drawable) {
+            // TODO:
+            // this is just working for tray icons now.
+            // other window may undraw in the future.
+            g_hash_table_replace(__EMBEDED_WINDOWS_DRAWABLE__, (gpointer)(Window)xid, (gpointer)TRUE);
+            cairo_rectangle_int_t rect = {0,0,16,16};
             set_input_region(wrapper, &rect);
-            gdk_window_show(wrapper);
-        } else {
-            set_input_region(win, &rect);
-            gdk_window_show(win);
         }
+
+        gdk_window_show(valid_window);
     } else {
         g_warning("window not found");
     }
