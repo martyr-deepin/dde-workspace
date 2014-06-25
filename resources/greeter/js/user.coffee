@@ -91,7 +91,7 @@ class User extends Widget
         echo "new_userinfo_for_lock"
         username = accounts.users_id_dbus[@_default_userid].UserName
         usericon = accounts.users_id_dbus[@_default_userid].IconFile
-        _current_user = new UserInfo(uid, username, usericon)
+        _current_user = new UserInfo(@_default_userid, username, usericon)
         _current_user.index = 0
         @element.appendChild(_current_user.element)
         _current_user.show()
