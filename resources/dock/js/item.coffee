@@ -82,7 +82,7 @@ class Item extends Widget
         this["img#{type}"].style.display = ''
 
     on_mouseover:(e)=>
-        if settings.hideMode() != HideMode.KeepShowing and hideStatusManager.state != HideState.Shown
+        if _isRightclicked || settings.hideMode() != HideMode.KeepShowing and hideStatusManager.state != HideState.Shown
             console.log("hide state is not Shown")
             return
         console.log("mouseover, require_all_region")
@@ -97,6 +97,7 @@ class Item extends Widget
         @core?.onMouseWheel(e.x, e.y, e.wheelDeltaY)
 
     on_rightclick:(e)=>
+        _isRightclicked = true
         e.preventDefault()
         e.stopPropagation()
         @tooltip?.hide()
@@ -470,6 +471,9 @@ class AppItem extends Item
 
     on_mouseover:(e)=>
         super
+        if _isRightclicked || settings.hideMode() != HideMode.KeepShowing and hideStatusManager.state != HideState.Shown
+            console.log("hide state is not Shown")
+            return
         if @isNormal() || @isNormalApplet()
             clearTimeout(hide_id)
             closePreviewWindowTimer = setTimeout(->
@@ -572,6 +576,9 @@ class AppItem extends Item
         _clear_item_timeout()
         clearTimeout(@showEmWindowTimer)
         Preview_close_now()
+        setTimeout(->
+            Preview_close_now()
+        , 300)
         # console.log("rightclick")
         xy = get_page_xy(@element)
 
@@ -613,6 +620,9 @@ class AppItem extends Item
 
         if dbus
             dbus.connect("ItemInvoked", @on_itemselected($DBus[@id]))
+            dbus.connect("MenuUnregistered", ->
+                _isRightclicked = false
+            )
             dbus.ShowMenu(menuJson)
         else
             conosle.log("get menu dbus failed")
