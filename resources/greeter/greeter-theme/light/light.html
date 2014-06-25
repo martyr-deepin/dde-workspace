@@ -10,15 +10,17 @@
         var LIGHTS = LIGHTS || {};
 		LIGHTS.Config = {
 			homeImages: {
-				bokeh:              'img/bokeh.png'
+				bokeh:'bokeh.png'
 			},
 		};
         </script>
-        <script type="text/javascript" src="js/three.js"></script>
-        <script type="text/javascript" src="js/light.js"></script>
+        <script type="text/javascript" src="three.js"></script>
+        <script type="text/javascript" src="Detector.js"></script>
+        <script type="text/javascript" src="stats.js"></script>
+        <script type="text/javascript" src="light.js"></script>
 
-        <div id="lights_wrapper">
-
-        </div>
+        <div id="lights_wrapper"></div>
+        <div id="lights_fail"></div>
+        <div id="lights_outer"></div>
     </body>
 </html>
