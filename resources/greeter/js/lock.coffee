@@ -24,6 +24,8 @@ class Lock extends Widget
         super
         echo "Lock"
         document.body.appendChild(@element)
+        @element.style.width = screen.width - 1
+        @element.style.height = screen.height - 1
         power = {"lock":false,"value":null}
         localStorage.setObject("shutdown_from_lock",power)
         enableZoneDetect(false)

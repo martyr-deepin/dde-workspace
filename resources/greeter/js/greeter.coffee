@@ -23,6 +23,8 @@ class Greeter extends Widget
         super
         echo "Greeter"
         document.body.appendChild(@element)
+        @element.style.width = screen.width - 1
+        @element.style.height = screen.height - 1
 
     webview_ok:(_current_user)->
         DCore.Greeter.webview_ok(_current_user.id) if hide_face_login
