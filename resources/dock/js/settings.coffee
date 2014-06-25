@@ -14,7 +14,7 @@ class Setting
             "GetHideMode"
         )
         @dbus.connect("HideModeChanged", (mode)=>
-            console.warn("mode changed to #{mode}")
+            console.log("mode changed to #{mode}")
             hideStatusManager.updateState()
         )
 

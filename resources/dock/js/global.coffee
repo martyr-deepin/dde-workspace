@@ -1,8 +1,8 @@
 # console.log=->
 
-cancelInsertTimer = null
 _lastHover = null
 _isDragging = false
+_isDragTimer = null
 _b = document.body
 _dragTargetManager = null
 _CW = $("#containerWarp")

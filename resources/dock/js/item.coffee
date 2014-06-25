@@ -85,7 +85,7 @@ class Item extends Widget
         if settings.hideMode() != HideMode.KeepShowing and hideStatusManager.state != HideState.Shown
             console.log("hide state is not Shown")
             return
-        # console.log("mouseover, require_all_region")
+        console.log("mouseover, require_all_region")
         DCore.Dock.require_all_region()
         @displayIcon('hover')
 
@@ -141,6 +141,7 @@ class Item extends Widget
         Preview_close_now()
         _dragTarget = new DragTarget(@)
         clearTimeout(@removeTimer || null)
+        clearTimeout(_isDragTimer)
         _dragTargetManager.add(@id, _dragTarget)
         pos = get_page_xy(@element)
         _dragTarget.setOrigin(pos.x, pos.y)
@@ -214,6 +215,9 @@ class Item extends Widget
             console.log("update tray icon")
             systemTray.updateTrayIcon()
         , 100)
+        _isDragTimer = setTimeout(->
+            _isDragging = false
+        , 500)
         # updatePanel()
         @element.style.marginLeft = ''
         @element.style.marginRight = ''
@@ -223,15 +227,10 @@ class Item extends Widget
 
     on_dragenter: (e)=>
         console.log("dragenter image #{@id}")
-        # if dnd_is_deepin_item(e) or dnd_is_desktop(e)
-        #     dataUrl = e.dataTransfer.getData("ItemIcon")
-        #     console.log("#{dataUrl}")
-        #     app_list.setInsertIndicator(dataUrl)
-        clearTimeout(cancelInsertTimer)
         e.preventDefault()
         e.stopPropagation()
         return if @is_fixed_pos
-        DCore.Dock.require_all_region()
+        # DCore.Dock.require_all_region()
         if dnd_is_deepin_item(e) or dnd_is_desktop(e)
             @move(e.offsetX, @element.clientWidth / 2)
         else
@@ -247,7 +246,7 @@ class Item extends Widget
     on_dragleave: (e)=>
         console.log("dragleave")
         clearTimeout(activeWindowTimer)
-        clearTimeout(cancelInsertTimer)
+        update_dock_region()
         e.preventDefault()
         e.stopPropagation()
 
@@ -490,8 +489,8 @@ class AppItem extends Item
             xy = get_page_xy(@element)
             w = @element.clientWidth || 0
             # console.log("mouseover: "+xy.y + ","+xy.x, +"clientWidth"+w)
+            console.log("ClientGroup mouseover")
             DCore.Dock.require_all_region()
-            # console.log("ClientGroup mouseover")
             # console.log(@core.type())
             if @core && @isApp()
                 console.log("App show preview")
@@ -560,7 +559,7 @@ class AppItem extends Item
                     # @embedWindows?.hide()
                 , 300)
             else
-                # console.log "Preview_container is showing"
+                console.log "item mouseout, Preview_container is showing"
                 DCore.Dock.require_all_region()
                 hide_id = setTimeout(=>
                     update_dock_region()

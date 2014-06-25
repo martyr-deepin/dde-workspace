@@ -18,7 +18,7 @@ DCore.signal_connect("embed_window_configure_request", (info)->
 
     Preview_container._calc_size(info)
     setTimeout(->
-        console.warn(item.element)
+        console.log(item.element)
         xy = get_page_xy(item.element)
         w = item.element.clientWidth || 0
         extraHeight = PREVIEW_TRIANGLE.height + 6 + PREVIEW_WINDOW_BORDER_WIDTH + PREVIEW_CONTAINER_BORDER_WIDTH + info.height
@@ -57,13 +57,11 @@ _b.addEventListener("contextmenu", (e)->
 )
 _b.addEventListener("dragenter", (e)->
     console.log("dragenter to body")
-    clearTimeout(cancelInsertTimer)
     _lastHover?.reset()
     updatePanel()
     # DCore.Dock.require_all_region()
 )
 _b.addEventListener("dragover", (e)->
-    clearTimeout(cancelInsertTimer)
     s_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
     console.log("dragover ##{s_id}# on body")
     t = Widget.look_up(s_id)
@@ -81,7 +79,8 @@ _b.addEventListener("drop", (e)->
     e.stopPropagation()
     e.preventDefault()
     console.log("drop on body")
-    # update_dock_region()
+    DCore.Dock.set_is_hovered(false)
+    update_dock_region()
     s_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
     _dragTarget = _dragTargetManager.getHandle(s_id)
     if e.y > screen.height - DOCK_HEIGHT - ITEM_HEIGHT
@@ -89,7 +88,6 @@ _b.addEventListener("drop", (e)->
         _dragTarget?.dragToBack = false
         _dragTarget?.back(e.x, e.y)
         _dragTargetManager.remove(s_id)
-        update_dock_region()
         return
     s_widget = Widget.look_up(s_id)
     if not s_widget

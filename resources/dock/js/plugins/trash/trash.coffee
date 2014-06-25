@@ -77,7 +77,7 @@ class Trash extends PostfixedItem
                 else
                     icon = DCore.get_theme_icon(@data.icon, 48)
                 icon = DCore.backup_app_icon(icon)
-                console.warn("set icon: #{icon} to notify icon")
+                console.log("set icon: #{icon} to notify icon")
                 uninstaller = new Uninstaller(@data.id, "Deepin Dock", icon, uninstallSignalHandler)
                 setTimeout(=>
                     uninstaller.uninstall(item:@data, purge:true)

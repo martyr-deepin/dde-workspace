@@ -19,6 +19,7 @@ class Applet extends Item
         if Preview_container.is_showing
             __clear_timeout()
             clearTimeout(tooltip_hide_id)
+            console.log("deepin item mouseout")
             DCore.Dock.require_all_region()
             normal_mouseout_id = setTimeout(->
                 calc_app_item_size()

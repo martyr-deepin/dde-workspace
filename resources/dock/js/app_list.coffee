@@ -42,6 +42,8 @@ class AppList
         console.log("do drop on app_list")
         _lastHover?.reset()
         dt = e.dataTransfer
+        DCore.Dock.set_is_hovered(false)
+        update_dock_region()
         if dnd_is_desktop(e)
             # console.log("is desktop")
             path = dt.getData("text/uri-list").substring("file://".length).trim()
@@ -79,7 +81,6 @@ class AppList
 
     on_dragover: (e) =>
         # console.log("start applist dragover")
-        clearTimeout(cancelInsertTimer)
         e.preventDefault()
         e.stopPropagation()
         return
@@ -110,6 +111,7 @@ class AppList
     on_dragleave: (e)=>
         clearTimeout(showIndicatorTimer)
         console.log("app_list dragleave")
+        update_dock_region()
         e.stopPropagation()
         e.preventDefault()
 

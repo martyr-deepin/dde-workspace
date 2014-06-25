@@ -113,7 +113,7 @@ JS_EXPORT_API
 void dock_force_set_region(double x, double y, double items_width, double panel_width, double height)
 {
     if (dock_is_hovered()) {
-        g_debug("[%s] dock is hovered", __func__);
+        g_warning("[%s] dock is hovered", __func__);
         return;
     }
 

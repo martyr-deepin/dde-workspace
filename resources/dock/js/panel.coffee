@@ -112,12 +112,12 @@ class Panel
                 Widget.look_up("le_#{appid}")?.notify()
 
     updateWithAnimation:=>
+        # console.warn("panel update with animation")
         @cancelAnimation()
-        # calc_app_item_size()
-        # console.log("update panel with animation")
         update_dock_region($("#container").clientWidth)
-        DCore.Dock.require_all_region()
+        panel.set_width($("#container").clientWidth)
         @calcTimer = webkitRequestAnimationFrame(@updateWithAnimation)
 
     cancelAnimation:=>
         webkitCancelAnimationFrame(@calcTimer || null)
+        update_dock_region($("#container").clientWidth)

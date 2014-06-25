@@ -52,6 +52,7 @@ class SystemTray extends SystemItem
                 # $EW.hide(xid)
         )
         @core.connect("Changed", (xid)=>
+            console.log("tray icon #{xid} is Changed")
             @isShowing = true
             @img.style.display = 'none'
             @panel.style.display = ''
@@ -59,7 +60,6 @@ class SystemTray extends SystemItem
             @imgContainer.style.webkitTransition = ''
             if @items.length > 4
                 @showButton()
-            console.log("#{xid} is Changed")
             @items.remove(xid)
             @items.unshift(xid)
             @unfold()
@@ -67,7 +67,7 @@ class SystemTray extends SystemItem
                 @isUnfolded = false
         )
         @core.connect("Removed", (xid)=>
-            # console.log("#{xid} is Removed")
+            console.log("tray icon #{xid} is Removed")
             @items.remove(xid)
 
             if @isShowing
@@ -76,7 +76,13 @@ class SystemTray extends SystemItem
                     if @isUnfolded
                         @fold()
 
-                @on_mouseover()
+                # @isShowing = true
+                # @img.style.display = 'none'
+                # @panel.style.display = ''
+                # @imgContainer.style.webkitTransform = 'translateY(0)'
+                # @imgContainer.style.webkitTransition = ''
+                # if @items.length > 4
+                #     @showButton()
 
             @updateTrayIcon()
             setTimeout(=>
@@ -148,6 +154,7 @@ class SystemTray extends SystemItem
         @updateTrayIcon()
         if @items.length > 4
             @showButton()
+        console.log("system tray mouseover")
         DCore.Dock.require_all_region()
         @imgContainer.style.webkitTransform = 'translateY(0)'
         @imgContainer.style.webkitTransition = ''
@@ -165,7 +172,7 @@ class SystemTray extends SystemItem
         $EW.show(@items[i]) if @items[i]
 
     on_mouseout: (e)=>
-        console.warn("system tray mouseout")
+        console.log("system tray mouseout")
         # super
         DCore.Dock.set_is_hovered(false)
         clearTimeout(@showEmWindowTimer)
@@ -196,7 +203,7 @@ class SystemTray extends SystemItem
                 @updateTrayIcon()
                 @showAllIcons()
                 update_dock_region()
-                console.warn("update dock region")
+                console.log("update dock region")
             , ANIMATION_TIME)
         else
             webkitCancelAnimationFrame(@calcTimer)
