@@ -7,7 +7,7 @@
 .switchuser_div{
     /*background-color:rgba(0,122,0,0.2);*/
     position:absolute;
-    z-index:10;
+    z-index:20;
     top:0;
     left: 0;
     width:100%;
@@ -46,7 +46,7 @@
 
 .UserInfo {
     position:absolute;
-    z-index:1;
+    z-index:11;
     top: 0;
     left: 0;
     width: 25em;
@@ -77,7 +77,7 @@
 
 .face_recognize_img{
     position:absolute;
-    z-index:10;
+    z-index:15;
 
     width:10.4em;
     height:10.4em;
@@ -167,7 +167,7 @@
     /*background:rgba(0,0,0,0.4);*/
     display: -webkit-box;
     -webkit-box-align:center;
-    z-index:3;
+    z-index:13;
 }
 .password {
     height:100%;
@@ -182,7 +182,7 @@
     font-size: 2.0em;
     color:rgba(255,255,255,0.5);
     display: block;
-    z-index:3;
+    z-index:13;
     background:rgba(0,0,0,0.5);
 }
 
@@ -192,7 +192,7 @@
     bottom:0.2em;
     width:3.3em;
     height:3.3em;
-    z-index:5;
+    z-index:15;
     cursor: pointer;
 }
 

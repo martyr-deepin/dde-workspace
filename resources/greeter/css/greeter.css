@@ -13,13 +13,11 @@ body{
 }
 
 .Greeter{
-    position:fixed;
-    background:transparent;
-    z-index:10;
 }
 
 .div_users{
     position:fixed;
+    z-index:10;
     
     display:-webkit-box;
     -webkit-box-pack:center;
@@ -29,6 +27,7 @@ body{
 
 .div_version{
     position:fixed;
+    z-index:10;
     bottom:3.5em;
     left:3em;
     
@@ -39,6 +38,7 @@ body{
 
 .div_desktop{
     position:fixed;
+    z-index:10;
     bottom:3.0em;
     right:19em;
     
@@ -50,6 +50,7 @@ body{
 
 .div_userchoose{
     position:fixed;
+    z-index:10;
     bottom:3.0em;
     right:11em;
     
@@ -63,6 +64,7 @@ body{
 
 .div_power {
     position:fixed;
+    z-index:10;
     bottom:3.0em;
     right:3em;
     
