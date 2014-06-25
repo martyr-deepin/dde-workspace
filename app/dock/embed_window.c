@@ -309,7 +309,7 @@ void exwindow_show(double xid)
             // other window may undraw in the future.
             g_hash_table_replace(__EMBEDED_WINDOWS_DRAWABLE__, (gpointer)(Window)xid, (gpointer)TRUE);
             cairo_rectangle_int_t rect = {0,0,16,16};
-            set_input_region(wrapper, &rect);
+            set_input_region(valid_window, &rect);
         }
 
         gdk_window_show(valid_window);
