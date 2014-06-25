@@ -233,7 +233,10 @@ initDock = ->
     , 100)
 
     if settings.hideMode() == HideMode.KeepHidden
-        hideStatusManager.updateState()
+        console.log("hide mode is KeepHidden")
+        setTimeout(->
+            hideStatusManager.updateState()
+        , 1000)
         return
 
     setTimeout(->

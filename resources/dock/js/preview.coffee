@@ -333,8 +333,10 @@ Preview_close_now = (client)->
         PWContainer._need_move_animation = false
         if $tooltip
             if !$tooltip.isShown()
+                console.error("tooltip is not shown, not hovered")
                 DCore.Dock.set_is_hovered(false)
         else
+            console.error("no tooltip, not hovered")
             DCore.Dock.set_is_hovered(false)
         update_dock_region()
     , 300)
