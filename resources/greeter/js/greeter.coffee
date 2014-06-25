@@ -22,7 +22,7 @@ class Greeter extends Widget
     constructor:->
         super
         echo "Greeter"
-
+        document.body.appendChild(@element)
 
     webview_ok:(_current_user)->
         DCore.Greeter.webview_ok(_current_user.id) if hide_face_login
@@ -61,6 +61,17 @@ class Greeter extends Widget
 
 greeter = new Greeter()
 greeter.isOnlyOneSession()
+
+div_users = create_element("div","div_users",greeter.element)
+div_users.setAttribute("id","div_users")
+div_version = create_element("div","div_version",greeter.element)
+div_version.setAttribute("id","div_version")
+div_desktop = create_element("div","div_desktop",greeter.element)
+div_desktop.setAttribute("id","div_desktop")
+div_power = create_element("div","div_power",greeter.element)
+div_power.setAttribute("id","div_power")
+div_switchuser = create_element("div","div_switchuser",greeter.element)
+div_switchuser.setAttribute("id","div_switchuser")
 
 desktopmenu = null
 if greeter.sessions.length > 1

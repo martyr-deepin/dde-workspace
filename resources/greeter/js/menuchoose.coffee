@@ -57,9 +57,10 @@ class MenuChoose extends Widget
         @opt_text = []
         @animation_end = true
         
-        document.body.style.fontSize = "62.5%"
-        document.body.appendChild(@element)
         @element.style.display = "none"
+        if APP_NAME is "Greeter" then @parent = greeter.element
+        else @parent = lock.element
+        @parent?.appendChild(@element)
     
     setPos:->
         left = (screen.width  - @element.clientWidth) / 2

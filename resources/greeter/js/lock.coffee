@@ -23,6 +23,7 @@ class Lock extends Widget
     constructor:->
         super
         echo "Lock"
+        document.body.appendChild(@element)
         power = {"lock":false,"value":null}
         localStorage.setObject("shutdown_from_lock",power)
         enableZoneDetect(false)
@@ -44,6 +45,18 @@ class Lock extends Widget
 lock = new Lock()
 
 is_guest = DCore.Lock.is_guest()
+
+
+div_users = create_element("div","div_users",lock.element)
+div_users.setAttribute("id","div_users")
+div_time = create_element("div","div_time",lock.element)
+div_time.setAttribute("id","div_time")
+div_power = create_element("div","div_power",lock.element)
+div_power.setAttribute("id","div_power")
+div_media_control = create_element("div","div_media_control",lock.element)
+div_media_control.setAttribute("id","div_media_control")
+div_switchuser = create_element("div","div_switchuser",lock.element)
+div_switchuser.setAttribute("id","div_switchuser")
 
 user = new User()
 $("#div_users").appendChild(user.element)
