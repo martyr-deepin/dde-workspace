@@ -15,7 +15,11 @@ def get_files():
     global coffee_files, c_files
     for d in os.listdir("../resources"):
         if d != "common" and d not in except_dirs:
-            coffee_files += glob.glob("../resources/%s/js/*.coffee" % d)
+            coffee_dir = "../resources/%s/js/" % d
+            for dirpath, dirnames, filenames in os.walk(coffee_dir):
+                for filename in filenames:
+                    if filename.endswith(".coffee"):
+                        coffee_files.append(os.path.join(dirpath, filename))
 
     for d in os.listdir("../app"):
         if d not in except_dirs:
