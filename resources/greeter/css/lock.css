@@ -37,7 +37,6 @@ body{
 }
 
 .div_switchuser {
-    /*background-color:rgba(125,255,120,0.2);*/
     position:absolute;
     bottom:3.5em;
     right:10em;
@@ -62,7 +61,6 @@ body{
 
 
 .div_media_control{
-    /*background-color:rgba(125,255,120,0.2);*/
     position:absolute;
     bottom:3.5em;
     right:19em;

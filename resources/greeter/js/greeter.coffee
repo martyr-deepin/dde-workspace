@@ -70,8 +70,8 @@ div_desktop = create_element("div","div_desktop",greeter.element)
 div_desktop.setAttribute("id","div_desktop")
 div_power = create_element("div","div_power",greeter.element)
 div_power.setAttribute("id","div_power")
-div_switchuser = create_element("div","div_switchuser",greeter.element)
-div_switchuser.setAttribute("id","div_switchuser")
+div_userchoose = create_element("div","div_userchoose",greeter.element)
+div_userchoose.setAttribute("id","div_userchoose")
 
 desktopmenu = null
 if greeter.sessions.length > 1
@@ -103,7 +103,7 @@ powermenu.new_power_menu()
 usermenu = null
 #user.prev_next_userinfo_create() if user.userinfo_all.length > 1
 if user.userinfo_all.length > 1
-    usermenu = new UserMenu($("#div_userswitch"),user.userinfo_all)
+    usermenu = new UserMenu($("#div_userchoose"),user.userinfo_all)
     usermenu.new_user_menu()
     if _current_user.is_logined then usermenu.menuShow()
 else

@@ -17,11 +17,10 @@ body{
     background:transparent;
     z-index:10;
     width:100%;
-    height::100%;
+    height:100%;
 }
 
 .div_users{
-    /*background-color:rgba(0,255,120,0.2);*/
     position:absolute;
     
     display:-webkit-box;
@@ -31,7 +30,6 @@ body{
 
 
 .div_version{
-    /*background-color:rgba(125,255,120,0.2);*/
     position:absolute;
     bottom:3.5em;
     left:3em;
@@ -42,7 +40,6 @@ body{
 }
 
 .div_desktop{
-    /*background-color:rgba(125,255,120,0.2);*/
     position:absolute;
     bottom:3.0em;
     right:19em;
@@ -53,8 +50,7 @@ body{
 
 }
 
-.div_userswitch{
-    /*background-color:rgba(125,255,120,0.2);*/
+.div_userchoose{
     position:absolute;
     bottom:3.0em;
     right:11em;
@@ -68,7 +64,6 @@ body{
 
 
 .div_power {
-    /*background-color:rgba(125,255,120,0.2);*/
     position:absolute;
     bottom:3.0em;
     right:3em;
