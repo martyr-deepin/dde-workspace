@@ -63,8 +63,10 @@ PRIVATE GtkWidget* container = NULL;
 PRIVATE
 GSettings* zone_gsettings = NULL;
 
+#ifdef NDEBUG
 PRIVATE
 gint t_id;
+#endif
 
 JS_EXPORT_API
 void zone_quit()
@@ -226,7 +228,7 @@ int main (int argc, char **argv)
     if (argc == 2 && 0 == g_strcmp0(argv[1], "-d"))
         g_message("dde-zone -d");
         g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
-        
+
     if (is_application_running(ZONE_ID_NAME)) {
         g_warning("another instance of application dzone is running...\n");
         return 0;

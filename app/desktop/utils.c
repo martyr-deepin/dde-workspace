@@ -32,6 +32,7 @@
 #include "jsextension.h"
 #include <gio/gdesktopappinfo.h>
 
+extern void desktop_richdir_update();
 //FIXME: implemented in lib/dentry/mime_actions.c
 //       move to a suitable place?
 void desktop_run_in_terminal(char* executable);
@@ -44,7 +45,7 @@ void desktop_run_deepin_settings(const char* mod)
 {
     char* e_p=shell_escape(mod);
     g_free(e_p);
-    
+
     char* cmd_line=g_strdup_printf("dde-control-center %s\n", e_p);
     GError* error=NULL;
     static char* zone = "zone";
@@ -53,7 +54,7 @@ void desktop_run_deepin_settings(const char* mod)
         cmd_line=g_strdup_printf("/usr/lib/deepin-daemon/dde-zone\n");
     }
     g_debug("desktop_run_deepin_settings mod :----%s----",cmd_line);
-    
+
     GAppInfo* appinfo=g_app_info_create_from_commandline(cmd_line, NULL,
                                                            G_APP_INFO_CREATE_NONE,
                                                            &error);

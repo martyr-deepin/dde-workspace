@@ -3,6 +3,7 @@
 #include <X11/extensions/shape.h>
 #include "X_misc.h"
 #include "jsextension.h"
+#include "dcore.h"
 #include <X11/Xlib.h>
 #include "xdg_misc.h"
 #include "utils.h"
@@ -13,7 +14,7 @@ void guide_quit()
 {
     gtk_main_quit();
 }
-                
+
 // only guide has left click ,not right_click
 // desktop launcher dock all event disable
 JS_EXPORT_API
@@ -34,12 +35,67 @@ void guide_enable_right_click()
 JS_EXPORT_API
 void guide_disable_keyboard()
 {
-    gdk_keyboard_grab(gtk_widget_get_window(get_container()), FALSE, GDK_CURRENT_TIME);
+    // gdk_keyboard_grab(gtk_widget_get_window(get_container()), FALSE, GDK_CURRENT_TIME);
+    GdkWindow* window = gtk_widget_get_window(get_container());
+    GdkDisplay* display = gdk_window_get_display(window);
+    GdkDeviceManager* manager = gdk_display_get_device_manager(display);
+    GList* devices = gdk_device_manager_list_devices(manager, GDK_DEVICE_TYPE_MASTER);
+    GdkDevice* device = NULL;
+    for (GList* dev = devices; dev != NULL; dev = dev->next) {
+        device = GDK_DEVICE(dev->data);
+
+        if (gdk_device_get_source(device) != GDK_SOURCE_KEYBOARD) {
+            continue;
+        }
+
+        GdkGrabStatus res = gdk_device_grab(device,
+                                            window,
+                                            GDK_OWNERSHIP_NONE,
+                                            FALSE,
+                                            GDK_KEY_PRESS_MASK|GDK_KEY_RELEASE_MASK,
+                                            NULL,
+                                            GDK_CURRENT_TIME
+                                           );
+        switch (res) {
+        case GDK_GRAB_ALREADY_GRABBED:
+            g_warning("Grab falied, device %s is already grabbed.", gdk_device_get_name(device));
+            break;
+        case GDK_GRAB_INVALID_TIME:
+            g_warning("Grab failed, the resource is grabbed more recently than the specified time.");
+            break;
+        case GDK_GRAB_NOT_VIEWABLE:
+            g_warning("Grab falied, the window is not viewable.");
+            break;
+        case GDK_GRAB_FROZEN:
+            g_warning("Grab falied, the resources is frozen.");
+            break;
+        case GDK_GRAB_SUCCESS:
+            break;
+        }
+    }
+
+    g_list_free(devices);
 }
+
 JS_EXPORT_API
 void guide_enable_keyboard()
 {
-    gdk_keyboard_ungrab(GDK_CURRENT_TIME);
+    // gdk_keyboard_ungrab(GDK_CURRENT_TIME);
+    GdkWindow* window = gtk_widget_get_window(get_container());
+    GdkDisplay* display = gdk_window_get_display(window);
+    GdkDeviceManager* manager = gdk_display_get_device_manager(display);
+    GList* devices = gdk_device_manager_list_devices(manager, GDK_DEVICE_TYPE_MASTER);
+    GdkDevice* device = NULL;
+    for (GList* dev = devices; dev != NULL; dev = dev->next) {
+        device = GDK_DEVICE(dev->data);
+
+        if (gdk_device_get_source(device) != GDK_SOURCE_KEYBOARD) {
+            continue;
+        }
+
+        gdk_device_ungrab(device, GDK_CURRENT_TIME);
+    }
+    g_list_free(devices);
 }
 
 Window get_dock_xid()
@@ -172,7 +228,7 @@ void guide_simulate_input(double input)
 JS_EXPORT_API
 gboolean guide_is_zone_launched()
 {
-    #define ZONE_ID_NAME "desktop.app.zone"   
+    #define ZONE_ID_NAME "desktop.app.zone"
     return is_application_running(ZONE_ID_NAME);
 }
 

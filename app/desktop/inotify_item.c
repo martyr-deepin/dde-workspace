@@ -29,6 +29,7 @@
 #include <fcntl.h>
 #include <glib-object.h>
 
+extern void desktop_item_update();
 PRIVATE gboolean _inotify_poll();
 PRIVATE void _remove_monitor_directory(GFile*);
 PRIVATE void _add_monitor_directory(GFile*);

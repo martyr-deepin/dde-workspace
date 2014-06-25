@@ -56,6 +56,8 @@
 
 #define APP_DEFAULT_ICON "application-default-icon"
 
+extern void monitor_and_update_proxy();
+
 PRIVATE
 GSettings* desktop_gsettings = NULL;
 GSettings* dock_gsettings = NULL;
