@@ -103,7 +103,7 @@ powermenu.new_power_menu()
 usermenu = null
 #user.prev_next_userinfo_create() if user.userinfo_all.length > 1
 if user.userinfo_all.length > 1
-    usermenu = new UserMenu($("#div_userchoose"),user.userinfo_all)
+    usermenu = new UserMenu(user.userinfo_all,$("#div_userchoose"))
     usermenu.new_user_menu()
     if _current_user.is_logined then usermenu.menuShow()
 else

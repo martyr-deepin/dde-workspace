@@ -19,15 +19,13 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class UserMenu extends Widget
-    constructor: (parent_el,@userinfo_all) ->
+    constructor: (@userinfo_all,@parent = document.body) ->
         super
         echo "new UserMenu"
-        @parent = parent_el
         @img_before = null
         @user_session = []
         @current_img_src = null
         
-        if not @parent? then @parent = document.body
         @parent.appendChild(@element)
         
     hide:->
@@ -44,9 +42,9 @@ class UserMenu extends Widget
     menuShow:->
         @ComboBox?.menu.show()
     
-    menuChoose_click_cb : (current, title)=>
-        @current = @ComboBox.set_current(current)
-
+    menuChoose_click_cb : (id, title)=>
+        echo "menuChoose_click_cb:current:#{id}"
+        @current = @ComboBox.set_current(id)
 
     new_user_menu: ->
         echo "new_user_menu"

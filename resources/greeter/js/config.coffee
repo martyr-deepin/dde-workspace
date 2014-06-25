@@ -117,8 +117,5 @@ enableZoneDetect = (enable) ->
 
 is_guest = false
 
-guest_id = "guest"
-guest_name = _("Guest")
-
 accounts = new Accounts(APP_NAME)
 

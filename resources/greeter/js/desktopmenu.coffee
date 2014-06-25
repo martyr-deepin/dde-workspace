@@ -51,8 +51,8 @@ class DesktopMenu extends Widget
             localStorage.setItem("menu_current_id_desktop",@current)
             @ComboBox.current_img.src = @current_img_src
 
-    menuChoose_click_cb : (current, title)=>
-        @current = @ComboBox.set_current(current)
+    menuChoose_click_cb : (id, title)=>
+        @current = @ComboBox.set_current(id)
         @update_current_icon(@current)
 
     new_desktop_menu: ->
@@ -62,9 +62,9 @@ class DesktopMenu extends Widget
         @sessions = DCore.Greeter.get_sessions()
         if @sessions.length == 0 then return
         for session in @sessions
-            id = session.toLowerCase()
-            name = id
-            #name = DCore.Greeter.get_session_name(id)
+            #id = session.toLowerCase()
+            name = id = session
+            #name = DCore.Greeter.get_session_name(session.toLowerCase())
             icon = DCore.Greeter.get_session_icon(session)
             icon_path_normal = @img_before + "#{icon}_normal.png"
             icon_path_hover = @img_before + "#{icon}_hover.png"

@@ -17,6 +17,9 @@
 #
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
+    
+guest_id = "999"
+guest_name = _("Guest")
 
 class Accounts
     ACCOUNTS_DAEMON = "com.deepin.daemon.Accounts"
@@ -69,6 +72,7 @@ class Accounts
         return username
 
     get_user_id:(user)->
+        if user is guest_name then return guest_id
         id = null
         try
             id = @users_name_dbus[user].Uid
@@ -97,16 +101,16 @@ class Accounts
         return is_sessioned_on
     
     is_need_pwd: (uid) ->
+        if uid is guest_id then return false
         username = @get_user_name(uid)
         dbus = null
-        return true
         try
             if APP is "Greeter"
                 LIGHTDM = "com.deepin.dde.lightdm"
                 dbus = DCore.DBus.sys(LIGHTDM)
             else
                 LOCK = "com.deepin.dde.lock"
-                dbus = DCore.DBus.session(LOCK)
+                dbus = DCore.DBus.sys(LOCK)
             return dbus?.NeedPwd_sync(username)
         catch e
             echo "is_need_pwd dbus error #{e}"

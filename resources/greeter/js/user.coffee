@@ -65,7 +65,7 @@ class User extends Widget
             if not accounts.is_disable_user(uid)
                 username = accounts.users_id_dbus[uid].UserName
                 usericon = accounts.users_id_dbus[uid].IconFile
-                u = new UserInfo(username, username, usericon)
+                u = new UserInfo(uid, username, usericon)
                 @userinfo_all.push(u)
                 u.is_logined = accounts.is_user_sessioned_on(uid)
                 _current_user = u if uid is @_default_userid
@@ -91,7 +91,7 @@ class User extends Widget
         echo "new_userinfo_for_lock"
         username = accounts.users_id_dbus[@_default_userid].UserName
         usericon = accounts.users_id_dbus[@_default_userid].IconFile
-        _current_user = new UserInfo(username, username, usericon)
+        _current_user = new UserInfo(uid, username, usericon)
         _current_user.index = 0
         @element.appendChild(_current_user.element)
         _current_user.show()
@@ -109,6 +109,7 @@ class User extends Widget
         if _current_user.id is uid then return
         _current_user.hide_animation()
         _current_user = user for user in @userinfo_all when user.id is uid
+        echo "switch_to_userinfo:#{_current_user.username} === #{_current_user.id}"
         _current_user.show_animation()
 
     switch_userinfo :(direc) =>
@@ -416,9 +417,7 @@ class LoginEntry extends Widget
         else @id = "lock"
         echo "new LoginEntry:#{@id}"
 
-        name =  @username
-        if @username is guest_name then name = "guest"
-        @is_need_pwd = accounts?.is_need_pwd(accounts.get_user_id(name))
+        @is_need_pwd = accounts?.is_need_pwd(accounts.get_user_id(@username))
         echo "#{@id} , #{@username} is_need_pwd is #{@is_need_pwd}"
 
         if @is_need_pwd
