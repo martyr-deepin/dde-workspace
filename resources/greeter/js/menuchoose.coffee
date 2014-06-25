@@ -40,7 +40,7 @@ class MenuChoose extends Widget
     init_width = 80 * 0.8
     final_width = 80
     
-    constructor: (@id)->
+    constructor: (@id,@parent = document.body)->
         super
         @current = @id
         
@@ -58,9 +58,9 @@ class MenuChoose extends Widget
         @animation_end = true
         
         @element.style.display = "none"
-        if APP_NAME is "Greeter" then @parent = greeter.element
-        else @parent = lock.element
-        @parent?.appendChild(@element)
+        @element.style.position = "absolute"
+        @element.style.zIndex = 3000
+        @parent.appendChild(@element)
     
     setPos:->
         left = (screen.width  - @element.clientWidth) / 2

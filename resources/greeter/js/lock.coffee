@@ -23,9 +23,6 @@ class Lock extends Widget
     constructor:->
         super
         echo "Lock"
-        document.body.appendChild(@element)
-        @element.style.width = screen.width - 1
-        @element.style.height = screen.height - 1
         power = {"lock":false,"value":null}
         localStorage.setObject("shutdown_from_lock",power)
         enableZoneDetect(false)
@@ -48,18 +45,10 @@ lock = new Lock()
 
 is_guest = DCore.Lock.is_guest()
 
+_b = document.body
 
-div_users = create_element("div","div_users",lock.element)
+div_users = create_element("div","div_users",_b)
 div_users.setAttribute("id","div_users")
-div_time = create_element("div","div_time",lock.element)
-div_time.setAttribute("id","div_time")
-div_power = create_element("div","div_power",lock.element)
-div_power.setAttribute("id","div_power")
-div_media_control = create_element("div","div_media_control",lock.element)
-div_media_control.setAttribute("id","div_media_control")
-div_switchuser = create_element("div","div_switchuser",lock.element)
-div_switchuser.setAttribute("id","div_switchuser")
-
 user = new User()
 $("#div_users").appendChild(user.element)
 user.new_userinfo_for_lock()
@@ -74,6 +63,8 @@ _current_user = user.get_current_userinfo()
 lock.start_login_connect(userinfo)
 lock.webview_ok(_current_user) if hide_face_login
 
+div_time = create_element("div","div_time",_b)
+div_time.setAttribute("id","div_time")
 timedate = new TimeDate()
 $("#div_time").appendChild(timedate.element)
 timedate.show()
@@ -81,6 +72,8 @@ timedate.show()
 
 
 powermenu = null
+div_power = create_element("div","div_power",_b)
+div_power.setAttribute("id","div_power")
 powermenu = new PowerMenu($("#div_power"))
 powermenu.new_power_menu()
 
@@ -101,16 +94,19 @@ catch e
 
 mediacontrol = null
 if audio_play_status
+    div_media_control = create_element("div","div_media_control",_b)
+    div_media_control.setAttribute("id","div_media_control")
     mediacontrol = new MediaControl()
     $("#div_media_control").appendChild(mediacontrol.element)
 
  #-------------------------------------------
 
 if not is_livecd
+    div_switchuser = create_element("div","div_switchuser",_b)
+    div_switchuser.setAttribute("id","div_switchuser")
     s = new SwitchUser()
     s.button_switch()
     $("#div_switchuser").appendChild(s.element)
-
 
 
 document.body.addEventListener("keydown",(e)->

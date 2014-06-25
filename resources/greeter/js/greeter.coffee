@@ -22,9 +22,6 @@ class Greeter extends Widget
     constructor:->
         super
         echo "Greeter"
-        document.body.appendChild(@element)
-        @element.style.width = screen.width - 1
-        @element.style.height = screen.height - 1
 
     webview_ok:(_current_user)->
         DCore.Greeter.webview_ok(_current_user.id) if hide_face_login
@@ -64,22 +61,17 @@ class Greeter extends Widget
 greeter = new Greeter()
 greeter.isOnlyOneSession()
 
-div_users = create_element("div","div_users",greeter.element)
-div_users.setAttribute("id","div_users")
-div_version = create_element("div","div_version",greeter.element)
-div_version.setAttribute("id","div_version")
-div_desktop = create_element("div","div_desktop",greeter.element)
-div_desktop.setAttribute("id","div_desktop")
-div_power = create_element("div","div_power",greeter.element)
-div_power.setAttribute("id","div_power")
-div_userchoose = create_element("div","div_userchoose",greeter.element)
-div_userchoose.setAttribute("id","div_userchoose")
+_b = document.body
 
 desktopmenu = null
 if greeter.sessions.length > 1
-    desktopmenu = new DesktopMenu($("#div_desktop"))
+    div_desktop = create_element("div","div_desktop",_b)
+    div_desktop.setAttribute("id","div_desktop")
+    desktopmenu = new DesktopMenu(div_desktop)
     desktopmenu.new_desktop_menu()
 
+div_users = create_element("div","div_users",_b)
+div_users.setAttribute("id","div_users")
 user = new User()
 $("#div_users").appendChild(user.element)
 user.new_userinfo_for_greeter()
@@ -95,22 +87,27 @@ _current_user = user.get_current_userinfo()
 greeter.start_login_connect(userinfo)
 greeter.webview_ok(_current_user) if hide_face_login
 
+div_version = create_element("div","div_version",_b)
+div_version.setAttribute("id","div_version")
 version = new Version()
-$("#div_version").appendChild(version.element)
+div_version.appendChild(version.element)
 
 powermenu = null
-powermenu = new PowerMenu($("#div_power"))
+div_power = create_element("div","div_power",_b)
+div_power.setAttribute("id","div_power")
+powermenu = new PowerMenu(div_power)
 powermenu.new_power_menu()
 
 usermenu = null
 #user.prev_next_userinfo_create() if user.userinfo_all.length > 1
 if user.userinfo_all.length > 1
-    usermenu = new UserMenu(user.userinfo_all,$("#div_userchoose"))
+    div_userchoose = create_element("div","div_userchoose",_b)
+    div_userchoose.setAttribute("id","div_userchoose")
+    usermenu = new UserMenu(user.userinfo_all,div_userchoose)
     usermenu.new_user_menu()
     if _current_user.is_logined then usermenu.menuShow()
 else
-    $("#div_userswitch").style.display = "none"
-    $("#div_desktop").style.right = "11em"
+    $("#div_desktop")?.style.right = "11em"
 
 document.body.addEventListener("keydown",(e)->
     try

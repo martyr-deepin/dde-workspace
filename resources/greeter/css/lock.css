@@ -14,12 +14,10 @@ body{
 }
 
 .Lock{
-    position:fixed;
-    background:transparent;
-    z-index:10;
 }
 .div_users{
     position:fixed;
+    z-index:10;
     display:-webkit-box;
     -webkit-box-pack:center;
     -webkit-box-align:center;
@@ -27,6 +25,7 @@ body{
 
 .div_time {
     position:fixed;
+    z-index:10;
     bottom:4em;
     left:3em;
     
@@ -37,6 +36,7 @@ body{
 
 .div_switchuser {
     position:fixed;
+    z-index:10;
     bottom:3.5em;
     right:10em;
     
@@ -48,6 +48,7 @@ body{
 
 .div_power {
     position:fixed;
+    z-index:10;
     bottom:3.5em;
     right:3em;
     
@@ -61,6 +62,7 @@ body{
 
 .div_media_control{
     position:fixed;
+    z-index:10;
     bottom:3.5em;
     right:19em;
     

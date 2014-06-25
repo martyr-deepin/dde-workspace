@@ -19,13 +19,12 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class UserMenu extends Widget
-    constructor: (@userinfo_all,@parent = document.body) ->
+    constructor: (@userinfo_all,@parent) ->
         super
         echo "new UserMenu"
         @img_before = null
         @user_session = []
         @current_img_src = null
-        
         @parent.appendChild(@element)
         
     hide:->

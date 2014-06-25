@@ -18,6 +18,7 @@ var particles = [];
 
 //数据初始化
 function init(){
+    console.log("sky theme init==== document.body.onload");
     //document.body.style.backgroundImage = "url(js/skyThree/sky.jpg)"; 
     //相机参数：
     //四个参数值分别代表:视野角：fov  纵横比：aspect 相机离视体最近的距离：near 相机离视体最远的距离：far
@@ -39,7 +40,7 @@ function init(){
     //调用自定义的生成粒子的方法
     makeParticles();
     //添加鼠标移动监听
-    document.addEventListener('mousemove',onMouseMove,false);
+    document.body.addEventListener('mousemove',onMouseMove,false);
     //设置间隔调用update函数,间隔次数为每秒30次
     setInterval(update,1000/UpdateTimes);
 }
@@ -53,7 +54,7 @@ function update() {
 
 //定义粒子生成的方法
 function makeParticles(){
-     
+    console.log("makeParticles");
     var particle,material;
     //粒子从Z轴产生区间在-1000到1000
     for(var zpos=-1000;zpos<1000;zpos+=20){
