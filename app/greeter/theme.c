@@ -45,10 +45,12 @@ void set_theme_background(GtkWidget* container,GtkWidget* child)
     g_free(theme);
     g_message("theme_bg_path:%s",bg_path);
     GFile* gf = g_file_new_for_path(bg_path);
-    if(g_file_query_exists(gf,NULL))
-    /*if(!g_file_test(bg_path,G_FILE_TEST_EXISTS))*/
-        bg_path = get_current_bg_path();
+    if(!g_file_query_exists(gf,NULL)){
+        const char* bg_url = get_current_bg_path();
+        gf = g_file_new_for_uri(bg_url);
+        bg_path = g_file_get_path(gf);
         g_message("bg isnt exists and current bg:%s",bg_path);
+    }
     g_object_unref(gf);
     BackgroundInfo* bg_info = create_background_info(container, child);
     background_info_set_background_by_file(bg_info, bg_path);
