@@ -27,13 +27,23 @@ THEME_PATH = "greeter-theme"
 
 setTheme = (theme)->
     _b = document.body
-    _b.style.height = window.innerHeight
-    _b.style.width = window.innerWidth
+    _b.style.height = screen.height
+    _b.style.width = screen.width
     echo "setTheme:#{theme}"
     path = "#{THEME_PATH}/#{theme}"
+    theme_iframe = create_element("iframe","theme_iframe",_b)
+    theme_iframe.src = "#{path}/#{theme}.html"
+    theme_iframe.style.position = "absolute"
+    theme_iframe.style.zIndex = 1
+    theme_iframe.style.width = "100%"
+    theme_iframe.style.height = "100%"
+    theme_iframe.style.margin = 0
+    theme_iframe.style.border = 0
+    theme_iframe.style.overflow = "hidden"
+    theme_iframe.style.background = "transparent"
+    return
     switch theme
         when THEME.sky
-            _b.style.backgroundImage = "url(#{path}/bg.jpg)"
             inject_js("#{path}/sky.js")
         when THEME.light
             inject_js("#{path}/light.js")

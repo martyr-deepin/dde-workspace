@@ -28,5 +28,5 @@ char* get_current_bg_path();
 void set_theme_background(GtkWidget* container,GtkWidget* child);
 void init_theme();
 
-#endif /* end of include guard: THEME_H */
+#endif /* end of THEME_H */
 
