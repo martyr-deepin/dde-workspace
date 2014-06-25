@@ -102,7 +102,7 @@ void do_window_shape_combine_region(cairo_region_t* region)
 JS_EXPORT_API
 void dock_require_all_region()
 {
-    g_debug("====%s====", __func__);
+    g_warning("====%s====", __func__);
     cancel_update_state_request();
     dock_set_is_hovered(TRUE);
     do_window_shape_combine_region(NULL);

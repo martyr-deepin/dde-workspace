@@ -74,9 +74,26 @@ void dock_draw_panel(JSValueRef canvas,
         return;
     }
 
-    GdkPixbuf* left = image_path(left_image, margin_width, panel_height);
-    GdkPixbuf* middle = image_path(middle_image, middle_width, panel_height);
-    GdkPixbuf* right = image_path(right_image, margin_width, panel_height);
+    static GdkPixbuf* left = NULL;
+    if (left == NULL) {
+        left = image_path(left_image, margin_width, panel_height);
+    }
+    static GdkPixbuf* ori_middle = NULL;
+    static GdkPixbuf* middle = NULL;
+    if (ori_middle == NULL) {
+        ori_middle = image_path(middle_image, middle_width, panel_height);
+        middle = gdk_pixbuf_copy(ori_middle);
+    } else {
+        g_object_unref(middle);
+        middle = gdk_pixbuf_scale_simple(ori_middle,
+                                         middle_width,
+                                         panel_height,
+                                         GDK_INTERP_BILINEAR);
+    }
+    static GdkPixbuf* right = NULL;
+    if (right == NULL) {
+        right = image_path(right_image, margin_width, panel_height);
+    }
 
     if (left == NULL || middle == NULL || right == NULL) {
         g_warning("[%s] load image failed", __func__);
@@ -101,9 +118,9 @@ void dock_draw_panel(JSValueRef canvas,
 
     canvas_custom_draw_did(cr, NULL);
 
-    g_object_unref(left);
-    g_object_unref(middle);
-    g_object_unref(right);
+    // g_object_unref(left);
+    // g_object_unref(middle);
+    // g_object_unref(right);
 }
 
 void draw_app_icon(JSValueRef canvas, double id, double number)
