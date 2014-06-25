@@ -39,6 +39,7 @@
 #include "dwebview.h"
 #include "i18n.h"
 #include "utils.h"
+#include "background.h"
 
 
 
@@ -54,7 +55,9 @@
 static GKeyFile* config = NULL;
 
 PRIVATE GtkWidget* container = NULL;
+#ifdef NDEBUG
 static GSGrab* grab = NULL;
+#endif
 
 
 JS_EXPORT_API

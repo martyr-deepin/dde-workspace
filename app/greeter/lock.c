@@ -41,6 +41,7 @@
 #include "i18n.h"
 #include "utils.h"
 #include "mutils.h"
+#include "background.h"
 
 /*#include "settings.h"*/
 /*#include "camera.h"*/

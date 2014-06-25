@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <glib.h>
 #include <gio/gio.h>
 
@@ -68,3 +69,4 @@ void monitor_and_update_proxy()
     g_signal_connect(s, "changed", G_CALLBACK(update_proxy_envs), NULL);
     update_proxy_envs(s);
 }
+
