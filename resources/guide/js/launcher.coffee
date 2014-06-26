@@ -128,8 +128,8 @@ class LauncherScroll extends Page
         @scroll_up.style.left = 0
         @scroll_up.style.bottom = 0
         @scroll_up.style.display = "none"
-        move_animation(@scroll_down,0 + height,0,"top","absolute")
-        move_animation(@scroll_up, 0 - height,0,"bottom","absolute")
+        move_animation(@scroll_up,0 + height,0,"top","absolute")
+        move_animation(@scroll_down, 0,0 - height,"bottom","absolute")
 
         @element.addEventListener("mousewheel", (e)=>
             if @scrollup or @scrolldown
