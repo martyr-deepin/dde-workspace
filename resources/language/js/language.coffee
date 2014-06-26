@@ -22,9 +22,11 @@ class Language extends Widget
 
     constructor:->
         super
-        inject_js("js/jquery/jquery.min.js")
-        inject_js("js/jquery/jquery.nicescroll.js")
+        #inject_js("js/jquery/jquery.min.js")
+        #inject_js("js/jquery/jquery.nicescroll.js")
         inject_css(_b,"css/language.css")
+        @get_lang_list()
+        @boxscroll_create()
 
     launch_check: ->
         APP_NAME = null
@@ -47,14 +49,13 @@ class Language extends Widget
 
     select_lang: (name) ->
         #TODO:update /etc/default/locale and command locale-gen
-        @username = "deepin"
-        @password = "deepin"
+        @username = "ycl"
+        @password = "1"
         @session = "deepin"
         document.body.cursor = "wait"
         DCore.Greeter.start_session(@username, @password, @session)
 
     boxscroll_create: ->
-        nicesx = $("#boxscroll").niceScroll({touchbehavior:false,cursorcolor:"#fff",cursoropacitymax:0.6,cursorwidth:8})
         @boxscroll = $("#boxscroll")
         @ul = create_element("ul","",@boxscroll)
         for lang,i in @lang_list
@@ -62,6 +63,8 @@ class Language extends Widget
             @a[i] = create_element("a","",@li[i])
             @a[i].title = lang.Name
             @a[i].innerText = lang.Locale
-        
+        setTimeout(=>
+            @select_lang("zh_CN")
+        ,3000)
 
 new Language()
