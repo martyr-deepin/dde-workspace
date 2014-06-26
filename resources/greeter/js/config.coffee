@@ -118,4 +118,4 @@ enableZoneDetect = (enable) ->
 is_guest = false
 
 accounts = new Accounts(APP_NAME)
-
+_b = document.body

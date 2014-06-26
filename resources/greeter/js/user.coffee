@@ -27,6 +27,7 @@ class User extends Widget
     
     constructor:->
         super
+        inject_css(_b,"css/user.css")
         
         @user_session = []
         @userinfo_all = []

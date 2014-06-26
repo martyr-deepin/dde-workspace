@@ -25,6 +25,7 @@ class VoiceControl extends Widget
 
     constructor:->
         super
+        inject_css(_b,"css/mediacontrol.css")
         document.body.appendChild(@element)
         @element.style.display = "none"
         #remove_element(background) if background

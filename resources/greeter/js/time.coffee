@@ -20,6 +20,7 @@
 class TimeDate extends Widget
     constructor:->
         super
+        inject_css(_b,"css/time.css")
 
     format_two_bit : (s) ->
         if s < 10

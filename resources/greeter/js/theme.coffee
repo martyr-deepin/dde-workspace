@@ -31,24 +31,24 @@ setTheme = (theme)->
     _b.style.width = screen.width
     echo "setTheme:#{theme}"
     path = "#{THEME_PATH}/#{theme}"
-    theme_iframe = create_element("iframe","theme_iframe",_b)
-    theme_iframe.src = "#{path}/#{theme}.html"
-    theme_iframe.style.position = "absolute"
-    theme_iframe.style.zIndex = 1
-    theme_iframe.style.width = "100%"
-    theme_iframe.style.height = "100%"
-    theme_iframe.style.margin = 0
-    theme_iframe.style.border = 0
-    theme_iframe.style.overflow = "hidden"
-    theme_iframe.style.background = "transparent"
-    return
+    #theme_iframe = create_element("div","theme_iframe",_b)
+    #theme_iframe.src = "#{path}/#{theme}.html"
+    #theme_iframe.style.position = "absolute"
+    #theme_iframe.style.zIndex = 1
+    #theme_iframe.style.width = "100%"
+    #theme_iframe.style.height = "100%"
+    #theme_iframe.style.margin = 0
+    #theme_iframe.style.border = 0
+    #theme_iframe.style.overflow = "hidden"
+    #theme_iframe.style.background = "transparent"
+    #return
     switch theme
         when THEME.sky
             inject_js("#{path}/sky.js")
-        when THEME.light
-            inject_js("#{path}/light.js")
-        when THEME.rain
-            inject_js("#{path}/rain.js")
+        #when THEME.light
+        #    inject_js("#{path}/light.js")
+        #when THEME.rain
+        #    inject_js("#{path}/rain.js")
 
 theme = DCore[APP_NAME].get_theme()
 setTheme(theme)

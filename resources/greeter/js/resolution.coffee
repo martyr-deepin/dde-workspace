@@ -13,6 +13,6 @@ scaleFinal = scaleFinal * 0.8
 
 WindowSize = {"width":WindowWidth,"height":WindowHeight,"scaleWidth":scaleWidth,"scaleHeight":scaleHeight,"scaleFinal":scaleFinal}
 localStorage.setObject("WindowSize",WindowSize)
-echo WindowSize
+#echo WindowSize
 
 

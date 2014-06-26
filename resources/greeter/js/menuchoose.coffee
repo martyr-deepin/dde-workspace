@@ -42,6 +42,7 @@ class MenuChoose extends Widget
     
     constructor: (@id,@parent = document.body)->
         super
+        inject_css(_b,"css/menuchoose.css")
         @current = @id
         
         @option = []
@@ -59,7 +60,7 @@ class MenuChoose extends Widget
         
         @element.style.display = "none"
         @element.style.position = "absolute"
-        @element.style.zIndex = 3000
+        @element.style.zIndex = 30
         @parent.appendChild(@element)
     
     setPos:->

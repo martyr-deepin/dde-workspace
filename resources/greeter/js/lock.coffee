@@ -23,6 +23,7 @@ class Lock extends Widget
     constructor:->
         super
         echo "Lock"
+        inject_css(_b,"css/lock.css")
         power = {"lock":false,"value":null}
         localStorage.setObject("shutdown_from_lock",power)
         enableZoneDetect(false)
@@ -52,8 +53,8 @@ div_users.setAttribute("id","div_users")
 user = new User()
 $("#div_users").appendChild(user.element)
 user.new_userinfo_for_lock()
-left = (screen.width  - $("#div_users").clientWidth) / 2
-top = (screen.height  - $("#div_users").clientHeight) / 2 * 0.8
+left = (screen.width  - 250) / 2
+top = (screen.height  - 180) / 2 * 0.8
 $("#div_users").style.left = "#{left}px"
 $("#div_users").style.top = "#{top}px"
 
@@ -107,7 +108,6 @@ if not is_livecd
     s = new SwitchUser()
     s.button_switch()
     $("#div_switchuser").appendChild(s.element)
-
 
 document.body.addEventListener("keydown",(e)->
     try

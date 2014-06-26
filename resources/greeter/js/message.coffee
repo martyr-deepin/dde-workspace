@@ -27,6 +27,7 @@ class Message extends Widget
         @text_li = []
         @text_span = []
         echo "new #{@id} Message"
+        inject_css(_b,"css/message.css")
     
     append: (el)->
         el.style.display = "-webkit-box"

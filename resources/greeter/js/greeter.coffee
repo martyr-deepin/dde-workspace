@@ -22,6 +22,7 @@ class Greeter extends Widget
     constructor:->
         super
         echo "Greeter"
+        inject_css(_b,"css/greeter.css")
 
     webview_ok:(_current_user)->
         DCore.Greeter.webview_ok(_current_user.id) if hide_face_login
@@ -75,9 +76,8 @@ div_users.setAttribute("id","div_users")
 user = new User()
 $("#div_users").appendChild(user.element)
 user.new_userinfo_for_greeter()
-
-left = (screen.width  - $("#div_users").clientWidth) / 2
-top = (screen.height  - $("#div_users").clientHeight) / 2 * 0.8
+left = (screen.width  - 250) / 2
+top = (screen.height  - 180) / 2 * 0.8
 $("#div_users").style.left = "#{left}px"
 $("#div_users").style.top = "#{top}px"
 
