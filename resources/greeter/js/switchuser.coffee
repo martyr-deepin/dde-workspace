@@ -30,7 +30,11 @@ class SwitchUser extends Widget
         clearInterval(draw_camera_id)
         draw_camera_id = null
         document.body.style.fontSize = "62.5%"
-        @switch_dbus = get_dbus("system",DisplayManager,"CanSwitch")
+        @switch_dbus = DCore.DBus.sys_object(
+            DisplayManager.name,
+            DisplayManager.path,
+            DisplayManager.interface
+        )
 
     button_switch:->
         @users_id = accounts.users_id

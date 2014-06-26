@@ -71,10 +71,8 @@ hide_face_login = hideFaceLogin()
 
 is_livecd = false
 try
-    LOCK = "com.deepin.dde.lock"
-    dbus = get_dbus("system", LOCK, "IsLiveCD")
-    is_livecd = dbus.IsLiveCD_sync(DCore.Lock.get_username())
-catch error
+    is_livecd = DCore[APP_NAME].is_livecd()
+catch
     is_livecd = false
  #-------------------------------------------
 
@@ -108,9 +106,8 @@ enableZoneDetect = (enable) ->
     echo "enableZoneDetect :#{enable}"
     ZONE = "com.deepin.daemon.Zone"
     try
-        zoneDBus = get_dbus("session", ZONE, "EnableZoneDetected") if not zoneDBus?
-        echo "EnableZoneDetected_sync #{enable}" if zoneDBus?
-        zoneDBus.EnableZoneDetected_sync(enable) if zoneDBus?
+        zoneDBus = DCore.DBus.session(ZONE) if not zoneDBus?
+        zoneDBus?.EnableZoneDetected_sync(enable)
     catch e
         echo "zoneDBus #{ZONE} error : #{e}"
  #-------------------------------------------
