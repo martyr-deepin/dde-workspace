@@ -1,0 +1,45 @@
+.wrap {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 700px;
+	height: 500px;
+	margin: -265px 0 0 -350px
+}
+.logo {
+	text-align: center;
+	height: 120px;
+}
+#boxscroll {
+	width: 700px;
+	margin: 10px auto;
+	height: 380px;border-radius:4px;background:rgba(255,255,255,0.05);
+	border:rgba(0,0,0,0.7) 1px solid;
+	box-shadow:0 0 4px 4px rgba(0,0,0,0.2);
+}
+#boxscroll ul{ padding:0; margin:0; cursor:pointer;}
+#boxscroll li{ padding:7px 15px;}
+#boxscroll li:nth-child(even){background:rgba(0,0,0,0.1);}
+#boxscroll a {
+	color: #FFFFFF;
+	font-family:Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 16px;
+}
+#boxscroll li:hover {
+	background:#4774f5;
+}
+#boxscroll li:active {
+	background:#0c37b7;
+}
+#boxscroll li:hover a{
+	color:#ffffff;
+}
+.nicescroll-rails > div {
+	background: -webkit-gradient(  linear, left top, left bottom,  from(#000),  to(#000));
+	-webkit-border-radius: 6px;border-radius: 6px;
+}
+.nicescroll-rails:hover {
+	background: rgba(0,0,0,0.7);
+	-webkit-border-radius: 5px;border-radius: 5px;
+	-webkit-box-shadow: none;
+}
