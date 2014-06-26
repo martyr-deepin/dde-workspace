@@ -73,6 +73,12 @@ char* greeter_get_theme()
     return get_theme_config();
 }
 
+JS_EXPORT_API
+gboolean greeter_is_livecd()
+{
+    return is_livecd();
+}
+
 static void
 free_auth_handler (struct AuthHandler *handler)
 {

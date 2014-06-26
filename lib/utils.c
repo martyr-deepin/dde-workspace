@@ -410,3 +410,23 @@ char* bg_blur_pict_get_dest_path (const char* src_uri)
     return path;
 }
 
+gboolean is_livecd ()
+{
+    const gchar *filename = "/proc/cmdline";
+    gchar *contents = NULL;
+    gboolean result = FALSE;
+    gsize length = 0;
+    if (g_file_get_contents(filename,&contents,&length,NULL))
+    {
+        gchar* ptr = g_strstr_len(contents, -1, "boot=casper");
+        if (ptr == NULL) {
+            result =  FALSE;
+        } else {
+            result = TRUE;
+            g_message("====is livecd os=====");
+        }
+        g_free(contents);
+    }
+    return result;
+}
+
