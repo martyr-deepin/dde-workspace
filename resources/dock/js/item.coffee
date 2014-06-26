@@ -98,6 +98,8 @@ class Item extends Widget
 
     on_rightclick:(e)=>
         _isRightclicked = true
+        DCore.Dock.set_is_hovered(false)
+        update_dock_region($("#container").clientWidth)
         e.preventDefault()
         e.stopPropagation()
         @tooltip?.hide()
@@ -432,6 +434,7 @@ class AppItem extends Item
             super
             @destroy_tooltip()
             calc_app_item_size()
+            update_dock_region($("#container").clientWidth)
         else
             Preview_close_now(@)
             @element.style.display = "block"
