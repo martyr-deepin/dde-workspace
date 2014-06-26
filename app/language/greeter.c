@@ -40,10 +40,6 @@
 #include "utils.h"
 #include "mutils.h"
 
-/*#include "settings.h"*/
-/*#include "camera.h"*/
-#include "background.h"
-
 #include "user.h"
 #include "session.h"
 #include "greeter_util.h"

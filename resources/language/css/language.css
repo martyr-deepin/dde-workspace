@@ -2,7 +2,7 @@ html {
 }
 body {
 	margin: 0px;
-	background: url(img/sky.png);
+	background: url(../img/sky.png);
 	background-size: cover;
 }
 

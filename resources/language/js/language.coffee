@@ -22,8 +22,8 @@ class Language extends Widget
 
     constructor:->
         super
-        inject_js("jquery/jquery.min.js")
-        inject_js("jquery/jquery.nicescroll.js")
+        inject_js("js/jquery/jquery.min.js")
+        inject_js("js/jquery/jquery.nicescroll.js")
         inject_css(_b,"css/language.css")
 
     launch_check: ->
@@ -64,4 +64,4 @@ class Language extends Widget
             @a[i].innerText = lang.Locale
         
 
-
+new Language()

@@ -42,7 +42,6 @@
 
 /*#include "settings.h"*/
 /*#include "camera.h"*/
-#include "background.h"
 
 #include "user.h"
 #include "session.h"
