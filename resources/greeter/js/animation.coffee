@@ -1,3 +1,5 @@
+inject_css(_b,"css/animation.css")
+
 animation_moveX = (el,moveX,time = 0,easing = "linear",delay = 0,cb)->
     #el.style.webkitTransition = "all #{time} linear"
     #el.style.marginLeft = moveX + "px"

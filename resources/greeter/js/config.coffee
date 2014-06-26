@@ -119,3 +119,6 @@ is_guest = false
 
 accounts = new Accounts(APP_NAME)
 _b = document.body
+
+inject_css(_b,"../common/css/global.css")
+inject_css(_b,"../common/css/animation.css")
