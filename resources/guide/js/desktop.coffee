@@ -247,7 +247,9 @@ class DesktopZone extends Page
                     if interval > 10
                         clearInterval(restack_interval)
                         DCore.Guide.enable_guide_region()
-                        @switch_page()
+                        setTimeout(=>
+                            @switch_page()
+                        ,1000)
                 ,200)
         
                 #@pointer_create()
