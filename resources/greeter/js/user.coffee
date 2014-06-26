@@ -421,12 +421,11 @@ class LoginEntry extends Widget
         @is_need_pwd = accounts?.is_need_pwd(accounts.get_user_id(@username))
         echo "#{@id} , #{@username} is_need_pwd is #{@is_need_pwd}"
 
-        if @is_need_pwd
-            @password_create()
+        @password_div = create_element("div", "password_div", @element)
+        if @is_need_pwd then @password_create()
         @loginbutton_create()
     
     password_create: ->
-        @password_div = create_element("div", "password_div", @element)
         @password = create_element("input", "password", @password_div)
         @password.type = "password"
         @password.setAttribute("maxlength", PasswordMaxlength) if PasswordMaxlength?
