@@ -31,11 +31,9 @@ APP_NAME = ''
 is_greeter = null
 try
     DCore.Greeter.get_date()
-    echo "check is_greeter succeed!"
     is_greeter = true
     APP_NAME = "Greeter"
 catch error
-    echo "check is_greeter false"
     is_greeter = false
     APP_NAME = "Lock"
 
