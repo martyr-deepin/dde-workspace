@@ -53,6 +53,9 @@ GdkFilterReturn embed_window_configure_request(GdkXEvent* xevent G_GNUC_UNUSED,
         json_append_number(info, "height",xev->height);
         js_post_message("embed_window_configure_request", info);
         return GDK_FILTER_TRANSLATE;
+    } else if (xev->type == ConfigureNotify){
+        XConfigureEvent* x = (XConfigureEvent*)xev;
+        g_warning("window 0x%x configure notify", (unsigned)x->window);
     }
 
     return GDK_FILTER_CONTINUE;
@@ -73,7 +76,7 @@ void __init__embed__()
     }
     XSelectInput(gdk_x11_get_default_xdisplay(),
                  GDK_WINDOW_XID(GET_CONTAINER_WINDOW()),
-                 SubstructureNotifyMask|SubstructureRedirectMask);
+                 StructureNotifyMask|SubstructureNotifyMask|SubstructureRedirectMask);
     gdk_window_add_filter(GET_CONTAINER_WINDOW(), embed_window_configure_request, NULL);
 }
 

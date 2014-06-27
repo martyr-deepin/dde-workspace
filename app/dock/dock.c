@@ -52,12 +52,14 @@ struct DisplayInfo dock;
 int _dock_height = 68;
 GdkWindow* DOCK_GDK_WINDOW() { return gtk_widget_get_window(container); }
 GdkWindow* GET_CONTAINER_WINDOW() { return DOCK_GDK_WINDOW(); }
+GdkWindow* WEBVIEW_GDK_WINDOW() {return gtk_widget_get_window(webview);}
 
 gboolean dock_has_maximize_client();
 JS_EXPORT_API void dock_change_workarea_height(double height);
 
 PRIVATE
-void update_dock_size(gint16 x, gint16 y, guint16 w, guint16 h);
+void _update_dock_size(gint16 x, gint16 y, guint16 w, guint16 h);
+gboolean update_dock_size();
 static gboolean primary_changed_handler(gpointer data);
 GdkWindow* get_dock_guard_window();
 
@@ -116,7 +118,9 @@ gboolean leave_notify(GtkWidget* w G_GNUC_UNUSED,
         !mouse_pointer_leave(e->x, e->y)) {
         g_debug("leave dock");
         update_hide_state();
-        js_post_signal("leave-notify");
+        if (GD.is_webview_loaded) {
+            js_post_signal("leave-notify");
+        }
     }
     return FALSE;
 }
@@ -148,15 +152,20 @@ void size_workaround(GtkWidget* container, GdkRectangle* allocation)
 {
     // update_display_info(&dock);
     if (gtk_widget_get_realized(container) && (dock.width != allocation->width || dock.height != allocation->height)) {
-        GdkWindow* w = DOCK_GDK_WINDOW();
+        GdkWindow* w = gtk_widget_get_window(container);
+        GdkGeometry geo = {0};
+        geo.min_width = 0;
+        geo.min_height = 0;
+
+        gdk_window_set_geometry_hints(w, &geo, GDK_HINT_MIN_SIZE);
         XSelectInput(gdk_x11_get_default_xdisplay(), GDK_WINDOW_XID(w), NoEventMask);
         gdk_window_move_resize(w, dock.x, dock.y, dock.width, dock.height);
         gdk_flush();
         gdk_window_set_events(w, gdk_window_get_events(w));
 
         g_warning("size workaround run fix (%d,%d) to (%d,%d)\n",
-                allocation->width, allocation->height,
-                dock.width, dock.height);
+                  allocation->width, allocation->height,
+                  dock.width, dock.height);
     }
 }
 
@@ -330,7 +339,8 @@ void dock_emit_webview_ok()
 
     update_display_info(&dock);
     listen_primary_changed_signal(primary_changed_handler);
-    update_dock_size(dock.x, dock.y, dock.width, dock.height);
+    g_warning("[%s]", __func__);
+    _update_dock_size(dock.x, dock.y, dock.width, dock.height);
     gtk_widget_show_all(container);
 
     GD.is_webview_loaded = TRUE;
@@ -346,6 +356,7 @@ void _change_workarea_height(int height)
 {
     static int saved_height = -1;
     if (saved_height == height) {
+        g_warning("workarea is already %d", height);
         return;
     }
     saved_height = height;
@@ -411,7 +422,15 @@ void dock_bus_message_notify(gchar* appid, gchar* itemid)
 }
 
 
-void update_dock_size(gint16 x, gint16 y, guint16 w, guint16 h)
+gboolean update_dock_size()
+{
+    g_debug("[%s]", __func__);
+    _update_dock_size(dock.x, dock.y, dock.width, dock.height);
+    return G_SOURCE_REMOVE;
+}
+
+
+void _update_dock_size(gint16 x, gint16 y, guint16 w, guint16 h)
 {
     GdkGeometry geo = {0};
     geo.min_width = 0;
@@ -419,7 +438,8 @@ void update_dock_size(gint16 x, gint16 y, guint16 w, guint16 h)
 
     gdk_window_set_geometry_hints(gtk_widget_get_window(webview), &geo, GDK_HINT_MIN_SIZE);
     gdk_window_set_geometry_hints(DOCK_GDK_WINDOW(), &geo, GDK_HINT_MIN_SIZE);
-    g_debug("%dx%d(%d, %d)", w, h, x, y);
+    gdk_flush();
+    g_debug("[%s] %dx%d(%d, %d)", __func__, w, h, x, y);
     gdk_window_move_resize(gtk_widget_get_window(webview), x, y, w, h);
     gdk_window_move_resize(DOCK_GDK_WINDOW(), x, y, w, h);
     gdk_window_flush(gtk_widget_get_window(webview));
@@ -490,7 +510,8 @@ gboolean primary_changed_handler(gpointer data)
             dbus_message_iter_next(&element_iter);
         }
 
-        update_dock_size(dock.x, dock.y, dock.width, dock.height);
+        update_dock_size();
+        // g_timeout_add_seconds(5, (GSourceFunc)update_dock_size, NULL);
     }
     dbus_message_unref(message);
 
@@ -547,6 +568,7 @@ int main(int argc, char* argv[])
     g_signal_connect(container, "enter-notify-event", G_CALLBACK(enter_notify), NULL);
     g_signal_connect(container, "leave-notify-event", G_CALLBACK(leave_notify), NULL);
     g_signal_connect(container, "size-allocate", G_CALLBACK(size_workaround), NULL);
+    g_signal_connect(webview, "size-allocate", G_CALLBACK(size_workaround), NULL);
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
 
 
@@ -567,6 +589,15 @@ int main(int argc, char* argv[])
 
     gtk_widget_show_all(container);
     require_manager_trayicons();
+
+#ifndef NDEBUG
+    g_warning("dock window: 0x%x", (unsigned)GDK_WINDOW_XID(DOCK_GDK_WINDOW()));
+    GdkWindow* webview_window = gtk_widget_get_window(webview);
+    if (webview_window != NULL) {
+        g_warning("webview window: 0x%lx", (unsigned long)GDK_WINDOW_XID(webview_window));
+    }
+#endif
+
     gtk_main();
     return 0;
 }

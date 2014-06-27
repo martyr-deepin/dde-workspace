@@ -52,4 +52,5 @@ update_dock_region = do->
 
 _b.onresize = ->
     calc_app_item_size()
+    update_dock_region($("#container").clientWidth)
 

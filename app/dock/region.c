@@ -87,7 +87,7 @@ gboolean _help_do_window_region(cairo_region_t* region)
     extern GdkWindow* DOCK_GDK_WINDOW();
     gdk_window_invalidate_rect(DOCK_GDK_WINDOW(), NULL, FALSE);
 
-    return FALSE;
+    return G_SOURCE_REMOVE;
 }
 
 PRIVATE
@@ -144,6 +144,7 @@ void dock_force_set_region(double x, double y, double items_width, double panel_
 void dock_require_region(double x, double y, double width, double height)
 {
     if (dock_is_hovered()) {
+        g_warning("[%s] dock is hovered", __func__);
         return;
     }
     cairo_rectangle_int_t tmp = {(int)x + _base_rect.x, (int)y + _base_rect.y, (int)width, (int)height};
