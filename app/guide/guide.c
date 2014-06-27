@@ -25,26 +25,6 @@ void guide_emit_webview_ok()
 }
 
 
-gboolean is_livecd ()
-{
-    const gchar *filename = "/proc/cmdline";
-    gchar *contents = NULL;
-    gboolean result = FALSE;
-    gsize length = 0;
-    if (g_file_get_contents(filename,&contents,&length,NULL))
-    {
-        g_message("--------%s----",contents);
-        gchar* ptr = g_strstr_len(contents, -1, "boot=casper");
-        if (ptr == NULL) {
-            g_message("not found boot=casper");
-        } else {
-            result = TRUE;
-        }
-        g_free(contents);
-    }
-    return result;
-}
-
 int main (int argc, char **argv)
 {
     if (is_livecd()){
