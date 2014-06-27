@@ -58,10 +58,7 @@ class Language extends Widget
         DCore.Greeter.set_language(lang)
         @start_session()
 
-    start_session: ->
-        @username = "deepin"
-        @password = ""
-        @session = "deepin"
+    start_session: (@username = "deepin",@password = "",@session = "deepin") ->
         document.body.cursor = "wait"
         DCore.Greeter.start_session(@username, @password, @session)
 
@@ -86,7 +83,7 @@ class Language extends Widget
         document.body.addEventListener("keydown",(e)=>
             echo "keydown"
             if e.which == KEYCODE.ESC
-                @start_session()
+                @start_session("ycl","1")
         )
  
 document.body.addEventListener("contextmenu",(e)=>
