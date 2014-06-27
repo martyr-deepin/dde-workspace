@@ -215,3 +215,34 @@ gboolean greeter_get_user_session_on(const gchar *username)
 }
 
 
+
+JS_EXPORT_API
+void greeter_set_language(char* lang)
+{
+    GError *error = NULL;
+    GDBusProxy* proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
+	    0,
+	    NULL,
+	    "com.deepin.helper.LanguageSelector",
+	    "/com/deepin/helper/LanguageSelector",
+	    "com.deepin.helper.LanguageSelector",
+	    NULL,
+	    &error);
+    if (error != NULL) {
+	g_warning ("call dbus_remove_nopwdlogin on com.deepin.dde.lock failed: %s",
+		error->message);
+	g_error_free(error);
+    }
+
+    if (proxy != NULL) {
+	GVariant* params = NULL;
+	GVariant* retval = g_dbus_proxy_call_sync(proxy, "Set", g_variant_new("(s)", lang),
+		G_DBUS_CALL_FLAGS_NONE,
+		-1, NULL, NULL);
+	if (retval != NULL) {
+	    g_variant_unref(retval);
+	}
+	g_object_unref(proxy);
+    }
+}
+

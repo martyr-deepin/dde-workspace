@@ -56,9 +56,7 @@ class Language extends Widget
         lang = la["lang"] for la in @lang_list when la["name"] is name
         echo lang + "===for  lang_list  name===" + name
         
-        cmd = "/usr/share/dde/resources/lang-selector/lang/language-set #{lang}"
-        echo cmd
-        DCore.Greeter.spawn_command_sync(cmd,true)
+        DCore.Greeter.set_language(lang)
         
         @start_session()
 
