@@ -12,7 +12,7 @@ include_directories(${DWEBVIEW_INCLUDE_DIRS} ${LIGHTDM_INCLUDE_DIRS}
     ${GST_INCLUDE_DIRS}
 )
 
-add_executable(${NAME} greeter.c user.c DBUS_greeter.c session.c theme.c mutils.c greeter_util.c ${JSC_GEN} ${DBUS_GEN})
+add_executable(${NAME} greeter.c user.c session.c theme.c mutils.c greeter_util.c ${JSC_GEN} ${DBUS_GEN})
 
 add_dependencies(${NAME} ${NAME}_js gogo)
 

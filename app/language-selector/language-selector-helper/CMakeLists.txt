@@ -16,12 +16,12 @@ install(
 )
 
 install(
-    FILES ${CMAKE_CURRENT_SOURCE_DIR}/com.deepin.helper.LanguageHelper.service
+    FILES ${CMAKE_CURRENT_SOURCE_DIR}/com.deepin.helper.LanguageSelector.service
     DESTINATION /usr/share/dbus-1/system-services/
 )
 
 install(
-    FILES ${CMAKE_CURRENT_SOURCE_DIR}/com.deepin.helper.LanguageHelper.conf
+    FILES ${CMAKE_CURRENT_SOURCE_DIR}/com.deepin.helper.LanguageSelector.conf
     DESTINATION /etc/dbus-1/system.d/
 )
 

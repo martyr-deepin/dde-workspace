@@ -40,5 +40,6 @@ func main() {
 		print("Can't Init LanguageSelector DBus Servier: " + err.Error())
 		return
 	}
+	dbus.DealWithUnhandledMessage()
 	dbus.Wait()
 }

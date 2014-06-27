@@ -43,7 +43,6 @@
 #include "user.h"
 #include "session.h"
 #include "greeter_util.h"
-#include "DBUS_greeter.h"
 #include "theme.h"
 
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/language-selector/index.html"
@@ -308,11 +307,6 @@ authenticated_complete(LightDMGreeter *greeter)
 JS_EXPORT_API
 gboolean greeter_start_session (const gchar *username, const gchar *password, const gchar *session)
 {
-/*    gboolean use_face_login = greeter_use_face_recognition_login(username);*/
-    gboolean use_face_login = FALSE;
-    if (use_face_login)
-        dbus_add_nopwdlogin((char*)username);
-
     gboolean ret = FALSE;
 
     if (handler != NULL) {
@@ -350,9 +344,6 @@ gboolean greeter_start_session (const gchar *username, const gchar *password, co
 
         ret = TRUE;
     }
-
-    if (use_face_login)
-        dbus_remove_nopwdlogin((char*)username);
 
     return ret;
 }

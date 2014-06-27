@@ -229,7 +229,7 @@ void greeter_set_language(char* lang)
 	    NULL,
 	    &error);
     if (error != NULL) {
-	g_warning ("call dbus_remove_nopwdlogin on com.deepin.dde.lock failed: %s",
+	g_warning ("call greeter_set_language on com.deepin.helper.LanguageHelper failed: %s",
 		error->message);
 	g_error_free(error);
     }
