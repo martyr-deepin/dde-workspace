@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=com.deepin.daemon.LanguageSelector
+Exec=/usr/bin/language-selector-helper
+User=root
