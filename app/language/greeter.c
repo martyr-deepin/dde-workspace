@@ -47,6 +47,7 @@
 #include "theme.h"
 
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/language/index.html"
+#define LANG_PATH ""RESOURCE_DIR"/language/lang/support_language_pack.ini"
 
 static GtkWidget* container = NULL;
 static GtkWidget* webview = NULL;
@@ -61,6 +62,38 @@ struct AuthHandler {
 };
 
 struct AuthHandler *handler;
+
+JS_EXPORT_API
+JSObjectRef greeter_get_lang_list()
+{
+    GKeyFile* key = g_key_file_new();
+    gboolean load = g_key_file_load_from_file (key,LANG_PATH , G_KEY_FILE_NONE, NULL);
+    gsize length;
+    char** list = g_key_file_get_groups(key,&length);
+    g_message("get_lang_list length:%d,load:%d",(int)length,load);
+    guint len  = g_strv_length(list);
+    g_message("len:%d",len);
+  
+    JSObjectRef array = json_array_create();
+    for (guint i = 0;i < len; i++)
+    {
+        g_message("list:%d:%s",i,list[i]);
+        gchar* name = g_key_file_get_string(key,list[i],"name",NULL);
+        gchar* local = g_key_file_get_string(key,list[i],"local",NULL);
+        g_message("name:%s,local:%s;======\n",name,local);
+
+        JSObjectRef json = json_create();
+        json_append_string(json,"name",name);
+        json_append_string(json,"local",local);
+        g_free(name);
+        g_free(local);
+        json_array_insert(array,i,json);
+    }
+    g_strfreev(list);
+    return array;
+}
+
+
 
 
 JS_EXPORT_API
@@ -293,7 +326,6 @@ int main (int argc, char **argv)
 
     monitors_adaptive(container,webview);
     set_theme_background(container,webview);
-    
     gtk_widget_realize (webview);
     gtk_widget_realize (container);
 
@@ -305,7 +337,7 @@ int main (int argc, char **argv)
     /*gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_XTERM));*/
 
     gtk_widget_show_all (container);
-
+    
  //   monitor_resource_file("greeter", webview);
     /*init_camera(argc, argv);*/
     /*turn_numlock_on ();*/

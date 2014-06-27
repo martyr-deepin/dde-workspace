@@ -45,7 +45,9 @@ class Language extends Widget
         return (is_livecd and APP_NAME is "Greeter")
         
     get_lang_list: ->
-        @lang_list = {}
+        @lang_list = []
+        @lang_list = DCore.Greeter.get_lang_list()
+        echo @lang_list
 
     select_lang: (name) ->
         #TODO:update /etc/default/locale and command locale-gen
@@ -56,15 +58,20 @@ class Language extends Widget
         DCore.Greeter.start_session(@username, @password, @session)
 
     boxscroll_create: ->
+        @li = []
+        @a = []
         @boxscroll = $("#boxscroll")
         @ul = create_element("ul","",@boxscroll)
         for lang,i in @lang_list
             @li[i] = create_element("li","",@ul)
             @a[i] = create_element("a","",@li[i])
-            @a[i].title = lang.Name
-            @a[i].innerText = lang.Locale
-        setTimeout(=>
-            @select_lang("zh_CN")
-        ,3000)
+            @a[i].title = lang["name"]
+            @a[i].innerText = lang["local"]
+
+        document.body.addEventListener("keydown",(e)=>
+            echo "keydown"
+            if e.which == KEYCODE.ESC
+                @select_lang("zh_CN")
+        )
 
 new Language()
