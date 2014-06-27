@@ -1,0 +1,4 @@
+#!/bin/sh
+
+lang=$1
+echo language-set ====$lang=====

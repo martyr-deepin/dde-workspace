@@ -63,17 +63,24 @@ struct AuthHandler {
 
 struct AuthHandler *handler;
 
-JS_EXPORT_API
-JSObjectRef greeter_get_lang_list()
+char** get_lang_groups()
 {
     GKeyFile* key = g_key_file_new();
     gboolean load = g_key_file_load_from_file (key,LANG_PATH , G_KEY_FILE_NONE, NULL);
-    gsize length;
-    char** list = g_key_file_get_groups(key,&length);
-    g_message("get_lang_list length:%d,load:%d",(int)length,load);
-    guint len  = g_strv_length(list);
-    g_message("len:%d",len);
-  
+    gsize len;
+    char** list = g_key_file_get_groups(key,&len);
+    g_message("get_lang_groups length:%d,load:%d",(int)len,load);
+    return list;
+}
+
+JS_EXPORT_API
+JSObjectRef greeter_get_local_list()
+{
+    GKeyFile* key = g_key_file_new();
+    gboolean load = g_key_file_load_from_file (key,LANG_PATH , G_KEY_FILE_NONE, NULL);
+    gsize len;
+    char** list = g_key_file_get_groups(key,&len);
+    g_message("get_lang_groups length:%d,load:%d",(int)len,load);
     JSObjectRef array = json_array_create();
     for (guint i = 0;i < len; i++)
     {
@@ -92,8 +99,76 @@ JSObjectRef greeter_get_lang_list()
     g_strfreev(list);
     return array;
 }
+JS_EXPORT_API
+JSObjectRef greeter_get_lang_list()
+{
+    GKeyFile* key = g_key_file_new();
+    gboolean load = g_key_file_load_from_file (key,LANG_PATH , G_KEY_FILE_NONE, NULL);
+    gsize len;
+    char** list = g_key_file_get_groups(key,&len);
+    g_message("get_lang_groups length:%d,load:%d",(int)len,load);
+    JSObjectRef array = json_array_create();
+    for (guint i = 0;i < len; i++)
+    {
+        g_message("list:%d:%s",i,list[i]);
+        gchar* name = g_key_file_get_string(key,list[i],"name",NULL);
+
+        JSObjectRef json = json_create();
+        json_append_string(json,"name",name);
+        json_append_string(json,"lang",list[i]);
+        g_message("name:%s,lang:%s;======\n",name,list[i]);
+        g_free(name);
+        json_array_insert(array,i,json);
+    }
+    g_strfreev(list);
+    return array;
+}
+
+JS_EXPORT_API
+char* greeter_get_lang_by_name(gchar* lang_name)
+{
+    GKeyFile* key = g_key_file_new();
+    gboolean load = g_key_file_load_from_file (key,LANG_PATH , G_KEY_FILE_NONE, NULL);
+    gsize len;
+    char** list = g_key_file_get_groups(key,&len);
+    g_message("get_lang_groups length:%d,load:%d",(int)len,load);
+    gchar* local = NULL;
+    for (guint i = 0;i < len; i++)
+    {
+        gchar* name = g_key_file_get_string(key,list[i],"name",NULL);
+        if(g_str_equal(lang_name,name)){
+            local = list[i];
+            g_message("list[%d]:=====name:%s,local:%s;======\n",i,name,local);
+        }
+        g_free(name);
+    } 
+    g_strfreev(list);
+    return g_strdup(local);
+}
 
 
+JS_EXPORT_API
+void greeter_spawn_command_sync (const char* command,gboolean sync){
+    GError *error = NULL;
+    const gchar *cmd = g_strdup_printf ("%s",command);
+    g_message ("g_spawn_command_line_sync:%s",cmd);
+    if(sync){
+        g_spawn_command_line_sync (cmd, NULL, NULL, NULL, &error);
+    }else{
+        g_spawn_command_line_async (cmd, &error);
+    }
+    if (error != NULL) {
+        g_warning ("%s failed:%s\n",cmd, error->message);
+        g_error_free (error);
+        error = NULL;
+    }
+}
+
+JS_EXPORT_API
+const char* greeter_get_resources_dir()
+{
+    return RESOURCE_DIR;
+}
 
 
 JS_EXPORT_API

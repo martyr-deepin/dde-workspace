@@ -50,7 +50,22 @@ class Language extends Widget
         echo @lang_list
 
     select_lang: (name) ->
-        #TODO:update /etc/default/locale and command locale-gen
+        local_list = DCore.Lock.get_local_list()
+        echo local_list
+        lang_list = DCore.Lock.get_lang_list()
+        echo lang_list
+        
+        name = lang_list[0]["name"]
+        
+        lang = DCore.Lock.get_lang_by_name(name)
+        echo lang + "===for get_lang_by_name ===" + name
+        
+        lang = la["lang"] for la in lang_list when la["name"] is name
+        echo lang + "===for  lang_list ===" + name
+        
+        RESOURCES_DIR = DCore.Greeter.get_resources_dir()
+        DCore.Greeter.spawn_command_sync("#{RESOURCES_DIR}/lang/language-set #{lang}",true)
+
         @username = "ycl"
         @password = "1"
         @session = "deepin"
