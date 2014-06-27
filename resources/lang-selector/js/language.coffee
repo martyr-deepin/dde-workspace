@@ -53,15 +53,9 @@ class Language extends Widget
         echo @lang_list
 
     select_lang: (name) ->
-        echo "select_lang:#{name}"
-        #lang = DCore.Greeter.get_lang_by_name(name)
-        #echo lang + "===for get_lang_by_name ===" + name
         lang = la["lang"] for la in @lang_list when la["name"] is name
         echo lang + "===for  lang_list  name===" + name
         
-        #RESOURCES_DIR = DCore.Greeter.get_resources_dir()
-        #echo RESOURCES_DIR
-        #cmd = "#{RESOURCES_DIR}/lang/language-set #{lang}"
         cmd = "/usr/share/dde/resources/lang-selector/lang/language-set #{lang}"
         echo cmd
         DCore.Greeter.spawn_command_sync(cmd,true)
