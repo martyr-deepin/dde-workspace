@@ -20,10 +20,7 @@
 
 forceShowTimer = null
 dialog = null
-try
-    s_dock = get_dbus("session", "com.deepin.dde.dock", "Xid")
-catch error
-    s_dock = null
+s_dock = null
 
 
 class Item extends Widget
@@ -263,6 +260,7 @@ class Item extends Widget
 
     createMenu:->
         @menu = null
+        s_dock = get_dbus("session", "com.deepin.dde.dock", "Xid")
         @menu = new Menu(
             DEEPIN_MENU_TYPE.NORMAL,
             new MenuItem(1, _("_Open")),
