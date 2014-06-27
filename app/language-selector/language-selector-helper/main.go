@@ -9,7 +9,7 @@ type LanguageSelector struct {
 }
 
 func (*LanguageSelector) Set(lang string) {
-	l, err := os.Open("/etc/default/locale")
+	l, err := os.Create("/etc/default/locale")
 	if err != nil {
 		print("Can't open /etc/default/locale " + err.Error())
 		return
