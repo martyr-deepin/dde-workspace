@@ -46,8 +46,8 @@
 #include "DBUS_greeter.h"
 #include "theme.h"
 
-#define GREETER_HTML_PATH "file://"RESOURCE_DIR"/language/index.html"
-#define LANG_PATH ""RESOURCE_DIR"/language/lang/support_language_pack.ini"
+#define GREETER_HTML_PATH "file://"RESOURCE_DIR"/lang-selector/index.html"
+#define LANG_PATH ""RESOURCE_DIR"/lang-selector/lang/support_language_pack.ini"
 
 static GtkWidget* container = NULL;
 static GtkWidget* webview = NULL;
