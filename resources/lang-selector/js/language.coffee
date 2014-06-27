@@ -25,6 +25,8 @@ class Language extends Widget
         #inject_js("js/jquery/jquery.min.js")
         #inject_js("js/jquery/jquery.nicescroll.js")
         inject_css(_b,"css/language.css")
+        @local_list = []
+        @lang_list = []
         @get_lang_list()
         @boxscroll_create()
 
@@ -45,21 +47,24 @@ class Language extends Widget
         return (is_livecd and APP_NAME is "Greeter")
         
     get_lang_list: ->
-        @local_list = []
-        @lang_list = []
-        @local_list = DCore.Lock.get_local_list()
+        @local_list = DCore.Greeter.get_local_list()
         echo @local_list
-        @lang_list = DCore.Lock.get_lang_list()
+        @lang_list = DCore.Greeter.get_lang_list()
         echo @lang_list
 
     select_lang: (name) ->
-        #lang = DCore.Lock.get_lang_by_name(name)
+        echo "select_lang:#{name}"
+        #lang = DCore.Greeter.get_lang_by_name(name)
         #echo lang + "===for get_lang_by_name ===" + name
         lang = la["lang"] for la in @lang_list when la["name"] is name
         echo lang + "===for  lang_list  name===" + name
         
-        RESOURCES_DIR = DCore.Greeter.get_resources_dir()
-        DCore.Greeter.spawn_command_sync("#{RESOURCES_DIR}/lang/language-set #{lang}",true)
+        #RESOURCES_DIR = DCore.Greeter.get_resources_dir()
+        #echo RESOURCES_DIR
+        #cmd = "#{RESOURCES_DIR}/lang/language-set #{lang}"
+        cmd = "/usr/share/dde/resources/lang-selector/lang/language-set #{lang}"
+        echo cmd
+        DCore.Greeter.spawn_command_sync(cmd,true)
         
         @start_session()
 
@@ -78,6 +83,7 @@ class Language extends Widget
         for local,i in @local_list
             @li[i] = create_element("li","",@ul)
             @a[i] = create_element("a","",@li[i])
+            @li[i].title = local["name"]
             @a[i].title = local["name"]
             @a[i].innerText = local["local"]
             that = @

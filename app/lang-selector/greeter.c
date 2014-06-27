@@ -165,7 +165,7 @@ void greeter_spawn_command_sync (const char* command,gboolean sync){
 }
 
 JS_EXPORT_API
-const char* greeter_get_resources_dir()
+char* greeter_get_resources_dir()
 {
     return RESOURCE_DIR;
 }
