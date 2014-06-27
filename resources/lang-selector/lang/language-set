@@ -4,4 +4,4 @@ lang=$1
 echo language-set ====$lang=====
 echo "LANG=\"$lang.UTF-8\"
 LANGUAGE=\"$lang\"" |sudo tee  /etc/default/locale >/dev/null
-
+locale-gen

@@ -45,29 +45,27 @@ class Language extends Widget
         return (is_livecd and APP_NAME is "Greeter")
         
     get_lang_list: ->
+        @local_list = []
         @lang_list = []
-        @lang_list = DCore.Greeter.get_lang_list()
+        @local_list = DCore.Lock.get_local_list()
+        echo @local_list
+        @lang_list = DCore.Lock.get_lang_list()
         echo @lang_list
 
     select_lang: (name) ->
-        local_list = DCore.Lock.get_local_list()
-        echo local_list
-        lang_list = DCore.Lock.get_lang_list()
-        echo lang_list
-        
-        name = lang_list[0]["name"]
-        
-        lang = DCore.Lock.get_lang_by_name(name)
-        echo lang + "===for get_lang_by_name ===" + name
-        
-        lang = la["lang"] for la in lang_list when la["name"] is name
-        echo lang + "===for  lang_list ===" + name
+        #lang = DCore.Lock.get_lang_by_name(name)
+        #echo lang + "===for get_lang_by_name ===" + name
+        lang = la["lang"] for la in @lang_list when la["name"] is name
+        echo lang + "===for  lang_list  name===" + name
         
         RESOURCES_DIR = DCore.Greeter.get_resources_dir()
         DCore.Greeter.spawn_command_sync("#{RESOURCES_DIR}/lang/language-set #{lang}",true)
+        
+        @start_session()
 
-        @username = "ycl"
-        @password = "1"
+    start_session: ->
+        @username = "deepin"
+        @password = ""
         @session = "deepin"
         document.body.cursor = "wait"
         DCore.Greeter.start_session(@username, @password, @session)
@@ -77,16 +75,20 @@ class Language extends Widget
         @a = []
         @boxscroll = $("#boxscroll")
         @ul = create_element("ul","",@boxscroll)
-        for lang,i in @lang_list
+        for local,i in @local_list
             @li[i] = create_element("li","",@ul)
             @a[i] = create_element("a","",@li[i])
-            @a[i].title = lang["name"]
-            @a[i].innerText = lang["local"]
+            @a[i].title = local["name"]
+            @a[i].innerText = local["local"]
+            that = @
+            @li[i].addEventListener("click",->
+                that.select_lang(this.title)
+            )
 
         document.body.addEventListener("keydown",(e)=>
             echo "keydown"
             if e.which == KEYCODE.ESC
-                @select_lang("zh_CN")
+                @start_session()
         )
 
 new Language()
