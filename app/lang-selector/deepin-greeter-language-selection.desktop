@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Deepin  Greeter Language Selection
+Comment=Deepin  Greeter Language Selection
+Exec=deepin-greeter-language-selection
+Type=Application
+X-Ubuntu-Gettext-Domain=deepin-lightdm-greeter

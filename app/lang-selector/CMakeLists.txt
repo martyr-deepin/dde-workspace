@@ -34,14 +34,18 @@ install(
     )
 
 install(
-    FILES ${PROJECT_SOURCE_DIR}/app/greeter/com.deepin.dde.lightdm.service
-    DESTINATION /usr/share/dbus-1/system-services/
-    )
-
-install(
     PROGRAMS ${PROJECT_SOURCE_DIR}/resources/${NAME}/lang/language-set
     DESTINATION ${RESOURCE_DIR}/${NAME}/lang
     )
 
+install(
+    FILES ${CMAKE_CURRENT_SOURCE_DIR}/lightdm.pkla
+    DESTINATION /var/lib/polkit-1/localauthority/50-local.d/
+    )
+
+install(
+    FILES ${CMAKE_CURRENT_SOURCE_DIR}/deepin-greeter-language-selection.desktop
+    DESTINATION /usr/share/xgreeters/
+    )
 
 GEN_JS_FILE(${NAME})

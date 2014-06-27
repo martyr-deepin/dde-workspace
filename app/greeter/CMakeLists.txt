@@ -91,12 +91,6 @@ install(
     DESTINATION /usr/share/personalization/
     )
 
-
-install(
-    FILES ${PROJECT_SOURCE_DIR}/app/greeter/com.deepin.dde.lightdm.service
-    DESTINATION /usr/share/dbus-1/system-services/
-    )
-
 install(
     FILES ${PROJECT_SOURCE_DIR}/app/greeter/com.deepin.dde.lock.service
     DESTINATION /usr/share/dbus-1/system-services/
@@ -107,4 +101,13 @@ install(
     DESTINATION /etc/dbus-1/system.d/
     )
 
+install(
+    FILES ${CMAKE_CURRENT_SOURCE_DIR}/lightdm.pkla
+    DESTINATION /var/lib/polkit-1/localauthority/50-local.d/
+    )
+
+install(
+    FILES ${CMAKE_CURRENT_SOURCE_DIR}/lightdm-deepin-greeter.desktop
+    DESTINATION /usr/share/xgreeters/
+    )
 GEN_JS_FILE(${NAME})
