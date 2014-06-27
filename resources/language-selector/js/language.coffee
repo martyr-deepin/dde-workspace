@@ -55,9 +55,7 @@ class Language extends Widget
     select_lang: (name) ->
         lang = la["lang"] for la in @lang_list when la["name"] is name
         echo lang + "===for  lang_list  name===" + name
-        
         DCore.Greeter.set_language(lang)
-        
         @start_session()
 
     start_session: ->
