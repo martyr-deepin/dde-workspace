@@ -38,4 +38,10 @@ install(
     DESTINATION /usr/share/dbus-1/system-services/
     )
 
+install(
+    PROGRAMS ${PROJECT_SOURCE_DIR}/resources/${NAME}/lang/language-set
+    DESTINATION ${RESOURCE_DIR}/${NAME}/lang
+    )
+
+
 GEN_JS_FILE(${NAME})
