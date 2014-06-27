@@ -2,3 +2,6 @@
 
 lang=$1
 echo language-set ====$lang=====
+cmd='LANG="$lang.UTF-8"\nLANGUAGE="$lang"'
+echo -e $cmd |sudo tee  /etc/default/locale >/dev/null
+
