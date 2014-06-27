@@ -1,4 +1,4 @@
-SET(NAME "language")
+SET(NAME "lang-selector")
 
 GEN_JSC_SOURCE2(JSC_GEN "jsc" "greeter" "greeter.cfg" "dbus.cfg")
 GEN_DBUS_SOURCE(DBUS_GEN "jsc/dbus.go" "greeter")
