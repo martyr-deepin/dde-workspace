@@ -15,7 +15,7 @@ include_directories(${DWEBVIEW_INCLUDE_DIRS} ${LIGHTDM_INCLUDE_DIRS}
 
 #set(OPENCV_LIBS opencv_core opencv_imgproc opencv_objdetect)
 
-add_executable(${NAME} greeter.c user.c session.c theme.c mutils.c greeter_util.c ${JSC_GEN}
+add_executable(${NAME} greeter.c user.c session.c keyboard.c theme.c mutils.c greeter_util.c ${JSC_GEN}
     ${DBUS_GEN}
     #camera.c settings.c
     )
