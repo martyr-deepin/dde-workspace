@@ -36,13 +36,12 @@ JSObjectRef greeter_get_layouts ()
     }
 
     for (i = 0; i < g_list_length (layouts); ++i) {
-        gchar *name = NULL;
         LightDMLayout *layout = (LightDMLayout *) g_list_nth_data (layouts, i);
 
-        name = g_strdup (lightdm_layout_get_name (layout));
+        /*gchar *name = g_strdup (lightdm_layout_get_name (layout));*/
+        const gchar* name = g_strdup(lightdm_layout_get_description(layout));
         json_array_insert (array, i, jsvalue_from_cstr (get_global_context (), g_strdup (name)));
-
-        g_free (name);
+        /*g_free (name);*/
     }
 
     return array;
@@ -51,9 +50,9 @@ JSObjectRef greeter_get_layouts ()
 JS_EXPORT_API
 gchar* greeter_get_current_layout ()
 {
-    gchar *name = NULL;
     LightDMLayout *layout  = lightdm_get_layout();
-    name = g_strdup (lightdm_layout_get_name (layout));
+    gchar *name = g_strdup (lightdm_layout_get_description (layout));
+    /*gchar *name = g_strdup (lightdm_layout_get_name (layout));*/
     return name;
 }
 
@@ -71,14 +70,15 @@ find_layout_by_name(gchar *name)
         LightDMLayout *layout = (LightDMLayout *) g_list_nth_data (layouts, i);
 
         if (layout != NULL) {
-            gchar *layout_name = g_strdup (lightdm_layout_get_name (layout));
+            const gchar *layout_name = g_strdup (lightdm_layout_get_description (layout));
+            /*gchar *layout_name = g_strdup (lightdm_layout_get_name (layout));*/
             if (g_strcmp0 (name, layout_name) == 0) {
                 ret = layout;
 
             } else {
                 continue;
             }
-            g_free (layout_name);
+            /*g_free (layout_name);*/
 
         } else {
             continue;
@@ -100,6 +100,14 @@ const gchar* greeter_get_short_description (gchar* name)
 {
     LightDMLayout *layout = find_layout_by_name(name);
     const gchar* des = lightdm_layout_get_short_description(layout);
+    return des;
+}
+
+JS_EXPORT_API
+const gchar* greeter_get_description (gchar* name)
+{
+    LightDMLayout *layout = find_layout_by_name(name);
+    const gchar* des = lightdm_layout_get_description(layout);
     return des;
 }
 

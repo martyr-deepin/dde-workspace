@@ -30,3 +30,5 @@ JS_EXPORT_API gchar* greeter_get_current_layout ();
 JS_EXPORT_API void greeter_set_layout (gchar *name);
 
 JS_EXPORT_API const gchar* greeter_get_short_description (gchar *name);
+
+JS_EXPORT_API const gchar* greeter_get_description (gchar *name);
