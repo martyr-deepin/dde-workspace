@@ -66,8 +66,6 @@ class Language extends Widget
         @li = []
         @a = []
         @boxscroll = $("#boxscroll")
-        SELECT_WIDTH_ONE = 33
-        @boxscroll.style.height = @local_list.length * SELECT_WIDTH_ONE
         @ul = create_element("ul","",@boxscroll)
         for local,i in @local_list
             @li[i] = create_element("li","",@ul)
