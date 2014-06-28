@@ -58,9 +58,16 @@ class Greeter extends Widget
         else if @sessions.length == 1 then @is_one_session = true
         return @is_one_session
 
+    layout: ->
+        @layouts = DCore.Greeter.get_layouts()
+        echo @layouts.length
+        echo @layouts
+        @currentlayout = DCore.Greeter.get_current_layout()
+        echo @currentlayout
 
 greeter = new Greeter()
 greeter.isOnlyOneSession()
+#greeter.layout()
 
 _b = document.body
 
