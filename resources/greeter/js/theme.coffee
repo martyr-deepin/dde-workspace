@@ -42,8 +42,10 @@ setTheme = (theme)->
     #theme_iframe.style.overflow = "hidden"
     #theme_iframe.style.background = "transparent"
     #return
+    #inject_js("#{THEME_PATH}/three.js")
     switch theme
         when THEME.sky
+            #inject_js("#{path}/three_sky.js")
             inject_js("#{path}/sky.js")
         when THEME.light
            inject_js("#{path}/ligls.js")
