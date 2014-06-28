@@ -16,8 +16,8 @@ func (*LanguageSelector) Set(lang string) {
 	}
 	defer l.Close()
 	l.WriteString(fmt.Sprintf(`
-	LANG=%s.UTF-8
-	LANGUAGE=%s
+	LANG="%s.UTF-8"
+	LANGUAGE="%s"
 	`, lang, lang))
 
 	go func() {
