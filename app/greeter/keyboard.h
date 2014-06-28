@@ -28,3 +28,5 @@ JS_EXPORT_API JSObjectRef greeter_get_layouts ();
 JS_EXPORT_API gchar* greeter_get_current_layout ();
 
 JS_EXPORT_API void greeter_set_layout (gchar *name);
+
+JS_EXPORT_API gchar* greeter_get_short_description (gchar *name);

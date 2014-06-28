@@ -95,3 +95,10 @@ void greeter_set_layout (gchar* name)
     lightdm_set_layout(layout);
 }
 
+JS_EXPORT_API
+gchar* greeter_get_short_description (gchar* name)
+{
+    LightDMLayout *layout = find_layout_by_name(name);
+    lightdm_layout_get_short_description(layout);
+}
+
