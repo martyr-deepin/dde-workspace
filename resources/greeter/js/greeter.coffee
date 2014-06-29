@@ -105,6 +105,13 @@ div_power.setAttribute("id","div_power")
 powermenu = new PowerMenu(div_power)
 powermenu.new_power_menu()
 
+div_keyboard = create_element("div","div_keyboard",_b)
+keyboard = new Keyboard(div_keyboard)
+keyboard.boxscroll_create()
+div_keyboard.style.left = left
+div_keyboard.style.top = top + 180 + 20
+
+
 usermenu = null
 #user.prev_next_userinfo_create() if user.userinfo_all.length > 1
 if user.userinfo_all.length > 1

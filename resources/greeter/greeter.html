@@ -5,8 +5,12 @@
     
     <body oncontextmenu="return false" >
         <script src="js/jquery/jquery-2.1.0.min.js"></script>
+        <script src="js/jquery/jquery.nicescroll.js"></script>
         <script src="greeter-theme/three.js"></script>
         <script src="greeter-theme/sky/three_sky.js"></script>
         <script src="js/greeter.js"> </script>
+        <script>
+        nicesx = $("#boxscroll").niceScroll({touchbehavior:false,cursorcolor:"#fff",cursoropacitymax:0.6,cursorwidth:8});
+        </script>
     </body>
 </html>
