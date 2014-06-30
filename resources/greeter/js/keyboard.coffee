@@ -20,7 +20,9 @@ class Keyboard extends Widget
 
     get_layout: ->
         @layouts = DCore.Greeter.get_layouts()
+        echo @layouts
         @CurrentLayout = DCore.Greeter.get_current_layout()
+        echo @CurrentLayout
 
     boxscroll_create: ->
         @boxscroll = create_element("div","boxscroll",@element)

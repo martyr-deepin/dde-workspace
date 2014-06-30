@@ -39,7 +39,7 @@
 #include "i18n.h"
 #include "utils.h"
 #include "mutils.h"
-
+#include "background.h"
 /*#include "settings.h"*/
 /*#include "camera.h"*/
 
@@ -48,6 +48,7 @@
 #include "greeter_util.h"
 #include "DBUS_greeter.h"
 #include "theme.h"
+#include "keyboard.h"
 
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/greeter.html"
 
@@ -261,6 +262,7 @@ int main (int argc, char **argv)
 
     init_i18n ();
     init_theme();
+    init_keyboard();
     gtk_init (&argc, &argv);
 
     greeter = lightdm_greeter_new ();

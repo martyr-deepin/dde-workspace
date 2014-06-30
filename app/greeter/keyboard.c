@@ -20,9 +20,78 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 
+#include <gtk/gtk.h>
 #include "keyboard.h"
 
-static GList *layouts = NULL;
+GList* g_layouts = NULL;
+GSettings* s_layout;
+gchar** layouts = NULL;
+#define LAYOUT_SCHEMA_ID "com.deepin.dde.keyboard"
+#define LAYOUT_KEY "user-layout-list"
+
+void init_keyboard()
+{
+    s_layout = g_settings_new(LAYOUT_SCHEMA_ID);
+}
+
+LightDMLayout*
+find_layout_by_des(gchar *des)
+{
+    LightDMLayout *ret = NULL;
+    guint i;
+
+    if (g_layouts == NULL) {
+        g_layouts = lightdm_get_layouts ();
+    }
+
+    for (i = 0; i < g_list_length (g_layouts); i++) {
+        LightDMLayout *layout = (LightDMLayout *) g_list_nth_data (g_layouts, i);
+
+        if (layout != NULL) {
+            const gchar *layout_des = g_strdup (lightdm_layout_get_description (layout));
+            if (g_strcmp0 (des, layout_des) == 0) {
+                ret = layout;
+
+            } else {
+                continue;
+            }
+        } else {
+            continue;
+        }
+    }
+
+    return ret;
+}
+
+LightDMLayout*
+find_layout_by_name(gchar *name)
+{
+    LightDMLayout *ret = NULL;
+    guint i;
+
+    if (g_layouts == NULL) {
+        g_layouts = lightdm_get_layouts ();
+    }
+
+    for (i = 0; i < g_list_length (g_layouts); i++) {
+        LightDMLayout *layout = (LightDMLayout *) g_list_nth_data (g_layouts, i);
+
+        if (layout != NULL) {
+            const gchar *layout_name = g_strdup (lightdm_layout_get_name (layout));
+            if (g_strcmp0 (name, layout_name) == 0) {
+                ret = layout;
+
+            } else {
+                continue;
+            }
+        } else {
+            continue;
+        }
+    }
+
+    return ret;
+}
+
 
 JS_EXPORT_API
 JSObjectRef greeter_get_layouts ()
@@ -31,17 +100,20 @@ JSObjectRef greeter_get_layouts ()
 
     guint i;
 
-    if (layouts == NULL) {
-        layouts = lightdm_get_layouts ();
-    }
-
-    for (i = 0; i < g_list_length (layouts); ++i) {
-        LightDMLayout *layout = (LightDMLayout *) g_list_nth_data (layouts, i);
-
-        /*gchar *name = g_strdup (lightdm_layout_get_name (layout));*/
+    //if (layouts == NULL) {
+    //    layouts = g_settings_get_strv(s_layout,LAYOUT_KEY);
+    //}
+    layouts = g_settings_get_strv(s_layout,"user-layout-list");
+    guint len = g_strv_length(layouts);
+    g_message("layouts len:%d",len);
+    for (i = 0; i < len; i++) {
+        gchar* dest = NULL;
+        g_utf8_strncpy(dest,layouts[i],(gsize)(g_utf8_strlen(layouts[i],0)-1));
+        g_message("keyboard layout:%d:=========%s===========",i,dest);
+        LightDMLayout *layout = find_layout_by_name(dest);
         const gchar* name = g_strdup(lightdm_layout_get_description(layout));
+        g_free(dest);
         json_array_insert (array, i, jsvalue_from_cstr (get_global_context (), g_strdup (name)));
-        /*g_free (name);*/
     }
 
     return array;
@@ -51,47 +123,14 @@ JS_EXPORT_API
 gchar* greeter_get_current_layout ()
 {
     LightDMLayout *layout  = lightdm_get_layout();
-    gchar *name = g_strdup (lightdm_layout_get_description (layout));
-    /*gchar *name = g_strdup (lightdm_layout_get_name (layout));*/
-    return name;
-}
-
-LightDMLayout*
-find_layout_by_name(gchar *name)
-{
-    LightDMLayout *ret = NULL;
-    guint i;
-
-    if (layouts == NULL) {
-        layouts = lightdm_get_layouts ();
-    }
-
-    for (i = 0; i < g_list_length (layouts); i++) {
-        LightDMLayout *layout = (LightDMLayout *) g_list_nth_data (layouts, i);
-
-        if (layout != NULL) {
-            const gchar *layout_name = g_strdup (lightdm_layout_get_description (layout));
-            /*gchar *layout_name = g_strdup (lightdm_layout_get_name (layout));*/
-            if (g_strcmp0 (name, layout_name) == 0) {
-                ret = layout;
-
-            } else {
-                continue;
-            }
-            /*g_free (layout_name);*/
-
-        } else {
-            continue;
-        }
-    }
-
-    return ret;
+    gchar *des = g_strdup (lightdm_layout_get_description (layout));
+    return des;
 }
 
 JS_EXPORT_API
-void greeter_set_layout (gchar* name)
+void greeter_set_layout (gchar* des)
 {
-    LightDMLayout *layout = find_layout_by_name(name);
+    LightDMLayout *layout = find_layout_by_des(des);
     lightdm_set_layout(layout);
 }
 

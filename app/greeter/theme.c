@@ -41,6 +41,7 @@ char* get_current_bg_path()
 void set_theme_background(GtkWidget* container,GtkWidget* child)
 {
     char* theme = get_theme_config();
+    g_message("theme:%s",theme);
     const char* bg_path = g_strdup_printf("%s/%s/bg.jpg",GREETER_THEME_PATH,theme);
     g_free(theme);
     g_message("theme_bg_path:%s",bg_path);
