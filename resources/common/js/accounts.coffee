@@ -102,6 +102,7 @@ class Accounts
     
     is_need_pwd: (uid) ->
         if uid is guest_id then return false
+        else return true
         username = @get_user_name(uid)
         dbus = null
         try
