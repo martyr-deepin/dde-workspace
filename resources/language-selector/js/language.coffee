@@ -69,7 +69,7 @@ class Language extends Widget
 
     boxscroll_create: ->
         @wrap = create_element("div","wrap",@element)
-        @logo = create_img("logo","img/language_logo.png",@wrap)
+        @logo = create_img("logo","img/logo.png",@wrap)
         @boxscroll = create_element("div","boxscroll",@wrap)
         @boxscroll.setAttribute("id","boxscroll")
         #nicesx = @boxscroll.niceScroll({touchbehavior:false,cursorcolor:"#fff",cursoropacitymax:0.6,cursorwidth:8})
