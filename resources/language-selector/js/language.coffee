@@ -69,6 +69,7 @@ class Language extends Widget
 
     boxscroll_create: ->
         @wrap = create_element("div","wrap",@element)
+        @wrap.setAttribute("draggable",false)
         @logo = create_img("logo","img/logo.png",@wrap)
         @boxscroll = create_element("div","boxscroll",@wrap)
         @boxscroll.setAttribute("id","boxscroll")
@@ -79,6 +80,7 @@ class Language extends Widget
         @li = []
         @a = []
         @ul = create_element("ul","",@boxscroll)
+        @ul.setAttribute("draggable",false)
         for local,i in @local_list
             @li[i] = create_element("li","",@ul)
             @a[i] = create_element("a","",@li[i])
