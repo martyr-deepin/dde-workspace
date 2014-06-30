@@ -5,7 +5,7 @@ DCore.signal_connect("active_window", (info)->)
 DCore.signal_connect("message_notify", (info)->)
 
 DCore.signal_connect("embed_window_configure_changed", (info)->
-    console.log("embed_window_configure_changed")
+    # console.log("embed_window_configure_changed")
     console.log(info)
 )
 DCore.signal_connect("embed_window_configure_request", (info)->
@@ -29,20 +29,20 @@ DCore.signal_connect("embed_window_configure_request", (info)->
     , 50)
 )
 DCore.signal_connect("embed_window_destroyed", (info)->
-    console.log("embed_window_destroyed")
+    # console.log("embed_window_destroyed")
     delete $EW_MAP[info.XID]
-    console.log(info)
+    # console.log(info)
 )
 DCore.signal_connect("embed_window_enter", (info)->
     console.log("embed_window_enter")
     __clear_timeout()
     clearTimeout(tooltip_hide_id)
     clearTimeout(hide_id)
-    console.log(info)
+    # console.log(info)
 )
 DCore.signal_connect("embed_window_leave", (info)->
     console.log("embed_window_leave")
-    console.log(info)
+    # console.log(info)
 )
 
 _b.addEventListener("click", (e)->
@@ -144,7 +144,11 @@ initDock = ->
 
     for path in entries
         console.log(path)
-        d = DCore.DBus.session_object("com.deepin.daemon.Dock", path, "dde.dock.EntryProxyer")
+        try
+            d = DCore.DBus.session_object("com.deepin.daemon.Dock", path, "dde.dock.EntryProxyer")
+        catch e
+            console.log(e)
+            continue
         console.log("init add: #{d.Id}")
         if d.Id == TRASH_ID
             trash = new Trash(TRASH_ID, Trash.get_icon(DCore.DEntry.get_trash_count()), _("Trash"))
@@ -166,7 +170,11 @@ initDock = ->
 
     entryManager.connect("Added", (path)->
         console.log("entry manager Added signal is emited: #{path}")
-        d = DCore.DBus.session_object("com.deepin.daemon.Dock", path, "dde.dock.EntryProxyer")
+        try
+            d = DCore.DBus.session_object("com.deepin.daemon.Dock", path, "dde.dock.EntryProxyer")
+        catch e
+            console.log(e)
+            return
         console.log("try to Add #{d.Id}")
         if d.Id == TRASH_ID
             trash.is_opened = true

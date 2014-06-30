@@ -14,8 +14,13 @@ class HideStatusManager
             @state = HideState.Hidden
         else
             @state = HideState.Shown
-        @dbus = DCore.DBus.session_object("com.deepin.daemon.Dock", "/dde/dock/HideStateManager", "dde.dock.HideStateManager")
-        @dbus.connect("StateChanged", (state)=>
+        try
+            @dbus = DCore.DBus.session_object("com.deepin.daemon.Dock", "/dde/dock/HideStateManager", "dde.dock.HideStateManager")
+        catch e
+            console.log(e)
+            @dbus = null
+
+        @dbus?.connect("StateChanged", (state)=>
             if DCore.Dock.is_hovered()
                 return
 
@@ -46,10 +51,10 @@ class HideStatusManager
         )
 
     setState: (state)->
-        @dbus.SetState(state)
+        @dbus?.SetState(state)
 
     updateState:()->
-        @dbus.UpdateState()
+        @dbus?.UpdateState()
 
     changeMode:(mode)->
         console.log("changeMode is invoked")
@@ -65,12 +70,20 @@ class HideStatusManager
     changeToHide:()->
         console.log("changeToHide: change to hide")
         @changeState(HideState.Hidding, "", "")
+        clearTimeout(@updateSystemTrayTiemr || null)
         systemTray?.hideAllIcons()
         $tooltip?.hide()
 
     changeToShow:()->
         console.log("changeToShow: change to show")
         @changeState(HideState.Showing, "translateY(0)", "translateY(0)")
+        clearTimeout(@updateSystemTrayTiemr || null)
+        @updateSystemTrayTiemr = setTimeout(->
+            if not systemTray || not systemTray.isShowing
+                return
+            systemTray.on_mouseover()
+            DCore.Dock.set_is_hovered(false)
+        , 400)
 
     changeDockRegion: =>
         console.log("changeDockRegion")
@@ -89,7 +102,4 @@ class HideStatusManager
 
         console.log("set workarea height to #{regionHeight}")
         update_dock_region(null, regionHeight)
-        # workareaHeight = 0
-        # if settings.hideMode() == HideMode.KeepShowing
-        #     workareaHeight = DOCK_HEIGHT
-        # DCore.Dock.change_workarea_height(workareaHeight)
+        # c code handles workarea height
