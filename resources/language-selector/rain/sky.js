@@ -46,6 +46,8 @@ function init(){
 }
  
 function update() {
+    mouseY += 50;
+    if(mouseY > 768) mouseY = 768;
     //调用移动粒子的函数
     updateParticles();
     //重新渲染
