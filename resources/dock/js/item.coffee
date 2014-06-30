@@ -330,7 +330,6 @@ class AppItem extends Item
 
         if @isRuntimeApplet()
             console.log("runtime applet: #{@id}")
-            @core?.showQuickWindow()
             @openIndicator.style.display = 'none'
 
         @core?.connect("DataChanged", (name, value)=>
@@ -528,6 +527,7 @@ class AppItem extends Item
                     console.log("length is not 0")
                     Preview_show(@)
             else if @embedWindows
+                @core?.showQuickWindow()
                 console.log("Applet show preview")
                 try
                     size = @embedWindows.window_size(@embedWindows.xids[0])
