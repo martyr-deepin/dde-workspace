@@ -9,7 +9,6 @@ add_subdirectory(zone)
 add_subdirectory(osd)
 add_subdirectory(lowpower)
 add_subdirectory(guide)
-add_subdirectory(language-selector)
 
 install(
     DIRECTORY ${PROJECT_SOURCE_DIR}/resources/common
