@@ -42,7 +42,7 @@ body {
 #boxscroll li:nth-child(even){background:rgba(0,0,0,0.1);}
 #boxscroll a {
 	color: #FFFFFF;
-	font-family:Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
+	/*font-family:Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;*/
 	font-size: 16px;
 }
 #boxscroll li:hover {

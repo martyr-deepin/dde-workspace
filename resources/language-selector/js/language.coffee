@@ -82,12 +82,11 @@ class Language extends Widget
         for local,i in @local_list
             @li[i] = create_element("li","",@ul)
             @a[i] = create_element("a","",@li[i])
-            @li[i].title = local["name"]
-            @a[i].title = local["name"]
+            @li[i].setAttribute("id",local["name"])
             @a[i].innerText = local["local"]
             that = @
             @li[i].addEventListener("click",->
-                that.select_lang(this.title)
+                that.select_lang(this.id)
             )
 
         document.body.addEventListener("keydown",(e)=>
