@@ -1,22 +1,36 @@
 html {
 }
 body {
-	margin: 0px;
-	background: url(../img/sky.png);
-	background-size: cover;
+	/*margin: 0px;*/
+	/*background: url(../img/sky.png);*/
+	/*background-size: cover;*/
+}
+
+.Language{
+    position:fixed;
+    left:0;
+    top:0;
+    width:100%;
+    height:100%;
+    
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
 }
 
 .wrap {
-	position: absolute;
-	top: 50%;
-	left: 50%;
+	/*position: fixed;*/
+	/*bottom:: 150px;*/
+	/*left: 50%;*/
 	width: 700px;
 	height: 500px;
-	margin: -265px 0 0 -350px
+	/*margin: -265px 0 0 -350px;*/
+    overflow:hidden;
 }
 .logo {
 	text-align: center;
-	height: 120px;
+	width:700px;
+    height:100px;
 }
 #boxscroll {
 	width: 700px;

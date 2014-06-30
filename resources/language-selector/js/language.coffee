@@ -27,8 +27,13 @@ class Language extends Widget
         inject_css(_b,"css/language.css")
         @local_list = []
         @lang_list = []
+        document.body.style.width = screen.width
+        document.body.style.height = screen.height
+
+        document.body.appendChild(@element)
         @get_lang_list()
         @boxscroll_create()
+
 
     launch_check: ->
         APP_NAME = null
@@ -63,9 +68,16 @@ class Language extends Widget
         DCore.Greeter.start_session(@username, @password, @session)
 
     boxscroll_create: ->
+        @wrap = create_element("div","wrap",@element)
+        @logo = create_img("logo","img/language_logo.png",@wrap)
+        @boxscroll = create_element("div","boxscroll",@wrap)
+        @boxscroll.setAttribute("id","boxscroll")
+        #nicesx = @boxscroll.niceScroll({touchbehavior:false,cursorcolor:"#fff",cursoropacitymax:0.6,cursorwidth:8})
         @li = []
         @a = []
-        @boxscroll = $("#boxscroll")
+        @ul = create_element("ul","",@boxscroll)
+        @li = []
+        @a = []
         @ul = create_element("ul","",@boxscroll)
         for local,i in @local_list
             @li[i] = create_element("li","",@ul)
