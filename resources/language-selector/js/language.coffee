@@ -53,9 +53,9 @@ class Language extends Widget
         
     get_lang_list: ->
         @local_list = DCore.Greeter.get_local_list()
-        echo @local_list
+        #echo @local_list
         @lang_list = DCore.Greeter.get_lang_list()
-        echo @lang_list
+        #echo @lang_list
 
     select_lang: (name) ->
         lang = la["lang"] for la in @lang_list when la["name"] is name
