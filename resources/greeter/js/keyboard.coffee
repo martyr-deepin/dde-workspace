@@ -10,7 +10,14 @@ class Keyboard extends Widget
         @CurrentLayout = null
         @parent?.appendChild(@element)
         @get_layout()
+        @hide()
  
+    show: ->
+        @element.style.display = "block"
+
+    hide: ->
+        @element.style.display = "none"
+
     get_layout: ->
         @layouts = DCore.Greeter.get_layouts()
         @CurrentLayout = DCore.Greeter.get_current_layout()
