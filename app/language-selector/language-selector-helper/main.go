@@ -1,6 +1,7 @@
 package main
 
 import "fmt"
+import "io/ioutil"
 import "pkg.linuxdeepin.com/lib/dbus"
 import "os"
 import "os/exec"
@@ -8,23 +9,28 @@ import "os/exec"
 type LanguageSelector struct {
 }
 
-func (*LanguageSelector) Set(lang string) {
-	l, err := os.Create("/etc/default/locale")
+func run_shell_content(code string, argv ...string) {
+	f, err := ioutil.TempFile(os.TempDir(), "shell_code")
 	if err != nil {
-		print("Can't open /etc/default/locale " + err.Error())
+		fmt.Println("can't create temp file: ", err)
 		return
 	}
-	defer l.Close()
-	l.WriteString(fmt.Sprintf(`
-LANG="%s.UTF-8"
-LANGUAGE="%s"
-`, lang, lang))
+	f.Close()
+	os.Remove(f.Name())
 
-	go func() {
-		exec.Command("/usr/bin/locale-gen", lang).Run()
-		exec.Command("/usr/bin/locale-gen", lang+".UTF-8").Run()
-		exec.Command("/usr/bin/locale-gen").Run()
-	}()
+	ioutil.WriteFile(f.Name(), ([]byte)(code), 0755)
+	argv = append([]string{f.Name()}, argv...)
+	cmd := exec.Command("sh", argv...)
+	d, err := cmd.Output()
+	fmt.Println(string(d))
+	if err != nil {
+		fmt.Println("Can't run shell code:", err)
+	}
+	defer os.Remove(f.Name())
+}
+
+func (*LanguageSelector) Set(lang string) {
+	run_shell_content(shell_code, lang)
 }
 
 func (*LanguageSelector) GetDBusInfo() dbus.DBusInfo {
