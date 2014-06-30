@@ -108,8 +108,8 @@ powermenu.new_power_menu()
 div_keyboard = create_element("div","div_keyboard",_b)
 keyboard = new Keyboard(div_keyboard)
 keyboard.boxscroll_create()
-div_keyboard.style.left = left
-div_keyboard.style.top = top + 180 + 20
+div_keyboard.style.left = left + 10
+div_keyboard.style.top = top + 180 + 10
 
 
 usermenu = null
