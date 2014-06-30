@@ -19,12 +19,8 @@ body {
 }
 
 .wrap {
-	/*position: fixed;*/
-	/*bottom:: 150px;*/
-	/*left: 50%;*/
 	width: 700px;
 	height: 500px;
-	/*margin: -265px 0 0 -350px;*/
     overflow:hidden;
 }
 .logo {
