@@ -359,7 +359,7 @@ class UserInfo extends Widget
 
     focus:->
         echo "#{@username} focus"
-        @login.password.focus() if @username isnt guest_name
+        @login.password?.focus() if @username isnt guest_name
 
         if @face_login
             DCore[APP_NAME].set_username(@username)
@@ -421,11 +421,12 @@ class LoginEntry extends Widget
         @is_need_pwd = accounts?.is_need_pwd(accounts.get_user_id(@username))
         echo "#{@id} , #{@username} is_need_pwd is #{@is_need_pwd}"
 
-        @password_div = create_element("div", "password_div", @element)
-        if @is_need_pwd then @password_create()
+        @password_create()
         @loginbutton_create()
     
     password_create: ->
+        if !@is_need_pwd then return
+        @password_div = create_element("div", "password_div", @element)
         @password = create_element("input", "password", @password_div)
         @password.type = "password"
         @password.setAttribute("maxlength", PasswordMaxlength) if PasswordMaxlength?
@@ -433,9 +434,19 @@ class LoginEntry extends Widget
         @password_eventlistener()
        
     loginbutton_create: ->
-        @loginbutton = create_img("loginbutton", "", @password_div)
+        @loginbutton = create_img("loginbutton", "",null)
         @loginbutton.type = "button"
         @loginbutton.src = "#{img_src_before}#{@id}_normal.png"
+        
+        if @is_need_pwd
+            @password_div.appendChild(@loginbutton)
+            @loginbutton.style.position = "relative"
+            @loginbutton.style.right = "3.15em"
+            @loginbutton.style.bottom = "0.2em"
+        else
+            @element.appendChild(@loginbutton)
+            @element.style.marginTop = "0.6em"
+        
         @loginbutton.addEventListener("mouseout", =>
             power_flag = false
             if (power = localStorage.getObject("shutdown_from_lock"))?
@@ -464,20 +475,20 @@ class LoginEntry extends Widget
 
 
     password_eventlistener:->
-        @password.addEventListener("click", (e)=>
+        @password?.addEventListener("click", (e)=>
             e.stopPropagation()
             if @username is guest_name then return
             if @password.value is password_error_msg or @password.value is localStorage.getItem("password_value_shutdown")
                 @input_password_again()
         )
         
-        @password.addEventListener("focus",=>
+        @password?.addEventListener("focus",=>
             if @username is guest_name then return
             if @password.value is password_error_msg or @password.value is localStorage.getItem("password_value_shutdown")
                 @input_password_again()
         )
         
-        @password.addEventListener("keyup",(e)=>
+        @password?.addEventListener("keyup",(e)=>
             if @username is guest_name then return
             if e.which == ENTER_KEY
                 @on_active(@username, @password.value) if @check_completeness()
@@ -507,7 +518,7 @@ class LoginEntry extends Widget
                 @loginbutton.src = "#{img_src_before}#{@id}_press.png"
             if @check_completeness
                 value = null
-                if @is_need_pwd then value = @password.value
+                if @is_need_pwd then value = @password?.value
                 else value = ""
                 @on_active(@username, value)
         )
@@ -527,25 +538,25 @@ class LoginEntry extends Widget
 
     input_password_again:->
         if !@is_need_pwd then return
-        @password.style.color = "rgba(255,255,255,0.5)"
-        @password.style.fontSize = "2.0em"
-        @password.style.paddingBottom = "0.2em"
-        @password.style.letterSpacing = "5px"
-        @password.type = "password"
-        @password.focus()
+        @password?.style.color = "rgba(255,255,255,0.5)"
+        @password?.style.fontSize = "2.0em"
+        @password?.style.paddingBottom = "0.2em"
+        @password?.style.letterSpacing = "5px"
+        @password?.type = "password"
+        @password?.focus()
         @loginbutton.disable = false
-        @password.value = null
+        @password?.value = null
 
     password_error:(msg)->
         if !@is_need_pwd then return
-        @password.style.color = "#F4AF53"
-        @password.style.fontSize = "1.5em"
-        @password.style.paddingBottom = "0.4em"
-        @password.style.letterSpacing = "0px"
-        @password.type = "text"
+        @password?.style.color = "#F4AF53"
+        @password?.style.fontSize = "1.5em"
+        @password?.style.paddingBottom = "0.4em"
+        @password?.style.letterSpacing = "0px"
+        @password?.type = "text"
         password_error_msg = msg
-        @password.value = password_error_msg
-        @password.blur()
+        @password?.value = password_error_msg
+        @password?.blur()
         @loginbutton.disable = true
 
 

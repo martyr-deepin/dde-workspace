@@ -147,6 +147,7 @@
 
 
 .LoginEntry{
+    width:24em;
     display:-webkit-box;
     -webkit-box-pack:center;
     -webkit-box-align:center;
@@ -187,9 +188,6 @@
 }
 
 .loginbutton{
-    position:relative;
-    right:3.15em;
-    bottom:0.2em;
     width:3.3em;
     height:3.3em;
     z-index:15;
