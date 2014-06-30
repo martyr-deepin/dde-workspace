@@ -104,7 +104,7 @@ class LauncherScroll extends Page
         inject_css(@element,"css/launcherscroll.css")
         new Launcher()?.show() if DEBUG
         
-        @message = _("All programs can be seen by scrolling the mouse up and down.\nYou can also click on the left classification navigation to locate")
+        @message = _("All programs can be located by scrolling the mouse up and down.\nYou can also click on the left classification navigation to locate")
         @show_message(@message)
         
         @scroll_create()
@@ -188,18 +188,6 @@ class LauncherSearch extends Page
             simulate_input(deepin_keysym,@,"LauncherMenu")
         ,20)
 
-class LauncherRightclick extends Page
-    constructor:(@id)->
-        super
-        
-        @message = _("Click the right mouse button on the application icon to call up the context menu\nClicking on the menu item will achieve its function")
-        @tips = _("tips:You can also directly use the left mouse button to drag the icon to the dock, favicon or trash")
-        @show_message(@message)
-        @show_tips(@tips)
-        setTimeout(=>
-            guide?.switch_page(@,"LauncherMenu")
-        ,t_switch_page)
-
 class LauncherMenu extends Page
     constructor:(@id)->
         super
@@ -209,7 +197,9 @@ class LauncherMenu extends Page
         @desktop = new Desktop()
         
         @message = _("Use the right mouse button to send two icons to the desktop")
+        @tips = _("tips:You can add it to startup items or uninstall")
         @show_message(@message)
+        @show_tips(@tips)
         #simulate_rightclick(@)
         @signal()
         
