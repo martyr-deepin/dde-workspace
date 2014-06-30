@@ -1,4 +1,19 @@
 nicesx = null
+
+class KeyboardImg extends Widget
+    constructor:(@parent) ->
+        super
+        inject_css(@element,"css/keyboardimg.css")
+        @img_dir = "images/keyboard"
+        @parent?.appendChild(@element)
+
+    keyboard_img_create: ->
+        echo "keyboard_img_create"
+        @img = create_element("div","keyboard_img",@element)
+        @img.addEventListener("click",=>
+            keyboard?.toggle()
+        )
+
 class Keyboard extends Widget
 
     constructor:(@parent)->
@@ -12,6 +27,10 @@ class Keyboard extends Widget
         @get_layout()
         @hide()
  
+    toggle: ->
+        if @element.style.display isnt "none" then @element.style.display = "block"
+        else @element.style.display = "none"
+
     show: ->
         @element.style.display = "block"
 

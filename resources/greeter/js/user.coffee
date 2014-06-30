@@ -422,6 +422,7 @@ class LoginEntry extends Widget
         echo "#{@id} , #{@username} is_need_pwd is #{@is_need_pwd}"
 
         @password_create()
+        @keyboard_create()
         @loginbutton_create()
     
     password_create: ->
@@ -433,6 +434,17 @@ class LoginEntry extends Widget
         @password.setAttribute("autofocus", true) if @username isnt guest_name
         @password_eventlistener()
        
+    keyboard_create: ->
+        if !@is_need_pwd then return
+        if !is_greeter then return
+        if DCore.Greeter.get_layouts().length < 2 then return
+        @keyboard = new KeyboardImg(@password_div)
+        @keyboard.keyboard_img_create()
+        @keyboard.element.style.position = "absolute"
+        @keyboard.element.style.left = 10
+        @keyboard.element.style.bottom = "2em"
+        @password?.style.paddingLeft = 10 + 30
+    
     loginbutton_create: ->
         @loginbutton = create_img("loginbutton", "",null)
         @loginbutton.type = "button"

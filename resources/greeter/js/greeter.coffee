@@ -105,12 +105,13 @@ div_power.setAttribute("id","div_power")
 powermenu = new PowerMenu(div_power)
 powermenu.new_power_menu()
 
-div_keyboard = create_element("div","div_keyboard",_b)
-keyboard = new Keyboard(div_keyboard)
-keyboard.boxscroll_create()
-div_keyboard.style.left = left + 10
-div_keyboard.style.top = top + 180 + 10
-
+if DCore.Greeter.get_layouts().length > 1
+    div_keyboard = create_element("div","div_keyboard",_b)
+    keyboard = new Keyboard(div_keyboard)
+    keyboard.boxscroll_create()
+    div_keyboard.style.left = left + 10
+    div_keyboard.style.top = top + 180 + 10
+    
 
 usermenu = null
 #user.prev_next_userinfo_create() if user.userinfo_all.length > 1
