@@ -206,10 +206,10 @@ class LauncherMenu extends Page
         app1 = @app_x_y(1)
         app2 = @app_x_y(2)
         @menu_create(app1.x,app1.y,=>
-            src1 = "/usr/share/applications/deepin-movie.desktop"
+            src1 = "/usr/share/applications/deepin-game-center.desktop"
             DCore.Guide.copy_file_to_desktop(src1)
             @menu_create(app2.x,app2.y,=>
-                src2 = "/usr/share/applications/deepin-music-player.desktop"
+                src2 = "/usr/share/applications/deepin-movie.desktop"
                 DCore.Guide.copy_file_to_desktop(src2)
                 @switch_page()
             )
