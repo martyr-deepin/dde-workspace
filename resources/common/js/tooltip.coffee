@@ -4,7 +4,6 @@ $tooltip = null
 
 class ToolTipBase extends Widget
     constructor: (@buddy, @text, @parent=document.body)->
-        $tooltip = @
         super
         @delay_time = 0
         @element.addEventListener("mouseover", @hide)
@@ -52,6 +51,9 @@ class ToolTipBase extends Widget
     hide: =>
         clearTimeout(tooltip_hide_id)
 
+    show:=>
+        $tooltip = @
+
 
 class ToolTip extends ToolTipBase
     @tooltip: null
@@ -61,6 +63,7 @@ class ToolTip extends ToolTipBase
         @bind_events()
 
     show: =>
+        super
         ToolTip.tooltip.innerText = @text
         ToolTip.tooltip.style.display = "block"
         @_move_tooltip()
@@ -222,6 +225,7 @@ class ArrowToolTip extends ToolTipBase
         ArrowToolTip.content.style.left = offsetForShadow + padding.horizontal + radius
 
     show: =>
+        super
         ArrowToolTip.container.style.display = "block"
         ArrowToolTip.container.style.opacity = 1
         ArrowToolTip.content.style.display = "block"

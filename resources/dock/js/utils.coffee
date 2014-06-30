@@ -5,6 +5,60 @@ itemDBus = (path)->
 
 $DBus = {}
 
+
+moveHoverInfo = ->
+    # TODO: clearTimeout ???
+    setTimeout(_moveHoverInfo, 300)
+
+_moveHoverInfo = ->
+    el = document.elementFromPoint($mousePosition.x, $mousePosition.y)
+    try
+        itemEl = el.parentNode.parentNode.parentNode
+    catch
+        console.log("the mouse hoverd is not item")
+        itemEl = null
+
+    if el
+        console.log("#{el.tagName}##{el.id||""}")
+
+    if el and el.tagName != "IMG"
+        itemEl = null
+
+    if itemEl == null
+        console.log("get element failed")
+        DCore.Dock.set_is_hovered(false)
+        $tooltip?.hide()
+        Preview_close()
+        systemTray?.updateTrayIcon()
+        return
+
+    console.log("element id: #{itemEl.id}")
+    item = Widget.look_up(itemEl.id)
+
+    if not item
+        console.log("get item failed")
+        DCore.Dock.set_is_hovered(false)
+        $tooltip?.hide()
+        Preview_close()
+        systemTray?.updateTrayIcon()
+        return
+
+    console.log("item id: #{item.id}, #{item.isRuntimeApplet()}")
+    if item.isNormal() or item.isNormalApplet()
+        Preview_close_now()
+        console.log("this item should show tooltip")
+        item.tooltip?.on_mouseover()
+        # $tooltip?.show()
+    else
+        $tooltip?.hide()
+        currentPreview = Preview_container._current_group
+        if Preview_container.is_showing && item.id == currentPreview.id && not currentPreview.isRuntimeApplet()
+            Preview_container._calc_size()
+        else
+            Preview_container._current_group = null
+            item?.on_mouseover()
+
+
 createItem = (d)->
     icon = d.Data[ITEM_DATA_FIELD.icon] || NOT_FOUND_ICON
     if !(icon.indexOf("data:") != -1 or icon[0] == '/' or icon.indexOf("file://") != -1)
@@ -27,13 +81,14 @@ createItem = (d)->
         console.log("SystemItem #{d.Id}, #{icon}, #{title}")
         new SystemItem(d.Id, icon, title)
 
-    if not Preview_container.is_showing
+    if not DCore.Dock.is_hovered()
         return
-    Preview_container._current_group
-    updateTrayIcon()
+
+    moveHoverInfo()
 
 
 deleteItem = (id)->
+    # console.log("delete item #{id}")
     delete $DBus[id]
     # id = path.substr(path.lastIndexOf('/') + 1)
     i = Widget.look_up(id)
@@ -41,6 +96,10 @@ deleteItem = (id)->
         i.destroy()
     else
         # console.log("#{id} not eixst")
+
+    if DCore.Dock.is_hovered()
+        console.log("delete item, is hovered")
+        moveHoverInfo()
 
 
 iconCanvas = create_element(tag:'canvas', document.body)

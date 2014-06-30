@@ -268,14 +268,14 @@ class PWContainer extends Widget
 
 
     close: ->
+        @is_showing = false
         # console.log("PWContainer::close")
         clearInterval(@_update_id)
         @_current_group = null
-        Object.keys(@_current_pws).forEach((w_id)->
-            Widget.look_up("pw"+w_id)?.destroy()
-        )
+        # Object.keys(@_current_pws).forEach((w_id)->
+        #     Widget.look_up("pw"+w_id)?.destroy()
+        # )
         update_dock_region()
-        @is_showing = false
 
     show_group: (group, allocation, cb)->
         # console.log("show_group")
@@ -464,7 +464,11 @@ class PreviewWindow extends Widget
         if not @applet
             Preview_active_window_changed(@w_id)
 
-    update_content: ->
+    update_content: =>
+        # console.log("is_showing: #{Preview_container.is_showing}")
+        if not Preview_container.is_showing
+            return
+
         if @scale != Preview_container.scale
             @update_size()
 

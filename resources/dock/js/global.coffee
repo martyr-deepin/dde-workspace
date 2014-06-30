@@ -8,3 +8,7 @@ _dragTargetManager = null
 _CW = $("#containerWarp")
 changeDockRegionTimer = null
 _isRightclicked = false
+
+$mousePosition =
+    x: 0
+    y: 0

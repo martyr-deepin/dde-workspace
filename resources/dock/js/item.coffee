@@ -26,6 +26,7 @@ class Item extends Widget
         @imgWarp.classList.add("ReflectImg")
         @imgContainer.style.pointerEvents = "auto"
         @imgContainer.addEventListener("mouseover", @on_mouseover)
+        @imgContainer.addEventListener("mouseover", @on_mousemove)
         @imgContainer.addEventListener("mouseout", @on_mouseout)
         @imgContainer.addEventListener("mousedown", @on_mousedown)
         @imgContainer.addEventListener("mouseup", @on_mouseup)
@@ -71,6 +72,18 @@ class Item extends Widget
         @tooltip?.destroy()
         @tooltip = null
 
+    isNormal:->
+        true
+
+    isNormalApplet:->
+        false
+
+    isActive:->
+        false
+
+    isRuntimeApplet:->
+        false
+
     update_scale:->
 
     displayIcon:(type="")->
@@ -81,7 +94,16 @@ class Item extends Widget
         @imgDark.style.display = 'none'
         this["img#{type}"].style.display = ''
 
+    on_mousemove: (e)=>
+        console.warn("mouse move event")
+        if e
+            console.warn("record mouse position")
+            $mousePosition.x = e.x
+            $mousePosition.y = e.y
+
     on_mouseover:(e)=>
+        @on_mousemove(e)
+
         if _isRightclicked || settings.hideMode() != HideMode.KeepShowing and hideStatusManager.state != HideState.Shown
             console.log("hide state is not Shown")
             return
@@ -436,7 +458,8 @@ class AppItem extends Item
             calc_app_item_size()
             update_dock_region($("#container").clientWidth)
         else
-            Preview_close_now(@)
+            if Preview_container._current_group && @id == Preview_container._current_group.id
+                Preview_close_now(@)
             @element.style.display = "block"
             super
 
@@ -500,7 +523,7 @@ class AppItem extends Item
             DCore.Dock.require_all_region()
             # console.log(@core.type())
             if @core && @isApp()
-                console.log("App show preview")
+                console.log("#{@id} App show preview")
                 if @n_clients.length != 0
                     console.log("length is not 0")
                     Preview_show(@)
