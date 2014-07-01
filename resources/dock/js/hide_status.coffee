@@ -81,7 +81,10 @@ class HideStatusManager
         @updateSystemTrayTiemr = setTimeout(->
             if not systemTray || not systemTray.isShowing
                 return
-            systemTray.on_mouseover()
+            if systemTray.isUnfolded
+                systemTray.showAllIcons()
+            else
+                systemTray.on_mouseover()
             DCore.Dock.set_is_hovered(false)
         , 400)
 
