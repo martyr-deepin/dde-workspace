@@ -17,6 +17,16 @@ DEEPIN_MENU_CORNER_DIRECTION =
     RIGHT: "right"
 
 
+getMenuManager = ->
+    return get_dbus(
+        "session",
+        name:DEEPIN_MENU_NAME,
+        path:DEEPIN_MENU_PATH,
+        interface:DEEPIN_MENU_MANAGER_INTERFACE,
+        "RegisterMenu"
+    )
+
+
 class NormalMenu
     constructor: (items...)->
         @x = 0
@@ -182,22 +192,16 @@ class Menu
         @dbus?.connect("MenuUnregistered", fn)
 
     _init_dbus: ->
-        manager = get_dbus(
-            "session",
-            name:DEEPIN_MENU_NAME,
-            path:DEEPIN_MENU_PATH,
-            interface:DEEPIN_MENU_MANAGER_INTERFACE,
-            "RegisterMenu"
-        )
+        manager = getMenuManager()
 
         return if not manager
 
-        menu_dbus_path = manager.RegisterMenu_sync()
-        # echo "menu path is: #{menu_dbus_path}"
+        @menu_dbus_path = manager.RegisterMenu_sync()
+        # echo "menu path is: #{@menu_dbus_path}"
         @dbus = get_dbus(
             "session",
             name:DEEPIN_MENU_NAME,
-            path:menu_dbus_path,
+            path:@menu_dbus_path,
             interface:DEEPIN_MENU_INTERFACE,
             "ShowMenu"
         )
@@ -221,3 +225,7 @@ class Menu
     destroy: ->
         try
             @dbus?.dis_connect("ItemInvoked", @callback)
+
+    unregister:->
+        @destroy()
+        getMenuManager()?.UnregisterMenu(@menu_dbus_path)

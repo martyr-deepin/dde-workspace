@@ -50,3 +50,6 @@ class GlobalMenu
                     console.wanr("cannot get dbus of #{groupName}")
                     return
                 dbus.ToggleApplet(realId)
+
+        @menu.unregister()
+        @menu = null
