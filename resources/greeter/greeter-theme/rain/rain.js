@@ -16,7 +16,7 @@ function RainyDay(canvasid, sourceid, width, height, opacity, blur) {
 	this.img = document.getElementById(sourceid);
 
 	// draw and blur the backgroiund image
-	//this.prepareBackground(blur ? blur : 10, width, height);
+    this.prepareBackground(blur ? blur : 10, width, height);
 	this.w = this.canvas.width;
 	this.h = this.canvas.height;
 
@@ -66,7 +66,7 @@ RainyDay.prototype.prepareReflections = function() {
 	ctx.translate(this.reflected.width / 2, this.reflected.height / 2);
 	ctx.rotate(Math.PI);
 
-    ctx.drawImage(this.img, -this.reflected.width / 2, -this.reflected.height / 2, this.reflected.width, this.reflected.height);
+	ctx.drawImage(this.img, -this.reflected.width / 2, -this.reflected.height / 2, this.reflected.width, this.reflected.height);
 };
 
 /**
@@ -109,7 +109,7 @@ RainyDay.prototype.preset = function(min, base, quan) {
 RainyDay.prototype.rain = function(presets, speed) {
 	// prepare canvas for drop reflections
 	if (this.reflection != this.REFLECTION_NONE) {
-        this.prepareReflections();
+		this.prepareReflections();
 	}
 
 	if (speed > 0) {
@@ -542,10 +542,10 @@ RainyDay.prototype.prepareBackground = function(radius, width, height) {
 		width = this.canvas.width;
 		height = this.canvas.height;
 	}
-
+    return;
 	var context = this.canvas.getContext("2d");
 	context.clearRect(0, 0, width, height);
-    context.drawImage(this.img, 0, 0, width, height);
+	context.drawImage(this.img, 0, 0, width, height);
 
 	if (isNaN(radius) || radius < 1) return;
 
