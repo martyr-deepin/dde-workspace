@@ -26,11 +26,9 @@ connect_default_signals = ->
     DCore.signal_connect("item_update", do_item_update)
     DCore.signal_connect("item_delete", do_item_delete)
     DCore.signal_connect("item_rename", do_item_rename)
-    DCore.signal_connect("trash_count_changed", do_trash_update)
     DCore.signal_connect("cut_completed", do_cut_completed)
     DCore.signal_connect("lost_focus", do_desktop_lost_focus)
     DCore.signal_connect("get_focus", do_desktop_get_focus)
-    DCore.signal_connect("desktop_config_changed", do_desktop_config_changed)
     DCore.signal_connect("workarea_changed", do_workarea_changed)
 
 
@@ -39,10 +37,6 @@ do_item_delete = (data) ->
     id = DCore.DEntry.get_id(data.entry)
     if (w = Widget.look_up(id))?
         delete_item(w)
-        dsc_e = DCore.DEntry.create_by_path("#{desktop_path}/deepin-software-center.desktop")
-        dsc_id = DCore.DEntry.get_id(dsc_e)
-        #if(id == dsc_id)
-            #DCore.Desktop.set_config_boolean("show-dsc-icon",false)
         update_selected_item_drag_image()
 
 
@@ -55,11 +49,6 @@ do_item_update = (data) ->
     else if (w = create_item(data.entry))?
         all_item.push(w.get_id())
         move_to_anywhere(w)
-        #dsc_e = DCore.DEntry.create_by_path("#{desktop_path}/deepin-software-center.desktop")
-        #dsc_id = DCore.DEntry.get_id(dsc_e)
-        #if(id == dsc_id)
-            #DCore.Desktop.set_config_boolean("show-dsc-icon",true)
-
     if w? then w.item_hint?()
 
 
@@ -90,13 +79,6 @@ do_item_rename = (data) ->
     update_selected_item_drag_image()
     return
 
-
-do_trash_update = ->
-    w = Widget.look_up("Trash_Virtual_Dir")
-    if w?
-        w.item_update()
-
-
 do_cut_completed = (items) ->
     for e in items
         w = Widget.look_up(DCore.DEntry.get_id(e))
@@ -122,11 +104,6 @@ do_desktop_get_focus = ->
     if last_widget.length > 0 and (w = Widget.look_up(last_widget))? and last_widget_has_focus == true
         w.item_focus()
         last_widget_has_focus == false
-    return
-
-
-do_desktop_config_changed = ->
-    place_desktop_items()
     return
 
 
