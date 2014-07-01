@@ -28,6 +28,7 @@ class Trash extends PostfixedItem
             DEEPIN_MENU_TYPE.NORMAL,
             new MenuItem(1, _("_Clean up")).setActive(DCore.DEntry.get_trash_count() != 0)
         )
+        menu.unregisterHook(handleMenuUnregister)
         if @is_opened
             menu.append(new MenuItem(2, _("_Close")))
         xy = get_page_xy(@element)

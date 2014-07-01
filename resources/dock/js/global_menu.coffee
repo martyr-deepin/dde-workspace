@@ -51,5 +51,6 @@ class GlobalMenu
                     return
                 dbus.ToggleApplet(realId)
 
+        _isRightclicked = false
         @menu.unregister()
         @menu = null

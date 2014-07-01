@@ -647,7 +647,7 @@ class AppItem extends Item
         if dbus
             dbus.connect("ItemInvoked", @on_itemselected($DBus[@id]))
             dbus.connect("MenuUnregistered", ->
-                _isRightclicked = false
+                handleMenuUnregister()
             )
             dbus.ShowMenu(menuJson)
         else

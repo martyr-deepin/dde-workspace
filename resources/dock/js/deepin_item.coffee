@@ -163,11 +163,13 @@ class DigitClock extends ClockBase
     on_rightclick: (e)=>
         e.preventDefault()
         xy = get_page_xy(@element)
-        new Menu(
+        m = new Menu(
             DEEPIN_MENU_TYPE.NORMAL,
             new MenuItem(1, _("_View as analog")),
             new MenuItem(2, _("_Time settings"))
-        ).addListener(@on_itemselected).showMenu(
+        )
+        m.unregisterHook(handleMenuUnregister)
+        m.addListener(@on_itemselected).showMenu(
             xy.x + @element.clientWidth / 2,
             xy.y + OFFSET_DOWN,
             DEEPIN_MENU_CORNER_DIRECTION.DOWN

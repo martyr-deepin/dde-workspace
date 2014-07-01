@@ -21,7 +21,7 @@ class HideStatusManager
             @dbus = null
 
         @dbus?.connect("StateChanged", (state)=>
-            if DCore.Dock.is_hovered()
+            if DCore.Dock.is_hovered() || _isRightclicked
                 return
 
             switch settings.hideMode()

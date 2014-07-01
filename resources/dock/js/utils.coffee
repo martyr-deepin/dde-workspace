@@ -167,3 +167,8 @@ getPreviousSiblingFromPoint = (x, y, sentinel, step=6)->
 
 getNextSiblingFromPoint = (x, y, sentinel, step=6)->
     getSiblingFromPoint(x, y, sentinel, step, (x, step)->x + step)
+
+
+handleMenuUnregister = ->
+    _isRightclicked = false
+    hideStatusManager?.updateState()
