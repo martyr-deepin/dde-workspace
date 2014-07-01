@@ -59,6 +59,9 @@ RainyDay.prototype.prepareReflections = function() {
 	this.reflected = document.createElement('canvas');
 	this.reflected.width = this.canvas.width;
 	this.reflected.height = this.canvas.height;
+	//this.reflected = document.getElementById('canvas');
+	//this.reflected.width = screen.width;
+	//this.reflected.height = screen.height;
 
 	var ctx = this.reflected.getContext('2d');
 
@@ -77,10 +80,10 @@ RainyDay.prototype.prepareGlass = function(opacity) {
 	this.glass = document.createElement('canvas');
 	this.glass.width = this.canvas.width;
 	this.glass.height = this.canvas.height;
-	this.glass.style.position = "absolute";
+	this.glass.style.position = "fixed";
 	this.glass.style.top = this.canvas.offsetTop;
 	this.glass.style.left = this.canvas.offsetLeft;
-	this.glass.style.zIndex = this.canvas.style.zIndex + 100;
+	this.glass.style.zIndex = this.canvas.style.zIndex + 1;
 	this.canvas.parentNode.appendChild(this.glass);
 	this.context = this.glass.getContext('2d');
 	this.glass.style.opacity = opacity;
@@ -143,7 +146,7 @@ RainyDay.prototype.rain = function(presets, speed) {
 		setInterval(
 			(function(self) {
 				return function() {
-					var random = Math.random();
+                    var random = Math.random();
 					// select matching preset
 					var preset;
 					for (var i = 0; i < presets.length; i++) {
@@ -153,6 +156,7 @@ RainyDay.prototype.rain = function(presets, speed) {
 						}
 					}
 					if (preset) {
+                        //console.log("rain setInterval");
 						self.putDrop(new Drop(self, Math.random() * self.w, Math.random() * self.h, preset.min, preset.base));
 					}
 				}
@@ -275,7 +279,7 @@ function Drop(rainyday, centerX, centerY, min, base) {
 	var iterations = 4;
 	this.r2 = 0.8 * this.r1;
 	this.linepoints = rainyday.getLinepoints(iterations);
-	this.context = rainyday.context;
+    this.context = rainyday.context;
 	this.reflection = rainyday.reflected;
 }
 
@@ -542,10 +546,9 @@ RainyDay.prototype.prepareBackground = function(radius, width, height) {
 		width = this.canvas.width;
 		height = this.canvas.height;
 	}
-    return;
-	var context = this.canvas.getContext("2d");
-	context.clearRect(0, 0, width, height);
-	context.drawImage(this.img, 0, 0, width, height);
+	//var context = this.canvas.getContext("2d");
+	//context.clearRect(0, 0, width, height);
+	//context.drawImage(this.img, 0, 0, width, height);
 
 	if (isNaN(radius) || radius < 1) return;
 

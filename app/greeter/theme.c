@@ -28,6 +28,11 @@
 #define GREETER_THEME_PATH ""RESOURCE_DIR"greeter/greeter-theme"
 GSettings* s;
 
+const char* get_theme_path()
+{
+    return GREETER_THEME_PATH;
+}
+
 char* get_theme_config()
 {
     return g_settings_get_string(s, GREETER_THEME_KEY);

@@ -23,6 +23,7 @@
 #ifndef THEME_H
 #define THEME_H
 
+const char* get_theme_path();
 char* get_theme_config();
 char* get_current_bg_path();
 void set_theme_background(GtkWidget* container,GtkWidget* child);

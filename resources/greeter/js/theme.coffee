@@ -20,7 +20,6 @@
 THEME =
     static:"static"
     sky:"sky"
-    light:"light"
     rain:"rain"
 
 THEME_PATH = "greeter-theme"
@@ -31,26 +30,12 @@ setTheme = (theme)->
     _b.style.width = screen.width
     echo "setTheme:#{theme}"
     path = "#{THEME_PATH}/#{theme}"
-    #theme_iframe = create_element("div","theme_iframe",_b)
-    #theme_iframe.src = "#{path}/#{theme}.html"
-    #theme_iframe.style.position = "absolute"
-    #theme_iframe.style.zIndex = 1
-    #theme_iframe.style.width = "100%"
-    #theme_iframe.style.height = "100%"
-    #theme_iframe.style.margin = 0
-    #theme_iframe.style.border = 0
-    #theme_iframe.style.overflow = "hidden"
-    #theme_iframe.style.background = "transparent"
-    #return
     #inject_js("#{THEME_PATH}/three.js")
     switch theme
         when THEME.sky
-            #inject_js("#{path}/three_sky.js")
             inject_js("#{path}/sky.js")
-        when THEME.light
-           inject_js("#{path}/ligls.js")
         when THEME.rain
-           inject_js("#{path}/rain.js")
+            inject_js("#{path}/rain.js")
 
 theme = DCore[APP_NAME].get_theme()
 setTheme(theme)

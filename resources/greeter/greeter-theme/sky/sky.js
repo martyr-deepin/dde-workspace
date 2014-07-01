@@ -19,7 +19,7 @@ var particles = [];
 //数据初始化
 function init(){
     console.log("sky theme init==== document.body.onload");
-    //document.body.style.backgroundImage = "url(js/skyThree/sky.jpg)"; 
+    //document.body.style.backgroundImage = "url(bg.jpg)"; 
     //相机参数：
     //四个参数值分别代表:视野角：fov  纵横比：aspect 相机离视体最近的距离：near 相机离视体最远的距离：far
     camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, ZEnd, ZStart );
@@ -114,4 +114,4 @@ function onMouseMove(event){
 }
 
 document.body.onload = init();
-//init();
+
