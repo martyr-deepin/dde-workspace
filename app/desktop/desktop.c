@@ -438,6 +438,12 @@ void send_lost_focus()
 {
     js_post_signal("lost_focus");
 }
+gboolean on_leave(GtkWidget* widget, GdkEventCrossing* event)
+{
+    send_lost_focus();
+    return FALSE;
+}
+
 void send_get_focus()
 {
     js_post_signal("get_focus");
@@ -571,6 +577,7 @@ int main(int argc, char* argv[])
     gtk_widget_realize(container);
     gtk_widget_realize(webview);
     g_signal_connect (webview, "draw", G_CALLBACK(erase_background), NULL);
+    g_signal_connect (webview, "leave-notify-event", G_CALLBACK(on_leave), NULL);
 
     GdkScreen* screen = gtk_window_get_screen(GTK_WINDOW(container));
     g_signal_connect(screen, "size-changed", G_CALLBACK(screen_change_size), gtk_widget_get_window(container));
