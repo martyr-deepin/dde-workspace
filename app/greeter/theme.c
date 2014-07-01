@@ -71,38 +71,38 @@ void init_theme()
 }
 
 
-char** get_user_groups()
-{
-    key_file = g_key_file_new();
-    gboolean load = g_key_file_load_from_file (key_file,LANG_PATH , G_KEY_FILE_NONE, NULL);
-    gsize len;
-    user_list = g_key_file_get_groups(key_file,&len);
-    g_message("get_user_groups length:%d,load:%d",(int)len,load);
-    return user_list;
-}
-
-JSObjectRef get_config_list()
-{
-    if(user_list == NULL){
-        get_user_groups();
-    }
-    JSObjectRef array = json_array_create();
-    for (guint i = 0;i < len; i++)
-    {
-        g_message("list:%d:%s",i,list[i]);
-        gchar* current_layout = g_key_file_get_string(key_file,list[i],"current-layout",NULL);
-        gchar** layouts_list = g_key_file_get_string_list(key_file,list[i],"user-layouts-list",NULL,NULL);
-        gchar** greeter_theme = g_key_file_get_string_list(key_file,list[i],"greeter-theme",NULL,NULL);
-
-        JSObjectRef json = json_create();
-        json_append_string(json,"current_layout",name);
-        json_append_string(json,"local",local);
-        g_free(name);
-        g_free(local);
-        json_array_insert(array,i,json);
-    }
-    g_strfreev(list);
-    return array;
-}
-
+//char** get_user_groups()
+//{
+//    key_file = g_key_file_new();
+//    gboolean load = g_key_file_load_from_file (key_file,LANG_PATH , G_KEY_FILE_NONE, NULL);
+//    gsize len;
+//    user_list = g_key_file_get_groups(key_file,&len);
+//    g_message("get_user_groups length:%d,load:%d",(int)len,load);
+//    return user_list;
+//}
+//
+//JSObjectRef get_config_list()
+//{
+//    if(user_list == NULL){
+//        get_user_groups();
+//    }
+//    JSObjectRef array = json_array_create();
+//    for (guint i = 0;i < len; i++)
+//    {
+//        g_message("list:%d:%s",i,list[i]);
+//        gchar* current_layout = g_key_file_get_string(key_file,list[i],"current-layout",NULL);
+//        gchar** layouts_list = g_key_file_get_string_list(key_file,list[i],"user-layouts-list",NULL,NULL);
+//        gchar** greeter_theme = g_key_file_get_string_list(key_file,list[i],"greeter-theme",NULL,NULL);
+//
+//        JSObjectRef json = json_create();
+//        json_append_string(json,"current_layout",name);
+//        json_append_string(json,"local",local);
+//        g_free(name);
+//        g_free(local);
+//        json_array_insert(array,i,json);
+//    }
+//    g_strfreev(list);
+//    return array;
+//}
+//
 
