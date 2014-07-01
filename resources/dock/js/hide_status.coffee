@@ -79,11 +79,14 @@ class HideStatusManager
         @changeState(HideState.Showing, "translateY(0)", "translateY(0)")
         clearTimeout(@updateSystemTrayTiemr || null)
         @updateSystemTrayTiemr = setTimeout(->
-            if not systemTray || not systemTray.isShowing
+            if not systemTray
                 return
             if systemTray.isUnfolded
+                # console.log("system tray is unfolded")
+                systemTray.updateTrayIcon()
                 systemTray.showAllIcons()
-            else
+            else if systemTray.isShowing
+                # console.log("system tray is showing")
                 systemTray.on_mouseover()
             DCore.Dock.set_is_hovered(false)
         , 400)
