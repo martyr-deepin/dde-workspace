@@ -74,14 +74,6 @@ void desktop_run_deepin_settings(const char* mod)
     g_object_unref(appinfo);
 }
 
-void desktop_run_deepin_software_center()
-{
-    GAppInfo* appinfo = G_APP_INFO(g_desktop_app_info_new("deepin-software-center.desktop"));
-    ArrayContainer fs = {0, 0};
-    dentry_launch(appinfo, fs);
-    g_object_unref(appinfo);
-}
-
 void desktop_open_trash_can()
 {
     GFile* file = g_file_new_for_uri("trash:///");
@@ -89,11 +81,6 @@ void desktop_open_trash_can()
     dentry_launch(file, fs);
     g_object_unref(file);
 }
-
-/*
- * Entry* desktop_get_trash_entry()
- * this function is defined in inotify_item.c because we will monitor the trash status
- * */
 
 Entry* desktop_get_home_entry()
 {

@@ -258,39 +258,3 @@ class TrashVDir extends DesktopEntry
     item_rename : =>
         return
 
-
-class DeepinSoftwareCenter extends DesktopEntry
-    constructor : ->
-        super(null, false, false)
-
-
-    set_id : =>
-        @id = _ITEM_ID_DSC_
-
-
-    get_name : =>
-        _("Software Center")
-
-
-    set_icon : (src = null) =>
-        if src == null
-            icon = DCore.get_theme_icon(_ICON_ID_DSC_, D_ICON_SIZE_NORMAL)
-        else
-            icon = src
-        super(icon)
-
-
-    get_path : =>
-        ""
-
-
-    do_buildmenu : ->
-        menus = [[1, _("_Open")]]
-
-
-    item_rename : =>
-        return
-
-
-    item_exec : =>
-        DCore.Desktop.run_deepin_software_center()

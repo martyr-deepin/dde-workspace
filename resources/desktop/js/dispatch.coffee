@@ -77,45 +77,6 @@ delete_widget = (w) ->
     w.destroy()
 
 
-clear_speical_desktop_items = ->
-    Widget.look_up(i)?.destroy() for i in speical_item
-    speical_item.splice(0)
-    return
-
-
-load_speical_desktop_items = ->
-    DCore.Desktop.load_dinstaller_desktop_item()
-    return
-    clear_speical_desktop_items()
-
-    if _GET_CFG_BOOL_(_CFG_SHOW_COMPUTER_ICON_)
-        item = new ComputerVDir
-        if item?
-            div_grid.appendChild(item.element)
-            speical_item.push(item.get_id())
-    else
-        discard_position(_ITEM_ID_COMPUTER_)
-
-    if _GET_CFG_BOOL_(_CFG_SHOW_HOME_ICON_)
-        item = new HomeVDir
-        if item?
-            div_grid.appendChild(item.element)
-            speical_item.push(item.get_id())
-    else
-        discard_position(_ITEM_ID_USER_HOME_)
-
-    if _GET_CFG_BOOL_(_CFG_SHOW_TRASH_BIN_ICON_)
-        item = new TrashVDir
-        if item?
-            div_grid.appendChild(item.element)
-            speical_item.push(item.get_id())
-    else
-        discard_position(_ITEM_ID_TRASH_BIN_)
-    
-    DCore.Desktop.load_dsc_desktop_item()
-    return
-
-
 clear_desktop_items = ->
     Widget.look_up(i)?.destroy() for i in all_item
     all_item.splice(0)

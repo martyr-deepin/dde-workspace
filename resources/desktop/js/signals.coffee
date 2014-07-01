@@ -126,7 +126,6 @@ do_desktop_get_focus = ->
 
 
 do_desktop_config_changed = ->
-    load_speical_desktop_items()
     place_desktop_items()
     return
 

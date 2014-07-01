@@ -279,14 +279,6 @@ PRIVATE void dock_config_changed(GSettings* settings, char* key, gpointer usr_da
 }
 
 
-PRIVATE void desktop_config_changed(GSettings* settings G_GNUC_UNUSED,
-                                    char* key G_GNUC_UNUSED,
-                                    gpointer usr_data G_GNUC_UNUSED)
-{
-    js_post_signal ("desktop_config_changed");
-}
-
-
 extern GHashTable* enabled_plugins;
 extern GHashTable* disabled_plugins;
 extern GHashTable* plugins_state;
@@ -328,24 +320,6 @@ PRIVATE void desktop_plugins_changed(GSettings* settings, char* key G_GNUC_UNUSE
     js_post_message("plugins_changed", json);
 }
 
-
-/* JS_EXPORT_API */
-/* JSObjectRef desktop_get_plugin_array(char const* name) */
-/* { */
-/*     char** values = g_settings_get_strv(desktop_gsettings, "enabled-plugins"); */
-/*     JSContextRef ctx = get_global_context(); */
-/*  */
-/*     JSObjectRef array = json_array_create(); */
-/*  */
-/*     for (int i = 0; values[i] != NULL; ++i) */
-/*         json_array_insert(array, i, jsvalue_from_cstr(ctx, values[i])); */
-/*  */
-/*     g_strfreev(values); */
-/*  */
-/*     return array; */
-/* } */
-
-
 JS_EXPORT_API
 gboolean desktop_get_config_boolean(const char* key_name)
 {
@@ -365,27 +339,6 @@ char* desktop_get_data_dir()
     return g_strdup (DATA_DIR);
 }
 
-
-JS_EXPORT_API
-void desktop_load_dsc_desktop_item()
-{
-    char* dsc_path = g_strdup_printf("%s/deepin-software-center.desktop", DESKTOP_DIR());
-    GFile* dest_file = g_file_new_for_path(dsc_path);
-
-    if (desktop_get_config_boolean("show-dsc-icon"))
-    {
-        GFile* src_file = g_file_new_for_path("/usr/share/applications/deepin-software-center.desktop");
-        g_file_copy(src_file, dest_file, G_FILE_COPY_NONE, NULL, NULL, NULL, NULL);
-        g_chmod(dsc_path, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);
-        g_object_unref(src_file);
-    }
-    else
-    {
-        g_file_delete(dest_file, NULL, NULL);
-    }
-    g_free(dsc_path);
-    g_object_unref(dest_file);
-}
 
 JS_EXPORT_API
 gboolean desktop_file_exist_in_desktop(char* name)
@@ -514,35 +467,6 @@ gboolean desktop_check_version_equal_set(const char* version_set)
 
     return result;
 }
-
-JS_EXPORT_API
-gboolean desktop_is_livecd ()
-{
-    return is_livecd();
-}
-
-JS_EXPORT_API
-void desktop_load_dinstaller_desktop_item()
-{
-    char* dsc_path = g_strdup_printf("%s/deepin-installer.desktop", DESKTOP_DIR());
-    GFile* dest_file = g_file_new_for_path(dsc_path);
-
-    if (desktop_is_livecd())
-    {
-        GFile* src_file = g_file_new_for_path("/usr/share/applications/deepin-installer.desktop");
-        g_file_copy(src_file, dest_file, G_FILE_COPY_NONE, NULL, NULL, NULL, NULL);
-        g_chmod(dsc_path, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);
-        g_object_unref(src_file);
-    }
-    else
-    {
-        g_message("desktop_is_livecd false");
-        /*g_file_delete(dest_file, NULL, NULL);*/
-    }
-    g_free(dsc_path);
-    g_object_unref(dest_file);
-}
-
 
 int main(int argc, char* argv[])
 {
@@ -679,14 +603,6 @@ void desktop_emit_webview_ok()
                           G_CALLBACK(dock_config_changed), NULL);
 
         desktop_gsettings = g_settings_new (DESKTOP_SCHEMA_ID);
-        g_signal_connect (desktop_gsettings, "changed::show-home-icon",
-                          G_CALLBACK(desktop_config_changed), NULL);
-        g_signal_connect (desktop_gsettings, "changed::show-trash-icon",
-                          G_CALLBACK(desktop_config_changed), NULL);
-        g_signal_connect (desktop_gsettings, "changed::show-computer-icon",
-                          G_CALLBACK(desktop_config_changed), NULL);
-        g_signal_connect (desktop_gsettings, "changed::show-dsc-icon",
-                          G_CALLBACK(desktop_config_changed), NULL);
         g_signal_connect(desktop_gsettings, "changed::enabled-plugins",
                          G_CALLBACK(desktop_plugins_changed), NULL);
 
