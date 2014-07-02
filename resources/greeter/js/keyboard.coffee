@@ -38,7 +38,7 @@ class Keyboard extends Widget
         @element.style.display = "none"
 
     get_layout: ->
-        @layouts = DCore.Greeter.get_layouts()
+        @layouts = DCore.Greeter.lightdm_get_layouts()
         echo @layouts
         @CurrentLayout = DCore.Greeter.get_current_layout()
         echo @CurrentLayout

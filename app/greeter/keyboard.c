@@ -24,20 +24,13 @@
 #include "jsextension.h"
 #include "keyboard.h"
 
-#define LAYOUT_SCHEMA_ID "com.deepin.dde.keyboard"
 #define USER_INI_PATH "/var/lib/greeter/user.ini"
 
 GList* g_layouts = NULL;
-GSettings* s_layout;
 gchar** layouts = NULL;
 
 GKeyFile* key_file = NULL;
 char** user_list = NULL;
-
-void init_keyboard()
-{
-    s_layout = g_settings_new(LAYOUT_SCHEMA_ID);
-}
 
 LightDMLayout*
 find_layout_by_des(gchar *des)
@@ -99,31 +92,6 @@ find_layout_by_name(gchar *name)
 
 
 JS_EXPORT_API
-JSObjectRef greeter_get_layouts ()
-{
-    JSObjectRef array = json_array_create ();
-
-    guint i;
-
-    if (layouts == NULL) {
-       layouts = g_settings_get_strv(s_layout,"user-layouts-list");
-    }
-    guint len = g_strv_length(layouts);
-    g_message("layouts len:%d",len);
-    for (i = 0; i < len; i++) {
-        gchar* dest = NULL;
-        g_utf8_strncpy(dest,layouts[i],(gsize)(g_utf8_strlen(layouts[i],0)-1));
-        g_message("keyboard layout:%d:=========%s===========",i,dest);
-        LightDMLayout *layout = find_layout_by_name(dest);
-        const gchar* name = g_strdup(lightdm_layout_get_description(layout));
-        g_free(dest);
-        json_array_insert (array, i, jsvalue_from_cstr (get_global_context (), g_strdup (name)));
-    }
-
-    return array;
-}
-
-JS_EXPORT_API
 gchar* greeter_get_current_layout ()
 {
     LightDMLayout *layout  = lightdm_get_layout();
@@ -166,6 +134,24 @@ char** get_user_groups()
    return user_list;
 }
 
+JSObjectRef export_layouts (gchar** layouts_list)
+{
+    JSObjectRef array = json_array_create ();
+    guint i;
+    guint len = g_strv_length(layouts_list);
+    g_message("layouts_list len:%d",len);
+    for (i = 0; i < len; i++) {
+        gchar* dest = NULL;
+        g_utf8_strncpy(dest,layouts_list[i],(gsize)(g_utf8_strlen(layouts_list[i],0)-1));
+        g_message("keyboard layout:%d:=========%s===========",i,dest);
+        LightDMLayout *layout = find_layout_by_name(dest);
+        const gchar* name = g_strdup(lightdm_layout_get_description(layout));
+        json_array_insert (array, i, jsvalue_from_cstr (get_global_context (), g_strdup (name)));
+        g_free(dest);
+    }
+    return array;
+}
+
 JS_EXPORT_API
 JSObjectRef greeter_get_user_config_list()
 {
@@ -178,16 +164,21 @@ JSObjectRef greeter_get_user_config_list()
     {
         g_message("list:%d:%s",i,user_list[i]);
         gchar* current_layout = g_key_file_get_string(key_file,user_list[i],"KeyboardLayout",NULL);
-        gchar** layouts_list = g_key_file_get_string_list(key_file,user_list[i],"KeyboardLayoutList",NULL,NULL);
+        layouts = g_key_file_get_string_list(key_file,user_list[i],"KeyboardLayoutList",NULL,NULL);
         gchar* greeter_theme = g_key_file_get_string(key_file,user_list[i],"GreeterTheme",NULL);
 
+
+
    JSObjectRef json = json_create();
+   json_append_string(json,"username",user_list[i]);
    json_append_string(json,"current_layout",current_layout);
    json_append_string(json,"greeter-theme",greeter_theme);
    g_free(current_layout);
    g_free(greeter_theme);
-   g_strfreev(layouts_list);
    json_array_insert(array,i,json);
+   
+   JSObjectRef obj = export_layouts(layouts);
+   json_array_insert(array,i,obj);
    }
    g_strfreev(user_list);
    return array;

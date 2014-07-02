@@ -262,7 +262,6 @@ int main (int argc, char **argv)
 
     init_i18n ();
     init_theme();
-    init_keyboard();
     gtk_init (&argc, &argv);
 
     greeter = lightdm_greeter_new ();

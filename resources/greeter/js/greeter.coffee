@@ -105,7 +105,11 @@ div_power.setAttribute("id","div_power")
 powermenu = new PowerMenu(div_power)
 powermenu.new_power_menu()
 
-if DCore.Greeter.get_layouts().length > 1
+echo DCore.Greeter.get_user_config_list()
+
+layouts = DCore.Greeter.lightdm_get_layouts()
+echo layouts
+if layouts.length > 1
     div_keyboard = create_element("div","div_keyboard",_b)
     keyboard = new Keyboard(div_keyboard)
     keyboard.boxscroll_create()

@@ -437,7 +437,7 @@ class LoginEntry extends Widget
     keyboard_create: ->
         if !@is_need_pwd then return
         if !is_greeter then return
-        if DCore.Greeter.get_layouts().length < 2 then return
+        if layouts?.length < 2 then return
         @keyboard = new KeyboardImg(@password_div)
         @keyboard.keyboard_img_create()
         @keyboard.element.style.position = "absolute"

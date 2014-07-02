@@ -23,7 +23,6 @@
 #include "jsextension.h"
 #include <lightdm.h>
 
-void init_keyboard();
 
 JS_EXPORT_API JSObjectRef greeter_get_layouts ();
 
