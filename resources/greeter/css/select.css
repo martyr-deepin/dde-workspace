@@ -1,4 +1,10 @@
 
+.triangle{
+    left:15px;
+    width:26px;
+    height:18px;
+}
+
 #boxscroll {
 	width: 220px;
     max-height: 18em;

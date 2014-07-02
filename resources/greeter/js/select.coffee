@@ -33,6 +33,7 @@ class Select extends Widget
 
     boxscroll_create: ->
         @boxscroll_remove()
+        #@triangle = create_img("triangle","images/triangle.png",@element)
         @boxscroll = create_element("div","boxscroll",@element)
         @boxscroll.setAttribute("id","boxscroll")
         #if jQuery("#boxscroll").length ==0
