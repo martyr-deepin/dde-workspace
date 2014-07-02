@@ -413,6 +413,8 @@ class LoginEntry extends Widget
     keyboard_img_create: ->
         if !@is_need_pwd then return
         if !is_greeter then return
+        @layouts = DCore.Greeter.lightdm_get_layouts()
+        if @layouts?.length < 2 then return
         
         @keyboard_img = create_element("div","keyboard_img",@password_div)
         @keyboard_img.style.position = "absolute"
@@ -429,8 +431,6 @@ class LoginEntry extends Widget
         #user_config = DCore.Greeter.get_user_config_list()
         #echo "user_config-------========="
         #echo user_config
-        @layouts = DCore.Greeter.lightdm_get_layouts()
-        if @layouts?.length < 2 then return
         @current_layout = DCore.Greeter.get_current_layout()
         @keyboard = new Select("keyboard_#{@username}",div_keyboard)
         @keyboard.element.style.position = "absolute"
