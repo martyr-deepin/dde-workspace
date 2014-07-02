@@ -205,11 +205,26 @@ class LauncherMenu extends Page
         
         app1 = @app_x_y(1)
         app2 = @app_x_y(2)
+        app_list = @launcher?.search("deepin")
+        src1_app = null
+        src2_app = null
+        try
+            src1_app = "#{app_list[0]}.desktop"
+            src2_app = "#{app_list[1]}.desktop"
+        catch e
+            echo "launcher dbus search error:#{e}"
+            if document.body.lang is "zh"
+                src1_app = "deepin-game-center.desktop"
+                src2_app = "deepin-movie.desktop"
+            else
+                src1_app = "deepin-software-center.desktop"
+                src2_app = "deepin-movie.desktop"
+
         @menu_create(app1.x,app1.y,=>
-            src1 = "/usr/share/applications/deepin-game-center.desktop"
+            src1 = "/usr/share/applications/#{src1_app}"
             DCore.Guide.copy_file_to_desktop(src1)
             @menu_create(app2.x,app2.y,=>
-                src2 = "/usr/share/applications/deepin-movie.desktop"
+                src2 = "/usr/share/applications/#{src2_app}"
                 DCore.Guide.copy_file_to_desktop(src2)
                 @switch_page()
             )

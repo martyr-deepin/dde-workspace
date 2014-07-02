@@ -85,6 +85,9 @@ class Launcher
     hide_signal_disconnect: ->
         @dbus?.dis_connect("Closed",@hide_signal_cb)
 
+    search: (str) ->
+        return @dbus?.Search_sync(str)
+
 class Dock
     DOCK_REGION =
         name:"com.deepin.daemon.Dock"
