@@ -165,13 +165,13 @@ LightDMUser* lightdm_user_get_by_username(const gchar *name)
 
     user_list = lightdm_user_list_get_instance ();
     if (user_list == NULL) {
-        g_warning ("greeter get user session:user list is NULL\n");
+        g_message ("greeter get user session:user list is NULL\n");
         return NULL;
     }
 
     user = lightdm_user_list_get_user_by_name (user_list, name);
     if (user == NULL) {
-        g_warning ("greeter get user session:user for %s is NULL\n", name);
+        g_message("greeter get user session:user for %s is NULL\n", name);
         return NULL;
     }
     
@@ -182,7 +182,7 @@ LightDMUser* lightdm_user_get_by_username(const gchar *name)
 JS_EXPORT_API
 gboolean greeter_get_user_session_on(const gchar *username)
 {
-    g_warning("greeter_get_user_session_on:%s\n",username);
+    g_message("greeter_get_user_session_on:%s\n",username);
     extern LightDMGreeter *greeter;
     const gchar *user_lock_path = NULL;
     const gchar *username_authentication = NULL;
@@ -192,9 +192,9 @@ gboolean greeter_get_user_session_on(const gchar *username)
     user = lightdm_user_get_by_username(username);
     result = lightdm_user_get_logged_in(user);
     if(result){
-        g_warning("lightdm_user_get_logged_in return TRUE\n");
+        g_message("lightdm_user_get_logged_in return TRUE\n");
     }else{
-        g_warning("lightdm_user_get_logged_in return FALSE\n");
+        g_message("lightdm_user_get_logged_in return FALSE\n");
     }
 
     user_lock_path = g_strdup_printf("%s%s", username, ".dlock.app.deepin");
@@ -206,10 +206,10 @@ gboolean greeter_get_user_session_on(const gchar *username)
     username_authentication = lightdm_greeter_get_authentication_user(greeter);
     if (g_strcmp0 (username, username_authentication) == 0) {
         /*result = TRUE;*/
-        g_warning("username_authentication is %s,and login_on is TRUE;\n",username);
+        g_message("username_authentication is %s,and login_on is TRUE;\n",username);
     }
 
-    g_warning("greeter_get_user_session_on result is %d.\n",result);
+    g_message("greeter_get_user_session_on result is %d.\n",result);
     return result;
 
 }

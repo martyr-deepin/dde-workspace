@@ -428,9 +428,9 @@ class LoginEntry extends Widget
         )
        
     keyboard_create: ->
-        #user_config = DCore.Greeter.get_user_config_list()
-        #echo "user_config-------========="
-        #echo user_config
+        user_config = DCore.Greeter.get_user_config_list()
+        echo "user_config-------========="
+        echo user_config
         @current_layout = DCore.Greeter.get_current_layout()
         @keyboard = new Select("keyboard_#{@username}",div_keyboard)
         @keyboard.element.style.position = "absolute"

@@ -136,10 +136,9 @@ char** get_user_groups()
 JSObjectRef export_layouts (gchar** layouts_list)
 {
     JSObjectRef array = json_array_create ();
-    guint i;
     guint len = g_strv_length(layouts_list);
     g_message("layouts_list len:%d",len);
-    for (i = 0; i < len; i++) {
+    for (guint i = 0; i < len; i++) {
         gchar* dest = NULL;
         g_utf8_strncpy(dest,layouts_list[i],(gsize)(g_utf8_strlen(layouts_list[i],0)-1));
         g_message("keyboard layout:%d:=========%s===========",i,dest);
@@ -154,11 +153,10 @@ JSObjectRef export_layouts (gchar** layouts_list)
 JS_EXPORT_API
 JSObjectRef greeter_get_user_config_list()
 {
-    if(user_list == NULL){
-       get_user_groups();
-    }
+    get_user_groups();
     JSObjectRef array = json_array_create();
     guint len = g_strv_length(user_list);
+    g_message("user_list len:%d",len);
     for (guint i = 0;i < len; i++)
     {
         g_message("list:%d:%s",i,user_list[i]);
@@ -168,11 +166,11 @@ JSObjectRef greeter_get_user_config_list()
 
         JSObjectRef json = json_create();
         json_append_string(json,"username",user_list[i]);
-        json_append_string(json,"current_layout",current_layout);
-        json_append_string(json,"greeter-theme",greeter_theme);
+        json_append_string(json,"currentlayout",current_layout);
+        json_append_string(json,"greetertheme",greeter_theme);
    
-        gchar* layouts_str = g_key_file_get_string(key_file,user_list[i],"KeyboardLayoutList",NULL);
-        json_append_string(json,"layouts_list",layouts_str);
+        /*gchar* layouts_str = g_key_file_get_string(key_file,user_list[i],"KeyboardLayoutList",NULL);*/
+        /*json_append_string(json,"layouts_list",layouts_str);*/
 
         /*layouts = g_key_file_get_string_list(key_file,user_list[i],"KeyboardLayoutList",NULL,NULL);*/
         /*JSObjectRef obj = export_layouts(layouts);*/
@@ -182,7 +180,7 @@ JSObjectRef greeter_get_user_config_list()
         g_free(current_layout);
         g_free(greeter_theme);
    }
-   g_strfreev(user_list);
+   /*g_strfreev(user_list);*/
    return array;
 }
 
