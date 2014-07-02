@@ -191,10 +191,11 @@ class LauncherSearch extends Page
 class LauncherMenu extends Page
     constructor:(@id)->
         super
-        #if DEBUG then @launcher.show()
-        
         @launcher = new Launcher()
         @desktop = new Desktop()
+        @launcher_daemon = new LauncherDaemon()
+        
+        #if DEBUG then @launcher?.show()
         
         @message = _("Use the right mouse button to send two icons to the desktop")
         @tips = _("tips:You can add it to startup items or uninstall")
@@ -205,7 +206,8 @@ class LauncherMenu extends Page
         
         app1 = @app_x_y(1)
         app2 = @app_x_y(2)
-        app_list = @launcher?.search("deepin")
+        app_list = @launcher_daemon?.search("deepin")
+        echo app_list
         src1_app = null
         src2_app = null
         try

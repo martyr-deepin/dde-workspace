@@ -85,6 +85,16 @@ class Launcher
     hide_signal_disconnect: ->
         @dbus?.dis_connect("Closed",@hide_signal_cb)
 
+class LauncherDaemon
+    LAUNCHER_DAEMON = "com.deepin.dde.daemon.Launcher"
+    constructor: ->
+        @dbus_error = false
+        try
+            @dbus = DCore.DBus.session(LAUNCHER_DAEMON)
+        catch e
+            @dbus_error = true
+            console.log "#{LAUNCHER_DAEMON} dbus error :#{e}"
+ 
     search: (str) ->
         return @dbus?.Search_sync(str)
 
