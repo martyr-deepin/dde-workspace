@@ -137,6 +137,10 @@ JSObjectRef export_layouts (gchar** layouts_list)
     guint len = g_strv_length(layouts_list);
     g_message("layouts_list len:%d",len);
     for (guint i = 0; i < len; i++) {
+        //TODO:
+        //1.transfer the layouts_list[i] to lightdm layout_name
+        //2.and get description by LightDMLayout
+        //3.json insert des
         /*g_utf8_strncpy(dest,layouts_list[i],(gsize)(g_utf8_strlen(layouts_list[i],0)-1));*/
         /*LightDMLayout *layout = find_layout_by_name(dest);*/
         /*const gchar* name = g_strdup(lightdm_layout_get_description(layout));*/
@@ -149,8 +153,6 @@ JSObjectRef export_layouts (gchar** layouts_list)
 JS_EXPORT_API
 JSObjectRef greeter_get_user_config_list(const gchar* username)
 {
-    /*get_user_groups();*/
-        
     GKeyFile* key_file = g_key_file_new();
     gboolean load = g_key_file_load_from_file (key_file,USER_INI_PATH , G_KEY_FILE_NONE, NULL);
     g_message("greeter_get_user_config_list key_file %s load:%d",USER_INI_PATH,load);
@@ -171,14 +173,10 @@ JSObjectRef greeter_get_user_config_list(const gchar* username)
 JS_EXPORT_API
 JSObjectRef greeter_get_user_layouts(const gchar* username)
 {
-    /*get_user_groups();*/
-    
     GKeyFile* key_file = g_key_file_new();
     gboolean load = g_key_file_load_from_file (key_file,USER_INI_PATH , G_KEY_FILE_NONE, NULL);
     g_message("greeter_get_user_layouts key_file %s load:%d",USER_INI_PATH,load);
     
-    /*gchar* layouts_str = g_key_file_get_string(key_file,username,"KeyboardLayoutList",NULL);*/
-    /*json_append_string(json,"layouts_list",layouts_str);*/
     gchar** layouts = g_key_file_get_string_list(key_file,username,"KeyboardLayoutList",NULL,NULL);
     JSObjectRef obj = export_layouts(layouts);
     g_strfreev(layouts);
