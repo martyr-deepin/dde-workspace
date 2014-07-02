@@ -30,12 +30,9 @@ setTheme = (theme)->
     _b.style.width = screen.width
     echo "setTheme:#{theme}"
     path = "#{THEME_PATH}/#{theme}"
-    #inject_js("#{THEME_PATH}/three.js")
     switch theme
         when THEME.sky
             inject_js("#{path}/sky.js")
-        when THEME.rain
-            inject_js("#{path}/rain.js")
 
 theme = DCore[APP_NAME].get_theme()
 setTheme(theme)
