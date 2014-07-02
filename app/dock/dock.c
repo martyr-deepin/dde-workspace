@@ -357,7 +357,9 @@ void _change_workarea_height(int height)
     static int saved_height = -1;
     if (saved_height == height) {
         g_warning("workarea is already %d", height);
-        return;
+	//NOTE: saved_height is useful due to the really workarea value may be changed
+	//by other guys. 
+        /*return;*/
     }
     saved_height = height;
 
@@ -380,18 +382,29 @@ void _change_workarea_height(int height)
     }
 }
 
+gboolean workaround_change_workarea_height(int height)
+{
+    int workarea_height = gdk_screen_height() - dock.height + height;
+    if (workarea_height <= 0 || workarea_height > gdk_screen_height()) {
+	//don't used this invalid value caused by gdk_screen_height() hasn't update.
+	g_warning("Err: workaround_change_workarea_height: %d = %d - %d + %d\n",
+		workarea_height, gdk_screen_height(), dock.height, height);
+	gdk_flush();
+	g_timeout_add(1000, (GSourceFunc)workaround_change_workarea_height, GINT_TO_POINTER(height));
+    } else {
+	g_warning("OK: workaround_change_workarea_height: %d = %d - %d + %d\n",
+		workarea_height, gdk_screen_height(), dock.height, height);
+	_change_workarea_height(workarea_height);
+	init_region(DOCK_GDK_WINDOW(), 0, dock.height - workarea_height, dock.width, workarea_height);
+    }
+    return FALSE;
+}
+
 JS_EXPORT_API
 void dock_change_workarea_height(double height)
 {
-    // if ((int)height == _dock_height && GD.is_webview_loaded) {
-    //     g_debug("no need to change workarea:\n%d ==? %d\nloaded?:%d",
-    //               (int)height, _dock_height, GD.is_webview_loaded);
-    //     return;
-    // }
-
-    int workarea_height = gdk_screen_height() - dock.height + height;
-    _change_workarea_height(workarea_height);
-    init_region(DOCK_GDK_WINDOW(), 0, dock.height - workarea_height, dock.width, workarea_height);
+    gdk_flush();
+    workaround_change_workarea_height((int)height);
 }
 
 JS_EXPORT_API
