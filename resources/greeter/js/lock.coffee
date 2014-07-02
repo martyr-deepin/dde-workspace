@@ -50,16 +50,16 @@ _b = document.body
 
 div_users = create_element("div","div_users",_b)
 div_users.setAttribute("id","div_users")
-user = new User()
-$("#div_users").appendChild(user.element)
-user.new_userinfo_for_lock()
 left = (screen.width  - 250) / 2
 top = (screen.height  - 180) / 2 * 0.8
-$("#div_users").style.left = "#{left}px"
-$("#div_users").style.top = "#{top}px"
+div_users.style.left = left
+div_users.style.top = top
 
+user = new User("lock_users",div_users)
+user.new_userinfo_for_lock()
 userinfo = user.get_current_userinfo()
 _current_user = user.get_current_userinfo()
+
 
 lock.start_login_connect(userinfo)
 lock.webview_ok(_current_user) if hide_face_login
@@ -69,7 +69,6 @@ div_time.setAttribute("id","div_time")
 timedate = new TimeDate()
 $("#div_time").appendChild(timedate.element)
 timedate.show()
-
 
 
 powermenu = null

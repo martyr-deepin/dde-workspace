@@ -77,17 +77,20 @@ if greeter.sessions.length > 1
     div_desktop.setAttribute("id","div_desktop")
     desktopmenu = new DesktopMenu(div_desktop)
     desktopmenu.new_desktop_menu()
+        
 
 div_users = create_element("div","div_users",_b)
 div_users.setAttribute("id","div_users")
-user = new User()
-$("#div_users").appendChild(user.element)
-user.new_userinfo_for_greeter()
 left = (screen.width  - 250) / 2
 top = (screen.height  - 180) / 2 * 0.8
-$("#div_users").style.left = "#{left}px"
-$("#div_users").style.top = "#{top}px"
+div_users.style.left = left
+div_users.style.top = top
+div_keyboard = create_element("div","div_keyboard",_b)
+div_keyboard.style.left = left + 10
+div_keyboard.style.top = top + 180 + 10
 
+user = new User("greeter_users",div_users)
+user.new_userinfo_for_greeter()
 userinfo = user.get_current_userinfo()
 _current_user = user.get_current_userinfo()
 
@@ -104,18 +107,7 @@ div_power = create_element("div","div_power",_b)
 div_power.setAttribute("id","div_power")
 powermenu = new PowerMenu(div_power)
 powermenu.new_power_menu()
-
-echo DCore.Greeter.get_user_config_list()
-
-layouts = DCore.Greeter.lightdm_get_layouts()
-echo layouts
-if layouts.length > 1
-    div_keyboard = create_element("div","div_keyboard",_b)
-    keyboard = new Keyboard(div_keyboard)
-    keyboard.boxscroll_create()
-    div_keyboard.style.left = left + 10
-    div_keyboard.style.top = top + 180 + 10
-    
+        
 
 usermenu = null
 #user.prev_next_userinfo_create() if user.userinfo_all.length > 1

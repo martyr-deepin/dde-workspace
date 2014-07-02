@@ -195,3 +195,18 @@
 }
 
 
+.keyboard_img
+{
+    width:30px;
+    height:30px;
+    background-image:url(../images/keyboard/keyboard_layout_normal.png);
+}
+
+.keyboard_img:hover{
+    background-image:url(../images/keyboard/keyboard_layout_hover.png);
+}
+
+.keyboard_img:active{
+    background-image:url(../images/keyboard/keyboard_layout_press.png);
+}
+

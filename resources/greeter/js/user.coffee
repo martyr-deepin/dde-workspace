@@ -25,9 +25,10 @@ password_error_msg = null
 class User extends Widget
     img_src_before = "images/userswitch/"
     
-    constructor:->
+    constructor:(@id,@parent)->
         super
         inject_css(_b,"css/user.css")
+        @parent?.appendChild(@element)
         
         @user_session = []
         @userinfo_all = []
@@ -212,31 +213,6 @@ class UserInfo extends Widget
         @face_recognize_div.style.display = "block"
         @face_recognize_img.style.display = "none"
 
-        ###------set width height left top--------####
-        #div_users_width = $("#div_users").clientWidth
-        #face_recognize_width = 135 * scaleFinal
-        #face_recognize_height = 135 *  scaleFinal
-        
-        #face_recognize_width = @face_recognize_div.style.width
-        #face_recognize_height = @face_recognize_div.style.height
-
-        #face_recognize_left = (div_users_width - face_recognize_width) / 2
-        #face_recognize_top = -7.5
-        #echo "(#{div_users_width} - #{face_recognize_width})/2 = #{face_recognize_left}"
-        #@face_recognize_div.style.width = face_recognize_width
-        #@face_recognize_div.style.height = face_recognize_height
-        #@face_recognize_div.style.left = face_recognize_left
-        #@face_recognize_div.style.top = face_recognize_left 
-        
-        #@userimg.style.width = 110 * scaleFinal
-        #@userimg.style.height = 110 * scaleFinal
-        #@userimg_border.style.width = @userimg.style.width + 16 * scaleFinal
-        #@userimg_border.style.height = @userimg.style.height + 16 * scaleFinal
-        #@userimg_background.style.width = @userimg_border.style.width - 3
-        #@userimg_background.style.height = @userimg_border.style.height - 3
-
-        #@loginAnimation()
-    
     
     hide:=>
         @username_div.style.display = "none"
@@ -422,7 +398,7 @@ class LoginEntry extends Widget
         echo "#{@id} , #{@username} is_need_pwd is #{@is_need_pwd}"
 
         @password_create()
-        @keyboard_create()
+        @keyboard_img_create()
         @loginbutton_create()
     
     password_create: ->
@@ -433,18 +409,43 @@ class LoginEntry extends Widget
         @password.setAttribute("maxlength", PasswordMaxlength) if PasswordMaxlength?
         @password.setAttribute("autofocus", true) if @username isnt guest_name
         @password_eventlistener()
-       
-    keyboard_create: ->
+        
+    keyboard_img_create: ->
         if !@is_need_pwd then return
         if !is_greeter then return
-        if layouts?.length < 2 then return
-        @keyboard = new KeyboardImg(@password_div)
-        @keyboard.keyboard_img_create()
-        @keyboard.element.style.position = "absolute"
-        @keyboard.element.style.left = 10
-        @keyboard.element.style.bottom = "2em"
+        
+        @keyboard_img = create_element("div","keyboard_img",@password_div)
+        @keyboard_img.style.position = "absolute"
+        @keyboard_img.style.left = 10
+        @keyboard_img.style.bottom = "2em"
         @password?.style.paddingLeft = 10 + 30
-    
+        @keyboard_create()
+        @keyboard_img.addEventListener("click",=>
+            @keyboard?.toggle()
+            echo "keyboard_img.click and keyboard.style.display is #{@keyboard.element.style.display}"
+        )
+       
+    keyboard_create: ->
+        #user_config = DCore.Greeter.get_user_config_list()
+        #echo "user_config-------========="
+        #echo user_config
+        @layouts = DCore.Greeter.lightdm_get_layouts()
+        if @layouts?.length < 2 then return
+        @current_layout = DCore.Greeter.get_current_layout()
+        @keyboard = new Select("keyboard_#{@username}",div_keyboard)
+        @keyboard.element.style.position = "absolute"
+        @keyboard.element.style.left = 0
+        @keyboard.element.style.top = 0
+        @keyboard.set_lists(@current_layout,@layouts)
+        @keyboard.boxscroll_create()
+        @keyboard.set_cb( (selected)=>
+            @selected = selected
+            echo "keyboard layout selected:#{@selected}"
+            DCore.Greeter.set_layout(selected)
+            @keyboard?.hide()
+        )
+
+
     loginbutton_create: ->
         @loginbutton = create_img("loginbutton", "",null)
         @loginbutton.type = "button"
@@ -484,7 +485,7 @@ class LoginEntry extends Widget
     hide:->
         @element.style.display = "none"
         @password?.blur()
-
+        @keyboard?.hide()
 
     password_eventlistener:->
         @password?.addEventListener("click", (e)=>
