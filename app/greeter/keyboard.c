@@ -21,13 +21,18 @@
  **/
 
 #include <gtk/gtk.h>
+#include "jsextension.h"
 #include "keyboard.h"
+
+#define LAYOUT_SCHEMA_ID "com.deepin.dde.keyboard"
+#define USER_INI_PATH "/var/lib/greeter/user.ini"
 
 GList* g_layouts = NULL;
 GSettings* s_layout;
 gchar** layouts = NULL;
-#define LAYOUT_SCHEMA_ID "com.deepin.dde.keyboard"
-#define LAYOUT_KEY "user-layout-list"
+
+GKeyFile* key_file = NULL;
+char** user_list = NULL;
 
 void init_keyboard()
 {
@@ -100,10 +105,9 @@ JSObjectRef greeter_get_layouts ()
 
     guint i;
 
-    //if (layouts == NULL) {
-    //    layouts = g_settings_get_strv(s_layout,LAYOUT_KEY);
-    //}
-    layouts = g_settings_get_strv(s_layout,"user-layout-list");
+    if (layouts == NULL) {
+       layouts = g_settings_get_strv(s_layout,"user-layouts-list");
+    }
     guint len = g_strv_length(layouts);
     g_message("layouts len:%d",len);
     for (i = 0; i < len; i++) {
@@ -149,4 +153,69 @@ const gchar* greeter_get_description (gchar* name)
     const gchar* des = lightdm_layout_get_description(layout);
     return des;
 }
+
+
+
+char** get_user_groups()
+{
+   key_file = g_key_file_new();
+   gboolean load = g_key_file_load_from_file (key_file,USER_INI_PATH , G_KEY_FILE_NONE, NULL);
+   gsize len;
+   user_list = g_key_file_get_groups(key_file,&len);
+   g_message("get_user_groups length:%d,load:%d",(int)len,load);
+   return user_list;
+}
+
+JS_EXPORT_API
+JSObjectRef greeter_get_user_config_list()
+{
+    if(user_list == NULL){
+       get_user_groups();
+    }
+    JSObjectRef array = json_array_create();
+    guint len = g_strv_length(user_list);
+    for (guint i = 0;i < len; i++)
+    {
+        g_message("list:%d:%s",i,user_list[i]);
+        gchar* current_layout = g_key_file_get_string(key_file,user_list[i],"KeyboardLayout",NULL);
+        gchar** layouts_list = g_key_file_get_string_list(key_file,user_list[i],"KeyboardLayoutList",NULL,NULL);
+        gchar* greeter_theme = g_key_file_get_string(key_file,user_list[i],"GreeterTheme",NULL);
+
+   JSObjectRef json = json_create();
+   json_append_string(json,"current_layout",current_layout);
+   json_append_string(json,"greeter-theme",greeter_theme);
+   g_free(current_layout);
+   g_free(greeter_theme);
+   g_strfreev(layouts_list);
+   json_array_insert(array,i,json);
+   }
+   g_strfreev(user_list);
+   return array;
+}
+
+
+
+JS_EXPORT_API
+JSObjectRef greeter_lightdm_get_layouts ()
+{
+    JSObjectRef array = json_array_create ();
+    guint i;
+
+    if (g_layouts == NULL) {
+        g_layouts = lightdm_get_layouts ();
+    }
+
+    for (i = 0; i < g_list_length (g_layouts); i++) {
+        LightDMLayout *layout = (LightDMLayout *) g_list_nth_data (g_layouts, i);
+
+        if (layout != NULL) {
+            const gchar *name = g_strdup (lightdm_layout_get_name (layout));
+            json_array_insert (array, i, jsvalue_from_cstr (get_global_context (), g_strdup (name)));
+        } else {
+            continue;
+        }
+    }
+    return array;
+}
+
 
