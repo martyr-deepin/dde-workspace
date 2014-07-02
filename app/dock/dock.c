@@ -357,8 +357,8 @@ void _change_workarea_height(int height)
     static int saved_height = -1;
     if (saved_height == height) {
         g_warning("workarea is already %d", height);
-	//NOTE: saved_height is useful due to the really workarea value may be changed
-	//by other guys. 
+        //NOTE: saved_height is useful due to the really workarea value may be changed
+        //by other guys.
         /*return;*/
     }
     saved_height = height;
@@ -384,18 +384,19 @@ void _change_workarea_height(int height)
 
 gboolean workaround_change_workarea_height(int height)
 {
-    int workarea_height = gdk_screen_height() - dock.height + height;
+    int workarea_height = gdk_screen_height() - dock.height - dock.y + height;
     if (workarea_height <= 0 || workarea_height > gdk_screen_height()) {
-	//don't used this invalid value caused by gdk_screen_height() hasn't update.
-	g_warning("Err: workaround_change_workarea_height: %d = %d - %d + %d\n",
-		workarea_height, gdk_screen_height(), dock.height, height);
-	gdk_flush();
-	g_timeout_add(1000, (GSourceFunc)workaround_change_workarea_height, GINT_TO_POINTER(height));
+        //don't used this invalid value caused by gdk_screen_height() hasn't update.
+        g_warning("Err: workaround_change_workarea_height: %d = %d - %d -%d + %d\n",
+                workarea_height, gdk_screen_height(), dock.height, dock.y, height);
+        gdk_flush();
+        g_timeout_add(1000, (GSourceFunc)workaround_change_workarea_height, GINT_TO_POINTER(height));
     } else {
-	g_warning("OK: workaround_change_workarea_height: %d = %d - %d + %d\n",
-		workarea_height, gdk_screen_height(), dock.height, height);
-	_change_workarea_height(workarea_height);
-	init_region(DOCK_GDK_WINDOW(), 0, dock.height - workarea_height, dock.width, workarea_height);
+        g_warning("OK: workaround_change_workarea_height: %d = %d - %d - %d + %d\n",
+                workarea_height, gdk_screen_height(), dock.height, dock.y, height);
+        _change_workarea_height(workarea_height);
+        init_region(DOCK_GDK_WINDOW(), 0, dock.height - workarea_height, dock.width, workarea_height);
+        // init_region(DOCK_GDK_WINDOW(), 0, dock.y + dock.height - workarea_height, dock.width, workarea_height);
     }
     return FALSE;
 }
@@ -460,7 +461,7 @@ void _update_dock_size(gint16 x, gint16 y, guint16 w, guint16 h)
 
     dock_change_workarea_height(_dock_height);
 
-    init_region(DOCK_GDK_WINDOW(), 0, h - _dock_height, w, _dock_height);
+    init_region(DOCK_GDK_WINDOW(), 0, y + h - _dock_height, w, _dock_height);
 }
 
 

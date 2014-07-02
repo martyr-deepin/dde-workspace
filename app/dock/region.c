@@ -26,6 +26,8 @@
 
 #define BOARD_HEIGHT 60
 
+extern int _dock_height;
+
 cairo_region_t* _region = NULL;
 GdkWindow* _win = NULL;
 cairo_rectangle_int_t _base_rect;
@@ -70,10 +72,10 @@ gboolean _help_do_window_region(cairo_region_t* region)
 #ifndef NDEBUG
     if (region != NULL) {
         cairo_rectangle_int_t rec;
-        cairo_region_get_rectangle(region, 0, &rec);
-        g_debug("%d, %d, %d, %d", rec.x, rec.y, rec.width, rec.height);
-        cairo_region_get_rectangle(region, 1, &rec);
-        g_debug("%d, %d, %d, %d", rec.x, rec.y, rec.width, rec.height);
+        for (int i = 0, num = cairo_region_num_rectangles(region); i < num; ++i) {
+            cairo_region_get_rectangle(region, i, &rec);
+            g_debug("region %d: %d, %d, %d, %d", i, rec.x, rec.y, rec.width, rec.height);
+        };
     }
 #endif
 
@@ -117,26 +119,51 @@ void dock_force_set_region(double x, double y, double items_width, double panel_
         return;
     }
 
+    g_debug("[%s] dock base rect: x:%d, y:%d, width: %d, height: %d", __func__,
+            _base_rect.x, _base_rect.y, _base_rect.width, _base_rect.height);
     cairo_region_destroy(_region);
+
     if ((int)height == 0) {
-        extern int _dock_height;
-        cairo_rectangle_int_t tmp = {(int)x + _base_rect.x, (int)y + _dock_height + _base_rect.y - 1, (int)panel_width, 1};
+        g_debug("[%s] set region to {0,0,%d,1}", __func__, (int)panel_width);
+
+        cairo_rectangle_int_t tmp = {
+            (int)x + _base_rect.x,
+            (int)y + _dock_height + _base_rect.y - 1,
+            (int)panel_width,
+            1
+        };
+
         _region = cairo_region_create_rectangle(&tmp);
-        g_debug("set region to {0,0,%d,1}", (int)panel_width);
     } else {
-        cairo_rectangle_int_t tmp = {(int)x + _base_rect.x, (int)y + _base_rect.y, (int)items_width, (int)height};
-        g_debug("x: %d, y: %d, width: %d, height: %d", tmp.x, tmp.y, tmp.width, tmp.height);
+        g_debug("[%s] set region to 2 union block", __func__);
+
+        cairo_rectangle_int_t tmp = {
+            (int)x + _base_rect.x,
+            (int)y + _base_rect.y,
+            (int)items_width,
+            (int)height
+        };
+
+        g_debug("[%s] dock items region: x: %d, y: %d, width: %d, height: %d",
+                __func__, tmp.x, tmp.y, tmp.width, tmp.height);
+
         cairo_rectangle_int_t dock_board_rect = _base_rect;
         dock_board_rect.x = tmp.x - (panel_width - items_width) / 2;
-        dock_board_rect.y = gdk_screen_height() - BOARD_HEIGHT;
+        dock_board_rect.y = tmp.y + _dock_height - BOARD_HEIGHT;
         dock_board_rect.height = BOARD_HEIGHT;
         dock_board_rect.width = (int)panel_width;
-        g_debug("x: %d, y: %d, width: %d, height: %d", dock_board_rect.x, dock_board_rect.y, dock_board_rect.width, dock_board_rect.height);
-        _region = cairo_region_create_rectangle(&dock_board_rect);
 
+        g_debug("[%s] dock board region: x: %d, y: %d, width: %d, height: %d",
+                __func__,
+                dock_board_rect.x,
+                dock_board_rect.y,
+                dock_board_rect.width,
+                dock_board_rect.height);
+
+        _region = cairo_region_create_rectangle(&dock_board_rect);
         cairo_region_union_rectangle(_region, &tmp);
-        g_debug("set region to 2 union block");
     }
+
     do_window_shape_combine_region(_region);
 }
 
