@@ -20,6 +20,7 @@
     
 guest_id = "999"
 guest_name = _("Guest")
+guest_name_in_lightdm = "guest"
 
 class Accounts
     ACCOUNTS_DAEMON = "com.deepin.daemon.Accounts"

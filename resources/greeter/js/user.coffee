@@ -355,18 +355,18 @@ class UserInfo extends Widget
     on_verify: (username, password)->
         echo "on_verify:#{username}"
         echo  "--------#{new Date().getTime()}-----------"
-        if username is guest_name then @username = guest_id
+        if username is guest_name then username = guest_name_in_lightdm
         @password = password
         if is_greeter
             @session = localStorage.getItem("menu_current_id_desktop")
             echo "#{username} start session #{@session}"
             @loginAnimation()
-            DCore.Greeter.start_session(@username, @password, @session)
+            DCore.Greeter.start_session(username, password, @session)
             document.body.cursor = "wait"
         else
             echo "#{username} try_unlock "
             @loginAnimation()
-            DCore.Lock.try_unlock(@username,@password)
+            DCore.Lock.try_unlock(username,password)
     
     auth_failed: (msg) =>
         @loginAnimationClear()
