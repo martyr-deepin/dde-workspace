@@ -58,6 +58,7 @@ class ListChoose extends Widget
         @Listul = create_element("ul","Listul",@element)
         for each,i in @list
             @li[i] = create_element("li","li",@Listul)
+            @li[i].setAttribute("id",each)
             @li_span[i] = create_element("span","li_span",@li[i])
             @li_span[i].textContent = each
             @currentIndex = i if each is @current
@@ -65,6 +66,10 @@ class ListChoose extends Widget
         echo "@currentIndex:#{@currentIndex}"
         @setBackground(@currentIndex)
 
+    get_current_index: ->
+        @currentIndex = i for each,i in @list when each is @current
+        return @currentIndex
+    
     setBackground: (index)=>
         # @ListAll(@UserLayoutList,@getCurrent())
         return if not @li[0]?
@@ -107,10 +112,11 @@ class ListChoose extends Widget
         
         @isFromList = true
         return @current
-    
+
     setKeyupListener:(KeyCode,cb)->
         @isFromList = false
         document.body.addEventListener("keyup",(e)=>
+            echo "keyup"
             if e.which == KeyCode and @isFromList is true
                 @isFromList = false
                 setFocus(false)
@@ -120,3 +126,18 @@ class ListChoose extends Widget
                 cb?()
         )
  
+    setClickCb: (cb) ->
+        that = @
+        
+        for li in @li
+            li.addEventListener("click",->
+                that.current = this.id
+                that.get_current_index()
+                setFocus(false)
+                clearTimeout(timeout_osdHide)
+                document.body.style.maxLength = "160px"
+                osdHide()
+                cb?()
+            )
+
+

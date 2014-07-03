@@ -67,14 +67,15 @@ osd.SwitchLayout = (keydown)->
     echo "UserLayoutList.length: #{keyboard.UserLayoutList.length}"
     if keyboard.UserLayoutList.length < 2 then return
     
+    keyboardList?.chooseOption()
     if not keyboardList?
         keyboardList = new ListChoose("KeyboardList")
         keyboardList.setParent(_b)
-        #keyboardList.setPosition(0,0,"absolute")
-        keyboardList.setSize("100%","100%")
+        keyboardList.setSize(160,180)
         keyboardList.ListAllBuild(keyboard.UserLayoutList,keyboard.getCurrentLayout())
-        keyboardList.setKeyupListener(KEYCODE.WIN,=>
-            keyboard.setCurrentLayout(keyboard.CurrentLayout)
+        keyboardList.setClickCb(=>
+            keyboard.setCurrentLayout(keyboardList.current)
         )
-    keyboard.CurrentLayout = keyboardList.chooseOption()
-
+        keyboardList.setKeyupListener(KEYCODE.WIN,=>
+            keyboard.setCurrentLayout(keyboardList.current)
+        )

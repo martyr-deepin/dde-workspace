@@ -1,12 +1,8 @@
 .ListChoose{
-    width:160px;
-    max-height:180px;
-    
     display:-webkit-box;
     -webkit-box-pack:center;
     -webkit-box-align:center;
-
-    overflow:scroll;
+    overflow-y:scroll;
 }
 
 .ListChoose::-webkit-scrollbar {
@@ -17,6 +13,7 @@
     margin:0;
     padding:0;
     width:130px;
+    height:180px;
 }
 
 .li{
@@ -25,7 +22,7 @@
     list-style:none;
     overflow:hidden;
     text-align:center;
-
+    cursor:pointer;
     border-radius:6px; 
 }
 .li span{
