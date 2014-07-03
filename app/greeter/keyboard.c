@@ -88,7 +88,6 @@ find_layout_by_name(gchar *name)
     return ret;
 }
 
-
 JS_EXPORT_API
 gchar* greeter_get_current_layout ()
 {
@@ -101,23 +100,35 @@ JS_EXPORT_API
 void greeter_set_layout (gchar* des)
 {
     LightDMLayout *layout = find_layout_by_des(des);
-    lightdm_set_layout(layout);
+    if (layout != NULL){
+        lightdm_set_layout(layout);
+    }else{
+        g_warning("find_layout_by_des:%s return NULL and will not lightdm_set_layout!!!!!!!!!",des);
+    }
 }
 
 JS_EXPORT_API
 const gchar* greeter_get_short_description (gchar* name)
 {
     LightDMLayout *layout = find_layout_by_name(name);
-    const gchar* des = lightdm_layout_get_short_description(layout);
-    return des;
+    if (layout != NULL){
+        return g_strdup(lightdm_layout_get_short_description(layout));
+    }else{
+        g_warning("find_layout_by_name:%s return NULL and will return the name instead of short description!!!!",name);
+        return g_strdup(name);
+    }
 }
 
 JS_EXPORT_API
 const gchar* greeter_get_description (gchar* name)
 {
     LightDMLayout *layout = find_layout_by_name(name);
-    const gchar* des = lightdm_layout_get_description(layout);
-    return des;
+    if (layout != NULL){
+        return g_strdup(lightdm_layout_get_description(layout));
+    }else{
+        g_warning("find_layout_by_name:%s return NULL and will return the name instead of description!!!!",name);
+        return g_strdup(name);
+    }
 }
 
 
@@ -131,21 +142,15 @@ char** get_user_groups()
     return user_list;
 }
 
-JSObjectRef export_layouts (gchar** layouts_list)
+JSObjectRef export_layouts_des (gchar** layouts_list)
 {
     JSObjectRef array = json_array_create ();
     guint len = g_strv_length(layouts_list);
     g_message("layouts_list len:%d",len);
     for (guint i = 0; i < len; i++) {
-        //TODO:
-        //1.transfer the layouts_list[i] to lightdm layout_name
-        //2.and get description by LightDMLayout
-        //3.json insert des
-        /*g_utf8_strncpy(dest,layouts_list[i],(gsize)(g_utf8_strlen(layouts_list[i],0)-1));*/
-        /*LightDMLayout *layout = find_layout_by_name(dest);*/
-        /*const gchar* name = g_strdup(lightdm_layout_get_description(layout));*/
-        g_message("keyboard layout:%d:=========%s===========",i,layouts_list[i]);
-        json_array_insert (array, i, jsvalue_from_cstr (get_global_context (), g_strdup (layouts_list[i])));
+        const gchar* des = greeter_get_description(layouts_list[i]);
+        g_message("keyboard layout:%d:=========%s===========",i,des);
+        json_array_insert (array, i, jsvalue_from_cstr (get_global_context (), g_strdup (des)));
     }
     return array;
 }
@@ -178,9 +183,33 @@ JSObjectRef greeter_get_user_layouts(const gchar* username)
     g_message("greeter_get_user_layouts key_file %s load:%d",USER_INI_PATH,load);
     
     gchar** layouts = g_key_file_get_string_list(key_file,username,"KeyboardLayoutList",NULL,NULL);
-    JSObjectRef obj = export_layouts(layouts);
+    JSObjectRef obj = export_layouts_des(layouts);
     g_strfreev(layouts);
     return obj;
+}
+
+JS_EXPORT_API
+JSObjectRef greeter_lightdm_get_layouts_des ()
+{
+    JSObjectRef array = json_array_create ();
+    guint i;
+
+    if (g_layouts == NULL) {
+        g_layouts = lightdm_get_layouts ();
+    }
+
+
+    for (i = 0; i < g_list_length (g_layouts); i++) {
+        LightDMLayout *layout = (LightDMLayout *) g_list_nth_data (g_layouts, i);
+
+        if (layout != NULL) {
+            const gchar *des = g_strdup (lightdm_layout_get_description (layout));
+            json_array_insert (array, i, jsvalue_from_cstr (get_global_context (), g_strdup (des)));
+        } else {
+            continue;
+        }
+    }
+    return array;
 }
 
 JS_EXPORT_API
