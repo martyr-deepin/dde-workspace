@@ -454,6 +454,7 @@ class PreviewWindow extends Widget
 
     do_click: (e)=>
         clientManager?.ActiveWindow(@w_id)
+        DCore.Dock.set_is_hovered(false)
         Preview_close_now(Preview_container._current_group)
 
     do_rightclick: (e)=>
