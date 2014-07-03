@@ -10,13 +10,13 @@ msgstr ""
 "POT-Creation-Date: 2014-07-03 15:03+0800\n"
 "PO-Revision-Date: 2014-07-02 12:04+0000\n"
 "Last-Translator: cxbii <chenxiangbang@linuxdeepin.com>\n"
-"Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/deepin-"
-"desktop-environment/language/zh_TW/)\n"
-"Language: zh_TW\n"
+"Language-Team: Slovak (http://www.transifex.com/projects/p/deepin-desktop-"
+"environment/language/sk/)\n"
+"Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
 #: resources/greeter/js/message.coffee:70
 msgid "\t\t\t\t-----No available desktop sessions!-----\n"
@@ -31,7 +31,7 @@ msgstr ""
 #: lib/dentry/mime_actions.c:199
 #, c-format
 msgid "\"%s\" is an executable text file."
-msgstr "「%s」是一個可執行的文字檔案。"
+msgstr "\"%s\" je spustiteľný textový súbor."
 
 #: resources/greeter/js/message.coffee:81
 msgid "$ sudo apt-get install deepin-desktop-Environment\n"
@@ -44,27 +44,27 @@ msgstr ""
 
 #: app/greeter/mutils.c:84
 msgid "%a, %b %d, %Y"
-msgstr "%Y年%b%d日 %A"
+msgstr "%a, %b %d, %Y"
 
 #: app/greeter/camera.c:235
 #, c-format
 msgid "%sRetry automatically in %ds"
-msgstr "%s%d秒後自動重試"
+msgstr "%s Opakovať automaticky o %ds"
 
 #: lib/dentry/fileops_error_dialog.c:242
 #, c-format
 msgid "A folder with the same name already exists in \"%s\"."
-msgstr "在「%s」中已存在相同檔案名的資料夾。"
+msgstr "Starší súbor s rovnakým názov už existuje v \"%s\"."
 
 #: lib/dentry/fileops_error_dialog.c:255
 #, c-format
 msgid "A newer file with the same name already exists in \"%s\"."
-msgstr "在「%s」中已存在更新的相同檔案名的檔案。"
+msgstr "Novší súbor s rovnakým názvom už existuje v \"%s\"."
 
 #: lib/dentry/fileops_error_dialog.c:228
 #, c-format
 msgid "A newer folder with the same name already exists in \"%s\"."
-msgstr "在「%s」中有相同名稱的一個較新資料夾已存在。"
+msgstr "Novšia zložka s rovnakým názvom už existuje v \"%s\"."
 
 #: resources/launcher/js/const.coffee:80
 msgid "Add to _favorites"
@@ -81,7 +81,7 @@ msgstr ""
 
 #: lib/dentry/fileops_trash.c:68
 msgid "All items in the Trash will be permanently deleted."
-msgstr "回收筒中的全部項目將被永久刪除。"
+msgstr "Všetky súbory z koša budú natrvalo vymazané."
 
 #: resources/guide/js/launcher.coffee:107
 msgid ""
@@ -92,34 +92,34 @@ msgstr ""
 #: lib/dentry/fileops_error_dialog.c:251
 #, c-format
 msgid "An older file with the same name already exists in \"%s\"."
-msgstr "在「%s」中已存在較舊的相同名稱的檔案。"
+msgstr "Starší súbor s rovnakým názvom už existuje v \"%s\"."
 
 #: lib/dentry/fileops_error_dialog.c:224
 #, c-format
 msgid "An older folder with the same name already exists in \"%s\"."
-msgstr "在「%s」中有相同名稱的一個較舊資料夾已存在。"
+msgstr "Staršia zložka s rovnakým názvom už existuje v \"%s\"."
 
 #: lib/dentry/fileops_error_dialog.c:259
 #, c-format
 msgid "Another file with the same name already exists in \"%s\"."
-msgstr "在「%s」中已存在相同檔案名的檔案。"
+msgstr "Iný súbor s rovnakým menom už existuje v \"%s\"."
 
 #: lib/dentry/fileops_error_dialog.c:232
 #, c-format
 msgid "Another folder with the same name already exists in \"%s\"."
-msgstr "在「%s」中有相同名稱的一個資料夾已存在。"
+msgstr "Iná zložka s rovnakým menom už existuje v \"%s\"."
 
 #: lib/dentry/entry.c:1415
 msgid "App Group"
-msgstr "應用程式啟動群組"
+msgstr "Pridať skupinu"
 
 #: lib/dentry/fileops_error_dialog.c:126
 msgid "Apply this action to all files"
-msgstr "將該動作套用到全部檔案"
+msgstr "Použiť túto akciu na všetky súbory"
 
 #: resources/greeter/js/time.coffee:43
 msgid "Apr"
-msgstr "4月"
+msgstr "Apr"
 
 #: resources/dock/js/plugins/trash/trash.coffee:107
 #: resources/launcher/js/item.coffee:339
@@ -128,16 +128,16 @@ msgstr ""
 
 #: lib/dentry/fileops_delete.c:32
 msgid "Are you sure you want to permanently delete the files?"
-msgstr "您確定要永久刪除檔案嗎？"
+msgstr "Ste si istý, že chcete natrvalo vymazať tento súbor?"
 
 #: resources/greeter/js/time.coffee:43
 msgid "Aug"
-msgstr "8月"
+msgstr "Aug"
 
 #: resources/desktop/js/desktopentry.coffee:151
 #: resources/dock/js/plugins/trash/trash.coffee:70
 msgid "Can not open this file."
-msgstr "無法開啟此檔案。"
+msgstr "Tento súbor sa nedá otvoriť."
 
 #: lib/dentry/entry.c:746
 #, c-format
@@ -148,7 +148,7 @@ msgstr ""
 #: resources/desktop/js/desktopentry.coffee:115
 #: resources/desktop/js/desktopentry.coffee:122
 msgid "Co_mpress"
-msgstr "壓縮檔案(_M)"
+msgstr "Za_baliť"
 
 #: resources/zone/js/utils.coffee:10
 msgid "Control Center"
@@ -156,28 +156,28 @@ msgstr ""
 
 #: resources/osd/js/display.coffee:42 lib/dentry/fileops.c:772
 msgid "Copy"
-msgstr "複製"
+msgstr "Kopírovať"
 
 #: resources/desktop/js/richdir.coffee:824
 #: resources/desktop/js/desktopentry.coffee:103
 msgid "Cu_t"
-msgstr "剪下(_T)"
+msgstr "Vy_strihnúť"
 
 #: resources/greeter/js/time.coffee:43
 msgid "Dec"
-msgstr "12月"
+msgstr "Dec"
 
 #: lib/dentry/fileops_delete.c:36
 msgid "Delete"
-msgstr "刪除"
+msgstr "Vymazať"
 
 #: lib/dentry/fileops_delete.c:29
 msgid "Delete Files"
-msgstr "刪除檔案"
+msgstr "Vymazať súbory"
 
 #: resources/zone/js/utils.coffee:10
 msgid "Desktop"
-msgstr "桌面歌詞"
+msgstr "Pracovné prostredie"
 
 #: lib/dentry/fileops_error_dialog.c:218
 #, c-format
@@ -197,7 +197,7 @@ msgstr ""
 #: lib/dentry/mime_actions.c:198
 #, c-format
 msgid "Do you want to run \"%s\", or display its contents?"
-msgstr "您想要執行“%s”，還是顯示其內容？"
+msgstr "Chcete spustiť \"%s\", alebo vymazať jeho obsah?"
 
 #: app/dock/dock.c:323
 msgid "Dock failed to start, because Compiz is not enabled."
@@ -205,15 +205,15 @@ msgstr ""
 
 #: lib/dentry/fileops_trash.c:58
 msgid "Empty Trash"
-msgstr "清理回收筒"
+msgstr "Vysypať kôš"
 
 #: lib/dentry/fileops_trash.c:71
 msgid "Empty _Trash"
-msgstr "清理回收筒(_T)"
+msgstr "Vysypať _kôš"
 
 #: lib/dentry/fileops_trash.c:67
 msgid "Empty all items from Trash?"
-msgstr "清理回收筒中的全部項目嗎？"
+msgstr "Odstrániť všetky súbory z koša?"
 
 #: resources/guide/js/end.coffee:32
 msgid "End"
@@ -227,32 +227,32 @@ msgstr ""
 #: lib/dentry/fileops_error_reporting.c:191
 #, c-format
 msgid "Error while %s files"
-msgstr "當%s檔案時出錯"
+msgstr "Chyba pri %s súboroch"
 
 #: resources/osd/js/display.coffee:43
 msgid "Expand"
-msgstr "展開"
+msgstr "Zväčšiť"
 
 #: resources/desktop/js/desktopentry.coffee:119
 #: resources/desktop/js/desktopentry.coffee:124
 msgid "Extract _Here"
-msgstr "在此解壓縮(_H)"
+msgstr "Rozbaliť _tu"
 
 #: resources/greeter/js/time.coffee:43
 msgid "Feb"
-msgstr "2月"
+msgstr "Feb"
 
 #: lib/dentry/fileops_error_dialog.c:63
 msgid "File conflict"
-msgstr "檔案衝突"
+msgstr "Stret súborov"
 
 #: resources/greeter/js/time.coffee:44
 msgid "Fri"
-msgstr "星期五"
+msgstr "Pi"
 
 #: resources/guide/js/end.coffee:47
 msgid "Get"
-msgstr "取得"
+msgstr "Získať"
 
 #: resources/greeter/js/usermenu.coffee:58
 msgid "Guest"
@@ -272,31 +272,31 @@ msgstr ""
 
 #: app/greeter/lock.c:134 app/greeter/greeter.c:194
 msgid "Invalid Password"
-msgstr "密碼錯誤"
+msgstr "Nesprávne heslo"
 
 #: resources/greeter/js/time.coffee:43
 msgid "Jan"
-msgstr "1月"
+msgstr "Jan"
 
 #: resources/greeter/js/time.coffee:43
 msgid "Jul"
-msgstr "7月"
+msgstr "Júl"
 
 #: resources/greeter/js/time.coffee:43
 msgid "Jun"
-msgstr "6月"
+msgstr "Jún"
 
 #: resources/desktop/js/grid.coffee:1023
 msgid "Last modified _time"
-msgstr "最後修改時間(_T)"
+msgstr "_Naposledy zmenené"
 
 #: lib/dentry/fileops_error_dialog.c:340 lib/dentry/fileops_error_dialog.c:368
 msgid "Last modified:"
-msgstr "修改日期："
+msgstr "Naposledy zmenené:"
 
 #: resources/zone/js/utils.coffee:10 resources/dock/js/main.coffee:221
 msgid "Launcher"
-msgstr "啟動器"
+msgstr "Spúšťač"
 
 #: resources/guide/js/desktop.coffee:29
 msgid ""
@@ -306,19 +306,19 @@ msgstr ""
 
 #: resources/greeter/js/time.coffee:43
 msgid "Mar"
-msgstr "3月"
+msgstr "Mar"
 
 #: resources/greeter/js/time.coffee:43
 msgid "May"
-msgstr "5月"
+msgstr "Máj"
 
 #: lib/dentry/fileops_error_dialog.c:385
 msgid "Merge"
-msgstr "合併"
+msgstr "Zlúčiť"
 
 #: resources/greeter/js/time.coffee:44
 msgid "Mon"
-msgstr "星期一"
+msgstr "Po"
 
 #: lib/dentry/fileops.c:566
 msgid "Move"
@@ -338,11 +338,11 @@ msgstr ""
 
 #: app/desktop/desktop.c:236
 msgid "New directory"
-msgstr "新增資料夾"
+msgstr "Nový adresár"
 
 #: app/desktop/desktop.c:225
 msgid "New file"
-msgstr "新增檔案"
+msgstr "Nový súbor"
 
 #: resources/guide/js/end.coffee:55
 msgid "New users directly jump to the registration page"
@@ -354,15 +354,15 @@ msgstr ""
 
 #: resources/zone/js/utils.coffee:10
 msgid "None"
-msgstr "沒有"
+msgstr "Žiadne"
 
 #: resources/greeter/js/time.coffee:43
 msgid "Nov"
-msgstr "11月"
+msgstr "Nov"
 
 #: resources/greeter/js/time.coffee:43
 msgid "Oct"
-msgstr "10月"
+msgstr "Okt"
 
 #: resources/osd/js/display.coffee:44
 msgid "Only the first Screen"
@@ -374,19 +374,19 @@ msgstr ""
 
 #: app/greeter/camera.c:47
 msgid "Oops...I can't recognize your face. "
-msgstr "糟糕～無法識別您的臉部資訊"
+msgstr "Ups, nedokážem rozoznať tvoju tvár."
 
 #: resources/desktop/js/grid.coffee:1047 resources/guide/js/desktop.coffee:222
 msgid "Open in _terminal"
-msgstr "在終端機中打開(_T)"
+msgstr "Otvoriť v _termináli"
 
 #: lib/dentry/fileops_error_dialog.c:331
 msgid "Original file"
-msgstr "原始檔案"
+msgstr "Pôvodný súbor"
 
 #: resources/desktop/js/grid.coffee:1052 resources/guide/js/desktop.coffee:227
 msgid "Pe_rsonalize"
-msgstr "個人化(_R)"
+msgstr "_Osobné úpravy"
 
 #: resources/guide/js/launcher.coffee:96
 msgid ""
@@ -395,7 +395,9 @@ msgstr ""
 
 #: app/greeter/camera.c:175
 msgid "Please login with your password or click your picture to retry."
-msgstr "請使用密碼登入或點選帳號圖片重試"
+msgstr ""
+"Prihláste sa pod svojim menom alebo kliknite na svoj obrázok pre zopakovanie "
+"postupu."
 
 #: resources/guide/js/welcome.coffee:41
 msgid "Prepare for operation ..."
@@ -408,7 +410,7 @@ msgstr ""
 
 #: lib/dentry/fileops_error_dialog.c:136
 msgid "Re_name"
-msgstr "重新命名(_N)"
+msgstr "Pre_menovať"
 
 #: resources/launcher/js/const.coffee:81
 #: resources/guide/js/launcher.coffee:244
@@ -417,27 +419,27 @@ msgstr ""
 
 #: lib/dentry/fileops_error_dialog.c:141
 msgid "Replace"
-msgstr "取代"
+msgstr "Premiestniť"
 
 #: lib/dentry/fileops_error_dialog.c:359
 msgid "Replace with"
-msgstr "取代為"
+msgstr "Nahradiť"
 
 #: lib/dentry/fileops_error_dialog.c:249
 msgid "Replacing it will overwrite its content."
-msgstr "取代將覆蓋它的內容。"
+msgstr "Pri jeho nahradení bude prepísaný jeho obsah."
 
 #: lib/dentry/fileops_error_dialog.c:238
 msgid "Replacing it will remove all files in the folder."
-msgstr "替換將移除資料夾中的所有檔案。"
+msgstr "Pri jeho nahradení bude prepísaný jeho obsah."
 
 #: lib/dentry/fileops_error_dialog.c:117
 msgid "Reset"
-msgstr "重設"
+msgstr "Nastaviť znovu"
 
 #: resources/greeter/js/powermenu.coffee:52
 msgid "Restart"
-msgstr "重新啟動"
+msgstr "Reštartovať"
 
 #: resources/guide/js/desktop.coffee:199
 msgid ""
@@ -447,25 +449,25 @@ msgstr ""
 
 #: lib/dentry/mime_actions.c:210
 msgid "Run in _Terminal"
-msgstr "在終端機中執行(_T)"
+msgstr "Spustiť v _termináli"
 
 #: resources/greeter/js/time.coffee:44
 msgid "Sat"
-msgstr "星期六"
+msgstr "So"
 
 #: resources/launcher/js/item.coffee:269
 #: resources/guide/js/launcher.coffee:245
 msgid "Send to d_esktop"
-msgstr "傳送到桌面(_E)"
+msgstr "Odoslať na p_lochu"
 
 #: resources/launcher/js/item.coffee:272
 #: resources/guide/js/launcher.coffee:246
 msgid "Send to do_ck"
-msgstr "釘選到 Dock(_C)"
+msgstr "Odoslať do do_cku"
 
 #: resources/greeter/js/time.coffee:43
 msgid "Sep"
-msgstr "9月"
+msgstr "Sep"
 
 #: resources/guide/js/desktop.coffee:151
 msgid "Show/Hide Control Center"
@@ -473,7 +475,7 @@ msgstr ""
 
 #: resources/guide/js/desktop.coffee:150
 msgid "Show/Hide Desktop"
-msgstr "顯示/隱藏桌面"
+msgstr "Zobraziť/Schovať plochu"
 
 #: resources/guide/js/desktop.coffee:149
 msgid "Show/Hide Launcher"
@@ -481,11 +483,11 @@ msgstr ""
 
 #: resources/greeter/js/powermenu.coffee:51
 msgid "Shut down"
-msgstr "關機"
+msgstr "Vypnúť"
 
 #: lib/dentry/fileops_error_dialog.c:332 lib/dentry/fileops_error_dialog.c:360
 msgid "Size:"
-msgstr "大小："
+msgstr "Veľkosť:"
 
 #: resources/guide/js/launcher.coffee:149
 msgid "Skip the step without scroll"
@@ -506,15 +508,15 @@ msgstr ""
 
 #: resources/guide/js/start.coffee:47
 msgid "Start"
-msgstr "開始"
+msgstr "Spustiť"
 
 #: resources/greeter/js/time.coffee:44
 msgid "Sun"
-msgstr "星期日"
+msgstr "Ne"
 
 #: resources/greeter/js/powermenu.coffee:53
 msgid "Suspend"
-msgstr "暫停"
+msgstr "Uspať"
 
 #: resources/guide/js/end.coffee:26
 msgid "Thanks for your patience to learn.Congratulation!"
@@ -547,23 +549,23 @@ msgstr ""
 
 #: resources/greeter/js/time.coffee:44
 msgid "Thu"
-msgstr "星期四"
+msgstr "Št"
 
 #: resources/dock/js/main.coffee:154 resources/dock/js/main.coffee:223
 msgid "Trash"
-msgstr "回收筒"
+msgstr "Kôš"
 
 #: resources/greeter/js/time.coffee:44
 msgid "Tue"
-msgstr "星期二"
+msgstr "Ut"
 
 #: lib/dentry/fileops_error_dialog.c:336 lib/dentry/fileops_error_dialog.c:364
 msgid "Type:"
-msgstr "類型："
+msgstr "Typ:"
 
 #: resources/desktop/js/grid.coffee:71 lib/dentry/fileops.c:403
 msgid "Untitled"
-msgstr "無標題"
+msgstr "Bez názvu"
 
 #: resources/guide/js/launcher.coffee:181
 msgid ""
@@ -581,11 +583,11 @@ msgstr ""
 #: resources/desktop/js/application.coffee:179
 #: resources/dock/js/plugins/trash/trash.coffee:70
 msgid "Warning"
-msgstr "警告"
+msgstr "Varovanie"
 
 #: resources/greeter/js/time.coffee:44
 msgid "Wed"
-msgstr "星期三"
+msgstr "St"
 
 #: resources/guide/js/welcome.coffee:38
 msgid "Welcome to use Deepin Operating System"
@@ -614,20 +616,20 @@ msgstr ""
 #: resources/launcher/js/const.coffee:72
 #: resources/guide/js/launcher.coffee:248
 msgid "_Add to autostart"
-msgstr "加入到「自動啟動」(_A)"
+msgstr "_Pridať do automatického spustenia"
 
 #: resources/dock/js/plugins/trash/trash.coffee:29
 msgid "_Clean up"
-msgstr "清理(_C)"
+msgstr "_Upratať"
 
 #: resources/dock/js/plugins/trash/trash.coffee:33
 msgid "_Close"
-msgstr "關閉(_C)"
+msgstr "_Zatvoriť"
 
 #: resources/desktop/js/richdir.coffee:825
 #: resources/desktop/js/desktopentry.coffee:104
 msgid "_Copy"
-msgstr "複製(_C)"
+msgstr "_Kopírovať"
 
 #: resources/desktop/js/grid.coffee:1051 resources/guide/js/desktop.coffee:226
 msgid "_Corner navigation"
@@ -638,32 +640,32 @@ msgstr ""
 #: resources/desktop/js/richdir.coffee:827
 #: resources/desktop/js/desktopentry.coffee:107
 msgid "_Delete"
-msgstr "刪除(_D)"
+msgstr "_Vymazať"
 
 #: lib/dentry/mime_actions.c:211
 msgid "_Display"
-msgstr "顯示(_D)"
+msgstr "_Zobraziť"
 
 #: resources/launcher/js/const.coffee:65
 msgid "_Display hidden icons"
-msgstr "顯示已隱藏圖示(_D)"
+msgstr "_Zobraziť skryté ikony"
 
 #: resources/desktop/js/grid.coffee:1050 resources/guide/js/desktop.coffee:225
 msgid "_Display settings"
-msgstr "顯示設定(_D)"
+msgstr "_Nastavenia displeja"
 
 #: resources/launcher/js/const.coffee:69
 msgid "_Display this icon"
-msgstr "顯示該圖示(_D)"
+msgstr "_Zobraziť túto ikonu"
 
 #: resources/desktop/js/desktopentry.coffee:118
 #: resources/desktop/js/desktopentry.coffee:123
 msgid "_Extract"
-msgstr "解壓縮檔案(_E)"
+msgstr "_Rozbaliť"
 
 #: resources/desktop/js/grid.coffee:1028
 msgid "_Folder"
-msgstr "資料夾(_F)"
+msgstr "_Priečinok"
 
 #: resources/launcher/js/const.coffee:64
 msgid "_Hide the icon"
@@ -671,15 +673,15 @@ msgstr ""
 
 #: resources/launcher/js/const.coffee:68
 msgid "_Hide this icon"
-msgstr "隱藏該圖示(_H)"
+msgstr "_Schovať túto ikonu"
 
 #: resources/desktop/js/grid.coffee:1022
 msgid "_Name"
-msgstr "名稱(_N)"
+msgstr "_Názov"
 
 #: resources/desktop/js/grid.coffee:1046 resources/guide/js/desktop.coffee:221
 msgid "_New"
-msgstr "新增(_N)"
+msgstr "_Nový"
 
 #: resources/desktop/js/richdir.coffee:133
 #: resources/desktop/js/richdir.coffee:822
@@ -687,54 +689,54 @@ msgstr "新增(_N)"
 #: resources/launcher/js/item.coffee:266
 #: resources/guide/js/launcher.coffee:242
 msgid "_Open"
-msgstr "開啟(_O)"
+msgstr "_Otvoriť"
 
 #: resources/desktop/js/grid.coffee:1048 resources/guide/js/desktop.coffee:223
 msgid "_Paste"
-msgstr "貼上(_P)"
+msgstr "_Prilepiť"
 
 #: resources/desktop/js/richdir.coffee:829
 #: resources/desktop/js/desktopentry.coffee:109
 msgid "_Properties"
-msgstr "屬性(_P)"
+msgstr "_Nastavenia"
 
 #: resources/launcher/js/const.coffee:73
 msgid "_Remove from autostart"
-msgstr "從「自動啟動」中移除(_R)"
+msgstr "_Odstrániť z automatického spustenia"
 
 #: resources/desktop/js/richdir.coffee:135
 #: resources/desktop/js/desktopentry.coffee:106
 msgid "_Rename"
-msgstr "重新命名(_R)"
+msgstr "_Premenovať"
 
 #: lib/dentry/mime_actions.c:213
 msgid "_Run"
-msgstr "執行(_R)"
+msgstr "_Spustiť"
 
 #: lib/dentry/fileops_error_dialog.c:106
 msgid "_Select a new name for the destination"
-msgstr "為目標選擇新的名稱(_S)"
+msgstr "_Vybrať nový názov pre cieľ"
 
 #: lib/dentry/fileops_error_dialog.c:133
 msgid "_Skip"
-msgstr "略過(_S)"
+msgstr "_Preskočiť"
 
 #: resources/desktop/js/grid.coffee:1045 resources/guide/js/desktop.coffee:220
 msgid "_Sort by"
-msgstr "排序方式(_S)"
+msgstr "_Zoradiť podľa"
 
 #: resources/desktop/js/grid.coffee:1029
 msgid "_Text document"
-msgstr "文字文件(_T)"
+msgstr "_Textový dokument"
 
 #: resources/dock/js/deepin_item.coffee:169
 #: resources/dock/js/deepin_item.coffee:221
 msgid "_Time settings"
-msgstr "時間設定(_T)"
+msgstr "_Nastavenia času"
 
 #: resources/desktop/js/richdir.coffee:137
 msgid "_Ungroup"
-msgstr "取消群組(_U)"
+msgstr "_Zrušiť zoskupenie"
 
 #: resources/launcher/js/item.coffee:275
 #: resources/guide/js/launcher.coffee:249
@@ -743,11 +745,11 @@ msgstr ""
 
 #: resources/dock/js/deepin_item.coffee:168
 msgid "_View as analog"
-msgstr "顯示傳統時鍾"
+msgstr "_Zobraziť ako hodiny s ručičkami"
 
 #: resources/dock/js/deepin_item.coffee:220
 msgid "_View as digit"
-msgstr "顯示數字時鍾"
+msgstr "_Zobraziť ako číslicu"
 
 #: resources/dock/js/global_menu.coffee:17
 msgid "_auto hide"
@@ -755,7 +757,7 @@ msgstr ""
 
 #: lib/category.c:45
 msgid "all"
-msgstr "全部"
+msgstr "všetko"
 
 #: resources/greeter/js/user.coffee:490
 msgid "click login button to log in"
@@ -763,31 +765,31 @@ msgstr ""
 
 #: lib/dentry/entry.c:833 lib/dentry/fileops.c:805
 msgid "copy"
-msgstr "複製"
+msgstr "kopírovať"
 
 #: lib/category.c:53
 msgid "development"
-msgstr "程式開發"
+msgstr "Vývoj"
 
 #: lib/category.c:52
 msgid "education"
-msgstr "科學教育"
+msgstr "Výučba"
 
 #: lib/category.c:48
 msgid "games"
-msgstr "遊戲娛樂"
+msgstr "Hry"
 
 #: lib/category.c:49
 msgid "graphics"
-msgstr "美工繪圖"
+msgstr "Grafika"
 
 #: lib/category.c:51
 msgid "industry"
-msgstr "行業軟體"
+msgstr "Priemysel"
 
 #: lib/category.c:46
 msgid "internet"
-msgstr "網路服務"
+msgstr "Internet"
 
 #: resources/dock/js/global_menu.coffee:16
 msgid "keep _hidden"
@@ -799,7 +801,7 @@ msgstr ""
 
 #: lib/category.c:47
 msgid "multimedia"
-msgstr "影音播放"
+msgstr "Multimédiá"
 
 #: resources/dock/js/plugins/trash/trash.coffee:107
 #: resources/launcher/js/item.coffee:339
@@ -808,15 +810,15 @@ msgstr ""
 
 #: lib/category.c:56
 msgid "other"
-msgstr "其他"
+msgstr "ostatné"
 
 #: lib/category.c:50
 msgid "productivity"
-msgstr "辦公軟體"
+msgstr "Produktivita"
 
 #: lib/category.c:54
 msgid "system"
-msgstr "系統管理"
+msgstr "Systém"
 
 #: resources/guide/js/launcher.coffee:201
 msgid "tips:You can add it to startup items or uninstall"
@@ -855,7 +857,7 @@ msgstr ""
 
 #: lib/category.c:55
 msgid "utilities"
-msgstr "公用程式"
+msgstr "Pomôcky"
 
 #: resources/dock/js/plugins/trash/trash.coffee:107
 #: resources/launcher/js/item.coffee:339
@@ -863,16 +865,16 @@ msgid "yes"
 msgstr ""
 
 #~ msgid "Computer"
-#~ msgstr "電腦"
+#~ msgstr "Počítač"
 
 #~ msgid "Home"
-#~ msgstr "推薦首頁"
+#~ msgstr "Domov"
 
 #~ msgid "Software Center"
-#~ msgstr "軟體中心"
+#~ msgstr "Centrum softvéru"
 
 #~ msgid "_Clean up %1 items"
-#~ msgstr "清理%1個項目(_C)"
+#~ msgstr "_Upratať %1 položiek"
 
 #~ msgid "_Clean up 1 item"
-#~ msgstr "清理1個項目(_C)"
+#~ msgstr "_Upratať 1 položku"
