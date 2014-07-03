@@ -411,7 +411,7 @@ class RichDir extends DesktopEntry
 
         #-----------------------pos-----------------------#
         if arrow_pos_at_bottom == true
-            pop_top = @element.offsetTop - @div_pop.offsetHeight - 10
+            pop_top = @element.offsetTop - @div_pop.offsetHeight - 20
         else
             pop_top = n + 35#default 14
 
@@ -430,7 +430,7 @@ class RichDir extends DesktopEntry
         @div_pop.style.top = pop_top
         @div_pop.style.left = pop_left
 
-        offset = pop_left + n - p - 5
+        offset = pop_left + n - p - 6
         pop_size_pos =
             pop_width:pop_width
             pop_height:ele_ul.offsetHeight
