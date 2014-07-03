@@ -72,11 +72,6 @@ PRIVATE gboolean is_js_already = FALSE;
 PRIVATE gboolean is_launcher_shown = FALSE;
 PRIVATE gboolean force_show = FALSE;
 struct DisplayInfo launcher;
-// TODO:: use curren_screen to reduce resize.
-struct {
-    GdkScreen* screen;
-    int index;
-} current_screen = {0};
 
 
 PRIVATE
@@ -88,48 +83,30 @@ void _do_im_commit(GtkIMContext *context G_GNUC_UNUSED, gchar* str)
 }
 
 
-// void update_display_info()
-// {
-//     if (current_screen.screen != NULL) {
-//         current_screen.screen = NULL;
-//     }
-//
-//     GdkDisplay* display = gdk_display_get_default();
-//     GdkDeviceManager* device_manager = gdk_display_get_device_manager(display);
-//     GdkDevice* pointer = gdk_device_manager_get_client_pointer(device_manager);
-//     gint x = 0, y = 0;
-//     gdk_device_get_position(pointer, &current_screen.screen, &x, &y);
-//     if (current_screen.screen == NULL) {
-//         return;
-//     }
-//     current_screen.index = gdk_screen_get_monitor_at_point(current_screen.screen, x, y);
-//     g_debug("[%s] monitor:%d", __func__, current_screen.index);
-//     gdk_screen_get_monitor_geometry(current_screen.screen, current_screen.index, &launcher);
-//     g_debug("[%s] new geometry: %dx%d+%d+%d", __func__, launcher.width, launcher.height, launcher.x, launcher.y);
-// }
-
-
 PRIVATE
 void set_size()
 {
+    g_warning("%s", __func__);
 #ifndef NDEBUG
     int width = 0, height = 0;
     gtk_window_get_size(GTK_WINDOW(container), &width, &height);
     g_debug("[%s] change window size from %dx%d to %dx%d", __func__, width, height, launcher.width, launcher.height);
 #endif
 
+    g_warning("[%s] %dx%d(%d, %d)", __func__, launcher.x, launcher.y, launcher.width, launcher.height);
     GdkGeometry geo = {0};
     geo.min_height = 0;
     geo.min_width = 0;
-    gtk_window_set_geometry_hints(GTK_WINDOW(container), NULL, &geo, GDK_HINT_MIN_SIZE);
-    gtk_widget_set_size_request(container, launcher.width, launcher.height);
+    GdkWindow* gdk = gtk_widget_get_window(container);
+    gdk_window_set_geometry_hints(gdk, &geo, GDK_HINT_MIN_SIZE);
+    gdk_window_move_resize(gdk, launcher.x, launcher.y, launcher.width, launcher.height);
 
     if (gtk_widget_get_realized(webview)) {
         GdkWindow* gdk = gtk_widget_get_window(webview);
         gdk_window_set_geometry_hints(gdk, &geo, GDK_HINT_MIN_SIZE);
         gdk_window_move_resize(gdk, launcher.x, launcher.y, launcher.width, launcher.height);
-        gdk_window_flush(gdk);
     }
+    gdk_flush();
 
 #ifndef NDEBUG
     gtk_window_get_size(GTK_WINDOW(container), &width, &height);
@@ -138,22 +115,26 @@ void set_size()
 }
 
 
-PRIVATE
-void _update_size(GdkScreen* screen G_GNUC_UNUSED,
-                  gpointer userdata G_GNUC_UNUSED)
-{
-    g_debug("[%s]", __func__);
-    // update_display_info();
-    set_size();
-}
-
-
 void resize(GtkWidget* widget G_GNUC_UNUSED,
             GdkRectangle* allocation G_GNUC_UNUSED,
             gpointer user_data G_GNUC_UNUSED)
 {
     g_debug("[%s] size-allocate signal", __func__);
-    _update_size(NULL, NULL);
+    // g_warning("allocation: %dx%d(%d,%d)", allocation->width, allocation->height, allocation->x, allocation->y);
+    // g_warning("launcher: %dx%d", launcher.width, launcher.height);
+    if (gtk_widget_get_realized(container)) {
+        g_warning("%s resize", __func__);
+        GdkWindow* w = gtk_widget_get_window(container);
+        GdkGeometry geo = {0};
+        geo.min_width = 0;
+        geo.min_height = 0;
+
+        gdk_window_set_geometry_hints(w, &geo, GDK_HINT_MIN_SIZE);
+        XSelectInput(gdk_x11_get_default_xdisplay(), GDK_WINDOW_XID(w), NoEventMask);
+        gdk_window_move_resize(w, launcher.x, launcher.y, launcher.width, launcher.height);
+        gdk_flush();
+        gdk_window_set_events(w, gdk_window_get_events(w));
+    }
     g_debug("[%s] size-allocate signal end", __func__);
 }
 
@@ -164,19 +145,20 @@ GdkFilterReturn launcher_ensure_fullscreen(GdkXEvent *xevent,
                                            GdkEvent *event G_GNUC_UNUSED,
                                            gpointer data G_GNUC_UNUSED)
 {
+    return GDK_FILTER_CONTINUE;
     XEvent* xev = xevent;
     if (xev->type == ConfigureNotify) {
-        _update_size(current_screen.screen, NULL);
+        set_size();
     }
     return GDK_FILTER_CONTINUE;
 }
 
 
 PRIVATE
-void _on_realize(GtkWidget* container)
+void _on_realize(GtkWidget* container G_GNUC_UNUSED)
 {
     g_debug("[%s] realize signal", __func__);
-    _update_size(current_screen.screen, container);
+    set_size();
     g_debug("[%s] realize signal end", __func__);
 }
 
@@ -381,8 +363,8 @@ void launcher_webview_ok()
     dde_session_register();
     is_js_already = TRUE;
     update_display_info(&launcher);
-    listen_primary_changed_signal(primary_changed_handler);
     if (!is_hidden && !inited) {
+        listen_primary_changed_signal(primary_changed_handler);
         inited = TRUE;
         js_post_signal("launcher_shown");
     }
@@ -496,32 +478,6 @@ void signal_handler(int signum)
 }
 
 
-static
-gboolean change_resolution_later(gpointer user_data G_GNUC_UNUSED)
-{
-    if (can_be_restart()) {
-        // restart_launcher();
-        launcher_quit();
-        return G_SOURCE_REMOVE;
-    }
-
-    return G_SOURCE_CONTINUE;
-}
-
-
-static
-void reslution_changed(GdkScreen* screen G_GNUC_UNUSED,
-                       gpointer user_data G_GNUC_UNUSED)
-{
-    if (can_be_restart()) {
-        // restart_launcher();
-        launcher_quit();
-    } else {
-        g_timeout_add(200, change_resolution_later, NULL);
-    }
-}
-
-
 int main(int argc, char* argv[])
 {
     gtk_init(&argc, &argv);
@@ -609,11 +565,10 @@ int main(int argc, char* argv[])
 
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
 
-    GdkScreen* screen = gdk_screen_get_default();
-    g_signal_connect(screen, "size-changed", G_CALLBACK(reslution_changed), NULL);
     g_signal_connect(container, "realize", G_CALLBACK(_on_realize), NULL);
     g_signal_connect (container, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect(container, "size-allocate", G_CALLBACK(resize), NULL);
+    g_signal_connect(webview, "size-allocate", G_CALLBACK(resize), NULL);
 #ifndef NDEBUG
     g_signal_connect(container, "delete-event", G_CALLBACK(empty), NULL);
 #endif
@@ -623,7 +578,6 @@ int main(int argc, char* argv[])
     setup_background(container, webview);
 
     GdkWindow* gdkwindow = gtk_widget_get_window(container);
-    gdk_window_add_filter(gdkwindow, launcher_ensure_fullscreen, NULL);
 
     gdk_window_set_skip_taskbar_hint(gdkwindow, TRUE);
     gdk_window_set_skip_pager_hint(gdkwindow, TRUE);
