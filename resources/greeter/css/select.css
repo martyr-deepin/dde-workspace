@@ -31,9 +31,7 @@
 #boxscroll li:hover {
 	background:rgba(0,0,0,0.6);
 }
-#boxscroll li:active {
-    background:rgba(0,0,0,0.5);
-}
+
 #boxscroll li:hover a{
 	color:#00ffff;
 }

@@ -21,6 +21,7 @@ class Select extends Widget
 
     show: ->
         @element.style.display = "block"
+        @check_selected_css()
         #@boxscroll_create()
 
     hide: ->
@@ -48,7 +49,16 @@ class Select extends Widget
             @a[i] = create_element("a","",@li[i])
             @li[i].setAttribute("id",each)
             @a[i].innerText = each
+    
+    check_selected_css: ->
+        @selected = @current
+        if @li.length == 0 then @boxscroll_create()
+        for each,i in @lists
             if each is @current then @select_css(@li[i])
+            else @unselect_css(@li[i])
+
+    unselect_css: (el) ->
+        el.style.background = "rgba(0,0,0,0.5)"
     
     select_css: (el) ->
         el.style.background = "rgba(0,0,0,0.3)"
@@ -58,9 +68,8 @@ class Select extends Widget
         for each,i in @lists
             that = @
             @li[i].addEventListener("click",->
-                that.select_css(this)
-                that.selected = this.id
-                that.cb?(that.selected)
+                that.current = this.id
+                that.cb?(that.current)
             )
  
 
