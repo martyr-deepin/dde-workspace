@@ -26,7 +26,7 @@ richdir_drag_canvas = document.createElement("canvas")
 richdir_drag_context = richdir_drag_canvas.getContext('2d')
 
 class RichDir extends DesktopEntry
-    
+
     arrow_pos_at_bottom = false
     constructor : (entry) ->
         super(entry, true, true)
@@ -253,8 +253,6 @@ class RichDir extends DesktopEntry
         @display_not_selected()
         @display_not_focus()
         @display_short_name()
-        
-
 
         @fill_pop_block()
         return
@@ -298,7 +296,7 @@ class RichDir extends DesktopEntry
             s.className = "item_name"
             s.innerText = DCore.DEntry.get_name(e)
             ele.appendChild(s)
-            
+
             that = @
             ele.addEventListener('dragstart', (evt) ->
                 evt.stopPropagation()
@@ -345,7 +343,7 @@ class RichDir extends DesktopEntry
                 evt.stopPropagation()
                 evt.preventDefault()
                 that.pop_div_item_contextmenu_flag = true
-                
+
                 w = Widget.look_up(this.parentElement.id)
                 if w? then e = w.sub_items[this.id]
                 menu = build_menu(w.build_block_item_menu())
@@ -358,8 +356,8 @@ class RichDir extends DesktopEntry
 
             ele_ul.appendChild(ele)
 
-        #@drawPanel_old(ele_ul)
-        @drawPanel(ele_ul)
+        @drawPanel_old(ele_ul)
+        # @drawPanel(ele_ul)
         return
 
     set_div_pop_size_pos :(ele_ul) ->
@@ -405,7 +403,7 @@ class RichDir extends DesktopEntry
         if @sub_items_count > col * row
             pop_width = col * _ITEM_WIDTH_ + 30
         pop_height = row * _ITEM_HEIGHT_
-        
+
         @div_pop.style.width = pop_width
         @div_pop.style.height = pop_height
         ele_ul.style.height = pop_height
@@ -420,7 +418,7 @@ class RichDir extends DesktopEntry
         # calc and make the arrow
         n = @div_pop.offsetWidth / 2 + 1
         p = @element.offsetLeft + @element.offsetWidth / 2
-        
+
         pop_left = s_offset_x
         if p < n
             pop_left = s_offset_x
@@ -428,30 +426,88 @@ class RichDir extends DesktopEntry
             pop_left = s_width - 2 * n
         else
             pop_left = p - n + 6
-        
+
         @div_pop.style.top = pop_top
         @div_pop.style.left = pop_left
-        
+
         pop_size_pos =
             pop_width:pop_width
             pop_height:pop_height
             #pop_height:ele_ul.offsetHeight
             pop_top:pop_top
             pop_left:pop_left
+            pop_left_offset: p - n
         return pop_size_pos
 
-    drawPanel_old:(ele_ul) ->
+    drawPanel_old:(ele_ul) =>
+        console.warn(@div_pop)
         @div_pop.appendChild(ele_ul)
         size = @set_div_pop_size_pos(ele_ul)
-        
+
+        @canvas = @canvas || create_element(tag:"canvas", class:"pop_bg", @div_pop)
+        @canvas.width = size.pop_width + (SHADOW.blur + BORDER_WIDTH) * 2
+        @canvas.height = size.pop_height + TRIANGLE.height + (BORDER_WIDTH + SHADOW.blur) * 2
+        ctx = @canvas.getContext("2d")
+        ctx.save()
+        ctx.clearRect(0, 0, @canvas.width, @canvas.height)
+        ctx.fillStyle = FILL_STYLE
+        ctx.lineWidth = BORDER_WIDTH
+        ctx.strokeStyle = STROKE_STYLE
+        ctx.shadowColor = SHADOW.color
+        ctx.shadowOffsetX = SHADOW.xOffset
+        ctx.shadowOffsetY = SHADOW.yOffset
+        ctx.shadowBlur = SHADOW.blur
+
+        _this = @
+        offset = CORNER_RADIUS + SHADOW.blur + BORDER_WIDTH
+        axisX =
+            left: offset
+            right: _this.canvas.width - offset
+        if arrow_pos_at_bottom
+            axisY =
+                top: offset
+                bottom: _this.canvas.height - offset - TRIANGLE.height
+        else
+            axisY =
+                top: offset + TRIANGLE.height
+                bottom: _this.canvas.height - offset
+
+        ctx.moveTo(axisX.left - CORNER_RADIUS, axisY.top)
+        ctx.arc(axisX.left, axisY.top, CORNER_RADIUS, Math.PI, Math.PI*1.5)
+
+        if !arrow_pos_at_bottom
+            x = @canvas.width/2
+            y = axisY.top - CORNER_RADIUS
+            ctx.lineTo(x - TRIANGLE.width/2, y)
+            ctx.lineTo(x, y - TRIANGLE.height)
+            ctx.lineTo(x + TRIANGLE.width/2, y)
+
+        ctx.lineTo(axisX.right, axisY.top - CORNER_RADIUS)
+
+        ctx.arc(axisX.right, axisY.top, CORNER_RADIUS, Math.PI*1.5, Math.PI*2)
+        ctx.lineTo(axisX.right + CORNER_RADIUS, axisY.bottom)
+        ctx.arc(axisX.right, axisY.bottom, CORNER_RADIUS, 0, Math.PI*.5)
+        if arrow_pos_at_bottom
+            x = @canvas.width/2# - size.pop_left_offset
+            y = axisY.bottom + CORNER_RADIUS
+            ctx.lineTo(x + TRIANGLE.width/2, y)
+            ctx.lineTo(x, y + TRIANGLE.height)
+            ctx.lineTo(x - TRIANGLE.width/2, y)
+        ctx.lineTo(axisX.left, axisY.bottom + CORNER_RADIUS)
+        ctx.arc(axisX.left, axisY.bottom, CORNER_RADIUS, Math.PI*.5, Math.PI)
+        ctx.lineTo(axisX.left - CORNER_RADIUS, axisY.top)
+
+        ctx.fill()
+        ctx.stroke()
+        ctx.restore()
         # calc and make the arrow
         n = @div_pop.offsetWidth / 2 + 1
         p = @element.offsetLeft + @element.offsetWidth / 2
-        
+
         echo "p:#{p};n:#{n};s_width:#{s_width};arrow_pos_at_bottom:#{arrow_pos_at_bottom}"
         SCALE = 1.5
         echo "SCALE:#{SCALE}"
-        
+
         #---------1.check is left or center or right----------#
         #---------and set style.left or right----------#
         arrow_outer_x = null
@@ -467,7 +523,7 @@ class RichDir extends DesktopEntry
         else
             arrow_outer_x = 9 * SCALE
             left = n - arrow_outer_x
-            
+
         #---------2.check arrow_pos_at_bottom or at top----------#
         #---------and set style.top or left----------#
         #---------and set style.borderWidth----------#
@@ -475,12 +531,13 @@ class RichDir extends DesktopEntry
         border_y = Math.abs(arrow_outer_y)
         angel = 1.0
         border_x = border_y / angel
-        
+
+        return
         #---------3.choose method for arrow----------#
         #---------method 1: use arrow_img----------#
         #---------method 2: use arrow outer mid inner and borderWidth----------#
         #---------method 3: use canvas----------#
-        method = 3
+        method = 2
         switch method
             when 1
                 @arrow_img = create_img("arrow_img","",@div_pop)
@@ -510,21 +567,21 @@ class RichDir extends DesktopEntry
                     arrow_outer.style.left = "#{left}px"
                     arrow_mid.style.left = "#{left}px"
                     arrow_inner.style.left = "#{left + 1}px"
-       
+
                 if arrow_pos_at_bottom == true
                     arrow_outer.setAttribute("id", "pop_arrow_up_outer")
                     arrow_mid.setAttribute("id", "pop_arrow_up_mid")
                     arrow_inner.setAttribute("id", "pop_arrow_up_inner")
-                    
+
                     arrow_outer.style.bottom = arrow_outer_y
                     arrow_mid.style.bottom = arrow_outer_y + 1
                     arrow_inner.style.bottom = arrow_outer_y + 2
-                    
+
                     # top right bottom left
                     arrow_outer.style.borderWidth = "#{border_y}px #{border_x}px 0px #{border_x}px"
                     arrow_mid.style.borderWidth = "#{border_y}px #{border_x}px 0px #{border_x}px"
                     arrow_inner.style.borderWidth = "#{border_y - 1}px #{border_x - 1}px 0px #{border_x - 1}px"
-                    
+
                     @div_pop.appendChild(arrow_outer)
                     @div_pop.appendChild(arrow_mid)
                     @div_pop.appendChild(arrow_inner)
@@ -535,18 +592,18 @@ class RichDir extends DesktopEntry
                     arrow_outer.style.top = arrow_outer_y
                     arrow_mid.style.top = arrow_outer_y + 1
                     arrow_inner.style.top = arrow_outer_y + 2
-                    
+
                     # top right down left
                     arrow_outer.style.borderWidth = "0px #{border_x}px #{border_y}px #{border_x}px"
                     arrow_mid.style.borderWidth = "0px #{border_x}px #{border_y}px #{border_x}px"
                     arrow_inner.style.borderWidth = "0px #{border_x - 1}px #{border_y - 1}px #{border_x - 1}px"
-                    
+
                     @div_pop.insertBefore(arrow_outer, ele_ul)
                     @div_pop.insertBefore(arrow_mid, ele_ul)
                     @div_pop.insertBefore(arrow_inner, ele_ul)
             when 3
                 echo "canvas richdir arrow"
-        
+
         drawTriangle: (x,y,parent) ->
             PREVIEW_CONTAINER_BORDER_WIDTH = 2
             PREVIEW_SHADOW_BLUR = 6
@@ -556,14 +613,14 @@ class RichDir extends DesktopEntry
                 height: 10
             @bg = create_element(tag:'canvas', class:"bg", parent)
             @bg.style.position = "absolute"
-            
+
             ctx = @bg.getContext('2d')
             ctx = @bg.getContext('2d')
 
             if is_right then @bg.style.right = left
             else @bg.style.left = left
             if !arrow_pos_at_bottom then ctx.rotate(Math.PI)
-            
+
             ctx.clearRect(0, 0, @bg.width, @bg.height)
             ctx.save()
 
@@ -575,14 +632,14 @@ class RichDir extends DesktopEntry
             ctx.lineWidth = PREVIEW_CONTAINER_BORDER_WIDTH
 
             ctx.fillStyle = "rgba(0,0,0,0.75)"
-    
+
             radius = PREVIEW_CORNER_RADIUS
             contentWidth = @bg.width + radius * 2 + ctx.lineWidth * 2 + ctx.shadowBlur * 2
             topY = radius + ctx.lineWidth
             bottomY = @bg.height - PREVIEW_TRIANGLE.height - ctx.lineWidth * 2 - ctx.shadowBlur
             leftX = radius + ctx.shadowBlur
             rightX = leftX + contentWidth
-            
+
             # bottom line
             halfWidth = leftX + contentWidth / 2
             triOffset = 0
@@ -611,7 +668,7 @@ class RichDir extends DesktopEntry
             @bg.style.display = "block"
 
     drawPanel:(ele_ul)->
-        
+
         @bg = create_element(tag:'canvas', class:"bg", @div_pop)
         @bg.style.position = "absolute"
         @bg.style.top = @bg.style.left = 0
@@ -621,7 +678,7 @@ class RichDir extends DesktopEntry
         #ele_ul.style.zIndex = 22000
         @bg.appendChild(ele_ul)
         size = @set_div_pop_size_pos(ele_ul)
-        
+
         PREVIEW_CORNER_RADIUS = 4
         PREVIEW_SHADOW_BLUR = 6
         PREVIEW_CONTAINER_HEIGHT = 160
@@ -636,7 +693,7 @@ class RichDir extends DesktopEntry
         PREVIEW_TRIANGLE =
             width: 18
             height: 10
-       
+
         @bg.style.width = size.pop_width + PREVIEW_TRIANGLE.width
         @bg.style.height = size.pop_height + PREVIEW_TRIANGLE.height
 
@@ -740,14 +797,14 @@ class RichDir extends DesktopEntry
 
     hide_pop_block : =>
         echo "hide_pop_block"
-        return
         @pop_div_item_contextmenu_flag = false
-        
+
         if @div_pop?
             @sub_items = {}
             @div_pop.parentElement?.removeChild(@div_pop)
             delete @div_pop
             @div_pop = null
+            @canvas = null
         @show_pop = false
 
         @display_selected()

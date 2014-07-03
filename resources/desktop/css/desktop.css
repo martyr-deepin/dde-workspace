@@ -159,13 +159,8 @@ body {
 }
 
 #pop_grid {
-    /*background-color: #F0E68C;*/
     z-index:20000;
     position:fixed;
-    /*background-color:rgba(0,0,0,0.8);*/
-    /*border: 1px solid rgba(255, 255, 255, 0.4);*/
-    /*border-radius: 4px;*/
-    /*box-shadow: 0 3px 5px rgba(0, 0, 0, 0.4);*/
 }
 
 #pop_grid ul {
@@ -218,6 +213,13 @@ body {
     overflow:hidden;
     word-wrap:break-word;
     text-overflow:ellipsis;
+}
+
+.pop_bg {
+  position: absolute;
+  top: -18px;
+  left: -5px;
+  z-index: -1;
 }
 
 

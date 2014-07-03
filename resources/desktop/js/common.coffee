@@ -101,3 +101,17 @@ _GET_CFG_BOOL_ = (val) ->
     DCore.Desktop.get_config_boolean(val)
 
 DSS = "com.deepin.dde.ControlCenter"
+
+# pop dialog
+TRIANGLE =
+    width: 18
+    height: 10
+BORDER_WIDTH = 1
+CORNER_RADIUS = 4
+SHADOW =
+    blur: 5
+    xOffset: 0
+    yOffset: 3
+    color: 'rgba(0,0,0,.4)'
+FILL_STYLE = 'rgba(0,0,0,.8)'
+STROKE_STYLE = 'rgba(255,255,255,.4)'

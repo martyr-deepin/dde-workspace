@@ -391,7 +391,7 @@ void send_lost_focus()
 {
     js_post_signal("lost_focus");
 }
-gboolean on_leave(GtkWidget* widget, GdkEventCrossing* event)
+gboolean on_leave(GtkWidget* widget G_GNUC_UNUSED, GdkEventCrossing* event G_GNUC_UNUSED)
 {
     send_lost_focus();
     return FALSE;
