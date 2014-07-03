@@ -119,6 +119,7 @@ class MenuChoose extends Widget
             {opacity:'0.0';},
             t_userinfo_show_hide,
             'linear',=>
+                _current_user?.hide()
                 $("#div_users").style.display = "none"
                 @element.style.display = "-webkit-box"
                 @setPos()
@@ -137,6 +138,7 @@ class MenuChoose extends Widget
             if i != 0 then return
             echo "animation_user_show(#{i})"
             @element.style.display = "none"
+            _current_user?.show()
             if @frame_click and @id is "user_menuchoose"
                 uid = localStorage.getItem("menu_current_id_user")
                 user?.switch_to_userinfo(uid)

@@ -506,6 +506,9 @@ class LoginEntry extends Widget
             if @password.value is password_error_msg or @password.value is localStorage.getItem("password_value_shutdown")
                 @input_password_again()
         )
+        @password?.addEventListener("blur",=>
+            @keyboard?.hide()
+        )
         
         @password?.addEventListener("focus",=>
             if @username is guest_name then return
@@ -518,6 +521,7 @@ class LoginEntry extends Widget
             if e.which == ENTER_KEY
                 @on_active(@username, @password.value) if @check_completeness()
         )
+        
         document.body.addEventListener("keydown",(e)=>
             try
                 els = $(".MenuChoose")
