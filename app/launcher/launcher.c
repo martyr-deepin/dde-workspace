@@ -569,6 +569,7 @@ int main(int argc, char* argv[])
     g_signal_connect (container, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect(container, "size-allocate", G_CALLBACK(resize), NULL);
     g_signal_connect(webview, "size-allocate", G_CALLBACK(resize), NULL);
+    g_signal_connect(webview, "map-event", G_CALLBACK(resize), NULL);
 #ifndef NDEBUG
     g_signal_connect(container, "delete-event", G_CALLBACK(empty), NULL);
 #endif
