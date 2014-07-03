@@ -380,9 +380,10 @@ class RichDir extends DesktopEntry
         if col > num_max then col = num_max
 
         # calc ideal rows
-        row = col - 1
+        row  = Math.ceil(@sub_items_count / col)
         if row < 1 then row = 1
         if row > 4 then row = 4
+        echo "row:#{row};col:#{col}"
         #calc ideal pop div width
         pop_width = col * _ITEM_WIDTH_ + 22
         pop_height = row * _ITEM_HEIGHT_
