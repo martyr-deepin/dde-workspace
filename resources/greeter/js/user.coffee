@@ -358,9 +358,11 @@ class UserInfo extends Widget
         if username is guest_name then username = guest_name_in_lightdm
         @password = password
         if is_greeter
-            @session = localStorage.getItem("menu_current_id_desktop")
-            echo "#{username} start session #{@session}"
             @loginAnimation()
+            @session = localStorage.getItem("menu_current_id_desktop")
+            if @session is null then @get_session_by_lightdm()
+            if @session is null then @session = "deepin"
+            echo "#{username} start session #{@session}"
             DCore.Greeter.start_session(username, password, @session)
             document.body.cursor = "wait"
         else
