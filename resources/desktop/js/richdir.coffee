@@ -430,16 +430,17 @@ class RichDir extends DesktopEntry
         @div_pop.style.top = pop_top
         @div_pop.style.left = pop_left
 
+        offset = pop_left + n - p
         pop_size_pos =
             pop_width:pop_width
             pop_height:ele_ul.offsetHeight
             pop_top:pop_top
             pop_left:pop_left
-            pop_left_offset: p - n
+            pop_offset: offset
+
         return pop_size_pos
 
     drawPanel:(ele_ul) =>
-        console.warn(@div_pop)
         @div_pop.appendChild(ele_ul)
         size = @set_div_pop_size_pos(ele_ul)
 
@@ -475,7 +476,7 @@ class RichDir extends DesktopEntry
         ctx.arc(axisX.left, axisY.top, CORNER_RADIUS, Math.PI, Math.PI*1.5)
 
         if !arrow_pos_at_bottom
-            x = @canvas.width/2 + size.pop_left_offset
+            x = @canvas.width/2 - size.pop_offset
             y = axisY.top - CORNER_RADIUS
             ctx.lineTo(x - TRIANGLE.width/2, y)
             ctx.lineTo(x, y - TRIANGLE.height)
@@ -487,7 +488,7 @@ class RichDir extends DesktopEntry
         ctx.lineTo(axisX.right + CORNER_RADIUS, axisY.bottom)
         ctx.arc(axisX.right, axisY.bottom, CORNER_RADIUS, 0, Math.PI*.5)
         if arrow_pos_at_bottom
-            x = @canvas.width/2 + size.pop_left_offset
+            x = @canvas.width/2 - size.pop_offset
             y = axisY.bottom + CORNER_RADIUS
             ctx.lineTo(x + TRIANGLE.width/2, y)
             ctx.lineTo(x, y + TRIANGLE.height)
