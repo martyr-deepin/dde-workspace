@@ -37,6 +37,7 @@ class SystemTray extends SystemItem
             $EW.create(xid, true)
             if @isShowing
                 if @items.length > 4
+                    # @hideAllIcons()
                     @unfold()
                     @showButton()
                 console.log("added show")
@@ -194,7 +195,7 @@ class SystemTray extends SystemItem
         clearTimeout(@hideTimer)
         webkitCancelAnimationFrame(@calcTimer || null)
         @updatePanel()
-        @hideAllIcons()
+        # @hideAllIcons()
         @updateTrayIcon()
         if @upperItemNumber > 2
             clearTimeout(@showTimer)
@@ -242,6 +243,7 @@ class SystemTray extends SystemItem
         if @isUnfolded
             @fold()
         else
+            @hideAllIcons()
             @unfold()
 
     on_rightclick: (e)=>
