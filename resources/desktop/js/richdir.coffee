@@ -390,7 +390,9 @@ class RichDir extends DesktopEntry
 
         n = @element.offsetTop + Math.min(_ITEM_HEIGHT_, @element.offsetHeight)
         num_max = s_height - n
-        if (num_max < @div_pop.offsetHeight) and (num_max < @element.offsetTop)
+        canvas_add_height = TRIANGLE.height + (BORDER_WIDTH + SHADOW.blur) * 2
+        canvas_height = pop_height + canvas_add_height
+        if num_max < canvas_height
             arrow_pos_at_bottom = true
             num_max = @element.offsetTop
         else
@@ -446,7 +448,8 @@ class RichDir extends DesktopEntry
 
         @canvas = @canvas || create_element(tag:"canvas", class:"pop_bg", @div_pop)
         @canvas.width = size.pop_width + (SHADOW.blur + BORDER_WIDTH) * 2
-        @canvas.height = size.pop_height + TRIANGLE.height + (BORDER_WIDTH + SHADOW.blur) * 2
+        add_height = TRIANGLE.height + (BORDER_WIDTH + SHADOW.blur) * 2
+        @canvas.height = size.pop_height + add_height
         if arrow_pos_at_bottom then @canvas.style.top = -10
         else @canvas.style.top = -18
         
