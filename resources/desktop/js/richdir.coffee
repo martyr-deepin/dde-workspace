@@ -462,20 +462,20 @@ class RichDir extends DesktopEntry
         axisX =
             left: offset
             right: _this.canvas.width - offset
+        axisY =
+            top: offset
+            bottom: _this.canvas.height - offset
+
         if arrow_pos_at_bottom
-            axisY =
-                top: offset
-                bottom: _this.canvas.height - offset - TRIANGLE.height
+            axisY.bottom = axisY.bottom - TRIANGLE.height
         else
-            axisY =
-                top: offset + TRIANGLE.height
-                bottom: _this.canvas.height - offset
+            axisY.top = axisY.top + TRIANGLE.height
 
         ctx.moveTo(axisX.left - CORNER_RADIUS, axisY.top)
         ctx.arc(axisX.left, axisY.top, CORNER_RADIUS, Math.PI, Math.PI*1.5)
 
         if !arrow_pos_at_bottom
-            x = @canvas.width/2
+            x = @canvas.width/2 + size.pop_left_offset
             y = axisY.top - CORNER_RADIUS
             ctx.lineTo(x - TRIANGLE.width/2, y)
             ctx.lineTo(x, y - TRIANGLE.height)
@@ -487,7 +487,7 @@ class RichDir extends DesktopEntry
         ctx.lineTo(axisX.right + CORNER_RADIUS, axisY.bottom)
         ctx.arc(axisX.right, axisY.bottom, CORNER_RADIUS, 0, Math.PI*.5)
         if arrow_pos_at_bottom
-            x = @canvas.width/2# - size.pop_left_offset
+            x = @canvas.width/2 + size.pop_left_offset
             y = axisY.bottom + CORNER_RADIUS
             ctx.lineTo(x + TRIANGLE.width/2, y)
             ctx.lineTo(x, y + TRIANGLE.height)
