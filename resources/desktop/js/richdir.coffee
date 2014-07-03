@@ -411,9 +411,9 @@ class RichDir extends DesktopEntry
 
         #-----------------------pos-----------------------#
         if arrow_pos_at_bottom == true
-            pop_top = @element.offsetTop - @div_pop.offsetHeight
+            pop_top = @element.offsetTop - @div_pop.offsetHeight - 10
         else
-            pop_top = n + 30#default 14
+            pop_top = n + 35#default 14
 
         # calc and make the arrow
         n = @div_pop.offsetWidth / 2 + 1
@@ -430,7 +430,7 @@ class RichDir extends DesktopEntry
         @div_pop.style.top = pop_top
         @div_pop.style.left = pop_left
 
-        offset = pop_left + n - p
+        offset = pop_left + n - p - 5
         pop_size_pos =
             pop_width:pop_width
             pop_height:ele_ul.offsetHeight
@@ -447,6 +447,9 @@ class RichDir extends DesktopEntry
         @canvas = @canvas || create_element(tag:"canvas", class:"pop_bg", @div_pop)
         @canvas.width = size.pop_width + (SHADOW.blur + BORDER_WIDTH) * 2
         @canvas.height = size.pop_height + TRIANGLE.height + (BORDER_WIDTH + SHADOW.blur) * 2
+        if arrow_pos_at_bottom then @canvas.style.top = -10
+        else @canvas.style.top = -18
+        
         ctx = @canvas.getContext("2d")
         ctx.save()
         ctx.clearRect(0, 0, @canvas.width, @canvas.height)
