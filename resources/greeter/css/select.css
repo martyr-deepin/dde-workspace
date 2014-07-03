@@ -18,6 +18,8 @@
 #boxscroll li{
     height:3.6em;
     line-height:3.6em;
+    overflow:hidden;
+    text-overflow:ellipsis;
     padding:0px 10px 0px 25px;
     background:rgba(0,0,0,0.5);
 }
