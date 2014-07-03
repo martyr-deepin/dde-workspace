@@ -143,7 +143,7 @@ void _update_size(GdkScreen* screen G_GNUC_UNUSED,
                   gpointer userdata G_GNUC_UNUSED)
 {
     g_debug("[%s]", __func__);
-    // update_display_info();
+    update_display_info(&launcher);
     set_size();
 }
 
