@@ -358,8 +358,8 @@ class RichDir extends DesktopEntry
 
             ele_ul.appendChild(ele)
 
-        @drawPanel_old(ele_ul)
-        #@drawPanel(ele_ul)
+        #@drawPanel_old(ele_ul)
+        @drawPanel(ele_ul)
         return
 
     set_div_pop_size_pos :(ele_ul) ->
@@ -406,9 +406,10 @@ class RichDir extends DesktopEntry
             pop_width = col * _ITEM_WIDTH_ + 30
         pop_height = row * _ITEM_HEIGHT_
         
-        @div_pop.style.width = "#{pop_width}px"
-        ele_ul.style.maxHeight = "#{pop_height}px"
-        
+        @div_pop.style.width = pop_width
+        @div_pop.style.height = pop_height
+        ele_ul.style.height = pop_height
+        echo "pop_width:#{pop_width};pop_height:#{pop_height}"
 
         #-----------------------pos-----------------------#
         if arrow_pos_at_bottom == true
@@ -433,7 +434,8 @@ class RichDir extends DesktopEntry
         
         pop_size_pos =
             pop_width:pop_width
-            pop_height:ele_ul.offsetHeight
+            pop_height:pop_height
+            #pop_height:ele_ul.offsetHeight
             pop_top:pop_top
             pop_left:pop_left
         return pop_size_pos
@@ -478,7 +480,7 @@ class RichDir extends DesktopEntry
         #---------method 1: use arrow_img----------#
         #---------method 2: use arrow outer mid inner and borderWidth----------#
         #---------method 3: use canvas----------#
-        method = 2
+        method = 3
         switch method
             when 1
                 @arrow_img = create_img("arrow_img","",@div_pop)
@@ -615,9 +617,9 @@ class RichDir extends DesktopEntry
         @bg.style.top = @bg.style.left = 0
         #@bg.style.zIndex = 21000
         ele_ul.style.position = "absolute"
-        ele_ul.style.top = @bg.style.left = 0
+        ele_ul.style.top = ele_ul.style.left = 0
         #ele_ul.style.zIndex = 22000
-        @div_pop.appendChild(ele_ul)
+        @bg.appendChild(ele_ul)
         size = @set_div_pop_size_pos(ele_ul)
         
         PREVIEW_CORNER_RADIUS = 4
@@ -635,8 +637,8 @@ class RichDir extends DesktopEntry
             width: 18
             height: 10
        
-        @bg.style.width = size.pop_width
-        @bg.style.height = size.pop_height
+        @bg.style.width = size.pop_width + PREVIEW_TRIANGLE.width
+        @bg.style.height = size.pop_height + PREVIEW_TRIANGLE.height
 
         triX = size.pop_left + size.pop_width / 2
 
@@ -738,6 +740,7 @@ class RichDir extends DesktopEntry
 
     hide_pop_block : =>
         echo "hide_pop_block"
+        return
         @pop_div_item_contextmenu_flag = false
         
         if @div_pop?
