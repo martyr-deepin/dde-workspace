@@ -83,6 +83,8 @@ class User extends Widget
             @element.appendChild(user.element)
             if user.index is _current_user.index
                 _current_user.show()
+                _current_user.get_session_by_lightdm()
+                _current_user.update_session_icon()
             else
                 user.hide()
         
@@ -124,6 +126,7 @@ class User extends Widget
         index = @check_index(index)
         _current_user = @userinfo_all[index]
         echo "to #{_current_user.index}: #{_current_user.username}"
+        _current_user.update_session_icon()
         _current_user.show_animation()
         _current_user.animate_prev()
 
@@ -178,6 +181,7 @@ class UserInfo extends Widget
     constructor: (@id, @username, @usericon)->
         super
         echo "new UserInfo :#{@username}"
+        @session = "deepin"
         
         @is_logined = false
         @is_recognizing = false
@@ -318,18 +322,17 @@ class UserInfo extends Widget
                 else
                     @session = sessions[0]
                     echo "session set #{sessions[0]}--"
+            return @session
         catch e
             echo "#{e}"
-        finally
             return @session
 
     update_session_icon: ->
-        echo "update_session_icon"
         if @is_logined
             desktopmenu?.hide()
         else
-            desktopmenu?.show()
-            @get_session_by_lightdm()
+            if not @session? then @get_session_by_lightdm()
+            echo "userinfo #{@username} update_session_icon:#{@session}"
             desktopmenu?.update_current_icon(@session)
         localStorage.setItem("menu_current_id_desktop",@session)
 
@@ -344,7 +347,6 @@ class UserInfo extends Widget
         
         _current_user = @
         localStorage.setItem("_current_user",_current_user)
-        @update_session_icon() if is_greeter
  
     
     blur: ->
@@ -360,8 +362,7 @@ class UserInfo extends Widget
         if is_greeter
             @loginAnimation()
             @session = localStorage.getItem("menu_current_id_desktop")
-            if @session is null then @get_session_by_lightdm()
-            if @session is null then @session = "deepin"
+            if @session is null or @session is undefined then @get_session_by_lightdm()
             echo "#{username} start session #{@session}"
             DCore.Greeter.start_session(username, password, @session)
             document.body.cursor = "wait"

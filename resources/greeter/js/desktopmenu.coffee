@@ -40,6 +40,7 @@ class DesktopMenu extends Widget
     update_current_icon:(@current)->
         @show()
         try
+            if @current is null or @current is undefined then @current = "deepin"
             echo "set_current(@current) :----#{@current}----"
             icon = DCore.Greeter.get_session_icon(@current)
             @current_img_src = "images/desktopmenu/current/#{icon}.png"
