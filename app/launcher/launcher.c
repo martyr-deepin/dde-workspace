@@ -93,7 +93,7 @@ void set_size()
     g_debug("[%s] change window size from %dx%d to %dx%d", __func__, width, height, launcher.width, launcher.height);
 #endif
 
-    g_warning("[%s] %dx%d(%d, %d)", __func__, launcher.x, launcher.y, launcher.width, launcher.height);
+    g_warning("[%s] %dx%d(%d, %d)", __func__, launcher.width, launcher.height, launcher.x, launcher.y);
     GdkGeometry geo = {0};
     geo.min_height = 0;
     geo.min_width = 0;
@@ -107,9 +107,9 @@ void set_size()
     if (gtk_widget_get_realized(webview)) {
         GdkWindow* gdk = gtk_widget_get_window(webview);
         gdk_window_set_geometry_hints(gdk, &geo, GDK_HINT_MIN_SIZE);
-        gdk_window_move_resize(gdk, launcher.x, launcher.y, launcher.width, launcher.height);
+        gdk_window_move_resize(gdk, 0, 0, launcher.width, launcher.height);
+        gdk_window_flush(gdk);
     }
-    gdk_flush();
 
 #ifndef NDEBUG
     gtk_window_get_size(GTK_WINDOW(container), &width, &height);
@@ -117,14 +117,22 @@ void set_size()
 #endif
 }
 
-
-void resize(GtkWidget* widget G_GNUC_UNUSED,
+void size_allocate_handler(GtkWidget* widget G_GNUC_UNUSED,
             GdkRectangle* allocation G_GNUC_UNUSED,
             gpointer user_data G_GNUC_UNUSED)
 {
-    g_debug("[%s] size-allocate signal", __func__);
-    set_size();
-    g_debug("[%s] size-allocate signal end", __func__);
+    if (gtk_widget_get_realized(widget)) {
+        GdkGeometry geo = {0};
+        geo.min_width = 0;
+        geo.min_height = 0;
+
+        GdkWindow* gdk = gtk_widget_get_window(widget);
+        gdk_window_set_geometry_hints(gdk, &geo, GDK_HINT_MIN_SIZE);
+        XSelectInput(gdk_x11_get_default_xdisplay(), GDK_WINDOW_XID(gdk), NoEventMask);
+        gdk_window_resize(gdk, launcher.width, launcher.height);
+        gdk_window_flush(gdk);
+        gdk_window_set_events(gdk, gdk_window_get_events(gdk));
+    }
 }
 
 
@@ -336,7 +344,6 @@ void launcher_webview_ok()
     static gboolean inited = FALSE;
     dde_session_register();
     is_js_already = TRUE;
-    update_display_info(&launcher);
     if (!is_hidden && !inited) {
         listen_primary_changed_signal(primary_changed_handler);
         inited = TRUE;
@@ -539,11 +546,12 @@ int main(int argc, char* argv[])
 
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
 
+    update_display_info(&launcher);
     g_signal_connect(container, "realize", G_CALLBACK(_on_realize), NULL);
     g_signal_connect (container, "destroy", G_CALLBACK(gtk_main_quit), NULL);
-    g_signal_connect(container, "size-allocate", G_CALLBACK(resize), NULL);
-    g_signal_connect(webview, "size-allocate", G_CALLBACK(resize), NULL);
-    g_signal_connect(webview, "map-event", G_CALLBACK(resize), NULL);
+    g_signal_connect(container, "size-allocate", G_CALLBACK(size_allocate_handler), NULL);
+    g_signal_connect(webview, "size-allocate", G_CALLBACK(size_allocate_handler), NULL);
+    g_signal_connect(webview, "map-event", G_CALLBACK(set_size), NULL);
 #ifndef NDEBUG
     g_signal_connect(container, "delete-event", G_CALLBACK(empty), NULL);
 #endif
