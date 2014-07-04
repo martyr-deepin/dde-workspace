@@ -107,3 +107,5 @@ bind_events = ->
     # this does not work on keypress
     _b.addEventListener("keydown", keydown_callback)
     _b.addEventListener('keypress', keypress_callback)
+    _b.onresize = ->
+        Item.updateHorizontalMargin()
