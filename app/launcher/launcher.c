@@ -97,9 +97,12 @@ void set_size()
     GdkGeometry geo = {0};
     geo.min_height = 0;
     geo.min_width = 0;
-    GdkWindow* gdk = gtk_widget_get_window(container);
-    gdk_window_set_geometry_hints(gdk, &geo, GDK_HINT_MIN_SIZE);
-    gdk_window_move_resize(gdk, launcher.x, launcher.y, launcher.width, launcher.height);
+    // FIXME: why???
+    // cannot use gdk window, otherwise, the launcher get wrong size for the
+    // workarea.
+    gtk_window_set_geometry_hints(GTK_WINDOW(container), NULL, &geo, GDK_HINT_MIN_SIZE);
+    gtk_widget_set_size_request(container, launcher.width, launcher.height);
+    gtk_window_move(GTK_WINDOW(container), launcher.x, launcher.y);
 
     if (gtk_widget_get_realized(webview)) {
         GdkWindow* gdk = gtk_widget_get_window(webview);
@@ -120,37 +123,8 @@ void resize(GtkWidget* widget G_GNUC_UNUSED,
             gpointer user_data G_GNUC_UNUSED)
 {
     g_debug("[%s] size-allocate signal", __func__);
-    // g_warning("allocation: %dx%d(%d,%d)", allocation->width, allocation->height, allocation->x, allocation->y);
-    // g_warning("launcher: %dx%d", launcher.width, launcher.height);
-    if (gtk_widget_get_realized(container)) {
-        g_warning("%s resize", __func__);
-        GdkWindow* w = gtk_widget_get_window(container);
-        GdkGeometry geo = {0};
-        geo.min_width = 0;
-        geo.min_height = 0;
-
-        gdk_window_set_geometry_hints(w, &geo, GDK_HINT_MIN_SIZE);
-        XSelectInput(gdk_x11_get_default_xdisplay(), GDK_WINDOW_XID(w), NoEventMask);
-        gdk_window_move_resize(w, launcher.x, launcher.y, launcher.width, launcher.height);
-        gdk_flush();
-        gdk_window_set_events(w, gdk_window_get_events(w));
-    }
+    set_size();
     g_debug("[%s] size-allocate signal end", __func__);
-}
-
-
-PRIVATE
-G_GNUC_UNUSED
-GdkFilterReturn launcher_ensure_fullscreen(GdkXEvent *xevent,
-                                           GdkEvent *event G_GNUC_UNUSED,
-                                           gpointer data G_GNUC_UNUSED)
-{
-    return GDK_FILTER_CONTINUE;
-    XEvent* xev = xevent;
-    if (xev->type == ConfigureNotify) {
-        set_size();
-    }
-    return GDK_FILTER_CONTINUE;
 }
 
 
