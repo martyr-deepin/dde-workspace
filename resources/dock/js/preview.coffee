@@ -390,8 +390,7 @@ class PreviewWindow extends Widget
 
             @titleContainer = create_element(tag:"div", class:"PWTitleContainer", container)
             @title = create_element(tag:"div", class:"PWTitle", @titleContainer)
-            @title.setAttribute("title", @title_str)
-            @title.innerText = @title_str
+            @setTitle(@title_str)
             @update_size()
 
             if get_active_window() == @w_id
@@ -403,6 +402,11 @@ class PreviewWindow extends Widget
         if @applet
         else
             Preview_container._calc_size()
+
+    setTitle:(title)=>
+        @title_str = title
+        @title.setAttribute("title", title)
+        @title.innerText = title
 
     delay_destroy: ->
         setTimeout(=>
@@ -479,6 +483,10 @@ class PreviewWindow extends Widget
         if @w_id != 0
             # console.log("draw_window_preview: #{@canvas_width}, #{@canvas_height}")
             DCore.Dock.draw_window_preview(@canvas, @w_id, @canvas_width, @canvas_height)
+            infos = Preview_container._current_group.client_infos
+            title = infos[@w_id].title
+            if title != @title_str
+                @setTitle(title)
 
 
 DCore.signal_connect("leave-notify", ->
