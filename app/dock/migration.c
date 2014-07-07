@@ -78,17 +78,25 @@ void dock_draw_window_preview(JSValueRef canvas, double xid, double dest_width, 
     cairo_paint(cr);
     cairo_restore(cr);
 
-    int width = gdk_window_get_width(win);
-    int height = gdk_window_get_height(win);
+    int width = 0;
+    int height = 0;
+    // gdk_window_get_width/height will gets wrong datum sometimes.
+    // like deepin-movie which switches between mini mode and normal mode.
+    XWindowAttributes attr = {0};
+    XGetWindowAttributes(gdk_x11_display_get_xdisplay(gdk_display_get_default()), (Window)xid, &attr);
+    width = attr.width;
+    height = attr.height;
 
     cairo_save(cr);
     double scale = 0;
     if (width > height) {
         scale = dest_width/width;
+        g_debug("window: %dx%d, scale: %.2lf", width, height, scale);
         cairo_scale(cr, scale, scale);
         gdk_cairo_set_source_window(cr, win, 0, 0.5*(dest_height/scale-height));
     } else {
         scale = dest_height/height;
+        g_debug("window: %dx%d, scale: %.2lf", width, height, scale);
         cairo_scale(cr, scale, scale);
         gdk_cairo_set_source_window(cr, win, 0.5*(dest_width/scale-width), 0);
     }

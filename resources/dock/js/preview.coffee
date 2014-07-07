@@ -29,6 +29,9 @@ class PWContainer extends Widget
         @bg = create_element(tag:'canvas', class:"bg", @border)
         @element.style.maxWidth = screen.width - 30
         @border.appendChild(@element)
+        @border.addEventListener("webkitTransitionEnd", ->
+            @classList.remove("moveAnimation")
+        )
         @element.addEventListener("mouseover", @on_mouseover)
         @element.addEventListener("mouseout", @on_mouseout)
         @is_showing = false
@@ -63,8 +66,9 @@ class PWContainer extends Widget
             @show()
         , 5)
         @_update_id = setInterval(=>
-            @_update_once()
-        , 500)
+            if not @border.classList.contains("moveAnimation")
+                @_update_once()
+        , 60)
 
     _update_once: (cb)=>
         # console.log("_update_once")
