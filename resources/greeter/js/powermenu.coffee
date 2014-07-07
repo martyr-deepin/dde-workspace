@@ -172,6 +172,6 @@ class PowerMenu extends Widget
             power = @clear_shutdown_from_lock()
             if not power.value? then return
             if @powercls.power_can(power.value)
-                power_force(power.value)
+                @powercls.power_force_sys(power.value)
 
 
