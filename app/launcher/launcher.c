@@ -122,18 +122,14 @@ void size_allocate_handler(GtkWidget* widget G_GNUC_UNUSED,
 {
     if (alloc->x != 0 || alloc->y != 0 ||
         alloc->width != launcher.width || alloc->height != launcher.height) {
-    // if (gtk_widget_get_realized(widget)) {
         GdkGeometry geo = {0};
         geo.min_width = 0;
         geo.min_height = 0;
 
         GdkWindow* gdk = gtk_widget_get_window(widget);
-        if (gdk != NULL) {
-            gdk_window_set_geometry_hints(gdk, &geo, GDK_HINT_MIN_SIZE);
-            XSelectInput(gdk_x11_get_default_xdisplay(), GDK_WINDOW_XID(gdk), NoEventMask);
-        }
+        gdk_window_set_geometry_hints(gdk, &geo, GDK_HINT_MIN_SIZE);
         gdk_window_resize(gdk, launcher.width, launcher.height);
-        gdk_window_set_events(gdk, gdk_window_get_events(gdk));
+        gdk_window_flush(gdk);
     }
 }
 
@@ -506,8 +502,6 @@ int main(int argc, char* argv[])
     update_display_info(&launcher);
     g_signal_connect(container, "realize", G_CALLBACK(_on_realize), NULL);
     g_signal_connect (container, "destroy", G_CALLBACK(gtk_main_quit), NULL);
-    g_signal_connect(container, "size-allocate", G_CALLBACK(size_allocate_handler), NULL);
-    g_signal_connect(webview, "size-allocate", G_CALLBACK(size_allocate_handler), NULL);
     g_signal_connect(container, "map", G_CALLBACK(move_launcher), NULL);
 #ifndef NDEBUG
     g_signal_connect(container, "delete-event", G_CALLBACK(empty), NULL);
@@ -515,6 +509,10 @@ int main(int argc, char* argv[])
 
     gtk_widget_realize(container);
     gtk_widget_realize(webview);
+
+    g_signal_connect(container, "size-allocate", G_CALLBACK(size_allocate_handler), NULL);
+    g_signal_connect(webview, "size-allocate", G_CALLBACK(size_allocate_handler), NULL);
+
     setup_background(container, webview);
 
     GdkWindow* gdkwindow = gtk_widget_get_window(container);
