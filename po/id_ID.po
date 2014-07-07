@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-03 15:03+0800\n"
-"PO-Revision-Date: 2014-07-03 05:01+0000\n"
+"POT-Creation-Date: 2014-07-07 16:25+0800\n"
+"PO-Revision-Date: 2014-07-05 22:30+0000\n"
 "Last-Translator: arvernester <dedy.yugo.purwanto@gmail.com>\n"
 "Language-Team: Indonesian (Indonesia) (http://www.transifex.com/projects/p/"
 "deepin-desktop-environment/language/id_ID/)\n"
@@ -126,7 +126,7 @@ msgstr "Apr"
 #: resources/dock/js/plugins/trash/trash.coffee:107
 #: resources/launcher/js/item.coffee:339
 msgid "Are you sure to remove"
-msgstr "Anda yakin untuk menghapus"
+msgstr "Apakah Anda yakin untuk menghapus"
 
 #: lib/dentry/fileops_delete.c:32
 msgid "Are you sure you want to permanently delete the files?"
@@ -139,7 +139,7 @@ msgstr "Agu"
 #: resources/desktop/js/desktopentry.coffee:151
 #: resources/dock/js/plugins/trash/trash.coffee:70
 msgid "Can not open this file."
-msgstr "Tidak bisa membuka berkas ini"
+msgstr "Tidak bisa membuka berkas ini."
 
 #: lib/dentry/entry.c:746
 #, c-format
@@ -160,7 +160,7 @@ msgstr "Pusat Kontrol"
 msgid "Copy"
 msgstr "Salin"
 
-#: resources/desktop/js/richdir.coffee:824
+#: resources/desktop/js/richdir.coffee:569
 #: resources/desktop/js/desktopentry.coffee:103
 msgid "Cu_t"
 msgstr "Po_tong"
@@ -201,7 +201,7 @@ msgstr "Apakah Anda ingin menimpa folder \"%s\"?"
 msgid "Do you want to run \"%s\", or display its contents?"
 msgstr "Anda akan menjalankan \"%s\", atau tampilkan kontennya?"
 
-#: app/dock/dock.c:323
+#: app/dock/dock.c:329
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr "Dock tidak terbuka, karena Compis tidak diaktifkan."
 
@@ -539,10 +539,10 @@ msgid "The item could not be renamed"
 msgstr ""
 
 #: resources/desktop/js/richdir.coffee:335
-#: resources/desktop/js/richdir.coffee:842
+#: resources/desktop/js/richdir.coffee:587
 #: resources/desktop/js/application.coffee:179
 msgid "The link is invalid. Do you want to delete it?"
-msgstr "Tautan salah. Anda ingin menghapusnya?"
+msgstr "Tautan tidak valid. Apakah Anda ingin menghapusnya?"
 
 #: lib/dentry/entry.c:752
 #, c-format
@@ -583,10 +583,10 @@ msgstr ""
 
 #: resources/guide/js/launcher.coffee:200
 msgid "Use the right mouse button to send two icons to the desktop"
-msgstr ""
+msgstr "Gunakan tombol klik kanan untuk mengirim dua icon ke desktop"
 
 #: resources/desktop/js/richdir.coffee:335
-#: resources/desktop/js/richdir.coffee:842
+#: resources/desktop/js/richdir.coffee:587
 #: resources/desktop/js/desktopentry.coffee:151
 #: resources/desktop/js/application.coffee:179
 #: resources/dock/js/plugins/trash/trash.coffee:70
@@ -629,13 +629,13 @@ msgstr "_Tambahkan ke aplikasi awalan"
 
 #: resources/dock/js/plugins/trash/trash.coffee:29
 msgid "_Clean up"
-msgstr "_Clean up"
+msgstr "_Bersihkan"
 
 #: resources/dock/js/plugins/trash/trash.coffee:33
 msgid "_Close"
 msgstr "_Tutup"
 
-#: resources/desktop/js/richdir.coffee:825
+#: resources/desktop/js/richdir.coffee:570
 #: resources/desktop/js/desktopentry.coffee:104
 msgid "_Copy"
 msgstr "_Duplikat"
@@ -646,7 +646,7 @@ msgstr "_Navigasi Pojok"
 
 #: resources/desktop/js/invalidlink.coffee:34
 #: resources/desktop/js/richdir.coffee:139
-#: resources/desktop/js/richdir.coffee:827
+#: resources/desktop/js/richdir.coffee:572
 #: resources/desktop/js/desktopentry.coffee:107
 msgid "_Delete"
 msgstr "_Hapus"
@@ -693,7 +693,7 @@ msgid "_New"
 msgstr "_Baru"
 
 #: resources/desktop/js/richdir.coffee:133
-#: resources/desktop/js/richdir.coffee:822
+#: resources/desktop/js/richdir.coffee:567
 #: resources/desktop/js/desktopentry.coffee:101
 #: resources/launcher/js/item.coffee:266
 #: resources/guide/js/launcher.coffee:242
@@ -704,7 +704,7 @@ msgstr "_Buka"
 msgid "_Paste"
 msgstr "_Tempel"
 
-#: resources/desktop/js/richdir.coffee:829
+#: resources/desktop/js/richdir.coffee:574
 #: resources/desktop/js/desktopentry.coffee:109
 msgid "_Properties"
 msgstr "_Properti"
@@ -716,7 +716,7 @@ msgstr "_Hapus dari aplikasi awalan"
 #: resources/desktop/js/richdir.coffee:135
 #: resources/desktop/js/desktopentry.coffee:106
 msgid "_Rename"
-msgstr "_Rubah Nama"
+msgstr "_Ubah Nama"
 
 #: lib/dentry/mime_actions.c:213
 msgid "_Run"
@@ -741,7 +741,7 @@ msgstr "_Dokumen teks"
 #: resources/dock/js/deepin_item.coffee:169
 #: resources/dock/js/deepin_item.coffee:221
 msgid "_Time settings"
-msgstr ""
+msgstr "_Pengaturan waktu"
 
 #: resources/desktop/js/richdir.coffee:137
 msgid "_Ungroup"
@@ -754,11 +754,11 @@ msgstr "_Bongkar"
 
 #: resources/dock/js/deepin_item.coffee:168
 msgid "_View as analog"
-msgstr ""
+msgstr "_Lihat sebagai analog"
 
 #: resources/dock/js/deepin_item.coffee:220
 msgid "_View as digit"
-msgstr ""
+msgstr "_Lihat sebagai angka"
 
 #: resources/dock/js/global_menu.coffee:17
 msgid "_auto hide"
@@ -768,7 +768,7 @@ msgstr ""
 msgid "all"
 msgstr "semua"
 
-#: resources/greeter/js/user.coffee:490
+#: resources/greeter/js/user.coffee:491
 msgid "click login button to log in"
 msgstr "klik tombol login untuk masuk"
 
@@ -888,11 +888,14 @@ msgstr "ya"
 #~ msgid "Home"
 #~ msgstr "Rumah"
 
+#, fuzzy
 #~ msgid "Software Center"
-#~ msgstr "Pusat Aplikasi"
+#~ msgstr "Pusat Kontrol"
 
+#, fuzzy
 #~ msgid "_Clean up %1 items"
-#~ msgstr "_Clean up %1 item"
+#~ msgstr "_Bersihkan"
 
+#, fuzzy
 #~ msgid "_Clean up 1 item"
-#~ msgstr "_Clean up 1 item"
+#~ msgstr "_Bersihkan"

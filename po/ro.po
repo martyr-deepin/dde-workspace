@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-03 15:03+0800\n"
-"PO-Revision-Date: 2014-07-02 12:04+0000\n"
-"Last-Translator: cxbii <chenxiangbang@linuxdeepin.com>\n"
+"POT-Creation-Date: 2014-07-07 16:25+0800\n"
+"PO-Revision-Date: 2014-07-07 01:00+0000\n"
+"Last-Translator: electricface <songwentai@linuxdeepin.com>\n"
 "Language-Team: Romanian (http://www.transifex.com/projects/p/deepin-desktop-"
 "environment/language/ro/)\n"
 "Language: ro\n"
@@ -159,7 +159,7 @@ msgstr ""
 msgid "Copy"
 msgstr "Copie"
 
-#: resources/desktop/js/richdir.coffee:824
+#: resources/desktop/js/richdir.coffee:569
 #: resources/desktop/js/desktopentry.coffee:103
 msgid "Cu_t"
 msgstr "Ta_ie"
@@ -178,7 +178,7 @@ msgstr ""
 
 #: resources/zone/js/utils.coffee:10
 msgid "Desktop"
-msgstr ""
+msgstr "Spațiu de lucru"
 
 #: lib/dentry/fileops_error_dialog.c:218
 #, c-format
@@ -200,7 +200,7 @@ msgstr ""
 msgid "Do you want to run \"%s\", or display its contents?"
 msgstr "Doriți să rulați \"%s\", sau să vizualizați conținutul?"
 
-#: app/dock/dock.c:323
+#: app/dock/dock.c:329
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr ""
 
@@ -257,7 +257,7 @@ msgstr ""
 
 #: resources/greeter/js/usermenu.coffee:58
 msgid "Guest"
-msgstr ""
+msgstr "oaspete"
 
 #: resources/guide/js/dss.coffee:77
 msgid "Here is the system setting area"
@@ -355,7 +355,7 @@ msgstr ""
 
 #: resources/zone/js/utils.coffee:10
 msgid "None"
-msgstr ""
+msgstr "Nimic"
 
 #: resources/greeter/js/time.coffee:43
 msgid "Nov"
@@ -536,7 +536,7 @@ msgid "The item could not be renamed"
 msgstr ""
 
 #: resources/desktop/js/richdir.coffee:335
-#: resources/desktop/js/richdir.coffee:842
+#: resources/desktop/js/richdir.coffee:587
 #: resources/desktop/js/application.coffee:179
 msgid "The link is invalid. Do you want to delete it?"
 msgstr ""
@@ -579,7 +579,7 @@ msgid "Use the right mouse button to send two icons to the desktop"
 msgstr ""
 
 #: resources/desktop/js/richdir.coffee:335
-#: resources/desktop/js/richdir.coffee:842
+#: resources/desktop/js/richdir.coffee:587
 #: resources/desktop/js/desktopentry.coffee:151
 #: resources/desktop/js/application.coffee:179
 #: resources/dock/js/plugins/trash/trash.coffee:70
@@ -627,7 +627,7 @@ msgstr "_Curăță"
 msgid "_Close"
 msgstr "_Închide"
 
-#: resources/desktop/js/richdir.coffee:825
+#: resources/desktop/js/richdir.coffee:570
 #: resources/desktop/js/desktopentry.coffee:104
 msgid "_Copy"
 msgstr "_Copie"
@@ -638,7 +638,7 @@ msgstr ""
 
 #: resources/desktop/js/invalidlink.coffee:34
 #: resources/desktop/js/richdir.coffee:139
-#: resources/desktop/js/richdir.coffee:827
+#: resources/desktop/js/richdir.coffee:572
 #: resources/desktop/js/desktopentry.coffee:107
 msgid "_Delete"
 msgstr "_Șterge"
@@ -685,7 +685,7 @@ msgid "_New"
 msgstr "_Nou"
 
 #: resources/desktop/js/richdir.coffee:133
-#: resources/desktop/js/richdir.coffee:822
+#: resources/desktop/js/richdir.coffee:567
 #: resources/desktop/js/desktopentry.coffee:101
 #: resources/launcher/js/item.coffee:266
 #: resources/guide/js/launcher.coffee:242
@@ -696,7 +696,7 @@ msgstr "_Deschide"
 msgid "_Paste"
 msgstr "_Lipește"
 
-#: resources/desktop/js/richdir.coffee:829
+#: resources/desktop/js/richdir.coffee:574
 #: resources/desktop/js/desktopentry.coffee:109
 msgid "_Properties"
 msgstr "_Proprietăți"
@@ -760,7 +760,7 @@ msgstr ""
 msgid "all"
 msgstr "tot"
 
-#: resources/greeter/js/user.coffee:490
+#: resources/greeter/js/user.coffee:491
 msgid "click login button to log in"
 msgstr ""
 
@@ -874,8 +874,10 @@ msgstr ""
 #~ msgid "Software Center"
 #~ msgstr "Centru de Programe"
 
+#, fuzzy
 #~ msgid "_Clean up %1 items"
-#~ msgstr "_Curăță %1 obiecte"
+#~ msgstr "_Curăță"
 
+#, fuzzy
 #~ msgid "_Clean up 1 item"
-#~ msgstr "_Curăță 1 obiect"
+#~ msgstr "_Curăță"

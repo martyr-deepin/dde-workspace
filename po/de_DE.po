@@ -3,15 +3,17 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
+# Albert Schotschneider <schotschneider@hotmail.de>, 2014
 # webcrush <chris.plescher@yahoo.de>, 2014
 # Eduard Gotwig <eduardgotwig@gmail.com>, 2014
+# Steven Eisenreich, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-03 15:03+0800\n"
-"PO-Revision-Date: 2014-07-03 05:01+0000\n"
-"Last-Translator: webcrush <chris.plescher@yahoo.de>\n"
+"POT-Creation-Date: 2014-07-07 16:25+0800\n"
+"PO-Revision-Date: 2014-07-07 01:00+0000\n"
+"Last-Translator: Albert Schotschneider <schotschneider@hotmail.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/projects/p/deepin-"
 "desktop-environment/language/de_DE/)\n"
 "Language: de_DE\n"
@@ -88,14 +90,13 @@ msgid "All items in the Trash will be permanently deleted."
 msgstr "Alle Objekte im Papierkorb werden dauerhaft gelöscht."
 
 #: resources/guide/js/launcher.coffee:107
-#, fuzzy
 msgid ""
 "All programs can be located by scrolling the mouse up and down.\n"
 "You can also click on the left classification navigation to locate"
 msgstr ""
 "Alle Programme können durch Scrollen mit der Maus nach oben und unten "
-"angesehen werden.  Sie können auch auf die linke Klassifizierung Navigation "
-"klicken, um zu suchen."
+"angesehen werden. Du kannst auch auf die linke Navigation klicken, um zu "
+"suchen."
 
 #: lib/dentry/fileops_error_dialog.c:251
 #, c-format
@@ -168,7 +169,7 @@ msgstr "Kontrollzentrum"
 msgid "Copy"
 msgstr "Kopieren"
 
-#: resources/desktop/js/richdir.coffee:824
+#: resources/desktop/js/richdir.coffee:569
 #: resources/desktop/js/desktopentry.coffee:103
 msgid "Cu_t"
 msgstr "Aus_schneiden"
@@ -209,7 +210,7 @@ msgstr "Möchten Sie den Ordner \"%s\" ersetzen?"
 msgid "Do you want to run \"%s\", or display its contents?"
 msgstr "Wollen Sie \"%s\" ausführen, oder den Inhalt anzeigen lassen?"
 
-#: app/dock/dock.c:323
+#: app/dock/dock.c:329
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr "Starten des Docks fehlgeschlagen, da Compiz nicht aktiviert ist."
 
@@ -314,7 +315,7 @@ msgid ""
 "Let's drag the other icon on the first icon \n"
 " to generate \"application group\""
 msgstr ""
-"Ziehen Sie das andere Symbol auf das erste Symbol \n"
+"Ziehe das andere Symbol auf das erste Symbol, \n"
 "um eine \"Anwendungsgruppe\" zu erzeugen"
 
 #: resources/greeter/js/time.coffee:43
@@ -511,7 +512,7 @@ msgstr "Größe:"
 
 #: resources/guide/js/launcher.coffee:149
 msgid "Skip the step without scroll"
-msgstr "Überspringen Sie den Schritt ohne Scrollen"
+msgstr "Überspringe den nächsten Schritt ohne scrollen"
 
 #: resources/guide/js/desktop.coffee:143
 msgid ""
@@ -565,7 +566,7 @@ msgid "The item could not be renamed"
 msgstr "Der Gegenstand konnte nicht umbenannt werden."
 
 #: resources/desktop/js/richdir.coffee:335
-#: resources/desktop/js/richdir.coffee:842
+#: resources/desktop/js/richdir.coffee:587
 #: resources/desktop/js/application.coffee:179
 msgid "The link is invalid. Do you want to delete it?"
 msgstr "Der Link ist ungültig. Soll er entfernt werden?"
@@ -615,7 +616,7 @@ msgstr ""
 "zu senden"
 
 #: resources/desktop/js/richdir.coffee:335
-#: resources/desktop/js/richdir.coffee:842
+#: resources/desktop/js/richdir.coffee:587
 #: resources/desktop/js/desktopentry.coffee:151
 #: resources/desktop/js/application.coffee:179
 #: resources/dock/js/plugins/trash/trash.coffee:70
@@ -671,7 +672,7 @@ msgstr "_Leeren"
 msgid "_Close"
 msgstr "_Schließen"
 
-#: resources/desktop/js/richdir.coffee:825
+#: resources/desktop/js/richdir.coffee:570
 #: resources/desktop/js/desktopentry.coffee:104
 msgid "_Copy"
 msgstr "_Kopieren"
@@ -682,7 +683,7 @@ msgstr "_Eckennavigation"
 
 #: resources/desktop/js/invalidlink.coffee:34
 #: resources/desktop/js/richdir.coffee:139
-#: resources/desktop/js/richdir.coffee:827
+#: resources/desktop/js/richdir.coffee:572
 #: resources/desktop/js/desktopentry.coffee:107
 msgid "_Delete"
 msgstr "_Löschen"
@@ -729,7 +730,7 @@ msgid "_New"
 msgstr "_Neu"
 
 #: resources/desktop/js/richdir.coffee:133
-#: resources/desktop/js/richdir.coffee:822
+#: resources/desktop/js/richdir.coffee:567
 #: resources/desktop/js/desktopentry.coffee:101
 #: resources/launcher/js/item.coffee:266
 #: resources/guide/js/launcher.coffee:242
@@ -740,7 +741,7 @@ msgstr "_Öffnen"
 msgid "_Paste"
 msgstr "_Einfügen"
 
-#: resources/desktop/js/richdir.coffee:829
+#: resources/desktop/js/richdir.coffee:574
 #: resources/desktop/js/desktopentry.coffee:109
 msgid "_Properties"
 msgstr "_Eigenschaften"
@@ -804,7 +805,7 @@ msgstr "_Automatisch Verstecken"
 msgid "all"
 msgstr "alles"
 
-#: resources/greeter/js/user.coffee:490
+#: resources/greeter/js/user.coffee:491
 msgid "click login button to log in"
 msgstr "Benutzen Sie den Knopf zur Anmeldung zum Anmelden"
 
@@ -931,14 +932,17 @@ msgstr "Ja"
 #~ msgid "Home"
 #~ msgstr "Start"
 
+#, fuzzy
 #~ msgid "Software Center"
-#~ msgstr "Software Center"
+#~ msgstr "Kontrollzentrum"
 
+#, fuzzy
 #~ msgid "_Clean up %1 items"
-#~ msgstr "%1 Objekt _leeren"
+#~ msgstr "_Leeren"
 
+#, fuzzy
 #~ msgid "_Clean up 1 item"
-#~ msgstr "_1 Objekt leeren"
+#~ msgstr "_Leeren"
 
 #~ msgid ""
 #~ "tips:You can also directly use the left mouse button to drag the icon to "

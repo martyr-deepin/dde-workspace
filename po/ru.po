@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-03 15:03+0800\n"
-"PO-Revision-Date: 2014-07-03 05:01+0000\n"
+"POT-Creation-Date: 2014-07-07 16:25+0800\n"
+"PO-Revision-Date: 2014-07-03 17:01+0000\n"
 "Last-Translator: Fox909 <ffox909@mail.ru>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/deepin-desktop-"
 "environment/language/ru/)\n"
@@ -90,13 +90,12 @@ msgid "All items in the Trash will be permanently deleted."
 msgstr "Содержимое корзины будет полностью удалено."
 
 #: resources/guide/js/launcher.coffee:107
-#, fuzzy
 msgid ""
 "All programs can be located by scrolling the mouse up and down.\n"
 "You can also click on the left classification navigation to locate"
 msgstr ""
-"Все программы можно увидеть с помощью прокрутки мыши\n"
-"Также для поиска можно нажать слева классификацию навигации"
+"Все программы могут быть выбраны прокруткой мыши вверх и вниз.\n"
+"Вы также можете нажать слева на классификации навигации, для поиска."
 
 #: lib/dentry/fileops_error_dialog.c:251
 #, c-format
@@ -169,7 +168,7 @@ msgstr "Центр управления"
 msgid "Copy"
 msgstr "Копировать"
 
-#: resources/desktop/js/richdir.coffee:824
+#: resources/desktop/js/richdir.coffee:569
 #: resources/desktop/js/desktopentry.coffee:103
 msgid "Cu_t"
 msgstr "Вырезать"
@@ -210,7 +209,7 @@ msgstr "Вы действительно желаете заменить папк
 msgid "Do you want to run \"%s\", or display its contents?"
 msgstr "Вы желаете запустить файл «%s» или просмотреть его содержимое?"
 
-#: app/dock/dock.c:323
+#: app/dock/dock.c:329
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr "Ошибка запуска панели: отключён плагин Compiz"
 
@@ -553,7 +552,7 @@ msgid "The item could not be renamed"
 msgstr "Объект не может быть переименован"
 
 #: resources/desktop/js/richdir.coffee:335
-#: resources/desktop/js/richdir.coffee:842
+#: resources/desktop/js/richdir.coffee:587
 #: resources/desktop/js/application.coffee:179
 msgid "The link is invalid. Do you want to delete it?"
 msgstr "Неверная ссылка! Желаете её удалить?"
@@ -602,7 +601,7 @@ msgstr ""
 "Рабочий стол"
 
 #: resources/desktop/js/richdir.coffee:335
-#: resources/desktop/js/richdir.coffee:842
+#: resources/desktop/js/richdir.coffee:587
 #: resources/desktop/js/desktopentry.coffee:151
 #: resources/desktop/js/application.coffee:179
 #: resources/dock/js/plugins/trash/trash.coffee:70
@@ -653,7 +652,7 @@ msgstr "Очистить"
 msgid "_Close"
 msgstr "_Закрыть"
 
-#: resources/desktop/js/richdir.coffee:825
+#: resources/desktop/js/richdir.coffee:570
 #: resources/desktop/js/desktopentry.coffee:104
 msgid "_Copy"
 msgstr "Копировать"
@@ -664,7 +663,7 @@ msgstr "Угловая навигация"
 
 #: resources/desktop/js/invalidlink.coffee:34
 #: resources/desktop/js/richdir.coffee:139
-#: resources/desktop/js/richdir.coffee:827
+#: resources/desktop/js/richdir.coffee:572
 #: resources/desktop/js/desktopentry.coffee:107
 msgid "_Delete"
 msgstr "_Удалить"
@@ -711,7 +710,7 @@ msgid "_New"
 msgstr "Новый"
 
 #: resources/desktop/js/richdir.coffee:133
-#: resources/desktop/js/richdir.coffee:822
+#: resources/desktop/js/richdir.coffee:567
 #: resources/desktop/js/desktopentry.coffee:101
 #: resources/launcher/js/item.coffee:266
 #: resources/guide/js/launcher.coffee:242
@@ -722,7 +721,7 @@ msgstr "Открыть"
 msgid "_Paste"
 msgstr "Вставить"
 
-#: resources/desktop/js/richdir.coffee:829
+#: resources/desktop/js/richdir.coffee:574
 #: resources/desktop/js/desktopentry.coffee:109
 msgid "_Properties"
 msgstr "Свойства"
@@ -786,7 +785,7 @@ msgstr "Автоскрытие"
 msgid "all"
 msgstr "все"
 
-#: resources/greeter/js/user.coffee:490
+#: resources/greeter/js/user.coffee:491
 msgid "click login button to log in"
 msgstr "нажать кнопку входа для авторизации"
 
@@ -913,14 +912,17 @@ msgstr "да"
 #~ msgid "Home"
 #~ msgstr "Домашняя папка"
 
+#, fuzzy
 #~ msgid "Software Center"
-#~ msgstr "Центр приложений"
+#~ msgstr "Центр управления"
 
+#, fuzzy
 #~ msgid "_Clean up %1 items"
-#~ msgstr "Очистить %1 объектов"
+#~ msgstr "Очистить"
 
+#, fuzzy
 #~ msgid "_Clean up 1 item"
-#~ msgstr "Очистить 1 объект"
+#~ msgstr "Очистить"
 
 #~ msgid ""
 #~ "tips:You can also directly use the left mouse button to drag the icon to "

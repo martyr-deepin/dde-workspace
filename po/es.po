@@ -6,13 +6,14 @@
 # child <comendador@gmail.com>, 2014
 # jose manuel <josemdance@outlook.com>, 2014
 # Luis Castillo <castilloluis2005@gmail.com>, 2014
+# karlos2 <xkarlos2@hotmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-03 15:03+0800\n"
-"PO-Revision-Date: 2014-07-03 05:01+0000\n"
-"Last-Translator: jose manuel <josemdance@outlook.com>\n"
+"POT-Creation-Date: 2014-07-07 16:25+0800\n"
+"PO-Revision-Date: 2014-07-03 14:41+0000\n"
+"Last-Translator: karlos2 <xkarlos2@hotmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/deepin-desktop-"
 "environment/language/es/)\n"
 "Language: es\n"
@@ -89,13 +90,12 @@ msgid "All items in the Trash will be permanently deleted."
 msgstr "Todos los Elementos en la Papelera serán borrados de forma permanente"
 
 #: resources/guide/js/launcher.coffee:107
-#, fuzzy
 msgid ""
 "All programs can be located by scrolling the mouse up and down.\n"
 "You can also click on the left classification navigation to locate"
 msgstr ""
-"Todos los programas pueden ser vistos por el desplazamiento del ratón hacia "
-"arriba y hacia abajo.\n"
+"Todos los programas pueden ser localizados desplazando el ratón hacia arriba "
+"y hacia abajo.\n"
 "También puede hacer clic en la barra de navegación izquierda para localizar "
 "la clasificación"
 
@@ -170,7 +170,7 @@ msgstr "Centro de Control"
 msgid "Copy"
 msgstr "Copiar"
 
-#: resources/desktop/js/richdir.coffee:824
+#: resources/desktop/js/richdir.coffee:569
 #: resources/desktop/js/desktopentry.coffee:103
 msgid "Cu_t"
 msgstr "Cor_tar"
@@ -211,7 +211,7 @@ msgstr "¿Quieres reemplazar la carpeta \"%s\"?"
 msgid "Do you want to run \"%s\", or display its contents?"
 msgstr "¿Desea ejecutar \"%s\", o mostrar su contenido?"
 
-#: app/dock/dock.c:323
+#: app/dock/dock.c:329
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr "Dock no se pudo iniciar porque Compiz no está habilitado."
 
@@ -560,7 +560,7 @@ msgid "The item could not be renamed"
 msgstr "El archivo no puede ser renombrado"
 
 #: resources/desktop/js/richdir.coffee:335
-#: resources/desktop/js/richdir.coffee:842
+#: resources/desktop/js/richdir.coffee:587
 #: resources/desktop/js/application.coffee:179
 msgid "The link is invalid. Do you want to delete it?"
 msgstr "El enlace es invalido. Desea borrarlo?"
@@ -608,7 +608,7 @@ msgstr ""
 "Utilice el botón derecho del ratón para enviar dos iconos en el escritorio"
 
 #: resources/desktop/js/richdir.coffee:335
-#: resources/desktop/js/richdir.coffee:842
+#: resources/desktop/js/richdir.coffee:587
 #: resources/desktop/js/desktopentry.coffee:151
 #: resources/desktop/js/application.coffee:179
 #: resources/dock/js/plugins/trash/trash.coffee:70
@@ -660,7 +660,7 @@ msgstr "_Limpiar"
 msgid "_Close"
 msgstr "_Cerrar"
 
-#: resources/desktop/js/richdir.coffee:825
+#: resources/desktop/js/richdir.coffee:570
 #: resources/desktop/js/desktopentry.coffee:104
 msgid "_Copy"
 msgstr "_Copiar"
@@ -671,7 +671,7 @@ msgstr "_Esquina de navegación"
 
 #: resources/desktop/js/invalidlink.coffee:34
 #: resources/desktop/js/richdir.coffee:139
-#: resources/desktop/js/richdir.coffee:827
+#: resources/desktop/js/richdir.coffee:572
 #: resources/desktop/js/desktopentry.coffee:107
 msgid "_Delete"
 msgstr "_Eliminar"
@@ -718,7 +718,7 @@ msgid "_New"
 msgstr "_Nuevo"
 
 #: resources/desktop/js/richdir.coffee:133
-#: resources/desktop/js/richdir.coffee:822
+#: resources/desktop/js/richdir.coffee:567
 #: resources/desktop/js/desktopentry.coffee:101
 #: resources/launcher/js/item.coffee:266
 #: resources/guide/js/launcher.coffee:242
@@ -729,7 +729,7 @@ msgstr "_Abrir"
 msgid "_Paste"
 msgstr "_Pegar"
 
-#: resources/desktop/js/richdir.coffee:829
+#: resources/desktop/js/richdir.coffee:574
 #: resources/desktop/js/desktopentry.coffee:109
 msgid "_Properties"
 msgstr "_Propiedades"
@@ -793,7 +793,7 @@ msgstr "_auto ocultar"
 msgid "all"
 msgstr "todo"
 
-#: resources/greeter/js/user.coffee:490
+#: resources/greeter/js/user.coffee:491
 msgid "click login button to log in"
 msgstr "Clic en el botón de inicio de sesión para iniciar sesión"
 
@@ -922,14 +922,17 @@ msgstr "si"
 #~ msgid "Home"
 #~ msgstr "Carpeta personal"
 
+#, fuzzy
 #~ msgid "Software Center"
-#~ msgstr "Centro de Software"
+#~ msgstr "Centro de Control"
 
+#, fuzzy
 #~ msgid "_Clean up %1 items"
-#~ msgstr "_Limpiar %1 elementos"
+#~ msgstr "_Limpiar"
 
+#, fuzzy
 #~ msgid "_Clean up 1 item"
-#~ msgstr "_Limpiar 1 elemento"
+#~ msgstr "_Limpiar"
 
 #~ msgid ""
 #~ "tips:You can also directly use the left mouse button to drag the icon to "

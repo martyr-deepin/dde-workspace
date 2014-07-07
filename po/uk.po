@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
+# Zoom <termosyura@ukr.net>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-03 15:03+0800\n"
-"PO-Revision-Date: 2014-07-02 12:04+0000\n"
-"Last-Translator: cxbii <chenxiangbang@linuxdeepin.com>\n"
+"POT-Creation-Date: 2014-07-07 16:25+0800\n"
+"PO-Revision-Date: 2014-07-03 22:32+0000\n"
+"Last-Translator: Zoom <termosyura@ukr.net>\n"
 "Language-Team: Ukrainian (http://www.transifex.com/projects/p/deepin-desktop-"
 "environment/language/uk/)\n"
 "Language: uk\n"
@@ -28,6 +29,8 @@ msgid ""
 "\t\t\t\t-----The daemon of accounts has not started!-----\n"
 ")"
 msgstr ""
+"\t\t\t\t-----Процес облікових записів не запущено!-----\n"
+")"
 
 #: lib/dentry/mime_actions.c:199
 #, c-format
@@ -36,12 +39,12 @@ msgstr ""
 
 #: resources/greeter/js/message.coffee:81
 msgid "$ sudo apt-get install deepin-desktop-Environment\n"
-msgstr ""
+msgstr "$ sudo apt-get install deepin-desktop-Environment\n"
 
 #: resources/greeter/js/message.coffee:110
 #: resources/greeter/js/message.coffee:84
 msgid "$ sudo reboot\n"
-msgstr ""
+msgstr "$ sudo reboot\n"
 
 #: app/greeter/mutils.c:84
 msgid "%a, %b %d, %Y"
@@ -69,16 +72,16 @@ msgstr ""
 
 #: resources/launcher/js/const.coffee:80
 msgid "Add to _favorites"
-msgstr ""
+msgstr "Додати до _обраного"
 
 #: resources/zone/js/utils.coffee:10
 msgid "All Windows"
-msgstr ""
+msgstr "Усі вікна"
 
 #: resources/dock/js/plugins/trash/trash.coffee:107
 #: resources/launcher/js/item.coffee:339
 msgid "All dependences will be removed"
-msgstr ""
+msgstr "Усі залежності будуть видалені"
 
 #: lib/dentry/fileops_trash.c:68
 msgid "All items in the Trash will be permanently deleted."
@@ -125,7 +128,7 @@ msgstr "Кві"
 #: resources/dock/js/plugins/trash/trash.coffee:107
 #: resources/launcher/js/item.coffee:339
 msgid "Are you sure to remove"
-msgstr ""
+msgstr "Ви впевнені, що хочете видалити"
 
 #: lib/dentry/fileops_delete.c:32
 msgid "Are you sure you want to permanently delete the files?"
@@ -153,13 +156,13 @@ msgstr "_Стиснути"
 
 #: resources/zone/js/utils.coffee:10
 msgid "Control Center"
-msgstr ""
+msgstr "Центр керування"
 
 #: resources/osd/js/display.coffee:42 lib/dentry/fileops.c:772
 msgid "Copy"
 msgstr "Копіювати"
 
-#: resources/desktop/js/richdir.coffee:824
+#: resources/desktop/js/richdir.coffee:569
 #: resources/desktop/js/desktopentry.coffee:103
 msgid "Cu_t"
 msgstr "_Вирізати"
@@ -178,7 +181,7 @@ msgstr ""
 
 #: resources/zone/js/utils.coffee:10
 msgid "Desktop"
-msgstr ""
+msgstr "Робочий стіл"
 
 #: lib/dentry/fileops_error_dialog.c:218
 #, c-format
@@ -200,7 +203,7 @@ msgstr ""
 msgid "Do you want to run \"%s\", or display its contents?"
 msgstr ""
 
-#: app/dock/dock.c:323
+#: app/dock/dock.c:329
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr ""
 
@@ -218,11 +221,11 @@ msgstr ""
 
 #: resources/guide/js/end.coffee:32
 msgid "End"
-msgstr ""
+msgstr "Кінець"
 
 #: resources/greeter/js/powermenu.coffee:102
 msgid "Enter your password to %1"
-msgstr ""
+msgstr "Введіть свій пароль для %1"
 
 #: lib/dentry/fileops_error_reporting.c:106
 #: lib/dentry/fileops_error_reporting.c:191
@@ -232,7 +235,7 @@ msgstr ""
 
 #: resources/osd/js/display.coffee:43
 msgid "Expand"
-msgstr ""
+msgstr "Розширити"
 
 #: resources/desktop/js/desktopentry.coffee:119
 #: resources/desktop/js/desktopentry.coffee:124
@@ -253,15 +256,15 @@ msgstr "Пт"
 
 #: resources/guide/js/end.coffee:47
 msgid "Get"
-msgstr ""
+msgstr "Отримати"
 
 #: resources/greeter/js/usermenu.coffee:58
 msgid "Guest"
-msgstr ""
+msgstr "Гість"
 
 #: resources/guide/js/dss.coffee:77
 msgid "Here is the system setting area"
-msgstr ""
+msgstr "Ось область налаштування системи"
 
 #: resources/guide/js/start.coffee:54
 msgid "I am older,exit directly"
@@ -347,15 +350,15 @@ msgstr "Новий файл"
 
 #: resources/guide/js/end.coffee:55
 msgid "New users directly jump to the registration page"
-msgstr ""
+msgstr "Нові користувачі відразу потрапляють на сторінку реєстрації"
 
 #: resources/guide/js/desktop.coffee:152
 msgid "No default functions setted in right up corner"
-msgstr ""
+msgstr "Функція по-замовчуванню не задана для правого верхнього кута"
 
 #: resources/zone/js/utils.coffee:10
 msgid "None"
-msgstr ""
+msgstr "Нічого"
 
 #: resources/greeter/js/time.coffee:43
 msgid "Nov"
@@ -367,11 +370,11 @@ msgstr "Жов"
 
 #: resources/osd/js/display.coffee:44
 msgid "Only the first Screen"
-msgstr ""
+msgstr "Лише перший екран"
 
 #: resources/osd/js/display.coffee:45
 msgid "Only the second Screen"
-msgstr ""
+msgstr "Лише другий екран"
 
 #: app/greeter/camera.c:47
 msgid "Oops...I can't recognize your face. "
@@ -402,12 +405,12 @@ msgstr ""
 
 #: resources/guide/js/welcome.coffee:41
 msgid "Prepare for operation ..."
-msgstr ""
+msgstr "Підготовка до операції..."
 
 #: resources/greeter/js/message.coffee:104
 #: resources/greeter/js/message.coffee:75
 msgid "Press Ctrl + Alt + F1\n"
-msgstr ""
+msgstr "Натисніть Ctrl + Alt + F1\n"
 
 #: lib/dentry/fileops_error_dialog.c:136
 msgid "Re_name"
@@ -416,7 +419,7 @@ msgstr "_Перейменувати"
 #: resources/launcher/js/const.coffee:81
 #: resources/guide/js/launcher.coffee:244
 msgid "Remove from _favorites"
-msgstr ""
+msgstr "Видалити з _обраного"
 
 #: lib/dentry/fileops_error_dialog.c:141
 msgid "Replace"
@@ -440,7 +443,7 @@ msgstr "Скинути"
 
 #: resources/greeter/js/powermenu.coffee:52
 msgid "Restart"
-msgstr ""
+msgstr "Перезавантажити"
 
 #: resources/guide/js/desktop.coffee:199
 msgid ""
@@ -472,7 +475,7 @@ msgstr "Вер"
 
 #: resources/guide/js/desktop.coffee:151
 msgid "Show/Hide Control Center"
-msgstr ""
+msgstr "Показати/Сховати Центр керування"
 
 #: resources/guide/js/desktop.coffee:150
 msgid "Show/Hide Desktop"
@@ -480,11 +483,11 @@ msgstr "Показати/Сховати Робочий стіл"
 
 #: resources/guide/js/desktop.coffee:149
 msgid "Show/Hide Launcher"
-msgstr ""
+msgstr "Показати/Сховати Запускач"
 
 #: resources/greeter/js/powermenu.coffee:51
 msgid "Shut down"
-msgstr ""
+msgstr "Вимкнути"
 
 #: lib/dentry/fileops_error_dialog.c:332 lib/dentry/fileops_error_dialog.c:360
 msgid "Size:"
@@ -500,6 +503,9 @@ msgid ""
 "events\n"
 "Please move to the left up corner first to show or hide Launcher"
 msgstr ""
+"Перемістіть курсор у чотири кути, що може викликати чотири різні події\n"
+"Будь ласка, перемістіть курсор спочатку у лівий верхній кут щоб показати або "
+"приховати Запускач"
 
 #: resources/guide/js/launcher.coffee:32
 msgid ""
@@ -517,15 +523,15 @@ msgstr "Нд"
 
 #: resources/greeter/js/powermenu.coffee:53
 msgid "Suspend"
-msgstr ""
+msgstr "Призупинити"
 
 #: resources/guide/js/end.coffee:26
 msgid "Thanks for your patience to learn.Congratulation!"
-msgstr ""
+msgstr "Спасибі за Ваше терпіння до навчання. Вітаємо!"
 
 #: resources/guide/js/end.coffee:43
 msgid "Thanks for your patience to learn.You get the novice package"
-msgstr ""
+msgstr "Спасибі за Ваше терпіння до навчання. Ви отримуєте пакет початківця"
 
 #: resources/guide/js/start.coffee:29
 msgid "The following will guide you to learn how to use some new functions"
@@ -536,10 +542,10 @@ msgid "The item could not be renamed"
 msgstr ""
 
 #: resources/desktop/js/richdir.coffee:335
-#: resources/desktop/js/richdir.coffee:842
+#: resources/desktop/js/richdir.coffee:587
 #: resources/desktop/js/application.coffee:179
 msgid "The link is invalid. Do you want to delete it?"
-msgstr ""
+msgstr "Посилання недійсне! Бажаєте видалити його?"
 
 #: lib/dentry/entry.c:752
 #, c-format
@@ -579,7 +585,7 @@ msgid "Use the right mouse button to send two icons to the desktop"
 msgstr ""
 
 #: resources/desktop/js/richdir.coffee:335
-#: resources/desktop/js/richdir.coffee:842
+#: resources/desktop/js/richdir.coffee:587
 #: resources/desktop/js/desktopentry.coffee:151
 #: resources/desktop/js/application.coffee:179
 #: resources/dock/js/plugins/trash/trash.coffee:70
@@ -592,15 +598,15 @@ msgstr "Ср"
 
 #: resources/guide/js/welcome.coffee:38
 msgid "Welcome to use Deepin Operating System"
-msgstr ""
+msgstr "Вітаємо в Операційній системі Deepin!"
 
 #: resources/guide/js/dss.coffee:30
 msgid "Well, please trigger the lower right corner again"
-msgstr ""
+msgstr "Будь ласка, наведіть курсор на нижній правий кут знову"
 
 #: resources/guide/js/desktop.coffee:129
 msgid "Well, you have learned how to create a \"application group\""
-msgstr ""
+msgstr "Отже, Ви навчились створювати \"групу застосунків\""
 
 #: resources/guide/js/launcher.coffee:80
 msgid ""
@@ -627,18 +633,18 @@ msgstr "_Очистити"
 msgid "_Close"
 msgstr "_Закрити"
 
-#: resources/desktop/js/richdir.coffee:825
+#: resources/desktop/js/richdir.coffee:570
 #: resources/desktop/js/desktopentry.coffee:104
 msgid "_Copy"
 msgstr "_Копіювати"
 
 #: resources/desktop/js/grid.coffee:1051 resources/guide/js/desktop.coffee:226
 msgid "_Corner navigation"
-msgstr ""
+msgstr "_Кутова навігація"
 
 #: resources/desktop/js/invalidlink.coffee:34
 #: resources/desktop/js/richdir.coffee:139
-#: resources/desktop/js/richdir.coffee:827
+#: resources/desktop/js/richdir.coffee:572
 #: resources/desktop/js/desktopentry.coffee:107
 msgid "_Delete"
 msgstr "_Видалити"
@@ -670,7 +676,7 @@ msgstr "_Папка"
 
 #: resources/launcher/js/const.coffee:64
 msgid "_Hide the icon"
-msgstr ""
+msgstr "_Приховати значок"
 
 #: resources/launcher/js/const.coffee:68
 msgid "_Hide this icon"
@@ -685,7 +691,7 @@ msgid "_New"
 msgstr "_Новий"
 
 #: resources/desktop/js/richdir.coffee:133
-#: resources/desktop/js/richdir.coffee:822
+#: resources/desktop/js/richdir.coffee:567
 #: resources/desktop/js/desktopentry.coffee:101
 #: resources/launcher/js/item.coffee:266
 #: resources/guide/js/launcher.coffee:242
@@ -696,7 +702,7 @@ msgstr "_Відкрити"
 msgid "_Paste"
 msgstr "_Вставити"
 
-#: resources/desktop/js/richdir.coffee:829
+#: resources/desktop/js/richdir.coffee:574
 #: resources/desktop/js/desktopentry.coffee:109
 msgid "_Properties"
 msgstr "_Властивості"
@@ -742,7 +748,7 @@ msgstr "_Розгрупувати"
 #: resources/launcher/js/item.coffee:275
 #: resources/guide/js/launcher.coffee:249
 msgid "_Uninstall"
-msgstr ""
+msgstr "Видалити"
 
 #: resources/dock/js/deepin_item.coffee:168
 msgid "_View as analog"
@@ -760,9 +766,9 @@ msgstr ""
 msgid "all"
 msgstr ""
 
-#: resources/greeter/js/user.coffee:490
+#: resources/greeter/js/user.coffee:491
 msgid "click login button to log in"
-msgstr ""
+msgstr "натисніть кнопку входу щоб увійти"
 
 #: lib/dentry/entry.c:833 lib/dentry/fileops.c:805
 msgid "copy"
@@ -807,7 +813,7 @@ msgstr ""
 #: resources/dock/js/plugins/trash/trash.coffee:107
 #: resources/launcher/js/item.coffee:339
 msgid "no"
-msgstr ""
+msgstr "ні"
 
 #: lib/category.c:56
 msgid "other"
@@ -831,13 +837,15 @@ msgstr ""
 
 #: resources/guide/js/dss.coffee:31
 msgid "tips：Click the setting icon on dock to implement"
-msgstr ""
+msgstr "Підказка: Для застосування натисніть на значок налаштувань на панелі"
 
 #: resources/guide/js/dss.coffee:78
 msgid ""
 "tips：Hover the setting icon on dock to quickly implement some setting "
 "functions"
 msgstr ""
+"Підказка: Наведіть курсор на значок налаштувань на панелі щоб швидко змінити "
+"деякі налаштування"
 
 #: resources/guide/js/launcher.coffee:182
 msgid "tips：Please directly enter the word \"deepin\""
@@ -845,16 +853,20 @@ msgstr ""
 
 #: resources/guide/js/end.coffee:45
 msgid "tips：Please receive in Deepin account"
-msgstr ""
+msgstr "Підказка: Отримайте в обліковому записі Deepin"
 
 #: resources/guide/js/desktop.coffee:144
 msgid ""
 "tips：Please trigger successively by hints, click on the blank area to return"
 msgstr ""
+"Підказка: Послідовно ініціюйте інші події за допомогою підказок, натисніть "
+"на пусте місце для повернення"
 
 #: resources/guide/js/desktop.coffee:130
 msgid "tips：Right-click on the application group will provide more functions"
 msgstr ""
+"Підказка: Натискання правої кнопки на групі застосунків надасть більше "
+"можливостей"
 
 #: lib/category.c:55
 msgid "utilities"
@@ -863,7 +875,7 @@ msgstr ""
 #: resources/dock/js/plugins/trash/trash.coffee:107
 #: resources/launcher/js/item.coffee:339
 msgid "yes"
-msgstr ""
+msgstr "так"
 
 #~ msgid "Computer"
 #~ msgstr "Комп’ютер"
@@ -871,11 +883,14 @@ msgstr ""
 #~ msgid "Home"
 #~ msgstr "Домашня папка"
 
+#, fuzzy
 #~ msgid "Software Center"
-#~ msgstr "Центр програмного забезпечення"
+#~ msgstr "Центр керування"
 
+#, fuzzy
 #~ msgid "_Clean up %1 items"
-#~ msgstr "_Очистити %1 об’єкти"
+#~ msgstr "_Очистити"
 
+#, fuzzy
 #~ msgid "_Clean up 1 item"
-#~ msgstr "_Очистити 1 об’єкт"
+#~ msgstr "_Очистити"

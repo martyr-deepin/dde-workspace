@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-03 15:03+0800\n"
-"PO-Revision-Date: 2014-07-03 05:01+0000\n"
-"Last-Translator: cxbii <chenxiangbang@linuxdeepin.com>\n"
+"POT-Creation-Date: 2014-07-07 16:25+0800\n"
+"PO-Revision-Date: 2014-07-07 01:41+0000\n"
+"Last-Translator: Ömer GÖK <omergok@outlook.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/deepin-desktop-"
 "environment/language/tr/)\n"
 "Language: tr\n"
@@ -91,6 +91,8 @@ msgid ""
 "All programs can be located by scrolling the mouse up and down.\n"
 "You can also click on the left classification navigation to locate"
 msgstr ""
+"Tüm uygulamalar fare ile yukarı ve aşşağı kayrılılarak konumlandırılabilir.\n"
+"Ayrıca sol sınıflandırmaya tıklanarakta konumlandırılabilir"
 
 #: lib/dentry/fileops_error_dialog.c:251
 #, c-format
@@ -163,7 +165,7 @@ msgstr "Kontrol Merkezi"
 msgid "Copy"
 msgstr "Kopyala"
 
-#: resources/desktop/js/richdir.coffee:824
+#: resources/desktop/js/richdir.coffee:569
 #: resources/desktop/js/desktopentry.coffee:103
 msgid "Cu_t"
 msgstr "K_es"
@@ -204,7 +206,7 @@ msgstr "\"%s\" klasörünü değiştirmek istiyor musunuz?"
 msgid "Do you want to run \"%s\", or display its contents?"
 msgstr "\"%s\"'ı çalıştırmak mı istiyorsunuz yoksa içeriğine bakmak mı ?"
 
-#: app/dock/dock.c:323
+#: app/dock/dock.c:329
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr "Dock bar başlatılamadı, çünkü Compiz aktif değil."
 
@@ -308,6 +310,8 @@ msgid ""
 "Let's drag the other icon on the first icon \n"
 " to generate \"application group\""
 msgstr ""
+"Diğer ikonu ilk ikonun üzerine bırakarak\n"
+"\"uygulama grubu\" oluşturulabilir"
 
 #: resources/greeter/js/time.coffee:43
 msgid "Mar"
@@ -451,6 +455,8 @@ msgid ""
 "Right-click on desktop black area to call up the menu, select \"Corner "
 "navigation\" to set the corner used"
 msgstr ""
+"Menüyü açmak için masaüstünde siyah alan üzerinde sağ tıklayın, \"Köşe "
+"gezinme\" seçilelerek köşe kullanılır"
 
 #: lib/dentry/mime_actions.c:210
 msgid "Run in _Terminal"
@@ -496,7 +502,7 @@ msgstr "Boyut:"
 
 #: resources/guide/js/launcher.coffee:149
 msgid "Skip the step without scroll"
-msgstr ""
+msgstr "Kaydırmadan adımı atla"
 
 #: resources/guide/js/desktop.coffee:143
 msgid ""
@@ -504,12 +510,17 @@ msgid ""
 "events\n"
 "Please move to the left up corner first to show or hide Launcher"
 msgstr ""
+"Fareyi ekrandaki dört köşeden birine kaydırmak, dört olaydan birini "
+"tetikleyecektir\n"
+"Başlatıcıyı göstermek veya gizlemek için fareyi sol üst köşeye kaydırın"
 
 #: resources/guide/js/launcher.coffee:32
 msgid ""
 "Sliding the mouse to the upper left corner or clicking on the launcher icon "
 "both can start \"Application Launcher\""
 msgstr ""
+"Fareyi sol üst köşeye kaydırarak veya başlatıcı ikona tıklanacak \"Uygulama "
+"Başlatıcısı\" başlatılabilir"
 
 #: resources/guide/js/start.coffee:47
 msgid "Start"
@@ -542,7 +553,7 @@ msgid "The item could not be renamed"
 msgstr "Bu nesne yeniden isimlendirilemedi"
 
 #: resources/desktop/js/richdir.coffee:335
-#: resources/desktop/js/richdir.coffee:842
+#: resources/desktop/js/richdir.coffee:587
 #: resources/desktop/js/application.coffee:179
 msgid "The link is invalid. Do you want to delete it?"
 msgstr "Bu bağlantı geçersiz. Bunu silmek istiyor musun?"
@@ -580,13 +591,15 @@ msgid ""
 "Use the keyboard searching to find applications you want\n"
 "We try\"deepin\" keyword to see which applications shown"
 msgstr ""
+"Klavye ile arama kullanılarak istenilen uygulama aranabilir\n"
+"Biz \"deepin\" anahtar kelimesini kullanarak bazı uygulamalar gösterilir"
 
 #: resources/guide/js/launcher.coffee:200
 msgid "Use the right mouse button to send two icons to the desktop"
 msgstr "Masaüstüne iki simge göndermek için sağ fare düğmesini kullanın"
 
 #: resources/desktop/js/richdir.coffee:335
-#: resources/desktop/js/richdir.coffee:842
+#: resources/desktop/js/richdir.coffee:587
 #: resources/desktop/js/desktopentry.coffee:151
 #: resources/desktop/js/application.coffee:179
 #: resources/dock/js/plugins/trash/trash.coffee:70
@@ -614,6 +627,8 @@ msgid ""
 "What shown in the first screen of \" launcher\" are the applications of "
 "collection"
 msgstr ""
+"\"başlatıcı\" nın ilk ekranında koleksiyonun hangi uygulamaları gösterdiği "
+"seçilir"
 
 #: lib/dentry/fileops_error_dialog.c:220
 msgid ""
@@ -636,7 +651,7 @@ msgstr "_Sil"
 msgid "_Close"
 msgstr "_Kapat"
 
-#: resources/desktop/js/richdir.coffee:825
+#: resources/desktop/js/richdir.coffee:570
 #: resources/desktop/js/desktopentry.coffee:104
 msgid "_Copy"
 msgstr "_Kopyala"
@@ -647,7 +662,7 @@ msgstr "_Köşe gezinme"
 
 #: resources/desktop/js/invalidlink.coffee:34
 #: resources/desktop/js/richdir.coffee:139
-#: resources/desktop/js/richdir.coffee:827
+#: resources/desktop/js/richdir.coffee:572
 #: resources/desktop/js/desktopentry.coffee:107
 msgid "_Delete"
 msgstr "_Sil"
@@ -694,7 +709,7 @@ msgid "_New"
 msgstr "_Yeni"
 
 #: resources/desktop/js/richdir.coffee:133
-#: resources/desktop/js/richdir.coffee:822
+#: resources/desktop/js/richdir.coffee:567
 #: resources/desktop/js/desktopentry.coffee:101
 #: resources/launcher/js/item.coffee:266
 #: resources/guide/js/launcher.coffee:242
@@ -705,7 +720,7 @@ msgstr "_Aç"
 msgid "_Paste"
 msgstr "Ya_pıştır"
 
-#: resources/desktop/js/richdir.coffee:829
+#: resources/desktop/js/richdir.coffee:574
 #: resources/desktop/js/desktopentry.coffee:109
 msgid "_Properties"
 msgstr "_Özellikler"
@@ -769,7 +784,7 @@ msgstr "_otomatik gizle"
 msgid "all"
 msgstr "hepsi"
 
-#: resources/greeter/js/user.coffee:490
+#: resources/greeter/js/user.coffee:491
 msgid "click login button to log in"
 msgstr "giriş için giriş tuşuna tıklayın"
 
@@ -832,11 +847,11 @@ msgstr "sistem"
 
 #: resources/guide/js/launcher.coffee:201
 msgid "tips:You can add it to startup items or uninstall"
-msgstr ""
+msgstr "ipucu:Başlangıç nesnelerine ekleyebilirsin veya kaldırılabilirsin"
 
 #: resources/guide/js/desktop.coffee:200
 msgid "tips：Click on the interface of corner navigation blank area to return"
-msgstr ""
+msgstr "ipucu：Köşeden arayüze geri dönmwk için arayüze tıklayın"
 
 #: resources/guide/js/dss.coffee:31
 msgid "tips：Click the setting icon on dock to implement"
@@ -862,6 +877,7 @@ msgstr "ipucu: Lütfen Deepin hesabı alın "
 msgid ""
 "tips：Please trigger successively by hints, click on the blank area to return"
 msgstr ""
+"ipucu：İpuçlarından fare kaydırılarak, boş alana tıklanarak geri dönülebilir"
 
 #: resources/guide/js/desktop.coffee:130
 msgid "tips：Right-click on the application group will provide more functions"
@@ -883,14 +899,17 @@ msgstr "evet"
 #~ msgid "Home"
 #~ msgstr "Ev"
 
+#, fuzzy
 #~ msgid "Software Center"
-#~ msgstr "Yazılım Merkezi"
+#~ msgstr "Kontrol Merkezi"
 
+#, fuzzy
 #~ msgid "_Clean up %1 items"
-#~ msgstr "%1 _Öğeyi Sil "
+#~ msgstr "_Sil"
 
+#, fuzzy
 #~ msgid "_Clean up 1 item"
-#~ msgstr "1 Öğeyi _Sil"
+#~ msgstr "_Sil"
 
 #~ msgid ""
 #~ "tips:You can also directly use the left mouse button to drag the icon to "

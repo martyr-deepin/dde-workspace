@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-03 15:03+0800\n"
-"PO-Revision-Date: 2014-07-02 12:04+0000\n"
-"Last-Translator: cxbii <chenxiangbang@linuxdeepin.com>\n"
+"POT-Creation-Date: 2014-07-07 16:25+0800\n"
+"PO-Revision-Date: 2014-07-07 06:31+0000\n"
+"Last-Translator: electricface <songwentai@linuxdeepin.com>\n"
 "Language-Team: Danish (http://www.transifex.com/projects/p/deepin-desktop-"
 "environment/language/da/)\n"
 "Language: da\n"
@@ -158,7 +158,7 @@ msgstr "Kontrol Center"
 msgid "Copy"
 msgstr "Kopier"
 
-#: resources/desktop/js/richdir.coffee:824
+#: resources/desktop/js/richdir.coffee:569
 #: resources/desktop/js/desktopentry.coffee:103
 msgid "Cu_t"
 msgstr "Kli_p"
@@ -199,7 +199,7 @@ msgstr ""
 msgid "Do you want to run \"%s\", or display its contents?"
 msgstr "Ønsker du at køre \"%s\", eller vise dets indhold?"
 
-#: app/dock/dock.c:323
+#: app/dock/dock.c:329
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr ""
 
@@ -256,7 +256,7 @@ msgstr "Get"
 
 #: resources/greeter/js/usermenu.coffee:58
 msgid "Guest"
-msgstr ""
+msgstr "Gæst"
 
 #: resources/guide/js/dss.coffee:77
 msgid "Here is the system setting area"
@@ -534,7 +534,7 @@ msgid "The item could not be renamed"
 msgstr ""
 
 #: resources/desktop/js/richdir.coffee:335
-#: resources/desktop/js/richdir.coffee:842
+#: resources/desktop/js/richdir.coffee:587
 #: resources/desktop/js/application.coffee:179
 msgid "The link is invalid. Do you want to delete it?"
 msgstr ""
@@ -577,7 +577,7 @@ msgid "Use the right mouse button to send two icons to the desktop"
 msgstr ""
 
 #: resources/desktop/js/richdir.coffee:335
-#: resources/desktop/js/richdir.coffee:842
+#: resources/desktop/js/richdir.coffee:587
 #: resources/desktop/js/desktopentry.coffee:151
 #: resources/desktop/js/application.coffee:179
 #: resources/dock/js/plugins/trash/trash.coffee:70
@@ -625,7 +625,7 @@ msgstr "_Ryd op"
 msgid "_Close"
 msgstr "_Luk"
 
-#: resources/desktop/js/richdir.coffee:825
+#: resources/desktop/js/richdir.coffee:570
 #: resources/desktop/js/desktopentry.coffee:104
 msgid "_Copy"
 msgstr "_Kopier"
@@ -636,7 +636,7 @@ msgstr ""
 
 #: resources/desktop/js/invalidlink.coffee:34
 #: resources/desktop/js/richdir.coffee:139
-#: resources/desktop/js/richdir.coffee:827
+#: resources/desktop/js/richdir.coffee:572
 #: resources/desktop/js/desktopentry.coffee:107
 msgid "_Delete"
 msgstr "_Slet"
@@ -683,7 +683,7 @@ msgid "_New"
 msgstr "_Ny"
 
 #: resources/desktop/js/richdir.coffee:133
-#: resources/desktop/js/richdir.coffee:822
+#: resources/desktop/js/richdir.coffee:567
 #: resources/desktop/js/desktopentry.coffee:101
 #: resources/launcher/js/item.coffee:266
 #: resources/guide/js/launcher.coffee:242
@@ -694,7 +694,7 @@ msgstr "_Åbn"
 msgid "_Paste"
 msgstr "_Sæt ind"
 
-#: resources/desktop/js/richdir.coffee:829
+#: resources/desktop/js/richdir.coffee:574
 #: resources/desktop/js/desktopentry.coffee:109
 msgid "_Properties"
 msgstr "_Egenskaber"
@@ -758,7 +758,7 @@ msgstr ""
 msgid "all"
 msgstr "alle"
 
-#: resources/greeter/js/user.coffee:490
+#: resources/greeter/js/user.coffee:491
 msgid "click login button to log in"
 msgstr ""
 
@@ -869,11 +869,14 @@ msgstr ""
 #~ msgid "Home"
 #~ msgstr "Hjem"
 
+#, fuzzy
 #~ msgid "Software Center"
-#~ msgstr "Software Center"
+#~ msgstr "Kontrol Center"
 
+#, fuzzy
 #~ msgid "_Clean up %1 items"
-#~ msgstr "_ Ryd op %1 emner"
+#~ msgstr "_Ryd op"
 
+#, fuzzy
 #~ msgid "_Clean up 1 item"
-#~ msgstr "_Ryd op 1 emne"
+#~ msgstr "_Ryd op"
