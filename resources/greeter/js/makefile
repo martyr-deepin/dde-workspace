@@ -1,8 +1,7 @@
 com_dir = ../../common/js
-com_coffee =${com_dir}/config.coffee ${com_dir}/utils.coffee ${com_dir}/audioplay.coffee ${com_dir}/module.coffee ${com_dir}/widget.coffee ${com_dir}/selector.coffee ${com_dir}/accounts.coffee
+com_coffee =${com_dir}/config.coffee ${com_dir}/utils.coffee ${com_dir}/audioplay.coffee ${com_dir}/module.coffee ${com_dir}/widget.coffee ${com_dir}/selector.coffee ${com_dir}/accounts.coffee ${com_dir}/power.coffee
 
 init_coffee = config.coffee resolution.coffee animation.coffee 
-power_coffee = powerdbus.coffee 
 com_module_coffee = theme.coffee message.coffee user.coffee menuchoose.coffee powermenu.coffee
 common_coffee = ${com_coffee} ${init_coffee} ${power_coffee} ${com_module_coffee}
 
