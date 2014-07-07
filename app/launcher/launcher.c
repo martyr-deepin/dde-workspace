@@ -55,11 +55,13 @@ int kill(pid_t, int);  // avoid warning
 static gboolean is_debug = FALSE;
 static gboolean is_replace = FALSE;
 static gboolean is_hidden = FALSE;
+static gboolean is_quit = FALSE;
 
 static GOptionEntry entries[] = {
     {"debug", 'd', 0, G_OPTION_ARG_NONE, &is_debug, "output debug message", NULL},
     {"replace", 'r', 0, G_OPTION_ARG_NONE, &is_replace, "replace launcher", NULL},
     {"hidden", 'h', 0, G_OPTION_ARG_NONE, &is_hidden, "start and hide launcher", NULL},
+    {"quit", 'q', 0, G_OPTION_ARG_NONE, &is_quit, "start and hide launcher", NULL},
 };
 
 
@@ -82,7 +84,7 @@ void _do_im_commit(GtkIMContext *context G_GNUC_UNUSED, gchar* str)
 
 
 PRIVATE
-void set_size()
+gboolean set_size()
 {
 #ifndef NDEBUG
     int width = 0, height = 0;
@@ -112,6 +114,7 @@ void set_size()
     gtk_window_get_size(GTK_WINDOW(container), &width, &height);
     g_debug("[%s] the new size is %dx%d", __func__,  width, height);
 #endif
+    return TRUE;
 }
 
 
@@ -242,10 +245,10 @@ void empty()
 JS_EXPORT_API
 void launcher_exit_gui()
 {
-    if (!is_debug) {
-        launcher_hide();
-    } else {
+    if (is_quit) {
         launcher_quit();
+    } else {
+        launcher_hide();
     }
 }
 
@@ -425,6 +428,7 @@ int main(int argc, char* argv[])
     g_debug("is_debug:%d", is_debug);
     g_debug("is_replace:%d", is_replace);
     g_debug("is_hidden:%d", is_hidden);
+    g_debug("is_quit:%d", is_quit);
 
     if (is_replace) {
         pid_t pid = read_pid();
