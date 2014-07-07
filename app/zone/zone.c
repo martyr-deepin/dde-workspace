@@ -46,7 +46,7 @@
 #define ZONE_SCHEMA_ID "com.deepin.dde.zone"
 #define ZONE_ID_NAME "desktop.app.zone"
 
-#define CHOICE_HTML_PATH "file://"RESOURCE_DIR"/zone/zone.html"
+#define HTML_PATH "file://"RESOURCE_DIR"/zone/zone.html"
 
 #define ZONE_MAJOR_VERSION 2
 #define ZONE_MINOR_VERSION 0
@@ -88,20 +88,6 @@ gboolean zone_set_config(const gchar* key_name,const gchar* value)
     return retval;
 }
 
-G_GNUC_UNUSED
-static gboolean
-prevent_exit (GtkWidget* w G_GNUC_UNUSED, GdkEvent* e G_GNUC_UNUSED)
-{
-    return TRUE;
-}
-
-static void
-G_GNUC_UNUSED sigterm_cb (int signum G_GNUC_UNUSED)
-{
-    gtk_main_quit ();
-}
-
-
 #ifdef NDEBUG
 static void
 focus_out_cb (GtkWidget* w G_GNUC_UNUSED, GdkEvent* e G_GNUC_UNUSED, gpointer user_data G_GNUC_UNUSED)
@@ -126,81 +112,6 @@ show_cb ()
     t_id = g_timeout_add(6000,(GSourceFunc)gs_grab_move,NULL);
 }
 
-
-static void
-select_popup_events (void)
-{
-    XWindowAttributes attr;
-    unsigned long     events;
-
-    gdk_error_trap_push ();
-
-    memset (&attr, 0, sizeof (attr));
-    XGetWindowAttributes (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), GDK_ROOT_WINDOW (), &attr);
-
-    events = SubstructureNotifyMask | attr.your_event_mask;
-    XSelectInput (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), GDK_ROOT_WINDOW (), events);
-
-    gdk_error_trap_pop_ignored ();
-}
-
-
-static gboolean
-x11_window_is_ours (Window window)
-{
-    GdkWindow *gwindow;
-    gboolean   ret;
-
-    ret = FALSE;
-
-    gwindow = gdk_x11_window_lookup_for_display (gdk_display_get_default (), window);
-
-    if (gwindow && (window != GDK_ROOT_WINDOW ())) {
-            ret = TRUE;
-    }
-
-    return ret;
-}
-
-
-static GdkFilterReturn
-xevent_filter (GdkXEvent *xevent, GdkEvent  *event G_GNUC_UNUSED, GdkWindow *window)
-{
-    XEvent *ev = xevent;
-
-    switch (ev->type) {
-
-        g_debug ("event type: %d", ev->xany.type);
-        case MapNotify:
-            g_debug("dlock: MapNotify");
-             {
-                 XMapEvent *xme = &ev->xmap;
-                 if (! x11_window_is_ours (xme->window))
-                 {
-            g_debug("dlock: gdk_window_raise");
-                      gdk_window_raise (window);
-                 }
-             }
-             break;
-
-        case ConfigureNotify:
-             g_debug("dlock: ConfigureNotify");
-             {
-                  XConfigureEvent *xce = &ev->xconfigure;
-                  if (! x11_window_is_ours (xce->window))
-                  {
-                      g_debug("dlock: gdk_window_raise");
-                      gdk_window_raise (window);
-                  }
-             }
-             break;
-
-        default:
-             break;
-    }
-
-    return GDK_FILTER_CONTINUE;
-}
 #endif
 
 
@@ -225,9 +136,10 @@ void check_version()
 
 int main (int argc, char **argv)
 {
-    if (argc == 2 && 0 == g_strcmp0(argv[1], "-d"))
+    if (argc == 2 && 0 == g_strcmp0(argv[1], "-d")){
         g_message("dde-zone -d");
         g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
+    }
 
     if (is_application_running(ZONE_ID_NAME)) {
         g_warning("another instance of application dzone is running...\n");
@@ -245,7 +157,7 @@ int main (int argc, char **argv)
 
     container = create_web_container (FALSE, TRUE);
 
-    GtkWidget *webview = d_webview_new_with_uri (CHOICE_HTML_PATH);
+    GtkWidget *webview = d_webview_new_with_uri (HTML_PATH);
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
     monitors_adaptive(container,webview);
 
