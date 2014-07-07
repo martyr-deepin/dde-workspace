@@ -96,9 +96,7 @@ gboolean set_size()
     GdkGeometry geo = {0};
     geo.min_height = 0;
     geo.min_width = 0;
-    // FIXME: why???
-    // cannot use gdk window, otherwise, the launcher get wrong size for the
-    // workarea.
+
     gtk_window_set_geometry_hints(GTK_WINDOW(container), NULL, &geo, GDK_HINT_MIN_SIZE);
     gtk_widget_set_size_request(container, launcher.width, launcher.height);
     gtk_window_move(GTK_WINDOW(container), launcher.x, launcher.y);
@@ -119,19 +117,22 @@ gboolean set_size()
 
 
 void size_allocate_handler(GtkWidget* widget G_GNUC_UNUSED,
-            GdkRectangle* allocation G_GNUC_UNUSED,
-            gpointer user_data G_GNUC_UNUSED)
+                           GdkRectangle* alloc G_GNUC_UNUSED,
+                           gpointer user_data G_GNUC_UNUSED)
 {
-    if (gtk_widget_get_realized(widget)) {
+    if (alloc->x != 0 || alloc->y != 0 ||
+        alloc->width != launcher.width || alloc->height != launcher.height) {
+    // if (gtk_widget_get_realized(widget)) {
         GdkGeometry geo = {0};
         geo.min_width = 0;
         geo.min_height = 0;
 
         GdkWindow* gdk = gtk_widget_get_window(widget);
-        gdk_window_set_geometry_hints(gdk, &geo, GDK_HINT_MIN_SIZE);
-        XSelectInput(gdk_x11_get_default_xdisplay(), GDK_WINDOW_XID(gdk), NoEventMask);
+        if (gdk != NULL) {
+            gdk_window_set_geometry_hints(gdk, &geo, GDK_HINT_MIN_SIZE);
+            XSelectInput(gdk_x11_get_default_xdisplay(), GDK_WINDOW_XID(gdk), NoEventMask);
+        }
         gdk_window_resize(gdk, launcher.width, launcher.height);
-        gdk_window_flush(gdk);
         gdk_window_set_events(gdk, gdk_window_get_events(gdk));
     }
 }
@@ -502,7 +503,6 @@ int main(int argc, char* argv[])
     g_signal_connect (container, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect(container, "size-allocate", G_CALLBACK(size_allocate_handler), NULL);
     g_signal_connect(webview, "size-allocate", G_CALLBACK(size_allocate_handler), NULL);
-    g_signal_connect(webview, "map-event", G_CALLBACK(set_size), NULL);
 #ifndef NDEBUG
     g_signal_connect(container, "delete-event", G_CALLBACK(empty), NULL);
 #endif
