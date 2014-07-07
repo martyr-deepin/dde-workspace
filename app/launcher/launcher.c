@@ -55,11 +55,13 @@ int kill(pid_t, int);  // avoid warning
 static gboolean is_debug = FALSE;
 static gboolean is_replace = FALSE;
 static gboolean is_hidden = FALSE;
+static gboolean is_quit = FALSE;
 
 static GOptionEntry entries[] = {
     {"debug", 'd', 0, G_OPTION_ARG_NONE, &is_debug, "output debug message", NULL},
     {"replace", 'r', 0, G_OPTION_ARG_NONE, &is_replace, "replace launcher", NULL},
     {"hidden", 'h', 0, G_OPTION_ARG_NONE, &is_hidden, "start and hide launcher", NULL},
+    {"quit", 'q', 0, G_OPTION_ARG_NONE, &is_quit, "start and hide launcher", NULL},
 };
 
 
@@ -82,7 +84,7 @@ void _do_im_commit(GtkIMContext *context G_GNUC_UNUSED, gchar* str)
 
 
 PRIVATE
-void set_size()
+gboolean set_size()
 {
 #ifndef NDEBUG
     int width = 0, height = 0;
@@ -94,9 +96,7 @@ void set_size()
     GdkGeometry geo = {0};
     geo.min_height = 0;
     geo.min_width = 0;
-    // FIXME: why???
-    // cannot use gdk window, otherwise, the launcher get wrong size for the
-    // workarea.
+
     gtk_window_set_geometry_hints(GTK_WINDOW(container), NULL, &geo, GDK_HINT_MIN_SIZE);
     gtk_widget_set_size_request(container, launcher.width, launcher.height);
     gtk_window_move(GTK_WINDOW(container), launcher.x, launcher.y);
@@ -112,24 +112,24 @@ void set_size()
     gtk_window_get_size(GTK_WINDOW(container), &width, &height);
     g_debug("[%s] the new size is %dx%d", __func__,  width, height);
 #endif
+    return TRUE;
 }
 
 
 void size_allocate_handler(GtkWidget* widget G_GNUC_UNUSED,
-            GdkRectangle* allocation G_GNUC_UNUSED,
-            gpointer user_data G_GNUC_UNUSED)
+                           GdkRectangle* alloc G_GNUC_UNUSED,
+                           gpointer user_data G_GNUC_UNUSED)
 {
-    if (gtk_widget_get_realized(widget)) {
+    if (alloc->x != 0 || alloc->y != 0 ||
+        alloc->width != launcher.width || alloc->height != launcher.height) {
         GdkGeometry geo = {0};
         geo.min_width = 0;
         geo.min_height = 0;
 
         GdkWindow* gdk = gtk_widget_get_window(widget);
         gdk_window_set_geometry_hints(gdk, &geo, GDK_HINT_MIN_SIZE);
-        XSelectInput(gdk_x11_get_default_xdisplay(), GDK_WINDOW_XID(gdk), NoEventMask);
         gdk_window_resize(gdk, launcher.width, launcher.height);
         gdk_window_flush(gdk);
-        gdk_window_set_events(gdk, gdk_window_get_events(gdk));
     }
 }
 
@@ -242,10 +242,10 @@ void empty()
 JS_EXPORT_API
 void launcher_exit_gui()
 {
-    if (!is_debug) {
-        launcher_hide();
-    } else {
+    if (is_quit) {
         launcher_quit();
+    } else {
+        launcher_hide();
     }
 }
 
@@ -405,6 +405,11 @@ void signal_handler(int signum)
     }
 }
 
+void move_launcher(GtkWidget* widget, gpointer data G_GNUC_UNUSED)
+{
+    gtk_window_move(GTK_WINDOW(widget), launcher.x, launcher.y);
+}
+
 
 int main(int argc, char* argv[])
 {
@@ -425,6 +430,7 @@ int main(int argc, char* argv[])
     g_debug("is_debug:%d", is_debug);
     g_debug("is_replace:%d", is_replace);
     g_debug("is_hidden:%d", is_hidden);
+    g_debug("is_quit:%d", is_quit);
 
     if (is_replace) {
         pid_t pid = read_pid();
@@ -496,15 +502,17 @@ int main(int argc, char* argv[])
     update_display_info(&launcher);
     g_signal_connect(container, "realize", G_CALLBACK(_on_realize), NULL);
     g_signal_connect (container, "destroy", G_CALLBACK(gtk_main_quit), NULL);
-    g_signal_connect(container, "size-allocate", G_CALLBACK(size_allocate_handler), NULL);
-    g_signal_connect(webview, "size-allocate", G_CALLBACK(size_allocate_handler), NULL);
-    g_signal_connect(webview, "map-event", G_CALLBACK(set_size), NULL);
+    g_signal_connect(container, "map", G_CALLBACK(move_launcher), NULL);
 #ifndef NDEBUG
     g_signal_connect(container, "delete-event", G_CALLBACK(empty), NULL);
 #endif
 
     gtk_widget_realize(container);
     gtk_widget_realize(webview);
+
+    g_signal_connect(container, "size-allocate", G_CALLBACK(size_allocate_handler), NULL);
+    g_signal_connect(webview, "size-allocate", G_CALLBACK(size_allocate_handler), NULL);
+
     setup_background(container, webview);
 
     GdkWindow* gdkwindow = gtk_widget_get_window(container);
