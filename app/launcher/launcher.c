@@ -409,6 +409,11 @@ void signal_handler(int signum)
     }
 }
 
+void move_launcher(GtkWidget* widget, gpointer data G_GNUC_UNUSED)
+{
+    gtk_window_move(GTK_WINDOW(widget), launcher.x, launcher.y);
+}
+
 
 int main(int argc, char* argv[])
 {
@@ -503,6 +508,7 @@ int main(int argc, char* argv[])
     g_signal_connect (container, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect(container, "size-allocate", G_CALLBACK(size_allocate_handler), NULL);
     g_signal_connect(webview, "size-allocate", G_CALLBACK(size_allocate_handler), NULL);
+    g_signal_connect(container, "map", G_CALLBACK(move_launcher), NULL);
 #ifndef NDEBUG
     g_signal_connect(container, "delete-event", G_CALLBACK(empty), NULL);
 #endif
