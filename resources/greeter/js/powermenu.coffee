@@ -23,44 +23,37 @@ class PowerMenu extends Widget
     constructor: (parent_el) ->
         super
         @power_dict = {}
-        @power_title = {}
-        @power_can_exe = {}
+        @power_title = {
+            shutdown:_("Shut down")
+            restart:_("Restart")
+            suspend:_("Suspend")
+        }
         
         @parent = parent_el
         @img_before = "images/powermenu/"
         if not @parent? then @parent = document.body
         @parent.appendChild(@element)
 
-        power_get_inhibit()
         @clear_shutdown_from_lock()
-        @get_power_can_exe()
-    
-    suspend_cb : ->
-        power_force("suspend")
+        
+        @powercls = new Power()
+        @powercls.power_get_inhibit()
+        
+    suspend_cb : =>
+        @powercls.power_force("suspend")
 
-    restart_cb : ->
-        power_force("restart")
+    restart_cb : =>
+        @powercls.power_force("restart")
 
-    shutdown_cb : ->
-        power_force("shutdown")
+    shutdown_cb : =>
+        @powercls.power_force("shutdown")
 
     get_power_dict : ->
         @power_dict["shutdown"] = @shutdown_cb
         @power_dict["restart"] = @restart_cb
         @power_dict["suspend"] = @suspend_cb
-        @power_title["shutdown"] = _("Shut down")
-        @power_title["restart"] = _("Restart")
-        @power_title["suspend"] = _("Suspend")
 
-        return @power_dict
-
-    get_power_can_exe: ->
-        @get_power_dict()
-        for key, title of @power_title
-            can = power_can(key)
-            @power_can_exe[key] = can
-
-    menuChoose_click_cb : (id, title)=>
+    menuChoose_click_cb : (id, title) =>
         if is_greeter
             @power_dict[id]()
         else
@@ -75,16 +68,14 @@ class PowerMenu extends Widget
 
     new_power_menu:->
         echo "new_power_menu"
-        
+        @get_power_dict()
         @ComboBox = new ComboBox("power", @menuChoose_click_cb)
         for key, title of @power_title
             img_normal = @img_before + "#{key}_normal.png"
             img_hover = @img_before + "#{key}_hover.png"
             img_click = @img_before + "#{key}_press.png"
-            message_text = null
-            inhibit = power_get_inhibit(key)
-            can_exe =  @power_can_exe[key]
-            if can_exe is false then message_text = inhibit?[2]
+            can_exe =  @powercls.power_can(key)
+            message_text = @powercls.inhibit_msg(key)
             @ComboBox.insert(key, title, img_normal,img_hover,img_click,!can_exe,message_text)
         
         @ComboBox.frame_build()
@@ -180,7 +171,7 @@ class PowerMenu extends Widget
         if @check_is_shutdown_from_lock()
             power = @clear_shutdown_from_lock()
             if not power.value? then return
-            if @power_can_exe[power.value]
+            if @powercls.power_can(power.value)
                 power_force(power.value)
 
 
