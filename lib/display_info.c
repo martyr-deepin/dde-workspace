@@ -1,8 +1,6 @@
-#include <dbus/dbus.h>
-#include <dbus/dbus-glib.h>
-#include <gio/gio.h>
 #include <gdk/gdk.h>
 
+#include "./dbus/dbus_introspect.h"
 #include "display_info.h"
 
 gboolean update_display_info(struct DisplayInfo* info)
@@ -35,41 +33,29 @@ gboolean update_display_info(struct DisplayInfo* info)
 }
 
 
-void listen_primary_changed_signal(GSourceFunc handler)
+void listen_primary_changed_signal(GDBusSignalCallback handler, gpointer data, GDestroyNotify data_free_func)
 {
-    char* rules = g_strdup_printf("eavesdrop='true',"
-                                  "type='signal',"
-                                  "interface='%s',"
-                                  "member='%s',"
-                                  "path='%s'",
-                                  DISPLAY_INTERFACE,
-                                  PRIMARY_CHANGED_SIGNAL,
-                                  DISPLAY_PATH);
-    g_debug("rules: %s", rules);
-
-    DBusError error;
-    dbus_error_init(&error);
-
-    DBusConnection* conn = dbus_bus_get(DBUS_BUS_SESSION, &error);
-
-    if (dbus_error_is_set(&error)) {
-        g_warning("[%s] Connection Error: %s", __func__, error.message);
-        dbus_error_free(&error);
+    GError* err = NULL;
+    static GDBusConnection* conn = NULL;
+    if (conn == NULL ) {
+        conn = g_bus_get_sync(G_BUS_TYPE_SESSION, NULL, &err);
+    }
+    if (err != NULL) {
+        g_warning("[%s] get dbus failed: %s", __func__, err->message);
+        g_clear_error(&err);
         return;
     }
-
-    dbus_bus_add_match(conn, rules, &error);
-    g_free(rules);
-
-    if (dbus_error_is_set(&error)) {
-        g_warning("[%s] add match failed: %s", __func__, error.message);
-        dbus_error_free(&error);
-        return;
-    }
-
-    dbus_connection_flush(conn);
-
-    g_debug("[%s] listen update signal", __func__);
-    g_timeout_add(100, (GSourceFunc)handler, conn);
+    add_watch(conn, DISPLAY_PATH, DISPLAY_INTERFACE, PRIMARY_CHANGED_SIGNAL);
+    g_dbus_connection_signal_subscribe(conn,
+                                       DISPLAY_NAME,
+                                       DISPLAY_INTERFACE,
+                                       PRIMARY_CHANGED_SIGNAL,
+                                       DISPLAY_PATH,
+                                       NULL,
+                                       G_DBUS_SIGNAL_FLAGS_NONE,
+                                       handler,
+                                       data,
+                                       data_free_func
+                                       );
 }
 

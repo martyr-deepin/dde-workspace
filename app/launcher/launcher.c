@@ -32,8 +32,6 @@
 
 #include <gtk/gtk.h>
 #include <gio/gdesktopappinfo.h>
-#include <dbus/dbus.h>
-#include <dbus/dbus-glib.h>
 
 #include "launcher.h"
 #include "xdg_misc.h"
@@ -272,69 +270,18 @@ GFile* launcher_get_desktop_entry()
 }
 
 
-gboolean primary_changed_handler(gpointer data)
+void primary_changed_handler(GDBusConnection* conn G_GNUC_UNUSED,
+                             const gchar* sender_name G_GNUC_UNUSED,
+                             const gchar* object_path G_GNUC_UNUSED,
+                             const gchar* interface_name G_GNUC_UNUSED,
+                             const gchar* signal_name G_GNUC_UNUSED,
+                             GVariant* parameters G_GNUC_UNUSED,
+                             gpointer data G_GNUC_UNUSED
+                             )
 {
-    DBusConnection* conn = (DBusConnection*)data;
-    dbus_connection_read_write(conn, 0);
-    DBusMessage* message = dbus_connection_pop_message(conn);
-
-    if (message == NULL) {
-        return G_SOURCE_CONTINUE;
-    }
-
-    g_debug("[%s] loop for signal", __func__);
-    if (dbus_message_is_signal(message,
-                               DISPLAY_INTERFACE,
-                               PRIMARY_CHANGED_SIGNAL)) {
-        DBusMessageIter args;
-        if (!dbus_message_iter_init(message, &args)) {
-            dbus_message_unref(message);
-            g_warning("init signal iter failed");
-            return G_SOURCE_CONTINUE;
-        }
-
-        DBusMessageIter element_iter;
-        dbus_message_iter_recurse(&args, &element_iter);
-
-        g_debug("[%s] get signal", __func__);
-        // iterate_container_message(conn, &array_iter, iter_array, info);
-        int count = 0;
-        while (dbus_message_iter_get_arg_type(&element_iter) != DBUS_TYPE_INVALID) {
-            switch (count) {
-            case 0: {
-                DBusBasicValue value;
-                dbus_message_iter_get_basic(&element_iter, &value);
-                launcher.x = value.i16;
-                break;
-            }
-            case 1: {
-                DBusBasicValue value;
-                dbus_message_iter_get_basic(&element_iter, &value);
-                launcher.y = value.i16;
-                break;
-            }
-            case 2: {
-                DBusBasicValue value;
-                dbus_message_iter_get_basic(&element_iter, &value);
-                launcher.width = value.u16;
-                break;
-            }
-            case 3: {
-                DBusBasicValue value;
-                dbus_message_iter_get_basic(&element_iter, &value);
-                launcher.height = value.u16;
-                break;
-            }
-            }
-            ++count;
-            dbus_message_iter_next(&element_iter);
-        }
-
-        set_size();
-    }
-    dbus_message_unref(message);
-
-    return G_SOURCE_CONTINUE;
+    struct DisplayInfo* rect = (struct DisplayInfo*)data;
+    g_variant_get(parameters, "((nnqq))", &rect->x, &rect->y, &rect->width, &rect->height);
+    set_size();
 }
 
 
@@ -345,6 +292,7 @@ void launcher_webview_ok()
     dde_session_register();
     is_js_already = TRUE;
     if (!is_hidden && !inited) {
+        listen_primary_changed_signal(primary_changed_handler, &launcher, NULL);
         inited = TRUE;
         js_post_signal("launcher_shown");
     }

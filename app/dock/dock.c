@@ -21,8 +21,6 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 #include <cairo.h>
-#include <dbus/dbus.h>
-#include <dbus/dbus-glib.h>
 
 #include <dwebview.h>
 #include "dock.h"
@@ -60,7 +58,15 @@ JS_EXPORT_API void dock_change_workarea_height(double height);
 PRIVATE
 void _update_dock_size(gint16 x, gint16 y, guint16 w, guint16 h);
 gboolean update_dock_size();
-static gboolean primary_changed_handler(gpointer data);
+static
+void primary_changed_handler(GDBusConnection* conn G_GNUC_UNUSED,
+                             const gchar* sender_name G_GNUC_UNUSED,
+                             const gchar* object_path G_GNUC_UNUSED,
+                             const gchar* interface_name G_GNUC_UNUSED,
+                             const gchar* signal_name G_GNUC_UNUSED,
+                             GVariant* parameters G_GNUC_UNUSED,
+                             gpointer data G_GNUC_UNUSED
+                             );
 GdkWindow* get_dock_guard_window();
 
 gboolean mouse_pointer_leave(int x, int y)
@@ -338,7 +344,7 @@ void dock_emit_webview_ok()
     }
 
     update_display_info(&dock);
-    listen_primary_changed_signal(primary_changed_handler);
+    listen_primary_changed_signal(primary_changed_handler, &dock, NULL);
     g_warning("[%s]", __func__);
     _update_dock_size(dock.x, dock.y, dock.width, dock.height);
     gtk_widget_show_all(container);
@@ -466,70 +472,18 @@ void _update_dock_size(gint16 x, gint16 y, guint16 w, guint16 h)
 
 
 static
-gboolean primary_changed_handler(gpointer data)
+void primary_changed_handler(GDBusConnection* conn G_GNUC_UNUSED,
+                             const gchar* sender_name G_GNUC_UNUSED,
+                             const gchar* object_path G_GNUC_UNUSED,
+                             const gchar* interface_name G_GNUC_UNUSED,
+                             const gchar* signal_name G_GNUC_UNUSED,
+                             GVariant* parameters G_GNUC_UNUSED,
+                             gpointer data G_GNUC_UNUSED
+                             )
 {
-    DBusConnection* conn = (DBusConnection*)data;
-    dbus_connection_read_write(conn, 0);
-    DBusMessage* message = dbus_connection_pop_message(conn);
-
-    if (message == NULL) {
-        return G_SOURCE_CONTINUE;
-    }
-
-    g_debug("[%s] loop for signal", __func__);
-    if (dbus_message_is_signal(message,
-                               DISPLAY_INTERFACE,
-                               PRIMARY_CHANGED_SIGNAL)) {
-        DBusMessageIter args;
-        if (!dbus_message_iter_init(message, &args)) {
-            dbus_message_unref(message);
-            g_warning("init signal iter failed");
-            return G_SOURCE_CONTINUE;
-        }
-
-        DBusMessageIter element_iter;
-        dbus_message_iter_recurse(&args, &element_iter);
-
-        g_debug("[%s] get signal", __func__);
-        // iterate_container_message(conn, &array_iter, iter_array, info);
-        int count = 0;
-        while (dbus_message_iter_get_arg_type(&element_iter) != DBUS_TYPE_INVALID) {
-            switch (count) {
-            case 0: {
-                DBusBasicValue value;
-                dbus_message_iter_get_basic(&element_iter, &value);
-                dock.x = value.i16;
-                break;
-            }
-            case 1: {
-                DBusBasicValue value;
-                dbus_message_iter_get_basic(&element_iter, &value);
-                dock.y = value.i16;
-                break;
-            }
-            case 2: {
-                DBusBasicValue value;
-                dbus_message_iter_get_basic(&element_iter, &value);
-                dock.width = value.u16;
-                break;
-            }
-            case 3: {
-                DBusBasicValue value;
-                dbus_message_iter_get_basic(&element_iter, &value);
-                dock.height = value.u16;
-                break;
-            }
-            }
-            ++count;
-            dbus_message_iter_next(&element_iter);
-        }
-
-        update_dock_size();
-        // g_timeout_add_seconds(5, (GSourceFunc)update_dock_size, NULL);
-    }
-    dbus_message_unref(message);
-
-    return G_SOURCE_CONTINUE;
+    struct DisplayInfo* rect = (struct DisplayInfo*)data;
+    g_variant_get(parameters, "((nnqq))", &rect->x, &rect->y, &rect->width, &rect->height);
+    update_dock_size();
 }
 
 

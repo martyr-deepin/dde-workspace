@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
-include_directories(${DWEBVIEW_INCLUDE_DIRS} ${DBUS_INCLUDE_DIRS})
 
+add_subdirectory(dbus)
+
+include_directories(${DWEBVIEW_INCLUDE_DIRS})
 
 GEN_JSC_SOURCE_WITH_NO_INIT(JSC_GEN "jsc_extension")
 
@@ -11,8 +13,7 @@ set(SRC_LIST background.c utils.c webview.c xdg_misc.c pixbuf.c X_misc.c xid2aid
     gs-grab.c)
 
 add_library(dcom ${SRC_LIST})
-target_link_libraries(dcom ${DWEBVIEW_LIBRAIRES} ${DBUS_LIBRARIES})
+target_link_libraries(dcom dbus ${DWEBVIEW_LIBRAIRES})
 
-add_subdirectory(dbus)
 add_subdirectory(dentry)
 
