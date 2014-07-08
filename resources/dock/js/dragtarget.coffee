@@ -28,7 +28,7 @@ class DragTarget
         @el.style.display = 'block'
 
     back:(x, y)->
-        console.log("back from #{x}, #{y}")
+        console.log("dragtarget backs from #{x}, #{y}")
         # FIXME: this statement will leads to GUI block
         # @img.style.webkitTransform = "translate(#{x - ITEM_WIDTH/2}px, #{Math.abs(y-ITEM_WIDTH/2)}px)"
         @dragToBack = false

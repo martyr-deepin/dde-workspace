@@ -127,6 +127,8 @@ class Item extends Widget
         @tooltip?.hide()
 
     on_mousedown:(e)=>
+        if e.button != 0
+            return
         Preview_close_now()
         @tooltip?.hide()
         @displayIcon('dark')
@@ -140,11 +142,11 @@ class Item extends Widget
     #     Preview_close_now()
 
     on_dragend:(e)=>
+        e.preventDefault()
         console.log(@id + ' dragend')
         clearTimeout(@removeTimer || null)
         update_dock_region()
         _lastHover?.reset()
-        e.preventDefault()
         @element.style.position = ''
         @element.style.webkitTransform = ''
         console.log(_dragTargetManager)

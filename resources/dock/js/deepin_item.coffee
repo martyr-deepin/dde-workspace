@@ -84,7 +84,8 @@ class SystemItem extends AppItem
         parentNode.appendChild($("#time")) if $("#time")
 
     on_dragover:(e)=>
-        super
+        # invokes super before, e.stopPropagation() should be used here.
+        e.preventDefault()
         e.dataTransfer.dropEffect = 'none'
         _isDragging = false
 

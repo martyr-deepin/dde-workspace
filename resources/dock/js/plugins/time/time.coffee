@@ -33,7 +33,7 @@ class Time extends SystemItem
 
     on_mouseover:=>
         super
-        @set_tooltip((new Date()).toLocaleDateString())
+        # @set_tooltip((new Date()).toLocaleDateString())
 
     on_mouseout:=>
         super
