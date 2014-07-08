@@ -1256,6 +1256,8 @@ create_item_grid = ->
     sel = new Mouse_Select_Area_box(div_grid.parentElement)
 
     drag_canvas = document.createElement("canvas")
+    drag_canvas.setAttribute("id","item_drag_canvas")
+    drag_canvas.style.opacity = 0.6
     drag_context = drag_canvas.getContext('2d')
     return
 
