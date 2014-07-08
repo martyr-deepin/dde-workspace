@@ -40,13 +40,16 @@ class PWContainer extends Widget
         @_current_pws = {}
         @hide_border_id = null
 
-    hide: ->
+    do_hide:=>
         @is_showing = false
-        @border.style.opacity = 0
+        @border.style.display = 'none'
+
+    hide: ->
         @cancelHide()
         @hide_border_id = setTimeout(=>
-            @border.style.display = 'none'
-        , 500)
+            @do_hide()
+            # @border.style.opacity = 0
+        , 50)
 
     cancelHide:->
         clearTimeout(@hide_border_id)
@@ -293,13 +296,15 @@ class PWContainer extends Widget
         @_update(allocation, cb)
 
     on_mouseover: (e)=>
-        console.log("preview window mouseover")
+        # console.log("preview container mouseover")
         __clear_timeout()
         clearTimeout(tooltip_hide_id)
         clearTimeout(hide_id)
+        @is_showing = true
         DCore.Dock.require_all_region()
 
     on_mouseout: =>
+        # console.log("preview container mouseout")
         Preview_close(Preview_container._current_group)
 
 
@@ -308,7 +313,13 @@ Preview_container = new PWContainer("pwcontainer")
 
 __SHOW_PREVIEW_ID = -1
 __CLOSE_PREVIEW_ID = -1
+_previewCloseTimer = null
+_previewCloseUpdateStateTimer = null
 __clear_timeout = ->
+    clearTimeout(_previewCloseTimer)
+    _previewCloseTimer = null
+    clearTimeout(_previewCloseUpdateStateTimer)
+    _previewCloseUpdateStateTimer = null
     clearTimeout(__SHOW_PREVIEW_ID)
     clearTimeout(__CLOSE_PREVIEW_ID)
     __SHOW_PREVIEW_ID = -1
@@ -332,27 +343,28 @@ Preview_close_now = (client)->
     return if Preview_container.is_showing == false
     console.log("Preview_close_now")
     Preview_container.hide()
-    setTimeout(->
+    _previewCloseTimer = setTimeout(->
         Preview_container.close()
         PWContainer._need_move_animation = false
         if $tooltip
             if !$tooltip.isShown()
-                console.error("tooltip is not shown, not hovered")
+                console.log("tooltip is not shown, not hovered")
                 DCore.Dock.set_is_hovered(false)
         else
-            console.error("no tooltip, not hovered")
+            console.log("no tooltip, not hovered")
             DCore.Dock.set_is_hovered(false)
         update_dock_region()
     , 300)
-    setTimeout(->
+    _previewCloseUpdateStateTimer = setTimeout(->
         update_dock_region()
         hideStatusManager.updateState()
     , 500)
 Preview_close = ->
     __clear_timeout()
+    console.log("outof real Preview_close")
     if Preview_container.is_showing
         __CLOSE_PREVIEW_ID = setTimeout(->
-            # console.log("Preview_close")
+            console.log("Preview_close")
             Preview_close_now(Preview_container._current_group)
         , 500)
 
@@ -469,6 +481,11 @@ class PreviewWindow extends Widget
         clientManager?.ActiveWindow(@w_id)
 
     do_mouseover: (e)=>
+        # console.log("preview window mouseover")
+        __clear_timeout()
+        Preview_container.cancelHide()
+        Preview_container.is_showing = true
+        DCore.Dock.require_all_region()
         clearTimeout(normal_mouseout_id)
         if not @applet
             Preview_active_window_changed(@w_id)
