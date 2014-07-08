@@ -40,13 +40,13 @@ class PowerMenu extends Widget
         @powercls.power_get_inhibit()
         
     suspend_cb : =>
-        @powercls.power_force("suspend")
+        @powercls.power_force_sys("suspend")
 
     restart_cb : =>
-        @powercls.power_force("restart")
+        @powercls.power_force_sys("restart")
 
     shutdown_cb : =>
-        @powercls.power_force("shutdown")
+        @powercls.power_force_sys("shutdown")
 
     get_power_dict : ->
         @power_dict["shutdown"] = @shutdown_cb
@@ -172,6 +172,6 @@ class PowerMenu extends Widget
             power = @clear_shutdown_from_lock()
             if not power.value? then return
             if @powercls.power_can(power.value)
-                power_force(power.value)
+                @powercls.power_force_sys(power.value)
 
 
