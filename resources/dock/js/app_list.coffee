@@ -36,6 +36,7 @@ class AppList
         @_insert_anchor_item = item
 
     on_drop: (e)=>
+        _dropped = true
         # FIXME: why drop event is triggered twice???
         e.stopPropagation()
         e.preventDefault()

@@ -84,7 +84,7 @@ _b.addEventListener("drop", (e)->
     s_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
     _dragTarget = _dragTargetManager.getHandle(s_id)
     if e.y > screen.height - DOCK_HEIGHT - ITEM_HEIGHT
-        console.error("not working area")
+        console.log("not working area")
         _dragTarget?.dragToBack = false
         _dragTarget?.back(e.x, e.y)
         _dragTargetManager.remove(s_id)

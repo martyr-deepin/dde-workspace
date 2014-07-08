@@ -95,9 +95,9 @@ class Item extends Widget
         this["img#{type}"].style.display = ''
 
     on_mousemove: (e)=>
-        console.warn("mouse move event")
+        console.log("mouse move event")
         if e
-            console.warn("record mouse position")
+            console.log("record mouse position")
             $mousePosition.x = e.x
             $mousePosition.y = e.y
 
@@ -285,6 +285,7 @@ class Item extends Widget
             @move(e.offsetX, @element.clientWidth / 2)
 
     on_drop: (e) =>
+        _dropped = true
         e.preventDefault()
         e.stopPropagation()
         updatePanel()

@@ -22,31 +22,26 @@ class HideStatusManager
 
         @dbus?.connect("StateChanged", (state)=>
             if DCore.Dock.is_hovered() || _isRightclicked
+                console.log("dock is hovered of contextmenu is shown")
                 return
 
-            switch settings.hideMode()
-                when HideMode.KeepShowing
-                    if state == HideState.Showing
-                        @changeToShow()
-                when HideMode.KeepHidden
-                    switch state
-                        when HideState.Showing
-                            update_dock_region()
-                            @changeToShow()
-                        when HideState.Hidding
+            switch state
+                when HideState.Showing
+                    clearTimeout(changeToHideTimer)
+                    update_dock_region()
+                    @changeToShow()
+                when HideState.Hidding
+                    if _dropped
+                        clearTimeout(changeToHideTimer)
+                        changeToHideTimer = setTimeout(=>
                             @changeToHide()
-                when HideMode.AutoHide
-                    switch state
-                        when HideState.Showing
-                            update_dock_region()
-                            @changeToShow()
-                        when HideState.Hidding
-                            @changeToHide()
+                            _dropped = false
+                            changeToHideTimer = null
+                        , 1000)
+                    else
+                        @changeToHide()
 
             @state = state
-            clearTimeout(changeDockRegionTimer)
-            changeDockRegionTimer = setTimeout(@changeDockRegion, 400)
-
             console.log("StateChanged: #{HideStateMap[state]}")
         )
 
@@ -62,10 +57,13 @@ class HideStatusManager
 
     changeState: (state, cw, panel)->
         if DCore.Dock.is_hovered()
-            console.warn("changeState dock is hovered")
+            console.log("changeState dock is hovered")
             return
         _CW.style.webkitTransform = cw
         $("#panel").style.webkitTransform = panel
+
+        clearTimeout(changeDockRegionTimer)
+        changeDockRegionTimer = setTimeout(@changeDockRegion, 400)
 
     changeToHide:()->
         console.log("changeToHide: change to hide")
@@ -103,7 +101,7 @@ class HideStatusManager
         console.log("panel webkitTransform: #{$("#panel").style.webkitTransform}")
         if $("#panel").style.webkitTransform == ""
             regionHeight = 0
-            console.warn("hide dock region")
+            console.log("hide dock region")
             # update_dock_region(null, regionHeight)
 
         console.log("set workarea height to #{regionHeight}")

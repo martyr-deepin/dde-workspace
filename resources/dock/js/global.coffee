@@ -1,5 +1,6 @@
 # console.log=->
 
+_dropped = false
 _lastHover = null
 _isDragging = false
 _isDragTimer = null
