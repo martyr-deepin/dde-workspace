@@ -76,7 +76,8 @@ class PowerMenu extends Widget
             img_click = @img_before + "#{key}_press.png"
             can_exe =  @powercls.power_can(key)
             message_text = @powercls.inhibit_msg(key)
-            @ComboBox.insert(key, title, img_normal,img_hover,img_click,!can_exe,message_text)
+            echo "#{key} #{can_exe} #{message_text}"
+            @ComboBox.insert(key, title, img_normal,img_hover,img_click,can_exe,message_text)
         
         @ComboBox.frame_build()
         @element.appendChild(@ComboBox.element)
