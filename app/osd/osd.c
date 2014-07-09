@@ -40,8 +40,6 @@
 #include "dwebview.h"
 #include "i18n.h"
 #include "utils.h"
-/*#include "DBUS_shutdown.h"*/
-
 
 #define ID_NAME "desktop.app.osd"
 
@@ -56,7 +54,6 @@ static GKeyFile* shutdown_config = NULL;
 
 PRIVATE GtkWidget* container = NULL;
 /*PRIVATE GtkStyleContext *style_context;*/
-
 
 static struct {
     gboolean is_AudioUp;
@@ -179,15 +176,12 @@ void check_version()
 JS_EXPORT_API
 void osd_set_focus(gboolean focus)
 {
-    gtk_window_set_focus_on_map (GTK_WINDOW (container), focus);
-    gtk_window_set_accept_focus (GTK_WINDOW (container), focus);
-    gtk_window_set_focus_visible (GTK_WINDOW (container), focus);
-
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
-    gdk_window_set_focus_on_map (gdkwindow, focus);
+    if(focus){
+       gdk_window_focus (gdkwindow, 0);
+    }
+    gdk_window_set_focus_on_map (gdkwindow, !focus);
     gdk_window_set_accept_focus (gdkwindow, focus);
-
-    gdk_window_set_override_redirect(gdkwindow, !focus);
 }
 
 #define KEYBOARD_SCHEMA_ID "com.deepin.dde.keyboard"
@@ -214,7 +208,7 @@ int main (int argc, char **argv)
 
     check_version();
     init_i18n ();
-    
+
     GOptionContext* ctx = g_option_context_new(NULL);
     g_option_context_add_main_entries(ctx, entries, NULL);
     g_option_context_add_group(ctx, gtk_get_option_group(TRUE));
@@ -238,9 +232,9 @@ int main (int argc, char **argv)
             return 0;
         }
     }
-    
+
     gtk_init (&argc, &argv);
-    
+
     container = create_web_container (FALSE, TRUE);
 
     gtk_window_set_position (GTK_WINDOW (container), GTK_WIN_POS_CENTER_ALWAYS);
@@ -248,7 +242,7 @@ int main (int argc, char **argv)
     GtkWidget *webview = d_webview_new_with_uri (CHOICE_HTML_PATH);
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
     g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
-    
+
     gtk_widget_realize (container);
     gtk_widget_realize (webview);
 
@@ -256,6 +250,7 @@ int main (int argc, char **argv)
     gdk_window_set_opacity (gdkwindow, 0.5);
     gdk_window_set_keep_above (gdkwindow, TRUE);
     osd_set_focus(FALSE);
+    gdk_window_set_override_redirect(gdkwindow, TRUE);
 
     gtk_widget_show_all (container);
 

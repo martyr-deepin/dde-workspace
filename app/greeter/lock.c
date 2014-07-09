@@ -194,7 +194,7 @@ int main (int argc, char **argv)
     g_message(" Lock Not DEBUG");
     gtk_window_set_keep_above (GTK_WINDOW (container), TRUE);
     g_signal_connect (container, "show", G_CALLBACK (show_cb), NULL);
-    g_signal_connect (webview, "focus-out-event", G_CALLBACK( focus_out_cb), NULL);
+    g_signal_connect (webview, "focus-out-event", G_CALLBACK(focus_out_cb), NULL);
 #endif
     gtk_widget_realize (container);
     gtk_widget_realize (webview);

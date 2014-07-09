@@ -83,7 +83,7 @@ class ListChoose extends Widget
                 li.style.border = "rgba(255,255,255,0.0) 2px solid"
                 li.style.backgroundColor = null
                 #li.blur()
-    
+
     checkIndex:(index)->
         max = @list.length - 1
         if index > max then index = 0
