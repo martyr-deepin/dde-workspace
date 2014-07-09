@@ -21,7 +21,7 @@
 forceShowTimer = null
 dialog = null
 s_dock = null
-
+dockedAppmanager = null
 dockHideManager = null
 DockHideState =
     Showing: 0
@@ -270,6 +270,7 @@ class Item extends Widget
     createMenu:->
         @menu = null
         s_dock = get_dbus("session", "com.deepin.dde.dock", "Xid")
+        dockedAppmanager = DCore.DBus.session_object("com.deepin.daemon.Dock", "/dde/dock/DockedAppManager", "dde.dock.DockedAppManager")
         @menu = new Menu(
             DEEPIN_MENU_TYPE.NORMAL,
             new MenuItem(1, _("_Open")),
@@ -278,7 +279,7 @@ class Item extends Widget
             new MenuItem(3, _("Send to d_esktop")).setActive(
                 not daemon.IsOnDesktop_sync(@path)
             ),
-            new MenuItem(4, _("Send to do_ck")).setActive(s_dock != null),
+            new MenuItem(4, _("Send to do_ck")).setActive(!(s_dock == null || dockedAppmanager.IsDocked_sync(@id))),
             new MenuSeparator(),
             new MenuItem(5, AUTOSTART_MESSAGE[@isAutostart]),
             new MenuItem(6, _("_Uninstall"))
