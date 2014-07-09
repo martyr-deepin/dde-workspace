@@ -85,7 +85,7 @@ class HideStatusManager
                 systemTray.showAllIcons()
             else if systemTray.isShowing
                 # console.log("system tray is showing")
-                systemTray.on_mouseover()
+                systemTray.minShow()
             DCore.Dock.set_is_hovered(false)
         , 400)
 

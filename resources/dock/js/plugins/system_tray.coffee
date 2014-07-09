@@ -149,14 +149,17 @@ class SystemTray extends SystemItem
         if @isUnfolded
             console.log("is unfolded")
             return
+        DCore.Dock.require_all_region()
+        console.log("system tray mouseover")
+        @minShow()
+
+    minShow:=>
         @isShowing = true
         @img.style.display = 'none'
         @panel.style.display = ''
         @updateTrayIcon()
         if @items.length > 4
             @showButton()
-        console.log("system tray mouseover")
-        DCore.Dock.require_all_region()
         @imgContainer.style.webkitTransform = 'translateY(0)'
         @imgContainer.style.webkitTransition = ''
         # for item,i in @items
@@ -166,10 +169,10 @@ class SystemTray extends SystemItem
         $EW.show(@items[0]) if @items[0]
         $EW.show(@items[1]) if @items[1]
         if @items[2] and @items.length <= 4
-            console.log("length: #{@items.length}")
+            console.log("tray icons length: #{@items.length}")
             $EW.show(@items[2])
         i = if @upperItemNumber == 2 then @upperItemNumber + 1 else @upperItemNumber
-        console.log("show #{i}")
+        console.log("the last tray icon to be shown #{i}")
         $EW.show(@items[i]) if @items[i]
 
     on_mouseout: (e)=>
