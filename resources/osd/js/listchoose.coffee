@@ -51,10 +51,9 @@ class ListChoose extends Widget
 
     ListAllBuild:(@list,@current) ->
         echo "ListAllBuild @current: #{@current}"
-        if not @current in @list
-            echo "#{@current} isnt is #{@list.toString()} ,and then return"
+        if !(@current in @list)
+            echo "#{@current} isnt in #{@list.toString()} ,and then return"
             return
-
         @Listul = create_element("ul","Listul",@element)
         for each,i in @list
             @li[i] = create_element("li","li",@Listul)
@@ -63,7 +62,7 @@ class ListChoose extends Widget
             @li_span[i].textContent = each
             @currentIndex = i if each is @current
         
-        echo "@currentIndex:#{@currentIndex}"
+        echo "@currentIndex:#{@currentIndex} is @current :#{@current}"
         @setBackground(@currentIndex)
 
     get_current_index: ->
@@ -71,27 +70,22 @@ class ListChoose extends Widget
         return @currentIndex
     
     setBackground: (index)=>
-        # @ListAll(@UserLayoutList,@getCurrent())
         return if not @li[0]?
         echo "setBackground:#{index}"
-        
         @show()
-        
         @currentIndex = @checkIndex(index)
-        
         for li,i in @li
             if i == @currentIndex
                 li.style.border = "rgba(255,255,255,0.5) 2px solid"
                 li.style.backgroundColor = "rgb(0,0,0)"
-                li.focus()
+                #li.focus()
             else
                 li.style.border = "rgba(255,255,255,0.0) 2px solid"
                 li.style.backgroundColor = null
-                li.blur()
+                #li.blur()
     
     checkIndex:(index)->
         max = @list.length - 1
-        echo "checkIndex max:#{max} ; index:#{index}"
         if index > max then index = 0
         else if index < 0 then index = max
         return index
@@ -102,33 +96,32 @@ class ListChoose extends Widget
         clearTimeout(timeout_osdHide)
         @prevIndex = @currentIndex
         @currentIndex++
-        
         @currentIndex = @checkIndex(@currentIndex)
         @current = @list[@currentIndex]
-        
         echo "ChooseIndex from #{@prevIndex} to #{@currentIndex}"
         osdShow()
         @setBackground(@currentIndex)
-        
         @isFromList = true
+        @element.focus()
+
+        @element.removeEventListener("keyup",@keyup)
+        @element.addEventListener("keyup",@keyup)
         return @current
 
-    setKeyupListener:(KeyCode,cb)->
+    keyup: (e) =>
+        echo "keyup:#{e.which}"
+        if e.which == @keyup_code and @isFromList is true
         @isFromList = false
-        document.body.addEventListener("keyup",(e)=>
-            echo "keyup"
-            if e.which == KeyCode and @isFromList is true
-                @isFromList = false
-                setFocus(false)
-                clearTimeout(timeout_osdHide)
-                document.body.style.maxLength = "160px"
-                osdHide()
-                cb?()
-        )
+        setFocus(false)
+        clearTimeout(timeout_osdHide)
+        document.body.style.maxLength = "160px"
+        osdHide()
+        @keyup_cb?()
+
+    setKeyupListener:(@keyup_code,@keyup_cb)->
  
     setClickCb: (cb) ->
         that = @
-        
         for li in @li
             li.addEventListener("click",->
                 that.current = this.id

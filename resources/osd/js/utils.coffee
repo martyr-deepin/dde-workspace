@@ -51,13 +51,6 @@ osdHide = ->
     DCore.Osd.quit()
     return
 
-    #document.body.opacity = "1"
-    #jQuery(document.body).animate(
-    #    {opacity:'0';},200,"linear",->
-    #        allElsHide()
-    #        DCore.Osd.hide()
-    #)
-
 osdShow = ->
     allElsHide()
     DCore.Osd.show()

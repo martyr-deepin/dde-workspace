@@ -41,7 +41,8 @@ class Keyboard
 
     getCurrentLayout: ->
         @CurrentLayout_en = @DBusKeyboard?.CurrentLayout
-        @CurrentLayout = @AlllayoutList[@CurrentLayout_en]?
+        @CurrentLayout = @AlllayoutList[@CurrentLayout_en]
+        echo "@CurrentLayout : #{@CurrentLayout} ; @CurrentLayout_en:#{@CurrentLayout_en}"
         return @CurrentLayout
 
     getCurrentLayoutIndex: ->
@@ -68,10 +69,16 @@ osd.SwitchLayout = (keydown)->
     if keyboard.UserLayoutList.length < 2 then return
     
     keyboardList?.chooseOption()
+    clearTimeout(timeout_osdHide)
+    timeout_osdHide = setTimeout(=>
+        keyboard.setCurrentLayout(keyboardList.current)
+        osdHide()
+    ,2000)
     if not keyboardList?
         keyboardList = new ListChoose("KeyboardList")
         keyboardList.setParent(_b)
-        keyboardList.setSize(160,180)
+        keyboardList.setSize(160,null)
+        #keyboardList.setSize(160,180)
         keyboardList.ListAllBuild(keyboard.UserLayoutList,keyboard.getCurrentLayout())
         keyboardList.setClickCb(=>
             keyboard.setCurrentLayout(keyboardList.current)
