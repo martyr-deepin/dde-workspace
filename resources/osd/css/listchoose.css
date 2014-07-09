@@ -22,7 +22,7 @@
     list-style:none;
     overflow:hidden;
     text-align:center;
-    cursor:pointer;
+    /*cursor:pointer;*/
     border-radius:6px; 
 }
 .li span{

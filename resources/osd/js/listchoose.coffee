@@ -92,8 +92,7 @@ class ListChoose extends Widget
         return index
 
     chooseOption: =>
-        setFocus(true)
-        document.body.style.maxLength = "100px"
+        document.body.style.maxLength = "180px"
         clearTimeout(timeout_osdHide)
         @prevIndex = @currentIndex
         @currentIndex++
@@ -113,7 +112,6 @@ class ListChoose extends Widget
         echo "keyup:#{e.which}"
         if e.which == @keyup_code and @isFromList is true
             @isFromList = false
-            setFocus(false)
             clearTimeout(timeout_osdHide)
             document.body.style.maxLength = "160px"
             osdHide()
@@ -127,7 +125,6 @@ class ListChoose extends Widget
             li.addEventListener("click",->
                 that.current = this.id
                 that.get_current_index()
-                setFocus(false)
                 clearTimeout(timeout_osdHide)
                 document.body.style.maxLength = "160px"
                 osdHide()
