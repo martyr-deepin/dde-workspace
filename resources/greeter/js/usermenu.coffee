@@ -26,7 +26,7 @@ class UserMenu extends Widget
         @user_session = []
         @current_img_src = null
         @parent.appendChild(@element)
-        
+
     hide:->
         @element.style.display = "none"
         @ComboBox?.hide()
@@ -34,13 +34,13 @@ class UserMenu extends Widget
     show:->
         @element.style.display = "block"
         @ComboBox?.show()
-    
+
     menuHide:->
         @ComboBox?.menu.hide()
-    
+
     menuShow:->
         @ComboBox?.menu.show()
-    
+
     menuChoose_click_cb : (id, title)=>
         echo "menuChoose_click_cb:current:#{id}"
         @current = @ComboBox.set_current(id)
@@ -48,7 +48,6 @@ class UserMenu extends Widget
     new_user_menu: ->
         echo "new_user_menu"
         if @userinfo_all.length < 2 then return
-        
         @ComboBox = new ComboBox("user", @menuChoose_click_cb)
         #@ComboBox.hide()
         for user in @userinfo_all
@@ -60,7 +59,6 @@ class UserMenu extends Widget
         @ComboBox.frame_build(1)
         @element.appendChild(@ComboBox.element)
         @ComboBox.current_img.src = "images/userswitch/acount_switch_hover.png"
-        
 
     keydown_listener:(e)->
         @ComboBox?.menu.keydown(e)

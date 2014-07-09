@@ -215,7 +215,7 @@ compare_pos_rect_pixel = (base1, base2, pos) ->
     top_right = Math.max(base1.x, base2.x)
     bottom_left = Math.min(base1.y, base2.y)
     bottom_right = Math.max(base1.y, base2.y)
-    
+
     rect_x0 = top_left
     rect_y0 = bottom_left
     rect_x1 = top_right
@@ -1151,7 +1151,6 @@ grid_do_keydown_to_shortcut = (evt) ->
                 for i in speical_item.concat(all_item)
                     if not (w_i = Widget.look_up(i))? then continue
                     item_pos = w_i.get_pos()
-                    
                     #pos_a_pixel = pos_to_pixel(pos_a)
                     #pos_b_pixel = pos_to_pixel(pos_b)
                     #item_pos_pixel = pos_to_pixel(item_pos)

@@ -24,24 +24,22 @@ password_error_msg = null
 
 class User extends Widget
     img_src_before = "images/userswitch/"
-    
     constructor:(@id,@parent)->
         super
         inject_css(_b,"css/user.css")
         @parent?.appendChild(@element)
-        
         @user_session = []
         @userinfo_all = []
         if accounts.get_dbus_failed then new NoAccountServiceMessage()
         @get_default_userid()
-   
+
     get_default_userid:->
         @_default_username = accounts.get_default_username()
         if @_default_username is null then @_default_username = accounts.users_name[0]
         @_default_userid = accounts.get_user_id(@_default_username)
         echo "_default_username:#{@_default_username};uid:#{@_default_userid}"
         return @_default_userid
-    
+
     sort_current_user_info_center:->
         echo "sort_current_user_info_center"
         tmp_length = (@userinfo_all.length - 1) / 2
@@ -51,7 +49,7 @@ class User extends Widget
             @userinfo_all[center_index] = _current_user
             @userinfo_all[_current_user.index] = center_old
             _current_user.index = center_index
-     
+
      isSupportGuest:->
         if is_support_guest and accounts.isAllowGuest() is true
             guest_image = "/var/lib/AccountsService/icons/guest.png"
@@ -71,14 +69,12 @@ class User extends Widget
                 @userinfo_all.push(u)
                 u.is_logined = accounts.is_user_sessioned_on(uid)
                 _current_user = u if uid is @_default_userid
-        
         @isSupportGuest()
 
         user.index = j for user,j in @userinfo_all
         if not _current_user?
             _current_user = @userinfo_all[0]
             _current_user.index = 0
-        
         for user in @userinfo_all
             @element.appendChild(user.element)
             if user.index is _current_user.index
@@ -87,10 +83,8 @@ class User extends Widget
                 _current_user.update_session_icon()
             else
                 user.hide()
-        
         return @userinfo_all
 
-   
     new_userinfo_for_lock:->
         echo "new_userinfo_for_lock"
         username = accounts.users_id_dbus[@_default_userid].UserName
@@ -99,8 +93,7 @@ class User extends Widget
         _current_user.index = 0
         @element.appendChild(_current_user.element)
         _current_user.show()
-    
-    
+
     get_current_userinfo:->
         return _current_user
 
@@ -173,7 +166,6 @@ class User extends Widget
             el.src = click
             click_cb?()
         ) if click
-    
 
 
 
@@ -182,34 +174,28 @@ class UserInfo extends Widget
         super
         echo "new UserInfo :#{@username}"
         @session = "deepin"
-        
         @is_logined = false
         @is_recognizing = false
         @animation_end = true
         @index = null
         @time_animation = 500
         @face_login = @userFaceLogin(@username)
-        
         @userinfo_build()
 
 
     userinfo_build:->
         @userbase = create_element("div", "UserBase", @element)
-        
         @face_recognize_div = create_element("div","face_recognize_div",@userbase)
         #@face_recognize_border = create_img("face_recognize_div","images/userinfo/facelogin_boder.png",@face_recognize_div)
         @face_recognize_img = create_img("face_recognize_img","images/userinfo/facelogin_animation.png",@face_recognize_div)
-        
         @userimg_div = create_element("div","userimg_div",@face_recognize_div)
         @userimg_border = create_element("div","userimg_border",@userimg_div)
         @userimg_background = create_element("div","userimg_background",@userimg_border)
         @userimg = create_img("userimg", @usericon, @userimg_background)
         @userimg_div.style.display = "none"
-
         @username_div = create_element("div", "username_div", @userbase)
         @username_div.innerText = @username
         @username_div.style.display = "none"
-        
         @login = new LoginEntry("login", @username, (u, p)=>@on_verify(u, p))
         @element.appendChild(@login.element)
         @login.hide()
@@ -217,11 +203,9 @@ class UserInfo extends Widget
         @face_recognize_div.style.display = "block"
         @face_recognize_img.style.display = "none"
 
-    
     hide:=>
         @username_div.style.display = "none"
         @login.hide()
-        
         @userimg_div.style.display = "none"
         @element.style.display = "none"
         @blur()
@@ -236,7 +220,6 @@ class UserInfo extends Widget
     hide_animation:(cb)->
         @username_div.style.display = "none"
         @login.hide()
-        
         @userimg.style.opacity = "1.0"
         @animation_end = false
         jQuery(@userimg).animate({opacity:'0.0'},@time_animation,
@@ -247,7 +230,7 @@ class UserInfo extends Widget
                 @animation_end = true
                 cb?()
         )
-    
+
     show_animation:(cb)->
         @show()
         @userimg.style.opacity = "0.0"
@@ -266,7 +249,7 @@ class UserInfo extends Widget
             echo "face_login #{e}"
         finally
             return face
-    
+
     draw_camera: ->
         if !@face_login then return
         clearInterval(draw_camera_id)
@@ -283,10 +266,9 @@ class UserInfo extends Widget
                 rotate = (rotate + 10 * scaleFinal) % 360
                 animation_rotate(@face_recognize_img,rotate)
             ,20)
-        
         @auth_time = 500#test is 85
         @auth_timeout = setTimeout(rotate_animation,@auth_time)
-    
+
     loginAnimationClear: ->
         echo "loginAnimationClear"
         @face_recognize_img.style.display = "none"
@@ -305,7 +287,6 @@ class UserInfo extends Widget
         @loginAnimationClear()
         enable_detection(false)
         DCore[APP_NAME].cancel_detect()
-   
 
     get_session_by_lightdm:->
         @session = "deepin"
@@ -344,15 +325,12 @@ class UserInfo extends Widget
             DCore[APP_NAME].set_username(@username)
             @draw_camera()
             @draw_avatar()
-        
         _current_user = @
         localStorage.setItem("_current_user",_current_user)
- 
-    
+
     blur: ->
         @loginAnimationClear()
         @stop_avatar()
-
 
     on_verify: (username, password)->
         echo "on_verify:#{username}"
@@ -370,7 +348,7 @@ class UserInfo extends Widget
             echo "#{username} try_unlock "
             @loginAnimation()
             DCore.Lock.try_unlock(username,password)
-    
+
     auth_failed: (msg) =>
         @loginAnimationClear()
         @stop_avatar()
@@ -388,7 +366,6 @@ class UserInfo extends Widget
         if @is_recognizing
             return
 
-
 class LoginEntry extends Widget
     img_src_before = "images/userinfo/"
     constructor: (@id, @username,@on_active)->
@@ -403,7 +380,7 @@ class LoginEntry extends Widget
         @password_create()
         @keyboard_img_create()
         @loginbutton_create()
-    
+
     password_create: ->
         if !@is_need_pwd then return
         @password_div = create_element("div", "password_div", @element)
@@ -412,7 +389,7 @@ class LoginEntry extends Widget
         @password.setAttribute("maxlength", PasswordMaxlength) if PasswordMaxlength?
         @password.setAttribute("autofocus", true) if @username isnt guest_name
         @password_eventlistener()
-        
+
     keyboard_img_create: ->
         if !@is_need_pwd then return
         if !is_greeter then return
@@ -420,7 +397,7 @@ class LoginEntry extends Widget
         if @layouts?.length < 2 then return
         echo "user_layouts---#{@username}----========="
         echo @layouts
-        
+
         @keyboard_img = create_element("div","keyboard_img",@password_div)
         @keyboard_img.style.position = "absolute"
         @keyboard_img.style.left = 10
@@ -431,7 +408,7 @@ class LoginEntry extends Widget
             @keyboard?.toggle()
             echo "keyboard_img.click and keyboard.style.display is #{@keyboard.element.style.display}"
         )
-       
+
     keyboard_create: ->
         @keyboard = new Select("keyboard_#{@username}",div_keyboard)
         @keyboard.element.style.position = "absolute"
@@ -447,7 +424,7 @@ class LoginEntry extends Widget
             DCore.Greeter.set_layout(selected)
             @keyboard?.hide()
         )
-        
+
     get_current_layout: ->
         @current_layout = DCore.Greeter.get_current_layout()
 
@@ -465,7 +442,6 @@ class LoginEntry extends Widget
         @loginbutton = create_img("loginbutton", "",null)
         @loginbutton.type = "button"
         @loginbutton.src = "#{img_src_before}#{@id}_normal.png"
-        
         if @is_need_pwd
             @password_div.appendChild(@loginbutton)
             @loginbutton.style.position = "relative"
@@ -474,7 +450,6 @@ class LoginEntry extends Widget
         else
             @element.appendChild(@loginbutton)
             @element.style.marginTop = "0.6em"
-        
         @loginbutton.addEventListener("mouseout", =>
             power_flag = false
             if (power = localStorage.getObject("shutdown_from_lock"))?
@@ -486,7 +461,6 @@ class LoginEntry extends Widget
                 @loginbutton.src = "#{img_src_before}#{@id}_normal.png"
         )
         @loginbutton_eventlistener()
-        
         if @username is guest_name
             @password_error(_("click login button to log in"))
             @loginbutton.disable = false
@@ -513,19 +487,16 @@ class LoginEntry extends Widget
         @password?.addEventListener("blur",=>
             @keyboard?.hide()
         )
-        
         @password?.addEventListener("focus",=>
             if @username is guest_name then return
             if @password.value is password_error_msg or @password.value is localStorage.getItem("password_value_shutdown")
                 @input_password_again()
         )
-        
         @password?.addEventListener("keyup",(e)=>
             if @username is guest_name then return
             if e.which == ENTER_KEY
                 @on_active(@username, @password.value) if @check_completeness()
         )
-        
         document.body.addEventListener("keydown",(e)=>
             try
                 els = $(".MenuChoose")
@@ -555,8 +526,6 @@ class LoginEntry extends Widget
                 else value = ""
                 @on_active(@username, value)
         )
-        
- 
 
     check_completeness: ->
         if !@is_need_pwd then return true

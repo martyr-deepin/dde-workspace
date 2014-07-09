@@ -22,11 +22,9 @@ class End extends Page
     constructor:(@id)->
         super
         DCore.Guide.enable_guide_region()
-        
         @message = _("Thanks for your patience to learn.Congratulation!")
         @show_message(@message)
         #@msg_tips.style.top = "-10%"
-        
         @element.style.webkitBoxOrient = "vertical"
         @choose_div = create_element("div","choose_div",@element)
         @end = new ButtonNext("end",_("End"),@choose_div)

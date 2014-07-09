@@ -12,7 +12,7 @@ class Select extends Widget
         @selected = null
         @boxscroll = null
         @hide()
-    
+
     set_lists:(@current,@lists) ->
 
     toggle: ->
@@ -49,7 +49,7 @@ class Select extends Widget
             @a[i] = create_element("a","",@li[i])
             @li[i].setAttribute("id",each)
             @a[i].innerText = each
-    
+
     check_selected_css: ->
         @selected = @current
         if @li.length == 0 then @boxscroll_create()
@@ -59,10 +59,10 @@ class Select extends Widget
 
     unselect_css: (el) ->
         el.style.background = "rgba(0,0,0,0.5)"
-    
+
     select_css: (el) ->
         el.style.background = "rgba(0,0,0,0.3)"
-    
+
     set_cb:(@cb) ->
         if @li.length == 0 then @boxscroll_create()
         for each,i in @lists
@@ -71,5 +71,3 @@ class Select extends Widget
                 that.current = this.id
                 that.cb?(that.current)
             )
- 
-

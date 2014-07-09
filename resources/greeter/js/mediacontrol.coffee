@@ -20,7 +20,6 @@
 class VoiceControl extends Widget
     myCanvas = null
     num = null
-    
     mouseover = false
 
     constructor:->
@@ -30,7 +29,7 @@ class VoiceControl extends Widget
         @element.style.display = "none"
         #remove_element(background) if background
         #background = create_img("background","images/voicecontrol/background.png",@element)
-    
+
     show:(x,y,position = "absolute")->
         @element.style.position = position
         @x = x
@@ -38,10 +37,10 @@ class VoiceControl extends Widget
         @element.style.left = x
         @element.style.top = y
         @element.style.display = "block"
-    
+
     hide:->
         @element.style.display = "none"
-     
+
     drawVolume:(vol,width = 50,height = 50)->
         remove_element(num) if num
         num = create_element("div","num",@element)
@@ -64,7 +63,7 @@ class VoiceControl extends Widget
         myCanvas.style.width = width * 2
         myCanvas.style.height = height * 2
         ctx = myCanvas.getContext("2d")
-       
+
         #dest
         ctx.beginPath()
         ctx.moveTo(x0,y0)
@@ -75,13 +74,13 @@ class VoiceControl extends Widget
         ctx.stroke()
         ctx.fillStyle = "rgba(255,255,255,1.0)"
         ctx.fill()
-        
+
         ctx.globalCompositeOperation = "source-in"
 
         #src
         ctx.fillStyle = "rgba(255,255,255,1.0)"
         ctx.fillRect(x0,y0 + height - vol * height,x0 + width,y0 + height)
-        
+
         remove_element(num) if num
         num = create_element("div","num",@element)
         num.style.position = "relative"
@@ -96,12 +95,11 @@ class VoiceControl extends Widget
     do_mouseover: (e)->
         mouseover = true
         #@element.style.display = "block"
-    
+
     do_mouseout: (e)->
         mouseover = false
         @hide()
-    
-   
+
     get_size: ->
         @element.style.display = "block"
         width = @element.clientWidth

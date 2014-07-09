@@ -28,7 +28,6 @@ class Option extends Widget
         @opt_text_span = []
         @Animation_End = false
         @element.style.position = "absolute"
-        
         switch @id
             when "left-up"
                 @current_up = true
@@ -50,7 +49,7 @@ class Option extends Widget
                 @current_left = false
                 @element.style.right = 0
                 @element.style.bottom = 0
-     
+
     insert:(opt)->
         @opt_text.push(opt)
 
@@ -62,17 +61,16 @@ class Option extends Widget
             @opt_choose_div_build()
             @current_div_build()
         jQuery(@element).hover(@mouseenter,@mouseleave)
-    
+
     mouseenter : =>
         echo "mouseenter"
         @current_img.style.backgroundPosition = @bg_pos_hover
-        
         for opt,i in @opt_text
             if opt is @current then @opt_text_span[i].style.color = "#00bbfe"
             else @opt_text_span[i].style.color = "#afafaf"
         @opt_choose.style.display = "block"
         @animation_show(@opt_choose,@current_up)
-        
+
     animation_show:(el,current_up)->
         @Animation_End = false
         t_show = 80
@@ -80,7 +78,6 @@ class Option extends Widget
         YEndTop = 50
         YStartBottom = YStartTop
         YEndTopBottom = YEndTop
-        
         el.style.opacity = "0.0"
         if current_up
             el.style.top = YStartTop
@@ -100,7 +97,7 @@ class Option extends Widget
                     echo "Animation End"
                     @Animation_End = true
             )
-       
+
     mouseleave : =>
         echo "mouseleave"
         @current_img.style.backgroundPosition = @bg_pos_normal
@@ -117,7 +114,6 @@ class Option extends Widget
             @current_img = create_element("div","current_img",@current_div)
             @current_div.style.webkitBoxPack = "end"
         @current_text.textContent = @current
-        
         Delta=(n)->
             return "#{n * 102}px"
         Hover_X = 0
@@ -125,7 +121,6 @@ class Option extends Widget
         left = 60
         top = 0
         bottom = 0
-        
         switch @id
             when "left-up"
                 @bg_pos_normal = "#{Delta(-1)} #{Delta(-1)}"
@@ -153,7 +148,6 @@ class Option extends Widget
         else
             @current_text.style.textAlign = "left"
 
-    
     opt_choose_div_build :->
         @opt_choose = create_element("ul","opt_choose",@element)
         left = 50
@@ -162,7 +156,6 @@ class Option extends Widget
         else
             echo "right"
             @opt_choose.style.right = left
-       
         if !@current_up then @opt_text.reverse()
         for opt,i in @opt_text
             @opt_text_li[i] = create_element("li","opt_text_li",@opt_choose)

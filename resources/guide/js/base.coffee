@@ -29,13 +29,12 @@ class Desktop
 
     richdir_signal: (@richdir_signal_cb) ->
         @dbus?.connect("RichdirUpdate",@richdir_signal_cb)
-    
+
     item_signal_disconnect: ->
         @dbus?.dis_connect("ItemUpdate",@item_signal_cb)
 
     richdir_signal_disconnect: ->
         @dbus?.dis_connect("RichdirUpdate",@richdir_signal_cb)
-    
 
 class Dss
     DSS = "com.deepin.dde.ControlCenter"
@@ -44,7 +43,7 @@ class Dss
             @dbus = DCore.DBus.session(DSS)
         catch e
             console.log "dbus error :#{e}"
- 
+
     hide: ->
         @dbus?.Hide_sync()
 
@@ -63,7 +62,7 @@ class Launcher
         catch e
             @dbus_error = true
             console.log "#{LAUNCHER} dbus error :#{e}"
- 
+
     hide: ->
         @dbus?.Hide_sync()
 
@@ -94,7 +93,7 @@ class LauncherDaemon
         catch e
             @dbus_error = true
             console.log "#{LAUNCHER_DAEMON} dbus error :#{e}"
- 
+
     search: (str) ->
         return @dbus?.Search_sync(str)
 
@@ -103,7 +102,7 @@ class Dock
         name:"com.deepin.daemon.Dock"
         path:"/dde/dock/DockRegion"
         interface:"dde.dock.DockRegion"
-    
+
     constructor: ->
         try
             @dock_region_dbus = DCore.DBus.session_object(
@@ -120,7 +119,6 @@ class Dock
         @y0 = @dock_region[1]
         @x1 = @dock_region[2]
         @y1 = @dock_region[3]
-        
         pos =
             x0:0
             y0:0
@@ -130,9 +128,8 @@ class Dock
         pos.y0 = @y0# - 8
         pos.x1 = pos.x0 + ICON_SIZE
         pos.y1 = pos.y0 + ICON_SIZE
-        
         return pos
-    
+
     get_launchericon_pos: ->
         pos = @get_icon_pos(1)
         return pos
@@ -148,7 +145,6 @@ class Page extends Widget
         echo "new #{@id} Page"
         @img_src = "img"
         document.body.style.background = "rgba(0,0,0,0.6)"
-        
         @element.style.display = "-webkit-box"
         @element.style.width = "100%"
         @element.style.height = "100%"
@@ -160,7 +156,6 @@ class Page extends Widget
         @msg_tips.style.color = "#fff"
         @msg_tips.style.textAlign = "center"
         @msg_tips.style.textShadow = "0 1px 1px rgba(0,0,0,0.7)"
-        
 
     show_message: (@message) ->
         if not @message_div?
@@ -177,5 +172,3 @@ class Page extends Widget
             @tips_div.style.position = "relative"
             @tips_div.style.marginTop = "40px"
         @tips_div.innerText = @tips
-
-

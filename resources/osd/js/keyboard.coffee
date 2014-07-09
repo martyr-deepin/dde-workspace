@@ -62,12 +62,12 @@ keyboardList = null
 osd.SwitchLayout = (keydown)->
     if !keydown then return if mode is "dbus"
     setFocus(true)
-    
+
     keyboard = new Keyboard() if not keyboard?
     keyboard.updateUserLayoutList()
     echo "UserLayoutList.length: #{keyboard.UserLayoutList.length}"
     if keyboard.UserLayoutList.length < 2 then return
-    
+
     keyboardList?.chooseOption()
     clearTimeout(timeout_osdHide)
     timeout_osdHide = setTimeout(=>

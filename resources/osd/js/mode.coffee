@@ -10,7 +10,6 @@ check_mediakey_signal= ->
         DBusMediaKey = DCore.DBus.session_object(MEDIAKEY.name, MEDIAKEY.path, MEDIAKEY.interface)
     catch e
         echo "Error:-----DBusMediaKey:#{e}"
-    
     for own signal of osd
         DBusMediaKey?.connect(signal, do (signal_each = signal)->
             (keydown)->

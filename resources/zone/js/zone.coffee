@@ -37,7 +37,7 @@ class Zone extends Widget
     setZoneLauncher: ->
         getZoneDBus()
         setZoneDBusSettings("left-up","/usr/bin/launcher")
-    
+
     option_build:->
         echo "option_build"
         @opt = []
@@ -57,7 +57,7 @@ document.body.addEventListener("click",(e)=>
     enableZoneDetect(true)
     DCore.Zone.quit()
 )
- 
+
 document.body.addEventListener("contextmenu",(e)=>
     e.preventDefault()
     e.stopPropagation()

@@ -24,7 +24,7 @@ class SwitchUser extends Widget
         name:"org.freedesktop.DisplayManager",
         path:"/org/freedesktop/DisplayManager/Seat0",
         interface:"org.freedesktop.DisplayManager.Seat",
-    
+
     constructor: ()->
         super
         clearInterval(draw_camera_id)
@@ -39,7 +39,6 @@ class SwitchUser extends Widget
     button_switch:->
         @users_id = accounts.users_id
         if @users_id.length < 2 and accounts.isAllowGuest() is false then return
-        
         @switch = create_img("switch", "images/userswitch/acount_switch_hover.png", @element)
         @switch.style.cursor = "pointer"
         @switch.style.width = "5em"

@@ -452,7 +452,6 @@ class RichDir extends DesktopEntry
         @canvas.height = size.pop_height + add_height
         if arrow_pos_at_bottom then @canvas.style.top = -10
         else @canvas.style.top = -18
-        
         ctx = @canvas.getContext("2d")
         ctx.save()
         ctx.clearRect(0, 0, @canvas.width, @canvas.height)

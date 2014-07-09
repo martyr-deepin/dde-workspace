@@ -37,7 +37,7 @@ class Display extends Widget
         @OpenedMonitorsName = []
         @FeaturrMonitorsName = []
         @valueEach = []
-        
+
         @DisplayModeList = [
             _("Copy"),
             _("Expand"),
@@ -49,10 +49,10 @@ class Display extends Widget
         #0 expand
         #1 onlyCurrentScreen
         #2 onlySecondScreen
-        
+
         _b.appendChild(@element)
         @getDBus()
-    
+
     hide:->
         @element.style.display = "none"
 
@@ -84,7 +84,7 @@ class Display extends Widget
             @getFeaturrMonitorsName()
         catch e
             echo "getDBusMonitors ERROR: ---#{e}---"
-        
+
     getDBusMonitor:(name)->
         return dbus = monitor for monitor in @DBusMonitors when monitor.FullName is name
 
@@ -96,7 +96,7 @@ class Display extends Widget
                 @FeaturrMonitorsName.push(name)
         echo @FeaturrMonitorsName
         return @FeaturrMonitorsName
-    
+
     getBrightness:(name)->
         @Brightness = @DBusDisplay.Brightness
         value = null
@@ -109,7 +109,7 @@ class Display extends Widget
 
     getPrimarBrightnessValue:->
         @getBrightness(@PrimarMonitorName)
-    
+
     getFeatureBrightnessValue:->
         @getBrightness(@FeaturrMonitorsName[0])
 
@@ -123,7 +123,7 @@ class Display extends Widget
         Modei = i for each,i in @DisplayModeList when each is current
         ModeChoose = @DisplayModeValue[Modei]
         @switchDisplayMode2(ModeChoose)
-    
+
     switchDisplayMode2:(ModeChoose)->
         setFocus(true)
         osdHide()
@@ -157,7 +157,7 @@ class Display extends Widget
         @timepress = setTimeout(=>
             osdShow()
             @element.style.display = "block"
-            
+
             @DisplayMode = @DBusDisplay.DisplayMode
             ImgIndex = @DisplayMode
             if ImgIndex >= 2 then ImgIndex = 2
@@ -217,11 +217,11 @@ osd.SwitchMonitors = (keydown)->
     if BrightCls.Monitors.length < 2
         osdHide()
         return
-    
+
     if not CHOOSEMODE
         BrightCls.showDisplayMode()
         return
-    
+
     if not displayModeList?
         displayModeList = new ListChoose("displayModeList")
         displayModeList.setParent(_b)

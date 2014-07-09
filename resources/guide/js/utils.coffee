@@ -147,7 +147,6 @@ simulate_input = (modle_keysym,old_page,new_page_cls_name = null) ->
         else
             input_keysym.push(input)
             DCore.Guide.simulate_input(input)
-        
         if input_keysym.toString() is modle_keysym.toString()
             echo "input_keysym finish!!!!!!!!!!!"
             modle_keysym_finish = true
@@ -156,7 +155,6 @@ simulate_input = (modle_keysym,old_page,new_page_cls_name = null) ->
                 guide?.switch_page(old_page,new_page_cls_name)
             ,t_mid_switch_page)
     )
-    
 
 body_hide = ->
     document.body.style.opacity = 0
@@ -206,15 +204,12 @@ shadow_light = (el,type = "circle") ->
     cover.style.left =  el.offsetLeft
     cover.style.top =  el.offsetTop
     guide.element.style.overflow = "hidden"
-    
     border_width = screen.width
     cover.style.border = "#{border_width}px solid rgba(0,0,0,0.3)"
-    
     cover.style.borderRadius = "50%" if type is "circle"
     cover.style.borderRadius = "1" if type is "rect"
 
 
- 
 move_animation = (el,y0,y1,type = "top",pos = "absolute",cb) ->
     el.style.display = "block"
     el.style.position = pos
@@ -231,12 +226,9 @@ move_animation = (el,y0,y1,type = "top",pos = "absolute",cb) ->
                 el.style.bottom = y0
                 pos0 = {bottom:y0}
                 pos1 = {bottom:y1}
-    
     animate_init()
     jQuery(el).animate(
         pos1,t_show,"linear",=>
             animate_init()
             jQuery(el).animate(pos1,t_show,"linear",cb?())
     )
-
-

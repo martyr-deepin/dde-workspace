@@ -22,21 +22,21 @@ class ListChoose extends Widget
         super
         echo "New ListChoose :#{@id}"
         @list = []
-        
+
         @Listul = []
         @li = []
         @li_span = []
         @isFromList = false
         @currentIndex = 0
-        
+
         @show()
-    
+
     hide:->
         @element.style.display = "none"
-    
+
     show:->
         @element.style.display = "-webkit-box"
-    
+
     setParent:(parent = document.body)->
         parent.appendChild(@element)
 
@@ -61,14 +61,14 @@ class ListChoose extends Widget
             @li_span[i] = create_element("span","li_span",@li[i])
             @li_span[i].textContent = each
             @currentIndex = i if each is @current
-        
+
         echo "@currentIndex:#{@currentIndex} is @current :#{@current}"
         @setBackground(@currentIndex)
 
     get_current_index: ->
         @currentIndex = i for each,i in @list when each is @current
         return @currentIndex
-    
+
     setBackground: (index)=>
         return if not @li[0]?
         echo "setBackground:#{index}"
@@ -119,7 +119,7 @@ class ListChoose extends Widget
             @keyup_cb?()
 
     setKeyupListener:(@keyup_code,@keyup_cb)->
- 
+
     setClickCb: (cb) ->
         that = @
         for li in @li

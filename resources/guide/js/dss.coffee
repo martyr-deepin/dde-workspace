@@ -21,7 +21,6 @@
 
 class DssLaunch extends Page
     get_dssicon_pos_interval = null
-    
     constructor:(@id)->
         super
         enableZoneDetect(true)
@@ -40,12 +39,10 @@ class DssLaunch extends Page
             guide?.switch_page(@,"DssArea")
         )
         @circle.enable_area_icon("#{@img_src}/preferences-system.png",48,48)
-        
         @corner = new Pointer("corner_rightdown",@element)
         @corner.create_pointer(AREA_TYPE.corner,POS_TYPE.rightdown,=>
             echo "mouseover"
             clearInterval(get_dssicon_pos_interval)
-            
             clearTimeout(switch_timeout)
             switch_timeout = setTimeout(=>
                 @dss = new Dss()
@@ -55,14 +52,12 @@ class DssLaunch extends Page
         ,"mouseover")
         @corner.set_area_pos(0,0,"fixed",POS_TYPE.rightdown)
         @corner.show_animation()
-        
         get_dssicon_pos_interval = setInterval(=>
             @pos = @dock.get_dssicon_pos()
             @circle_x = @pos.x0 - @circle.pointer_width
             @circle_y = @pos.y0 - @circle.pointer_height - ICON_MARGIN_V_BOTTOM / 2
             @circle.set_area_pos(@circle_x,@circle_y,"fixed",POS_TYPE.leftup)
         ,100)
-        
         @circle.show_animation()
 
 
@@ -70,7 +65,6 @@ class DssArea extends Page
     constructor:(@id)->
         super
         DCore.Guide.disable_guide_region()
-        
         restack_time_out = setTimeout(->
             DCore.Guide.restack()
         ,200)
@@ -81,13 +75,6 @@ class DssArea extends Page
 
         @dock = new Dock()
         @dss = new Dss()
-        #@circle = new Pointer("dss_circle",@element)
-        #@circle.create_pointer(AREA_TYPE.circle_white,POS_TYPE.rightdown)
-        #@pos = @dock.get_dssicon_pos()
-        #@circle_x = @pos.x0 - @circle.pointer_width
-        #@circle_y = @pos.y0 - @circle.pointer_height - ICON_MARGIN_V_BOTTOM / 2
-        #@circle.set_area_pos(@circle_x,@circle_y,"fixed",POS_TYPE.leftup)
-        #@circle.show_animation()
 
         @rect = new Rect("dss_area",@element)
         @rect.create_rect(360,520)
@@ -99,5 +86,3 @@ class DssArea extends Page
                 guide?.switch_page(@,"End")
             ,t_mid_switch_page)
         )
-        
-

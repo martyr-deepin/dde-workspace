@@ -3,16 +3,14 @@
 class ButtonNext extends Widget
     normal_interval = null
     normal_hover_interval = null
-    
     constructor: (@id,@text,@parent)->
         super
-        
         @parent?.appendChild(@element)
         @img_src = "img"
         @img_normal = "#{@img_src}/next_normal.png"
         @img_hover = "#{@img_src}/next_hover.png"
         @img_press = "#{@img_src}/next_press.png"
-    
+
     set_img:(@img_normal,@img_hover,@img_press) ->
 
     create_button:(@cb,@show_animation = false) ->
@@ -20,7 +18,6 @@ class ButtonNext extends Widget
         @element.style.height = "64px"
         @element.style.color = "#fff"
         @element.style.textShadow = "0 1px 1px rgba(0,0,0,0.7)"
-        
         @bn_text = create_element("div","bn_text",@element)
         @bn_text.innerText = @text
         @bn_text.style.fontSize = "2.2em"
@@ -66,10 +63,8 @@ class ButtonNext extends Widget
                             @bn_div.style.backgroundImage = "url(#{@img_normal})"
                     )
             )
-    
         animation_hover_to_normal()
         normal_interval = setInterval(=>
             animation_hover_to_normal()
         ,t * 2)
-
 

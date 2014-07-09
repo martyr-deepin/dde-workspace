@@ -26,7 +26,7 @@ class Option extends Widget
 
     hide:->
         @element.style.Option = "none"
-    
+
     show:->
         clearTimeout(@timepress)
         clearTimeout(timeout_osdHide)
@@ -55,7 +55,7 @@ isCapsLockToggle = ->
         if result isnt true then result = false
     catch e
         echo "isCapsLockToggle error:#{e}"
-    
+
     echo "isCapsLockToggle:#{result}"
     return result
 

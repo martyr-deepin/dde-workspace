@@ -48,7 +48,6 @@ class TimeDate extends Widget
         mon = new Date().getMonth() + 1
         #mon = month_list[new Date().getMonth()]
         date = new Date().getDate()
-        
         # Monday
         day = day_list[new Date().getDay()]
         switch(type)

@@ -19,7 +19,6 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class PowerMenu extends Widget
-    
     constructor: (parent_el) ->
         super
         @power_dict = {}
@@ -28,17 +27,15 @@ class PowerMenu extends Widget
             restart:_("Restart")
             suspend:_("Suspend")
         }
-        
         @parent = parent_el
         @img_before = "images/powermenu/"
         if not @parent? then @parent = document.body
         @parent.appendChild(@element)
 
         @clear_shutdown_from_lock()
-        
         @powercls = new Power()
         @powercls.power_get_inhibit()
-        
+
     suspend_cb : =>
         @powercls.power_force_sys("suspend")
 
@@ -78,7 +75,6 @@ class PowerMenu extends Widget
             message_text = @powercls.inhibit_msg(key)
             echo "#{key} #{can_exe} #{message_text}"
             @ComboBox.insert(key, title, img_normal,img_hover,img_click,can_exe,message_text)
-        
         @ComboBox.frame_build()
         @element.appendChild(@ComboBox.element)
         @ComboBox.current_img.src = @img_before + "powermenu.png"
@@ -93,7 +89,6 @@ class PowerMenu extends Widget
         power_title = @power_title[powervalue]
         value = _("Enter your password to %1").args(power_title)
         localStorage.setItem("password_value_shutdown",value)
-        
         password_error = (msg) =>
             $(".password").style.color = "#F4AF53"
             $(".password").style.fontSize = "1.2em"
@@ -104,23 +99,19 @@ class PowerMenu extends Widget
             $(".password").value = password_error_msg
             $(".password").blur()
             $(".loginbutton").disable = true
-        
         password_error(value)
         $(".loginbutton").src = "images/userinfo/#{powervalue}_normal.png"
         $(".password").focus()
-        
         document.body.addEventListener("click",(e)=>
             e.stopPropagation()
             @confirm_shutdown_hide()
         )
-        
 
     confirm_shutdown_hide:=>
         if @check_is_shutdown_from_lock()
             power = @clear_shutdown_from_lock()
         else
             return
-        
         input_password_again = =>
             $(".password").style.color = "rgba(255,255,255,0.5)"
             $(".password").style.fontSize = "2.0em"
@@ -159,14 +150,14 @@ class PowerMenu extends Widget
             power = {"lock":false,"value":null}
             localStorage.setObject("shutdown_from_lock",power)
         return power
-             
+
     set_shutdown_from_lock : (powervalue) ->
         if (power = localStorage.getObject("shutdown_from_lock"))?
             power.lock = true
             power.value = powervalue
             localStorage.setObject("shutdown_from_lock",power)
         return
-    
+
     auth_succeed_excute: ->
         echo "PowerMenu auth_succeed_excute"
         if @check_is_shutdown_from_lock()
@@ -174,5 +165,4 @@ class PowerMenu extends Widget
             if not power.value? then return
             if @powercls.power_can(power.value)
                 @powercls.power_force_sys(power.value)
-
 

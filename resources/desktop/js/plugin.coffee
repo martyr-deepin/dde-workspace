@@ -95,7 +95,7 @@ class PluginHandle extends Widget
     destroy:->
         echo "PluginHandle destroy"
         remove_element(@element)
-        
+
 class DesktopPluginItem extends Widget
     constructor: (@id)->
         super
@@ -222,7 +222,6 @@ class DesktopPlugin extends Plugin
                     pos.y = if (rows - @info.y ) < @info.height then (rows - @info.height + 1) else @info.y
             if @info.x? or @info.y?
                 save_position(@item.get_id(),pos)
-            
 
     destroy:->
         echo "DesktopPlugin destory"

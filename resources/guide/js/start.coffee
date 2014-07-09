@@ -27,9 +27,7 @@ class Start extends Page
         @option = ["launcher","desktop","dss"]
         @option_text = [_("New Launcher"),_("New Desktop"),_("New System Settings")]
         @message_text = _("The following will guide you to learn how to use some new functions")
-        
         document.body.style.background = "rgba(0,0,0,0.9)"
-
         @guide_choose_build()
 
     guide_choose_build : ->
@@ -43,7 +41,6 @@ class Start extends Page
         @menu.frame_build()
         @menu.show()
         @guide_choose.appendChild(@menu.element)
-   
         @start = new ButtonNext("start",_("Start"),@guide_choose)
         @start.create_button(=>
             guide?.switch_page(@,"LauncherLaunch")

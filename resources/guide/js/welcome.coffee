@@ -21,25 +21,19 @@
 class Welcome extends Widget
     constructor:(@id)->
         super
-        
         echo "welcome #{@id}"
         inject_css(@element,"css/welcome.css")
-        
         DEFAULT_BG = "/usr/share/backgrounds/default_background.jpg"
         @element.style.backgroundImage = "url(#{DEFAULT_BG})"
-        
         @session = new Session()
-        
         @logo = create_element("div","logo",@element)
         @logo_img = create_img("logo_img","",@logo)
         @img_src_before = "img/"
         @logo_img.src = "#{@img_src_before}/deepin_logo_w.png"
         @welcome_text = create_element("div","welcome_text",@logo)
         @welcome_text.textContent = _("Welcome to use Deepin Operating System")
-        
         @readying = create_element("div","readying",@element)
         @readying.innerText = _("Prepare for operation ...")
-    
         set_pos_center(@logo,0.7)
         w = 260
         left = (screen.width  - w) / 2
@@ -57,4 +51,3 @@ class Welcome extends Widget
     prepare : =>
         #DCore.Guide.spawn_command_sync("/usr/bin/dde-launcher --hidden",true)
         guide?.switch_page(@,"Start")
-

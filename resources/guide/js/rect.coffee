@@ -21,10 +21,9 @@
 class Rect extends Widget
     constructor:(@id,parent)->
         super
-        
         echo "Rect #{@id}"
         parent?.appendChild(@element)
-        
+
     create_rect_canvas: (@width,@height) ->
         @myCanvas = create_element("canvas","myCanvas",@element)
         @myCanvas.style.width = @width
@@ -33,7 +32,7 @@ class Rect extends Widget
         @ctx.strokeStyle = "rgba(0,0,0,1.0)"
         @ctx.lineWidth = 1.5
         @ctx.strokeRect(0,0,@width,@height)
-        
+
     create_rect : (@width,@height) ->
         @rect = create_element("div","rect",@element)
         @rect.style.borderColor = "#fff"
@@ -42,7 +41,7 @@ class Rect extends Widget
         @rect.style.borderRadius = "5px"
         @rect.style.width = @width
         @rect.style.height = @height
-    
+
     set_pos : (x,y,position_type = "fixed",type = POS_TYPE.leftup) ->
         set_pos(@element,x,y,position_type,type)
         #@show_animation()
@@ -61,5 +60,3 @@ class Rect extends Widget
                         @show_animation_cb?()
                 )
         )
-
-

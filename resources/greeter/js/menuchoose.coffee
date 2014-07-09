@@ -22,8 +22,7 @@
 class MenuChoose extends Widget
     choose_num = -1
     select_state_confirm = false
-    
-    
+
     #var for animation
     t_userinfo_show_hide = 600
     t_userinfo_show_delay = 500
@@ -31,20 +30,19 @@ class MenuChoose extends Widget
     t_max = 200
     t_min = 100
     t_delay = 30
-    
+
     XMove = -50
     XBack = 0
     XStartShow = 300
     XEndHide = 300
-    
+
     init_width = 80 * 0.8
     final_width = 80
-    
+
     constructor: (@id,@parent = document.body)->
         super
         inject_css(_b,"css/menuchoose.css")
         @current = @id
-        
         @option = []
         @option_disable = []
         @message_text = []
@@ -57,12 +55,12 @@ class MenuChoose extends Widget
         @opt_img = []
         @opt_text = []
         @animation_end = true
-        
+
         @element.style.display = "none"
         @element.style.position = "absolute"
         @element.style.zIndex = 30
         @parent.appendChild(@element)
-    
+
     setPos:->
         left = (screen.width  - @element.clientWidth) / 2
         top = (screen.height  - @element.clientHeight) / 2 * 0.9
@@ -70,10 +68,9 @@ class MenuChoose extends Widget
         @element.style.top = "#{top}px"
         XStartShow = (screen.width - left) - @element.clientWidth
         XEndHide = XStartShow
-    
+
     show:->
         echo "show"
-        
         @animation_end = false
         animation_opt_text_show = (i)=>
             if i != @opt.length - 1 then return
@@ -92,16 +89,12 @@ class MenuChoose extends Widget
             text_el = @opt_text[i]
             img_el = @opt_img[i]
             opt_el = @opt[i]
-            
             #init el css and then can animate
             text_el.style.opacity = "0.0"
-            
             img_el.style.width = "#{init_width / 10}em"
             img_el.style.height = "#{init_width / 10}em"
-            
             opt_el.style.opacity = "0.0"
             opt_el.style.left = XStartShow
-            
             animation_scale(img_el,final_width / init_width,t_max)
             jQuery(opt_el).delay(t_delay).animate(
                 {opacity: '1.0';left:XMove},
@@ -127,13 +120,9 @@ class MenuChoose extends Widget
                     animation_opt_move_show(i,i * t_delay)
         )
 
-
-   
     hide: ->
         echo "hide"
-        
         @animation_end = false
-        
         animation_user_show = (i)=>
             if i != 0 then return
             echo "animation_user_show(#{i})"
@@ -176,7 +165,6 @@ class MenuChoose extends Widget
                     )
             )
 
-
         j = 0
         for i in [@opt.length - 1..0]
             #delete select_state and then start animate
@@ -195,7 +183,7 @@ class MenuChoose extends Widget
         @img_url_normal.push(img_normal)
         @img_url_hover.push(img_hover)
         @img_url_click.push(img_click)
-    
+
     body_click_to_hide:->
         document.body.addEventListener("click",(e)=>
             e.stopPropagation()
@@ -207,11 +195,11 @@ class MenuChoose extends Widget
             else
                 @frame_click = false
         )
-    
+
     showMessage:(text)->
         @message_div?.style.opacity = 1
         @message_text_div?.textContent = text
-    
+
     hideMessage: ->
         @message_div.style.opacity = 0
 
@@ -238,7 +226,6 @@ class MenuChoose extends Widget
         @message_div_build()
         @frame = create_element("div", "frame", @element)
         @button = create_element("div","button",@frame)
-       
         @frame.addEventListener("click",(e)=>
             e.stopPropagation()
             @frame_click = true
@@ -249,7 +236,6 @@ class MenuChoose extends Widget
             @opt[i].style.backgroundColor = "rgba(255,255,255,0.0)"
             @opt[i].style.border = "1px solid rgba(255,255,255,0.0)"
             @opt[i].value = i
-            
             switch img_method
                 when 0
                     @opt_img[i] = create_img("opt_img_m0",@img_url_normal[i],@opt[i])
@@ -261,21 +247,17 @@ class MenuChoose extends Widget
                 else
                     @opt_img[i] = create_img("opt_img_m0",@img_url_normal[i],@opt[i])
 
-            
             @opt_text[i] = create_element("div","opt_text",@opt[i])
             @opt_text[i].textContent = @option_text[i]
-                
             that = @
             #hover
             @opt[i].addEventListener("mouseover",->
                 that.hover_state(this.value)
             )
-            
             #normal
             @opt[i].addEventListener("mouseout",->
                 that.normal_state(this.value)
             )
-
             #click
             @opt[i].addEventListener("click",(e)->
                 e.stopPropagation()
@@ -296,11 +278,11 @@ class MenuChoose extends Widget
         @hide()
         @cb(@option[i], @option_text[i])
 
- 
+
     check_disable: ->
         for bt,i in @opt
             @css_disable(i)
-   
+
     is_disable: (i) ->
         return (@option[i] in @option_disable)
 
@@ -317,7 +299,7 @@ class MenuChoose extends Widget
             @opt[i].style.cursor = "pointer"
             #@hideMessage()
         return disable
-    
+
     normal_state:(i)->
         if @is_disable(i) then return
         @opt_img[i].src = @img_url_normal[i]
@@ -333,7 +315,7 @@ class MenuChoose extends Widget
         for tmp,j in @opt_img
             if j == i and !@is_disable(i) then tmp.src = @img_url_hover[i]
             else tmp.src = @img_url_normal[j]
-   
+
     select_state:(i)->
         select_state_confirm = true
         choose_num = i
@@ -348,7 +330,6 @@ class MenuChoose extends Widget
                 tmp.style.border = "1px solid rgba(255,255,255,0.0)"
                 tmp.style.borderRadius = "0px"
 
-    
     keydown:(e)->
         if @is_hide() then return
         echo "MenuChoose #{@id} keydown from choose_num:#{choose_num}"
@@ -372,7 +353,7 @@ class MenuChoose extends Widget
             when ESC_KEY
                 destory_all()
         echo "to choose_num #{choose_num}}"
-    
+
     is_hide:->
         if @element.style.display is "none" then return true
         else return false
@@ -386,23 +367,21 @@ class ComboBox extends Widget
     constructor: (@id, @on_click_cb) ->
         super
         @current_img = create_img("current_img", "", @element)
-        
         @menu = new MenuChoose("#{@id}_menuchoose")
         @menu.set_callback(@on_click_cb)
 
     insert: (id, title, img_normal,img_hover,img_click,can_exe = true,message_text = null)->
         @menu.insert(id, title, img_normal,img_hover,img_click,can_exe,message_text)
-    
+
     frame_build:(img_method = 0)->
         @menu.frame_build(img_method)
-    
+
     showMessage:(msg)->
         @menu.showMessage(msg)
 
 
     insert_noimg: (id, title)->
         @menu.insert_noimg(id, title)
-    
 
     only_show_current_Menuchoose: ->
        echo "only_show_current_Menuchoose"
@@ -418,13 +397,13 @@ class ComboBox extends Widget
         @only_show_current_Menuchoose()
         if !@menu.animation_end then return
         @menu.toggle()
-    
+
     hide:->
         @element.style.display = "none"
 
     show:->
         @element.style.display = "block"
-    
+
     is_hide:->
         if @element.style.display = "none" then return true
         else return false
@@ -436,11 +415,9 @@ class ComboBox extends Widget
 
     currentTextShow: ->
         @current_text = create_element("div","current_text",@element) if not @current_text?
-        
         @menu_current_id = localStorage.getItem("menu_current_id_#{@id}")
         @current_text.textContent = @menu_current_id
         @current_text.style.display = "block"
-        
         XInit = -30
         XMove = 15
         @current_text.style.opacity = "0.0"
@@ -463,7 +440,6 @@ class ComboBox extends Widget
         #current = current.toLowerCase()
         @menu.current = current
         @current_text?.textContent = current
-        
         localStorage.setItem("menu_current_id_#{@id}",current)
         return current
 

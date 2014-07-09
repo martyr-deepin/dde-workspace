@@ -1,11 +1,9 @@
 class Guide extends Widget
     page_index = 0
-    
     constructor: (@id)->
         super
         @pages = []
         echo "new Guide"
-        
         document.body.style.height = screen.height
         document.body.style.width = screen.width
         echo screen.width + "*" + screen.height
@@ -33,12 +31,11 @@ class Guide extends Widget
             echo "#{error}"
 
 
-    
     switch_page: (old_page, new_page_cls_name) ->
         echo "switch page from ---#{old_page.id}--- to ----#{new_page_cls_name}----"
         @remove_page(old_page)
         @create_page(new_page_cls_name)
-    
+
     create_page: (cls_name)->
         echo "create_page"
         DCore.Guide.disable_keyboard()
@@ -48,34 +45,32 @@ class Guide extends Widget
         switch cls_name
             when "Welcome"
                 page = new Welcome(cls_name)
-            
             when "Start"
                 # only guide can get keydown
                 #DCore.Guide.disable_keyboard()
-                
+
                 # only guide cannot get keydown event
                 #DCore.Guide.enable_keyboard()
 
                 # only guide has left click ,not right_click
                 # desktop launcher dock all event disable
                 #DCore.Guide.disable_right_click()
-                
+
                 # only guide has left click and right_click
                 # desktop  launcher dock all event disable
                 #DCore.Guide.enable_right_click()
-                
+
 
                 # guide all event disable
                 # desktop launcher all event enable
                 # dock all event disable
                 #DCore.Guide.disable_guide_region()
-                
+
                 # guide all event enable
                 # desktop launcher dock all event disbable
                 #DCore.Guide.enable_guide_region()
-                
+
                 page = new Start(cls_name)
-            
             when "LauncherLaunch"
                 page = new LauncherLaunch(cls_name)
 
@@ -84,37 +79,37 @@ class Guide extends Widget
 
             when "LauncherAllApps"
                 page = new LauncherAllApps(cls_name)
-                
+
             when "LauncherScroll"
                 page = new LauncherScroll(cls_name)
-                
+
             when "LauncherSearch"
                 page = new LauncherSearch(cls_name)
-                
+
             when "LauncherRightclick"
                 page = new LauncherRightclick(cls_name)
-                
+
             when "LauncherMenu"
                 page = new LauncherMenu(cls_name)
-                
+
             when "DesktopRichDir"
                 page = new DesktopRichDir(cls_name)
-                
+
             when "DesktopRichDirCreated"
                 page = new DesktopRichDirCreated(cls_name)
-                
+
             when "DesktopCorner"
                 page = new DesktopCorner(cls_name)
-                
+
             when "DesktopZone"
                 page = new DesktopZone(cls_name)
-                
+
             when "DssLaunch"
                 page = new DssLaunch(cls_name)
-                
+
             when "DssArea"
                 page = new DssArea(cls_name)
-                
+
             when "End"
                 page = new End(cls_name)
             else

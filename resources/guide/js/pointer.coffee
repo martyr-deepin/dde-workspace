@@ -27,7 +27,6 @@ AREA_TYPE =
 class Pointer extends Widget
     constructor:(@id,parent)->
         super
-        
         echo "new Pointer #{@id}"
         @img_src = "img"
         parent?.appendChild(@element)
@@ -51,7 +50,6 @@ class Pointer extends Widget
         @area_width = @area_height = @pointer_width = @pointer_height = POINTER_AREA_SIZE
         @height = @area_height + @pointer_height
         @width = @area_width + @pointer_width
-        
         @pointer_img.style.width = @pointer_width
         @pointer_img.style.height = @pointer_height
         @area_div.style.width = @area_width
@@ -67,7 +65,7 @@ class Pointer extends Widget
             console.log "area #{@id} click"
             @cb?(e)
         )
-    
+
     enable_area_icon: (@area_icon_path,w = ICON_SIZE,h = ICON_SIZE) ->
         #return
         @area_icon = create_img("area_icon",@area_icon_path,@area_div) if not @area_icon?
@@ -99,7 +97,7 @@ class Pointer extends Widget
         switch @pos_type
             when POS_TYPE.leftup
                 pos = {left:x1;top:y1}
-            
+
             when POS_TYPE.rightup
                 pos = {right:x1;top:y1}
 
@@ -108,7 +106,6 @@ class Pointer extends Widget
 
             when POS_TYPE.rightdown
                 pos = {right:x1;bottom:y1}
-        
         set_pos(@pointer_img,x0,y0,"absolute",@pos_type)
         jQuery(@pointer_img).animate(
             pos,t_show,"linear",=>
@@ -119,4 +116,3 @@ class Pointer extends Widget
                         @show_cb?()
                 )
         )
-

@@ -77,7 +77,6 @@ if greeter.sessions.length > 1
     div_desktop.setAttribute("id","div_desktop")
     desktopmenu = new DesktopMenu(div_desktop)
     desktopmenu.new_desktop_menu()
-        
 
 div_users = create_element("div","div_users",_b)
 div_users.setAttribute("id","div_users")
@@ -107,7 +106,6 @@ div_power = create_element("div","div_power",_b)
 div_power.setAttribute("id","div_power")
 powermenu = new PowerMenu(div_power)
 powermenu.new_power_menu()
-        
 
 usermenu = null
 #user.prev_next_userinfo_create() if user.userinfo_all.length > 1

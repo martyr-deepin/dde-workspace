@@ -27,7 +27,6 @@ class DesktopMenu extends Widget
         @current_img_src = null
         if not @parent? then @parent = document.body
         @parent.appendChild(@element)
-   
 
     hide:->
         @element.style.display = "none"
@@ -58,7 +57,6 @@ class DesktopMenu extends Widget
 
     new_desktop_menu: ->
         echo "new_desktop_menu"
-        
         @ComboBox = new ComboBox("desktop", @menuChoose_click_cb)
         @sessions = DCore.Greeter.get_sessions()
         if @sessions.length == 0 then return
@@ -74,7 +72,6 @@ class DesktopMenu extends Widget
         @ComboBox.frame_build()
         @ComboBox.currentTextShow()
         @element.appendChild(@ComboBox.element)
-        
 
     keydown_listener:(e)->
         @ComboBox.menu.keydown(e)

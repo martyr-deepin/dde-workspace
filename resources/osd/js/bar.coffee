@@ -25,7 +25,7 @@ class Bar extends Widget
         @color = "#FFF"
         @whole_w = 200
         @whole_h = 15
-    
+
     show:->
         @element.style.display = "block"
 
@@ -42,7 +42,7 @@ class Bar extends Widget
         @element.style.width = @whole_w
         @element.style.height = @whole_h
         @element.style.backgroundColor = "rgba(0,0,0,0.95)"
-    
+
     setColor:(@color)->
         @progress.style.background = @color if @progress
 
@@ -56,11 +56,10 @@ class Bar extends Widget
         @progress.style.background = @color
         @progress.style.textAlign = "center"
         @progress.style.borderRadius = "3px"
-    
+
     setProgress:(@val)->
         if @val > 1 then @val = 1
         else if @val < 0 then @val = 0
         @progress.innerHTML = @progress.style.width if @progressNum
         @progress.style.width = "#{@val * 100}%"
-        
 

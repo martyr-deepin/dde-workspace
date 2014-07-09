@@ -2,7 +2,7 @@ animation_moveX = (el,moveX,time = 0,easing = "linear",delay = 0,cb)->
     #el.style.webkitTransition = "all #{time} linear"
     #el.style.marginLeft = moveX + "px"
     #el.style.webkitTransition = "display #{time} linear"
-    
+
     el.style.webkitTransform = "translateX(#{moveX}px)"
     el.style.webkitTransition = "-webkit-transform #{time / 1000}s easing #{delay}ms"
     el.style.webkitAnimationFillMode = "both"
@@ -11,7 +11,7 @@ animation_moveX = (el,moveX,time = 0,easing = "linear",delay = 0,cb)->
         cb?()
         clearTimeout(id)
     , time * 1000)
-    
+
 animation_scale = (el,scaleN,time = 0)->
     el.style.webkitTransform = "scale(#{scaleN})"
     el.style.webkitTransition = "-webkit-transform #{time}ms linear"

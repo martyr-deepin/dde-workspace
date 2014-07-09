@@ -20,7 +20,6 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class Message extends Widget
-    
     constructor: (@id)->
         super
         @text = []
@@ -28,7 +27,7 @@ class Message extends Widget
         @text_span = []
         echo "new #{@id} Message"
         inject_css(_b,"css/message.css")
-    
+
     append: (el)->
         el.style.display = "-webkit-box"
         el.style.WebkitBoxPack = "center"
@@ -58,7 +57,7 @@ class Message extends Widget
         for text,i in @text
             @text_li[i] = create_element("li","text_li",@title_ol)
             @text_li[i].textContent = text
-    
+
     setZIndex: (zIndex = 65530) ->
         @element.style.position = "absolute"
         @element.style.zIndex = "#{zIndex}"
@@ -66,7 +65,6 @@ class Message extends Widget
 class NoSessionMessage
 
     constructor: ->
-        
         @title = _("\t\t\t\t-----No available desktop sessions!-----\n
             You can try the following steps and install the Deepin Desktop Environment.\n
             ")
@@ -85,18 +83,15 @@ class NoSessionMessage
                 \tRestart your system.\n
                 ")
         ]
-        
         @message = new Message("NoSession")
         @message.title_text(@title,@text)
         @message.frame_build()
         @message.setZIndex(65530)
         @message.append(document.body)
-        
 
 class NoAccountServiceMessage
 
     constructor: ->
-        
         @title = _("\t\t\t\t-----The daemon of accounts has not started!-----\n
                     ")
         @text = []
