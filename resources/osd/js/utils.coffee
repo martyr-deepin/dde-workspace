@@ -121,3 +121,35 @@ showValue = (value,min,max,cls,id)->
         cls.bar.progressCreate()
     echo "showValue: setProgress-----#{value / max}---"
     cls.bar.setProgress(value / max) if cls.bar
+
+
+move_animation = (el,y0,y1,type = "top",pos = "absolute",cb) ->
+    el.style.display = "block"
+    el.style.position = pos
+    t_show = 1000
+    pos0 = null
+    pos1 = null
+    animate_init = ->
+        switch type
+            when "top"
+                el.style.top = y0
+                pos0 = {top:y0}
+                pos1 = {top:y1}
+            when "bottom"
+                el.style.bottom = y0
+                pos0 = {bottom:y0}
+                pos1 = {bottom:y1}
+    animate_init()
+    jQuery(el).animate(
+        pos1,t_show,"linear",=>
+            animate_init()
+            jQuery(el).animate(pos1,t_show,"linear",cb?())
+    )
+
+set_center = (el,w,h,x_scale = 1,y_scale = 0.8) ->
+    top = (screen.height  - h) / 2 * y_scale
+    left = (screen.width  - w) / 2 * x_scale
+    el.style.position = "fixed"
+    el.style.top = "#{top}px"
+    el.style.left = "#{left}px"
+

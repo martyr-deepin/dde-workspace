@@ -68,12 +68,10 @@ osd.SwitchLayout = (keydown)->
     echo "UserLayoutList.length: #{keyboard.UserLayoutList.length}"
     if keyboard.UserLayoutList.length < 2 then return
 
-    keyboardList?.chooseOption()
     clearTimeout(timeout_osdHide)
     timeout_osdHide = setTimeout(=>
-        keyboard.setCurrentLayout(keyboardList.current)
         osdHide()
-    ,2000)
+    ,TIME_HIDE)
     if not keyboardList?
         keyboardList = new ListChoose("KeyboardList")
         keyboardList.setParent(_b)
@@ -86,3 +84,9 @@ osd.SwitchLayout = (keydown)->
         keyboardList.setKeyupListener(KEYCODE.WIN,=>
             keyboard.setCurrentLayout(keyboardList.current)
         )
+    keyboardList?.chooseOption()
+    clearTimeout(timeout_setlayout)
+    timeout_setlayout = setTimeout(=>
+        keyboard?.setCurrentLayout?(keyboardList?.current)
+    ,800)
+
