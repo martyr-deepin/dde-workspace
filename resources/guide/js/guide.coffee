@@ -41,6 +41,7 @@ class Guide extends Widget
         DCore.Guide.disable_keyboard()
         DCore.Guide.disable_right_click()
         enableZoneDetect(false)
+        new Dss().hide()
         echo "create_page #{cls_name}"
         switch cls_name
             when "Welcome"

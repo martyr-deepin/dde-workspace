@@ -75,7 +75,7 @@ class DssArea extends Page
 
         @dock = new Dock()
         @dss = new Dss()
-
+        @dss.show()
         @rect = new Rect("dss_area",@element)
         @rect.create_rect(360,520)
         @rect.set_pos(0,150,"fixed",POS_TYPE.rightup)
