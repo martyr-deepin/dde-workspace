@@ -21,5 +21,10 @@
             <summary>left down corner</summary>
             <description>move to left-down corner to show</description>
         </key>
+        <key type="as" name="white-list">
+            <default>['dde-launcher']</default>
+            <summary>zone white list</summary>
+            <description>fobidden zone if app not in this list</description>
+        </key>
     </schema>
 </schemalist>
