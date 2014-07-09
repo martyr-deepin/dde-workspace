@@ -522,7 +522,7 @@ class AppItem extends Item
             w = @element.clientWidth || 0
             # console.log("mouseover: "+xy.y + ","+xy.x, +"clientWidth"+w)
             console.log("ClientGroup mouseover")
-            DCore.Dock.require_all_region()
+            # DCore.Dock.require_all_region()
             # console.log(@core.type())
             if @core && @isApp()
                 console.log("#{@id} App show preview")

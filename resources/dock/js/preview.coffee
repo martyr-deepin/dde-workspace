@@ -55,6 +55,7 @@ class PWContainer extends Widget
         clearTimeout(@hide_border_id)
 
     show: ->
+        console.log("show border")
         @cancelHide()
         PWContainer._need_move_animation = true
         @is_showing = true
@@ -164,10 +165,10 @@ class PWContainer extends Widget
         halfWidth = leftX + contentWidth / 2
         triOffset = 0
         if triX < halfWidth
-            console.log("left overflow")
+            console.log("drawPanel: left overflow")
             triOffset = triX - halfWidth
         else if halfWidth + triX > screen.width
-            console.log("right overflow")
+            console.log("drawPanel: right overflow")
             triOffset = (halfWidth + triX) - screen.width
 
         ctx.lineTo(halfWidth + triOffset + PREVIEW_TRIANGLE.width / 2,
@@ -194,11 +195,11 @@ class PWContainer extends Widget
         ctx.restore()
 
     _calc_size: (allocation)=>
-        # console.log("_calc_size")
+        console.log("_calc_size:")
 
         return if @_current_group == null
 
-        # console.log("@_current_group != null")
+        console.log("_calc_size: @_current_group != null")
 
         if PWContainer._need_move_animation
             # console.log 'need move animation'
@@ -208,7 +209,7 @@ class PWContainer extends Widget
             @border.classList.remove('moveAnimation')
             @border.style.display = "none"
 
-        console.log("allocation: #{allocation}")
+        console.log("_calc_size: allocation: #{allocation}")
 
         @pw_width = 0
         @pw_height = 0
@@ -240,7 +241,7 @@ class PWContainer extends Widget
         else
             @bg.height = PREVIEW_CONTAINER_HEIGHT * @scale + extraHeight
 
-        console.log("canvas width: #{@bg.width}, height: #{@bg.height}")
+        console.log("_calc_size: canvas width: #{@bg.width}, height: #{@bg.height}")
         # the container must not contain the shadow and the border
         @border.style.width = @bg.width - (PREVIEW_SHADOW_BLUR + PREVIEW_CONTAINER_BORDER_WIDTH) * 2
         @border.style.height = @bg.height
@@ -253,15 +254,15 @@ class PWContainer extends Widget
         halfWidth = window_width * n / 2
         offset = x - halfWidth
         if halfWidth > x
-            console.log("_calc:: left overflow")
+            console.log("_calc_size: left overflow")
             offset = PREVIEW_SHADOW_BLUR
         else if halfWidth + x > screen.width
-            console.log("_calc:: right overflow")
+            console.log("_calc_size: right overflow")
             offset -= (halfWidth + x - screen.width) + PREVIEW_SHADOW_BLUR
         else
             offset = clamp(offset, 5, screen.width - @pw_width)
 
-        console.log("get offset: #{offset}")
+        console.log("_calc_size: get offset: #{offset}")
         @border.style.webkitTransform = "translateX(#{offset}px)"
 
     append: (pw)->
@@ -285,11 +286,11 @@ class PWContainer extends Widget
         update_dock_region()
 
     show_group: (group, allocation, cb)->
-        # console.log("show_group")
+        console.log("show_group:")
         clearTimeout(PWContainer._cancel_move_animation_id)
         PWContainer._cancel_move_animation_id = -1
         return if @_current_group == group
-        # console.log("different current_group")
+        console.log("show_group: different current_group")
         @hide()
         @_current_group = group
         # console.log(allocation)

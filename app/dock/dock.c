@@ -398,7 +398,7 @@ gboolean workaround_change_workarea_height(int height)
         gdk_flush();
         g_timeout_add(1000, (GSourceFunc)workaround_change_workarea_height, GINT_TO_POINTER(height));
     } else {
-        g_warning("OK: workaround_change_workarea_height: %d = %d - %d - %d + %d\n",
+        g_debug("OK: workaround_change_workarea_height: %d = %d - %d - %d + %d\n",
                 workarea_height, gdk_screen_height(), dock.height, dock.y, height);
         _change_workarea_height(workarea_height);
         // cannot use workarea_height to initialize the y axis and dock height.

@@ -46,11 +46,13 @@ DCore.signal_connect("embed_window_leave", (info)->
 )
 
 _b.addEventListener("click", (e)->
+    DCore.Dock.set_is_hovered(false)
     e.preventDefault()
     console.log("click on body")
     update_dock_region()
 )
 _b.addEventListener("contextmenu", (e)->
+    DCore.Dock.set_is_hovered(false)
     e.preventDefault()
     console.log("rightclick on body")
     update_dock_region()
