@@ -73,7 +73,7 @@ class ListChoose extends Widget
         return if not @li[0]?
         echo "setBackground:#{index}"
         @show()
-        jQuery(@Listul).scroll()
+        jQuery(@element).scroll()
         @currentIndex = @checkIndex(index)
         for li,i in @li
             if i == @currentIndex
