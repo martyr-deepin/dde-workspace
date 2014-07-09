@@ -21,39 +21,32 @@
 
 class LauncherLaunch extends Page
     get_launchericon_pos_interval = null
-    
     constructor:(@id)->
         super
         enableZoneDetect(true)
-        
         @dock = new Dock()
         @launcher = new Launcher()
-        
         @message = _("Sliding the mouse to the upper left corner or clicking on the launcher icon both can start \"Application Launcher\"")
         @show_message(@message)
-        
         @corner_leftup = new Pointer("corner_leftup",@element)
         @corner_leftup.create_pointer(AREA_TYPE.corner,POS_TYPE.leftup)
         @corner_leftup.set_area_pos(0,0,"fixed",POS_TYPE.leftup)
         @corner_leftup.show_animation()
-        
         @circle = new Pointer("launcher_circle",@element)
         @circle.create_pointer(AREA_TYPE.circle,POS_TYPE.rightdown,=>
             @launcher?.show()
         )
         @circle.enable_area_icon("#{@img_src}/start-here.png",48,48)
-        
         get_launchericon_pos_interval = setInterval(=>
             @pos = @dock.get_launchericon_pos()
             @circle_x = @pos.x0 - @circle.pointer_width + ICON_MARGIN_H
             @circle_y = @pos.y0 - @circle.pointer_height - ICON_MARGIN_V_BOTTOM / 2
             @circle.set_area_pos(@circle_x,@circle_y,"fixed",POS_TYPE.leftup)
         ,100)
-        
         @circle.show_animation()
 
         @launcher.show_signal(@show_signal_cb)
-    
+
     show_signal_cb:=>
         enableZoneDetect(false)
         @element.style.display = "none"
@@ -63,11 +56,9 @@ class LauncherLaunch extends Page
             guide?.switch_page(@,"LauncherCollect")
         ,t_min_switch_page)
 
-        
 class LauncherCollect extends Page
     constructor:(@id)->
         super
-        
         @rect = new Rect("collectApp",@element)
         @rect.create_rect(COLLECT_WIDTH,COLLECT_HEIGHT)
         @rect.set_pos(COLLECT_LEFT,COLLECT_TOP)
@@ -76,7 +67,6 @@ class LauncherCollect extends Page
                 guide?.switch_page(@,"LauncherAllApps")
             ,t_mid_switch_page)
         )
-        
         @message = _("What shown in the first screen of \" launcher\" are the applications of collection")
         @show_message(@message)
         @msg_tips.style.marginTop = "150px"
@@ -92,7 +82,6 @@ class LauncherAllApps extends Page
         @pointer.enable_area_icon("#{@img_src}/category_normal.png",64,64)
         @pointer.set_area_pos(CATE_LEFT - 2,CATE_LEFT - 2)
         @pointer.show_animation()
-        
         @message = _("Please click on the \"All Applications\" icon , you will see all applications")
         @show_message(@message)
 
@@ -103,10 +92,8 @@ class LauncherScroll extends Page
         @scrolldown = false
         inject_css(@element,"css/launcherscroll.css")
         new Launcher()?.show() if DEBUG
-        
         @message = _("All programs can be located by scrolling the mouse up and down.\nYou can also click on the left classification navigation to locate")
         @show_message(@message)
-        
         @scroll_create()
         @rect_pointer_create()
 
@@ -115,10 +102,8 @@ class LauncherScroll extends Page
         @scroll.style.position = "absolute"
         @scroll.style.top = "37%"
         @scroll.style.right = "200px"
-        
         @scroll_down = create_img("scroll_down","#{@img_src}/pointer_down.png",@scroll)
         @scroll_up = create_img("scroll_up","#{@img_src}/pointer_up.png",@scroll)
-        
         width = height = 64
         @scroll.style.width = width
         @scroll.style.height = height * 2 + 50
@@ -144,20 +129,18 @@ class LauncherScroll extends Page
                 @switch_page()
         )
 
-        
         @noscroll = create_element("div","noscroll",@element)
         @noscroll.innerText = _("Skip the step without scroll")
         @noscroll.addEventListener("click",(e) =>
             e.stopPropagation()
             @switch_page()
         )
-    
+
     rect_pointer_create: ->
         @rect = new Rect("collectApp",@element)
         @rect.create_rect(CATE_WIDTH,CATE_HEIGHT)
         rect_top = (screen.height  - @rect.height) / 2
         @rect.set_pos(CATE_LEFT,rect_top - CATE_TOP_DELTA)
-        
         @pointer = new Pointer("category",@element)
         @pointer.create_pointer(AREA_TYPE.circle,POS_TYPE.leftup,=>
             simulate_click(CLICK_TYPE.leftclick,@,"LauncherSearch")
@@ -177,7 +160,6 @@ class LauncherSearch extends Page
     constructor:(@id)->
         super
         new Launcher()?.show() if DEBUG
-        
         @message = _("Use the keyboard searching to find applications you want\nWe try\"deepin\" keyword to see which applications shown")
         @tips = _("tips：Please directly enter the word \"deepin\"")
         @show_message(@message)
@@ -194,16 +176,13 @@ class LauncherMenu extends Page
         @launcher = new Launcher()
         @desktop = new Desktop()
         @launcher_daemon = new LauncherDaemon()
-        
         #if DEBUG then @launcher?.show()
-        
         @message = _("Use the right mouse button to send two icons to the desktop")
         @tips = _("tips:You can add it to startup items or uninstall")
         @show_message(@message)
         @show_tips(@tips)
         #simulate_rightclick(@)
         @signal()
-        
         app1 = @app_x_y(1)
         app2 = @app_x_y(2)
         app_list = @launcher_daemon?.search("deepin")
@@ -211,8 +190,16 @@ class LauncherMenu extends Page
         src1_app = null
         src2_app = null
         try
-            src1_app = "#{app_list[0]}.desktop"
-            src2_app = "#{app_list[1]}.desktop"
+            if app_list[0] is null or app_list[0] is undefine or app_list[1] is null or app_list[1] is undefine or app_list.length < 2
+                if document.body.lang is "zh"
+                    src1_app = "deepin-game-center.desktop"
+                    src2_app = "deepin-movie.desktop"
+                else
+                    src1_app = "deepin-software-center.desktop"
+                    src2_app = "deepin-movie.desktop"
+            else
+                src1_app = "#{app_list[0]}.desktop"
+                src2_app = "#{app_list[1]}.desktop"
         catch e
             echo "launcher dbus search error:#{e}"
             if document.body.lang is "zh"
@@ -255,7 +242,7 @@ class LauncherMenu extends Page
             @element.removeChild(@contextmenu.element)
             cb?()
         )
-    
+
     signal: ->
         @launcher?.hide_signal(=>
             @launcher?.show()
