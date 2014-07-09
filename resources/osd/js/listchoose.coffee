@@ -111,12 +111,12 @@ class ListChoose extends Widget
     keyup: (e) =>
         echo "keyup:#{e.which}"
         if e.which == @keyup_code and @isFromList is true
-        @isFromList = false
-        setFocus(false)
-        clearTimeout(timeout_osdHide)
-        document.body.style.maxLength = "160px"
-        osdHide()
-        @keyup_cb?()
+            @isFromList = false
+            setFocus(false)
+            clearTimeout(timeout_osdHide)
+            document.body.style.maxLength = "160px"
+            osdHide()
+            @keyup_cb?()
 
     setKeyupListener:(@keyup_code,@keyup_cb)->
  
