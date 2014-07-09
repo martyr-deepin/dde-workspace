@@ -73,6 +73,7 @@ class ListChoose extends Widget
         return if not @li[0]?
         echo "setBackground:#{index}"
         @show()
+        jQuery(@Listul).scroll()
         @currentIndex = @checkIndex(index)
         for li,i in @li
             if i == @currentIndex
@@ -92,7 +93,7 @@ class ListChoose extends Widget
 
     chooseOption: =>
         setFocus(true)
-        document.body.style.maxLength = "180px"
+        document.body.style.maxLength = "100px"
         clearTimeout(timeout_osdHide)
         @prevIndex = @currentIndex
         @currentIndex++
