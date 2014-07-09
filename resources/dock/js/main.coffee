@@ -6,10 +6,10 @@ DCore.signal_connect("message_notify", (info)->)
 
 DCore.signal_connect("embed_window_configure_changed", (info)->
     # console.log("embed_window_configure_changed")
-    console.log(info)
+    # console.log(info)
 )
 DCore.signal_connect("embed_window_configure_request", (info)->
-    console.log(info)
+    # console.log(info)
 
     item = $EW_MAP[info.XID]
     if not item
