@@ -260,16 +260,20 @@ class Item extends Widget
     createMenu:->
         @menu = null
         s_dock = get_dbus("session", "com.deepin.dde.dock", "Xid")
-        dockedAppmanager = DCore.DBus.session_object("com.deepin.daemon.Dock", "/dde/dock/DockedAppManager", "dde.dock.DockedAppManager")
+        dockedAppmanager = DCore.DBus.session_object(
+            "com.deepin.daemon.Dock",
+            "/dde/dock/DockedAppManager",
+            "dde.dock.DockedAppManager"
+        )
+        @isOnDesktop = daemon.IsOnDesktop_sync(@path)
+        @isOnDock = dockedAppmanager.IsDocked_sync(@id)
         @menu = new Menu(
             DEEPIN_MENU_TYPE.NORMAL,
             new MenuItem(1, _("_Open")),
             new MenuSeparator(),
             new MenuItem(2, FAVOR_MESSAGE[@isFavor]),
-            new MenuItem(3, _("Send to d_esktop")).setActive(
-                not daemon.IsOnDesktop_sync(@path)
-            ),
-            new MenuItem(4, _("Send to do_ck")).setActive(!(s_dock == null || dockedAppmanager.IsDocked_sync(@id))),
+            new MenuItem(3, SEND_TO_DESKTOP_MESSAGE[@isOnDesktop]),
+            new MenuItem(4, SEND_TO_DOCK_MESSAGE[@isOnDock]).setActive(s_dock != null),
             new MenuSeparator(),
             new MenuItem(5, AUTOSTART_MESSAGE[@isAutostart]),
             new MenuItem(6, _("_Uninstall"))
@@ -314,7 +318,11 @@ class Item extends Widget
                     console.log 'add to favor'
                     if favor.add(@id)
                         switcher.notify()
-            when 3 then daemon.SendToDesktop(@path)
+            when 3
+                if @isOnDesktop
+                    daemon.RemoveFromDesktop(@path)
+                else
+                    daemon.SendToDesktop(@path)
             when 4
                 try
                     dock = get_dbus(
@@ -325,7 +333,10 @@ class Item extends Widget
                         "DockedAppList"
                     )
                     console.log(get_path_name(@path))
-                    dock.Dock(get_path_name(@path), "", "", "")
+                    if @isOnDock
+                        dock.Undock(get_path_name(@path))
+                    else
+                        dock.Dock(get_path_name(@path), "", "", "")
                 catch e
                     console.log(e)
 

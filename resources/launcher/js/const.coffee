@@ -80,4 +80,12 @@ FAVOR_MESSAGE =
     false: _("Add to _favorites")
     true: _("Remove from _favorites")
 
+SEND_TO_DESKTOP_MESSAGE =
+    false: _("Send to d_esktop")
+    true: _("Remove from d_esktop")
+
+SEND_TO_DOCK_MESSAGE =
+    false: _("Send to do_ck")
+    true: _("Remove from do_ck")
+
 MASK_TOP_BOTTOM = "-webkit-linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,1) 5%, rgba(0,0,0,1) 90%, rgba(0,0,0,0.3), rgba(0,0,0,0))"
