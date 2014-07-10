@@ -277,7 +277,7 @@ class PWContainer extends Widget
 
     close: ->
         @is_showing = false
-        # console.log("PWContainer::close")
+        console.log("PWContainer::close")
         clearInterval(@_update_id)
         @_current_group = null
         # Object.keys(@_current_pws).forEach((w_id)->
@@ -289,7 +289,7 @@ class PWContainer extends Widget
         console.log("show_group:")
         clearTimeout(PWContainer._cancel_move_animation_id)
         PWContainer._cancel_move_animation_id = -1
-        return if @_current_group == group
+        return if @_current_group == group and Preview_container.is_showing
         console.log("show_group: different current_group")
         @hide()
         @_current_group = group

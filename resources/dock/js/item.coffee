@@ -584,7 +584,7 @@ class AppItem extends Item
             __clear_timeout()
             _clear_item_timeout()
             if not Preview_container.is_showing
-                # console.log "Preview_container is not showing"
+                console.log "Preview_container is not showing"
                 # calc_app_item_size()
                 hide_id = setTimeout(=>
                     update_dock_region()
