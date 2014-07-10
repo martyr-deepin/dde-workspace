@@ -1,7 +1,11 @@
 
 
 
-.menubg{ background:#FFF; border:#777 1px solid; border-radius:4px;float:left; box-shadow: rgba(0,0,0,0.7) 0 0 3px;}
+.menubg{ width:155px; overflow:hidden;text-overflow:ellipsis; background:#FFF; border:#777 1px solid; border-radius:4px;float:left; box-shadow: rgba(0,0,0,0.7) 0 0 3px;}
+
+.menubg:lang(zh){
+    width:135px;
+}
 
 .menubg ul li{ margin:0; list-style:none; padding:2px 20px; font-family:Arial; font-size:12px; white-space:nowrap;}
 
