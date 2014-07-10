@@ -18,29 +18,24 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-class Welcome extends Widget
+class Welcome extends Page
     constructor:(@id)->
         super
         echo "welcome #{@id}"
         inject_css(@element,"css/welcome.css")
         DEFAULT_BG = "/usr/share/backgrounds/default_background.jpg"
         @element.style.backgroundImage = "url(#{DEFAULT_BG})"
+        @element.style.webkitBoxOrient = "vertical"
         @session = new Session()
-        @logo = create_element("div","logo",@element)
-        @logo_img = create_img("logo_img","",@logo)
-        @img_src_before = "img/"
-        @logo_img.src = "#{@img_src_before}/deepin_logo_w.png"
-        @welcome_text = create_element("div","welcome_text",@logo)
+
+        @logo_wel = create_element("div","logo_wel",@element)
+        @logo_img = create_img("logo_img","",@logo_wel)
+        @logo_img.src = "#{@img_src}/logo.png"
+        @welcome_text = create_element("div","welcome_text",@logo_wel)
         @welcome_text.textContent = _("Welcome to use Deepin Operating System")
+
         @readying = create_element("div","readying",@element)
         @readying.innerText = _("Prepare for operation ...")
-        set_pos_center(@logo,0.7)
-        w = 260
-        left = (screen.width  - w) / 2
-        @logo.style.left = left
-        @readying.style.width = w
-        @readying.style.left = left
-        @readying.style.bottom = "4.5em"
 
         interval_switch = setInterval(=>
             if @session.getStage() < @session.STAGE.SessionStageCoreEnd then return
@@ -49,5 +44,4 @@ class Welcome extends Widget
         ,200)
 
     prepare : =>
-        #DCore.Guide.spawn_command_sync("/usr/bin/dde-launcher --hidden",true)
         guide?.switch_page(@,"Start")

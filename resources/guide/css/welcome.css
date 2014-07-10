@@ -1,36 +1,45 @@
+.Welcome{
+    text-align:center;
+    color:#fff;
+    text-shadow:0 1px 1px rgba(0,0,0,0.7);
+    font-weight:normal;
+    overflow:hidden;
+}
 
-.logo{
-    display:block;
-    position:absolute;
+.logo_wel{
+    width:100%;
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+    -webkit-box-orient:vertical;
+
+    position:relative;
+    bottom:10%;
 }
 
 .logo_img{
     width:260px;
     height:70px;
-    /*width:208px;*/
-    /*height:56px;*/
 }
-
-.Welcome{
-    width:100%;
-    height:100%;
-
-    text-align:center;
-    color:#fff;
-    text-shadow:0 1px 1px rgba(0,0,0,0.7);
-    font-weight:normal; 
-}
-
 
 .welcome_text{
     width:100%;
     text-align:center;
     margin-top:1.5em;
     font-size:2.0em;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    line-height:200%;
 }
 
 
 .readying{
-    position:absolute;
+    width:100%;
     font-size:1.6em;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    line-height:200%;
+
+    position:relative;
+    top:20%;
 }
