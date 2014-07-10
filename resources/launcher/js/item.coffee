@@ -22,12 +22,6 @@ forceShowTimer = null
 dialog = null
 s_dock = null
 dockedAppmanager = null
-dockHideManager = null
-DockHideState =
-    Showing: 0
-    Shown: 1
-    Hidding: 2
-    Hidden: 3
 
 
 class Item extends Widget
@@ -199,9 +193,6 @@ class Item extends Widget
         dt.setDragCanvas(Item.dragCanvas, ITEM_IMG_SIZE/2+3, ITEM_IMG_SIZE/2)
 
     on_dragstart: (e)=>
-        dockHideManager = dockHideManager || DCore.DBus.session_object("com.deepin.daemon.Dock", "/dde/dock/HideStateManager", "dde.dock.HideStateManager")
-        dockHideManager.SetState(DockHideState.Showing)
-
         # target is hoverBoxOutter
         target = e.target
         o = e
@@ -251,7 +242,6 @@ class Item extends Widget
         switcher.bright()
 
     on_dragend: (e)=>
-        dockHideManager.SetState(DockHideState.Hidding)
         target = e.target
         item = target.parentNode
         item.classList.remove("item_dragged")
