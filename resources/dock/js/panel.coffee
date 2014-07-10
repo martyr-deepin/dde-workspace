@@ -47,6 +47,7 @@ class Panel
         if @inEffectivePanelWorkarea(e.clientX, e.clientY)
             show_desktop.toggle()
             calc_app_item_size()
+            update_dock_region()
             Preview_close_now(_lastCliengGroup)
 
     on_rightclick: (e)=>
