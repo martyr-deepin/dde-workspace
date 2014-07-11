@@ -276,8 +276,6 @@ void guide_OpenUrl(const char* url)
 }
 
 
-
-
 JS_EXPORT_API
 void guide_copy_file_to_desktop(const char* src)
 {
