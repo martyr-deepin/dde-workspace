@@ -40,14 +40,14 @@ class PWContainer extends Widget
         @_current_pws = {}
         @hide_border_id = null
 
-    do_hide:=>
+    _do_hide:=>
         @is_showing = false
         @border.style.display = 'none'
 
     hide: ->
         @cancelHide()
         @hide_border_id = setTimeout(=>
-            @do_hide()
+            @_do_hide()
             # @border.style.opacity = 0
         , 50)
 
