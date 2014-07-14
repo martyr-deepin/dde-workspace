@@ -8,7 +8,6 @@ GEN_DBUS_SOURCE(DBUS_GEN "jsc/dbus.go" "dock")
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS})
 include_directories(${DTEST_INCLUDE_DIRS})
-include_directories(${DBUS_INCLUDE_DIRS})
 
 SET(SRC_LIST
 	embed_window.c
@@ -33,7 +32,7 @@ SET_TARGET_PROPERTIES(${NAME}
 
 target_link_libraries(${NAME} dcom dentry dbus
     ddock_test
-    ${DBUS_LIBRARIES} ${DWEBVIEW_LIBRARIES} dtest)
+    ${DWEBVIEW_LIBRARIES} dtest)
 
 install(
     PROGRAMS ${PROJECT_BINARY_DIR}/dde-${NAME}

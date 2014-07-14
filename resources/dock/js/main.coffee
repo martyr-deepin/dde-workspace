@@ -238,14 +238,15 @@ initDock = ->
             systemTray = null
 
         calc_app_item_size()
-        update_dock_region($("#container").clientWidth)
         DCore.Dock.change_workarea_height(DOCK_HEIGHT)
+        update_dock_region($("#container").clientWidth)
     , 100)
 
     if settings.hideMode() == HideMode.KeepHidden
         console.log("hide mode is KeepHidden")
         setTimeout(->
             hideStatusManager.updateState()
+            update_dock_region($("#container").clientWidth)
         , 1000)
         return
 
@@ -253,6 +254,7 @@ initDock = ->
         _CW.style.webkitTransform = "translateY(0)"
         panel.panel.style.webkitTransform = "translateY(0)"
         hideStatusManager.updateState()
+        update_dock_region($("#container").clientWidth)
     , 1000)
 
 

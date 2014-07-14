@@ -8,7 +8,6 @@ pkg_check_modules(LIGHTDM REQUIRED liblightdm-gobject-1)
 #pkg_check_modules(OPENCV REQUIRED opencv)
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS} ${LIGHTDM_INCLUDE_DIRS}
-    ${GST_INCLUDE_DIRS}
     #${OPENCV_INCLUDE_DIRES}
     )
 
@@ -20,7 +19,6 @@ add_executable(${NAME} greeter.c user.c session.c keyboard.c theme.c mutils.c gr
     )
 add_dependencies(${NAME} ${NAME}_js)
 target_link_libraries(${NAME} dcom dbus ${DWEBVIEW_LIBRARIES} ${LIGHTDM_LIBRARIES}
-    ${GST_LIBRARIES}
     #${OPENCV_LIBS}
     )
 
@@ -30,7 +28,6 @@ add_executable(lock lock.c user.c theme.c lock_util.c mutils.c ${JSC_LOCK_GEN}
     )
 add_dependencies(lock ${NAME}_js)
 target_link_libraries(lock dcom dbus ${DWEBVIEW_LIBRARIES} 
-    ${GST_LIBRARIES}
     #${OPENCV_LIBS}
     )
 
