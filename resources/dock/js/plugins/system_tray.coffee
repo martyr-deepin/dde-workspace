@@ -128,6 +128,7 @@ class SystemTray extends SystemItem
 
     updatePanel:=>
         calc_app_item_size()
+        update_dock_region($("#container").clientWidth)
         @calcTimer = webkitRequestAnimationFrame(@updatePanel)
 
     hideAllIcons:=>
