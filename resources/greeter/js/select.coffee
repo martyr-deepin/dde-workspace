@@ -67,7 +67,8 @@ class Select extends Widget
         if @li.length == 0 then @boxscroll_create()
         for each,i in @lists
             that = @
-            @li[i].addEventListener("click",->
+            @li[i].addEventListener("click",(e)->
+                e.stopPropagation()
                 that.current = this.id
                 that.cb?(that.current)
             )

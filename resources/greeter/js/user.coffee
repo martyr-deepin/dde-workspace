@@ -392,8 +392,9 @@ class LoginEntry extends Widget
 
     keyboard_img_create: ->
         if !@is_need_pwd then return
-        if !is_greeter then return
-        @layouts = DCore[APP_NAME].get_user_layouts(@username)
+        if !is_greeter then @keyboard_dbus = new Keyboard()
+        if is_greeter then @layouts = DCore.Greeter.get_user_layouts(@username)
+        else @layouts = @keyboard_dbus.updateUserLayoutList()
         if @layouts?.length < 2 then return
         echo "user_layouts---#{@username}----========="
         echo @layouts
@@ -404,7 +405,8 @@ class LoginEntry extends Widget
         @keyboard_img.style.bottom = "2em"
         @password?.style.paddingLeft = 10 + 30
         @keyboard_create()
-        @keyboard_img.addEventListener("click",=>
+        @keyboard_img.addEventListener("click",(e)=>
+            e.stopPropagation()
             @keyboard?.toggle()
             echo "keyboard_img.click and keyboard.style.display is #{@keyboard.element.style.display}"
         )
@@ -421,12 +423,17 @@ class LoginEntry extends Widget
         @keyboard.set_cb( (selected)=>
             @selected = selected
             echo "keyboard layout selected:#{@selected}"
-            DCore[APP_NAME].set_layout(selected)
+            if is_greeter then DCore.Greeter.set_layout(selected)
+            else @keyboard_dbus?.setCurrentLayout(selected)
             @keyboard?.hide()
         )
-
+        document.body.addEventListener("click",(e)=>
+            e.stopPropagation()
+            @keyboard?.hide()
+        )
     get_current_layout: ->
-        @current_layout = DCore[APP_NAME].get_current_layout()
+        if is_greeter then @current_layout = DCore.Greeter.get_current_layout()
+        else @current_layout = @keyboard_dbus?.getCurrentLayout()
 
     check_layouts_is_in_lightdm: ->
         if !is_greeter then return
