@@ -28,11 +28,14 @@ body {
   -webkit-user-select: none;
 }
 
+.container_animation{
+  -webkit-transition: -webkit-transform 400ms;
+}
+
 .fixed_center {
   left: 0px;
   right: 0px;
   margin: auto;
-  -webkit-transition: -webkit-transform 400ms;
 }
 
 #containerWarp{

@@ -53,6 +53,8 @@ class Item extends Widget
         else
             @container?.appendChild?(@element)
 
+        update_dock_region($("#container").clientWidth)
+
     change_icon: (src)->
         @img.src = src
         @img.onload = =>

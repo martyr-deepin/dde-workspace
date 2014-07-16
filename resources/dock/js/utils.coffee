@@ -184,3 +184,4 @@ resetAllItems = ->
         Widget.look_up(k)?.reset()
 
     updatePanel()
+

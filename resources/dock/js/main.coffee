@@ -113,6 +113,10 @@ _b.addEventListener("drop", (e)->
 )
 
 settings = new Setting()
+if settings.displayMode() == 'win7'
+    $("#panel").classList.remove("fixed_center")
+    $("#containerWarp").classList.remove("fixed_center")
+
 hideStatusManager = new HideStatusManager(settings.hideMode())
 
 show_desktop = new ShowDesktop()

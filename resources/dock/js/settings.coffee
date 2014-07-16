@@ -27,3 +27,6 @@ class Setting
     setHideMode:(id)->
         console.log("setHideMode: #{id}")
         @dbus.SetHideMode(id)
+
+    displayMode:->
+        return 'win7'

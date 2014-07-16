@@ -74,7 +74,7 @@ gboolean _help_do_window_region(cairo_region_t* region)
         cairo_rectangle_int_t rec;
         for (int i = 0, num = cairo_region_num_rectangles(region); i < num; ++i) {
             cairo_region_get_rectangle(region, i, &rec);
-            g_debug("region %d: %d, %d, %d, %d", i, rec.x, rec.y, rec.width, rec.height);
+            g_debug("region %d: x: %d, y: %d, width: %d, height: %d", i, rec.x, rec.y, rec.width, rec.height);
         };
     }
 #endif
@@ -148,7 +148,12 @@ void dock_force_set_region(double x, double y, double items_width, double panel_
                 __func__, tmp.x, tmp.y, tmp.width, tmp.height);
 
         cairo_rectangle_int_t dock_board_rect = _base_rect;
-        dock_board_rect.x = tmp.x - (panel_width - items_width) / 2;
+        // TODO
+        if (1) {
+            dock_board_rect.x = 0;
+        } else {
+            dock_board_rect.x = tmp.x - (panel_width - items_width) / 2;
+        }
         dock_board_rect.y = tmp.y + _dock_height - BOARD_HEIGHT;
         dock_board_rect.height = BOARD_HEIGHT;
         dock_board_rect.width = (int)panel_width;

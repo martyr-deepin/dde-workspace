@@ -122,3 +122,11 @@ class Panel
     cancelAnimation:=>
         webkitCancelAnimationFrame(@calcTimer || null)
         update_dock_region($("#container").clientWidth)
+
+    @getPanelWidth:->
+        if settings.displayMode() == 'win7'
+            return screen.width
+        else
+            apps = $s(".AppItem")
+            panel_width = ITEM_WIDTH * apps.length + PANEL_MARGIN * 2
+            return panel_width
