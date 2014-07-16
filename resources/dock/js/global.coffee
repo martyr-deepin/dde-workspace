@@ -9,6 +9,7 @@ _dragTargetManager = null
 _CW = $("#containerWarp")
 changeDockRegionTimer = null
 _isRightclicked = false
+_isItemExpanded = false
 
 $mousePosition =
     x: 0

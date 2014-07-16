@@ -8,6 +8,9 @@ class AppList
         @element.addEventListener("dragover", @on_dragover)
         @element.addEventListener("dragleave", @on_dragleave)
         @element.addEventListener("drop", @on_drop)
+        @element.addEventListener('mouseover', ->
+            resetAllItems()
+        )
         # @insert_indicator = create_element(tag:"div", id:'insert_indicator', class:"AppItem")
         # create_img(src:'', @insert_indicator)
         @insert_anchor_item = null

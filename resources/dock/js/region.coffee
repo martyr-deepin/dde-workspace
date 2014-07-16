@@ -54,3 +54,6 @@ _b.onresize = ->
     calc_app_item_size()
     update_dock_region($("#container").clientWidth)
 
+clearRegion = ->
+    DCore.Dock.set_is_hovered(false)
+    update_dock_region()

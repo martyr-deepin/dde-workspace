@@ -101,6 +101,9 @@ class Item extends Widget
             $mousePosition.x = e.x
             $mousePosition.y = e.y
 
+        resetAllItems()
+        # clearRegion()
+
     on_mouseover:(e)=>
         @on_mousemove(e)
 
@@ -232,6 +235,7 @@ class Item extends Widget
             updatePanel()
             _isDragging = true
 
+        _isItemExpanded = true
         setTimeout(->
             console.log("update tray icon")
             systemTray.updateTrayIcon()
@@ -242,6 +246,7 @@ class Item extends Widget
             console.log("update tray icon")
             systemTray.updateTrayIcon()
         , 100)
+        _isItemExpanded = false
         _isDragTimer = setTimeout(->
             _isDragging = false
         , 500)

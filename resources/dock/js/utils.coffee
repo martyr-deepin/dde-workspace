@@ -135,6 +135,7 @@ dark_image = (img, adjustment)->
 
 updatePanel = ->
     _isDragging = false
+    panel.cancelAnimation()
     panel.updateWithAnimation()
     setTimeout(->
         panel.cancelAnimation()
@@ -172,3 +173,14 @@ getNextSiblingFromPoint = (x, y, sentinel, step=6)->
 handleMenuUnregister = ->
     _isRightclicked = false
     hideStatusManager?.updateState()
+
+resetAllItems = ->
+    if not _isItemExpanded
+        return
+
+    clearRegion()
+    _isItemExpanded = false
+    for k, v of $DBus
+        Widget.look_up(k)?.reset()
+
+    updatePanel()
