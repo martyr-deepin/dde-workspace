@@ -393,7 +393,7 @@ class LoginEntry extends Widget
     keyboard_img_create: ->
         if !@is_need_pwd then return
         if !is_greeter then return
-        @layouts = DCore.Greeter.get_user_layouts(@username)
+        @layouts = DCore[APP_NAME].get_user_layouts(@username)
         if @layouts?.length < 2 then return
         echo "user_layouts---#{@username}----========="
         echo @layouts
@@ -415,20 +415,21 @@ class LoginEntry extends Widget
         @keyboard.element.style.left = 0
         @keyboard.element.style.top = 0
         @get_current_layout()
-        @check_layouts_is_in_lightdm()
+        #@check_layouts_is_in_lightdm()
         @keyboard.set_lists(@current_layout,@layouts)
         @keyboard.boxscroll_create()
         @keyboard.set_cb( (selected)=>
             @selected = selected
             echo "keyboard layout selected:#{@selected}"
-            DCore.Greeter.set_layout(selected)
+            DCore[APP_NAME].set_layout(selected)
             @keyboard?.hide()
         )
 
     get_current_layout: ->
-        @current_layout = DCore.Greeter.get_current_layout()
+        @current_layout = DCore[APP_NAME].get_current_layout()
 
     check_layouts_is_in_lightdm: ->
+        if !is_greeter then return
         @layouts_lightdm = DCore.Greeter.lightdm_get_layouts_des()
         for lay in @layouts
             if lay in @layouts_lightdm
