@@ -114,7 +114,7 @@ class DesktopRichDirCreated extends Page
     constructor:(@id)->
         super
         @message = _("Well, you have learned how to create a \"application group\"")
-        @tips = _("tips：Right-click on the application group will provide more functions")
+        @tips = _("tips: Right-click on the application group will provide more functions")
         @show_message(@message)
         @show_tips(@tips)
         setTimeout(=>
@@ -126,7 +126,7 @@ class DesktopCorner extends Page
     constructor:(@id)->
         super
         @message = _("Slide the mouse to the four top corners, which can trigger four different events\nPlease move to the upper left corner first to show or hide Launcher")
-        @tips = _("tips：Please trigger successively by hints, click on the blank area to return")
+        @tips = _("tips: Please trigger successively by hints, click on the blank area to return")
         @show_message(@message)
         @show_tips(@tips)
         @message_corner =
@@ -176,7 +176,7 @@ class DesktopZone extends Page
     constructor:(@id)->
         super
         @message = _("Right-click on desktop black area to call up the menu, select \"Corner navigation\" to set the corner used")
-        @tips = _("tips：Click on the interface of corner navigation blank area to return")
+        @tips = _("tips: Click on the interface of corner navigation blank area to return")
         @show_message(@message)
         @show_tips(@tips)
         @pos = ["leftup","leftdown","rightdown","rightup"]

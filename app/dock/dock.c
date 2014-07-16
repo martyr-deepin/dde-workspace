@@ -22,6 +22,7 @@
  **/
 #include <cairo.h>
 
+#include "dock_config.h"
 #include <dwebview.h>
 #include "dock.h"
 #include "X_misc.h"
@@ -47,7 +48,6 @@ static GtkWidget* webview = NULL;
 Window active_client_id = 0;
 
 struct DisplayInfo dock;
-int _dock_height = 68;
 GdkWindow* DOCK_GDK_WINDOW() { return gtk_widget_get_window(container); }
 GdkWindow* GET_CONTAINER_WINDOW() { return DOCK_GDK_WINDOW(); }
 GdkWindow* WEBVIEW_GDK_WINDOW() {return gtk_widget_get_window(webview);}
@@ -308,14 +308,6 @@ void update_dock_color()
         /* js_post_signal("dock_color_changed"); */
 }
 
-void update_dock_size_mode()
-{
-    if (GD.config.mini_mode) {
-        js_post_signal("in_mini_mode");
-    } else {
-        js_post_signal("in_normal_mode");
-    }
-}
 
 JS_EXPORT_API
 void dock_emit_webview_ok()
@@ -338,11 +330,8 @@ void dock_emit_webview_ok()
 
         inited = TRUE;
         init_config();
-        // update_dock_size_mode();
         init_dock_guard_window();
         require_manager_trayicons();
-    } else {
-        update_dock_size_mode();
     }
 
     g_warning("[%s]", __func__);
@@ -372,7 +361,7 @@ void _change_workarea_height(int height)
     saved_height = height;
 
     // update_display_info(&dock);
-    int workarea_width = (dock.width - dock_panel_width) / 2;
+    int workarea_width = (dock.width - GD.dock_panel_width) / 2;
     if (GD.config.hide_mode == NO_HIDE_MODE ) {
         g_message("NO_HIDE_MODE, set workarea height to %d", height);
         set_struct_partial(DOCK_GDK_WINDOW(),
@@ -404,7 +393,7 @@ gboolean workaround_change_workarea_height(int height)
                 workarea_height, gdk_screen_height(), dock.height, dock.y, height);
         _change_workarea_height(workarea_height);
         // cannot use workarea_height to initialize the y axis and dock height.
-        init_region(DOCK_GDK_WINDOW(), 0, dock.height - _dock_height, dock.width, _dock_height);
+        init_region(DOCK_GDK_WINDOW(), 0, dock.height - GD.dock_height, dock.width, GD.dock_height);
     }
     return FALSE;
 }
@@ -469,9 +458,9 @@ void _update_dock_size(gint16 x, gint16 y, guint16 w, guint16 h)
     gdk_window_flush(WEBVIEW_GDK_WINDOW());
     gdk_window_flush(DOCK_GDK_WINDOW());
 
-    dock_change_workarea_height(_dock_height);
+    dock_change_workarea_height(GD.dock_height);
 
-    // init_region(DOCK_GDK_WINDOW(), 0, h - _dock_height, w, _dock_height);
+    // init_region(DOCK_GDK_WINDOW(), 0, h - GD.dock_height, w, GD.dock_height);
 }
 
 

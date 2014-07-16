@@ -77,6 +77,33 @@ delete_widget = (w) ->
     w.destroy()
 
 
+clear_speical_desktop_items = ->
+    Widget.look_up(i)?.destroy() for i in speical_item
+    speical_item.splice(0)
+    return
+
+
+load_speical_desktop_items = ->
+    clear_speical_desktop_items()
+
+    if _GET_CFG_BOOL_(_CFG_SHOW_COMPUTER_ICON_)
+        item = new ComputerVDir
+        if item?
+            div_grid.appendChild(item.element)
+            speical_item.push(item.get_id())
+    else
+        discard_position(_ITEM_ID_COMPUTER_)
+
+    if _GET_CFG_BOOL_(_CFG_SHOW_TRASH_BIN_ICON_)
+        item = new TrashVDir
+        if item?
+            div_grid.appendChild(item.element)
+            speical_item.push(item.get_id())
+    else
+        discard_position(_ITEM_ID_TRASH_BIN_)
+    return
+
+
 clear_desktop_items = ->
     Widget.look_up(i)?.destroy() for i in all_item
     all_item.splice(0)

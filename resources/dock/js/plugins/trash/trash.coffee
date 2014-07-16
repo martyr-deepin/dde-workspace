@@ -26,7 +26,7 @@ class Trash extends PostfixedItem
         e.stopPropagation()
         menu = new Menu(
             DEEPIN_MENU_TYPE.NORMAL,
-            new MenuItem(1, _("_Clean up")).setActive(DCore.DEntry.get_trash_count() != 0)
+            new MenuItem(1, _("_Empty")).setActive(DCore.DEntry.get_trash_count() != 0)
         )
         menu.unregisterHook(handleMenuUnregister)
         if @is_opened

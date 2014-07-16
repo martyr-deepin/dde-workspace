@@ -2,11 +2,11 @@
     <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <link href="../common/css/global.css" rel="stylesheet">
-        <link href="css/dock.css" rel="stylesheet">
+        <link href="css/modern/dock.css" rel="stylesheet">
     </head>
     <body>
-        <canvas id="panel" class='fixed_center'></canvas>
-        <div id="containerWarp" class="fixed_center">
+        <canvas id="panel" class='container_animation fixed_center'></canvas>
+        <div id="containerWarp" class="container_animation fixed_center">
             <div id='container'>
                 <!-- maybe use separator is better -->
                 <div class='item_container' id='pre_fixed'></div>
@@ -15,6 +15,7 @@
                 <div class='item_container' id='post_fixed'></div>
             </div>
         </div>
+        <div id="trayarea"></div>
         <script src="js/dock.js"> </script>
     </body>
 </html>

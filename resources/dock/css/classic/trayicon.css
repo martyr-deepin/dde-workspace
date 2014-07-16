@@ -1,0 +1,32 @@
+#trayarea{
+  -webkit-transition: -webkit-transform 400ms;
+  -webkit-transform: translateY(110%);
+  position: fixed;
+  bottom: 1px;
+  right: 32px;
+  height: 46px;
+}
+
+#system-tray {
+  display:none;
+}
+
+#time {
+  width: auto;
+  margin: 0;
+  margin-left: 8px;
+}
+
+#time .imgWarp {
+  display: none;
+}
+
+#timeContent {
+  pointer-events: auto;
+  cursor: default;
+  color: white;
+  font-size: 13px;
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+}
