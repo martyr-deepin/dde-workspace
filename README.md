@@ -12,3 +12,9 @@ How to build?
     cd build
     cmake -DDEVELOP=1 ..
     make
+
+Option
+-----
+DEVELOP
+DEBUG\_DOCK\_REGION
+TEST
