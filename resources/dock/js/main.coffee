@@ -62,6 +62,7 @@ _b.addEventListener("dragenter", (e)->
     # DCore.Dock.require_all_region()
 )
 _b.addEventListener("dragover", (e)->
+    app_list.element.style.width = ''
     s_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
     console.log("dragover ##{s_id}# on body")
     t = Widget.look_up(s_id)

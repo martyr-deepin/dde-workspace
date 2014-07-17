@@ -67,6 +67,40 @@ class PrefixedItem extends FixedItem
         @imgContainer.draggable = false
         # $("#pre_fixed").appendChild(@element)
 
+    isFirstElementChild:->
+        @container.firstElementChild.isEqualNode(@element)
+
+    isLastElementChild:->
+        @container.lastElementChild.isEqualNode(@element)
+
+    on_dragenter:(e)=>
+        if @isLastElementChild()
+            return
+        super
+        updatePanel()
+
+    on_dragover:(e)=>
+        e.stopPropagation()
+        if not @isLastElementChild() or e.offsetX <= @element.clientWidth / 2
+            $("#app_list").style.width = ''
+            updatePanel()
+            return
+
+        container = $("#app_list")
+        if not container
+            return
+
+        if item = container.firstElementChild
+            console.warn("container has items")
+            item.style.marginLeft = "#{INSERT_INDICATOR_WIDTH}px"
+            item.style.marginRight = ''
+            app_list.setInsertAnchor(item)
+        else
+            console.warn("container has items")
+            container.style.width = "#{INSERT_INDICATOR_WIDTH}px"
+            app_list.setInsertAnchor(null)
+        updatePanel()
+
 
 class SystemItem extends AppItem
     is_fixed_pos: true
@@ -83,13 +117,42 @@ class SystemItem extends AppItem
         parentNode.appendChild($("#system-tray")) if $("#system-tray")
         parentNode.appendChild($("#time")) if $("#time")
 
+
+    isFirstElementChild:->
+        $("#system").firstElementChild.isEqualNode(@element)
+
+    isLastElementChild:->
+        $("#system").lastElementChild.isEqualNode(@element)
+
     on_dragover:(e)=>
-        # invokes super before, e.stopPropagation() should be used here.
+        e.stopPropagation()
         e.preventDefault()
         e.dataTransfer.dropEffect = 'none'
         _isDragging = false
 
+        if not @isFirstElementChild() or e.offsetX >= @element.clientWidth / 2
+            $("#app_list").style.width = ''
+            updatePanel()
+            return
+
+        container = $("#app_list")
+        if not container
+            return
+
+        if item = container.firstElementChild
+            console.warn("container has items")
+            item.style.marginRight = "#{INSERT_INDICATOR_WIDTH}px"
+            item.style.marginLeft = ''
+            app_list.setInsertAnchor(item)
+        else
+            console.warn("container has items")
+            container.style.width = "#{INSERT_INDICATOR_WIDTH}px"
+            app_list.setInsertAnchor(null)
+        updatePanel()
+
     on_dragenter:(e)=>
+        if @isFirstElementChild()
+            return
         super
         updatePanel()
 

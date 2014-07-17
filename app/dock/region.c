@@ -104,7 +104,7 @@ void do_window_shape_combine_region(cairo_region_t* region)
 JS_EXPORT_API
 void dock_require_all_region()
 {
-    g_warning("====%s====", __func__);
+    g_debug("====%s====", __func__);
     cancel_update_state_request();
     dock_set_is_hovered(TRUE);
     do_window_shape_combine_region(NULL);
@@ -115,7 +115,7 @@ JS_EXPORT_API
 void dock_force_set_region(double x, double y, double items_width, double panel_width, double height)
 {
     if (dock_is_hovered()) {
-        g_warning("[%s] dock is hovered", __func__);
+        g_debug("[%s] dock is hovered", __func__);
         return;
     }
 
@@ -171,7 +171,7 @@ void dock_force_set_region(double x, double y, double items_width, double panel_
 void dock_require_region(double x, double y, double width, double height)
 {
     if (dock_is_hovered()) {
-        g_warning("[%s] dock is hovered", __func__);
+        g_debug("[%s] dock is hovered", __func__);
         return;
     }
     cairo_rectangle_int_t tmp = {(int)x + _base_rect.x, (int)y + _base_rect.y, (int)width, (int)height};
