@@ -91,12 +91,10 @@ class PrefixedItem extends FixedItem
             return
 
         if item = container.firstElementChild
-            console.warn("container has items")
             item.style.marginLeft = "#{INSERT_INDICATOR_WIDTH}px"
             item.style.marginRight = ''
             app_list.setInsertAnchor(item)
         else
-            console.warn("container has items")
             container.style.width = "#{INSERT_INDICATOR_WIDTH}px"
             app_list.setInsertAnchor(null)
         updatePanel()
@@ -139,13 +137,11 @@ class SystemItem extends AppItem
         if not container
             return
 
-        if item = container.firstElementChild
-            console.warn("container has items")
+        if item = container.lastElementChild
             item.style.marginRight = "#{INSERT_INDICATOR_WIDTH}px"
             item.style.marginLeft = ''
             app_list.setInsertAnchor(item)
         else
-            console.warn("container has items")
             container.style.width = "#{INSERT_INDICATOR_WIDTH}px"
             app_list.setInsertAnchor(null)
         updatePanel()
