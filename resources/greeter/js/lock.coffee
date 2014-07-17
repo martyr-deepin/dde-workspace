@@ -54,6 +54,9 @@ left = (screen.width  - 250) / 2
 top = (screen.height  - 180) / 2 * 0.8
 div_users.style.left = left
 div_users.style.top = top
+div_keyboard = create_element("div","div_keyboard",_b)
+div_keyboard.style.left = left + 10
+div_keyboard.style.top = top + 180 + 10
 
 user = new User("lock_users",div_users)
 user.new_userinfo_for_lock()

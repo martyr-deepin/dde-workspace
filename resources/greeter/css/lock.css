@@ -23,6 +23,15 @@ body{
     -webkit-box-align:center;
 }
 
+.div_keyboard{
+    position:fixed;
+    z-index:10;
+    
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+}
+
 .div_time {
     position:fixed;
     z-index:10;

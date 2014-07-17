@@ -53,34 +53,3 @@ class Keyboard
         @DBusKeyboard?.CurrentLayout = @CurrentLayout_en
         echo "setCurrentLayout:#{@CurrentLayout_en}:#{layout}"
 
-
-keyboard = null
-keyboardList = null
-
-osd.SwitchLayout = (keydown)->
-    if !keydown then return if mode is "dbus"
-    setFocus(false)
-
-    keyboard = new Keyboard() if not keyboard?
-    keyboard.updateUserLayoutList()
-    echo "UserLayoutList.length: #{keyboard.UserLayoutList.length}"
-    if keyboard.UserLayoutList.length < 2 then return
-
-    if not keyboardList?
-        keyboardList = new ListChoose("KeyboardList")
-        keyboardList.setParent(_b)
-        keyboardList.setSize(160,null)
-        #keyboardList.setSize(160,180)
-        keyboardList.ListAllBuild(keyboard.UserLayoutList,keyboard.getCurrentLayout())
-        keyboardList.setKeyupListener(KEYCODE.WIN,=>
-            keyboard.setCurrentLayout(keyboardList.current)
-        )
-    else
-        keyboardList.chooseOption()
-    clearTimeout(timeout_osdHide)
-    timeout_osdHide = setTimeout(=>
-        document.body.style.maxLength = "160px"
-        keyboard.setCurrentLayout(keyboardList.current)
-        osdHide()
-    ,TIME_HIDE)
-

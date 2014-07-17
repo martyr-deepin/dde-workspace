@@ -7,6 +7,7 @@ class SystemTray extends SystemItem
         @panel.addEventListener("mouseover", @on_mouseover)
         @panel.addEventListener("mouseout", @on_mouseout)
         @panel.addEventListener("click", (e)->e.preventDefault();e.stopPropagation())
+        @panel.addEventListener("contextmenu", @on_rightclick)
         @openIndicator.style.display = 'none'
         @isUnfolded = false
         @button = create_element(tag:'div', class:'TrayFoldButton', @imgWarp)
@@ -253,3 +254,6 @@ class SystemTray extends SystemItem
     on_rightclick: (e)=>
         e.preventDefault()
         e.stopPropagation()
+        DCore.Dock.set_is_hovered(false)
+        update_dock_region($("#container").clientWidth)
+        Preview_close_now()
