@@ -31,6 +31,13 @@ class Time extends SystemItem
     isRuntimeApplet: ->
         true
 
+    on_rightclick:(e)->
+        DCore.Dock.set_is_hovered(false)
+        update_dock_region($("#container").clientWidth)
+        e.preventDefault()
+        e.stopPropagation()
+        Preview_close_now()
+
     on_mouseover:=>
         super
         # @set_tooltip((new Date()).toLocaleDateString())
