@@ -15,3 +15,7 @@ class LauncherItem extends PrefixedItem
             return
         DCore.Dock.toggle_launcher(!@__show)
 
+    on_rightclick:(e)=>
+        e.stopPropagation()
+        e.preventDefault()
+        _isRightclicked = false
