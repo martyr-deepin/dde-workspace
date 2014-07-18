@@ -160,7 +160,7 @@ class LauncherSearch extends Page
     constructor:(@id)->
         super
         new Launcher()?.show() if DEBUG
-        @message = _("Use the keyboard searching to find applications you want\nWe try\"deepin\" keyword to see which applications shown")
+        @message = _("Use the keyboard to search for applications\nTry the \"deepin\" keyword to see which applications are shown")
         @tips = _("tips：Please directly enter the word \"deepin\"")
         @show_message(@message)
         @show_tips(@tips)
