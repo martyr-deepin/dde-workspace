@@ -55,7 +55,7 @@ GdkFilterReturn embed_window_configure_request(GdkXEvent* xevent G_GNUC_UNUSED,
         return GDK_FILTER_TRANSLATE;
     } else if (xev->type == ConfigureNotify){
         XConfigureEvent* x = (XConfigureEvent*)xev;
-        g_warning("window 0x%x configure notify", (unsigned)x->window);
+        g_debug("window 0x%x configure notify", (unsigned)x->window);
     }
 
     return GDK_FILTER_CONTINUE;

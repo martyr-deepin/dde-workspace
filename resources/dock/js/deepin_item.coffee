@@ -80,6 +80,7 @@ class PrefixedItem extends FixedItem
         updatePanel()
 
     on_dragover:(e)=>
+        e.dataTransfer.dropEffect = 'none'
         e.stopPropagation()
         if not @isLastElementChild() or e.offsetX <= @element.clientWidth / 2
             $("#app_list").style.width = ''
@@ -94,6 +95,7 @@ class PrefixedItem extends FixedItem
             item.style.marginLeft = "#{INSERT_INDICATOR_WIDTH}px"
             item.style.marginRight = ''
             app_list.setInsertAnchor(item)
+            _lastHover = Widget.look_up(item.id)
         else
             container.style.width = "#{INSERT_INDICATOR_WIDTH}px"
             app_list.setInsertAnchor(null)
@@ -141,6 +143,7 @@ class SystemItem extends AppItem
             item.style.marginRight = "#{INSERT_INDICATOR_WIDTH}px"
             item.style.marginLeft = ''
             app_list.setInsertAnchor(item)
+            _lastHover = Widget.look_up(item.id)
         else
             container.style.width = "#{INSERT_INDICATOR_WIDTH}px"
             app_list.setInsertAnchor(null)
