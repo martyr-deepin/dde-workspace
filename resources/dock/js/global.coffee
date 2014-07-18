@@ -1,4 +1,4 @@
-# console.log=->
+console.log=->
 
 _dropped = false
 _lastHover = null

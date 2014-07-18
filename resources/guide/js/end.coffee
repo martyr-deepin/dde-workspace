@@ -22,7 +22,7 @@ class End extends Page
     constructor:(@id)->
         super
         DCore.Guide.enable_guide_region()
-        @message = _("Thanks for your patience to learn.Congratulation!")
+        @message = _("Thanks for your patience while learning. Congratulations.")
         @show_message(@message)
         #@msg_tips.style.top = "-10%"
         @element.style.webkitBoxOrient = "vertical"

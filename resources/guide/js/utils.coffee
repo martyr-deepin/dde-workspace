@@ -1,4 +1,4 @@
-DEBUG = true
+DEBUG = false
 ESC_KEYSYM_TO_CODE = 0xff08
 
 #launcher

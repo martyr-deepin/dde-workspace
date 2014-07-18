@@ -39,6 +39,7 @@ class AppList
         @_insert_anchor_item = item
 
     on_drop: (e)=>
+        @element.style.width = ''
         _dropped = true
         # FIXME: why drop event is triggered twice???
         e.stopPropagation()
@@ -51,7 +52,7 @@ class AppList
         if dnd_is_desktop(e)
             # console.log("is desktop")
             path = dt.getData("text/uri-list").substring("file://".length).trim()
-            id = get_path_name(path)
+            id = get_path_name(path).replace("_", "-")
             if not Widget.look_up(id)
                 t = document.getElementsByName(id)
                 if t.length == 0
@@ -87,30 +88,6 @@ class AppList
         # console.log("start applist dragover")
         e.preventDefault()
         e.stopPropagation()
-        return
-        dt = e.dataTransfer
-        if dnd_is_deepin_item(e) or dnd_is_desktop(e)
-            if e.y < screen.height - DOCK_HEIGHT + ITEM_HEIGHT / 4
-                return
-
-            console.log("effective dragover on applist")
-            clearTimeout(showIndicatorTimer)
-            try_insert_id = dt.getData(DEEPIN_ITEM_ID)
-
-            dt.dropEffect = "copy"
-            # step = 6
-            x = e.x
-            y = e.y
-            if e.y > screen.height - DOCK_HEIGHT + ITEM_HEIGHT
-                y -= ITEM_HEIGHT / 2
-
-            el = getPreviousSiblingFromPoint(x, y, try_insert_id)
-            x = e.x
-            el = getNextSiblingFromPoint(x, y, try_insert_id)
-            el = el.parentNode.parentNode.parentNode if el
-            if el.parentNode.id != "app_list"
-                el = null
-            return
 
     on_dragleave: (e)=>
         clearTimeout(showIndicatorTimer)

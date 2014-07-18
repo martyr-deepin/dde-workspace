@@ -62,6 +62,7 @@ _b.addEventListener("dragenter", (e)->
     # DCore.Dock.require_all_region()
 )
 _b.addEventListener("dragover", (e)->
+    app_list.element.style.width = ''
     s_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
     console.log("dragover ##{s_id}# on body")
     t = Widget.look_up(s_id)
@@ -202,6 +203,7 @@ initDock = ->
         initDockedAppPosition()
         setTimeout(->
             calc_app_item_size()
+            update_dock_region($("#container").style.clientWidth)
             if systemTray?.isShowing
                 systemTray.updateTrayIcon()
         , 100)
@@ -217,6 +219,7 @@ initDock = ->
         deleteItem(id)
         calc_app_item_size()
         systemTray?.updateTrayIcon()
+        update_dock_region($("#container").style.clientWidth)
     )
 
     try

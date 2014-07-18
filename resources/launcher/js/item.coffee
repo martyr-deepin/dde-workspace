@@ -332,11 +332,11 @@ class Item extends Widget
                         interface:"dde.dock.DockedAppManager",
                         "DockedAppList"
                     )
-                    console.log(get_path_name(@path))
+                    console.log(@id)
                     if @isOnDock
-                        dock.Undock(get_path_name(@path))
+                        dock.Undock(@id)
                     else
-                        dock.Dock(get_path_name(@path), "", "", "")
+                        dock.Dock(@id, "", "", "")
                 catch e
                     console.log(e)
 
