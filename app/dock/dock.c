@@ -343,10 +343,10 @@ void dock_emit_webview_ok()
         update_dock_size_mode();
     }
 
-    update_display_info(&dock);
-    listen_primary_changed_signal(primary_changed_handler, &dock, NULL);
     g_warning("[%s]", __func__);
+    update_display_info(&dock);
     _update_dock_size(dock.x, dock.y, dock.width, dock.height);
+    listen_primary_changed_signal(primary_changed_handler, &dock, NULL);
     gtk_widget_show_all(container);
 
     GD.is_webview_loaded = TRUE;
@@ -456,13 +456,15 @@ void _update_dock_size(gint16 x, gint16 y, guint16 w, guint16 h)
     geo.min_width = 0;
     geo.min_height = 0;
 
-    gdk_window_set_geometry_hints(gtk_widget_get_window(webview), &geo, GDK_HINT_MIN_SIZE);
+    gdk_window_set_geometry_hints(WEBVIEW_GDK_WINDOW(), &geo, GDK_HINT_MIN_SIZE);
     gdk_window_set_geometry_hints(DOCK_GDK_WINDOW(), &geo, GDK_HINT_MIN_SIZE);
     gdk_flush();
+
     g_debug("[%s] %dx%d(%d, %d)", __func__, w, h, x, y);
-    gdk_window_move_resize(gtk_widget_get_window(webview), x, y, w, h);
+    gdk_window_move_resize(WEBVIEW_GDK_WINDOW(), x, y, w, h);
     gdk_window_move_resize(DOCK_GDK_WINDOW(), x, y, w, h);
-    gdk_window_flush(gtk_widget_get_window(webview));
+
+    gdk_window_flush(WEBVIEW_GDK_WINDOW());
     gdk_window_flush(DOCK_GDK_WINDOW());
 
     dock_change_workarea_height(_dock_height);
@@ -483,7 +485,7 @@ void primary_changed_handler(GDBusConnection* conn G_GNUC_UNUSED,
 {
     struct DisplayInfo* rect = (struct DisplayInfo*)data;
     g_variant_get(parameters, "((nnqq))", &rect->x, &rect->y, &rect->width, &rect->height);
-    update_dock_size();
+    _update_dock_size(rect->x, rect->y, rect->width, rect->height);
 }
 
 
@@ -526,6 +528,9 @@ int main(int argc, char* argv[])
     gdk_error_trap_push(); //we need remove this, but now it can ignore all X error so we would'nt crash.
 
     webview = d_webview_new_with_uri(GET_HTML_PATH("dock"));
+    gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
+    gtk_widget_realize(webview);
+    gtk_widget_realize(container);
     g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
 
     extern gboolean draw_embed_windows(GtkWidget* w, cairo_t *cr);
@@ -537,12 +542,8 @@ int main(int argc, char* argv[])
     g_signal_connect(container, "leave-notify-event", G_CALLBACK(leave_notify), NULL);
     g_signal_connect(container, "size-allocate", G_CALLBACK(size_workaround), NULL);
     g_signal_connect(webview, "size-allocate", G_CALLBACK(size_workaround), NULL);
-    gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
-
-
 
     gtk_widget_set_size_request(webview, gdk_screen_width(), gdk_screen_height());
-    gtk_widget_realize(container);
 
     set_wmspec_dock_hint(DOCK_GDK_WINDOW());
 
@@ -557,14 +558,6 @@ int main(int argc, char* argv[])
 
     gtk_widget_show_all(container);
     require_manager_trayicons();
-
-#ifndef NDEBUG
-    g_warning("dock window: 0x%x", (unsigned)GDK_WINDOW_XID(DOCK_GDK_WINDOW()));
-    GdkWindow* webview_window = gtk_widget_get_window(webview);
-    if (webview_window != NULL) {
-        g_warning("webview window: 0x%lx", (unsigned long)GDK_WINDOW_XID(webview_window));
-    }
-#endif
 
     gtk_main();
     return 0;
