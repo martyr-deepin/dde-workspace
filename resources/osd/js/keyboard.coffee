@@ -64,7 +64,9 @@ osd.SwitchLayout = (keydown)->
     keyboard = new Keyboard() if not keyboard?
     keyboard.updateUserLayoutList()
     echo "UserLayoutList.length: #{keyboard.UserLayoutList.length}"
-    if keyboard.UserLayoutList.length < 2 then return
+    if keyboard.UserLayoutList.length < 2
+        osdHide()
+        return
 
     if not keyboardList?
         keyboardList = new ListChoose("KeyboardList")

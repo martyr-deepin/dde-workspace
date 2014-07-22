@@ -52,7 +52,7 @@ class AppList
         if dnd_is_desktop(e)
             # console.log("is desktop")
             path = dt.getData("text/uri-list").substring("file://".length).trim()
-            id = get_path_name(path).replace("_", "-")
+            id = get_path_name(path).replace("_", "-").toLowerCase()
             if not Widget.look_up(id)
                 t = document.getElementsByName(id)
                 if t.length == 0
