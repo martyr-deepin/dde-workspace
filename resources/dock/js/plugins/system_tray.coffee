@@ -64,9 +64,9 @@ class SystemTray extends SystemItem
                 @showButton()
             @items.remove(xid)
             @items.unshift(xid)
-            @unfold()
-            if @upperItemNumber <= 2
-                @isUnfolded = false
+            @showAllIcons()
+            if @upperItemNumber > 2
+                @unfold()
         )
         @core.connect("Removed", (xid)=>
             console.log("tray icon #{xid} is Removed")

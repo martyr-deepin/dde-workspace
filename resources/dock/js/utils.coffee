@@ -133,13 +133,17 @@ dark_image = (img, adjustment)->
     #     ctx.drawImage(i, 0, 0)
     return dataUrl
 
-updatePanel = ->
-    _isDragging = false
-    panel.cancelAnimation()
-    panel.updateWithAnimation()
-    setTimeout(->
+updatePanel = do ->
+    _updatePanelTimer = null
+    ->
+        _isDragging = false
+        clearTimeout(_updatePanelTimer)
         panel.cancelAnimation()
-    , 300)
+        panel.updateWithAnimation()
+        _updatePanelTimer = setTimeout(->
+            panel.cancelAnimation()
+            _updatePanelTimer = null
+        , 300)
 
 
 getSiblingFromPoint = (x, y, sentinel, step, stepHandler)->
