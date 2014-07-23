@@ -28,6 +28,10 @@ UNINSTALL_STATUS =
     FAILED: "action-failed"
     SUCCESS: "action-finish"
 
+UNINSTALL_MESSAGE=
+    SUCCESSFUL: _("You have uninstalled \"%1\" successfully")
+    FAILED: _("\"%1\" failed to be uninstalled")
+
 
 SOFTWARE_STATE =
     IDLE: 0
@@ -64,15 +68,15 @@ class Uninstaller
 
     uninstallReport: (status, msg)->
         if status == UNINSTALL_STATUS.FAILED
-            message = "FAILED"
+            message = "failed"
         else if status == UNINSTALL_STATUS.SUCCESS
-            message = "SUCCESSFUL"
+            message = "successfully"
 
         console.log "uninstall #{message}, #{msg}"
         try
             notification = get_dbus("session", NOTIFICATIONS, "Notify")
             console.warn("#{@appid} sets icon: #{@icon} to notify icon")
-            id = notification.Notify_sync(@appName, @notifyId, @icon, "Uninstall #{message}", "#{msg}", [], {}, 0)
+            id = notification.Notify_sync(@appName, @notifyId, @icon, "", msg, [], {}, 0)
             @notifyId += 1
             console.warn("notify id: #{id}")
             Uninstaller.IdMap[id] = @icon
@@ -100,7 +104,7 @@ class Uninstaller
                     item.status = SOFTWARE_STATE.IDLE
                     item.show()
                 delete @uninstalling_apps[item.id]
-                @uninstallReport(UNINSTALL_STATUS.FAILED, "get packages failed")
+                @uninstallReport("", UNINSTALL_MESSAGE.FAILED.args(item.id))
                 console.log("get packages failed")
                 @disconnect()
                 return
