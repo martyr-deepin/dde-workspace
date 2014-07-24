@@ -32,6 +32,7 @@ static void dbus_dde_session_register(const char* arg0)
 void dde_session_register()
 {
     const char* cookie = g_getenv("DDE_SESSION_PROCESS_COOKIE_ID");
+    g_unsetenv("DDE_SESSION_PROCESS_COOKIE_ID");
     if (cookie == NULL) {
 	g_warning("not start by startdde");
 	return;
