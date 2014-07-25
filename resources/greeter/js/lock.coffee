@@ -18,6 +18,16 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
+enableZoneDetect = (enable) ->
+    echo "enableZoneDetect :#{enable}"
+    ZONE = "com.deepin.daemon.Zone"
+    try
+        zoneDBus = DCore.DBus.session(ZONE) if not zoneDBus?
+        zoneDBus?.EnableZoneDetected_sync(enable)
+    catch e
+        echo "zoneDBus #{ZONE} error : #{e}"
+
+
 class Lock extends Widget
 
     constructor:->
@@ -38,8 +48,6 @@ class Lock extends Widget
             userinfo.is_recognizing = false
             DCore.Lock.try_unlock("")
         )
-
-
 
 
 lock = new Lock()
@@ -81,28 +89,13 @@ powermenu = new PowerMenu($("#div_power"))
 powermenu.new_power_menu()
 
 
-audio_play_status = null
-is_volume_control = null
-try
-    audioplay = new AudioPlay()
-    audio_play_status = audioplay.get_launched_status()
-    if audio_play_status
-        if audioplay.getTitle() is undefined then audio_play_status = false
-    is_volume_control = false
-    echo "audio_play_status:#{audio_play_status}"
-catch e
-    echo "#{e}"
-    audio_play_status = false
-    is_volume_control = false
-
-mediacontrol = null
-if audio_play_status
+mediacontrol = new MediaControl()
+if mediacontrol.check_launched()
     div_media_control = create_element("div","div_media_control",_b)
     div_media_control.setAttribute("id","div_media_control")
-    mediacontrol = new MediaControl()
+    mediacontrol.create_mediacontrol_div()
     $("#div_media_control").appendChild(mediacontrol.element)
 
- #-------------------------------------------
 
 if not is_livecd
     div_switchuser = create_element("div","div_switchuser",_b)

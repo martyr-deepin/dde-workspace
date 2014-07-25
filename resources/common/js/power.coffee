@@ -6,7 +6,7 @@ class Power
         path:"/org/freedesktop/login1",
         interface:"org.freedesktop.login1.Manager",
     dbus_login1 = null
-       
+
     constructor : ->
         @option = ["shutdown","restart","suspend","logout"]
         @inhibitorsList = []
@@ -23,8 +23,7 @@ class Power
             )
         catch e
             echo "dbus_login1 error:#{e}"
-        
-    
+
     power_request : (power) ->
         if not dbus_login1? then get_login1_dbus()
         document.body.style.cursor = "wait" if power isnt "suspend" and power isnt "lock"
@@ -34,7 +33,7 @@ class Power
             when "restart" then dbus_login1.Reboot(true)
             when "shutdown" then dbus_login1.PowerOff(true)
             else return
-    
+
     power_force_sys : (power) ->
         if not dbus_login1? then get_login1_dbus()
         document.body.style.cursor = "wait" if power isnt "suspend" and power isnt "lock"
@@ -43,23 +42,6 @@ class Power
             when "suspend" then dbus_login1.Suspend(false)
             when "restart" then dbus_login1.Reboot(false)
             when "shutdown" then dbus_login1.PowerOff(false)
-            else return
-        
-    power_force_session : (power) ->
-        dbus_power = null
-        try
-            dbus_power = DCore.DBus.session(SessionManager)
-        catch e
-            echo "dbus_power error:#{e}"
-        if not dbus_power? then return
-        document.body.style.cursor = "wait" if power isnt "suspend" and power isnt "lock"
-        echo "Warning: The system will ----#{power}---- Force!!"
-        switch power
-            when "lock" then dbus_power.RequestLock()
-            when "suspend" then dbus_power.RequestSuspend()
-            when "logout" then dbus_power.ForceLogout()
-            when "restart" then dbus_power.ForceReboot()
-            when "shutdown" then dbus_power.ForceShutdown()
             else return
 
     power_can_freedesktop : (power) ->

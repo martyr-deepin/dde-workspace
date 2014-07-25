@@ -171,6 +171,8 @@ initDock = ->
     entryManager.connect("TrayInited",->
         if not systemTray and not $("#system-tray")
             systemTray = new SystemTray("system-tray", trayIcon, "")
+        else if systemTray
+            systemTray.clearItems()
     )
 
     entryManager.connect("Added", (path)->

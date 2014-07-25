@@ -97,19 +97,7 @@ catch e
 PowerManager = null
 ANIMATION = false
 
- #-------------------------------------------
-
 zoneDBus = null
-enableZoneDetect = (enable) ->
-    echo "enableZoneDetect :#{enable}"
-    ZONE = "com.deepin.daemon.Zone"
-    try
-        zoneDBus = DCore.DBus.session(ZONE) if not zoneDBus?
-        zoneDBus?.EnableZoneDetected_sync(enable)
-    catch e
-        echo "zoneDBus #{ZONE} error : #{e}"
- #-------------------------------------------
-
 is_guest = false
 
 accounts = new Accounts(APP_NAME)
