@@ -25,8 +25,6 @@
 
 #include <glib.h>
 
-extern int dock_panel_width;
-
 void dock_delay_show(int delay);
 void dock_delay_hide(int delay);
 void dock_show_now();

@@ -30,7 +30,6 @@
 #include <gdk/gdkx.h>
 #include "DBUS_dock.h"
 
-extern int _dock_height;
 extern void _change_workarea_height(int height);
 extern GdkWindow* DOCK_GDK_WINDOW();
 extern gboolean mouse_pointer_leave();
@@ -58,8 +57,6 @@ enum State {
 } CURRENT_STATE = StateShow;
 
 
-int dock_panel_width = 0;
-
 gboolean dock_is_hidden()
 {
     if (CURRENT_STATE == StateHidding)
@@ -81,7 +78,7 @@ PRIVATE void enter_show()
     g_assert(CURRENT_STATE != StateShow);
 
     set_state(StateShow);
-    _change_workarea_height(_dock_height);
+    _change_workarea_height(GD.dock_height);
     gdk_window_move(DOCK_GDK_WINDOW(), dock.x, dock.y);
 }
 PRIVATE void enter_hide()
@@ -90,7 +87,7 @@ PRIVATE void enter_hide()
 
     set_state(StateHidden);
     _change_workarea_height(0);
-    gdk_window_move(DOCK_GDK_WINDOW(), dock.x, dock.y+_dock_height);
+    gdk_window_move(DOCK_GDK_WINDOW(), dock.x, dock.y+GD.dock_height);
     js_post_message("dock_hidden", NULL);
 }
 
@@ -112,7 +109,7 @@ PRIVATE void enter_hidding()
 {
     set_state(StateHidding);
     _cancel_animation();
-    do_hide_animation(_dock_height);
+    do_hide_animation(GD.dock_height);
     js_post_message("dock_hidden", NULL);
 }
 PRIVATE void enter_showing()
@@ -194,8 +191,8 @@ PRIVATE gboolean do_show_animation(int current_height)
 {
     if (CURRENT_STATE != StateShowing) return FALSE;
 
-    if (current_height <= _dock_height) {
-        gdk_window_move(DOCK_GDK_WINDOW(), dock.x, dock.y + _dock_height - current_height);
+    if (current_height <= GD.dock_height) {
+        gdk_window_move(DOCK_GDK_WINDOW(), dock.x, dock.y + GD.dock_height - current_height);
         _change_workarea_height(current_height);
         _animation_show_id = g_timeout_add(SHOW_HIDE_ANIMATION_INTERVAL, (GSourceFunc)do_show_animation,
                 GINT_TO_POINTER(current_height + SHOW_HIDE_ANIMATION_STEP));
@@ -210,7 +207,7 @@ PRIVATE gboolean do_hide_animation(int current_height)
     if (CURRENT_STATE != StateHidding) return FALSE;
 
     if (current_height >= 0) {
-        gdk_window_move(DOCK_GDK_WINDOW(), dock.x, dock.y + _dock_height - current_height);
+        gdk_window_move(DOCK_GDK_WINDOW(), dock.x, dock.y + GD.dock_height - current_height);
         _change_workarea_height(current_height);
         _animation_hide_id = g_timeout_add(SHOW_HIDE_ANIMATION_INTERVAL, (GSourceFunc)do_hide_animation,
                 GINT_TO_POINTER(current_height - SHOW_HIDE_ANIMATION_STEP));
@@ -408,7 +405,7 @@ void update_dock_guard_window_position(double width)
     GdkWindow* win = get_dock_guard_window();
     if (width == 0)
         width = dock.width;
-    dock_panel_width = width;
+    GD.dock_panel_width = width;
     gdk_window_move_resize(win,
                            dock.x + (dock.width - width) / 2,
                            dock.y + dock.height - GUARD_WINDOW_HEIGHT,
@@ -451,7 +448,7 @@ void dock_update_hide_mode()
 {
     g_debug("%s", __func__);
     if (!GD.is_webview_loaded || _IN_TOGGLE_SHOW) return;
-    _change_workarea_height(_dock_height);
+    _change_workarea_height(GD.dock_height);
 
     // extern Window launcher_id;
     // if (launcher_id != 0 && dock_get_active_window() == launcher_id) {

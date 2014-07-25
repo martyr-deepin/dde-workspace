@@ -27,7 +27,9 @@
 #define APP_NAME "dock"
 
 enum {NO_HIDE_MODE=0, INTELLIGENT_HIDE_MODE=3, ALWAYS_HIDE_MODE=1, AUTO_HIDE_MODE=2} HideMode;
+enum {MODERN_MODE, LEGACY_MODE};
 struct _DockConfig {
+    int display_mode;
     int hide_mode;
     gboolean mini_mode;
     guint32 color;
@@ -36,6 +38,9 @@ struct _DockConfig {
 
 struct _GlobalData {
     struct _DockConfig config;
+    int dock_height;
+    int dock_panel_height;
+    int dock_panel_width;
     gboolean is_webview_loaded;
     GtkWidget* container;
     GtkWidget* webview;
