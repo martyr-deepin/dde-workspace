@@ -64,6 +64,7 @@ class SystemTray extends SystemItem
                 @showButton()
             @items.remove(xid)
             @items.unshift(xid)
+            @updateTrayIcon()
             @showAllIcons()
             if @upperItemNumber > 2
                 @unfold()
