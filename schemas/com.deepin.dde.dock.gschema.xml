@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
-      <enum id="com.deepin.dde.dock.HideMode">
+    <enum id="com.deepin.dde.dock.HideMode">
         <value value="0" nick="keep-showing"/>
         <value value="1" nick="keep-hidden"/>
         <value value="2" nick="auto-hide"/>
-      </enum>
-      <enum id="com.deepin.dde.dock.ClockType">
+    </enum>
+    <enum id="com.deepin.dde.dock.ClockType">
         <value value="0" nick="digit" />
         <value value="1" nick="analog" />
-      </enum>
+    </enum>
+    <enum id="com.deepin.dde.dock.DisplayMode">
+        <value value="0" nick="modern" />
+        <value value="1" nick="legacy" />
+    </enum>
 
     <schema path="/com/deepin/dde/dock/" id="com.deepin.dde.dock">
         <key name="hide-mode" enum="com.deepin.dde.dock.HideMode">
             <default>'keep-showing'</default>
-            <summary>the hideen mode</summary>
+            <summary>the hide mode</summary>
             <description>The value will influence when the dock is shown or hidden.</description>
         </key>
         <key enum="com.deepin.dde.dock.ClockType" name="clock-type">
@@ -25,6 +29,11 @@
             <default>[]</default>
             <summary>The default apps on dock.</summary>
             <description>The default apps which is docked when dock is started.</description>
+        </key>
+        <key name="display-mode" enum="com.deepin.dde.dock.DisplayMode">
+            <default>'modern'</default>
+            <summary>The display mode.</summary>
+            <description>The dock gets different display mode, for instance, dock looks like win7 taskbar on legacy mode.</description>
         </key>
     </schema>
 </schemalist>
