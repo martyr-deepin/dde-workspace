@@ -18,6 +18,16 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
+enableZoneDetect = (enable) ->
+    echo "enableZoneDetect :#{enable}"
+    ZONE = "com.deepin.daemon.Zone"
+    try
+        zoneDBus = DCore.DBus.session(ZONE) if not zoneDBus?
+        zoneDBus?.EnableZoneDetected_sync(enable)
+    catch e
+        echo "zoneDBus #{ZONE} error : #{e}"
+
+
 class Lock extends Widget
 
     constructor:->
@@ -38,8 +48,6 @@ class Lock extends Widget
             userinfo.is_recognizing = false
             DCore.Lock.try_unlock("")
         )
-
-
 
 
 lock = new Lock()
