@@ -85,7 +85,8 @@ class PWContainer extends Widget
                 id = @_current_group.id
                 infos = @_current_group.client_infos
                 # console.log("create PreviewWindow, #{id}##{infos[w_id].id}")
-                pw = new PreviewWindow("pw"+w_id, w_id, infos[w_id].title, cb)
+                if infos[w_id]
+                    pw = new PreviewWindow("pw"+w_id, w_id, infos[w_id].title, cb)
 
             setTimeout(->
                 if cb
@@ -502,13 +503,15 @@ class PreviewWindow extends Widget
         if @applet
             return
 
-        if @w_id != 0
+        infos = Preview_container._current_group.client_infos
+        if @w_id != 0 and infos[@w_id]
             # console.log("draw_window_preview: #{@canvas_width}, #{@canvas_height}")
             DCore.Dock.draw_window_preview(@canvas, @w_id, @canvas_width, @canvas_height)
-            infos = Preview_container._current_group.client_infos
             title = infos[@w_id].title
             if title != @title_str
                 @setTitle(title)
+        else
+            console.log("#{@w_id} is not eixsted")
 
 
 DCore.signal_connect("leave-notify", ->

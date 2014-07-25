@@ -59,16 +59,18 @@ void dock_draw_window_preview(JSValueRef canvas, double xid, double dest_width, 
 {
     GdkWindow* win = gdk_x11_window_foreign_new_for_display(gdk_display_get_default(), (long)xid);
     if (win == NULL) {
+        g_warning("[%s] get GdkWindow failed", __func__);
         return;
     }
 
     if (JSValueIsNull(get_global_context(), canvas)) {
-        g_debug("draw_window_preview with null canvas!");
+        g_warning("[%s] draw_window_preview with null canvas!", __func__);
         return;
     }
     cairo_t* cr =  fetch_cairo_from_html_canvas(get_global_context(), canvas);
 
     if (cr == NULL) {
+        g_warning("[%s] get canvas failed", __func__);
         return;
     }
 
@@ -91,12 +93,18 @@ void dock_draw_window_preview(JSValueRef canvas, double xid, double dest_width, 
     double scale = 0;
     if (width > height) {
         scale = dest_width/width;
-        g_debug("window: %dx%d -> %dx%d, scale: %.2lf", width, height, (int)dest_width, (int)(height*scale), scale);
+        g_debug("[%s] window(0x%lx): %dx%d -> %dx%d, scale: %.2lf", __func__,
+                  (unsigned long)xid, width, height,
+                  (int)dest_width, (int)(height*scale),
+                  scale);
         cairo_scale(cr, scale, scale);
         gdk_cairo_set_source_window(cr, win, 0, 0.5*(dest_height/scale-height));
     } else {
         scale = dest_height/height;
-        g_debug("window: %dx%d -> %dx%d, scale: %.2lf", width, height, (int)(dest_width*scale), (int)dest_height, scale);
+        g_debug("[%s] window(0x%lx): %dx%d -> %dx%d, scale: %.2lf", __func__,
+                  (unsigned long)xid, width, height,
+                  (int)(dest_width*scale), (int)dest_height,
+                  scale);
         cairo_scale(cr, scale, scale);
         gdk_cairo_set_source_window(cr, win, 0.5*(dest_width/scale-width), 0);
     }
