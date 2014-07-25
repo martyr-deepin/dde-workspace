@@ -59,7 +59,7 @@ void dock_draw_window_preview(JSValueRef canvas, double xid, double dest_width, 
 {
     GdkWindow* win = gdk_x11_window_foreign_new_for_display(gdk_display_get_default(), (long)xid);
     if (win == NULL) {
-	return;
+        return;
     }
 
     if (JSValueIsNull(get_global_context(), canvas)) {
@@ -91,12 +91,12 @@ void dock_draw_window_preview(JSValueRef canvas, double xid, double dest_width, 
     double scale = 0;
     if (width > height) {
         scale = dest_width/width;
-        g_debug("window: %dx%d, scale: %.2lf", width, height, scale);
+        g_debug("window: %dx%d -> %dx%d, scale: %.2lf", width, height, (int)dest_width, (int)(height*scale), scale);
         cairo_scale(cr, scale, scale);
         gdk_cairo_set_source_window(cr, win, 0, 0.5*(dest_height/scale-height));
     } else {
         scale = dest_height/height;
-        g_debug("window: %dx%d, scale: %.2lf", width, height, scale);
+        g_debug("window: %dx%d -> %dx%d, scale: %.2lf", width, height, (int)(dest_width*scale), (int)dest_height, scale);
         cairo_scale(cr, scale, scale);
         gdk_cairo_set_source_window(cr, win, 0.5*(dest_width/scale-width), 0);
     }
