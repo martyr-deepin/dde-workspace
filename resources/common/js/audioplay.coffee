@@ -32,15 +32,26 @@ class AudioPlay
         interface:"org.mpris.MediaPlayer2.Player"
 
     constructor: ->
+        @STATUS =
+            off:false
+            on:true
+            stop:"Stopped"
+            play:"Playing"
+            pause:"Paused"
+
         @mpris_all = []
         @mpris_dbus = null
-        @launched_status = false
-        
+        @launched_status = @STATUS.off
+
         @now_mpris = @get_mpris_now()
+        if @now_mpris is null
+            @launched_status = @STATUS.off
+            echo "there is not media player working!"
+            return
         @now_mpris_dbus_name = @now_mpris?.mpris
         @now_mpris_name = @now_mpris?.name
         echo "@now_mpris:#{@now_mpris_name}:#{@now_mpris_dbus_name}"
-        @mpris_dbus = @get_mpris_dbus(@now_mpris_dbus_name)
+        @get_mpris_dbus(@now_mpris_dbus_name)
 
     get_mpris_now:->
         #1.get all dbus_name_all and then search for MPRIS_DBUS_MIN
@@ -57,8 +68,6 @@ class AudioPlay
                 name = dbus.substring(index + MPRIS_DBUS_MIN.length)
                 mpris = {"name":name,"mpris":dbus}
                 @mpris_all.push(mpris)
-        
-        echo @mpris_all
 
         #2.check which mpris is now playing
         switch(@mpris_all.length)
@@ -68,7 +77,6 @@ class AudioPlay
                 #1.if is dmusic then directly return
                 for dbus in @mpris_all
                     if dbus?.name is "dmusic" then return dbus
-                
                 #2.if isnt Stopped then return
                 for dbus in @mpris_all
                     mpris = dbus?.mpris
@@ -80,31 +88,30 @@ class AudioPlay
                             MPRIS_DBUS.interface
                         )
                         #if dbus.name is @get_default_audio_player_name return dbus
-                        if mpris_dbus.PlaybackStatus isnt "Stopped" then return dbus
+                        if mpris_dbus.PlaybackStatus isnt @STATUS.stop then return dbus
                     catch e
                         echo "get_mpris_dbus_name #{e}"
                         return null
-                
                 #3. else return null
                 return null
 
 
     get_mpris_dbus:(dbus_name) ->
         try
+            @mpris_dbus = null
+            if not dbus_name? then return
             MPRIS_DBUS.name = dbus_name
-            mpris_dbus = DCore.DBus.session_object(
+            @mpris_dbus = DCore.DBus.session_object(
                 MPRIS_DBUS.name,
                 MPRIS_DBUS.path,
                 MPRIS_DBUS.interface
             )
-            @launched_status = true
-            return mpris_dbus
+            @launched_status = @STATUS.on
         catch e
-            @launched_status = false
-            echo "@mpris_dbus is null ,the player isnt launched!:#{e}"
-            return null
+            @launched_status = @STATUS.off
+            echo "#{MPRIS_DBUS.interface} connect dbus error::#{e}"
 
-    get_launched_status:->
+    check_launched:->
         return @launched_status
 
     get_default_audio_player_name:->
@@ -114,61 +121,61 @@ class AudioPlay
         DCore.DEntry.get_default_audio_player_icon()
 
     getPlaybackStatus:->
-        @mpris_dbus.PlaybackStatus
+        @mpris_dbus?.PlaybackStatus
 
     Next:->
-        @mpris_dbus.Next()
+        @mpris_dbus?.Next()
 
     Pause:->
-        @mpris_dbus.Pause()
+        @mpris_dbus?.Pause()
 
     Play:->
-        @mpris_dbus.Play()
+        @mpris_dbus?.Play()
 
     PlayPause:->
-        @mpris_dbus.PlayPause()
+        @mpris_dbus?.PlayPause()
 
     Previous:->
-        @mpris_dbus.Previous()
+        @mpris_dbus?.Previous()
 
     Seek:->
-        @mpris_dbus.Seek()
+        @mpris_dbus?.Seek()
 
     SetPosition:->
-        @mpris_dbus.SetPosition()
+        @mpris_dbus?.SetPosition()
 
     getPosition:->
-        @mpris_dbus.Position
+        @mpris_dbus?.Position
 
     Stop:->
-        @mpris_dbus.Stop()
+        @mpris_dbus?.Stop()
 
     getVolume:->
-        @mpris_dbus.Volume
+        @mpris_dbus?.Volume
 
     setVolume:(val)->
         if val > 1 then val = 1
         else if val < 0 then val = 0
-        @mpris_dbus.Volume = val
+        @mpris_dbus?.Volume = val
 
     getMetadata:->
-        @mpris_dbus.Metadata
+        @mpris_dbus?.Metadata
 
     getTitle:->
-        @mpris_dbus.Metadata['xesam:title']
+        @mpris_dbus?.Metadata['xesam:title']
 
     getUrl:->
         #www url
-        @mpris_dbus.Metadata['xesam:url']
+        @mpris_dbus?.Metadata['xesam:url']
 
     getalbum:->
         #zhuanji name
-        @mpris_dbus.Metadata['xesam:album']
+        @mpris_dbus?.Metadata['xesam:album']
 
     getArtist:->
         #artist name
-        @mpris_dbus.Metadata['xesam:artist']
+        @mpris_dbus?.Metadata['xesam:artist']
 
     getArtUrl:->
         #artist img
-        @mpris_dbus.Metadata['mpris:artUrl']
+        @mpris_dbus?.Metadata['mpris:artUrl']

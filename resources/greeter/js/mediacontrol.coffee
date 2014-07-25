@@ -17,10 +17,12 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+
 class VoiceControl extends Widget
     myCanvas = null
     num = null
     mouseover = false
+    audioplay = null
 
     constructor:->
         super
@@ -29,6 +31,7 @@ class VoiceControl extends Widget
         @element.style.display = "none"
         #remove_element(background) if background
         #background = create_img("background","images/voicecontrol/background.png",@element)
+        if not audioplay then audioplay = new AudioPlay()
 
     show:(x,y,position = "absolute")->
         @element.style.position = position
@@ -123,10 +126,10 @@ class VoiceControl extends Widget
             volume = volume - 0.1
         @setVolume(volume)
 
-        
+
 class MediaControl extends Widget
+    audioplay = null
     img_src_before = null
-    
     name = null
     up = null
     play = null
@@ -138,39 +141,59 @@ class MediaControl extends Widget
 
     play_status = "play"
     voice_status = "voice"
-    
-    name_text = null
 
     constructor:->
         super
-        if not audio_play_status then return
+        if not audioplay then audioplay = new AudioPlay()
+
+    check_launched: ->
+        try
+            @launched = audioplay.check_launched()
+            if @launched isnt audioplay.STATUS.off
+                #return false if audioplay.getPlaybackStatus() is audioplay.STATUS.stop
+                return true
+            else
+                return false
+        catch e
+            echo "check_audio_launched error:#{e}"
+            return false
+
+    update_button_img_name: ->
+        if audioplay.getPlaybackStatus() is audioplay.STATUS.play then play_status = "pause"
+        else if audioplay.getPlaybackStatus() is audioplay.STATUS.pause then play_status = "play"
+        else play_status = "play"
+
+    get_audio_name_text: ->
+        name_text = _("Click button to Play")
+        if audioplay.getTitle() isnt undefined and audioplay.getTitle() isnt null
+            if audioplay.getArtist() is undefined then name_text = audioplay.getTitle()
+            else name_text = audioplay.getTitle() + " -- " + audioplay.getArtist()
+        return name_text
+
+    get_voice_status: ->
+        if voicecontrol is null then new VoiceControl()
+        if voicecontrol.getVolume() < 0.01 then voice_status = "mute"
+        else voice_status = "voice"
+        return voice_status
+
+    create_mediacontrol_div: ->
         img_src_before = "images/mediacontrol/"
         name = create_element("div","name",@element)
-        if audioplay.getArtist() isnt undefined
-            name_text = audioplay.getTitle() + " -- " + audioplay.getArtist()
-        else name_text = audioplay.getTitle()
-        name.textContent = name_text
+        name.textContent = @get_audio_name_text()
         control = create_element("div","control",@element)
-        
         up = create_img("up",img_src_before + "up_normal.png",control)
-        
-        if audioplay.getPlaybackStatus() is "Playing" then play_status = "pause"
-        else if audioplay.getPlaybackStatus() is "Paused" then play_status = "play"
-        else play_status = "play"
+        @update_button_img_name()
         play = create_img("play",img_src_before + "#{play_status}_normal.png",control)
         next = create_img("next",img_src_before + "next_normal.png",control)
         voice = create_img("voice",img_src_before + "voice_normal.png",control)
         voicecontrol = new VoiceControl()
-        if voicecontrol.getVolume() < 0.01 then voice_status = "mute"
-        else voice_status = "voice"
+        @get_voice_status()
         voice.src = img_src_before + voice_status + "_normal.png"
 
-       
-        setInterval(->
-            if audioplay.getArtist() isnt undefined
-                name_text = audioplay.getTitle() + " -- " + audioplay.getArtist()
-            else name_text = audioplay.getTitle()
-            name.textContent = name_text
+        setInterval(=>
+            name.textContent = @get_audio_name_text()
+            @get_voice_status()
+            voice.src = img_src_before + voice_status + "_normal.png"
         ,1000)
 
         @normal_hover_click_cb(up,
@@ -187,7 +210,7 @@ class MediaControl extends Widget
         )
         @play_normal_hover_click_cb(play,@media_play)
         @voice_normal_hover_click_cb(voice)
-        
+
     normal_hover_click_cb: (el,normal,hover,click,click_cb) ->
         el.addEventListener("mouseover",->
             el.src = hover
@@ -206,12 +229,8 @@ class MediaControl extends Widget
 
     media_play:=>
         audioplay.mpris_dbus.PlayPause_sync()
-        
-        if audioplay.getPlaybackStatus() is "Playing" then play_status = "pause"
-        else if audioplay.getPlaybackStatus() is "Paused" then play_status = "play"
-        else play_status = "play"
+        @update_button_img_name()
         play.src = img_src_before + "#{play_status}_normal.png"
-        
 
     media_next:->
         audioplay.Next()
@@ -264,7 +283,7 @@ class MediaControl extends Widget
                 else voice_status = "voice"
                 voice.src = img_src_before + voice_status + "_normal.png"
         )
-        
+
     play_normal_hover_click_cb: (el,click_cb) ->
         el.addEventListener("mouseover",->
             el.src = img_src_before + play_status + "_normal.png"
