@@ -23,6 +23,13 @@ class GlobalMenu
         # console.log(settings)
         items[@map[settings.hideMode()]].setChecked(true)
         @menu = new Menu(DEEPIN_MENU_TYPE.NORMAL)
+        legacy = new RadioBoxMenuItem("dockDisplayMode:radio:legacy", _("_legacy mode"))
+        modern = new RadioBoxMenuItem("dockDisplayMode:radio:modern", _("_modern mode"))
+        if settings.displayMode() == DisplayMode.Legacy
+            legacy.setChecked(true)
+        else
+            modern.setChecked(true)
+        @menu.append(legacy, modern).addSeparator()
         @menu.append.apply(@menu, items)
 
         if Object.keys(@plugins).length > 0
@@ -33,23 +40,30 @@ class GlobalMenu
             for info in infos
                 @menu.append(new CheckBoxMenuItem("#{groupName}:checkbox:#{info[0]}", info[1]).setChecked(info[2]))
 
+        @menu.addSeparator().append(new MenuItem("dockSetting", _("_dock setting")))
         # console.log("showmenu:#{@menu.menu.menuJsonContent}")
         @menu.addListener(@on_itemselected).showMenu(x, y)
 
     on_itemselected:(id)=>
         info = id.split(":")
         groupName = info[0]
-        realId = info[2]
+        realId = info[2] || null
         console.log("globalMenu: groupName: #{groupName}, realId: #{realId}")
         switch groupName
             when "dockHideMode"
                 settings.setHideMode(realId)
+            when "dockDisplayMode"
+                settings.setDisplayMode(realId)
             when "deepinAppletManager"
                 dbus = @plugins[groupName]
                 if not dbus
                     console.wanr("cannot get dbus of #{groupName}")
                     return
                 dbus.ToggleApplet(realId)
+            when "dockSetting"
+                # TODO:
+                # toggle dock setting panel.
+                console.log("toggle dock setting panel")
 
         _isRightclicked = false
         @menu.unregister()

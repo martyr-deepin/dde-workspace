@@ -1,8 +1,12 @@
 workareaTimer = null
-HideMode=
+HideMode =
     KeepShowing: "keep-showing"
     KeepHidden: "keep-hidden"
     AutoHide: "auto-hide"
+
+DisplayMode =
+    Legacy: "legacy"
+    Modern: "modern"
 
 class Setting
     constructor:->
@@ -17,6 +21,11 @@ class Setting
             console.log("mode changed to #{mode}")
             hideStatusManager.updateState()
         )
+        @dbus.connect("DisplayModeChanged", (mode)=>
+            # TODO:
+            # switch between different mode.
+            console.log("DisplayModeChanged is emited")
+        )
 
     hideMode:->
         mode = @dbus.GetHideMode_sync()
@@ -29,4 +38,7 @@ class Setting
         @dbus.SetHideMode(id)
 
     displayMode:->
-        return 'win7'
+        return @dbus.GetDisplayMode_sync()
+
+    setDisplayMode:(id)->
+        @dbus.SetDisplayMode(id)
