@@ -23,8 +23,7 @@ class SystemTray extends SystemItem
         )
 
         @items = []
-        if Array.isArray @core.TrayIcons
-            @items = @core.TrayIcons.slice(0) || []
+        @clearItems()
         # console.log("TrayIcons: #{@items}")
         for item, i in @items
             # console.log("#{item} add to SystemTray")
@@ -96,6 +95,10 @@ class SystemTray extends SystemItem
 
 
         @updateTrayIcon()
+
+    clearItems:->
+        if Array.isArray @core.TrayIcons
+            @items = @core.TrayIcons.slice(0) || []
 
     updateTrayIcon:=>
         #console.log("update the order: #{@items}")
