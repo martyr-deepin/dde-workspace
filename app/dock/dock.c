@@ -339,6 +339,7 @@ void dock_emit_webview_ok()
         init_config();
         // update_dock_size_mode();
         init_dock_guard_window();
+        require_manager_trayicons();
     } else {
         update_dock_size_mode();
     }
@@ -556,7 +557,6 @@ int main(int argc, char* argv[])
     GFileMonitor* m G_GNUC_UNUSED = monitor_trash();
 
     gtk_widget_show_all(container);
-    require_manager_trayicons();
 
     gtk_main();
     return 0;
