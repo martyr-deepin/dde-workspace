@@ -44,6 +44,10 @@ class SystemTray extends SystemItem
                 $EW.show(xid)
                 # creat will take a while.
                 @updateTrayIcon()
+                if @isUnfolded
+                    @showAllIcons()
+                else
+                    @minShow
                 setTimeout(=>
                     @updateTrayIcon()
                     calc_app_item_size()
@@ -65,6 +69,10 @@ class SystemTray extends SystemItem
             @items.unshift(xid)
             @updateTrayIcon()
             @showAllIcons()
+            if IN_INIT
+                setTimeout(=>
+                    @updateTrayIcon()
+                , 1000 + ANIMATION_TIME)
             if @upperItemNumber > 2
                 @unfold()
         )

@@ -236,7 +236,6 @@ initDock = ->
     DCore.Dock.test()
 
     setTimeout(->
-        IN_INIT = false
         try
             if not systemTray and not $("#system-tray")
                 systemTray = new SystemTray("system-tray", trayIcon, "")
@@ -244,20 +243,22 @@ initDock = ->
             systemTray?.destroy()
             systemTray = null
 
-        calc_app_item_size()
         DCore.Dock.change_workarea_height(DOCK_HEIGHT)
-        update_dock_region($("#container").clientWidth)
     , 100)
 
     if settings.hideMode() == HideMode.KeepHidden
         console.log("hide mode is KeepHidden")
         setTimeout(->
+            IN_INIT = false
+            calc_app_item_size()
             hideStatusManager.updateState()
             update_dock_region($("#container").clientWidth)
         , 1000)
         return
 
     setTimeout(->
+        IN_INIT = false
+        calc_app_item_size()
         _CW.style.webkitTransform = "translateY(0)"
         panel.panel.style.webkitTransform = "translateY(0)"
         hideStatusManager.updateState()
