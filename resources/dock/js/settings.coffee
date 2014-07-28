@@ -1,12 +1,21 @@
 workareaTimer = null
 HideMode =
-    KeepShowing: "keep-showing"
-    KeepHidden: "keep-hidden"
-    AutoHide: "auto-hide"
+    KeepShowing: 0
+    KeepHidden: 1
+    AutoHide: 2
+
+HideModeNameMap =
+    "keep-showing": 0
+    "keep-hidden": 1
+    "auto-hide": 2
 
 DisplayMode =
-    Legacy: "legacy"
-    Modern: "modern"
+    Modern: 0
+    Classic: 1
+
+DisplayModeNameMap =
+    "modern": 0
+    "classic": 1
 
 class Setting
     constructor:->
@@ -25,7 +34,20 @@ class Setting
             # TODO:
             # switch between different mode.
             console.log("DisplayModeChanged is emited")
+            @update_height(mode)
         )
+
+    update_height:(mode)->
+        switch mode
+            when DisplayMode.Classic
+                DOCK_HEIGHT = 48
+                PANEL_HEIGHT = 48
+            when DisplayMode.Modern
+                DOCK_HEIGHT = 68
+                PANEL_HEIGHT = 60
+
+        DCore.Dock.set_height(DOCK_HEIGHT)
+        DCore.Dock.set_panel_height(PANEL_HEIGHT)
 
     hideMode:->
         mode = @dbus.GetHideMode_sync()

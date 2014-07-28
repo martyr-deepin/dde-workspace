@@ -2,7 +2,6 @@ class GlobalMenu
     constructor:->
         @plugins = {}
 
-
     showMenu:(x, y)->
         @menu?.destroy()
         @menu = null
@@ -18,13 +17,13 @@ class GlobalMenu
         # console.log(settings.hideMode())
         items[settings.hideMode()].setChecked(true)
         @menu = new Menu(DEEPIN_MENU_TYPE.NORMAL)
-        legacy = new RadioBoxMenuItem("dockDisplayMode:radio:legacy", _("_legacy mode"))
+        classic = new RadioBoxMenuItem("dockDisplayMode:radio:classic", _("_classic mode"))
         modern = new RadioBoxMenuItem("dockDisplayMode:radio:modern", _("_modern mode"))
-        if settings.displayMode() == DisplayMode.Legacy
-            legacy.setChecked(true)
+        if settings.displayMode() == DisplayMode.Classic
+            classic.setChecked(true)
         else
             modern.setChecked(true)
-        @menu.append(legacy, modern).addSeparator()
+        @menu.append(classic, modern).addSeparator()
         @menu.append.apply(@menu, items)
 
         if Object.keys(@plugins).length > 0
@@ -46,9 +45,9 @@ class GlobalMenu
         console.log("globalMenu: groupName: #{groupName}, realId: #{realId}")
         switch groupName
             when "dockHideMode"
-                settings.setHideMode(realId)
+                settings.setHideMode(HideModeNameMap[realId])
             when "dockDisplayMode"
-                settings.setDisplayMode(realId)
+                settings.setDisplayMode(DisplayModeNameMap[realId])
             when "deepinAppletManager"
                 dbus = @plugins[groupName]
                 if not dbus

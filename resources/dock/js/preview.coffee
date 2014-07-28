@@ -266,6 +266,13 @@ class PWContainer extends Widget
         console.log("_calc_size: get offset: #{offset}")
         @border.style.webkitTransform = "translateX(#{offset}px)"
 
+        if settings.displayMode() == DisplayMode.Classic
+            if @border.style.border != '48px'
+                @border.style.bottom = '48px'
+        else
+            if @border.style.bottom != '64px'
+                @border.style.bottom = '64px'
+
     append: (pw)->
         @_current_pws[pw.w_id] = true
         @element.appendChild(pw.element)

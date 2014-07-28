@@ -28,7 +28,7 @@ calc_app_item_size = ->
 
     # update_dock_region($("#container").clientWidth)
     if panel
-        panel.set_width(Panel.getPanelWidth())
+        panel.set_width(Panel.getPanelMiddleWidth())
 
 update_dock_region = do->
     lastWidth = null
@@ -45,15 +45,16 @@ update_dock_region = do->
             if w
                 app_len = w
             else
-                app_len = w #ITEM_WIDTH * apps.length
+                app_len = ITEM_WIDTH * apps.length
             panel_width = Panel.getPanelWidth()
-            if settings.displayMode() == 'win7'
-                left_offset = 0
-            else
-                left_offset = (screen.width - app_len) / 2
-                # console.log("set dock region height to #{DOCK_HEIGHT}")
-                # if setting.hideMode() != HideMode.Showing
-                #     h = 0
+            switch settings.displayMode()
+                when DisplayMode.Classic
+                    left_offset = 0
+                when DisplayMode.Modern
+                    left_offset = (screen.width - app_len) / 2
+                    # console.log("set dock region height to #{DOCK_HEIGHT}")
+                    # if setting.hideMode() != HideMode.Showing
+                    #     h = 0
             DCore.Dock.force_set_region(left_offset, 0, ICON_SCALE * ITEM_WIDTH * apps.length, panel_width, h)
 
 _b.onresize = ->

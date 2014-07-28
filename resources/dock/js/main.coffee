@@ -114,9 +114,22 @@ _b.addEventListener("drop", (e)->
 )
 
 settings = new Setting()
-if settings.displayMode() == 'win7'
+settings.update_height(settings.displayMode())
+if settings.displayMode() == DisplayMode.Classic
     $("#panel").classList.remove("fixed_center")
     $("#containerWarp").classList.remove("fixed_center")
+    $("#containerWarp").style.bottom = '1px'
+    $("#containerWarp").style.minHeight = '46px' # the top black line cannot be overlap, the bottom border should be shown.
+    $("#containerWarp").style.maxHeight = '46px'
+    # $("#system").classList.remove()
+    tray = create_element(tag:'div', id:"trayarea")
+    tray.style.position = 'fixed'
+    tray.style.bottom = '1px'
+    tray.style.right = '32px'
+    tray.style.height = '46px'
+    tray.appendChild($("#system"))
+    _b.appendChild(tray)
+    $("#post_fixed").style.display = 'none'
 
 hideStatusManager = new HideStatusManager(settings.hideMode())
 

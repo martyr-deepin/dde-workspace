@@ -77,7 +77,7 @@ createItem = (d)->
         time.core = new EntryProxy(d)
         time.init_clientgroup()
         time.core.showQuickWindow()
-    else
+    else if settings.displayMode() == DisplayMode.Classic
         console.log("SystemItem #{d.Id}, #{icon}, #{title}")
         new SystemItem(d.Id, icon, title)
 
@@ -188,4 +188,14 @@ resetAllItems = ->
         Widget.look_up(k)?.reset()
 
     updatePanel()
+
+drawLine = (ctx, x0, y0, x1, y1, opt)->
+    ctx.beginPath()
+    ctx.moveTo(x0, y0)
+    ctx.lineTo(x1, y1)
+
+    ctx.lineWidth = opt.lineWidth if opt.lineWidth?
+    ctx.strokeStyle = opt.lineColor if opt.lineColor?
+
+    ctx.stroke()
 

@@ -47,7 +47,7 @@ class SystemTray extends SystemItem
                 if @isUnfolded
                     @showAllIcons()
                 else
-                    @minShow
+                    @minShow()
                 setTimeout(=>
                     @updateTrayIcon()
                     calc_app_item_size()
