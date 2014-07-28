@@ -146,7 +146,7 @@ void dock_force_set_region(double x, double y, double items_width, double panel_
                 __func__, tmp.x, tmp.y, tmp.width, tmp.height);
 
         cairo_rectangle_int_t dock_board_rect = _base_rect;
-        if (GD.config.display_mode == LEGACY_MODE) {
+        if (GD.config.display_mode == CLASSIC_MODE) {
             dock_board_rect.x = 0;
         } else {
             dock_board_rect.x = tmp.x - (panel_width - items_width) / 2;
