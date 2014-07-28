@@ -201,7 +201,7 @@ initDock = ->
         initDockedAppPosition()
         setTimeout(->
             calc_app_item_size()
-            update_dock_region($("#container").style.clientWidth)
+            update_dock_region($("#container").clientWidth)
             if systemTray?.isShowing
                 systemTray.updateTrayIcon()
         , 100)
@@ -217,7 +217,7 @@ initDock = ->
         deleteItem(id)
         calc_app_item_size()
         systemTray?.updateTrayIcon()
-        update_dock_region($("#container").style.clientWidth)
+        update_dock_region($("#container").clientWidth)
     )
 
     try
