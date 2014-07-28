@@ -1,10 +1,5 @@
 class GlobalMenu
     constructor:->
-        @map =
-            "keep-showing": 0
-            "keep-hidden": 1
-            "auto-hide": 2
-
         @plugins = {}
 
 
@@ -20,8 +15,8 @@ class GlobalMenu
             dbus = DCore.DBus.session("dde.dock.entry.AppletManager")
             if dbus and not @plugins["deepinAppletManager"]
                 @plugins["deepinAppletManager"] = dbus
-        # console.log(settings)
-        items[@map[settings.hideMode()]].setChecked(true)
+        # console.log(settings.hideMode())
+        items[settings.hideMode()].setChecked(true)
         @menu = new Menu(DEEPIN_MENU_TYPE.NORMAL)
         legacy = new RadioBoxMenuItem("dockDisplayMode:radio:legacy", _("_legacy mode"))
         modern = new RadioBoxMenuItem("dockDisplayMode:radio:modern", _("_modern mode"))
