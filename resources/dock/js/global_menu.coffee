@@ -2,7 +2,6 @@ class GlobalMenu
     constructor:->
         @plugins = {}
 
-
     showMenu:(x, y)->
         @menu?.destroy()
         @menu = null
@@ -41,7 +40,7 @@ class GlobalMenu
         console.log("globalMenu: groupName: #{groupName}, realId: #{realId}")
         switch groupName
             when "dockHideMode"
-                settings.setHideMode(realId)
+                settings.setHideMode(HideModeNameMap[realId])
             when "deepinAppletManager"
                 dbus = @plugins[groupName]
                 if not dbus

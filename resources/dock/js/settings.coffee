@@ -1,8 +1,13 @@
 workareaTimer = null
-HideMode=
-    KeepShowing: "keep-showing"
-    KeepHidden: "keep-hidden"
-    AutoHide: "auto-hide"
+HideMode =
+    KeepShowing: 0
+    KeepHidden: 1
+    AutoHide: 2
+
+HideModeNameMap =
+    "keep-showing": 0
+    "keep-hidden": 1
+    "auto-hide": 2
 
 class Setting
     constructor:->
