@@ -37,6 +37,9 @@ class GlobalMenu
         @menu.addSeparator().append(new MenuItem("dockSetting", _("_dock setting")))
         # console.log("showmenu:#{@menu.menu.menuJsonContent}")
         @menu.addListener(@on_itemselected).showMenu(x, y)
+        @menu.unregisterHook(->
+            _isRightclicked = false
+        )
 
     on_itemselected:(id)=>
         info = id.split(":")

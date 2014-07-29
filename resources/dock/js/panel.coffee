@@ -62,6 +62,8 @@ class Panel
         e.stopPropagation()
         if @inEffectivePanelWorkarea(e.clientX, e.clientY)
             @globalMenu.showMenu(e.clientX, e.clientY)
+            Preview_close_now()
+            $tooltip?.hide()
 
     load_image: (src)->
         img = new Image()
