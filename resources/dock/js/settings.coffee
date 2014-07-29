@@ -38,6 +38,11 @@ class Setting
             # TODO:
             # switch between different mode.
             console.log("DisplayModeChanged is emited")
+            switch mode
+                when DisplayMode.Classic
+                    switchToClassicMode()
+                when DisplayMode.Modern
+                    switchToModernMode()
             @update_height(mode)
         )
 

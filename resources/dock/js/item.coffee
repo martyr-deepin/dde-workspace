@@ -14,41 +14,46 @@ class Item extends Widget
         @imgWarp = create_element(tag:'div', class:"imgWarp", @element)
         @imgContainer = create_element(tag:'div', class:"imgWarp imgContainer", @imgWarp)
         @img = create_img(src:icon || NOT_FOUND_ICON, class:"AppItemImg", @imgContainer)
+        @imgHover = create_img(src:"", class:"AppItemImg", @imgContainer)
+        @imgHover.style.display = 'none'
+        @imgDark = create_img(src:"", class:"AppItemImg", @imgContainer)
+        @imgDark.style.display = 'none'
+
         if settings.displayMode() == DisplayMode.Classic
             @img.style.width = '32px'
             @img.style.height = '32px'
+
             @imgWarp.style.position = "relative"
             @imgWarp.style.top = "#{(44-32)/2}px"
+
+            @imgHover.style.width = '32px'
+            @imgHover.style.height = '32px'
+
+            @imgDark.style.width = '32px'
+            @imgDark.style.height = '32px'
+
+            @imgWarp.classList.remove("ReflectImg")
         else
             @img.style.width = '48px'
             @img.style.height = '44px'
+
             @imgWarp.style.position = ""
             @imgWarp.style.marginTop = ''
-        @imgHover = create_img(src:"", class:"AppItemImg", @imgContainer)
-        @imgHover.style.display = 'none'
-        if settings.displayMode() == DisplayMode.Classic
-            @imgHover.style.width = '32px'
-            @imgHover.style.height = '32px'
-        else
+
             @imgHover.style.width = '48px'
             @imgHover.style.height = '44px'
-        @imgDark = create_img(src:"", class:"AppItemImg", @imgContainer)
-        @imgDark.style.display = 'none'
-        if settings.displayMode() == DisplayMode.Classic
-            @imgDark.style.width = '32px'
-            @imgDark.style.height = '32px'
-        else
+
             @imgDark.style.width = '48px'
             @imgDark.style.height = '44px'
+
+            @imgWarp.classList.add("ReflectImg")
+
         @img.onload = =>
             dataUrl = bright_image(@img, 40)
             @imgHover.src = dataUrl
             dataUrl = bright_image(@img, -40)
             @imgDark.src = dataUrl
-        if settings.displayMode() == DisplayMode.Classic
-            @imgWarp.classList.remove("ReflectImg")
-        else
-            @imgWarp.classList.add("ReflectImg")
+
         @imgContainer.style.pointerEvents = "auto"
         @imgContainer.addEventListener("mouseover", @on_mouseover)
         @imgContainer.addEventListener("mouseover", @on_mousemove)

@@ -16,7 +16,7 @@ class Time extends SystemItem
         @element.insertBefore(@timeContent, @imgWarp)
 
         if settings.displayMode() == DisplayMode.Classic
-            @element.style.width = ''
+            @element.style.width = 'auto'
             @element.style.margin = '0'
             @element.style.marginLeft = '8px'
             @imgWarp.style.display = 'none'

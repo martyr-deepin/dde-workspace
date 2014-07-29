@@ -125,7 +125,6 @@ class SystemItem extends AppItem
                 @element.style.margin = 'auto 8px'
                 @imgContainer.style.width = '16px'
                 @imgContainer.style.height = '16px'
-                # @imgWarp.style.width = '16px'
                 @imgWarp.style.height = '16px'
                 @imgWarp.style.top = "#{(44-16)/2}px"
                 @imgHover.style.width = '16px'

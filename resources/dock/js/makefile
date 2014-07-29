@@ -10,6 +10,7 @@ all: ${com_coffee} \
 	dragtarget.coffee\
 	config.coffee \
 	utils.coffee\
+	switcher.coffee\
 	region.coffee\
 	hide_status.coffee\
 	settings.coffee\
