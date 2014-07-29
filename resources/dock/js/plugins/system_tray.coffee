@@ -1,3 +1,7 @@
+TRAY_ICON_WIDTH = 16
+TRAY_ICON_HEIGHT = 16
+TRAY_ICON_MARGIN = 8
+
 class SystemTray extends SystemItem
     constructor:(@id, icon, title)->
         super
@@ -77,10 +81,12 @@ class SystemTray extends SystemItem
                 @unfold()
         )
         @core.connect("Removed", (xid)=>
-            console.log("tray icon #{xid} is Removed")
+            console.warn("tray icon #{xid} is Removed")
             @items.remove(xid)
 
-            if @isShowing
+            # TODO:
+            # another way to fold for classic mode.
+            if @isShowing and settings.displayMode() != DisplayMode.Classic
                 if @items.length == 4
                     @hideButton()
                     if @isUnfolded
@@ -109,12 +115,28 @@ class SystemTray extends SystemItem
             @items = @core.TrayIcons.slice(0) || []
 
     updateTrayIcon:=>
+        switch settings.displayMode()
+            when DisplayMode.Classic
+                @updateTrayIconForClassic()
+            when DisplayMode.Modern
+                @updateTrayIconForModern()
+
+    updateTrayIconForClassic:=>
+        console.warn("updateTrayIconForClassic")
+        trayarea = $("#trayarea")
+        y = (44 - TRAY_ICON_HEIGHT) / 2 + trayarea.offsetTop
+        for item, i in @items
+            x = trayarea.offsetLeft + TRAY_ICON_MARGIN - (i + 1) * (TRAY_ICON_WIDTH + TRAY_ICON_MARGIN * 2)
+            console.warn("move #{item} to #{x}x#{y}")
+            $EW.move_resize(item, x, y, TRAY_ICON_WIDTH, TRAY_ICON_HEIGHT)
+            # @showAllIcons()
+
+    updateTrayIconForModern:=>
         #console.log("update the order: #{@items}")
         @upperItemNumber = Math.max(Math.ceil(@items.length / 2), 2)
         if @items.length > 4 && @items.length % 2 == 0
             @upperItemNumber += 1
 
-        iconSize = 16
         itemSize = 18
 
         if @isUnfolded && @upperItemNumber > 2
@@ -137,7 +159,7 @@ class SystemTray extends SystemItem
                 x += (i - @upperItemNumber) * itemSize
                 y += itemSize
             # console.log("move tray icon #{item} to #{x}, #{y}")
-            $EW.move_resize(item, x, y, iconSize, iconSize)
+            $EW.move_resize(item, x, y, TRAY_ICON_WIDTH, TRAY_ICON_HEIGHT)
 
     updatePanel:=>
         calc_app_item_size()
@@ -145,6 +167,7 @@ class SystemTray extends SystemItem
         @calcTimer = webkitRequestAnimationFrame(@updatePanel)
 
     hideAllIcons:=>
+        console.warn("hideAllIcons")
         for item in @items
             $EW.undraw(item)
 
