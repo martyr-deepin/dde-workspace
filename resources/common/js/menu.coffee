@@ -190,6 +190,7 @@ class Menu
 
     unregisterHook: (fn)->
         @dbus?.connect("MenuUnregistered", fn)
+        @
 
     _init_dbus: ->
         manager = getMenuManager()
@@ -218,6 +219,7 @@ class Menu
             @menu.cornerDirection = ori
         # echo @menu
         @dbus?.ShowMenu("#{@menu}")
+        @
 
     toString: ->
         "#{@menu}"
