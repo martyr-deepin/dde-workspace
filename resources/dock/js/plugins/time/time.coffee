@@ -1,10 +1,27 @@
 class Time extends SystemItem
+    @weekday: [_("Sun"), _("Mon"), _("Tue"), _("Wed"), _("Thu"), _("Fri"), _("Sat")]
     constructor:->
         super
         @time = create_element('div', 'DigitClockTime', @imgWarp)
 
         for name in ['hourHeight', 'hourLow', 'minHeight', 'minLow']
             @loadBit(name)
+
+        @timeContent = create_element(tag:'div')
+        @timeContent.style.position = 'relative'
+        @timeContent.style.color = 'white'
+        @timeContent.style.fontSize = '13px'
+        @timeContent.style.top = '50%'
+        @timeContent.style.webkitTransform = 'translateY(-50%)'
+        @element.insertBefore(@timeContent, @imgWarp)
+
+        if settings.displayMode() == DisplayMode.Classic
+            @element.style.width = ''
+            @imgWarp.style.display = 'none'
+            @timeContent.style.display = ''
+        else
+            @imgWarp.style.display = ''
+            @timeContent.style.display = 'none'
 
         @update_time()
         @update_id = setInterval(@update_time, 1000)
@@ -53,8 +70,29 @@ class Time extends SystemItem
         sysSettings.ShowModule("date_time") if sysSettings
 
     update_time: =>
-        # @time.textContent = "#{@hour()}:#{@min()}"
-        # console.log("#{@hour(24, true)}:#{@min()}")
+        switch settings.displayMode()
+            when DisplayMode.Classic
+                @update_time_for_classic_mode()
+            when DisplayMode.Modern
+                @update_time_for_modern_mode()
+
+    update_time_for_classic_mode: =>
+        d = new Date()
+        @timeContent.textContent = ""
+
+        # TODO: week
+        if true
+            @timeContent.textContent += "#{Time.weekday[d.getDay()]} "
+
+        @timeContent.textContent += "#{d.toLocaleDateString()}"
+
+        hour = @hour(24, true)
+        @timeContent.textContent += " #{hour}"
+
+        min = @min()
+        @timeContent.textContent += ":#{min}"
+
+    update_time_for_modern_mode:=>
         hour = @hour(24, true)
         @hourHeightNumber.style.display = 'none'
         @hourHeightNumber = @hourHeight.children[parseInt(hour[0])]
@@ -92,3 +130,14 @@ class Time extends SystemItem
         min = new Date().getMinutes()
         if twobit then @force2bit(min) else "#{min}"
 
+    year:->
+        new Date().getFullYear()
+
+    month:->
+        new Date().getMonth() + 1
+
+    weekday:->
+        new Date().getDay()
+
+    date:->
+        new Date().getDate()
