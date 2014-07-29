@@ -121,6 +121,8 @@ class SystemItem extends AppItem
             if @id == 'system-tray'
                 @element.style.display = 'none'
             else
+                @element.style.width = '16px'
+                @element.style.margin = 'auto 8px'
                 @imgContainer.style.width = '16px'
                 @imgContainer.style.height = '16px'
                 # @imgWarp.style.width = '16px'

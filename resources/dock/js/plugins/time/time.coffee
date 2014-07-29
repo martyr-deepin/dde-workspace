@@ -17,6 +17,8 @@ class Time extends SystemItem
 
         if settings.displayMode() == DisplayMode.Classic
             @element.style.width = ''
+            @element.style.margin = '0'
+            @element.style.marginLeft = '8px'
             @imgWarp.style.display = 'none'
             @timeContent.style.display = ''
         else
