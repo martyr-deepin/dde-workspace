@@ -26,6 +26,10 @@ class Setting
             interface:"dde.dock.DockSetting",
             "GetHideMode"
         )
+        if not @dbus
+            console.error("connect to DockSetting failed")
+            DCore.Dock.quit()
+
         @dbus.connect("HideModeChanged", (mode)=>
             console.log("mode changed to #{mode}")
             hideStatusManager.updateState()

@@ -496,6 +496,12 @@ guint64 dock_xid()
 }
 
 
+void dock_quit()
+{
+    gtk_main_quit();
+}
+
+
 int main(int argc, char* argv[])
 {
     if (is_application_running(DOCK_ID_NAME)) {
