@@ -107,6 +107,10 @@ class SystemItem extends AppItem
     position: ['AppletNetwork', 'AppletDiskMount', 'AppletPower', 'AppletSound']
     constructor:(@id, icon, title)->
         super(@id, icon, title, $("#system"))
+        @element.classList.add("AppletItem")
+        # @imgWarp.classList.add("AppletItemImg")
+        @imgContainer.classList.add("AppletItemImg")
+        @img.classList.add("AppletItemImg")
         @img.draggable = false
         parentNode = $("#system")
         parentNode.appendChild(@element)
@@ -116,23 +120,6 @@ class SystemItem extends AppItem
                 parentNode.insertBefore(item, parentNode.firstChild)
         parentNode.appendChild($("#system-tray")) if $("#system-tray")
         parentNode.appendChild($("#time")) if $("#time")
-
-        if settings.displayMode() == DisplayMode.Classic
-            if @id == 'system-tray'
-                @element.style.display = 'none'
-            else
-                @element.style.width = '16px'
-                @element.style.margin = 'auto 8px'
-                @imgContainer.style.width = '16px'
-                @imgContainer.style.height = '16px'
-                @imgWarp.style.height = '16px'
-                @imgWarp.style.top = "#{(44-16)/2}px"
-                @imgHover.style.width = '16px'
-                @imgHover.style.height = '16px'
-                @imgDark.style.width = '16px'
-                @imgDark.style.height = '16px'
-                @img.style.width = '16px'
-                @img.style.height = '16px'
 
     isFirstElementChild:->
         $("#system").firstElementChild.isEqualNode(@element)

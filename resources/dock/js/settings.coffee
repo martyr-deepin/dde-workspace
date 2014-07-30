@@ -35,25 +35,37 @@ class Setting
             hideStatusManager.updateState()
         )
         @dbus.connect("DisplayModeChanged", (mode)=>
+            console.log("DisplayModeChanged is emited")
+            @updateSize(mode)
             # TODO:
             # switch between different mode.
-            console.log("DisplayModeChanged is emited")
             switch mode
                 when DisplayMode.Classic
                     switchToClassicMode()
                 when DisplayMode.Modern
                     switchToModernMode()
-            @update_height(mode)
         )
 
-    update_height:(mode)->
+    updateSize:(mode)->
         switch mode
             when DisplayMode.Classic
                 DOCK_HEIGHT = 48
                 PANEL_HEIGHT = 48
+
+                ITEM_HEIGHT = 46.0
+                ITEM_WIDTH = 48
+
+                ICON_WIDTH = 32
+                ICON_HEIGHT = 32
             when DisplayMode.Modern
                 DOCK_HEIGHT = 68
                 PANEL_HEIGHT = 60
+
+                ITEM_HEIGHT = 60.0
+                ITEM_WIDTH = 54.0
+
+                ICON_WIDTH = 48.0
+                ICON_HEIGHT = 48.0
 
         DCore.Dock.set_height(DOCK_HEIGHT)
         DCore.Dock.set_panel_height(PANEL_HEIGHT)

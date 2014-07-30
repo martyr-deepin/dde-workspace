@@ -7,23 +7,13 @@ class Time extends SystemItem
         for name in ['hourHeight', 'hourLow', 'minHeight', 'minLow']
             @loadBit(name)
 
-        @timeContent = create_element(tag:'div')
+        @timeContent = create_element(tag:'div', id:"timeContent")
         @timeContent.style.position = 'relative'
         @timeContent.style.color = 'white'
         @timeContent.style.fontSize = '13px'
         @timeContent.style.top = '50%'
         @timeContent.style.webkitTransform = 'translateY(-50%)'
         @element.insertBefore(@timeContent, @imgWarp)
-
-        if settings.displayMode() == DisplayMode.Classic
-            @element.style.width = 'auto'
-            @element.style.margin = '0'
-            @element.style.marginLeft = '8px'
-            @imgWarp.style.display = 'none'
-            @timeContent.style.display = ''
-        else
-            @imgWarp.style.display = ''
-            @timeContent.style.display = 'none'
 
         @update_time()
         @update_id = setInterval(@update_time, 1000)

@@ -12,41 +12,14 @@ class Item extends Widget
     constructor:(@id, icon, title, @container)->
         super()
         @imgWarp = create_element(tag:'div', class:"imgWarp", @element)
-        @imgContainer = create_element(tag:'div', class:"imgWarp imgContainer", @imgWarp)
+        @imgContainer = create_element(tag:'div', class:"imgContainer", @imgWarp)
         @img = create_img(src:icon || NOT_FOUND_ICON, class:"AppItemImg", @imgContainer)
         @imgHover = create_img(src:"", class:"AppItemImg", @imgContainer)
         @imgHover.style.display = 'none'
         @imgDark = create_img(src:"", class:"AppItemImg", @imgContainer)
         @imgDark.style.display = 'none'
 
-        if settings.displayMode() == DisplayMode.Classic
-            @img.style.width = '32px'
-            @img.style.height = '32px'
-
-            @imgWarp.style.position = "relative"
-            @imgWarp.style.top = "#{(44-32)/2}px"
-
-            @imgHover.style.width = '32px'
-            @imgHover.style.height = '32px'
-
-            @imgDark.style.width = '32px'
-            @imgDark.style.height = '32px'
-
-            @imgWarp.classList.remove("ReflectImg")
-        else
-            @img.style.width = '48px'
-            @img.style.height = '44px'
-
-            @imgWarp.style.position = ""
-            @imgWarp.style.marginTop = ''
-
-            @imgHover.style.width = '48px'
-            @imgHover.style.height = '44px'
-
-            @imgDark.style.width = '48px'
-            @imgDark.style.height = '44px'
-
-            @imgWarp.classList.add("ReflectImg")
+        @imgWarp.classList.add("ReflectImg")
 
         @img.onload = =>
             dataUrl = bright_image(@img, 40)
@@ -72,12 +45,12 @@ class Item extends Widget
         calc_app_item_size()
         @tooltip = null
         @element.classList.add("AppItem")
-        if settings.displayMode() == DisplayMode.Classic
-            @element.style.width = '48px'
-            @element.style.height = '44px' # + border * 2 == container.clientHeight
-        else
-            @element.style.width = '48px'
-            @element.style.height = '54px'
+        # if settings.displayMode() == DisplayMode.Classic
+        #     @element.style.width = '48px'
+        #     @element.style.height = '44px' # + border * 2 == container.clientHeight
+        # else
+        #     @element.style.width = '48px'
+        #     @element.style.height = '54px'
 
         @imgContainer.draggable=true
         e = document.getElementsByName(@id)
@@ -362,8 +335,6 @@ class AppItem extends Item
         @clientgroupInited = @isActive()
         console.log("#{@id} init status: #{@lastStatus}")
         @indicatorWarp = create_element(tag:'div', class:"indicatorWarp", @element)
-        if settings.displayMode() == DisplayMode.Classic
-            @indicatorWarp.style.top = "7px"
         @openingIndicator = create_img(src:OPENING_INDICATOR, class:"indicator OpeningIndicator", @indicatorWarp)
         @openingIndicator.addEventListener("webkitAnimationEnd", @on_animationend)
         @openIndicator = create_img(src:OPEN_INDICATOR, class:"indicator OpenIndicator", @indicatorWarp)

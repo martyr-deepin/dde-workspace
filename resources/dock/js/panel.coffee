@@ -76,8 +76,6 @@ class Panel
 
     draw: =>
         if settings.displayMode() == DisplayMode.Classic
-            # @set_width(screen.width)
-            # @panel.height(48)
             ctx = @panel.getContext('2d')
             ctx.clearRect(0, 0, @panel.width, @panel.height)
             ctx.rect(0, 0, @panel.width, @panel.height)

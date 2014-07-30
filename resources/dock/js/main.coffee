@@ -114,7 +114,7 @@ _b.addEventListener("drop", (e)->
 )
 
 settings = new Setting()
-settings.update_height(settings.displayMode())
+settings.updateSize(settings.displayMode())
 if settings.displayMode() == DisplayMode.Classic
     switchToClassicMode()
     # FIXME: hide tray icons.

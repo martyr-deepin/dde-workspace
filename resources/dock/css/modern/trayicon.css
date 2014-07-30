@@ -28,3 +28,6 @@
   height: 16px;
   visibility: hidden;
 }
+#timeContent {
+  display: none;
+}
