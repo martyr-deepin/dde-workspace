@@ -22,5 +22,11 @@
 }
 
 #timeContent {
-  display: block;
+  pointer-events: auto;
+  cursor: default;
+  color: white;
+  font-size: 13px;
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
 }

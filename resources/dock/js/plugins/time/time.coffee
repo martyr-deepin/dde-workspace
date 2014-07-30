@@ -8,12 +8,12 @@ class Time extends SystemItem
             @loadBit(name)
 
         @timeContent = create_element(tag:'div', id:"timeContent")
-        @timeContent.style.position = 'relative'
-        @timeContent.style.color = 'white'
-        @timeContent.style.fontSize = '13px'
-        @timeContent.style.top = '50%'
-        @timeContent.style.webkitTransform = 'translateY(-50%)'
         @element.insertBefore(@timeContent, @imgWarp)
+
+        console.warn(@element.id)
+        @element.addEventListener("mouseover", @on_mouseover)
+        @element.addEventListener("mouseout", @on_mouseout)
+        @element.addEventListener("click", @on_mouseup)
 
         @update_time()
         @update_id = setInterval(@update_time, 1000)

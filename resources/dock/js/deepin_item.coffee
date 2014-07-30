@@ -129,6 +129,11 @@ class SystemItem extends AppItem
     isLastElementChild:->
         $("#system").lastElementChild.isEqualNode(@element)
 
+    on_mouseover:=>
+        super
+        if settings.displayMode() == DisplayMode.Classic
+            @displayIcon()
+
     on_dragover:(e)=>
         e.stopPropagation()
         e.preventDefault()
