@@ -33,9 +33,9 @@ body {
 }
 
 .fixed_center {
-  left: 0px;
-  right: 0px;
-  margin: auto;
+  /* left: 0px; */
+  /* right: 0px; */
+  /* margin: auto; */
 }
 
 #containerWarp{
@@ -65,4 +65,8 @@ body {
   position: fixed;
   bottom: 0px;
   -webkit-transform: translateY(100%);
+}
+
+#post_fixed {
+  display:none;
 }

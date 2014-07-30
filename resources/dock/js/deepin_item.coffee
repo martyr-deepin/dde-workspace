@@ -111,6 +111,8 @@ class SystemItem extends AppItem
         # @imgWarp.classList.add("AppletItemImg")
         @imgContainer.classList.add("AppletItemImg")
         @img.classList.add("AppletItemImg")
+        @imgHover.classList.add("AppletItemImg")
+        @imgDark.classList.add("AppletItemImg")
         @img.draggable = false
         parentNode = $("#system")
         parentNode.appendChild(@element)

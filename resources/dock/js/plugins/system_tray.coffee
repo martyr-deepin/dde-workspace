@@ -81,7 +81,7 @@ class SystemTray extends SystemItem
                 @unfold()
         )
         @core.connect("Removed", (xid)=>
-            console.warn("tray icon #{xid} is Removed")
+            console.log("tray icon #{xid} is Removed")
             @items.remove(xid)
 
             # TODO:
@@ -122,12 +122,12 @@ class SystemTray extends SystemItem
                 @updateTrayIconForModern()
 
     updateTrayIconForClassic:=>
-        console.warn("updateTrayIconForClassic")
+        # console.warn("updateTrayIconForClassic")
         trayarea = $("#trayarea")
         y = (44 - TRAY_ICON_HEIGHT) / 2 + trayarea.offsetTop
         for item, i in @items
             x = trayarea.offsetLeft + TRAY_ICON_MARGIN - (i + 1) * (TRAY_ICON_WIDTH + TRAY_ICON_MARGIN * 2)
-            console.warn("move #{item} to #{x}x#{y}")
+            # console.warn("move #{item} to #{x}x#{y}")
             $EW.move_resize(item, x, y, TRAY_ICON_WIDTH, TRAY_ICON_HEIGHT)
             # @showAllIcons()
 
@@ -167,7 +167,6 @@ class SystemTray extends SystemItem
         @calcTimer = webkitRequestAnimationFrame(@updatePanel)
 
     hideAllIcons:=>
-        console.warn("hideAllIcons")
         for item in @items
             $EW.undraw(item)
 

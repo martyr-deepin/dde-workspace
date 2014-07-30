@@ -9,38 +9,23 @@ changeThemeCss = (theme)->
 
 switchToClassicMode = ->
     changeThemeCss("classic")
-
-    $("#panel").classList.remove("fixed_center")
-    $("#containerWarp").classList.remove("fixed_center")
-    $("#post_fixed").style.display = 'none'
-
-    if tray = $("#trayarea")
-        tray.style.display = ''
-        tray.appendChild($("#system"))
-        return
-
-    tray = create_element(tag:'div', id:"trayarea")
-    tray.appendChild($("#system"))
-    _b.appendChild(tray)
-
+    $("#trayarea").appendChild($("#system"))
     update_dock() if panel
 
 switchToModernMode = ->
     changeThemeCss("modern")
-
-    $("#panel").classList.add("fixed_center")
-    $("#containerWarp").classList.add("fixed_center")
-
     $("#container").insertBefore($("#system"), $("#post_fixed"))
-    $("#trayarea")?.style.display = 'none'
-    $("#post_fixed").style.display = ''
-
     update_dock() if panel
 
 update_dock=->
     setTimeout(->
-        update_dock_region(Panel.getPanelMiddleWidth())
+        console.warn("panel #{Panel.getPanelMiddleWidth()}")
+
         panel.set_width(Panel.getPanelMiddleWidth())
+        update_dock_region(Panel.getPanelMiddleWidth())
+
         panel.redraw()
+        systemTray?.updateTrayIcon()
+
         console.warn("update region and panel")
     , 2000)
