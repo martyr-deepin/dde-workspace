@@ -1,4 +1,5 @@
 #trayarea{
-    -webkit-transform: translateY(110%);
+  -webkit-transition: -webkit-transform 400ms;
+  -webkit-transform: translateY(110%);
 }
 

@@ -262,7 +262,7 @@ initDock = ->
         calc_app_item_size()
         _CW.style.webkitTransform = "translateY(0)"
         panel.panel.style.webkitTransform = "translateY(0)"
-        $("#trayarea").style.webkitTransform = 'translateY(0)' if settings.displayMode.Classic
+        $("#trayarea").style.webkitTransform = 'translateY(0)' if settings.displayMode() == DisplayMode.Classic
         hideStatusManager.updateState()
         update_dock_region($("#container").clientWidth)
     , 1000)
