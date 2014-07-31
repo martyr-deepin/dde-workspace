@@ -1,3 +1,4 @@
+dbus = null
 activeWindowTimer = null
 normal_mouseout_id = null
 closePreviewWindowTimer = null
@@ -508,6 +509,7 @@ class AppItem extends Item
             console.log("hide state is not Shown")
             return
         if @isNormal() || @isNormalApplet()
+            console.log("app item is normal")
             clearTimeout(hide_id)
             closePreviewWindowTimer = setTimeout(->
                 Preview_close_now(Preview_container._current_group)
@@ -619,6 +621,7 @@ class AppItem extends Item
         clientHalfWidth = @element.clientWidth / 2
         menuContent = @core.menuContent?()
         if not menuContent
+            _isRightclicked = false
             return
 
         menu =
@@ -640,7 +643,9 @@ class AppItem extends Item
             "RegisterMenu"
         )
 
-        return if not manager
+        if not manager
+            _isRightclicked = false
+            return
 
         menu_dbus_path = manager.RegisterMenu_sync()
         # echo "menu path is: #{menu_dbus_path}"
@@ -656,6 +661,7 @@ class AppItem extends Item
             dbus.connect("ItemInvoked", @on_itemselected($DBus[@id]))
             dbus.connect("MenuUnregistered", ->
                 handleMenuUnregister()
+                dbus = null
             )
             dbus.ShowMenu(menuJson)
         else
