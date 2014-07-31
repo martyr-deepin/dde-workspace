@@ -67,6 +67,12 @@ void lowpower_quit()
     gtk_main_quit();
 }
 
+JS_EXPORT_API
+void lowpower_restack()
+{
+    gdk_window_restack(gtk_widget_get_window(container), NULL, TRUE);
+}
+
 
 #ifdef NDEBUG
 static void
