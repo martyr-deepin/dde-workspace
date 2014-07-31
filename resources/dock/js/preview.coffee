@@ -442,7 +442,8 @@ class PreviewWindow extends Widget
         super
         # console.log("PreviewWindow destroy")
         Preview_container.remove(@)
-        Preview_container._calc_size()
+        if Preview_container.is_showing
+            Preview_container._calc_size()
 
     update_size: ->
         # console.log("PreviewWindow::update_size: #{Preview_container.scale}")

@@ -67,6 +67,12 @@ void lowpower_quit()
     gtk_main_quit();
 }
 
+JS_EXPORT_API
+void lowpower_restack()
+{
+    gdk_window_restack(gtk_widget_get_window(container), NULL, TRUE);
+}
+
 
 #ifdef NDEBUG
 static void
@@ -141,6 +147,9 @@ int main (int argc, char **argv)
 
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
     gdk_window_move_resize(gdkwindow, 0, 0, gdk_screen_width(), gdk_screen_height());
+    GdkCursor* cursor;
+    cursor = gdk_cursor_new(GDK_BLANK_CURSOR);
+    gdk_window_set_cursor (gdkwindow, cursor);
 
 #ifdef NDEBUG
     gdk_window_set_keep_above (gdkwindow, TRUE);

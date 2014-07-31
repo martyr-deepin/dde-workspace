@@ -24,7 +24,9 @@ _b.addEventListener("contextmenu",(e)=>
     e.stopPropagation()
 )
 
-
+setInterval(=>
+    DCore.Lowpower.restack()
+,50)
 
 lp_full = create_element("div","lp_full",_b)
 lowpower = create_element("div","lowpower",lp_full)
