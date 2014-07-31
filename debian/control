@@ -1,0 +1,28 @@
+Source: deepin-desktop-environment
+Section: utils
+Priority: extra
+Maintainer: Li Longyu (Ai Kotoba) <leaeasy@gmail.com>
+Build-Depends: debhelper (>= 8.0.0), cmake, pkg-config, libgtk-3-dev, libwebkitgtk-3.0-dev, libdeepin-webkit-3.0-0, libgdk-pixbuf2.0-dev, coffeescript, python, libdbus-glib-1-dev, libsqlite3-dev, libglib2.0-dev, liblightdm-gobject-1-dev | lightdm-gobject-dev, libgstreamer-plugins-base0.10-dev, golang-go, libnotify-dev, libgail-3-dev, libicu48, golang-gettext-go, libxtst-dev, libdeepin-webkit-3.0-0, go-dlib
+Standards-Version: 3.9.2
+Homepage: http://www.linuxdeepin.com
+
+Package: deepin-desktop-environment
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, deepin-artwork, dde-workspace, dde-control-center
+Description: Meta Package for Linuxdeepin test desktop environment.
+ Linuxdeepin 12.12 testing deskotp environment.
+ .
+ This package depends those modules includes: dock, launcher, lock, greeter
+
+Package: dde-workspace
+Architecture: any
+Conflicts: deepin-desktop-environment-dock, deepin-desktop-environment-launcher, 
+ deepin-desktop-environment-lightdm-greeter, deepin-desktop-environment-desktop, 
+ deepin-desktop-environment-lock, deepin-desktop-environment-dzone, 
+ deepin-desktop-environment-dosd, deepin-desktop-environment-common,
+ deepin-desktop-environment-plugins-common, deepin-desktop-environment-plugins-clock,
+ deepin-desktop-environment-plugins-weather
+Depends: ${shlibs:Depends}, ${misc:Depends}, deepin-menu, systemd-shim, libicu48
+Description: deepin desktop envrionment for Linuxdeepin new desktop environment.
+ Linuxdeepin 12.12 testing deskotp environment.
+ .

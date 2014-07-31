@@ -1,0 +1,4201 @@
+deepin-desktop-environment (2.1+20140731145428~cdfebbc9e3) trusty; urgency=low
+
+  * Build from git cdfebbc9e39994d934c76d9c7438519204473614
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 31 Jul 2014 14:54:29 +0800
+
+deepin-desktop-environment (2.1+20140731143430~cdfebbc9e3) trusty; urgency=low
+
+  * Build from git cdfebbc9e39994d934c76d9c7438519204473614
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 31 Jul 2014 14:34:31 +0800
+
+deepin-desktop-environment (2.1+20140729144445~b41470916e) trusty; urgency=low
+
+  * Build from git b41470916e1749d3771a926ece4fe16f449d9f94
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 29 Jul 2014 14:44:45 +0800
+
+deepin-desktop-environment (2.1+20140729112542~d52e1cbfa3) trusty; urgency=low
+
+  * Build from git d52e1cbfa315475340963c7393e8427e2e7aef52
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 29 Jul 2014 11:25:43 +0800
+
+deepin-desktop-environment (2.1+20140728162111~3cef3f84e5) trusty; urgency=low
+
+  * Build from git 3cef3f84e5eaa96c84596093a11ff354b23fa822
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 28 Jul 2014 16:21:12 +0800
+
+deepin-desktop-environment (2.1+20140728160543~e405bc76f7) trusty; urgency=low
+
+  * Build from git e405bc76f7a7cf2df33579db51c2e055e0fa6d67
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 28 Jul 2014 16:05:44 +0800
+
+deepin-desktop-environment (2.1+20140728153200~5bfc13045d) trusty; urgency=low
+
+  * Build from git 5bfc13045da1748e35ff9da2dddc8c95d89a2695
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 28 Jul 2014 15:32:00 +0800
+
+deepin-desktop-environment (2.1+20140728105000~fa8adccac0) trusty; urgency=low
+
+  * Build from git fa8adccac041d3261349bc28228563eb51271369
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 28 Jul 2014 10:50:01 +0800
+
+deepin-desktop-environment (2.1+20140725175113~368be26a3f) trusty; urgency=low
+
+  * Build from git 368be26a3f5ff8a5ebea2ce477ff06a0cfe3769c
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 25 Jul 2014 17:51:14 +0800
+
+deepin-desktop-environment (2.1+20140725170255~cd785333af) trusty; urgency=low
+
+  * Build from git cd785333afba3a3f201dd60051e7229bc605156d
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 25 Jul 2014 17:02:56 +0800
+
+deepin-desktop-environment (2.1+20140725154022~d8a20b2b6c) trusty; urgency=low
+
+  * Build from git d8a20b2b6c2222406eeb309684853e0e83e88dd0
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 25 Jul 2014 15:40:22 +0800
+
+deepin-desktop-environment (2.1+20140725152556~59cf82b9cb) trusty; urgency=low
+
+  * Build from git 59cf82b9cbe96d4cc9789ccbe265e9bbe03204ff
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 25 Jul 2014 15:25:57 +0800
+
+deepin-desktop-environment (2.1+20140725145126~a871962fe5) trusty; urgency=low
+
+  * Build from git a871962fe5b3a53791edfb37612b4814314a2502
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 25 Jul 2014 14:51:27 +0800
+
+deepin-desktop-environment (2.1+20140725094802~5d9c50c68a) trusty; urgency=low
+
+  * Build from git 5d9c50c68aea87e85280c523c522aa56f6da4148
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 25 Jul 2014 09:48:02 +0800
+
+deepin-desktop-environment (2.1+20140724151148~154fba12ef) trusty; urgency=low
+
+  * Build from git 154fba12ef5431e01d99d005360200a23ac52e0b
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 24 Jul 2014 15:11:49 +0800
+
+deepin-desktop-environment (2.1+20140723174133~166b1adecb) trusty; urgency=low
+
+  * Build from git 166b1adecb8167d3943367944c628812182aebf6
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 23 Jul 2014 17:41:34 +0800
+
+deepin-desktop-environment (2.1+20140723104406~6cc5a34eda) trusty; urgency=low
+
+  * Build from git 6cc5a34eda503511e9293007335abb525470bc9e
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 23 Jul 2014 10:44:07 +0800
+
+deepin-desktop-environment (2.1+20140722171550~b159875517) trusty; urgency=low
+
+  * Build from git b159875517c57e45f04c849ce13d76864d14df89
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 22 Jul 2014 17:15:50 +0800
+
+deepin-desktop-environment (2.1+20140721173322~e050aafc9e) trusty; urgency=low
+
+  * Build from git e050aafc9e7b3821c303cfd077202494c6909e96
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 21 Jul 2014 17:33:23 +0800
+
+deepin-desktop-environment (2.1+20140718161124~c1ec7dc5cc) trusty; urgency=low
+
+  * Build from git c1ec7dc5cc86225725bee598a06d63664d7d3fdb
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 18 Jul 2014 16:11:25 +0800
+
+deepin-desktop-environment (2.1+20140717154855~5005cbba1a) trusty; urgency=low
+
+  * Build from git 5005cbba1aff5e54adf0eb0d90572420c07a3e19
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 17 Jul 2014 15:48:56 +0800
+
+deepin-desktop-environment (2.1+20140717145441~a67c599a8e) trusty; urgency=low
+
+  * Build from git a67c599a8ef095e590cd023672e27fcd420e3537
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 17 Jul 2014 14:54:41 +0800
+
+deepin-desktop-environment (2.1+20140717144342~6d22efc59f) trusty; urgency=low
+
+  * Build from git 6d22efc59fedbaf46d425e35383ddaf3c05b4246
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 17 Jul 2014 14:43:42 +0800
+
+deepin-desktop-environment (2.1+20140717142740~0faff0c5f9) trusty; urgency=low
+
+  * Build from git 0faff0c5f984f624be2d55c4428b92359e9f2455
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 17 Jul 2014 14:27:40 +0800
+
+deepin-desktop-environment (2.1+20140717111149~35fa389d75) trusty; urgency=low
+
+  * Build from git 35fa389d75fc848945536c2a9833956d09f7532d
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 17 Jul 2014 11:11:49 +0800
+
+deepin-desktop-environment (2.1+20140717101755~a5866264b7) trusty; urgency=low
+
+  * Build from git a5866264b70d3c963f2d0011ba3f793758a44d70
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 17 Jul 2014 10:17:55 +0800
+
+deepin-desktop-environment (2.1+20140716174624~f22c73998c) trusty; urgency=low
+
+  * Build from git f22c73998c165a6500567d1e89f06bb02e3e3a4e
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 16 Jul 2014 17:46:25 +0800
+
+deepin-desktop-environment (2.1+20140716110337~5de2bd0fc7) trusty; urgency=low
+
+  * Build from git 5de2bd0fc7a952decca2969f9799d2f1ce63760c
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 16 Jul 2014 11:03:38 +0800
+
+deepin-desktop-environment (2.1+20140716100425~3e498115ce) trusty; urgency=low
+
+  * Build from git 3e498115ce4a912f733813ae2d348cbd9628021f
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 16 Jul 2014 10:04:25 +0800
+
+deepin-desktop-environment (2.1+20140714170557~91b34f6970) trusty; urgency=low
+
+  * Build from git 91b34f697051513a7edf786e9969ca9ba5331939
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 14 Jul 2014 17:05:58 +0800
+
+deepin-desktop-environment (2.1+20140714113031~eb2db6026e) trusty; urgency=low
+
+  * Build from git eb2db6026e654cd4429ce7d3ccc24434bfc3b815
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 14 Jul 2014 11:30:31 +0800
+
+deepin-desktop-environment (2.1+20140710174724~fd9349c49f) trusty; urgency=low
+
+  * Build from git fd9349c49f40c9bd35da7ca02d8a5ded6dfcf9c3
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 10 Jul 2014 17:47:25 +0800
+
+deepin-desktop-environment (2.1+20140710170427~7d83b7c084) trusty; urgency=low
+
+  * Build from git 7d83b7c084ba8c7c369def94cfe7ea6d33a2091b
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 10 Jul 2014 17:04:27 +0800
+
+deepin-desktop-environment (2.1+20140710154543~598582edc3) trusty; urgency=low
+
+  * Build from git 598582edc3b6574da800cb5638009debba546cf1
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 10 Jul 2014 15:45:44 +0800
+
+deepin-desktop-environment (2.1+20140710143917~568751f62c) trusty; urgency=low
+
+  * Build from git 568751f62cac8904bda5ebf91cc52d4d65060635
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 10 Jul 2014 14:39:18 +0800
+
+deepin-desktop-environment (2.1+20140709180813~dd0eb6222b) trusty; urgency=low
+
+  * Build from git dd0eb6222b0412f921dd02408c2373a3a9333a0c
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 09 Jul 2014 18:08:13 +0800
+
+deepin-desktop-environment (2.1+20140709160646~7954bcfd5b) trusty; urgency=low
+
+  * Build from git 7954bcfd5b3b9e0175f249321211fd5b45eb038f
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 09 Jul 2014 16:06:46 +0800
+
+deepin-desktop-environment (2.1+20140709153707~41bcad1b15) trusty; urgency=low
+
+  * Build from git 41bcad1b1538d5ad4b179ff94d50622d3496b9f7
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 09 Jul 2014 15:37:07 +0800
+
+deepin-desktop-environment (2.1+20140709152227~f46b4cfd1e) trusty; urgency=low
+
+  * Build from git f46b4cfd1e3a4f60f2f93864091848b6f77ee6d3
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 09 Jul 2014 15:22:28 +0800
+
+deepin-desktop-environment (2.1+20140709102147~5baf717b83) trusty; urgency=low
+
+  * Build from git 5baf717b83fe3b885a7ef6776270008a328dff9b
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 09 Jul 2014 10:21:47 +0800
+
+deepin-desktop-environment (2.1+20140709101504~5baf717b83) trusty; urgency=low
+
+  * Build from git 5baf717b83fe3b885a7ef6776270008a328dff9b
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 09 Jul 2014 10:15:04 +0800
+
+deepin-desktop-environment (2.1+20140709091749~0ec1f24191) trusty; urgency=low
+
+  * Build from git 0ec1f24191226ce09ffcf0a702ffb4c1cb29c922
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 09 Jul 2014 09:17:50 +0800
+
+deepin-desktop-environment (2.1+20140709084347~f384ecf102) trusty; urgency=low
+
+  * Build from git f384ecf1023631f3a8409c410db8ae1902a6a908
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 09 Jul 2014 08:43:47 +0800
+
+deepin-desktop-environment (2.1+20140708174018~306cbb9b01) trusty; urgency=low
+
+  * Build from git 306cbb9b013c08dd8bc91097fa0a5f4bca0236e8
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 08 Jul 2014 17:40:18 +0800
+
+deepin-desktop-environment (2.1+20140708135120~8bb00c4ccc) trusty; urgency=low
+
+  * Build from git 8bb00c4ccc99448e6b85bad39590452694d3b011
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 08 Jul 2014 13:51:21 +0800
+
+deepin-desktop-environment (2.1+20140708134052~9fd7d4e6b6) trusty; urgency=low
+
+  * Build from git 9fd7d4e6b676c17372c049e0c2a05550ed6a9eeb
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 08 Jul 2014 13:40:52 +0800
+
+deepin-desktop-environment (2.1+20140708131526~c23f67105a) trusty; urgency=low
+
+  * Build from git c23f67105ab6cd716fcdd726391145a3647e899b
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 08 Jul 2014 13:15:26 +0800
+
+deepin-desktop-environment (2.1+20140708093802~1330936a5a) trusty; urgency=low
+
+  * Build from git 1330936a5ac8f37729913cf098c7f0043b410d33
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 08 Jul 2014 09:38:03 +0800
+
+deepin-desktop-environment (2.1+20140704121757~12fbba9f03) trusty; urgency=low
+
+  * Build from git 12fbba9f03e9425073166b4399fe2b1dd39d8e89
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 04 Jul 2014 12:17:58 +0800
+
+deepin-desktop-environment (2.1+20140703182527~8c016b9578) trusty; urgency=low
+
+  * Build from git 8c016b9578ff12dcef1e9a7d8a0c526c39927b8d
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 03 Jul 2014 18:25:27 +0800
+
+deepin-desktop-environment (2.1+20140703180237~9e70b23c2c) trusty; urgency=low
+
+  * Build from git 9e70b23c2ce8bdf912e639fbc39940cc6014c15b
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 03 Jul 2014 18:02:37 +0800
+
+deepin-desktop-environment (2.1+20140703172357~3fa2383edb) trusty; urgency=low
+
+  * Build from git 3fa2383edbf5872e2f4b35e36d7fd96fc9b1eb0b
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 03 Jul 2014 17:23:58 +0800
+
+deepin-desktop-environment (2.1+20140703171105~3da76052bd) trusty; urgency=low
+
+  * Build from git 3da76052bd46233c95889ae361ad95f248536620
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 03 Jul 2014 17:11:05 +0800
+
+deepin-desktop-environment (2.1+20140703170245~cbb335f05c) trusty; urgency=low
+
+  * Build from git cbb335f05c8de204d8d490b005fce5f8c800c2ae
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 03 Jul 2014 17:02:45 +0800
+
+deepin-desktop-environment (2.1+20140703161514~efe9c4465e) trusty; urgency=low
+
+  * Build from git efe9c4465ec7d38e7be0c25e7645623d4d62f32b
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 03 Jul 2014 16:15:15 +0800
+
+deepin-desktop-environment (2.1+20140703151800~890dc6d404) trusty; urgency=low
+
+  * Build from git 890dc6d404372f073ddc8bb1627ad87993ba356d
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 03 Jul 2014 15:18:01 +0800
+
+deepin-desktop-environment (2.1+20140703141914~53496d271c) trusty; urgency=low
+
+  * Build from git 53496d271c005062603256f4cd9314ad8e29cb6e
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 03 Jul 2014 14:19:15 +0800
+
+deepin-desktop-environment (2.1+20140703134142~209d1be867) trusty; urgency=low
+
+  * Build from git 209d1be867219c627f27e0ca35426ac49b8d5d2c
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 03 Jul 2014 13:41:42 +0800
+
+deepin-desktop-environment (2.1+20140703105643~7717105655) trusty; urgency=low
+
+  * Build from git 7717105655f1c88f93047db7a719331adeb3cf41
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 03 Jul 2014 10:56:43 +0800
+
+deepin-desktop-environment (2.1+20140703095934~e82a397b76) trusty; urgency=low
+
+  * Build from git e82a397b76d3026cee7934f5a5bdc7bcc4bbf90c
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 03 Jul 2014 09:59:34 +0800
+
+deepin-desktop-environment (2.1+20140703090807~5ff6dea8e7) trusty; urgency=low
+
+  * Build from git 5ff6dea8e7d10ee89d8218715dcf52912e3eb4f1
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 03 Jul 2014 09:08:07 +0800
+
+deepin-desktop-environment (2.1+20140702160936~1e8a22c9d9) trusty; urgency=low
+
+  * Build from git 1e8a22c9d94bf0368bc6c7ba09ccbb5d95d22fa1
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 02 Jul 2014 16:09:36 +0800
+
+deepin-desktop-environment (2.1-20140702090046~329da82f5d) trusty; urgency=low
+
+  * Build from git 329da82f5dc7df4f0f0f92ff919b170dca7fa61a
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 02 Jul 2014 09:00:47 +0800
+
+deepin-desktop-environment (2.1-20140701224730~356ecdca4f) trusty; urgency=low
+
+  * Build from git 356ecdca4fda91c3c53be7d961e6756efa3caabd
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 01 Jul 2014 22:47:31 +0800
+
+deepin-desktop-environment (2.1-20140701174945~f7692934b1) trusty; urgency=low
+
+  * Build from git f7692934b12115ab4edb951b42a42893145fd760
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 01 Jul 2014 17:49:45 +0800
+
+deepin-desktop-environment (2.1-20140701152122~894368ad23) trusty; urgency=low
+
+  * Build from git 894368ad23426a9e6dfc4efbba57607b014e01e1
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 01 Jul 2014 15:21:22 +0800
+
+deepin-desktop-environment (2.1-20140701145100~649dce5b44) trusty; urgency=low
+
+  * Build from git 649dce5b449733269497e4b7346cf5550b56057e
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 01 Jul 2014 14:51:01 +0800
+
+deepin-desktop-environment (2.1-20140701104146~da63f85312) trusty; urgency=low
+
+  * Build from git da63f85312a9ad0326aaa5587b1b7c5eb6c0f018
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 01 Jul 2014 10:41:47 +0800
+
+deepin-desktop-environment (2.1-20140701102630~c82612d745) trusty; urgency=low
+
+  * Build from git c82612d745366716cd621bafb9a774c8dd4207e8
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 01 Jul 2014 10:26:30 +0800
+
+deepin-desktop-environment (2.1-20140630193642~80be6a26f4) trusty; urgency=low
+
+  * Build from git 80be6a26f462857cee5ee7b58de0cde12cff4538
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 30 Jun 2014 19:36:43 +0800
+
+deepin-desktop-environment (2.1-20140630193240~424cbe651c) trusty; urgency=low
+
+  * Build from git 424cbe651c0c1182ee6d32af549f2886c74dbae9
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 30 Jun 2014 19:32:41 +0800
+
+deepin-desktop-environment (2.1-20140630175801~f45ddcd84a) trusty; urgency=low
+
+  * Build from git f45ddcd84a26de0526fdde49d844c58c44e2a762
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 30 Jun 2014 17:58:02 +0800
+
+deepin-desktop-environment (2.1-20140630162650~c24bbc0d7c) trusty; urgency=low
+
+  * Build from git c24bbc0d7c99110cda1c5af9f74168cac68bb10f
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 30 Jun 2014 16:26:51 +0800
+
+deepin-desktop-environment (2.1-20140630160754~3761cc00a3) trusty; urgency=low
+
+  * Build from git 3761cc00a3ebdf6f53b1adde588940ef741cd6e4
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 30 Jun 2014 16:07:54 +0800
+
+deepin-desktop-environment (2.1-20140630143525~326c35b8ae) trusty; urgency=low
+
+  * Build from git 326c35b8ae060b1508ad38c905c058a136c3ac9a
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 30 Jun 2014 14:35:26 +0800
+
+deepin-desktop-environment (2.1-20140630142521~ecbd0e5035) trusty; urgency=low
+
+  * Build from git ecbd0e503543a3edc843572b092735c64c5ac580
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 30 Jun 2014 14:25:22 +0800
+
+deepin-desktop-environment (2.1-20140630112948~7280508e25) trusty; urgency=low
+
+  * Build from git 7280508e252b9619dcad409ac3f4644badd7dee4
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 30 Jun 2014 11:29:48 +0800
+
+deepin-desktop-environment (2.1-20140630112322~c9833cd7e0) trusty; urgency=low
+
+  * Build from git c9833cd7e01bdcecaa030a2dc9fb6a166db1aebe
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 30 Jun 2014 11:23:23 +0800
+
+deepin-desktop-environment (2.1-20140629223326~e2fc6eb5e2) trusty; urgency=low
+
+  * Build from git e2fc6eb5e253b1da35da795cca6b52e53f228e13
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Sun, 29 Jun 2014 22:33:26 +0800
+
+deepin-desktop-environment (2.1-20140627221006~3c9f4d41a1) trusty; urgency=low
+
+  * Build from git 3c9f4d41a1c3ca7b59fca1d63c29f5de29266123
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 27 Jun 2014 22:10:06 +0800
+
+deepin-desktop-environment (2.1-20140627214759~8098653e64) trusty; urgency=low
+
+  * Build from git 8098653e64b6531d1a5365f80b13d07b0d996643
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 27 Jun 2014 21:48:00 +0800
+
+deepin-desktop-environment (2.1-20140627204622~6871852800) trusty; urgency=low
+
+  * Build from git 68718528008166a6cc79f8b7f26df3a62b6cb2a5
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 27 Jun 2014 20:46:23 +0800
+
+deepin-desktop-environment (2.1-20140627194028~bf382b2109) trusty; urgency=low
+
+  * Build from git bf382b2109a46f560a62cbef8c3c36f9d8ddbb83
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 27 Jun 2014 19:40:29 +0800
+
+deepin-desktop-environment (2.1-20140627185918~bf382b2109) trusty; urgency=low
+
+  * Build from git bf382b2109a46f560a62cbef8c3c36f9d8ddbb83
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 27 Jun 2014 18:59:19 +0800
+
+deepin-desktop-environment (2.1-20140627185527~a7f04d99ff) trusty; urgency=low
+
+  * Build from git a7f04d99ff846291590ddcde4c19c7ac65f13351
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 27 Jun 2014 18:55:28 +0800
+
+deepin-desktop-environment (2.1-20140627162456~07eba2b5e7) trusty; urgency=low
+
+  * Build from git 07eba2b5e77a853a875bfd9bba1c232fe55d2050
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 27 Jun 2014 16:24:56 +0800
+
+deepin-desktop-environment (2.1-20140627134657~07eba2b5e7) trusty; urgency=low
+
+  * Build from git 07eba2b5e77a853a875bfd9bba1c232fe55d2050
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 27 Jun 2014 13:46:58 +0800
+
+deepin-desktop-environment (2.1-20140627113556~e72fd0e2f5) trusty; urgency=low
+
+  * Build from git e72fd0e2f5f43c2a00d242b3149db5a60dc8bb64
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 27 Jun 2014 11:35:58 +0800
+
+deepin-desktop-environment (2.1-20140627095410~1062db0cc3) trusty; urgency=low
+
+  * Build from git 1062db0cc325463e9b31a0b2f7c89cedacfd1fc2
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 27 Jun 2014 09:54:11 +0800
+
+deepin-desktop-environment (2.1-20140627094556~3caef6fb0c) trusty; urgency=low
+
+  * Build from git 3caef6fb0c99e07b3503683f466a421ee1cd968e
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 27 Jun 2014 09:45:57 +0800
+
+deepin-desktop-environment (2.1-20140625165016~06464f762a) trusty; urgency=low
+
+  * Build from git 06464f762aa5933d6b04a5b05bfb89088100cff0
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 25 Jun 2014 16:50:17 +0800
+
+deepin-desktop-environment (2.1-20140625164400~ecda301e86) trusty; urgency=low
+
+  * Build from git ecda301e868c788ee2cb369154249646e8413bdd
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 25 Jun 2014 16:44:01 +0800
+
+deepin-desktop-environment (2.1-20140625160735~03ddffea54) trusty; urgency=low
+
+  * Build from git 03ddffea54d36f5a081eff51822823b7f55f5d75
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 25 Jun 2014 16:07:35 +0800
+
+deepin-desktop-environment (2.1-20140625154414~fc920a84bc) trusty; urgency=low
+
+  * Build from git fc920a84bc09cf8f64f0bb249528ef7d68466537
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 25 Jun 2014 15:44:15 +0800
+
+deepin-desktop-environment (2.1-20140625150142~82ac2a309c) trusty; urgency=low
+
+  * Build from git 82ac2a309cf6103adb8c053e9d8207e53d3b5f35
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 25 Jun 2014 15:01:44 +0800
+
+deepin-desktop-environment (2.1-20140625134018~518455ecae) trusty; urgency=low
+
+  * Build from git 518455ecaea6da453018d7a2e94a558420d70c03
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 25 Jun 2014 13:40:19 +0800
+
+deepin-desktop-environment (2.1-20140625133030~721b5fe700) trusty; urgency=low
+
+  * Build from git 721b5fe700a81083e22555918dc104ac945717a1
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 25 Jun 2014 13:30:31 +0800
+
+deepin-desktop-environment (2.1-20140625093709~4bf5a34476) trusty; urgency=low
+
+  * Build from git 4bf5a344760b623d8a57d7d2eb52889fb8d86667
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 25 Jun 2014 09:37:09 +0800
+
+deepin-desktop-environment (2.1-20140624160126~3264ed87e6) trusty; urgency=low
+
+  * Build from git 3264ed87e6a610a75e678de54b3097ae02223813
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 24 Jun 2014 16:01:27 +0800
+
+deepin-desktop-environment (2.1-20140624154313~6bfa93e8a6) trusty; urgency=low
+
+  * Build from git 6bfa93e8a6c3d2ae0402a997f5f55298dfb4d591
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 24 Jun 2014 15:43:14 +0800
+
+deepin-desktop-environment (2.1-20140624153331~9ec3569c9f) trusty; urgency=low
+
+  * Build from git 9ec3569c9f41376d7c45c59cd3b4502fc239ac08
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 24 Jun 2014 15:33:31 +0800
+
+deepin-desktop-environment (2.1-20140624142217~858d254082) trusty; urgency=low
+
+  * Build from git 858d25408258e2b6a281b547aae265f96b42e8c5
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 24 Jun 2014 14:22:18 +0800
+
+deepin-desktop-environment (2.1-20140624140905~858d254082) trusty; urgency=low
+
+  * Build from git 858d25408258e2b6a281b547aae265f96b42e8c5
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 24 Jun 2014 14:09:07 +0800
+
+deepin-desktop-environment (2.1-20140624105431~c410ac41b3) trusty; urgency=low
+
+  * Build from git c410ac41b33ac480dbc50ef040e0737f87e3de07
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 24 Jun 2014 10:54:32 +0800
+
+deepin-desktop-environment (2.1-20140624104957~83fd168638) trusty; urgency=low
+
+  * Build from git 83fd1686388cb4458e3ab87bd69799123b9335a5
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 24 Jun 2014 10:49:57 +0800
+
+deepin-desktop-environment (2.1-20140624102955~e3b7ec6fec) trusty; urgency=low
+
+  * Build from git e3b7ec6fec7c477e5ae07a803fd3aa17b7e99f51
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 24 Jun 2014 10:29:55 +0800
+
+deepin-desktop-environment (2.1-20140624093053~8da42e9f61) trusty; urgency=low
+
+  * Build from git 8da42e9f6110a0dbe73bcb5e9f4d76e7ff3a41ca
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 24 Jun 2014 09:30:53 +0800
+
+deepin-desktop-environment (2.1-20140623172102~cf642d83ec) trusty; urgency=low
+
+  * Build from git cf642d83ec83ae87cbf991a68bbc08df5ca1668d
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 23 Jun 2014 17:21:03 +0800
+
+deepin-desktop-environment (2.1-20140623160341~6c22450018) trusty; urgency=low
+
+  * Build from git 6c224500182e79c08b93f1cd0be38b1e89b5114f
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 23 Jun 2014 16:03:42 +0800
+
+deepin-desktop-environment (2.1-20140623150138~3ea9b2ed88) trusty; urgency=low
+
+  * Build from git 3ea9b2ed88dca1854956f2b5a335a4269f5baa26
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 23 Jun 2014 15:01:39 +0800
+
+deepin-desktop-environment (2.1-20140623143941~5de4ffe9a3) trusty; urgency=low
+
+  * Build from git 5de4ffe9a39e6fdcebb61cf07f4ce3641fcbd407
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 23 Jun 2014 14:39:43 +0800
+
+deepin-desktop-environment (2.1-20140623143016~a08cf471fd) trusty; urgency=low
+
+  * Build from git a08cf471fd40a6638187612965d4abe41ebf98f2
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 23 Jun 2014 14:30:16 +0800
+
+deepin-desktop-environment (2.1-20140623140945~7d0ddd694a) trusty; urgency=low
+
+  * Build from git 7d0ddd694a38f529f4075d4c2d58b89b1cd6c1eb
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 23 Jun 2014 14:09:46 +0800
+
+deepin-desktop-environment (2.1-20140623131623~7d0ddd694a) trusty; urgency=low
+
+  * Build from git 7d0ddd694a38f529f4075d4c2d58b89b1cd6c1eb
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 23 Jun 2014 13:16:24 +0800
+
+deepin-desktop-environment (2.1-20140623114402~7d0ddd694a) trusty; urgency=low
+
+  * Build from git 7d0ddd694a38f529f4075d4c2d58b89b1cd6c1eb
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 23 Jun 2014 11:44:03 +0800
+
+deepin-desktop-environment (2.1-20140620162414~67f21f09a6) trusty; urgency=low
+
+  * Build from git 67f21f09a69c87884636f634d851500d81f238d4
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 20 Jun 2014 16:24:15 +0800
+
+deepin-desktop-environment (2.1-20140620154405~10c91c9d13) trusty; urgency=low
+
+  * Build from git 10c91c9d13d7de117552e6d34b74c201f102f7c6
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 20 Jun 2014 15:44:06 +0800
+
+deepin-desktop-environment (2.1-20140620112125~cfeacd9cb1) trusty; urgency=low
+
+  * Build from git cfeacd9cb18fb6b37dfca6ec24cf7ad9a208fbe3
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 20 Jun 2014 11:21:26 +0800
+
+deepin-desktop-environment (2.1-20140620104540~89dc711b0a) trusty; urgency=low
+
+  * Build from git 89dc711b0a192050d7fb774fd1fb6cd2f1b52c6b
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 20 Jun 2014 10:45:41 +0800
+
+deepin-desktop-environment (2.1-20140619173348~60cfe5983c) trusty; urgency=low
+
+  * Build from git 60cfe5983c4f8b84d56e2f3bd07d974f936c4c95
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 19 Jun 2014 17:33:49 +0800
+
+deepin-desktop-environment (2.1-20140619171430~f60ab69c44) trusty; urgency=low
+
+  * Build from git f60ab69c445ae635f1dbb3d3e7b72af7d1c804f1
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 19 Jun 2014 17:14:31 +0800
+
+deepin-desktop-environment (2.1-20140619161202~7bf0beeb6e) trusty; urgency=low
+
+  * Build from git 7bf0beeb6e9aa32d2f84f0f51badb84d834c6e97
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 19 Jun 2014 16:12:03 +0800
+
+deepin-desktop-environment (2.1-20140619112831~f4eafce520) trusty; urgency=low
+
+  * Build from git f4eafce520ea0e386bd1697cf1d0dca6a60a015e
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 19 Jun 2014 11:28:32 +0800
+
+deepin-desktop-environment (2.1-20140618165442~676f811970) trusty; urgency=low
+
+  * Build from git 676f81197037c4f4723048bd50885835352f1314
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 18 Jun 2014 16:54:43 +0800
+
+deepin-desktop-environment (2.1-20140618103542~a119b99302) trusty; urgency=low
+
+  * Build from git a119b99302d17f812e2ed9867039f9669dd3c29d
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 18 Jun 2014 10:35:43 +0800
+
+deepin-desktop-environment (2.1-20140615111247~7030a04630) trusty; urgency=low
+
+  * Build from git 7030a046306b0f6271245576135ef3272a24ae8d
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Sun, 15 Jun 2014 11:12:48 +0800
+
+deepin-desktop-environment (2.1-20140614171202~4404467405) trusty; urgency=low
+
+  * Build from git 440446740502a2b1dbb1676acdbd6cd273e5cf89
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Sat, 14 Jun 2014 17:12:03 +0800
+
+deepin-desktop-environment (2.1-20140614164312~ce8c7f3125) trusty; urgency=low
+
+  * Build from git ce8c7f3125ba5a60a3048d8cc7beee303ad8f33b
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Sat, 14 Jun 2014 16:43:13 +0800
+
+deepin-desktop-environment (2.1-20140614153218~9f665a3d73) trusty; urgency=low
+
+  * Build from git 9f665a3d73978fbf6b693b7becc78b3a0497d9ce
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Sat, 14 Jun 2014 15:32:18 +0800
+
+deepin-desktop-environment (2.1-20140614150622~a0f1fce5b1) trusty; urgency=low
+
+  * Build from git a0f1fce5b16c51a1ea12d61ba1406ae6b560c354
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Sat, 14 Jun 2014 15:06:23 +0800
+
+deepin-desktop-environment (2.1-20140614143630~e0c654d80d) trusty; urgency=low
+
+  * Build from git e0c654d80d506f39141049fa47289265ba6df166
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Sat, 14 Jun 2014 14:36:31 +0800
+
+deepin-desktop-environment (2.1-20140614133432~c8da26537e) trusty; urgency=low
+
+  * Build from git c8da26537e2855c53321d9d73639be06a2058d5f
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Sat, 14 Jun 2014 13:34:32 +0800
+
+deepin-desktop-environment (2.1-20140614121625~c9866ac5c0) trusty; urgency=low
+
+  * Build from git c9866ac5c0acc184f439ab8975e55e4446a9faa8
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Sat, 14 Jun 2014 12:16:26 +0800
+
+deepin-desktop-environment (2.1-20140614110616~6dfb2899a5) trusty; urgency=low
+
+  * Build from git 6dfb2899a52029049d59893761a0095031219586
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Sat, 14 Jun 2014 11:06:17 +0800
+
+deepin-desktop-environment (2.1-20140614104942~51702b875d) trusty; urgency=low
+
+  * Build from git 51702b875dd5487d76c3070f5993e01f510f74ba
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Sat, 14 Jun 2014 10:49:43 +0800
+
+deepin-desktop-environment (2.1-20140614103223~5d447ee580) trusty; urgency=low
+
+  * Build from git 5d447ee5802b0650b32cdb6f5767af5a522f5568
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Sat, 14 Jun 2014 10:32:24 +0800
+
+deepin-desktop-environment (2.1-20140614102711~30436c0b1f) trusty; urgency=low
+
+  * Build from git 30436c0b1fd08adf7540eb6b6399e3005c930416
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Sat, 14 Jun 2014 10:27:12 +0800
+
+deepin-desktop-environment (2.1-20140614095847~b0343fe9c7) trusty; urgency=low
+
+  * Build from git b0343fe9c72da31b5cfab5fc40fdac84f0240879
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Sat, 14 Jun 2014 09:58:48 +0800
+
+deepin-desktop-environment (2.1-20140614093535~ff12e35549) trusty; urgency=low
+
+  * Build from git ff12e35549c081ba3a6788ed0180ca6638f11e24
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Sat, 14 Jun 2014 09:35:36 +0800
+
+deepin-desktop-environment (2.1-20140614090301~ff12e35549) trusty; urgency=low
+
+  * Build from git ff12e35549c081ba3a6788ed0180ca6638f11e24
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Sat, 14 Jun 2014 09:03:02 +0800
+
+deepin-desktop-environment (2.1-20140613175322~856798b1b0) trusty; urgency=low
+
+  * Build from git 856798b1b0802c73cd008d4bdd9b07dc91b6d67a
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 13 Jun 2014 17:53:23 +0800
+
+deepin-desktop-environment (2.1-20140613165022~1b7a55d677) trusty; urgency=low
+
+  * Build from git 1b7a55d677c7e24c2ccdc7284f48e26439ad040c
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 13 Jun 2014 16:50:22 +0800
+
+deepin-desktop-environment (2.1-20140613163718~79d9de3ed4) trusty; urgency=low
+
+  * Build from git 79d9de3ed40575d1558ffaf2f3126ae0c37fd2ab
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 13 Jun 2014 16:37:19 +0800
+
+deepin-desktop-environment (2.1-20140613152616~e1e675ffc9) trusty; urgency=low
+
+  * Build from git e1e675ffc95703e3c7e288882da45490bd505139
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 13 Jun 2014 15:26:17 +0800
+
+deepin-desktop-environment (2.1-20140613150336~dfb370f817) trusty; urgency=low
+
+  * Build from git dfb370f8176ccda4530b97bcfb002a727d75c9db
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 13 Jun 2014 15:03:37 +0800
+
+deepin-desktop-environment (2.1-20140613143838~32f44bfe59) trusty; urgency=low
+
+  * Build from git 32f44bfe590f5783140091a9309ab07fc833395c
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 13 Jun 2014 14:38:38 +0800
+
+deepin-desktop-environment (2.1-20140613131934~1f55a2120e) trusty; urgency=low
+
+  * Build from git 1f55a2120ec001f3dca4eda9b1c58d9493fbee6e
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 13 Jun 2014 13:19:35 +0800
+
+deepin-desktop-environment (2.1-20140613124427~fbc21d1d9a) trusty; urgency=low
+
+  * Build from git fbc21d1d9af802d012f1e0fc0b5441e779ffc5a9
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 13 Jun 2014 12:44:27 +0800
+
+deepin-desktop-environment (2.1-20140613120921~b7461efb66) trusty; urgency=low
+
+  * Build from git b7461efb66a464b8ba35adfd3122500899ccc66b
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 13 Jun 2014 12:09:22 +0800
+
+deepin-desktop-environment (2.1-20140612224456~a42bba5ea3) trusty; urgency=low
+
+  * Build from git a42bba5ea3b9bedb33086a29cae63d99f36bd6c7
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 12 Jun 2014 22:44:56 +0800
+
+deepin-desktop-environment (2.1-20140612223818~d04dfa5bec) trusty; urgency=low
+
+  * Build from git d04dfa5bec851a9878c2c252d1ba583c8138f7ac
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 12 Jun 2014 22:38:19 +0800
+
+deepin-desktop-environment (2.1-20140612193245~d04dfa5bec) trusty; urgency=low
+
+  * Build from git d04dfa5bec851a9878c2c252d1ba583c8138f7ac
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 12 Jun 2014 19:32:45 +0800
+
+deepin-desktop-environment (2.1-20140612180502~4f073c0235) trusty; urgency=low
+
+  * Build from git 4f073c02353e7c481b151a555144eeda2cc62e14
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 12 Jun 2014 18:05:02 +0800
+
+deepin-desktop-environment (2.1-20140612175746~6685e4afcc) trusty; urgency=low
+
+  * Build from git 6685e4afcc45195fdbf2c4fc33c29c0fa8bb8d9b
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 12 Jun 2014 17:57:47 +0800
+
+deepin-desktop-environment (2.1-20140612165744~8728b870b6) trusty; urgency=low
+
+  * Build from git 8728b870b64b207213a084d7a0c57957ad23a57f
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 12 Jun 2014 16:57:45 +0800
+
+deepin-desktop-environment (2.1-20140612162248~5d606970cd) trusty; urgency=low
+
+  * Build from git 5d606970cd905b1debbe35df1d865d16f64c4fa1
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 12 Jun 2014 16:22:48 +0800
+
+deepin-desktop-environment (2.1-20140612084200~e6b42a5a1a) trusty; urgency=low
+
+  * Build from git e6b42a5a1a0fe4cfc5986bea0281e59918b50223
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 12 Jun 2014 08:42:01 +0800
+
+deepin-desktop-environment (2.1-20140611173729~4e392d6446) trusty; urgency=low
+
+  * Build from git 4e392d6446c945a85ca340f9df278d94592d7e9a
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 11 Jun 2014 17:37:30 +0800
+
+deepin-desktop-environment (2.1-20140611172239~97b737f4e5) trusty; urgency=low
+
+  * Build from git 97b737f4e5c26ce887bc679e7e5ff8feef25dd77
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 11 Jun 2014 17:22:39 +0800
+
+deepin-desktop-environment (2.1-20140611142653~8115a32f7d) trusty; urgency=low
+
+  * Build from git 8115a32f7d8573856fa9f5623b8e297bed113f32
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 11 Jun 2014 14:26:53 +0800
+
+deepin-desktop-environment (2.1-20140611132726~266ec23e14) trusty; urgency=low
+
+  * Build from git 266ec23e14287b6a9a4c390998098abceba34a8d
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 11 Jun 2014 13:27:26 +0800
+
+deepin-desktop-environment (2.1-20140611125325~44b277ec71) trusty; urgency=low
+
+  * Build from git 44b277ec71cc656dad5461ccdcdf62bc6841bd61
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 11 Jun 2014 12:53:25 +0800
+
+deepin-desktop-environment (2.1-20140611122532~f70b7a7687) trusty; urgency=low
+
+  * Build from git f70b7a7687c3339ffc0f3a310e6dc29d982f25a6
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 11 Jun 2014 12:25:32 +0800
+
+deepin-desktop-environment (2.1-20140611104809~88fe115574) trusty; urgency=low
+
+  * Build from git 88fe1155745466b655725784c042ff20123f922b
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 11 Jun 2014 10:48:10 +0800
+
+deepin-desktop-environment (2.1-20140610180107~aa07babe9a) trusty; urgency=low
+
+  * Build from git aa07babe9a408de0441bc2d1d72d5d9071d3e66b
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 10 Jun 2014 18:01:08 +0800
+
+deepin-desktop-environment (2.1-20140609221951~168ac641dc) trusty; urgency=low
+
+  * Build from git 168ac641dcb104d41b5e9eeeccbb7f702e6b8811
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 09 Jun 2014 22:19:52 +0800
+
+deepin-desktop-environment (2.1-20140609220928~d5eb04846f) trusty; urgency=low
+
+  * Build from git d5eb04846f70158169d3faf0f6e7df5189779934
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 09 Jun 2014 22:09:29 +0800
+
+deepin-desktop-environment (2.1-20140609213645~d5eb04846f) trusty; urgency=low
+
+  * Build from git d5eb04846f70158169d3faf0f6e7df5189779934
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 09 Jun 2014 21:36:46 +0800
+
+deepin-desktop-environment (2.1-20140609203925~98929d3551) trusty; urgency=low
+
+  * Build from git 98929d35511d5e36a920426819416c0d91401dc0
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 09 Jun 2014 20:39:26 +0800
+
+deepin-desktop-environment (2.1-20140609170745~9fe8b84262) trusty; urgency=low
+
+  * Build from git 9fe8b8426271c59e3a641386f0f358da82268ffe
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 09 Jun 2014 17:07:46 +0800
+
+deepin-desktop-environment (2.1-20140609161252~1b45a34bfb) trusty; urgency=low
+
+  * Build from git 1b45a34bfb6bee91e43ef35d057bb4e49bd53109
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 09 Jun 2014 16:12:52 +0800
+
+deepin-desktop-environment (2.1-20140606171641~85e63fb187) trusty; urgency=low
+
+  * Build from git 85e63fb187b971138317b30ea13264f9b209d997
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 06 Jun 2014 17:16:42 +0800
+
+deepin-desktop-environment (2.1-20140606110104~fcd2d12970) trusty; urgency=low
+
+  * Build from git fcd2d129703c67e700da532b2bdee796bffe8f98
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 06 Jun 2014 11:01:05 +0800
+
+deepin-desktop-environment (2.1-20140606102901~47981e8c7c) trusty; urgency=low
+
+  * Build from git 47981e8c7c9ea19ea2a5b1f05202f7610e213591
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 06 Jun 2014 10:29:02 +0800
+
+deepin-desktop-environment (2.1-20140605174115~9eae4fea1e) trusty; urgency=low
+
+  * Build from git 9eae4fea1e98aedd2fffbac4c42ebe2abf349dd4
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 05 Jun 2014 17:41:16 +0800
+
+deepin-desktop-environment (2.1-20140603155205~63cf7446e8) trusty; urgency=low
+
+  * Build from git 63cf7446e8db6547ec5ba5e09a161000f1a4d57e
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 03 Jun 2014 15:52:05 +0800
+
+deepin-desktop-environment (2.1-20140603154747~71a81a31db) trusty; urgency=low
+
+  * Build from git 71a81a31db2d25ec6a053e79104383491fe2e26b
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 03 Jun 2014 15:47:47 +0800
+
+deepin-desktop-environment (2.1-20140603093527~9727ea743c) trusty; urgency=low
+
+  * Build from git 9727ea743c38c42c1468f60e5d49fd839a0a2c4d
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 03 Jun 2014 09:35:27 +0800
+
+deepin-desktop-environment (2.1-20140603091338~a41de02c0d) trusty; urgency=low
+
+  * Build from git a41de02c0dd8a4951c08496e092cd522fc931f10
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 03 Jun 2014 09:13:38 +0800
+
+deepin-desktop-environment (2.1-20140530203058~29cb5facc9) trusty; urgency=low
+
+  * Build from git 29cb5facc928cde0f5322b0948e9010689b1a426
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 30 May 2014 20:30:59 +0800
+
+deepin-desktop-environment (2.1-20140530173934~6ee0c2c1dd) trusty; urgency=low
+
+  * Build from git 6ee0c2c1ddd6440ce8861db4cbd4fb5d92a226a0
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 30 May 2014 17:39:35 +0800
+
+deepin-desktop-environment (2.1-20140530161440~c0b904c2b5) trusty; urgency=low
+
+  * Build from git c0b904c2b56f29e02ddd1fd924237830e2383113
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 30 May 2014 16:14:40 +0800
+
+deepin-desktop-environment (2.1-20140530151118~8ae8658023) trusty; urgency=low
+
+  * Build from git 8ae86580232752bf805fab3426770522dee626a6
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 30 May 2014 15:11:19 +0800
+
+deepin-desktop-environment (2.1-20140530121309~0e293b46d5) trusty; urgency=low
+
+  * Build from git 0e293b46d53f5457cfb443de97dd6669e2833767
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 30 May 2014 12:13:09 +0800
+
+deepin-desktop-environment (2.1-20140530103909~e108e81164) trusty; urgency=low
+
+  * Build from git e108e81164926477ee9786fd864d2203adb8fe69
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 30 May 2014 10:39:10 +0800
+
+deepin-desktop-environment (2.1-20140529162640~ffdc8aac4c) trusty; urgency=low
+
+  * Build from git ffdc8aac4cd84fa83afc55519d772265fba1c243
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 29 May 2014 16:26:41 +0800
+
+deepin-desktop-environment (2.1-20140528151943~9b1420ffda) trusty; urgency=low
+
+  * Build from git 9b1420ffda374c0371c21c85994bd108b71a0501
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 28 May 2014 15:19:44 +0800
+
+deepin-desktop-environment (2.1-20140528142744~0d11288d1b) trusty; urgency=low
+
+  * Build from git 0d11288d1b000802e6d92cdc68bf0dd88db6fce2
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 28 May 2014 14:27:45 +0800
+
+deepin-desktop-environment (2.1-20140528122218~43fcb56b97) trusty; urgency=low
+
+  * Build from git 43fcb56b97b2a762b6e5375d2698940159ab03eb
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 28 May 2014 12:22:18 +0800
+
+deepin-desktop-environment (2.1-20140527160842~623e0eac44) trusty; urgency=low
+
+  * Build from git 623e0eac44cd1c4660029c4767d13a58fc4c227c
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 27 May 2014 16:08:43 +0800
+
+deepin-desktop-environment (2.1-20140527151702~5dc7ec9c4e) trusty; urgency=low
+
+  * Build from git 5dc7ec9c4efbfb1d18e49dc5b16a8d8cfa6239b6
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 27 May 2014 15:17:03 +0800
+
+deepin-desktop-environment (2.1-20140527104813~415bf11987) trusty; urgency=low
+
+  * Build from git 415bf11987c80872061c6a617abb63daf33e1e84
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 27 May 2014 10:48:13 +0800
+
+deepin-desktop-environment (2.1-20140527102053~283c11f364) trusty; urgency=low
+
+  * Build from git 283c11f36405d705be94895ba9a694cfab5670e6
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 27 May 2014 10:20:54 +0800
+
+deepin-desktop-environment (2.1-20140527095717~77e3956e4b) trusty; urgency=low
+
+  * Build from git 77e3956e4b129d93b01ca2ca8ac4b141b2a76192
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 27 May 2014 09:57:18 +0800
+
+deepin-desktop-environment (2.1-20140526103923~89a5a51ac2) trusty; urgency=low
+
+  * Build from git 89a5a51ac2aa6456050839fdc471d86b31ccb3f5
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 26 May 2014 10:39:24 +0800
+
+deepin-desktop-environment (2.1-20140526083847~bc08b8ac7f) trusty; urgency=low
+
+  * Build from git bc08b8ac7f4e42adc30c5608de448165060a4239
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 26 May 2014 08:38:48 +0800
+
+deepin-desktop-environment (2.1-20140523172807~bf67c29d72) trusty; urgency=low
+
+  * Build from git bf67c29d723d18f149cc1f3870214f75118bb179
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 23 May 2014 17:28:07 +0800
+
+deepin-desktop-environment (2.1-20140523161419~56c96d18fa) trusty; urgency=low
+
+  * Build from git 56c96d18fa0729ccf17fbe1bb00658e282cc3140
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 23 May 2014 16:14:20 +0800
+
+deepin-desktop-environment (2.1-20140522113224~a4e32db3d4) trusty; urgency=low
+
+  * Build from git a4e32db3d4dddbdea7fa8aea7b5f898cb1d59546
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 22 May 2014 11:32:25 +0800
+
+deepin-desktop-environment (2.1-20140521110648~db769cfa33) trusty; urgency=low
+
+  * Build from git db769cfa33e0597be6a33a94ff209be4f45c4eb7
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 21 May 2014 11:06:48 +0800
+
+deepin-desktop-environment (2.1-20140516170840~d8c5862140) trusty; urgency=low
+
+  * Build from git d8c5862140d203f83f34de78a3352c830d952d6c
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 16 May 2014 17:08:40 +0800
+
+deepin-desktop-environment (2.1-20140516153321~eb4c6ea125) trusty; urgency=low
+
+  * Build from git eb4c6ea12588c0aa6efb9f47d3db6dec20c0a7a2
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 16 May 2014 15:33:21 +0800
+
+deepin-desktop-environment (2.1-20140516151916~6c3e1babe0) trusty; urgency=low
+
+  * Build from git 6c3e1babe0d8c30090c2111f29f3182831a2414b
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 16 May 2014 15:19:16 +0800
+
+deepin-desktop-environment (2.1-20140515125307~7e1e607b5d) trusty; urgency=low
+
+  * Build from git 7e1e607b5d604671dc3e839ac79c321af5675b1b
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 15 May 2014 12:53:07 +0800
+
+deepin-desktop-environment (2.1-20140514150621~546c6c5faf) trusty; urgency=low
+
+  * Build from git 546c6c5faff941e7013cafd6c32356fc67bf264c
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 14 May 2014 15:06:22 +0800
+
+deepin-desktop-environment (2.1-20140514100827~1c16f90151) trusty; urgency=low
+
+  * Build from git 1c16f90151fb4d4eaf04c6aeb8660bdac355b710
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 14 May 2014 10:08:28 +0800
+
+deepin-desktop-environment (2.1-20140513200844~ffcff3cbab) trusty; urgency=low
+
+  * Build from git ffcff3cbab8bb27ea413e85cf2b6d97e7e2892dc
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 13 May 2014 20:08:45 +0800
+
+deepin-desktop-environment (2.1-20140513191529~1376d81907) trusty; urgency=low
+
+  * Build from git 1376d819071b0671d88673bde1f4177c37d61394
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 13 May 2014 19:15:30 +0800
+
+deepin-desktop-environment (2.1-20140513174631~a3994622e0) trusty; urgency=low
+
+  * Build from git a3994622e0dfdacf9339d5fc509aa46d519b6d89
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 13 May 2014 17:46:31 +0800
+
+deepin-desktop-environment (2.1-20140513150504~24aec0c557) trusty; urgency=low
+
+  * Build from git 24aec0c5571e1def4ed03fd7f16260711ef6a215
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Tue, 13 May 2014 15:05:05 +0800
+
+deepin-desktop-environment (2.1-20140512142928~02bcfc4035) trusty; urgency=low
+
+  * Build from git 02bcfc40359985b76e37e6a5dcc5d2689c712c4c
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 12 May 2014 14:29:29 +0800
+
+deepin-desktop-environment (2.1-20140512111117~70d076dba0) trusty; urgency=low
+
+  * Build from git 70d076dba0cc850185b3f34c733c564a33701ff5
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 12 May 2014 11:11:17 +0800
+
+deepin-desktop-environment (2.1-20140512092425~ca50027147) trusty; urgency=low
+
+  * Build from git ca5002714743accd67cbd568210edc0d3a034658
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Mon, 12 May 2014 09:24:25 +0800
+
+deepin-desktop-environment (2.1-20140509162607~c6709c5305) trusty; urgency=low
+
+  * Build from git c6709c5305e4324053f3593809924aca8ec67a50
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 09 May 2014 16:26:08 +0800
+
+deepin-desktop-environment (2.1-20140509145419~05389753c0) trusty; urgency=low
+
+  * Build from git 05389753c030cd0c6e76f4214b31222d849a6275
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 09 May 2014 14:54:20 +0800
+
+deepin-desktop-environment (2.1-20140509144730~05389753c0) trusty; urgency=low
+
+  * Build from git 05389753c030cd0c6e76f4214b31222d849a6275
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 09 May 2014 14:47:30 +0800
+
+deepin-desktop-environment (2.1-20140509143920~adb9878cdd) trusty; urgency=low
+
+  * Build from git adb9878cdd487fd7efcec34f6e1f1dedc6d9f755
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 09 May 2014 14:39:21 +0800
+
+deepin-desktop-environment (2.1-20140509142834~82362c1a88) trusty; urgency=low
+
+  * Build from git 82362c1a880ebc2ba9fc0fcd34d552ce33b65e7d
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 09 May 2014 14:28:34 +0800
+
+deepin-desktop-environment (2.1-20140509124031~629f39b3df) trusty; urgency=low
+
+  * Build from git 629f39b3dfa037abe3d4ca1f448489f7ecfd9e2e
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 09 May 2014 12:40:31 +0800
+
+deepin-desktop-environment (2.1-20140509111820~a5ed92a047) trusty; urgency=low
+
+  * Build from git a5ed92a047990dec49afcecebc7ac3696b3e21e9
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Fri, 09 May 2014 11:18:20 +0800
+
+deepin-desktop-environment (2.1-20140508195654~d7740b84be) trusty; urgency=low
+
+  * Build from git d7740b84bea520e6a5a7362aafdcc8e42f0bfe1e
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 08 May 2014 19:56:54 +0800
+
+deepin-desktop-environment (2.1-20140508180143~71b93dc05d) trusty; urgency=low
+
+  * Build from git 71b93dc05de1352cb838adfa6d19f4946a293475
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 08 May 2014 18:01:43 +0800
+
+deepin-desktop-environment (2.1-20140508171348~5a12a73396) trusty; urgency=low
+
+  * Build from git 5a12a733966598205222045eece358458005e837
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 08 May 2014 17:13:48 +0800
+
+deepin-desktop-environment (2.1-20140508170341~928f462338) trusty; urgency=low
+
+  * Build from git 928f4623381c916cdc13e3ab67ce63e5d6c76bda
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 08 May 2014 17:03:42 +0800
+
+deepin-desktop-environment (2.1-20140508163200~1dca2614e9) trusty; urgency=low
+
+  * Build from git 1dca2614e90716f83adc9675fb56d21c1c6d6b91
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 08 May 2014 16:32:00 +0800
+
+deepin-desktop-environment (2.1-20140508152933~bde0087ee4) trusty; urgency=low
+
+  * Build from git bde0087ee4aff83cd39056b6d669969ee163d645
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 08 May 2014 15:29:34 +0800
+
+deepin-desktop-environment (2.1-20140508145328~ec7b3d3363) trusty; urgency=low
+
+  * Build from git ec7b3d33634df12cd0e36a37381401e221f18ff4
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 08 May 2014 14:53:29 +0800
+
+deepin-desktop-environment (2.1-20140508134154~1185daa0c1) trusty; urgency=low
+
+  * Build from git 1185daa0c14a6c9dd36543c7b32830fc1afa1540
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 08 May 2014 13:41:55 +0800
+
+deepin-desktop-environment (2.1-20140508102728~bd64a84029) trusty; urgency=low
+
+  * Build from git bd64a840295852d250d16a1492ee3b9b1a7c80ac
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 08 May 2014 10:27:29 +0800
+
+deepin-desktop-environment (2.1-20140508094232~d8457f6749) trusty; urgency=low
+
+  * Build from git d8457f67495b3226a4392791cffc9b56dc8dc7fb
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Thu, 08 May 2014 09:42:33 +0800
+
+deepin-desktop-environment (2.1-20140507180808~e13e03457d) trusty; urgency=low
+
+  * Build from git e13e03457d5881538539ae38b87597311b0de5e8
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 07 May 2014 18:08:08 +0800
+
+deepin-desktop-environment (2.1-20140507175206~29e3ba320a) trusty; urgency=low
+
+  * Build from git 29e3ba320aa7d0df1d3dcf44d236e6b58c02bced
+
+ -- Yueqian Zhang <zhangyueqian@linuxdeepin.com>  Wed, 07 May 2014 17:52:06 +0800
+
+deepin-desktop-environment (2.0+git20140507150525~02b68d27e9) trusty; urgency=low
+
+  * Build from git revision 02b68d27e9b254a228396d3c24175672b25dfa52
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 07 May 2014 15:05:25 +0800
+
+deepin-desktop-environment (2.0+git20140506191310~e488453b61) trusty; urgency=low
+
+  * Build from git revision e488453b61c72349fbdd892cbbb9e020346903f3
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 06 May 2014 19:13:10 +0800
+
+deepin-desktop-environment (2.0+git20140506174834~ec9127b561) trusty; urgency=low
+
+  * Build from git revision ec9127b5618a967efffb0ac224916e281389aa17
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 06 May 2014 17:48:34 +0800
+
+deepin-desktop-environment (2.0+git20140506155626~0a5e032ffa) trusty; urgency=low
+
+  * Build from git revision 0a5e032ffaffaa59eac6b9a27a3aa0f11293e7d9
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 06 May 2014 15:56:26 +0800
+
+deepin-desktop-environment (2.0+git20140506151753~0a5e032ffa) trusty; urgency=low
+
+  * Build from git revision 0a5e032ffaffaa59eac6b9a27a3aa0f11293e7d9
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 06 May 2014 15:17:53 +0800
+
+deepin-desktop-environment (2.0+git20140506151618~0a5e032ffa) trusty; urgency=low
+
+  * Build from git revision 0a5e032ffaffaa59eac6b9a27a3aa0f11293e7d9
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 06 May 2014 15:16:18 +0800
+
+deepin-desktop-environment (2.0+git20140506144152~407d319c10) trusty; urgency=low
+
+  * Build from git revision 407d319c10cd19a1098b700a951d2252ee480bba
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 06 May 2014 14:41:52 +0800
+
+deepin-desktop-environment (2.0+git20140506142429~d990ecf7c1) trusty; urgency=low
+
+  * Build from git revision d990ecf7c1a448b4e9626acefa0e9d0187787a61
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 06 May 2014 14:24:29 +0800
+
+deepin-desktop-environment (2.0+git20140506111152~d2b1a8aba4) trusty; urgency=low
+
+  * Build from git revision d2b1a8aba4008f4afee13a48e5cbed386f1ea32e
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 06 May 2014 11:11:52 +0800
+
+deepin-desktop-environment (2.0+git20140506104200~95de6c48a1) trusty; urgency=low
+
+  * Build from git revision 95de6c48a113fcd24de7283076fd2c582bb7a653
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 06 May 2014 10:42:00 +0800
+
+deepin-desktop-environment (2.0+git20140505165207~c698ec31c1) trusty; urgency=low
+
+  * Build from git revision c698ec31c1cdac5d8e339b3a00992000f8a2c86a
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 05 May 2014 16:52:07 +0800
+
+deepin-desktop-environment (2.0+git20140505112549~9046217945) trusty; urgency=low
+
+  * Build from git revision 904621794596e24dc80859c4ba48ac3c65d5546a
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 05 May 2014 11:25:49 +0800
+
+deepin-desktop-environment (2.0+git20140505102922~a7ec52b36e) trusty; urgency=low
+
+  * Build from git revision a7ec52b36e7b452f066b415d09137fa1611ef37c
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 05 May 2014 10:29:22 +0800
+
+deepin-desktop-environment (2.0+git20140504164524~411377d1b2) trusty; urgency=low
+
+  * Build from git revision 411377d1b24767b11dc92ca8cea22af3c7f7c1ff
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Sun, 04 May 2014 16:45:24 +0800
+
+deepin-desktop-environment (2.0+git20140504113722~9db66d73ab) trusty; urgency=low
+
+  * Build from git revision 9db66d73abc6ddc99eb2dcd86e443b5882314a37
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Sun, 04 May 2014 11:37:22 +0800
+
+deepin-desktop-environment (2.0+git20140504101311~8d418d91ec) trusty; urgency=low
+
+  * Build from git revision 8d418d91ece8054ad9d594063bea6366d31b30b0
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Sun, 04 May 2014 10:13:11 +0800
+
+deepin-desktop-environment (2.0+git20140430150937~cd6a156a1d) trusty; urgency=low
+
+  * Build from git revision cd6a156a1d8d6c5a7fd7414e72dd1d69d8e07d5c
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 30 Apr 2014 15:09:37 +0800
+
+deepin-desktop-environment (2.0+git20140430142159~cd6a156a1d) trusty; urgency=low
+
+  * Build from git revision cd6a156a1d8d6c5a7fd7414e72dd1d69d8e07d5c
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 30 Apr 2014 14:21:59 +0800
+
+deepin-desktop-environment (2.0+git20140430132355~c2f7586a6b) trusty; urgency=low
+
+  * Build from git revision c2f7586a6bd5eb02a0599856f64130077a01bef2
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 30 Apr 2014 13:23:55 +0800
+
+deepin-desktop-environment (2.0+git20140430131407~02f544e72e) trusty; urgency=low
+
+  * Build from git revision 02f544e72e08b4bad40f57ee398b0a00661c7cca
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 30 Apr 2014 13:14:07 +0800
+
+deepin-desktop-environment (2.0+git20140430112810~69638fe6b7) trusty; urgency=low
+
+  * Build from git revision 69638fe6b7d3d02a44476b213562dfd5fe79afeb
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 30 Apr 2014 11:28:10 +0800
+
+deepin-desktop-environment (2.0+git20140430111054~878c380c8a) trusty; urgency=low
+
+  * Build from git revision 878c380c8abd11313cd83deafa64aa4bdb574ad1
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 30 Apr 2014 11:10:55 +0800
+
+deepin-desktop-environment (2.0+git20140430105825~08780545d9) trusty; urgency=low
+
+  * Build from git revision 08780545d90c75add0aa0a24dd3e16fa735e40c6
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 30 Apr 2014 10:58:26 +0800
+
+deepin-desktop-environment (2.0+git20140430103438~8774d381ee) trusty; urgency=low
+
+  * Build from git revision 8774d381ee0b0855d005b44ba526a0189cba2790
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 30 Apr 2014 10:34:38 +0800
+
+deepin-desktop-environment (2.0+git20140429110156~9e6a9043c2) trusty; urgency=low
+
+  * Build from git revision 9e6a9043c2d322c9b5d43f0f0f92f0e3bc7031a9
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 29 Apr 2014 11:01:56 +0800
+
+deepin-desktop-environment (2.0+git20140428092202~aba0d761f3) trusty; urgency=low
+
+  * Build from git revision aba0d761f36116379f7647d4f3908591a359bc14
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 28 Apr 2014 09:22:03 +0800
+
+deepin-desktop-environment (2.0+git20140428090654~5542cbd790) trusty; urgency=low
+
+  * Build from git revision 5542cbd7906708a701f5d8813fdf552a48882401
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 28 Apr 2014 09:06:54 +0800
+
+deepin-desktop-environment (2.0+git20140425170442~428e039266) trusty; urgency=low
+
+  * Build from git revision 428e039266523e8b636c5e3c9078a9fbebf12216
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 25 Apr 2014 17:04:42 +0800
+
+deepin-desktop-environment (2.0+git20140425160734~21f4816f25) trusty; urgency=low
+
+  * Build from git revision 21f4816f25d7b460c73821000d0376da444584c9
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 25 Apr 2014 16:07:35 +0800
+
+deepin-desktop-environment (2.0+git20140425120107~35deb1f18a) trusty; urgency=low
+
+  * Build from git revision 35deb1f18ad8046867cce0df8427d34dbb5a8e83
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 25 Apr 2014 12:01:08 +0800
+
+deepin-desktop-environment (2.0+git20140425112838~35deb1f18a) trusty; urgency=low
+
+  * Build from git revision 35deb1f18ad8046867cce0df8427d34dbb5a8e83
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 25 Apr 2014 11:28:39 +0800
+
+deepin-desktop-environment (2.0+git20140425110342~35deb1f18a) trusty; urgency=low
+
+  * Build from git revision 35deb1f18ad8046867cce0df8427d34dbb5a8e83
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 25 Apr 2014 11:03:42 +0800
+
+deepin-desktop-environment (2.0+git20140424174228~622e3f8b60) trusty; urgency=low
+
+  * Build from git revision 622e3f8b60b592cad065126092df13afbd922c9f
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 24 Apr 2014 17:42:29 +0800
+
+deepin-desktop-environment (2.0+git20140424172940~f8699c94c5) trusty; urgency=low
+
+  * Build from git revision f8699c94c5d75522945b1a3923dca29689518490
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 24 Apr 2014 17:29:40 +0800
+
+deepin-desktop-environment (2.0+git20140424164723~e83f776c64) trusty; urgency=low
+
+  * Build from git revision e83f776c64a52bc0b2d652905a0e69b01993239b
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 24 Apr 2014 16:47:24 +0800
+
+deepin-desktop-environment (2.0+git20140424095104~36aef589ba) trusty; urgency=low
+
+  * Build from git revision 36aef589ba731c89d395764d998310038b26a891
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 24 Apr 2014 09:51:05 +0800
+
+deepin-desktop-environment (2.0+git20140423174821~86931ac133) trusty; urgency=low
+
+  * Build from git revision 86931ac1333b9b654cae5ca3565d22e629b77bb0
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 23 Apr 2014 17:48:21 +0800
+
+deepin-desktop-environment (2.0+git20140423165529~b8da7ad32b) trusty; urgency=low
+
+  * Build from git revision b8da7ad32b643a1b92510197c51d5c6adf5ffc8c
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 23 Apr 2014 16:55:30 +0800
+
+deepin-desktop-environment (2.0+git20140423145926~cd200038e4) trusty; urgency=low
+
+  * Build from git revision cd200038e4b838e3e03a7dcc1ff18608c37b4c00
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 23 Apr 2014 14:59:26 +0800
+
+deepin-desktop-environment (2.0+git20140422180422~55165b4d3d) trusty; urgency=low
+
+  * Build from git revision 55165b4d3d645cdbeb5ed06471b5c7353b163e6a
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 22 Apr 2014 18:04:22 +0800
+
+deepin-desktop-environment (2.0+git20140422102700~8f5b523c0d) trusty; urgency=low
+
+  * Build from git revision 8f5b523c0d985bf1c34a6e68664a8849c414cede
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 22 Apr 2014 10:27:01 +0800
+
+deepin-desktop-environment (2.0+git20140422094145~ad4120543f) trusty; urgency=low
+
+  * Build from git revision ad4120543f57cbe46e313a005d894eece64748ba
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 22 Apr 2014 09:41:45 +0800
+
+deepin-desktop-environment (2.0+git20140421140910~7c1d591f8e) trusty; urgency=low
+
+  * Build from git revision 7c1d591f8eb103665267380d5546614210274bde
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 21 Apr 2014 14:09:11 +0800
+
+deepin-desktop-environment (2.0+git20140421093340~df8681e066) trusty; urgency=low
+
+  * Build from git revision df8681e0664a949dac61d3385d0195502db7d8ae
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 21 Apr 2014 09:33:40 +0800
+
+deepin-desktop-environment (2.0+git20140418172647~ee31a3957b) trusty; urgency=low
+
+  * Build from git revision ee31a3957bfa9ef5b3bae90bf9be75bee2b2d29b
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 18 Apr 2014 17:26:48 +0800
+
+deepin-desktop-environment (2.0+git20140418111334~533332cd39) trusty; urgency=low
+
+  * Build from git revision 533332cd391ae76f4ee78c69cf04f7ef2f17d50f
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 18 Apr 2014 11:13:35 +0800
+
+deepin-desktop-environment (2.0+git20140418105640~437813d89d) trusty; urgency=low
+
+  * Build from git revision 437813d89d5a8634e5645d7e65fc111da53add51
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 18 Apr 2014 10:56:40 +0800
+
+deepin-desktop-environment (2.0+git20140417212107~a7bd822a53) trusty; urgency=low
+
+  * Build from git revision a7bd822a532a994f9c113d48a874dba5e607a137
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 17 Apr 2014 21:21:07 +0800
+
+deepin-desktop-environment (2.0+git20140417185439~d50fc46ae8) trusty; urgency=low
+
+  * Build from git revision d50fc46ae8c2310d9392171b76b3bb33f84ad3c8
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 17 Apr 2014 18:54:39 +0800
+
+deepin-desktop-environment (2.0+git20140417162336~ae2be5cc7c) trusty; urgency=low
+
+  * Build from git revision ae2be5cc7cf0b8909e0369d699a44c85fdb045db
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 17 Apr 2014 16:23:36 +0800
+
+deepin-desktop-environment (2.0+git20140417153004~8baf1c6047) trusty; urgency=low
+
+  * Build from git revision 8baf1c604759e7e8d873cd3946a419177d42a388
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 17 Apr 2014 15:30:05 +0800
+
+deepin-desktop-environment (2.0+git20140417145823~1cb6ee9d55) trusty; urgency=low
+
+  * Build from git revision 1cb6ee9d5554faa0b886e1cb6bd4d4f01e297fc6
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 17 Apr 2014 14:58:23 +0800
+
+deepin-desktop-environment (2.0+git20140416170223~87e062dbc8) trusty; urgency=low
+
+  * Build from git revision 87e062dbc865e4ac3847106ce4fc8d3328e531f0
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 16 Apr 2014 17:02:24 +0800
+
+deepin-desktop-environment (2.0+git20140416095014~c091448d31) trusty; urgency=low
+
+  * Build from git revision c091448d31a49457730e5c35e6657024ad0897c1
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 16 Apr 2014 09:50:15 +0800
+
+deepin-desktop-environment (2.0+git20140415143327~c2b7fb0324) trusty; urgency=low
+
+  * Build from git revision c2b7fb0324a6fbebf06c3e41409890f82391e7b6
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 15 Apr 2014 14:33:27 +0800
+
+deepin-desktop-environment (2.0+git20140415104336~4a6e744f8d) trusty; urgency=low
+
+  * Build from git revision 4a6e744f8d4360c0b0df389dbd04b30999552d25
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 15 Apr 2014 10:43:37 +0800
+
+deepin-desktop-environment (2.0+git20140414180524~d85a996b58) trusty; urgency=low
+
+  * Build from git revision d85a996b5815e880f2122fa2987006223ef65ce7
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 14 Apr 2014 18:05:25 +0800
+
+deepin-desktop-environment (2.0+git20140414171841~5fb3eceafc) trusty; urgency=low
+
+  * Build from git revision 5fb3eceafc2688bdea7849091d69fd29b496d1d1
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 14 Apr 2014 17:18:41 +0800
+
+deepin-desktop-environment (2.0+git20140414155757~43781793de) trusty; urgency=low
+
+  * Build from git revision 43781793de997639484e9b21d3bd207b4d526b08
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 14 Apr 2014 15:57:57 +0800
+
+deepin-desktop-environment (2.0+git20140414134845~183afe140b) trusty; urgency=low
+
+  * Build from git revision 183afe140bb7fa696b0e08367bc89bcd040affda
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 14 Apr 2014 13:48:45 +0800
+
+deepin-desktop-environment (2.0+git20140414134733~183afe140b) trusty; urgency=low
+
+  * Build from git revision 183afe140bb7fa696b0e08367bc89bcd040affda
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 14 Apr 2014 13:47:33 +0800
+
+deepin-desktop-environment (2.0+git20140414125525~9a06cacd52) trusty; urgency=low
+
+  * Build from git revision 9a06cacd52436a9e47d8f1a4b2ad43d101dbb796
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 14 Apr 2014 12:55:25 +0800
+
+deepin-desktop-environment (2.0+git20140414103440~587eba8950) trusty; urgency=low
+
+  * Build from git revision 587eba895046f9f4322f5eed1d0b5240fa8b1437
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 14 Apr 2014 10:34:41 +0800
+
+deepin-desktop-environment (2.0+git20140414101111~77a1931738) trusty; urgency=low
+
+  * Build from git revision 77a1931738c709acff5c18813e74607a2dd89856
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 14 Apr 2014 10:11:12 +0800
+
+deepin-desktop-environment (2.0+git20140414085941~f5f02efe3b) trusty; urgency=low
+
+  * Build from git revision f5f02efe3b4e9c3d245f88d26384b7a76c4bcccb
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 14 Apr 2014 08:59:41 +0800
+
+deepin-desktop-environment (2.0+git20140411180040~cfd7088671) trusty; urgency=low
+
+  * Build from git revision cfd7088671c18361389e395ac466aad4e931adda
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 11 Apr 2014 18:00:41 +0800
+
+deepin-desktop-environment (2.0+git20140411160043~106613b214) trusty; urgency=low
+
+  * Build from git revision 106613b214316e8a618aa66752d33305a7e6cd4d
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 11 Apr 2014 16:00:43 +0800
+
+deepin-desktop-environment (2.0+git20140411145300~861bf88a57) trusty; urgency=low
+
+  * Build from git revision 861bf88a57fd0bdb1f6b93ae0a2d7c6733477f3a
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 11 Apr 2014 14:53:00 +0800
+
+deepin-desktop-environment (2.0+git20140411131518~389c8e3807) trusty; urgency=low
+
+  * Build from git revision 389c8e3807dc83eb6b54747411ec198f4f6bfbe0
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 11 Apr 2014 13:15:19 +0800
+
+deepin-desktop-environment (2.0+git20140411121001~bd3ed46683) trusty; urgency=low
+
+  * Build from git revision bd3ed46683a8f6ca3fafdfeb3d248acf3b47d794
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 11 Apr 2014 12:10:01 +0800
+
+deepin-desktop-environment (2.0+git20140411120900~bd3ed46683) trusty; urgency=low
+
+  * Build from git revision bd3ed46683a8f6ca3fafdfeb3d248acf3b47d794
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 11 Apr 2014 12:09:00 +0800
+
+deepin-desktop-environment (2.0+git20140411105459~45be783793) trusty; urgency=low
+
+  * Build from git revision 45be7837930255d6353a10f3a7994f37e38a6193
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 11 Apr 2014 10:54:59 +0800
+
+deepin-desktop-environment (2.0+git20140411105415~45be783793) trusty; urgency=low
+
+  * Build from git revision 45be7837930255d6353a10f3a7994f37e38a6193
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 11 Apr 2014 10:54:16 +0800
+
+deepin-desktop-environment (2.0+git20140411105119~45be783793) trusty; urgency=low
+
+  * Build from git revision 45be7837930255d6353a10f3a7994f37e38a6193
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 11 Apr 2014 10:51:20 +0800
+
+deepin-desktop-environment (2.0+git20140411104915~45be783793) trusty; urgency=low
+
+  * Build from git revision 45be7837930255d6353a10f3a7994f37e38a6193
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 11 Apr 2014 10:49:16 +0800
+
+deepin-desktop-environment (2.0+git20140410174808~f3c21d9724) trusty; urgency=low
+
+  * Build from git revision f3c21d972473bc3808d004cd7d5182efc2727066
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 10 Apr 2014 17:48:09 +0800
+
+deepin-desktop-environment (2.0+git20140410105919~a44f30fe7d) trusty; urgency=low
+
+  * Build from git revision a44f30fe7d8f07b08fefabac71db348d6e288b12
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 10 Apr 2014 10:59:19 +0800
+
+deepin-desktop-environment (2.0+git20140409201050~a9203d8057) trusty; urgency=low
+
+  * Build from git revision a9203d80570c7c10816dada10eff8c65431f8dd0
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 09 Apr 2014 20:10:51 +0800
+
+deepin-desktop-environment (2.0+git20140409144104~a96428d9bc) trusty; urgency=low
+
+  * Build from git revision a96428d9bc54d82b3665c005fbac27fb7aa119dc
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 09 Apr 2014 14:41:05 +0800
+
+deepin-desktop-environment (2.0+git20140408164957~31d8a25112) trusty; urgency=low
+
+  * Build from git revision 31d8a25112dd8f8f4ae7a8e07abe402a69dda7ac
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 08 Apr 2014 16:49:57 +0800
+
+deepin-desktop-environment (2.0+git20140408134909~9d0408347f) trusty; urgency=low
+
+  * Build from git revision 9d0408347ffe1278bb98fb7181df03ebe98f9d4b
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 08 Apr 2014 13:49:09 +0800
+
+deepin-desktop-environment (2.0+git20140408123426~30b8b216ca) trusty; urgency=low
+
+  * Build from git revision 30b8b216ca55db05607c3af2b1eda70cd0c3529b
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 08 Apr 2014 12:34:26 +0800
+
+deepin-desktop-environment (2.0+git20140408120619~c25ee1ae8f) trusty; urgency=low
+
+  * Build from git revision c25ee1ae8ff3955916cc1a90d197ea8502bcbfab
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 08 Apr 2014 12:06:20 +0800
+
+deepin-desktop-environment (2.0+git20140408104910~c25ee1ae8f) trusty; urgency=low
+
+  * Build from git revision c25ee1ae8ff3955916cc1a90d197ea8502bcbfab
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 08 Apr 2014 10:49:10 +0800
+
+deepin-desktop-environment (2.0+git20140408095348~95d5af29d5) trusty; urgency=low
+
+  * Build from git revision 95d5af29d5ae16f9c0be083cf022f5890f4e027f
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 08 Apr 2014 09:53:49 +0800
+
+deepin-desktop-environment (2.0+git20140404174107~9e8e59c6a7) trusty; urgency=low
+
+  * Build from git revision 9e8e59c6a7f29b108c845468d4926e6d080ca81c
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 04 Apr 2014 17:41:07 +0800
+
+deepin-desktop-environment (2.0+git20140404162429~08efd358f8) trusty; urgency=low
+
+  * Build from git revision 08efd358f85b0d9ea4dc2b4324f296bd13e5622e
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 04 Apr 2014 16:24:29 +0800
+
+deepin-desktop-environment (2.0+git20140404152019~618a57f2d2) trusty; urgency=low
+
+  * Build from git revision 618a57f2d288efb183b767addaaf6da086978d51
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 04 Apr 2014 15:20:20 +0800
+
+deepin-desktop-environment (2.0+git20140404133927~8000c00214) trusty; urgency=low
+
+  * Build from git revision 8000c00214a9e8bdbab16fde40bedffd95d4de20
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 04 Apr 2014 13:39:28 +0800
+
+deepin-desktop-environment (2.0+git20140404112705~5baee8198a) trusty; urgency=low
+
+  * Build from git revision 5baee8198a22bf893a3c9e5cfa23f671d95ce47d
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 04 Apr 2014 11:27:05 +0800
+
+deepin-desktop-environment (2.0+git20140404102958~80b7a1c72a) trusty; urgency=low
+
+  * Build from git revision 80b7a1c72aeab83c100f7867c93e33c2bea3a69b
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 04 Apr 2014 10:29:59 +0800
+
+deepin-desktop-environment (2.0+git20140404094721~a438e1ed75) trusty; urgency=low
+
+  * Build from git revision a438e1ed75de71afbb1d4d16736b7ad101d662a7
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 04 Apr 2014 09:47:22 +0800
+
+deepin-desktop-environment (2.0+git20140403183824~fbbd18799a) trusty; urgency=low
+
+  * Build from git revision fbbd18799a9bafca0848353eafecb4c1baae45dd
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 03 Apr 2014 18:38:25 +0800
+
+deepin-desktop-environment (2.0+git20140403173230~82f80d6f3a) trusty; urgency=low
+
+  * Build from git revision 82f80d6f3a816249c06dee7cbf979298fffb53d6
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 03 Apr 2014 17:32:31 +0800
+
+deepin-desktop-environment (2.0+git20140403154725~b8ef7affb9) trusty; urgency=low
+
+  * Build from git revision b8ef7affb904357d9a400f33c3f156edc6c69363
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 03 Apr 2014 15:47:25 +0800
+
+deepin-desktop-environment (2.0+git20140403142956~49051d9444) trusty; urgency=low
+
+  * Build from git revision 49051d94446a2176335412e473231c23a4117c18
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 03 Apr 2014 14:29:56 +0800
+
+deepin-desktop-environment (2.0+git20140403094142~5b6263cc10) trusty; urgency=low
+
+  * Build from git revision 5b6263cc1071482c7b98cbb30d24a3ac0cdc9a07
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 03 Apr 2014 09:41:43 +0800
+
+deepin-desktop-environment (2.0+git20140403093210~5b6263cc10) trusty; urgency=low
+
+  * Build from git revision 5b6263cc1071482c7b98cbb30d24a3ac0cdc9a07
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 03 Apr 2014 09:32:10 +0800
+
+deepin-desktop-environment (2.0+git20140403091927~5b6263cc10) trusty; urgency=low
+
+  * Build from git revision 5b6263cc1071482c7b98cbb30d24a3ac0cdc9a07
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 03 Apr 2014 09:19:27 +0800
+
+deepin-desktop-environment (2.0+git20140403090249~4dcea2a42b) trusty; urgency=low
+
+  * Build from git revision 4dcea2a42bf034181d1a53ddc1d01f9ddc7ff414
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 03 Apr 2014 09:02:50 +0800
+
+deepin-desktop-environment (2.0+git20140402173050~4d4c8db0e6) trusty; urgency=low
+
+  * Build from git revision 4d4c8db0e637c429c782a9053ded9d8f3b1b50a5
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 02 Apr 2014 17:30:50 +0800
+
+deepin-desktop-environment (2.0+git20140402171953~ea320ef092) trusty; urgency=low
+
+  * Build from git revision ea320ef0929d8880941b19cfee459da47d9462b5
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 02 Apr 2014 17:19:53 +0800
+
+deepin-desktop-environment (2.0+git20140402170615~16c58441b9) trusty; urgency=low
+
+  * Build from git revision 16c58441b953bf6142e92b9d9d438fe59f387122
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 02 Apr 2014 17:06:16 +0800
+
+deepin-desktop-environment (2.0+git20140402104817~34d1878176) trusty; urgency=low
+
+  * Build from git revision 34d1878176d3521b349d6f0b3d6d90164f44259b
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 02 Apr 2014 10:48:17 +0800
+
+deepin-desktop-environment (2.0+git20140401103346~4939eb1acf) trusty; urgency=low
+
+  * Build from git revision 4939eb1acf05e788589aad0cfcc2ba7c09b3e19a
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 01 Apr 2014 10:33:47 +0800
+
+deepin-desktop-environment (2.0+git20140331165235~e9205c7e9c) trusty; urgency=low
+
+  * Build from git revision e9205c7e9c9ef2a9c0063fabc918fe6e406f1b1e
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 31 Mar 2014 16:52:36 +0800
+
+deepin-desktop-environment (2.0+git20140331144619~fec9ab72f0) trusty; urgency=low
+
+  * Build from git revision fec9ab72f0810134cf28d088c032d41f84e63ccc
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 31 Mar 2014 14:46:20 +0800
+
+deepin-desktop-environment (2.0+git20140328165411~3e5fe6fca6) trusty; urgency=low
+
+  * Build from git revision 3e5fe6fca60a54c370407408a9a728c28287d7e6
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 28 Mar 2014 16:54:12 +0800
+
+deepin-desktop-environment (2.0+git20140328153604~2f3ef5a298) trusty; urgency=low
+
+  * Build from git revision 2f3ef5a298e6c5ae632bf99f0f0db721ae39697a
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 28 Mar 2014 15:36:05 +0800
+
+deepin-desktop-environment (2.0+git20140327201511~47837ca088) trusty; urgency=low
+
+  * Build from git revision 47837ca0889607c748d86c7ced4b6eb7fafa288d
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 27 Mar 2014 20:15:11 +0800
+
+deepin-desktop-environment (2.0+git20140327145516~14ad411892) trusty; urgency=low
+
+  * Build from git revision 14ad4118922e407554c300e4b4f2eb10566f1f86
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 27 Mar 2014 14:55:16 +0800
+
+deepin-desktop-environment (2.0+git20140327131358~c0f5f332ed) trusty; urgency=low
+
+  * Build from git revision c0f5f332ed427e5ab9acadf0cc246b34f6381fb0
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 27 Mar 2014 13:13:59 +0800
+
+deepin-desktop-environment (2.0+git20140326105532~2f711a65ae) trusty; urgency=low
+
+  * Build from git revision 2f711a65aee6ee75a4a1417860713e902027fa58
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 26 Mar 2014 10:55:32 +0800
+
+deepin-desktop-environment (2.0+git20140326103949~2f711a65ae) trusty; urgency=low
+
+  * Build from git revision 2f711a65aee6ee75a4a1417860713e902027fa58
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 26 Mar 2014 10:39:49 +0800
+
+deepin-desktop-environment (2.0+git20140326095316~2f711a65ae) trusty; urgency=low
+
+  * Build from git revision 2f711a65aee6ee75a4a1417860713e902027fa58
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 26 Mar 2014 09:53:16 +0800
+
+deepin-desktop-environment (2.0+git20140325165953~dffa5782e0) trusty; urgency=low
+
+  * Build from git revision dffa5782e017410e98504d29de0b2caf372ae537
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 25 Mar 2014 16:59:53 +0800
+
+deepin-desktop-environment (2.0+git20140324092922~888f0f08dd) trusty; urgency=low
+
+  * Build from git revision 888f0f08dd6f2bde255a678b52f5504de3f3e1ee
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 24 Mar 2014 09:29:22 +0800
+
+deepin-desktop-environment (2.0+git20140321165911~b7d61fd8b5) trusty; urgency=low
+
+  * Build from git revision b7d61fd8b5ad1467d6253a17c08de6bb6b068edc
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 21 Mar 2014 16:59:11 +0800
+
+deepin-desktop-environment (2.0+git20140321162135~d80a598b67) trusty; urgency=low
+
+  * Build from git revision d80a598b670e275ddf6c6a59f57552f2ec81d1ad
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 21 Mar 2014 16:21:35 +0800
+
+deepin-desktop-environment (2.0+git20140321141559~6a2beaac94) trusty; urgency=low
+
+  * Build from git revision 6a2beaac94f0ee9de34f344a7902372948d7cf15
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 21 Mar 2014 14:16:00 +0800
+
+deepin-desktop-environment (2.0+git20140321092651~e79779e796) trusty; urgency=low
+
+  * Build from git revision e79779e796f5502b4542b3c2009ede8754b2b3cf
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 21 Mar 2014 09:26:51 +0800
+
+deepin-desktop-environment (2.0+git20140321090947~953fe7773c) trusty; urgency=low
+
+  * Build from git revision 953fe7773cae4441f9474d8c67bb320c951c5d4a
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 21 Mar 2014 09:09:47 +0800
+
+deepin-desktop-environment (2.0+git20140321090658~953fe7773c) trusty; urgency=low
+
+  * Build from git revision 953fe7773cae4441f9474d8c67bb320c951c5d4a
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 21 Mar 2014 09:06:58 +0800
+
+deepin-desktop-environment (2.0+git20140319093000~45b47edec1) trusty; urgency=low
+
+  * Build from git revision 45b47edec125c0d592224b491d67ebaee8671f8b
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 19 Mar 2014 09:30:00 +0800
+
+deepin-desktop-environment (2.0+git20140318193119~eba69acd3b) trusty; urgency=low
+
+  * Build from git revision eba69acd3be5c47c20cc5b0e2eafdffdf9ef82f9
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 18 Mar 2014 19:31:19 +0800
+
+deepin-desktop-environment (2.0+git20140318145424~06639194b0) trusty; urgency=low
+
+  * Build from git revision 06639194b02b9fcadcb8a53d65fbae607110d432
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 18 Mar 2014 14:54:24 +0800
+
+deepin-desktop-environment (2.0+git20140317160456~fc81be60f4) trusty; urgency=low
+
+  * Build from git revision fc81be60f49d8d26de8a8bd16a1652404cdff0e4
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 17 Mar 2014 16:04:56 +0800
+
+deepin-desktop-environment (2.0+git20140317113757~3182e45260) trusty; urgency=low
+
+  * Build from git revision 3182e45260150b32ce3b682c226e3cf026d40409
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 17 Mar 2014 11:37:57 +0800
+
+deepin-desktop-environment (2.0+git20140317103505~9b8f74a40a) trusty; urgency=low
+
+  * Build from git revision 9b8f74a40ae99276f9dc28841432a8ae2a0f6455
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 17 Mar 2014 10:35:05 +0800
+
+deepin-desktop-environment (2.0+git20140314173319~214ccbd0cc) trusty; urgency=low
+
+  * Build from git revision 214ccbd0ccb4db0199136be359fce4a21aa63fe9
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 14 Mar 2014 17:33:19 +0800
+
+deepin-desktop-environment (2.0+git20140314102052~815d4581c1) trusty; urgency=low
+
+  * Build from git revision 815d4581c1b31c8630844549cd5add39a6fe8100
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 14 Mar 2014 10:20:52 +0800
+
+deepin-desktop-environment (2.0+git20140313142206~2c0d3e0adf) trusty; urgency=low
+
+  * Build from git revision 2c0d3e0adf17e9a18c271846f0828e194726e993
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 13 Mar 2014 14:22:07 +0800
+
+deepin-desktop-environment (2.0+git20140313100420~2c0d3e0adf) trusty; urgency=low
+
+  * Build from git revision 2c0d3e0adf17e9a18c271846f0828e194726e993
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 13 Mar 2014 10:04:20 +0800
+
+deepin-desktop-environment (2.0+git20140312171614~3ef1da58d7) trusty; urgency=low
+
+  * Build from git revision 3ef1da58d7e2b598d47b4912629efea2d313dc33
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 12 Mar 2014 17:16:14 +0800
+
+deepin-desktop-environment (2.0+git20140312165854~0064cb9344) trusty; urgency=low
+
+  * Build from git revision 0064cb934418983763021fd22537e948fb7f7c6b
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 12 Mar 2014 16:58:54 +0800
+
+deepin-desktop-environment (2.0+git20140312161443~00ba249272) trusty; urgency=low
+
+  * Build from git revision 00ba249272236e71b85e859453c6967fcbb1e3e9
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 12 Mar 2014 16:14:43 +0800
+
+deepin-desktop-environment (2.0+git20140311175247~f35368f498) trusty; urgency=low
+
+  * Build from git revision f35368f4980962cc8ed4955fd49b92a8a001d1de
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 11 Mar 2014 17:52:47 +0800
+
+deepin-desktop-environment (2.0+git20140311164307~977da9fb0b) trusty; urgency=low
+
+  * Build from git revision 977da9fb0bf3bc03d449834596c4c0db853953be
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 11 Mar 2014 16:43:08 +0800
+
+deepin-desktop-environment (2.0+git20140311151958~e1d187dda9) trusty; urgency=low
+
+  * Build from git revision e1d187dda9582f5b871337174772aab7f4460758
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 11 Mar 2014 15:19:58 +0800
+
+deepin-desktop-environment (2.0+git20140311151508~5ee8333821) trusty; urgency=low
+
+  * Build from git revision 5ee8333821cdec6c5b134c5cb2ef9ed4ef2ae0c0
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 11 Mar 2014 15:15:09 +0800
+
+deepin-desktop-environment (2.0+git20140311145251~a17f7f5e3f) trusty; urgency=low
+
+  * Build from git revision a17f7f5e3fecf70b8a92ed9cdf640572edfd6b32
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 11 Mar 2014 14:52:51 +0800
+
+deepin-desktop-environment (2.0+git20140310160722~ae25a9e7ae) trusty; urgency=low
+
+  * Build from git revision ae25a9e7ae2358f03ab08511a4acca8a9a4bfa9e
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 10 Mar 2014 16:07:22 +0800
+
+deepin-desktop-environment (2.0+git20140310110318~c49f0f993d) saucy; urgency=low
+
+  * Build from git revision c49f0f993dfb45f5b8a4bc6721119c6dc7942621
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 10 Mar 2014 11:03:18 +0800
+
+deepin-desktop-environment (2.0+git20140310094536~4d4eb501ae) saucy; urgency=low
+
+  * Build from git revision 4d4eb501aeb0b386e519175e511803637328c5c3
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 10 Mar 2014 09:45:36 +0800
+
+deepin-desktop-environment (2.0+git20140310094126~ee9cf65dde) saucy; urgency=low
+
+  * Build from git revision ee9cf65dde032c66bcdafc86771995ab6c34a2d8
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 10 Mar 2014 09:41:26 +0800
+
+deepin-desktop-environment (2.0+git20140307153348~ee9cf65dde) trusty; urgency=low
+
+  * Build from git revision ee9cf65dde032c66bcdafc86771995ab6c34a2d8
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 07 Mar 2014 15:33:48 +0800
+
+deepin-desktop-environment (2.0+git20140307152524~1f4d7fa872) trusty; urgency=low
+
+  * Build from git revision 1f4d7fa87250e269e1db3a62868d5f58d8ebd0c2
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 07 Mar 2014 15:25:24 +0800
+
+deepin-desktop-environment (2.0+git20140307152403~1f4d7fa872) trusty; urgency=low
+
+  * Build from git revision 1f4d7fa87250e269e1db3a62868d5f58d8ebd0c2
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 07 Mar 2014 15:24:03 +0800
+
+deepin-desktop-environment (2.0+git20140307152238~1f4d7fa872) trusty; urgency=low
+
+  * Build from git revision 1f4d7fa87250e269e1db3a62868d5f58d8ebd0c2
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 07 Mar 2014 15:22:38 +0800
+
+deepin-desktop-environment (2.0+git20140307144336~1f4d7fa872) trusty; urgency=low
+
+  * Build from git revision 1f4d7fa87250e269e1db3a62868d5f58d8ebd0c2
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 07 Mar 2014 14:43:36 +0800
+
+deepin-desktop-environment (2.0+git20140307135406~7d3dd03384) trusty; urgency=low
+
+  * Build from git revision 7d3dd03384da5cd0ce01d1079212117dc2993775
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 07 Mar 2014 13:54:07 +0800
+
+deepin-desktop-environment (2.0+git20140307125857~f8a417a55a) saucy; urgency=low
+
+  * Build from git revision f8a417a55ae2e526ec9d010678d804e7ada48ce2
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 07 Mar 2014 12:58:57 +0800
+
+deepin-desktop-environment (2.0+git20140307104650~f8a417a55a) saucy; urgency=low
+
+  * Build from git revision f8a417a55ae2e526ec9d010678d804e7ada48ce2
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 07 Mar 2014 10:46:50 +0800
+
+deepin-desktop-environment (2.0+git20140306154818~b9b4084f7b) saucy; urgency=low
+
+  * Build from git revision b9b4084f7b6fb55a3abd5e16a7866e156f3ebf42
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 06 Mar 2014 15:48:18 +0800
+
+deepin-desktop-environment (2.0+git20140306153742~8be2bac35c) saucy; urgency=low
+
+  * Build from git revision 8be2bac35c5307c0a165a80fae007bb856778e77
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 06 Mar 2014 15:37:42 +0800
+
+deepin-desktop-environment (2.0+git20140306150816~2699c20fc3) saucy; urgency=low
+
+  * Build from git revision 2699c20fc38721237474e79d962eb69fef08886b
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 06 Mar 2014 15:08:17 +0800
+
+deepin-desktop-environment (2.0+git20140306130413~338c30683d) saucy; urgency=low
+
+  * Build from git revision 338c30683d70b44c172efb369e74d12bae796425
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 06 Mar 2014 13:04:13 +0800
+
+deepin-desktop-environment (2.0+git20140306123627~8f2efcc3dd) saucy; urgency=low
+
+  * Build from git revision 8f2efcc3dd65558803eb9b9c571337ae2d87e86f
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 06 Mar 2014 12:36:28 +0800
+
+deepin-desktop-environment (2.0+git20140306114656~39ec517b47) saucy; urgency=low
+
+  * Build from git revision 39ec517b4715157ec650c9e4b78ac3d14cbbf1fd
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 06 Mar 2014 11:46:56 +0800
+
+deepin-desktop-environment (2.0+git20140306100127~6962c27407) saucy; urgency=low
+
+  * Build from git revision 6962c274078c530a72d77ebd72e71bd03398d1c3
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 06 Mar 2014 10:01:27 +0800
+
+deepin-desktop-environment (2.0+git20140305153013~c7ef71ed4d) saucy; urgency=low
+
+  * Build from git revision c7ef71ed4db4c5f859edfffe4c5ad08b1e555ea6
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 05 Mar 2014 15:30:13 +0800
+
+deepin-desktop-environment (2.0+git20140305133911~1474cc6e52) saucy; urgency=low
+
+  * Build from git revision 1474cc6e52c202cbbfb69c1baadfebdfabfc92e9
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 05 Mar 2014 13:39:12 +0800
+
+deepin-desktop-environment (2.0+git20140305102102~9117520faa) saucy; urgency=low
+
+  * Build from git revision 9117520faa20d1950e952677ec3b037aef4ec963
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 05 Mar 2014 10:21:02 +0800
+
+deepin-desktop-environment (2.0+git20140305101539~2a5c1fe261) saucy; urgency=low
+
+  * Build from git revision 2a5c1fe261cef656c14e8ef186aaf963966abc78
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 05 Mar 2014 10:15:40 +0800
+
+deepin-desktop-environment (2.0+git20140304101956~f53f72fba2) saucy; urgency=low
+
+  * Build from git revision f53f72fba285a07e0f5429181c9b25f07c709343
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 04 Mar 2014 10:19:56 +0800
+
+deepin-desktop-environment (2.0+git20140304095647~e04e9ce790) saucy; urgency=low
+
+  * Build from git revision e04e9ce7906467b37e3faf9596ebcb411b2238fb
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 04 Mar 2014 09:56:47 +0800
+
+deepin-desktop-environment (2.0+git20140303171942~5ad810860b) saucy; urgency=low
+
+  * Build from git revision 5ad810860ba6eaff8894a00cf317a5ddad1866de
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 03 Mar 2014 17:19:43 +0800
+
+deepin-desktop-environment (2.0+git20140303123919~544abca9bc) saucy; urgency=low
+
+  * Build from git revision 544abca9bc1103a21751a3dcc1af476f5c8decb1
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 03 Mar 2014 12:39:19 +0800
+
+deepin-desktop-environment (2.0+git20140303104415~c85baffca7) saucy; urgency=low
+
+  * Build from git revision c85baffca7c4677211c19872b5eb5759a77bb4fd
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 03 Mar 2014 10:44:16 +0800
+
+deepin-desktop-environment (2.0+git20140228161041~24ed2a889e) saucy; urgency=low
+
+  * Build from git revision 24ed2a889e906159aa89a9a7d536ca10bbab3b06
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 28 Feb 2014 16:10:41 +0800
+
+deepin-desktop-environment (2.0+git20140228154625~db83d36e50) saucy; urgency=low
+
+  * Build from git revision db83d36e50cbdbbcc14bd8cab132710c7f63ee38
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 28 Feb 2014 15:46:25 +0800
+
+deepin-desktop-environment (2.0+git20140228111810~0f51bb6253) saucy; urgency=low
+
+  * Build from git revision 0f51bb6253511466480065f6681054d6fd8dbe4a
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 28 Feb 2014 11:18:11 +0800
+
+deepin-desktop-environment (2.0+git20140228094223~b61a74e4b8) saucy; urgency=low
+
+  * Build from git revision b61a74e4b832e0a1cafa8869fbf3816578f6189e
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 28 Feb 2014 09:42:23 +0800
+
+deepin-desktop-environment (2.0+git20140227110902~eb59225910) saucy; urgency=low
+
+  * Build from git revision eb5922591005628f42e38949943fb67be491023b
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 27 Feb 2014 11:09:02 +0800
+
+deepin-desktop-environment (2.0+git20140227095533~796f4a1bee) saucy; urgency=low
+
+  * Build from git revision 796f4a1bee3c8767249a4e201f20439e36fabe86
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 27 Feb 2014 09:55:34 +0800
+
+deepin-desktop-environment (2.0+git20140227093757~412812d65d) saucy; urgency=low
+
+  * Build from git revision 412812d65d241be44d3fac1858f8da9e694fa23b
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 27 Feb 2014 09:37:58 +0800
+
+deepin-desktop-environment (2.0+git20140226172354~412812d65d) saucy; urgency=low
+
+  * Build from git revision 412812d65d241be44d3fac1858f8da9e694fa23b
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 26 Feb 2014 17:23:54 +0800
+
+deepin-desktop-environment (2.0+git20140226171537~3ccb5886cb) saucy; urgency=low
+
+  * Build from git revision 3ccb5886cb0a73409973a358fb40f7bea84c494c
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 26 Feb 2014 17:15:37 +0800
+
+deepin-desktop-environment (2.0+git20140226170928~3ccb5886cb) saucy; urgency=low
+
+  * Build from git revision 3ccb5886cb0a73409973a358fb40f7bea84c494c
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 26 Feb 2014 17:09:28 +0800
+
+deepin-desktop-environment (2.0+git20140226170336~3ccb5886cb) saucy; urgency=low
+
+  * Build from git revision 3ccb5886cb0a73409973a358fb40f7bea84c494c
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 26 Feb 2014 17:03:37 +0800
+
+deepin-desktop-environment (2.0+git20140226164912~06c89cdea7) saucy; urgency=low
+
+  * Build from git revision 06c89cdea778c271ece4f163fe520f244d0b0dc6
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 26 Feb 2014 16:49:13 +0800
+
+deepin-desktop-environment (2.0+git20140226162829~c07d180cee) saucy; urgency=low
+
+  * Build from git revision c07d180cee5bb3159ae0f29814f0a20fd92f3488
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 26 Feb 2014 16:28:29 +0800
+
+deepin-desktop-environment (2.0+git20140226161919~7d372e05af) saucy; urgency=low
+
+  * Build from git revision 7d372e05af9ff00eb7ba6eb791121b785f973a1d
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 26 Feb 2014 16:19:19 +0800
+
+deepin-desktop-environment (2.0+git20140226152245~3365123d55) saucy; urgency=low
+
+  * Build from git revision 3365123d559bb0b3ba78cff0af53feba46398cab
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 26 Feb 2014 15:22:45 +0800
+
+deepin-desktop-environment (2.0+git20140226142059~3365123d55) saucy; urgency=low
+
+  * Build from git revision 3365123d559bb0b3ba78cff0af53feba46398cab
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 26 Feb 2014 14:20:59 +0800
+
+deepin-desktop-environment (2.0+git20140226135759~785147740a) saucy; urgency=low
+
+  * Build from git revision 785147740a913e7f5d14435013710de054c8d834
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 26 Feb 2014 13:58:00 +0800
+
+deepin-desktop-environment (2.0+git20140226122016~0ee3f37475) saucy; urgency=low
+
+  * Build from git revision 0ee3f37475f0957b8a1edde9bd2f5f0c8f2c902b
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 26 Feb 2014 12:20:16 +0800
+
+deepin-desktop-environment (2.0+git20140226113411~f1c6cabc22) saucy; urgency=low
+
+  * Build from git revision f1c6cabc22bf60943e1b525adb5fa98d1ce914a6
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 26 Feb 2014 11:34:11 +0800
+
+deepin-desktop-environment (2.0+git20140226092143~c8cb1c3c16) saucy; urgency=low
+
+  * Build from git revision c8cb1c3c16bdc3637e9daf1f3e29b92011e3ecbd
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 26 Feb 2014 09:21:43 +0800
+
+deepin-desktop-environment (2.0+git20140226090544~1854790cc7) saucy; urgency=low
+
+  * Build from git revision 1854790cc790aff2284804859f695474e78e88bb
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 26 Feb 2014 09:05:45 +0800
+
+deepin-desktop-environment (2.0+git20140225171103~1854790cc7) saucy; urgency=low
+
+  * Build from git revision 1854790cc790aff2284804859f695474e78e88bb
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 25 Feb 2014 17:11:03 +0800
+
+deepin-desktop-environment (2.0+git20140225161816~9f6b582c5a) saucy; urgency=low
+
+  * Build from git revision 9f6b582c5a4d2d49271e6daaa7999422b791c402
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 25 Feb 2014 16:18:16 +0800
+
+deepin-desktop-environment (2.0+git20140225161426~9f6b582c5a) saucy; urgency=low
+
+  * Build from git revision 9f6b582c5a4d2d49271e6daaa7999422b791c402
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 25 Feb 2014 16:14:27 +0800
+
+deepin-desktop-environment (2.0+git20140225160908~9f6b582c5a) saucy; urgency=low
+
+  * Build from git revision 9f6b582c5a4d2d49271e6daaa7999422b791c402
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 25 Feb 2014 16:09:09 +0800
+
+deepin-desktop-environment (2.0+git20140225160118~9f6b582c5a) saucy; urgency=low
+
+  * Build from git revision 9f6b582c5a4d2d49271e6daaa7999422b791c402
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 25 Feb 2014 16:01:19 +0800
+
+deepin-desktop-environment (2.0+git20140224170017~6264614ad5) saucy; urgency=low
+
+  * Build from git revision 6264614ad54c92ccd937089260cfafff12840b45
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 24 Feb 2014 17:00:18 +0800
+
+deepin-desktop-environment (2.0+git20140224154340~16c88ed26b) saucy; urgency=low
+
+  * Build from git revision 16c88ed26bd8dc1bfc98b4d85631787362b880c9
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 24 Feb 2014 15:43:41 +0800
+
+deepin-desktop-environment (2.0+git20140221160759~325bce25b3) saucy; urgency=low
+
+  * Build from git revision 325bce25b3e22604490718d283c4b08777f2bfb5
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 21 Feb 2014 16:07:59 +0800
+
+deepin-desktop-environment (2.0+git20140221140452~3856b6153a) saucy; urgency=low
+
+  * Build from git revision 3856b6153aa4c24d192e7c52ae8abb3fe0152cb7
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 21 Feb 2014 14:04:52 +0800
+
+deepin-desktop-environment (2.0+git20140221132104~3856b6153a) saucy; urgency=low
+
+  * Build from git revision 3856b6153aa4c24d192e7c52ae8abb3fe0152cb7
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 21 Feb 2014 13:21:04 +0800
+
+deepin-desktop-environment (2.0+git20140221114817~f113da5f41) saucy; urgency=low
+
+  * Build from git revision f113da5f41c7a63b6a16d9d94024dd1f1b92434b
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 21 Feb 2014 11:48:17 +0800
+
+deepin-desktop-environment (2.0+git20140220200741~e693c8bfb5) saucy; urgency=low
+
+  * Build from git revision e693c8bfb5b4fd7419a921424f15da5bdd92cc24
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 20 Feb 2014 20:07:41 +0800
+
+deepin-desktop-environment (2.0+git20140220170532~0dd0a4c426) saucy; urgency=low
+
+  * Build from git revision 0dd0a4c42620e463f34a17550ff63c7a3bd0d9b9
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 20 Feb 2014 17:05:32 +0800
+
+deepin-desktop-environment (2.0+git20140219142731~f3e65bf5a6) saucy; urgency=low
+
+  * Build from git revision f3e65bf5a64f8203e0c2af81a0ddf70854bb1e11
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 19 Feb 2014 14:27:31 +0800
+
+deepin-desktop-environment (2.0+git20140219104019~1d06bc68ea) saucy; urgency=low
+
+  * Build from git revision 1d06bc68eadbb639decdfdf2bfaf5911574a66c9
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 19 Feb 2014 10:40:19 +0800
+
+deepin-desktop-environment (2.0+git20140219092925~8392bdc67c) saucy; urgency=low
+
+  * Build from git revision 8392bdc67c84ef1a6f2fe1b4e5fda28ef678a979
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 19 Feb 2014 09:29:25 +0800
+
+deepin-desktop-environment (2.0+git20140219092109~e1e66382cc) saucy; urgency=low
+
+  * Build from git revision e1e66382cc79255204ce2415eb7b2531e356b835
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 19 Feb 2014 09:21:09 +0800
+
+deepin-desktop-environment (2.0+git20140218222008~e1e66382cc) saucy; urgency=low
+
+  * Build from git revision e1e66382cc79255204ce2415eb7b2531e356b835
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 18 Feb 2014 22:20:09 +0800
+
+deepin-desktop-environment (2.0+git20140218114303~5eb642f23b) saucy; urgency=low
+
+  * Build from git revision 5eb642f23bf257c35a5da58361c86a809ef24432
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 18 Feb 2014 11:43:03 +0800
+
+deepin-desktop-environment (2.0+git20140218094524~1b4ee58771) saucy; urgency=low
+
+  * Build from git revision 1b4ee58771c745be48c9160299024a03e83f03a6
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 18 Feb 2014 09:45:24 +0800
+
+deepin-desktop-environment (2.0+git20140217173253~1b4ee58771) saucy; urgency=low
+
+  * Build from git revision 1b4ee58771c745be48c9160299024a03e83f03a6
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 17 Feb 2014 17:32:54 +0800
+
+deepin-desktop-environment (2.0+git20140217173014~1b4ee58771) saucy; urgency=low
+
+  * Build from git revision 1b4ee58771c745be48c9160299024a03e83f03a6
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 17 Feb 2014 17:30:14 +0800
+
+deepin-desktop-environment (2.0+git20140217153207~548d6d984a) saucy; urgency=low
+
+  * Build from git revision 548d6d984a6206889f8503a115ce5320372540e6
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 17 Feb 2014 15:32:07 +0800
+
+deepin-desktop-environment (2.0+git20140217150956~7ebd21c870) saucy; urgency=low
+
+  * Build from git revision 7ebd21c870012718fcc0c0ba03a1fc2e697a6f47
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 17 Feb 2014 15:09:56 +0800
+
+deepin-desktop-environment (2.0+git20140217145648~10c2f7f757) saucy; urgency=low
+
+  * Build from git revision 10c2f7f7570aea4d5bc867c6112e5b80558a9f55
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 17 Feb 2014 14:56:48 +0800
+
+deepin-desktop-environment (2.0+git20140217144537~79ea3a73bc) saucy; urgency=low
+
+  * Build from git revision 79ea3a73bc49e1343248afcbb243521cdd1912d3
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 17 Feb 2014 14:45:37 +0800
+
+deepin-desktop-environment (2.0+git20140217143359~fc7d0fd90d) saucy; urgency=low
+
+  * Build from git revision fc7d0fd90daae3d445c919d5fad54d250ee6740a
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 17 Feb 2014 14:33:59 +0800
+
+deepin-desktop-environment (2.0+git20140217142548~5d8ec6e06e) saucy; urgency=low
+
+  * Build from git revision 5d8ec6e06e766b75a324b6e9153ceb11ba501b94
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 17 Feb 2014 14:25:48 +0800
+
+deepin-desktop-environment (2.0+git20140217141603~5534c728cb) saucy; urgency=low
+
+  * Build from git revision 5534c728cbb1de32f960a25fe7b09b34fa161cc0
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 17 Feb 2014 14:16:03 +0800
+
+deepin-desktop-environment (2.0+git20140217135616~5fd02610e3) saucy; urgency=low
+
+  * Build from git revision 5fd02610e398d78080efa7f79c765d61239b7163
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 17 Feb 2014 13:56:17 +0800
+
+deepin-desktop-environment (2.0+git20140217090655~6aa0ec9506) saucy; urgency=low
+
+  * Build from git revision 6aa0ec95068b0278b5d68aa8c73c8eb74e4889ed
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 17 Feb 2014 09:06:56 +0800
+
+deepin-desktop-environment (2.0+git20140214151825~ab7cc43d70) saucy; urgency=low
+
+  * Build from git revision ab7cc43d70f08d15b2e1892c73d29a152a95feda
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 14 Feb 2014 15:18:25 +0800
+
+deepin-desktop-environment (2.0+git20140214113935~8ed596947d) saucy; urgency=low
+
+  * Build from git revision 8ed596947d1d75e22e07880b28cae61e42f1206d
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 14 Feb 2014 11:39:35 +0800
+
+deepin-desktop-environment (2.0+git20140214102233~309b3fddb5) saucy; urgency=low
+
+  * Build from git revision 309b3fddb5814846128fb3747ca933c68ce780c2
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 14 Feb 2014 10:22:33 +0800
+
+deepin-desktop-environment (2.0+git20140214095553~2f1da15654) saucy; urgency=low
+
+  * Build from git revision 2f1da15654017bf33d6d222c4fc36a06e4b75941
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 14 Feb 2014 09:55:53 +0800
+
+deepin-desktop-environment (2.0+git20140214094738~564e9fb519) saucy; urgency=low
+
+  * Build from git revision 564e9fb519e68856acf0e86f15898c1e191de489
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 14 Feb 2014 09:47:38 +0800
+
+deepin-desktop-environment (2.0+git20140213174928~c671530d30) saucy; urgency=low
+
+  * Build from git revision c671530d304c5f48f6c0dccbc4212b0a72a84924
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 13 Feb 2014 17:49:28 +0800
+
+deepin-desktop-environment (2.0+git20140213164340~16f3f97ae0) saucy; urgency=low
+
+  * Build from git revision 16f3f97ae04d43375180980df2b776117d981960
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 13 Feb 2014 16:43:40 +0800
+
+deepin-desktop-environment (2.0+git20140213113106~18596c61c7) saucy; urgency=low
+
+  * Build from git revision 18596c61c7779ab69933d51bfe9f09086c0b4a4c
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 13 Feb 2014 11:31:06 +0800
+
+deepin-desktop-environment (2.0+git20140213100452~a0b8412dba) saucy; urgency=low
+
+  * Build from git revision a0b8412dbafa643d0912f976058f3a2d54721c92
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 13 Feb 2014 10:04:52 +0800
+
+deepin-desktop-environment (2.0+git20140212180052~43295cddc1) saucy; urgency=low
+
+  * Build from git revision 43295cddc1b9d3771050fcbb8c1b878c7f191a1c
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 12 Feb 2014 18:00:52 +0800
+
+deepin-desktop-environment (2.0+git20140212171542~70c5c7f7ee) saucy; urgency=low
+
+  * Build from git revision 70c5c7f7eec47cfc3b45ea9dcc252085a0d0e591
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 12 Feb 2014 17:15:42 +0800
+
+deepin-desktop-environment (2.0+git20140212124502~0939bac8da) saucy; urgency=low
+
+  * Build from git revision 0939bac8dad24eb041e401707cc288384b20e3b6
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 12 Feb 2014 12:45:03 +0800
+
+deepin-desktop-environment (2.0+git20140212115447~7c64769105) saucy; urgency=low
+
+  * Build from git revision 7c64769105f4808eb2bfdafcb28c8405180b9889
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 12 Feb 2014 11:54:47 +0800
+
+deepin-desktop-environment (2.0+git20140212103102~d51da2e2d5) saucy; urgency=low
+
+  * Build from git revision d51da2e2d5efc0e976c56f1a65667a36be0d6934
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 12 Feb 2014 10:31:03 +0800
+
+deepin-desktop-environment (2.0+git20140212100222~ad9dee08c3) saucy; urgency=low
+
+  * Build from git revision ad9dee08c3699598738ce6fe7fc402337f9b5b26
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 12 Feb 2014 10:02:22 +0800
+
+deepin-desktop-environment (2.0+git20140212094123~feebd63196) saucy; urgency=low
+
+  * Build from git revision feebd63196eb412689398f89c5add59932b77fab
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 12 Feb 2014 09:41:23 +0800
+
+deepin-desktop-environment (2.0+git20140212093036~280d0e5bee) saucy; urgency=low
+
+  * Build from git revision 280d0e5bee12f45dfa0b86ee826dbe64967934e3
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 12 Feb 2014 09:30:37 +0800
+
+deepin-desktop-environment (2.0+git20140211174732~958fecc0e5) saucy; urgency=low
+
+  * Build from git revision 958fecc0e56c81298d051e3276d7d7cd388e20ca
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 11 Feb 2014 17:47:32 +0800
+
+deepin-desktop-environment (2.0+git20140211174058~b80afe1bb1) saucy; urgency=low
+
+  * Build from git revision b80afe1bb14e2bd66ccd17443e534b273a071c81
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 11 Feb 2014 17:40:58 +0800
+
+deepin-desktop-environment (2.0+git20140211170603~abde7b82a5) saucy; urgency=low
+
+  * Build from git revision abde7b82a51c80ff9167278233b9b18f711e1b41
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 11 Feb 2014 17:06:03 +0800
+
+deepin-desktop-environment (2.0+git20140209141802~dd5559ec8c) saucy; urgency=low
+
+  * Build from git revision dd5559ec8c4c0fe43566d8abc7d6c2b74ba1a32a
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Sun, 09 Feb 2014 14:18:02 +0800
+
+deepin-desktop-environment (2.0+git20140209135031~f5eb233504) saucy; urgency=low
+
+  * Build from git revision f5eb23350499d82aeaac7519057cf9a11f507847
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Sun, 09 Feb 2014 13:50:31 +0800
+
+deepin-desktop-environment (2.0+git20140209112346~15a942a130) saucy; urgency=low
+
+  * Build from git revision 15a942a1304a9e128fb860b05ac157daa9b403ee
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Sun, 09 Feb 2014 11:23:46 +0800
+
+deepin-desktop-environment (2.0+git20140209095255~fbab097a7a) saucy; urgency=low
+
+  * Build from git revision fbab097a7a7ba6bd797989d3ec709644f8f23655
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Sun, 09 Feb 2014 09:52:56 +0800
+
+deepin-desktop-environment (2.0+git20140209094835~83499e38be) saucy; urgency=low
+
+  * Build from git revision 83499e38be48afa4b344cd3d6efa1467db3f1463
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Sun, 09 Feb 2014 09:48:35 +0800
+
+deepin-desktop-environment (2.0+git20140208164558~8501c2778b) saucy; urgency=low
+
+  * Build from git revision 8501c2778b4c60b21ddaeab5add479c260d1d167
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Sat, 08 Feb 2014 16:45:58 +0800
+
+deepin-desktop-environment (2.0+git20140208151240~7e317b9ab6) saucy; urgency=low
+
+  * Build from git revision 7e317b9ab6bab99d44473103c822632f62f7d71e
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Sat, 08 Feb 2014 15:12:40 +0800
+
+deepin-desktop-environment (2.0+git20140129114009~7577515964) saucy; urgency=low
+
+  * Build from git revision 75775159640fc8f1df08a88ab32db854ee7dede5
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 29 Jan 2014 11:40:09 +0800
+
+deepin-desktop-environment (2.0+git20140128155344~5b8f93f83f) saucy; urgency=low
+
+  * Build from git revision 5b8f93f83fba2c07311309ab7f704656184d6a33
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 28 Jan 2014 15:53:44 +0800
+
+deepin-desktop-environment (2.0+git20140127205136~b264d8cad7) saucy; urgency=low
+
+  * Build from git revision b264d8cad7e1372d818edb22463d213dfc161973
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 27 Jan 2014 20:51:36 +0800
+
+deepin-desktop-environment (2.0+git20140124190412~2fa86e10f6) saucy; urgency=low
+
+  * Build from git revision 2fa86e10f6307f90eeaa092f2677ef3a8d6d33f5
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 24 Jan 2014 19:04:12 +0800
+
+deepin-desktop-environment (2.0+git20140124143545~b3c44ce7e6) saucy; urgency=low
+
+  * Build from git revision b3c44ce7e689ac4df5efea2473620d36f7c10dff
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 24 Jan 2014 14:35:45 +0800
+
+deepin-desktop-environment (2.0+git20140124113324~b3c44ce7e6) saucy; urgency=low
+
+  * Build from git revision b3c44ce7e689ac4df5efea2473620d36f7c10dff
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 24 Jan 2014 11:33:24 +0800
+
+deepin-desktop-environment (2.0+git20140123112239~461ea2ed09) saucy; urgency=low
+
+  * Build from git revision 461ea2ed09171ecee9748b4e9feebed43013577d
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 23 Jan 2014 11:22:39 +0800
+
+deepin-desktop-environment (2.0+git20140123103158~76aac3b932) saucy; urgency=low
+
+  * Build from git revision 76aac3b932577ad585a210a054a14246f90f9980
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 23 Jan 2014 10:31:58 +0800
+
+deepin-desktop-environment (2.0+git20140123093438~df837b8f6c) saucy; urgency=low
+
+  * Build from git revision df837b8f6c35c0d960b1814a6a006c49a5b75817
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 23 Jan 2014 09:34:38 +0800
+
+deepin-desktop-environment (2.0+git20140122145954~6aa8d86bda) saucy; urgency=low
+
+  * Build from git revision 6aa8d86bda9f11c4c65c96ee3ac8c2411e1a7e78
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 22 Jan 2014 14:59:54 +0800
+
+deepin-desktop-environment (2.0+git20140117132531~fe0e17279c) saucy; urgency=low
+
+  * Build from git revision fe0e17279cf1438903a34369aa3c0cac4ca4ee6f
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 17 Jan 2014 13:25:31 +0800
+
+deepin-desktop-environment (2.0+git20140116104322~41257c8a0e) saucy; urgency=low
+
+  * Build from git revision 41257c8a0ee5f9154477e6174a8135a1b890f0a1
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 16 Jan 2014 10:43:22 +0800
+
+deepin-desktop-environment (2.0+git20140116095346~0c46207d4e) saucy; urgency=low
+
+  * Build from git revision 0c46207d4e81d896f7810c4c8b381603f3f9b61d
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 16 Jan 2014 09:53:46 +0800
+
+deepin-desktop-environment (2.0+git20140116094823~0c46207d4e) saucy; urgency=low
+
+  * Build from git revision 0c46207d4e81d896f7810c4c8b381603f3f9b61d
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 16 Jan 2014 09:48:23 +0800
+
+deepin-desktop-environment (2.0+git20140115121009~0c46207d4e) saucy; urgency=low
+
+  * Build from git revision 0c46207d4e81d896f7810c4c8b381603f3f9b61d
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 15 Jan 2014 12:10:09 +0800
+
+deepin-desktop-environment (2.0+git20140115120609~0c46207d4e) saucy; urgency=low
+
+  * Build from git revision 0c46207d4e81d896f7810c4c8b381603f3f9b61d
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 15 Jan 2014 12:06:09 +0800
+
+deepin-desktop-environment (2.0+git20140113173603~dc39603d91) saucy; urgency=low
+
+  * Build from git revision dc39603d916b3242fc8413d4e7653b4d9e315c00
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 13 Jan 2014 17:36:03 +0800
+
+deepin-desktop-environment (2.0+git20140113102550~d9ebcef4b9) saucy; urgency=low
+
+  * Build from git revision d9ebcef4b9771a6f094a6e3969a7e9aad5a1abc7
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 13 Jan 2014 10:25:50 +0800
+
+deepin-desktop-environment (2.0+git20140112140558~5d6877efb1) saucy; urgency=low
+
+  * Build from git revision 5d6877efb1da1f0488c2a8164290f9e437b6a879
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Sun, 12 Jan 2014 14:05:59 +0800
+
+deepin-desktop-environment (2.0+git20140111203506~77837c7f9f) saucy; urgency=low
+
+  * Build from git revision 77837c7f9fcbba27a2fb8d82a88083d208761ea4
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Sat, 11 Jan 2014 20:35:07 +0800
+
+deepin-desktop-environment (2.0+git20140110162604~185a4712ee) saucy; urgency=low
+
+  * Build from git revision 185a4712ee598296352373e53bde31d120e4875a
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 10 Jan 2014 16:26:04 +0800
+
+deepin-desktop-environment (2.0+git20140110151907~a54dad8eed) saucy; urgency=low
+
+  * Build from git revision a54dad8eede41586c10eb60cd1002035de58c738
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 10 Jan 2014 15:19:07 +0800
+
+deepin-desktop-environment (2.0+git20140110143435~96128e5145) saucy; urgency=low
+
+  * Build from git revision 96128e5145614407e8ed8fea802de0de7d53b46a
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 10 Jan 2014 14:34:36 +0800
+
+deepin-desktop-environment (2.0+git20140110141436~af18bd571e) saucy; urgency=low
+
+  * Build from git revision af18bd571ebe2ae02e5a6e61e559b8ac769aa17f
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 10 Jan 2014 14:14:36 +0800
+
+deepin-desktop-environment (2.0+git20140110122946~1ffbd272b7) saucy; urgency=low
+
+  * Build from git revision 1ffbd272b7e6107ad8491a36caae23433d03c331
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 10 Jan 2014 12:29:46 +0800
+
+deepin-desktop-environment (2.0+git20140110122055~f1d474afa7) saucy; urgency=low
+
+  * Build from git revision f1d474afa7cba2f391ff4192f90367efab39aba3
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 10 Jan 2014 12:20:55 +0800
+
+deepin-desktop-environment (2.0+git20140109155401~22e63a945f) saucy; urgency=low
+
+  * Build from git revision 22e63a945feac9062133c795646e75c93afab12d
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 09 Jan 2014 15:54:01 +0800
+
+deepin-desktop-environment (2.0+git20140107143301~c61501e0b1) saucy; urgency=low
+
+  * Build from git revision c61501e0b1741ed3db9e1d3b435d8d3f5b431e06
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 07 Jan 2014 14:33:01 +0800
+
+deepin-desktop-environment (2.0+git20140107111603~38597ab6b8) saucy; urgency=low
+
+  * Build from git revision 38597ab6b8ba315c0bc6fdd7ea9f43d175222181
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 07 Jan 2014 11:16:03 +0800
+
+deepin-desktop-environment (2.0+git20140106154239~75dbf56f1f) saucy; urgency=low
+
+  * Build from git revision 75dbf56f1fc3d09a49f259ffe9a62e40fe7e93d6
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 06 Jan 2014 15:42:39 +0800
+
+deepin-desktop-environment (2.0+git20140106145133~3c5d19a30a) saucy; urgency=low
+
+  * Build from git revision 3c5d19a30afe10652a6a8c0c9fe20bdbe3fba039
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 06 Jan 2014 14:51:33 +0800
+
+deepin-desktop-environment (2.0+git20140106112157~da889ea15d) saucy; urgency=low
+
+  * Build from git revision da889ea15d425375774ea5c98433a5054b86dfe2
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 06 Jan 2014 11:21:58 +0800
+
+deepin-desktop-environment (2.0+git20140103104030~f22cf303d9) saucy; urgency=low
+
+  * Build from git revision f22cf303d96d1af86c1d949f788b822a604f240f
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 03 Jan 2014 10:40:31 +0800
+
+deepin-desktop-environment (2.0+git20140102171851~01943f5290) saucy; urgency=low
+
+  * Build from git revision 01943f52909231f43db0b5ccd1747df0f6d550d5
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 02 Jan 2014 17:18:51 +0800
+
+deepin-desktop-environment (2.0+git20140102124053~10ea564e22) saucy; urgency=low
+
+  * Build from git revision 10ea564e22ac81246b666ee7999dfcc9104a1a38
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 02 Jan 2014 12:40:53 +0800
+
+deepin-desktop-environment (2.0+git20131227165215~10ea564e22) saucy; urgency=low
+
+  * Build from git revision 10ea564e22ac81246b666ee7999dfcc9104a1a38
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 27 Dec 2013 16:52:15 +0800
+
+deepin-desktop-environment (2.0+git20131227102823~8edcd675f7) saucy; urgency=low
+
+  * Build from git revision 8edcd675f720540e23e95695a0175303d7ec9d00
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 27 Dec 2013 10:28:23 +0800
+
+deepin-desktop-environment (2.0+git20131226170432~c9c6543536) saucy; urgency=low
+
+  * Build from git revision c9c65435368feb428863d454aecf31397a0d46a2
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 26 Dec 2013 17:04:32 +0800
+
+deepin-desktop-environment (2.0+git20131226155330~00ab66fa06) saucy; urgency=low
+
+  * Build from git revision 00ab66fa06d1d9a13e20366b8068e36427f2334c
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 26 Dec 2013 15:53:30 +0800
+
+deepin-desktop-environment (2.0+git20131225155029~7adc14eeeb) saucy; urgency=low
+
+  * Build from git revision 7adc14eeeb4272cfc95c5ad9e70f547cf27883e0
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 25 Dec 2013 15:50:30 +0800
+
+deepin-desktop-environment (2.0+git20131224145427~bae9d4797d) saucy; urgency=low
+
+  * Build from git revision bae9d4797d5308b156e6b8fbf5a12d3bb8266c0d
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 24 Dec 2013 14:54:27 +0800
+
+deepin-desktop-environment (2.0+git20131223171600~5f58fd6c98) saucy; urgency=low
+
+  * Build from git revision 5f58fd6c982fffd51f1dda024e1c0d79d9e47a05
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 23 Dec 2013 17:16:01 +0800
+
+deepin-desktop-environment (2.0+git20131223162808~c7c8ccdd95) saucy; urgency=low
+
+  * Build from git revision c7c8ccdd952072ce5c894fe8307b2285b130e07b
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 23 Dec 2013 16:28:08 +0800
+
+deepin-desktop-environment (2.0+git20131219093114~6f37433876) raring; urgency=low
+
+  * Build from git revision 6f3743387660f6165aa83c4181ee4adf4a668487
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 19 Dec 2013 09:31:15 +0800
+
+deepin-desktop-environment (2.0+git20131218155953~df2aba9c8d) raring; urgency=low
+
+  * Build from git revision df2aba9c8db98797547b709500d5efa981d928b1
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 18 Dec 2013 15:59:53 +0800
+
+deepin-desktop-environment (2.0+git20131217172150~9525f5033f) raring; urgency=low
+
+  * Build from git revision 9525f5033f0a1db03969d7fcaf8c6c4573a41444
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 17 Dec 2013 17:21:50 +0800
+
+deepin-desktop-environment (2.0+git20131217170244~9525f5033f) raring; urgency=low
+
+  * Build from git revision 9525f5033f0a1db03969d7fcaf8c6c4573a41444
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 17 Dec 2013 17:02:44 +0800
+
+deepin-desktop-environment (1.0+git20131217170232~1a78873445) raring; urgency=low
+
+  * Build from git revision 1a78873445cc753f19556bd06ae889155e9facbd
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 17 Dec 2013 17:02:32 +0800
+
+deepin-desktop-environment (1.0+git20131217170227~1a78873445) raring; urgency=low
+
+  * Build from git revision 1a78873445cc753f19556bd06ae889155e9facbd
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 17 Dec 2013 17:02:28 +0800
+
+deepin-desktop-environment (1.0+git20131217165925~1a78873445) raring; urgency=low
+
+  * Build from git revision 1a78873445cc753f19556bd06ae889155e9facbd
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 17 Dec 2013 16:59:25 +0800
+
+deepin-desktop-environment (1.0+git20131217155503~e937008780) raring; urgency=low
+
+  * Build from git revision e9370087808c5206a9a4e9994795719ee2a7eb54
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 17 Dec 2013 15:55:03 +0800
+
+deepin-desktop-environment (1.0+git20131217155201~e937008780) raring; urgency=low
+
+  * Build from git revision e9370087808c5206a9a4e9994795719ee2a7eb54
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 17 Dec 2013 15:52:02 +0800
+
+deepin-desktop-environment (1.0+git20131217153718~e937008780) raring; urgency=low
+
+  * Build from git revision e9370087808c5206a9a4e9994795719ee2a7eb54
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 17 Dec 2013 15:37:19 +0800
+
+deepin-desktop-environment (1.0+git20131217152036~18cfd596e2) raring; urgency=low
+
+  * Build from git revision 18cfd596e2f46759ab6e2ec04c6862b2946bb2ca
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 17 Dec 2013 15:20:36 +0800
+
+deepin-desktop-environment (1.0+git20131213170000~2d37297b4f) raring; urgency=low
+
+  * Build from git revision 2d37297b4f76711384e918eabf435618f0336c06
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 13 Dec 2013 17:00:00 +0800
+
+deepin-desktop-environment (1.0+git20131205120956~76547e965d) raring; urgency=low
+
+  * Build from git revision 76547e965db45c1e7d662321c4e593a52096c7b8
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 05 Dec 2013 12:09:56 +0800
+
+deepin-desktop-environment (1.0+git20131205120416~76547e965d) raring; urgency=low
+
+  * Build from git revision 76547e965db45c1e7d662321c4e593a52096c7b8
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 05 Dec 2013 12:04:17 +0800
+
+deepin-desktop-environment (1.0+git20131204163155~71570daace~2013) raring; urgency=low
+
+  * Build from git revision 71570daace8ba6a02c5c6fd7962d9b6be46b5e58
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 04 Dec 2013 16:31:55 +0800
+
+deepin-desktop-environment (1.0+git20131203151408~71570daace) raring; urgency=low
+
+  * Build from git revision 71570daace8ba6a02c5c6fd7962d9b6be46b5e58
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 03 Dec 2013 15:14:08 +0800
+
+deepin-desktop-environment (1.0+git20131128152026~1ef65f4046) raring; urgency=low
+
+  * Build from git revision 1ef65f4046ed39b93bc85a1881acbd502ff60b78
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 28 Nov 2013 15:20:27 +0800
+
+deepin-desktop-environment (1.0+git20131128145606~a48fbc6cb9) raring; urgency=low
+
+  * Build from git revision a48fbc6cb9c8f7565bf68481a509f6df523a04c1
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 28 Nov 2013 14:56:06 +0800
+
+deepin-desktop-environment (1.0+git20131128145009~a48fbc6cb9) raring; urgency=low
+
+  * Build from git revision a48fbc6cb9c8f7565bf68481a509f6df523a04c1
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 28 Nov 2013 14:50:09 +0800
+
+deepin-desktop-environment (1.0+git20131128103906~8625fe7692) raring; urgency=low
+
+  * Build from git revision 8625fe7692671fb68fc7d91987a2a5b22e570832
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 28 Nov 2013 10:39:06 +0800
+
+deepin-desktop-environment (1.0+git20131125172710~45909d777d) raring; urgency=low
+
+  * Build from git revision 45909d777d3eb71c8a9710fe55606a9ee7c551c5
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 25 Nov 2013 17:27:10 +0800
+
+deepin-desktop-environment (1.0+git20131121141728~9b29838bb3) raring; urgency=low
+
+  * Build from git revision 9b29838bb355e767da16e0cea39ee8e6cfcd5e1f
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 21 Nov 2013 14:17:28 +0800
+
+deepin-desktop-environment (1.0+git20131121134515~c5d7f592c5) raring; urgency=low
+
+  * Build from git revision c5d7f592c5af5d7e1b5587ac81f123493f7e5420
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 21 Nov 2013 13:45:15 +0800
+
+deepin-desktop-environment (1.0+git20131118193241~7ab67fec21) raring; urgency=low
+
+  * Build from git revision 7ab67fec2169c99e9402ba97e606eadb45972390
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 18 Nov 2013 19:32:41 +0800
+
+deepin-desktop-environment (1.0+git20131115105150~7ab67fec21) raring; urgency=low
+
+  * Build from git revision 7ab67fec2169c99e9402ba97e606eadb45972390
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 15 Nov 2013 10:51:50 +0800
+
+deepin-desktop-environment (1.0+git20131114100420~39dfe64bdb) raring; urgency=low
+
+  * Build from git revision 39dfe64bdb6e8fec55d4c6cd1c3fd487a6687a65
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 14 Nov 2013 10:04:20 +0800
+
+deepin-desktop-environment (1.0+git20131108110416~6b29df6147) raring; urgency=low
+
+  * Build from git revision 6b29df6147513516749a9bf999bd27c3f6fc2973
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 08 Nov 2013 11:04:16 +0800
+
+deepin-desktop-environment (1.0+git20131107102836~9020d0c5ed) raring; urgency=low
+
+  * Build from git revision 9020d0c5edea2da3a953263994f533c511e3729b
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 07 Nov 2013 10:28:36 +0800
+
+deepin-desktop-environment (1.0+git20131106104851~9020d0c5ed) raring; urgency=low
+
+  * Build from git revision 9020d0c5edea2da3a953263994f533c511e3729b
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 06 Nov 2013 10:48:51 +0800
+
+deepin-desktop-environment (1.0+git20131106102705~fd317abf1d) raring; urgency=low
+
+  * Build from git revision fd317abf1db43221ac973dd4645c46ac42415d7b
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 06 Nov 2013 10:27:06 +0800
+
+deepin-desktop-environment (1.0+git20131101163030~4ac6054bcc) raring; urgency=low
+
+  * Build from git revision 4ac6054bccc44dc7de0f5cc59c015906fe78c6aa
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 01 Nov 2013 16:30:30 +0800
+
+deepin-desktop-environment (1.0+git20131101155143~0215021bbf) raring; urgency=low
+
+  * Build from git revision 0215021bbf23cab2bb5c68d863031cb6e35181d8
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 01 Nov 2013 15:51:44 +0800
+
+deepin-desktop-environment (1.0+git20131101112212~79170e3b21) raring; urgency=low
+
+  * Build from git revision 79170e3b215499fc7928c36549ae391b974e50f1
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 01 Nov 2013 11:22:12 +0800
+
+deepin-desktop-environment (1.0+git20131030172143~30f3ce58c0) raring; urgency=low
+
+  * Build from git revision 30f3ce58c0a5c07a95c9a4d4c7f1045ab2dd90e6
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 30 Oct 2013 17:21:43 +0800
+
+deepin-desktop-environment (1.0+git20131029173621~ead789097c) raring; urgency=low
+
+  * Build from git revision ead789097c208aa1a9d8bf355eb9fbfc1e0b4dc1
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 29 Oct 2013 17:36:21 +0800
+
+deepin-desktop-environment (1.0+git20131029104755~93dee23712) raring; urgency=low
+
+  * Build from git revision 93dee23712e5539b748c23ad14834521834c28c5
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 29 Oct 2013 10:47:55 +0800
+
+deepin-desktop-environment (1.0+git20131028164456~26f305b706) raring; urgency=low
+
+  * Build from git revision 26f305b70617e82eb8d5baa6322fba3e5c0e2bb8
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 28 Oct 2013 16:44:56 +0800
+
+deepin-desktop-environment (1.0+git20131028162800~eea7a97af4) raring; urgency=low
+
+  * Build from git revision eea7a97af4a3a044b01e8d811f4eba3b6a78f65f
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 28 Oct 2013 16:28:01 +0800
+
+deepin-desktop-environment (1.0+git20131028160725~19439ac8d1) raring; urgency=low
+
+  * Build from git revision 19439ac8d109695f8721b776bc2bbb9e7c026ea7
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 28 Oct 2013 16:07:25 +0800
+
+deepin-desktop-environment (1.0+git20131028153615~d2d5638ba0) raring; urgency=low
+
+  * Build from git revision d2d5638ba0b35c870bc217a5170ca27f7c275280
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 28 Oct 2013 15:36:16 +0800
+
+deepin-desktop-environment (1.0+git20131028101648~00cbced8bb) raring; urgency=low
+
+  * Build from git revision 00cbced8bb095e3484e7aff44ea6983f3d482b6e
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 28 Oct 2013 10:16:48 +0800
+
+deepin-desktop-environment (1.0+git20131028100709~2ade129e14) raring; urgency=low
+
+  * Build from git revision 2ade129e14770df60db441803ab5b474a39b4bdb
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 28 Oct 2013 10:07:10 +0800
+
+deepin-desktop-environment (1.0+git20131025144617~9af3fc2cd5) raring; urgency=low
+
+  * Build from git revision 9af3fc2cd54f7f0199d08ad03d9f2a777a07d15b
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 25 Oct 2013 14:46:17 +0800
+
+deepin-desktop-environment (1.0+git20131025143017~a23362c099) raring; urgency=low
+
+  * Build from git revision a23362c0998c4e360323d98c4d7750c9ab0e1270
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 25 Oct 2013 14:30:17 +0800
+
+deepin-desktop-environment (1.0+git20131025142502~7e47e2bcfd) raring; urgency=low
+
+  * Build from git revision 7e47e2bcfda7c24efd471cbd859cd981c7e73e02
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 25 Oct 2013 14:25:02 +0800
+
+deepin-desktop-environment (1.0+git20131025130612~fa58b29a69) raring; urgency=low
+
+  * Build from git revision fa58b29a6997c9809a98ed0426d85add7b91439c
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 25 Oct 2013 13:06:12 +0800
+
+deepin-desktop-environment (1.0+git20131025121221~1757c521cd) raring; urgency=low
+
+  * Build from git revision 1757c521cd16d5e03818d37dfc082b08dd2f490e
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 25 Oct 2013 12:12:21 +0800
+
+deepin-desktop-environment (1.0+git20131024202536~ec5d374a20) raring; urgency=low
+
+  * Build from git revision ec5d374a20d497690ebed41b24f205ca06e35543
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 24 Oct 2013 20:25:36 +0800
+
+deepin-desktop-environment (1.0+git20131024161527~ca72d0ddce) raring; urgency=low
+
+  * Build from git revision ca72d0ddce7d456c3305d4b99d3170f01d8cdccf
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 24 Oct 2013 16:15:27 +0800
+
+deepin-desktop-environment (1.0+git20131024123058~15ff98dfeb) raring; urgency=low
+
+  * Build from git revision 15ff98dfebc21d59dbd54885795c4ce6ac7104f6
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 24 Oct 2013 12:30:58 +0800
+
+deepin-desktop-environment (1.0+git20131024111559~15ff98dfeb) raring; urgency=low
+
+  * Build from git revision 15ff98dfebc21d59dbd54885795c4ce6ac7104f6
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 24 Oct 2013 11:16:00 +0800
+
+deepin-desktop-environment (1.0+git20131024100925~6ee0d2157f) raring; urgency=low
+
+  * Build from git revision 6ee0d2157ffa29b0499be549519df00af42baa4c
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 24 Oct 2013 10:09:25 +0800
+
+deepin-desktop-environment (1.0+git20131024100640~6ee0d2157f) raring; urgency=low
+
+  * Build from git revision 6ee0d2157ffa29b0499be549519df00af42baa4c
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 24 Oct 2013 10:06:40 +0800
+
+deepin-desktop-environment (1.0+git20131024095129~6ee0d2157f) raring; urgency=low
+
+  * Build from git revision 6ee0d2157ffa29b0499be549519df00af42baa4c
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 24 Oct 2013 09:51:29 +0800
+
+deepin-desktop-environment (1.0+git20131024094536~6ee0d2157f) raring; urgency=low
+
+  * Build from git revision 6ee0d2157ffa29b0499be549519df00af42baa4c
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 24 Oct 2013 09:45:36 +0800
+
+deepin-desktop-environment (1.0+git20131024094153~6d6773485a) raring; urgency=low
+
+  * Build from git revision 6d6773485a548209962573a4bf317cc02c81b472
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 24 Oct 2013 09:41:54 +0800
+
+deepin-desktop-environment (1.0+git20131024091548~6d6773485a) raring; urgency=low
+
+  * Build from git revision 6d6773485a548209962573a4bf317cc02c81b472
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 24 Oct 2013 09:15:48 +0800
+
+deepin-desktop-environment (1.0+git20131024091106~6d6773485a) raring; urgency=low
+
+  * Build from git revision 6d6773485a548209962573a4bf317cc02c81b472
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 24 Oct 2013 09:11:06 +0800
+
+deepin-desktop-environment (1.0+git20131024090534~6d6773485a) raring; urgency=low
+
+  * Build from git revision 6d6773485a548209962573a4bf317cc02c81b472
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 24 Oct 2013 09:05:34 +0800
+
+deepin-desktop-environment (1.0+git20131024090139~6d6773485a) raring; urgency=low
+
+  * Build from git revision 6d6773485a548209962573a4bf317cc02c81b472
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 24 Oct 2013 09:01:39 +0800
+
+deepin-desktop-environment (1.0+git20131024085904~6d6773485a) raring; urgency=low
+
+  * Build from git revision 6d6773485a548209962573a4bf317cc02c81b472
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 24 Oct 2013 08:59:04 +0800
+
+deepin-desktop-environment (1.0+git20131024085647~6d6773485a) raring; urgency=low
+
+  * Build from git revision 6d6773485a548209962573a4bf317cc02c81b472
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 24 Oct 2013 08:56:47 +0800
+
+deepin-desktop-environment (1.0+git20131024000547~6d6773485a) raring; urgency=low
+
+  * Build from git revision 6d6773485a548209962573a4bf317cc02c81b472
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 24 Oct 2013 00:05:47 +0800
+
+deepin-desktop-environment (1.0+git20131023173952~ea173818c1) raring; urgency=low
+
+  * Build from git revision ea173818c151ddf07a776fa58455720d6a48aa61
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 23 Oct 2013 17:39:53 +0800
+
+deepin-desktop-environment (1.0+git20131023172625~ea173818c1) raring; urgency=low
+
+  * Build from git revision ea173818c151ddf07a776fa58455720d6a48aa61
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 23 Oct 2013 17:26:25 +0800
+
+deepin-desktop-environment (1.0+git20131023171631~ea173818c1) raring; urgency=low
+
+  * Build from git revision ea173818c151ddf07a776fa58455720d6a48aa61
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 23 Oct 2013 17:16:31 +0800
+
+deepin-desktop-environment (1.0+git20131023170822~bd42474051) raring; urgency=low
+
+  * Build from git revision bd42474051f1bd1ce68cb01f2ed10e59abe2813b
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 23 Oct 2013 17:08:22 +0800
+
+deepin-desktop-environment (1.0+git20131023142409~bd42474051) raring; urgency=low
+
+  * Build from git revision bd42474051f1bd1ce68cb01f2ed10e59abe2813b
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 23 Oct 2013 14:24:09 +0800
+
+deepin-desktop-environment (1.0+git20131023112612~bd42474051) raring; urgency=low
+
+  * Build from git revision bd42474051f1bd1ce68cb01f2ed10e59abe2813b
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 23 Oct 2013 11:26:12 +0800
+
+deepin-desktop-environment (1.0+git20131022085121~e9192ef065) raring; urgency=low
+
+  * Build from git revision e9192ef065e226258b6859b859566ae546c3bc49
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 22 Oct 2013 08:51:22 +0800
+
+deepin-desktop-environment (1.0+git20131021155742~f4ee700e08) raring; urgency=low
+
+  * Build from git revision f4ee700e08f86b6464fcb022789e8feeb7d6d79a
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 21 Oct 2013 15:57:42 +0800
+
+deepin-desktop-environment (1.0+git20131021155143~b6960494c0) raring; urgency=low
+
+  * Build from git revision b6960494c0314736cbe3b3be4a3f80fb22c49fbe
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 21 Oct 2013 15:51:44 +0800
+
+deepin-desktop-environment (1.0+git20131021103659~e4bb2401c0) raring; urgency=low
+
+  * Build from git revision e4bb2401c00f3b244df4df3514498b6ce3446653
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 21 Oct 2013 10:36:59 +0800
+
+deepin-desktop-environment (1.0+git20131021090411~a39738f08f) raring; urgency=low
+
+  * Build from git revision a39738f08fca5749ee2f0ac688fefbbf781a0dd3
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 21 Oct 2013 09:04:11 +0800
+
+deepin-desktop-environment (1.0+git20131018161051~a39738f08f) raring; urgency=low
+
+  * Build from git revision a39738f08fca5749ee2f0ac688fefbbf781a0dd3
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 18 Oct 2013 16:10:51 +0800
+
+deepin-desktop-environment (1.0+git20131018122754~2a4171bf79) raring; urgency=low
+
+  * Build from git revision 2a4171bf797acf6dc1930f528f9e0bb26968e364
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 18 Oct 2013 12:27:54 +0800
+
+deepin-desktop-environment (1.0+git20131018120123~0bcc95566f) raring; urgency=low
+
+  * Build from git revision 0bcc95566fdd9d8b38948293d58457ebf3a9810d
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 18 Oct 2013 12:01:24 +0800
+
+deepin-desktop-environment (1.0+git20131018112550~a05f14b92d) raring; urgency=low
+
+  * Build from git revision a05f14b92d5f880ec06128310cf3f70735b200d7
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 18 Oct 2013 11:25:50 +0800
+
+deepin-desktop-environment (1.0+git20131018110822~2fe5384648) raring; urgency=low
+
+  * Build from git revision 2fe5384648dcf15e9e7f2c930b9ef09896f8a6d8
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 18 Oct 2013 11:08:22 +0800
+
+deepin-desktop-environment (1.0+git20131018102444~ee9733f08c) raring; urgency=low
+
+  * Build from git revision ee9733f08cef402e9191f5f0891943ab4c29c7ba
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 18 Oct 2013 10:24:44 +0800
+
+deepin-desktop-environment (1.0+git20131017174105~17162d622c) raring; urgency=low
+
+  * Build from git revision 17162d622c37216e967ca8f5d44ccec58f9a4330
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 17 Oct 2013 17:41:05 +0800
+
+deepin-desktop-environment (1.0+git20131017155049~6db8058ac0) raring; urgency=low
+
+  * Build from git revision 6db8058ac094aab06c5142eeb31fe6957777be75
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 17 Oct 2013 15:50:49 +0800
+
+deepin-desktop-environment (1.0+git20131017153349~6db8058ac0) raring; urgency=low
+
+  * Build from git revision 6db8058ac094aab06c5142eeb31fe6957777be75
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 17 Oct 2013 15:33:50 +0800
+
+deepin-desktop-environment (1.0+git20131017150153~a56b42d83c) raring; urgency=low
+
+  * Build from git revision a56b42d83ce2d39530aaf679d24474f5b4041b37
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 17 Oct 2013 15:01:54 +0800
+
+deepin-desktop-environment (1.0+git20131017112901~930c72b996) raring; urgency=low
+
+  * Build from git revision 930c72b996b380492b733242805fa31f9285d1ec
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 17 Oct 2013 11:29:01 +0800
+
+deepin-desktop-environment (1.0+git20131017103651~22ddc1a61d) raring; urgency=low
+
+  * Build from git revision 22ddc1a61d704c57f0321a0192e6903855e7d4e3
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 17 Oct 2013 10:36:51 +0800
+
+deepin-desktop-environment (1.0+git20131017095616~bdb6e0a33d) raring; urgency=low
+
+  * Build from git revision bdb6e0a33d4a7a5e848aab794e0809b8b2c204ca
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 17 Oct 2013 09:56:17 +0800
+
+deepin-desktop-environment (1.0+git20131016180215~cee774c090) raring; urgency=low
+
+  * Build from git revision cee774c090d2325349fd733858b1c11c529fe8cb
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 16 Oct 2013 18:02:15 +0800
+
+deepin-desktop-environment (1.0+git20131016155526~cee774c090) raring; urgency=low
+
+  * Build from git revision cee774c090d2325349fd733858b1c11c529fe8cb
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 16 Oct 2013 15:55:26 +0800
+
+deepin-desktop-environment (1.0+git20131016145426~aa55306328) raring; urgency=low
+
+  * Build from git revision aa553063289520a0806b4402454ca1edc35e68bc
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 16 Oct 2013 14:54:26 +0800
+
+deepin-desktop-environment (1.0+git20131016102300~81b884150d) raring; urgency=low
+
+  * Build from git revision 81b884150d0fda548714dc995a66095fec812b11
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 16 Oct 2013 10:23:00 +0800
+
+deepin-desktop-environment (1.0+git20131016092753~901ea5b631) raring; urgency=low
+
+  * Build from git revision 901ea5b63118c1055b41d0e099884cf97d4a4902
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 16 Oct 2013 09:27:53 +0800
+
+deepin-desktop-environment (1.0+git20131015171249~e2447897f6) raring; urgency=low
+
+  * Build from git revision e2447897f6c78aea66baf79b04b25f1aa3683986
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 15 Oct 2013 17:12:49 +0800
+
+deepin-desktop-environment (1.0+git20131015164922~3ccca1f9d6) raring; urgency=low
+
+  * Build from git revision 3ccca1f9d62d227b678482e3036c5d17c20da789
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 15 Oct 2013 16:49:22 +0800
+
+deepin-desktop-environment (1.0+git20131015155632~c540ab549a) raring; urgency=low
+
+  * Build from git revision c540ab549a880c00440420ea455e96409f20e4c9
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 15 Oct 2013 15:56:32 +0800
+
+deepin-desktop-environment (1.0+git20131015102151~401a5ae913) raring; urgency=low
+
+  * Build from git revision 401a5ae913acee961a106bf760a4bfaa34b21dcb
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 15 Oct 2013 10:21:51 +0800
+
+deepin-desktop-environment (1.0+git20131014161545~c78a13f937) raring; urgency=low
+
+  * Build from git revision c78a13f937da9cbc2d4663016065c743614ce2fb
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 14 Oct 2013 16:15:45 +0800
+
+deepin-desktop-environment (1.0+git20131014091356~446258e6d1) raring; urgency=low
+
+  * Build from git revision 446258e6d1152e66007b57ecd3124a63bdab29e6
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 14 Oct 2013 09:13:56 +0800
+
+deepin-desktop-environment (1.0+git20131011123440~3d2d29b3cc) raring; urgency=low
+
+  * Build from git revision 3d2d29b3cc4ca3579a5955fc0644029f8ea6cbfd
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 11 Oct 2013 12:34:41 +0800
+
+deepin-desktop-environment (1.0+git20131011110613~bbfe211527) raring; urgency=low
+
+  * Build from git revision bbfe211527ebe8097e8c40b4a078744baa47a458
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 11 Oct 2013 11:06:13 +0800
+
+deepin-desktop-environment (1.0+git20131011101623~d157ce4138) raring; urgency=low
+
+  * Build from git revision d157ce41383ea975a2013fc04200d4d9fe49f0d2
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 11 Oct 2013 10:16:24 +0800
+
+deepin-desktop-environment (1.0+git20131010174337~87cb083cb0) raring; urgency=low
+
+  * Build from git revision 87cb083cb00c530befe72e4a94e64299c232d194
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 10 Oct 2013 17:43:37 +0800
+
+deepin-desktop-environment (1.0+git20131010171750~5ad2a2922b) raring; urgency=low
+
+  * Build from git revision 5ad2a2922b7595e82585072c8358c1d35b6f9549
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 10 Oct 2013 17:17:51 +0800
+
+deepin-desktop-environment (1.0+git20131010145513~19957780c6) raring; urgency=low
+
+  * Build from git revision 19957780c6687798a9fc69028c6f4c22325bc402
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 10 Oct 2013 14:55:13 +0800
+
+deepin-desktop-environment (1.0+git20131010143126~8ac71cc044) raring; urgency=low
+
+  * Build from git revision 8ac71cc04465bdd17bbf5dce43ea6560e70535f2
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 10 Oct 2013 14:31:26 +0800
+
+deepin-desktop-environment (1.0+git20131010133504~cb67b7e5c9) raring; urgency=low
+
+  * Build from git revision cb67b7e5c9b84df55231c572865af1036849257e
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 10 Oct 2013 13:35:05 +0800
+
+deepin-desktop-environment (1.0+git20131010101047~820dbf20bf) raring; urgency=low
+
+  * Build from git revision 820dbf20bfc92324b488a0cf7b89f1885e113378
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 10 Oct 2013 10:10:47 +0800
+
+deepin-desktop-environment (1.0+git20131009163002~7a1b5da95d) raring; urgency=low
+
+  * Build from git revision 7a1b5da95d9665372a7a476c7a603e3e9fa5e420
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 09 Oct 2013 16:30:02 +0800
+
+deepin-desktop-environment (1.0+git20131008153506~35041e35b6) raring; urgency=low
+
+  * Build from git revision 35041e35b6045ba9e61b81b914ed6e97acc6ebd8
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 08 Oct 2013 15:35:06 +0800
+
+deepin-desktop-environment (1.0+git20131008102332~4ce295bb23) raring; urgency=low
+
+  * Build from git revision 4ce295bb23ac1104ca14e31418e4c91bc2bc8c2b
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 08 Oct 2013 10:23:33 +0800
+
+deepin-desktop-environment (1.0+git20130929151817~af64e960c5) raring; urgency=low
+
+  * Build from git revision af64e960c5f03e83e78a2ff8045ca6aadffa06de
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Sun, 29 Sep 2013 15:18:17 +0800
+
+deepin-desktop-environment (1.0+git20130929120356~407245c882) raring; urgency=low
+
+  * Build from git revision 407245c8820ff9f64503bb0bb7b0ebac988ea812
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Sun, 29 Sep 2013 12:03:57 +0800
+
+deepin-desktop-environment (1.0+git20130928165114~407245c882) raring; urgency=low
+
+  * Build from git revision 407245c8820ff9f64503bb0bb7b0ebac988ea812
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Sat, 28 Sep 2013 16:51:14 +0800
+
+deepin-desktop-environment (1.0+git20130927171014~34dfb96bf7) raring; urgency=low
+
+  * Build from git revision 34dfb96bf7ab23aa75e4851fba5289bdd164a64b
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 27 Sep 2013 17:10:14 +0800
+
+deepin-desktop-environment (1.0+git20130926173209~968d0da5a8) raring; urgency=low
+
+  * Build from git revision 968d0da5a862893f115a28c63195829d57644779
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 26 Sep 2013 17:32:09 +0800
+
+deepin-desktop-environment (1.0+git20130926163204~34d36a5082) raring; urgency=low
+
+  * Build from git revision 34d36a50829901db42f33438bb6410e0f14077a2
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 26 Sep 2013 16:32:04 +0800
+
+deepin-desktop-environment (1.0+git20130926145307~b8ceb94855) raring; urgency=low
+
+  * Build from git revision b8ceb94855442ea32c67fda4bacd52941a76bd88
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 26 Sep 2013 14:53:07 +0800
+
+deepin-desktop-environment (1.0+git20130926133146~1e5086e15c) raring; urgency=low
+
+  * Build from git revision 1e5086e15c495e0fe45d18cf72788d9787eceae5
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 26 Sep 2013 13:31:46 +0800
+
+deepin-desktop-environment (1.0+git20130926115738~a7fed539e9) raring; urgency=low
+
+  * Build from git revision a7fed539e9178f08ccad76edb3156a79a37f8fbb
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 26 Sep 2013 11:57:38 +0800
+
+deepin-desktop-environment (1.0+git20130925095336~614e6b62b0) raring; urgency=low
+
+  * Build from git revision 614e6b62b029a85e5e4b592c92784d8a61be3482
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 25 Sep 2013 09:53:36 +0800
+
+deepin-desktop-environment (1.0+git20130918093941~934c449125) raring; urgency=low
+
+  * Build from git revision 934c4491250605c09f4ce00450e640fe506d281a
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 18 Sep 2013 09:39:41 +0800
+
+deepin-desktop-environment (1.0+git20130917150407~1f4b4acbf1) raring; urgency=low
+
+  * Build from git revision 1f4b4acbf1a2f4524c13e61bc88f66092d4079c6
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 17 Sep 2013 15:04:07 +0800
+
+deepin-desktop-environment (1.0+git20130916165303~ad8ac78069) raring; urgency=low
+
+  * Build from git revision ad8ac7806921276117eeadfcdc345fb780dccd50
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 16 Sep 2013 16:53:03 +0800
+
+deepin-desktop-environment (1.0+git20130913110534~e559eea015) raring; urgency=low
+
+  * Build from git revision e559eea0152fe96b2b33ea96f314c2faa7f11cd3
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 13 Sep 2013 11:05:35 +0800
+
+deepin-desktop-environment (1.0+git20130913095645~652de55c8c) raring; urgency=low
+
+  * Build from git revision 652de55c8c031ff7115165694c160253ef110d5e
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 13 Sep 2013 09:56:45 +0800
+
+deepin-desktop-environment (1.0+git20130912174006~ac753092e0) raring; urgency=low
+
+  * Build from git revision ac753092e031c66d6c7eba76a910e57642da9279
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 12 Sep 2013 17:40:06 +0800
+
+deepin-desktop-environment (1.0+git20130912103314~abe5170d3c) raring; urgency=low
+
+  * Build from git revision abe5170d3c59f99360552ad89f4861a63dccb1dc
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 12 Sep 2013 10:33:14 +0800
+
+deepin-desktop-environment (1.0+git20130911114627~2ca5ce404c) raring; urgency=low
+
+  * Build from git revision 2ca5ce404c909cca4a2174407ff4cf09347b3773
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 11 Sep 2013 11:46:27 +0800
+
+deepin-desktop-environment (1.0+git20130910164745~fc1812ebea) raring; urgency=low
+
+  * Build from git revision fc1812ebea205a059ab79f3ecc717d0f35b7832f
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 10 Sep 2013 16:47:45 +0800
+
+deepin-desktop-environment (1.0+git20130910164634~fc1812ebea) raring; urgency=low
+
+  * Build from git revision fc1812ebea205a059ab79f3ecc717d0f35b7832f
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 10 Sep 2013 16:46:35 +0800
+
+deepin-desktop-environment (1.0+git20130909142514~dda6fd2bbf) raring; urgency=low
+
+  * Build from git revision dda6fd2bbf615135b5ad070c77cb71eedb29d9a0
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 09 Sep 2013 14:25:15 +0800
+
+deepin-desktop-environment (1.0+git20130909111235~03dd1c91d3) raring; urgency=low
+
+  * Build from git revision 03dd1c91d3e035444871b53b92025964e123fc31
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 09 Sep 2013 11:12:35 +0800
+
+deepin-desktop-environment (1.0+git20130906143212~d11b51187d) raring; urgency=low
+
+  * Build from git revision d11b51187dcc03943a78e4fa0621cf481fec25bd
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 06 Sep 2013 14:32:13 +0800
+
+deepin-desktop-environment (1.0+git20130905160116~061c0879c7) raring; urgency=low
+
+  * Build from git revision 061c0879c7c90be3aaf85f8ec7a48691f085ea78
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 05 Sep 2013 16:01:16 +0800
+
+deepin-desktop-environment (1.0+git20130905145955~51df1bd828) raring; urgency=low
+
+  * Build from git revision 51df1bd8283b1dfda741eee0fe7143cd46f37f06
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 05 Sep 2013 14:59:55 +0800
+
+deepin-desktop-environment (1.0+git20130905131648~728a8d4c9c) raring; urgency=low
+
+  * Build from git revision 728a8d4c9cf46944bddb3556b69664f3acb91287
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 05 Sep 2013 13:16:49 +0800
+
+deepin-desktop-environment (1.0+git20130905111121~b06814b846) raring; urgency=low
+
+  * Build from git revision b06814b8465e842429a19f5ddc66537ccd27318a
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 05 Sep 2013 11:11:22 +0800
+
+deepin-desktop-environment (1.0+git20130905100330~bc9acad787) raring; urgency=low
+
+  * Build from git revision bc9acad78775dfa5c9bbcc8f91be5ae1ae41d8fa
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 05 Sep 2013 10:03:30 +0800
+
+deepin-desktop-environment (1.0+git20130905095208~bc9acad787) raring; urgency=low
+
+  * Build from git revision bc9acad78775dfa5c9bbcc8f91be5ae1ae41d8fa
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 05 Sep 2013 09:52:08 +0800
+
+deepin-desktop-environment (1.0+git20130905094845~bc9acad787) raring; urgency=low
+
+  * Build from git revision bc9acad78775dfa5c9bbcc8f91be5ae1ae41d8fa
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 05 Sep 2013 09:48:45 +0800
+
+deepin-desktop-environment (1.0+git20130902132937~4e0497152e) raring; urgency=low
+
+  * Build from git revision 4e0497152ee4530f3f03f5aec0a919f62dad39e3
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 02 Sep 2013 13:29:37 +0800
+
+deepin-desktop-environment (1.0+git20130902102809~590ac299f5) raring; urgency=low
+
+  * Build from git revision 590ac299f53e7c6190426766aa86ad1616a10855
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 02 Sep 2013 10:28:09 +0800
+
+deepin-desktop-environment (1.0+git20130830163426~a0205637db) raring; urgency=low
+
+  * Build from git revision a0205637dbe503dd596cdf02dc4abcd4643529c3
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 30 Aug 2013 16:34:26 +0800
+
+deepin-desktop-environment (1.0+git20130830083144~24ec43fc9c) raring; urgency=low
+
+  * Build from git revision 24ec43fc9c38e2626ea61a9616b383b62890d7f2
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 30 Aug 2013 08:31:44 +0800
+
+deepin-desktop-environment (1.0+git20130829152146~10e33338fd) raring; urgency=low
+
+  * Build from git revision 10e33338fdd7ed786bbe1c3a62b74c5a6c27275e
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 29 Aug 2013 15:21:46 +0800
+
+deepin-desktop-environment (1.0+git20130829105920~809f7cee8c) raring; urgency=low
+
+  * Build from git revision 809f7cee8c9a0771185c00a9549cc574ce9f7877
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 29 Aug 2013 10:59:20 +0800
+
+deepin-desktop-environment (1.0+git20130823083009~8b5ab14b19) raring; urgency=low
+
+  * Build from git revision 8b5ab14b19223fa7acc197087f4fb607bc584749
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 23 Aug 2013 08:30:09 +0800
+
+deepin-desktop-environment (1.0+git20130822173759~ffcc896e2e) raring; urgency=low
+
+  * Build from git revision ffcc896e2e33bf8e19530834b3e7c049be729868
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 22 Aug 2013 17:37:59 +0800
+
+deepin-desktop-environment (1.0+git20130822162742~95e877398c) raring; urgency=low
+
+  * Build from git revision 95e877398c9482c1e24781ae9fbd7143e9e57498
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 22 Aug 2013 16:27:43 +0800
+
+deepin-desktop-environment (1.0+git20130822140226~aba377e83e) raring; urgency=low
+
+  * Build from git revision aba377e83e1ba1dbd06d35b3d173e742b9eea0d4
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 22 Aug 2013 14:02:26 +0800
+
+deepin-desktop-environment (1.0+git20130821164143~e4004a3e49) raring; urgency=low
+
+  * Build from git revision e4004a3e496d927e553da48610e6b5080a30869c
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 21 Aug 2013 16:41:43 +0800
+
+deepin-desktop-environment (1.0+git20130820003604~e60892982e) raring; urgency=low
+
+  * Build git resivision from 565932939 to e60892982e
+    e608929 Merge remote-tracking branch 'origin/develop'
+    b96b157 app:desktop fix desktop crash on start (caused by use uninitialized GPtrArray* picture_paths)
+    fbbdd22 Merge remote-tracking branch 'origin/develop'
+    d4ba5fc fix bug of plugin item not real place when 注销或开机
+    e31ea3f lib:dentry  improve fileops_get_trash_count
+    7e683f9 Merge branch 'develop'
+    33918da lib:entry:: fix the bug that cannot create app group when drag more than 2 items
+    ba3c987 Merge branch 'develop'
+    828dd23 app:launcher:: fix the bug whose id is 2219 on mantis
+    bf06a3e lib:entry:: fix the bug that desktop will die if desktop file has not Categories field when create app group
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 20 Aug 2013 00:36:04 +0800
+
+
+deepin-desktop-environment (1.0+git20130820003030~e60892982e) raring; urgency=low
+
+  * Build git resivision from 565932939 to e60892982e
+    e608929 Merge remote-tracking branch 'origin/develop'
+    b96b157 app:desktop fix desktop crash on start (caused by use uninitialized GPtrArray* picture_paths)
+    fbbdd22 Merge remote-tracking branch 'origin/develop'
+    d4ba5fc fix bug of plugin item not real place when 注销或开机
+    e31ea3f lib:dentry  improve fileops_get_trash_count
+    7e683f9 Merge branch 'develop'
+    33918da lib:entry:: fix the bug that cannot create app group when drag more than 2 items
+    ba3c987 Merge branch 'develop'
+    828dd23 app:launcher:: fix the bug whose id is 2219 on mantis
+    bf06a3e lib:entry:: fix the bug that desktop will die if desktop file has not Categories field when create app group
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 20 Aug 2013 00:30:30 +0800
+
+
+deepin-desktop-environment (1.0+git20130820002540~e60892982e) raring; urgency=low
+
+  * Build git resivision from 565932939 to e60892982e
+    e608929 Merge remote-tracking branch 'origin/develop'
+    b96b157 app:desktop fix desktop crash on start (caused by use uninitialized GPtrArray* picture_paths)
+    fbbdd22 Merge remote-tracking branch 'origin/develop'
+    d4ba5fc fix bug of plugin item not real place when 注销或开机
+    e31ea3f lib:dentry  improve fileops_get_trash_count
+    7e683f9 Merge branch 'develop'
+    33918da lib:entry:: fix the bug that cannot create app group when drag more than 2 items
+    ba3c987 Merge branch 'develop'
+    828dd23 app:launcher:: fix the bug whose id is 2219 on mantis
+    bf06a3e lib:entry:: fix the bug that desktop will die if desktop file has not Categories field when create app group
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Tue, 20 Aug 2013 00:25:40 +0800
+
+
+deepin-desktop-environment (1.0+git20130819234149~e60892982e) raring; urgency=low
+
+  * Build git resivision from 565932939 to e60892982e
+    e608929 Merge remote-tracking branch 'origin/develop'
+    b96b157 app:desktop fix desktop crash on start (caused by use uninitialized GPtrArray* picture_paths)
+    fbbdd22 Merge remote-tracking branch 'origin/develop'
+    d4ba5fc fix bug of plugin item not real place when 注销或开机
+    e31ea3f lib:dentry  improve fileops_get_trash_count
+    7e683f9 Merge branch 'develop'
+    33918da lib:entry:: fix the bug that cannot create app group when drag more than 2 items
+    ba3c987 Merge branch 'develop'
+    828dd23 app:launcher:: fix the bug whose id is 2219 on mantis
+    bf06a3e lib:entry:: fix the bug that desktop will die if desktop file has not Categories field when create app group
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 19 Aug 2013 23:41:49 +0800
+
+
+deepin-desktop-environment (1.0+git20130819233505~e60892982e) raring; urgency=low
+
+  * Build git resivision from 565932939 to e60892982e
+    e608929 Merge remote-tracking branch 'origin/develop'
+    b96b157 app:desktop fix desktop crash on start (caused by use uninitialized GPtrArray* picture_paths)
+    fbbdd22 Merge remote-tracking branch 'origin/develop'
+    d4ba5fc fix bug of plugin item not real place when 注销或开机
+    e31ea3f lib:dentry  improve fileops_get_trash_count
+    7e683f9 Merge branch 'develop'
+    33918da lib:entry:: fix the bug that cannot create app group when drag more than 2 items
+    ba3c987 Merge branch 'develop'
+    828dd23 app:launcher:: fix the bug whose id is 2219 on mantis
+    bf06a3e lib:entry:: fix the bug that desktop will die if desktop file has not Categories field when create app group
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 19 Aug 2013 23:35:05 +0800
+
+
+deepin-desktop-environment (1.0+git20130819165449~e60892982e) raring; urgency=low
+
+  * Build git resivision from 565932939 to e60892982e
+    e608929 Merge remote-tracking branch 'origin/develop'
+    b96b157 app:desktop fix desktop crash on start (caused by use uninitialized GPtrArray* picture_paths)
+    fbbdd22 Merge remote-tracking branch 'origin/develop'
+    d4ba5fc fix bug of plugin item not real place when 注销或开机
+    e31ea3f lib:dentry  improve fileops_get_trash_count
+    7e683f9 Merge branch 'develop'
+    33918da lib:entry:: fix the bug that cannot create app group when drag more than 2 items
+    ba3c987 Merge branch 'develop'
+    828dd23 app:launcher:: fix the bug whose id is 2219 on mantis
+    bf06a3e lib:entry:: fix the bug that desktop will die if desktop file has not Categories field when create app group
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 19 Aug 2013 16:54:49 +0800
+
+
+deepin-desktop-environment (1.0+git20130819165301~e60892982e) raring; urgency=low
+
+  * Build git resivision from 565932939 to e60892982e
+    e608929 Merge remote-tracking branch 'origin/develop'
+    b96b157 app:desktop fix desktop crash on start (caused by use uninitialized GPtrArray* picture_paths)
+    fbbdd22 Merge remote-tracking branch 'origin/develop'
+    d4ba5fc fix bug of plugin item not real place when 注销或开机
+    e31ea3f lib:dentry  improve fileops_get_trash_count
+    7e683f9 Merge branch 'develop'
+    33918da lib:entry:: fix the bug that cannot create app group when drag more than 2 items
+    ba3c987 Merge branch 'develop'
+    828dd23 app:launcher:: fix the bug whose id is 2219 on mantis
+    bf06a3e lib:entry:: fix the bug that desktop will die if desktop file has not Categories field when create app group
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Mon, 19 Aug 2013 16:53:01 +0800
+
+
+deepin-desktop-environment (1.0+git20130815145911~7e683f9f49) raring; urgency=low
+
+  * Build from git revision 7e683f9f49441cc7dcb7fcb170ffd068beb8340c
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Thu, 15 Aug 2013 14:59:11 +0800
+
+deepin-desktop-environment (1.0+git20130814162417~cca0c883a7) raring; urgency=low
+
+  * Build git resivision from 565932939 to cca0c883a7
+    cca0c88 Merge remote-tracking branch 'origin/develop'
+    0941e4d Merge remote-tracking branch 'origin/grid_tmp' into develop
+    dd0e0e8 optimiz dde seleted item speed again
+    575c765 delete some echo
+    663ad68 fix bug of ctrl shift to selected item
+    0c314ee can cancle_item_selected but pop two times for one item
+    44a4332 still cannot set_item_selected false
+    18d3c29 can push pop ok
+    a377b71 make_dbus: check wheter have rettype when generate dbus caller functions
+    d451da3 make_dbus: fix temp_caller_func_decl  index featch error
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 14 Aug 2013 16:24:17 +0800
+
+
+deepin-desktop-environment (1.0+git20130814162307~cca0c883a7) raring; urgency=low
+
+  * Build git resivision from 565932939 to cca0c883a7
+    cca0c88 Merge remote-tracking branch 'origin/develop'
+    0941e4d Merge remote-tracking branch 'origin/grid_tmp' into develop
+    dd0e0e8 optimiz dde seleted item speed again
+    575c765 delete some echo
+    663ad68 fix bug of ctrl shift to selected item
+    0c314ee can cancle_item_selected but pop two times for one item
+    44a4332 still cannot set_item_selected false
+    18d3c29 can push pop ok
+    a377b71 make_dbus: check wheter have rettype when generate dbus caller functions
+    d451da3 make_dbus: fix temp_caller_func_decl  index featch error
+
+ -- Deepin Packages Builder <packages@linuxdeepin.com>  Wed, 14 Aug 2013 16:23:07 +0800
