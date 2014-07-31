@@ -55,23 +55,15 @@ _RENAME_TIME_DELAY_ = 600
 
 # id string for "computer" item
 _ITEM_ID_COMPUTER_  = "Computer_Virtual_Dir"
-# id string for "home" item
-_ITEM_ID_USER_HOME_ = "Home_Virtual_Dir"
 # id string for "trash bin" item
 _ITEM_ID_TRASH_BIN_ = "Trash_Virtual_Dir"
-# id string for "Deepin Software Center" item
-_ITEM_ID_DSC_ = "DSC_Virtual_Button"
 
 # id string for "computer" icon
 _ICON_ID_COMPUTER_  = "computer"
-# id string for "home" icon
-_ICON_ID_USER_HOME_ = "deepin-user-home"
 # id string for "trash bin" normal icon
 _ICON_ID_TRASH_BIN_FULL_ = "user-trash-full"
 # id string for "trash bin" empty icon
 _ICON_ID_TRASH_BIN_ = "user-trash"
-# id string for "Deepin Software Center" icon
-_ICON_ID_DSC_ = "deepin-software-center"
 
 # desktop icon size category
 D_ICON_SIZE_SMALL  = 16
@@ -92,9 +84,7 @@ desktop_uri = DCore.DEntry.get_uri(g_desktop_entry)
 
 # const names to get configs
 _CFG_SHOW_COMPUTER_ICON_ = "show-computer-icon"
-_CFG_SHOW_HOME_ICON_ = "show-home-icon"
 _CFG_SHOW_TRASH_BIN_ICON_ = "show-trash-icon"
-_CFG_SHOW_DSC_ICON_ = "show-dsc-icon"
 
 # wrapper func to get configs
 _GET_CFG_BOOL_ = (val) ->

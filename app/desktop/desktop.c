@@ -279,6 +279,13 @@ PRIVATE void dock_config_changed(GSettings* settings, char* key, gpointer usr_da
 }
 
 
+PRIVATE void desktop_config_changed(GSettings* settings G_GNUC_UNUSED,
+                                    char* key G_GNUC_UNUSED,
+                                    gpointer usr_data G_GNUC_UNUSED)
+{
+    js_post_signal ("desktop_config_changed");
+}
+
 extern GHashTable* enabled_plugins;
 extern GHashTable* disabled_plugins;
 extern GHashTable* plugins_state;
@@ -603,6 +610,10 @@ void desktop_emit_webview_ok()
                           G_CALLBACK(dock_config_changed), NULL);
 
         desktop_gsettings = g_settings_new (DESKTOP_SCHEMA_ID);
+        g_signal_connect (desktop_gsettings, "changed::show-computer-icon",
+                          G_CALLBACK(desktop_config_changed), NULL);
+        g_signal_connect (desktop_gsettings, "changed::show-trash-icon",
+                          G_CALLBACK(desktop_config_changed), NULL);
         g_signal_connect(desktop_gsettings, "changed::enabled-plugins",
                          G_CALLBACK(desktop_plugins_changed), NULL);
 
