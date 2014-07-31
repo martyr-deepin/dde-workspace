@@ -44,7 +44,7 @@ class GlobalMenu
             when "deepinAppletManager"
                 dbus = @plugins[groupName]
                 if not dbus
-                    console.wanr("cannot get dbus of #{groupName}")
+                    console.warn("cannot get dbus of #{groupName}")
                     return
                 dbus.ToggleApplet(realId)
 
