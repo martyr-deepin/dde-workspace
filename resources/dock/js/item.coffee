@@ -109,7 +109,10 @@ class Item extends Widget
         @on_mousemove(e)
 
         if _isRightclicked || settings.hideMode() != HideMode.KeepShowing and hideStatusManager.state != HideState.Shown
-            console.log("hide state is not Shown")
+            console.log("_isRightclicked: #{_isRightclicked}")
+            console.log("hide mode is keep-showing: #{settings.hideMode() != HideMode.KeepShowing}")
+            console.log("hide state is not Shown: #{hideStatusManager.state != HideState.Shown}")
+            $tooltip?.hide()
             return
         console.log("mouseover, require_all_region")
         DCore.Dock.require_all_region()
