@@ -19,15 +19,16 @@ DisplayModeNameMap =
 
 class Setting
     constructor:->
-        @dbus = get_dbus(
-            'session',
-            name: "com.deepin.daemon.Dock",
-            path: "/dde/dock/DockSetting",
-            interface:"dde.dock.DockSetting",
-            "GetHideMode"
-        )
-        if not @dbus
-            console.error("connect to DockSetting failed")
+        try
+            @dbus = get_dbus(
+                'session',
+                name: "com.deepin.daemon.Dock",
+                path: "/dde/dock/DockSetting",
+                interface:"dde.dock.DockSetting",
+                "GetHideMode"
+            )
+        catch e
+            console.error("connect to DockSetting failed: #{e}")
             DCore.Dock.quit()
 
         @dbus.connect("HideModeChanged", (mode)=>
@@ -72,7 +73,6 @@ class Setting
         if mode == "default" || mode == "intelligent"
             return HideMode.KeepShowing
         mode
-
     setHideMode:(id)->
         console.log("setHideMode: #{id}")
         @dbus.SetHideMode(id)

@@ -251,6 +251,7 @@ initDock = ->
         console.log("hide mode is KeepHidden")
         setTimeout(->
             IN_INIT = false
+            READY_FOR_TRAY_ICONS = true
             calc_app_item_size()
             hideStatusManager.updateState()
             update_dock_region($("#container").clientWidth)
@@ -265,6 +266,9 @@ initDock = ->
         $("#trayarea").style.webkitTransform = 'translateY(0)' if settings.displayMode() == DisplayMode.Classic
         hideStatusManager.updateState()
         update_dock_region($("#container").clientWidth)
+        setTimeout(->
+            READY_FOR_TRAY_ICONS = true
+        , ANIMATION_TIME)
     , 1000)
 
 
