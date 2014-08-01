@@ -61,7 +61,9 @@ class Select extends Widget
         el.style.background = "rgba(0,0,0,0.5)"
 
     select_css: (el) ->
-        el.style.background = "rgba(0,0,0,0.3)"
+        el.style.background = "url(\"images/select.png\") no-repeat"
+        el.style.backgroundPosition = "5px 11px"
+        el.style.backgroundColor = "rgba(0,0,0,0.3)"
 
     set_cb:(@cb) ->
         if @li.length == 0 then @boxscroll_create()
