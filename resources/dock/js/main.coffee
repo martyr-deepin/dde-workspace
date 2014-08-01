@@ -268,6 +268,8 @@ initDock = ->
         update_dock_region($("#container").clientWidth)
         setTimeout(->
             READY_FOR_TRAY_ICONS = true
+            if settings.displayMode() == DisplayMode.Classic
+                systemTray?.showAllIcons()
         , ANIMATION_TIME)
     , 1000)
 

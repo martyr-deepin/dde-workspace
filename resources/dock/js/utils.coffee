@@ -77,7 +77,7 @@ createItem = (d)->
         time.core = new EntryProxy(d)
         time.init_clientgroup()
         time.core.showQuickWindow()
-    else if settings.displayMode() == DisplayMode.Classic
+    else
         console.log("SystemItem #{d.Id}, #{icon}, #{title}")
         new SystemItem(d.Id, icon, title)
 

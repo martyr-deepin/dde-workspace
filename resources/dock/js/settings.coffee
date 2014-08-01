@@ -43,6 +43,8 @@ class Setting
             switch mode
                 when DisplayMode.Classic
                     switchToClassicMode()
+                    $("#trayarea").style.webkitTransform = 'translateY(0)'
+                    systemTray?.updateTrayIcon()
                 when DisplayMode.Modern
                     switchToModernMode()
         )
