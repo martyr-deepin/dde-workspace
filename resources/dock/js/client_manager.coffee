@@ -7,4 +7,5 @@ try
         "ToggleShowDesktop"
     )
 catch e
-    console.log e
+    console.error e
+    DCore.Dock.quit()

@@ -9,6 +9,7 @@ try
     )
 catch e
     console.log e
+    DCore.Dock.quit()
 
 dockedAppManager?.connect("Docked", (id)->
     console.log("Docked #{id}")

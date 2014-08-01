@@ -57,6 +57,17 @@ class SystemTray extends SystemItem
                 # $EW.hide(xid)
         )
         @core.connect("Changed", (xid)=>
+            if !READY_FOR_TRAY_ICONS
+                @items.remove(xid)
+                @items.unshift(xid)
+                return
+
+            if @items.length == 0
+                @hideButton()
+                if @isUnfolded
+                    @fold()
+                return
+
             console.log("tray icon #{xid} is Changed")
             @isShowing = true
             @img.style.display = 'none'
@@ -69,16 +80,18 @@ class SystemTray extends SystemItem
             @items.unshift(xid)
             @updateTrayIcon()
             @showAllIcons()
-            if IN_INIT
-                setTimeout(=>
-                    @updateTrayIcon()
-                , 1000 + ANIMATION_TIME)
             if @upperItemNumber > 2
                 @unfold()
         )
         @core.connect("Removed", (xid)=>
             console.log("tray icon #{xid} is Removed")
             @items.remove(xid)
+
+            if @items.length == 0
+                @hideButton()
+                if @isUnfolded
+                    @fold()
+                return
 
             if @isShowing
                 if @items.length == 4

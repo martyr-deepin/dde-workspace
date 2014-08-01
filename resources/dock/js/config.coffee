@@ -103,3 +103,5 @@ TRASH_ID = "filemanager-trash"
 INSERT_INDICATOR_WIDTH = 57
 
 TIME_ID = "AppletDateTime"
+
+READY_FOR_TRAY_ICONS = false
