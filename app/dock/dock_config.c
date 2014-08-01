@@ -52,6 +52,8 @@ void setting_changed(GSettings* s, gchar* key, gpointer user_data G_GNUC_UNUSED)
             GD.dock_height = 68;
             GD.dock_panel_height = 60;
         }
+
+        _change_workarea_height(GD.dock_height);
     }
 }
 
