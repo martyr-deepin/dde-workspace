@@ -53,7 +53,11 @@ void setting_changed(GSettings* s, gchar* key, gpointer user_data G_GNUC_UNUSED)
             GD.dock_panel_height = 60;
         }
 
-        _change_workarea_height(GD.dock_height);
+        if (GD.config.hide_mode == NO_HIDE_MODE ) {
+            _change_workarea_height(GD.dock_height);
+        } else {
+            _change_workarea_height(0);
+        }
     }
 }
 
