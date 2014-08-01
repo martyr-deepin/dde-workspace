@@ -45,6 +45,13 @@ void setting_changed(GSettings* s, gchar* key, gpointer user_data G_GNUC_UNUSED)
         g_debug("setting_changed");
     } else if (g_strcmp0(key, DISPLAY_MODE_KEY) == 0) {
         GD.config.display_mode = g_settings_get_enum(s, key);
+        if (GD.config.display_mode == CLASSIC_MODE) {
+            GD.dock_height = 48;
+            GD.dock_panel_height = 48;
+        } else {
+            GD.dock_height = 68;
+            GD.dock_panel_height = 60;
+        }
     }
 }
 
@@ -57,6 +64,13 @@ void init_config()
     GSettings* s = g_settings_new(SCHEMA_ID);
     GD.config.hide_mode = g_settings_get_enum(s, HIDE_MODE_KEY);
     GD.config.display_mode = g_settings_get_enum(s, DISPLAY_MODE_KEY);
+    if (GD.config.display_mode == CLASSIC_MODE) {
+        GD.dock_height = 48;
+        GD.dock_panel_height = 48;
+    } else {
+        GD.dock_height = 68;
+        GD.dock_panel_height = 60;
+    }
     g_signal_connect(s, "changed", G_CALLBACK(setting_changed), NULL);
 }
 

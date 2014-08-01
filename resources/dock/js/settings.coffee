@@ -67,9 +67,6 @@ class Setting
                 ICON_WIDTH = 48.0
                 ICON_HEIGHT = 48.0
 
-        DCore.Dock.set_height(DOCK_HEIGHT)
-        DCore.Dock.set_panel_height(PANEL_HEIGHT)
-
     hideMode:->
         mode = @dbus.GetHideMode_sync()
         if mode == "default" || mode == "intelligent"

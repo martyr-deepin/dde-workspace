@@ -19,8 +19,9 @@ switchToModernMode = ->
 
 update_dock=->
     setTimeout(->
-        console.warn("panel #{Panel.getPanelMiddleWidth()}")
+        console.log("panel #{Panel.getPanelMiddleWidth()}")
 
+        panel.set_height(PANEL_HEIGHT)
         panel.set_width(Panel.getPanelMiddleWidth())
         update_dock_region(Panel.getPanelMiddleWidth())
 
@@ -28,4 +29,4 @@ update_dock=->
         systemTray?.updateTrayIcon()
 
         console.warn("update region and panel")
-    , 2000)
+    , 10)
