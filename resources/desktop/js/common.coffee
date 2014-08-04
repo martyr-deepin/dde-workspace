@@ -115,7 +115,6 @@ dss_dbus = null
 dss_ShowModule = (module) ->
     try
         dss_dbus = DCore.DBus.session(DSS) if dss_dbus is null or dss_dbus is undefined
-        echo dss_dbus
         dss_dbus?.ShowModule(module)
     catch e
         echo "dss_ShowModule #{module} error:#{e}"
