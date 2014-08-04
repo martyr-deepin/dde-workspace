@@ -1,7 +1,7 @@
 nicesx = null
 
 class Select extends Widget
-
+    EACH_HEIGHT = 36
     constructor:(@id,@parent)->
         super
         echo "New Select #{@id}"
@@ -32,20 +32,19 @@ class Select extends Widget
         @element.removeChild(@boxscroll) if @boxscroll
         @boxscroll = null
 
-    boxscroll_create: ->
+    boxscroll_create: (@max_show = 5) ->
         @boxscroll_remove()
         #@triangle = create_img("triangle","images/triangle.png",@element)
         @boxscroll = create_element("div","boxscroll",@element)
         @boxscroll.setAttribute("id","boxscroll")
-        #if jQuery("#boxscroll").length ==0
-        #    @boxscroll = create_element("div","boxscroll",@element)
-        #    @boxscroll.setAttribute("id","boxscroll")
-        #else @boxscroll = jQuery("#boxscroll")[0]
+        @boxscroll.style.maxHeight = EACH_HEIGHT * @max_show
+        @boxscroll.style.overflowY = "scroll" if @lists.length > @max_show
         @li = []
         @a = []
         @ul = create_element("ul","",@boxscroll)
         for each,i in @lists
             @li[i] = create_element("li","",@ul)
+            @li[i].setAttribute("style","height:#{EACH_HEIGHT}px;line-height:#{EACH_HEIGHT}px;")
             @a[i] = create_element("a","",@li[i])
             @li[i].setAttribute("id",each)
             @a[i].innerText = each
@@ -54,16 +53,33 @@ class Select extends Widget
         @selected = @current
         if @li.length == 0 then @boxscroll_create()
         for each,i in @lists
-            if each is @current then @select_css(@li[i])
-            else @unselect_css(@li[i])
+            if each is @current
+                @select_css(i)
+                #@li[i].removeEventListener("mouseover",@hover_css(i))
+                #@li[i].removeEventListener("mouseout",@unselect_css(i))
+            else
+                @unselect_css(i)
+                @li[i].addEventListener("mouseover",@hover_css(i))
+                @li[i].addEventListener("mouseout",@unselect_css(i))
 
-    unselect_css: (el) ->
-        el.style.background = "rgba(0,0,0,0.5)"
+    unselect_css: (i) =>
+        echo "unselect_css:#{i}"
+        @li[i].style.background = "no-repeat"
+        @li[i].style.backgroundColor = "rgba(0,0,0,0.4)"
+        @a[i].style.color = "#FFFFFF"
 
-    select_css: (el) ->
-        el.style.background = "url(\"images/select.png\") no-repeat"
-        el.style.backgroundPosition = "5px 11px"
-        el.style.backgroundColor = "rgba(0,0,0,0.3)"
+    hover_css: (i) =>
+        echo "hover_css:#{i}"
+        @li[i].style.background = "no-repeat"
+        @li[i].style.backgroundColor = "rgba(0,0,0,0.7)"
+        @a[i].style.color = "#FFFFFF"
+
+    select_css: (i) =>
+        echo "select_css:#{i}"
+        @li[i].style.background = "url(\"images/select_dark_hover.png\") no-repeat"
+        @li[i].style.backgroundPosition = "5px 11px"
+        @li[i].style.backgroundColor = "rgba(0,0,0,0.7)"
+        @a[i].style.color = "#01bdff"
 
     set_cb:(@cb) ->
         if @li.length == 0 then @boxscroll_create()

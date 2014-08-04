@@ -408,7 +408,6 @@ class LoginEntry extends Widget
         @keyboard_img.addEventListener("click",(e)=>
             e.stopPropagation()
             @keyboard?.toggle()
-            echo "keyboard_img.click and keyboard.style.display is #{@keyboard.element.style.display}"
         )
 
     keyboard_create: ->
