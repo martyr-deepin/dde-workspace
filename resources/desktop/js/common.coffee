@@ -90,8 +90,6 @@ _CFG_SHOW_TRASH_BIN_ICON_ = "show-trash-icon"
 _GET_CFG_BOOL_ = (val) ->
     DCore.Desktop.get_config_boolean(val)
 
-DSS = "com.deepin.dde.ControlCenter"
-
 # pop dialog
 TRIANGLE =
     width: 18
@@ -105,3 +103,20 @@ SHADOW =
     color: 'rgba(0,0,0,.4)'
 FILL_STYLE = 'rgba(0,0,0,.8)'
 STROKE_STYLE = 'rgba(255,255,255,.4)'
+
+
+DSS = "com.deepin.dde.ControlCenter"
+DSS_MODULE =
+    SYSTEM_INFO:"system_info"
+    DISPLAY:"display"
+    PERSON:"personalization"
+
+dss_dbus = null
+dss_ShowModule = (module) ->
+    try
+        dss_dbus = DCore.DBus.session(DSS) if dss_dbus is null or dss_dbus is undefined
+        echo dss_dbus
+        dss_dbus?.ShowModule(module)
+    catch e
+        echo "dss_ShowModule #{module} error:#{e}"
+
