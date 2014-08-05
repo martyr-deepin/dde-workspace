@@ -1,0 +1,6 @@
+usr/lib/deepin-daemon/osd
+usr/lib/deepin-daemon/lowpower
+usr/share/dde/resources/lowpower/*
+#usr/share/dbus-1/services/com.deepin.dde.osd.service
+usr/share/dde/resources/osd/*
+etc/xdg/autostart/deepin-osd.desktop

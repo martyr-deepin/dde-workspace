@@ -1,0 +1,4 @@
+#usr/bin/startsession
+#usr/lib/deepin-daemon/*
+#usr/share/dbus-1/services/com.deepin.dde.shutdown.service
+#usr/share/dde/resources/shutdown/*

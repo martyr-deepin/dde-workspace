@@ -1,0 +1,3 @@
+usr/lib/deepin-daemon/zone
+#usr/share/dbus-1/services/com.deepin.dde.zone.service
+usr/share/dde/resources/zone/*
