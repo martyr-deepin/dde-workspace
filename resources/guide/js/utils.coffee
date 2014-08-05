@@ -128,7 +128,6 @@ white_key_list_spec_key = [KEYCODE.BACKSPACE]
 white_key_list = []
 white_key_list = white_key_list.concat(white_key_list_num,white_key_list_char,white_key_list_spec_key)
 
-
 simulate_input = (modle_keysym,old_page,new_page_cls_name = null) ->
     DCore.Guide.disable_keyboard()
     timeout_deepin = null
