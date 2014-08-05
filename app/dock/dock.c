@@ -307,14 +307,6 @@ void update_dock_color()
         /* js_post_signal("dock_color_changed"); */
 }
 
-void update_dock_size_mode()
-{
-    if (GD.config.mini_mode) {
-        js_post_signal("in_mini_mode");
-    } else {
-        js_post_signal("in_normal_mode");
-    }
-}
 
 JS_EXPORT_API
 void dock_emit_webview_ok()
@@ -337,11 +329,8 @@ void dock_emit_webview_ok()
 
         inited = TRUE;
         init_config();
-        // update_dock_size_mode();
         init_dock_guard_window();
         require_manager_trayicons();
-    } else {
-        update_dock_size_mode();
     }
 
     g_warning("[%s]", __func__);

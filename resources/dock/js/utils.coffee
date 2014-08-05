@@ -3,8 +3,6 @@ itemDBus = (path)->
     path: path
     interface: "dde.dock.EntryProxyer"
 
-$DBus = {}
-
 
 moveHoverInfo = ->
     # TODO: clearTimeout ???

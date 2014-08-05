@@ -418,7 +418,7 @@ class PreviewWindow extends Widget
             @setTitle(@title_str)
             @update_size()
 
-            if get_active_window() == @w_id
+            if activeWindow.active_window == @w_id
                 @to_active()
             else
                 @to_normal()

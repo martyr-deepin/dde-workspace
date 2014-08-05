@@ -34,4 +34,10 @@ update_dock=->
         systemTray?.updateTrayIcon()
     , 1000)
 
+    for own k, v of $DBus
+        item = Widget.look_up(k)
+        if item and item.isApp?() and item.isActive?()
+            item.hide_open_indicator()
+            item.show_open_indicator()
+
     console.warn("update region and panel")

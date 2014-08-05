@@ -28,20 +28,20 @@ class Item extends Widget
             dataUrl = bright_image(@img, -40)
             @imgDark.src = dataUrl
 
-        @imgContainer.style.pointerEvents = "auto"
-        @imgContainer.addEventListener("mouseover", @on_mouseover)
-        @imgContainer.addEventListener("mouseover", @on_mousemove)
-        @imgContainer.addEventListener("mouseout", @on_mouseout)
-        @imgContainer.addEventListener("mousedown", @on_mousedown)
-        @imgContainer.addEventListener("mouseup", @on_mouseup)
-        @imgContainer.addEventListener("contextmenu", @on_rightclick)
-        @imgContainer.addEventListener("dragstart", @on_dragstart)
-        @imgContainer.addEventListener("dragenter", @on_dragenter)
-        @imgContainer.addEventListener("dragover", @on_dragover)
-        @imgContainer.addEventListener("dragleave", @on_dragleave)
-        @imgContainer.addEventListener("drop", @on_drop)
-        @imgContainer.addEventListener("dragend", @on_dragend)
-        @imgContainer.addEventListener("mousewheel", @on_mousewheel)
+        @imgWarp.style.pointerEvents = "auto"
+        @imgWarp.addEventListener("mouseover", @on_mouseover)
+        @imgWarp.addEventListener("mouseover", @on_mousemove)
+        @imgWarp.addEventListener("mouseout", @on_mouseout)
+        @imgWarp.addEventListener("mousedown", @on_mousedown)
+        @imgWarp.addEventListener("mouseup", @on_mouseup)
+        @imgWarp.addEventListener("contextmenu", @on_rightclick)
+        @imgWarp.addEventListener("dragstart", @on_dragstart)
+        @imgWarp.addEventListener("dragenter", @on_dragenter)
+        @imgWarp.addEventListener("dragover", @on_dragover)
+        @imgWarp.addEventListener("dragleave", @on_dragleave)
+        @imgWarp.addEventListener("drop", @on_drop)
+        @imgWarp.addEventListener("dragend", @on_dragend)
+        @imgWarp.addEventListener("mousewheel", @on_mousewheel)
 
         calc_app_item_size()
         @tooltip = null
@@ -341,10 +341,16 @@ class AppItem extends Item
         @indicatorWarp = create_element(tag:'div', class:"indicatorWarp", @element)
         @openingIndicator = create_img(src:OPENING_INDICATOR, class:"indicator OpeningIndicator", @indicatorWarp)
         @openingIndicator.addEventListener("webkitAnimationEnd", @on_animationend)
-        @openIndicator = create_img(src:OPEN_INDICATOR, class:"indicator OpenIndicator", @indicatorWarp)
+        if settings.displayMode() == DisplayMode.Classic
+            @openIndicator = create_img(src:CLASSIC_ACTIVE_IMG, class:"indicator OpenIndicator", @indicatorWarp)
+            @hoverIndicator = create_img(src:CLASSIC_ACTIVE_HOVER_IMG, class:"indicator OpenIndicator", @indicatorWarp)
+        else
+            @openIndicator = create_img(src:OPEN_INDICATOR, class:"indicator OpenIndicator", @indicatorWarp)
+            @hoverIndicator = create_img(src:OPEN_INDICATOR, class:"indicator OpenIndicator", @indicatorWarp)
 
         @tooltip = null
 
+        @hide_open_indicator()
         if @isNormal() || @isNormalApplet()
             console.log("is normal")
             @init_activator()
@@ -354,7 +360,7 @@ class AppItem extends Item
 
         if @isRuntimeApplet()
             console.log("runtime applet: #{@id}")
-            @openIndicator.style.display = 'none'
+            @hide_open_indicator()
 
         @core?.connect("DataChanged", (name, value)=>
             console.log("#{name} is changed to #{value}")
@@ -401,6 +407,40 @@ class AppItem extends Item
                     @set_tooltip(value)
         )
 
+    _show_indicator:(bgColor, borderColor, img, display)->
+        if settings.displayMode() == DisplayMode.Classic
+            console.log("#{@id} display on Classic mode")
+            if activeWindow and activeWindow.itemId and activeWindow.itemId == @id
+                console.log("#{@id} is active window")
+                @element.style.backgroundColor = ""
+                @element.style.borderColor = ""
+                if display == 'none'
+                    @openIndicator.style.display = 'none'
+                    @hoverIndicator.style.display = 'none'
+                else if img == CLASSIC_ACTIVE_IMG
+                    @openIndicator.style.display = 'inline'
+                    @hoverIndicator.style.display = 'none'
+                else
+                    @openIndicator.style.display = 'none'
+                    @hoverIndicator.style.display = 'inline'
+            else
+                @openIndicator.style.display = 'none'
+                @hoverIndicator.style.display = 'none'
+                @element.style.backgroundColor = bgColor
+                @element.style.borderColor = borderColor
+                console.log("#{@id} is not active window")
+        else
+            @openIndicator.style.display = display
+
+    hide_open_indicator:->
+        @_show_indicator("", "", "", "none")
+
+    show_open_indicator:->
+        @_show_indicator( "rgba(255,255,255, .15)", "rgba(255,255,255, .25)", CLASSIC_ACTIVE_IMG, "inline")
+
+    show_hover_indicator:->
+        @_show_indicator( "rgba(255,255,255, .3)", "rgba(255,255,255, .4)", CLASSIC_ACTIVE_HOVER_IMG, "inline")
+
     init_clientgroup:->
         # console.log("init_clientgroup #{@core.id()}")
         @n_clients = []
@@ -421,21 +461,24 @@ class AppItem extends Item
                 console.log("map #{xid.Xid}")
                 $EW_MAP[xid.Xid] = @
             @embedWindows = new EmbedWindow(xids)
+        else
+            @show_open_indicator()
 
         @clientgroupInited = true
 
     init_activator:->
         # console.log("init_activator #{@core.id()}")
-        @openIndicator.style.display = 'none'
+        @hide_open_indicator()
         title = @core.title() || "Unknow"
         @set_tooltip(title)
         @clientgroupInited = false
 
     swap_to_clientgroup:->
-        # console.log('swap to clientgroup')
+        console.log('swap to clientgroup')
         @openingIndicator.style.display = 'none'
         @openingIndicator.style.webkitAnimationName = ''
-        @openIndicator.style.display = 'inline'
+        if not @isApplet()
+            @show_open_indicator()
         @destroy_tooltip()
         @init_clientgroup()
 
@@ -498,7 +541,7 @@ class AppItem extends Item
 
     rotate:(time=1000)->
         console.log("rotate")
-        apply_animation(@imgContainer, "rotateOut", time)
+        apply_animation(@imgWarp, "rotateOut", time)
 
     isNormal:->
         @core.isNormal?()
@@ -530,6 +573,9 @@ class AppItem extends Item
                 Preview_close_now(Preview_container._current_group)
             , 200)
         else
+            if @isApp()
+                @show_hover_indicator()
+
             if _lastCliengGroup and _lastCliengGroup.id != @id
                 _lastCliengGroup.embedWindows?.hide?()
 
@@ -603,6 +649,8 @@ class AppItem extends Item
                     hideStatusManager.updateState()
                 , 500)
         else
+            if not @isApplet()
+                @show_open_indicator()
             __clear_timeout()
             _clear_item_timeout()
             if not Preview_container.is_showing
@@ -691,12 +739,16 @@ class AppItem extends Item
         super
         if e.button != 0
             return
+
+        if @isApp()
+            activeWindow.itemId = @id
+
         if not @core.activate?(0,0)
             console.log("activate failed")
             dockedAppManager.Undock(@id)
             return
         console.log("on_click")
-        if @isNormal()
+        if @isNormal() and settings.displayMode() != DisplayMode.Classic
             @openNotify()
 
     openNotify:->

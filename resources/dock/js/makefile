@@ -19,10 +19,10 @@ all: ${com_coffee} \
 	panel.coffee\
 	app_list.coffee \
 	entry_proxy.coffee\
+	client_manager.coffee\
 	active_window.coffee\
 	preview.coffee\
 	embed_window.coffee\
-	client_manager.coffee\
 	item.coffee \
 	deepin_item.coffee\
 	${plugin_dir}/show_desktop.coffee\
