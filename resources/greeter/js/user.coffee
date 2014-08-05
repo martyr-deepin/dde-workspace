@@ -386,7 +386,6 @@ class LoginEntry extends Widget
         @password_div = create_element("div", "password_div", @element)
         @password = create_element("input", "password", @password_div)
         @password.type = "password"
-        @password.setAttribute("maxlength", PasswordMaxlength) if PasswordMaxlength?
         @password.setAttribute("autofocus", true) if @username isnt guest_name
         @password_eventlistener()
 
