@@ -37,7 +37,9 @@ class Setting
         )
         @dbus.connect("DisplayModeChanged", (mode)=>
             console.log("DisplayModeChanged is emited")
+
             @updateSize(mode)
+
             # TODO:
             # switch between different mode.
             switch mode

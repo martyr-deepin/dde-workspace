@@ -428,7 +428,7 @@ class AppItem extends Item
                 @hoverIndicator.style.display = 'none'
                 @element.style.backgroundColor = bgColor
                 @element.style.borderColor = borderColor
-                console.log("#{@id} is not active window")
+                console.log("#{@id} is not active window, #{@element.style.backgroundColor}, #{@element.style.borderColor}")
         else
             @openIndicator.style.display = display
 

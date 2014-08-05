@@ -50,6 +50,11 @@ class GlobalMenu
             when "dockHideMode"
                 settings.setHideMode(HideModeNameMap[realId])
             when "dockDisplayMode"
+                for own k, v of $DBus
+                    item = Widget.look_up(k)
+                    if item and item.isApp?() and item.isActive?()
+                        item.hide_open_indicator()
+
                 settings.setDisplayMode(DisplayModeNameMap[realId])
             when "deepinAppletManager"
                 dbus = @plugins[groupName]

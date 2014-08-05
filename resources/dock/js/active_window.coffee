@@ -15,19 +15,19 @@ class ActiveWindow
 
 
 clientManager?.connect("ActiveWindowChanged", (xid)->
-    console.warn("ActiveWindowChanged")
+    console.log("ActiveWindowChanged")
 
     if activeWindow.itemId
         origItem = Widget.look_up(activeWindow.itemId)
 
     activeWindow.active_window = xid
     item = findActiveItem(xid)
-    console.warn(item)
+
     if item
-        console.warn(item.id)
         activeWindow.itemId = item.id
         item.show_open_indicator()
     else
         activeWindow.itemId = null
+
     origItem?.show_open_indicator()
 )
