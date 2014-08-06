@@ -14,7 +14,8 @@ switchToClassicMode = ->
     systemTray?.showAllIcons()
     for own k, v of $DBus
         item = Widget.look_up(k)
-        if item and item.isApp?() and item.isActive?()
+        if item and item.isApp?()
+            console.log("#{item.id} switch to classic mode")
             item.openIndicator.src = CLASSIC_ACTIVE_IMG
             item.hoverIndicator.src = CLASSIC_ACTIVE_HOVER_IMG
 
@@ -28,7 +29,8 @@ switchToModernMode = ->
         systemTray.fold()
     for own k, v of $DBus
         item = Widget.look_up(k)
-        if item and item.isApp?() and item.isActive?()
+        if item and item.isApp?()
+            console.log("#{item.id} switch to modern mode")
             item.openIndicator.src = OPEN_INDICATOR
             item.hoverIndicator.src = OPEN_INDICATOR
 

@@ -430,12 +430,16 @@ class AppItem extends Item
                 @element.style.borderColor = borderColor
                 console.log("#{@id} is not active window, #{@element.style.backgroundColor}, #{@element.style.borderColor}")
         else
+            console.warn("#{@id} display on modern mode")
+            @hoverIndicator.style.display = 'none'
             @openIndicator.style.display = display
 
     hide_open_indicator:->
+        console.log("#{@id} hide_open_indicator")
         @_show_indicator("", "", "", "none")
 
     show_open_indicator:->
+        console.log("#{@id} show_open_indicator")
         @_show_indicator( "rgba(255,255,255, .15)", "rgba(255,255,255, .25)", CLASSIC_ACTIVE_IMG, "inline")
 
     show_hover_indicator:->
