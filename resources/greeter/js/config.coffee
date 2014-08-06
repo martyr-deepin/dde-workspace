@@ -20,8 +20,6 @@
 
 VERSION = "2.0"  #Beta
 
-PasswordMaxlength = 16 #default 16
-
 CANVAS_WIDTH = 150
 CANVAS_HEIGHT = 150
 ANIMATION_TIME = 2

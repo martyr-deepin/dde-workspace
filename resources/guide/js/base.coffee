@@ -1,3 +1,28 @@
+class Fcitx
+    FCITX =
+        name:"org.fcitx.Fcitx-0"
+        path:"/inputmethod"
+        interface:"org.fcitx.Fcitx.InputMethod"
+
+    constructor: ->
+        @dbus = null
+        @IMList = []
+        @IMTrueList = []
+        try
+            @dbus = DCore.DBus.session(
+                FCITX.name,
+                FCITX.path,
+                FCITX.interface
+            )
+            @IMList = @DBusIM.IMList
+            @IMTrueList.push(im[1]) for im in @IMList when im[3]
+        catch e
+            console.log "dbus #{FCITX.interface} error :#{e}"
+
+    setCurrentIM: (im)->
+        if im not in @IMTrueList then return
+        @dbus?.setCurrentIM_sync(im)
+
 class Session
     SESSION = "com.deepin.SessionManager"
     constructor: ->

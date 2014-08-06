@@ -1,0 +1,5 @@
+#usr/bin/greeter
+usr/bin/lightdm-deepin-greeter
+usr/share/dde/resources/greeter/*
+debian/lightdm-deepin-greeter.desktop usr/share/xgreeters/
+debian/lightdm.pkla /var/lib/polkit-1/localauthority/50-local.d/

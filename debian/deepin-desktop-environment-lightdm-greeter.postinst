@@ -1,0 +1,9 @@
+#!/bin/sh
+
+#setcap cap_kill=ep /usr/bin/greeter
+LIGHTDM_SESSION="
+[SeatDefaults]
+greeter-session=lightdm-deepin-greeter
+user-session=deepin
+"
+echo "${LIGHTDM_SESSION}" | tee "/etc/lightdm/lightdm.conf" > /dev/null
