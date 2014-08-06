@@ -55,6 +55,9 @@ FULL_TRASH_ICON = "user-trash-full"
 SHORT_INDICATOR = "img/indicator-short.svg"
 LONG_INDICATOR = "img/indicator-long.svg"
 
+CLASSIC_ACTIVE_IMG = 'img/active.png'
+CLASSIC_ACTIVE_HOVER_IMG = 'img/active_hover.png'
+
 ITEM_TYPE_NULL = ''
 ITEM_TYPE_APP = "App"
 ITEM_TYPE_APPLET = "Applet"

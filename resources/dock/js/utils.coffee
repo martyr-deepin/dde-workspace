@@ -3,8 +3,6 @@ itemDBus = (path)->
     path: path
     interface: "dde.dock.EntryProxyer"
 
-$DBus = {}
-
 
 moveHoverInfo = ->
     # TODO: clearTimeout ???
@@ -71,7 +69,7 @@ createItem = (d)->
         container = app_list.element
 
         console.log("AppItem #{d.Id}")
-        new AppItem(d.Id, icon, title, container)
+        item = new AppItem(d.Id, icon, title, container)
     else if d.Id == TIME_ID
         console.log("AppletDateTime")
         time.core = new EntryProxy(d)
@@ -79,7 +77,12 @@ createItem = (d)->
         time.core.showQuickWindow()
     else
         console.log("SystemItem #{d.Id}, #{icon}, #{title}")
-        new SystemItem(d.Id, icon, title)
+        item = new SystemItem(d.Id, icon, title)
+
+    if activeWindow and activeWindow.active_window and activeWindow.itemId == null
+        activeWindow.itemId = item.id
+        if item.isApp() and item.isActive()
+            item.show_open_indicator()
 
     if not DCore.Dock.is_hovered()
         return

@@ -29,7 +29,6 @@
 
 
 struct _GlobalData GD;
-void update_dock_size_mode();
 void dock_update_hide_mode();
 void _change_workarea_height(int height);
 

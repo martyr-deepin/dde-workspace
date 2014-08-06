@@ -10,7 +10,6 @@ class Time extends SystemItem
         @timeContent = create_element(tag:'div', id:"timeContent")
         @element.insertBefore(@timeContent, @imgWarp)
 
-        console.warn(@element.id)
         @element.addEventListener("mouseover", @on_mouseover)
         @element.addEventListener("mouseout", @on_mouseout)
         @element.addEventListener("click", @on_mouseup)

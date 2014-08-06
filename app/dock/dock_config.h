@@ -31,7 +31,6 @@ enum {MODERN_MODE, CLASSIC_MODE};
 struct _DockConfig {
     int display_mode;
     int hide_mode;
-    gboolean mini_mode;
     guint32 color;
     int position; //hasn't use
 };

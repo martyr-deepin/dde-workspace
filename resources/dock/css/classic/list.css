@@ -8,7 +8,7 @@
 .AppItem {
     position:relative;
     margin: 0 2px;
-    width: 48px;
+    width: 60px;
     height: 44px;
     max-height: 60px;
     -webkit-box-flex: 1;
@@ -21,20 +21,23 @@
 }
 
 .imgWarp{
-  position:relative;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-  display: -webkit-box;
-  -webkit-box-pack:center;
+  width: 60px;
+  height: 44px;
   /* border:black 1px solid; */
 }
 .imgContainer {
+  position:relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
   /* display: -webkit-box; */
   /* -webkit-box-pack:center; */
 }
 .indicatorWarp{
   position:relative;
-  top: 7px;
+  width: 60px;
+  height: 44px;
+  -webkit-transform: translateY(-100%);
+  z-index: -1;
   text-align: center;
 }
 
@@ -53,10 +56,10 @@
 
 .indicator{
   position:relative;
+  display:none;
 }
 
 .OpenIndicator {
-  bottom:-4px;
 }
 @-webkit-keyframes Breath {
   0% { opacity: 0; }
@@ -64,7 +67,6 @@
   100%{opacity: 0;}
 }
 .OpeningIndicator {
-  display: none;
   bottom: 8px;
   -webkit-animation-duration: 1s;
   -webkit-animation-timing-function: ease-in-out;

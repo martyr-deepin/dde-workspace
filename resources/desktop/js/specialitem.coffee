@@ -60,7 +60,7 @@ class ComputerVDir extends DesktopEntry
             when 1
                 @item_exec()
             when 2
-                DCore.Desktop.run_deepin_settings("system_information")
+                dss_ShowModule(DSS_MODULE.SYSTEM_INFO)
             else
                 echo "computer unkown command id:#{evt.id} title:#{evt.title}"
         return
