@@ -49,8 +49,12 @@ class Time extends SystemItem
         super
         if e.button != 0
             return
-        sysSettings = get_dbus('session', "com.deepin.dde.ControlCenter", "ShowModule")
-        sysSettings.ShowModule("date_time") if sysSettings
+        try
+            sysSettings = get_dbus('session', "com.deepin.dde.ControlCenter", "ShowModule")
+        catch e
+            console.log e
+            sysSettings = null
+        sysSettings?.ShowModule("date_time") if sysSettings
 
     update_time: =>
         # @time.textContent = "#{@hour()}:#{@min()}"
