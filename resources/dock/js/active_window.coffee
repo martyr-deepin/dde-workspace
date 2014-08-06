@@ -20,8 +20,13 @@ clientManager?.connect("ActiveWindowChanged", (xid)->
     if activeWindow.itemId
         origItem = Widget.look_up(activeWindow.itemId)
 
+    if activeWindow.active_window == xid
+        return
+
     activeWindow.active_window = xid
     item = findActiveItem(xid)
+
+    console.log("findActiveItem: #{item and item.id}")
 
     if item
         activeWindow.itemId = item.id
@@ -29,5 +34,6 @@ clientManager?.connect("ActiveWindowChanged", (xid)->
     else
         activeWindow.itemId = null
 
-    origItem?.show_open_indicator()
+    if origItem and origItem.isApp() and origItem.isActive()
+        origItem.show_open_indicator()
 )

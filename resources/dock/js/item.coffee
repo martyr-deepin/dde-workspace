@@ -363,7 +363,7 @@ class AppItem extends Item
             @hide_open_indicator()
 
         @core?.connect("DataChanged", (name, value)=>
-            console.log("#{name} is changed to #{value}")
+            console.log("#{@id}: #{name} is changed to #{value}")
 
             switch name
                 when ITEM_DATA_FIELD.xids
@@ -483,6 +483,8 @@ class AppItem extends Item
         @init_clientgroup()
 
     swap_to_activator:->
+        console.log("swap_to_activator")
+        @hide_open_indicator()
         Preview_close_now()
         @init_activator()
 
@@ -739,9 +741,6 @@ class AppItem extends Item
         super
         if e.button != 0
             return
-
-        if @isApp()
-            activeWindow.itemId = @id
 
         if not @core.activate?(0,0)
             console.log("activate failed")
