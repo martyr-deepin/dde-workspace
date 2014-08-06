@@ -259,7 +259,11 @@ class Item extends Widget
 
     createMenu:->
         @menu = null
-        s_dock = get_dbus("session", "com.deepin.dde.dock", "Xid")
+        try
+            s_dock = get_dbus("session", "com.deepin.dde.dock", "Xid")
+        catch e
+            console.log(e)
+            s_dock = null
         dockedAppmanager = DCore.DBus.session_object(
             "com.deepin.daemon.Dock",
             "/dde/dock/DockedAppManager",

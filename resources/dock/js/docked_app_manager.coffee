@@ -8,7 +8,7 @@ try
         "DockedAppList"
     )
 catch e
-    console.log e
+    console.error(e)
     DCore.Dock.quit()
 
 dockedAppManager?.connect("Docked", (id)->

@@ -14,13 +14,17 @@ class SystemTray extends SystemItem
         @button.addEventListener('mouseover', @on_mouseover)
         @button.addEventListener('click', @on_button_click)
 
-        @core = get_dbus(
-            'session',
-            name:"com.deepin.dde.TrayManager",
-            path:"/com/deepin/dde/TrayManager",
-            interface: "com.deepin.dde.TrayManager",
-            "TrayIcons"
-        )
+        try
+            @core = get_dbus(
+                'session',
+                name:"com.deepin.dde.TrayManager",
+                path:"/com/deepin/dde/TrayManager",
+                interface: "com.deepin.dde.TrayManager",
+                "TrayIcons"
+            )
+        catch e
+            console.log(e)
+            @core = null
 
         @items = []
         @clearItems()

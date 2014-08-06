@@ -20,7 +20,7 @@ class Setting
                 "GetHideMode"
             )
         catch e
-            console.error("connect to DockSetting failed: #{e}")
+            console.error(e)
             DCore.Dock.quit()
 
         @dbus.connect("HideModeChanged", (mode)=>
