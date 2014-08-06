@@ -165,6 +165,8 @@ class LauncherSearch extends Page
         @show_message(@message)
         @show_tips(@tips)
 
+        @fcitx = new Fcitx()
+        @fcitx?.setCurrentIM("fcitx-keyboard-us")
         deepin_keysym = [68,69,69,80,73,78]
         setTimeout(=>
             simulate_input(deepin_keysym,@,"LauncherMenu")
@@ -174,50 +176,54 @@ class LauncherMenu extends Page
     constructor:(@id)->
         super
         @launcher = new Launcher()
-        @desktop = new Desktop()
-        @launcher_daemon = new LauncherDaemon()
-        #if DEBUG then @launcher?.show()
         @message = _("Use the right mouse button to send two icons to the desktop")
         @tips = _("tips:You can add it to startup items or uninstall")
         @show_message(@message)
         @show_tips(@tips)
-        #simulate_rightclick(@)
         @signal()
-        app1 = @app_x_y(1)
-        app2 = @app_x_y(2)
-        app_list = @launcher_daemon?.search("deepin")
-        echo app_list
-        src1_app = null
-        src2_app = null
+        @src_app_create_menu()
+
+    src_app_create_menu: ->
+        @app_list = []
+        @app1 = null
+        @app2 = null
+        @src1_app = null
+        @src2_app = null
+        @app1 = @app_x_y(1)
+        @app2 = @app_x_y(2)
+        @launcher_daemon = new LauncherDaemon()
+        @app_list = @launcher_daemon?.search("deepin")
+        echo @app_list
         try
-            if app_list[0] is null or app_list[0] is undefine or app_list[1] is null or app_list[1] is undefine or app_list.length < 2
-                if document.body.lang is "zh"
-                    src1_app = "deepin-game-center.desktop"
-                    src2_app = "deepin-movie.desktop"
-                else
-                    src1_app = "deepin-software-center.desktop"
-                    src2_app = "deepin-movie.desktop"
+            if @app_list.length < 2
+                @src_app_catch()
             else
-                src1_app = "#{app_list[0]}.desktop"
-                src2_app = "#{app_list[1]}.desktop"
+                if @app_list[0] is null or @app_list[0] is undefined or @app_list[1] is null or @app_list[1] is undefined
+                    @src_app_catch()
+                else
+                    @src1_app = "#{@app_list[0]}.desktop"
+                    @src2_app = "#{@app_list[1]}.desktop"
         catch e
             echo "launcher dbus search error:#{e}"
-            if document.body.lang is "zh"
-                src1_app = "deepin-game-center.desktop"
-                src2_app = "deepin-movie.desktop"
-            else
-                src1_app = "deepin-software-center.desktop"
-                src2_app = "deepin-movie.desktop"
+            @src_app_catch()
 
-        @menu_create(app1.x,app1.y,=>
-            src1 = "/usr/share/applications/#{src1_app}"
-            DCore.Guide.copy_file_to_desktop(src1)
-            @menu_create(app2.x,app2.y,=>
-                src2 = "/usr/share/applications/#{src2_app}"
-                DCore.Guide.copy_file_to_desktop(src2)
+        @menu_create(@app1.x,@app1.y,=>
+            @src1 = "/usr/share/applications/#{@src1_app}"
+            DCore.Guide.copy_file_to_desktop(@src1)
+            @menu_create(@app2.x,@app2.y,=>
+                @src2 = "/usr/share/applications/#{@src2_app}"
+                DCore.Guide.copy_file_to_desktop(@src2)
                 @switch_page()
             )
         )
+
+    src_app_catch: ->
+        if document.body.lang is "zh"
+            @src1_app = "deepin-game-center.desktop"
+            @src2_app = "deepin-movie.desktop"
+        else
+            @src1_app = "deepin-software-center.desktop"
+            @src2_app = "deepin-movie.desktop"
 
     app_x_y: (n) ->
         x = COLLECT_LEFT + (EACH_APP_WIDTH + EACH_APP_MARGIN_LEFT) * (n - 1) + EACH_APP_WIDTH * 0.75
