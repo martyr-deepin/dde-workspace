@@ -1,6 +1,0 @@
-usr/
-etc/
-debian/30-deepin-inotify-limit.conf etc/sysctl.d/
-debian/default-terminal usr/bin/
-debian/lightdm.pkla /var/lib/polkit-1/localauthority/50-local.d/
-debian/dde-account.conf /etc/init/
