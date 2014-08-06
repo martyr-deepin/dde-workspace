@@ -248,16 +248,16 @@ get_dbus = (type, opt, testProperty)->
         d = func.apply(null, dbusArg)
     catch e
         if typeof opt == 'string'
-            console.log "Get DBus \"#{opt}\" failed: #{e}"
+            throw "Get DBus \"#{opt}\" failed: #{e}"
         else
-            console.log "Get DBus \"#{opt.name} #{opt.path} #{opt.interface}\" failed: #{e}"
+            throw "Get DBus \"#{opt.name} #{opt.path} #{opt.interface}\" failed: #{e}"
         return null
 
     if !d
         if typeof opt == 'string'
-            console.log "Get DBus \"#{opt}\" failed"
+            throw "Get DBus \"#{opt}\" failed"
         else
-            console.log "Get DBus \"#{opt.name} #{opt.path} #{opt.interface}\" failed"
+            throw "Get DBus \"#{opt.name} #{opt.path} #{opt.interface}\" failed"
         return null
 
     count = 0
@@ -267,13 +267,23 @@ get_dbus = (type, opt, testProperty)->
             # because the callback will get no chance to be executed.
             d = func.apply(null, dbusArg)
             count += 1
-            if typeof opt == 'string'
-                console.log "Get DBus \"#{opt}\" failed"
-            else
-                console.log "Get DBus \"#{opt.name} #{opt.path} #{opt.interface}\" failed"
+            # if typeof opt == 'string'
+            #     console.log "Get DBus \"#{opt}\" failed"
+            # else
+            #     console.log "Get DBus \"#{opt.name} #{opt.path} #{opt.interface}\" failed"
 
             if count == 100
+                if typeof opt == 'string'
+                    throw "Get DBus \"#{opt}\" failed"
+                else
+                    throw "Get DBus \"#{opt.name} #{opt.path} #{opt.interface}\" failed"
                 return null
+
+    if not d
+        if typeof opt == 'string'
+            throw "Get DBus \"#{opt}\" failed"
+        else
+            throw "Get DBus \"#{opt.name} #{opt.path} #{opt.interface}\" failed"
     d
 
 

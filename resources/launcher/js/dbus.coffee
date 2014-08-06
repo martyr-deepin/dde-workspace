@@ -22,7 +22,7 @@ LAUNCHER_DAEMON="com.deepin.dde.daemon.Launcher"
 try
     daemon = get_dbus("session", LAUNCHER_DAEMON, "GetFavors")
 catch e
-    console.log e
+    console.error(e)
     DCore.Launcher.quit()
 
 
@@ -34,7 +34,7 @@ START_MANAGER =
 try
     startManager = get_dbus("session", START_MANAGER, "AutostartList")
 catch e
-    console.log e
+    console.error e
     DCore.Launcher.quit()
 
 startManager?.connect("AutostartChanged", (status, path)->

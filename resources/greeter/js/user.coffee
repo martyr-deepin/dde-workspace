@@ -415,7 +415,7 @@ class LoginEntry extends Widget
         @keyboard = new Select("keyboard_#{@username}",div_keyboard)
         @keyboard.element.style.position = "absolute"
         @keyboard.element.style.left = 0
-        @keyboard.element.style.top = 0
+        @keyboard.element.style.top = -20
         @get_current_layout()
         #@check_layouts_is_in_lightdm()
         @keyboard.set_lists(@current_layout,@layouts)

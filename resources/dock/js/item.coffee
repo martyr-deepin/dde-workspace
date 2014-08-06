@@ -650,37 +650,39 @@ class AppItem extends Item
 
         # console.log(menuJson)
 
-        manager = get_dbus(
-            "session",
-            name:DEEPIN_MENU_NAME,
-            path:DEEPIN_MENU_PATH,
-            interface:DEEPIN_MENU_MANAGER_INTERFACE,
-            "RegisterMenu"
-        )
-
-        if not manager
+        try
+            manager = get_dbus(
+                "session",
+                name:DEEPIN_MENU_NAME,
+                path:DEEPIN_MENU_PATH,
+                interface:DEEPIN_MENU_MANAGER_INTERFACE,
+                "RegisterMenu"
+            )
+        catch e
+            console.log(e)
             _isRightclicked = false
             return
 
         menu_dbus_path = manager.RegisterMenu_sync()
         # echo "menu path is: #{menu_dbus_path}"
-        dbus = get_dbus(
-            "session",
-            name:DEEPIN_MENU_NAME,
-            path:menu_dbus_path,
-            interface:DEEPIN_MENU_INTERFACE,
-            "ShowMenu"
-        )
-
-        if dbus
-            dbus.connect("ItemInvoked", @on_itemselected($DBus[@id]))
-            dbus.connect("MenuUnregistered", ->
-                handleMenuUnregister()
-                dbus = null
+        try
+            dbus = get_dbus(
+                "session",
+                name:DEEPIN_MENU_NAME,
+                path:menu_dbus_path,
+                interface:DEEPIN_MENU_INTERFACE,
+                "ShowMenu"
             )
-            dbus.ShowMenu(menuJson)
-        else
-            conosle.log("get menu dbus failed")
+        catch e
+            conosle.log("get menu dbus failed: #{e}")
+            return
+
+        dbus.connect("ItemInvoked", @on_itemselected($DBus[@id]))
+        dbus.connect("MenuUnregistered", ->
+            handleMenuUnregister()
+            dbus = null
+        )
+        dbus.ShowMenu(menuJson)
 
     on_itemselected: (d)->
         (id)->

@@ -44,13 +44,16 @@ class Trash extends PostfixedItem
         id = parseInt(id)
         switch id
             when 1
-                d = get_dbus("session",
-                        name:"org.gnome.Nautilus",
-                        path:"/org/gnome/Nautilus",
-                        interface:"org.gnome.Nautilus.FileOperations",
-                        "EmptyTrash"
-                )
-                d.EmptyTrash()
+                try
+                    d = get_dbus("session",
+                            name:"org.gnome.Nautilus",
+                            path:"/org/gnome/Nautilus",
+                            interface:"org.gnome.Nautilus.FileOperations",
+                            "EmptyTrash"
+                    )
+                    d.EmptyTrash()
+                catch e
+                    console.log(e)
                 @update()
             when 2
                 clientManager?.CloseWindow(@w_id)

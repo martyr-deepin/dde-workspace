@@ -158,6 +158,7 @@ class Menu
                 @menu = new RadioBoxMenu(items)
             else
                 throw "Invalid DEEPIN_MENU_TYPE: #{@type}"
+        @dbus = null
         @_init_dbus()
 
     apply: (fn, items)->
@@ -193,22 +194,25 @@ class Menu
         @
 
     _init_dbus: ->
-        manager = getMenuManager()
-
-        return if not manager
+        try
+            manager = getMenuManager()
+        catch e
+            console.log("get menu manager failed: #{e}")
+            return
 
         @menu_dbus_path = manager.RegisterMenu_sync()
         # echo "menu path is: #{@menu_dbus_path}"
-        @dbus = get_dbus(
-            "session",
-            name:DEEPIN_MENU_NAME,
-            path:@menu_dbus_path,
-            interface:DEEPIN_MENU_INTERFACE,
-            "ShowMenu"
-        )
-
-        if not @dbus?
-            echo "get deepin dbus menu failed"
+        try
+            @dbus = get_dbus(
+                "session",
+                name:DEEPIN_MENU_NAME,
+                path:@menu_dbus_path,
+                interface:DEEPIN_MENU_INTERFACE,
+                "ShowMenu"
+            )
+        catch e
+            @dbus = null
+            console.log("get deepin dbus menu failed: #{e}")
 
     showMenu: (x, y, ori=null)->
         @menu.x = x

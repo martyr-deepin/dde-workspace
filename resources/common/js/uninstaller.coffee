@@ -55,7 +55,11 @@ class Uninstaller
     @notifyId: 0
     constructor: (@appid, @appName, @icon, handler)->
         @uninstalling_apps = {}
-        @daemon = get_dbus("session", LAUNCHER_DAEMON, "GetPackageName")
+        try
+            @daemon = get_dbus("session", LAUNCHER_DAEMON, "GetPackageName")
+        catch e
+            console.log(e)
+            @daemon = null
         @uninstallSignalHandler = (info)=>
             console.warn(info)
             handler?(@, info)
@@ -95,9 +99,9 @@ class Uninstaller
 
         if Object.keys(@uninstalling_apps).length == 1
             console.log 'uninstall: connect signal'
-            @daemon.connect("UpdateSignal", @uninstallSignalHandler)
+            @daemon?.connect("UpdateSignal", @uninstallSignalHandler)
 
-        @daemon.connect("PackageNameGet", (package_name)=>
+        @daemon?.connect("PackageNameGet", (package_name)=>
             console.log "package_name: #{package_name}"
             if package_name.length == 0
                 if item.status
@@ -113,4 +117,4 @@ class Uninstaller
             # @softwareManager.uninstall_pkg(package_name, opt.purge)
             @daemon.Uninstall(package_name, opt.purge)
         )
-        @daemon.GetPackageName(item.path)
+        @daemon?.GetPackageName(item.path)
