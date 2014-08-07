@@ -420,9 +420,13 @@ class AppItem extends Item
                 else if img == CLASSIC_ACTIVE_IMG
                     @openIndicator.style.display = 'inline'
                     @hoverIndicator.style.display = 'none'
+                    @element.style.boxShadow = 'rgba(92, 209, 255, .2) 0 0 2px'
+                    @element.style.borderColor = 'rgba(92, 209, 255, .2)'
                 else
+                    @element.style.borderColor = 'rgba(92, 209, 255, .5)'
                     @openIndicator.style.display = 'none'
                     @hoverIndicator.style.display = 'inline'
+                    @element.style.boxShadow = 'rgba(92, 209, 255, .5) 0 0 2px'
             else
                 @openIndicator.style.display = 'none'
                 @hoverIndicator.style.display = 'none'
@@ -440,10 +444,10 @@ class AppItem extends Item
 
     show_open_indicator:->
         console.log("#{@id} show_open_indicator")
-        @_show_indicator( "rgba(255,255,255, .15)", "rgba(255,255,255, .25)", CLASSIC_ACTIVE_IMG, "inline")
+        @_show_indicator( "rgba(255,255,255, .15)", "rgba(255,255,255, .2)", CLASSIC_ACTIVE_IMG, "inline")
 
     show_hover_indicator:->
-        @_show_indicator( "rgba(255,255,255, .3)", "rgba(255,255,255, .4)", CLASSIC_ACTIVE_HOVER_IMG, "inline")
+        @_show_indicator( "rgba(255,255,255, .3)", "rgba(255,255,255, .35)", CLASSIC_ACTIVE_HOVER_IMG, "inline")
 
     init_clientgroup:->
         # console.log("init_clientgroup #{@core.id()}")
