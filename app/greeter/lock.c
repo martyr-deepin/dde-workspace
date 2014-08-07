@@ -43,9 +43,6 @@
 #include "mutils.h"
 #include "background.h"
 
-/*#include "settings.h"*/
-/*#include "camera.h"*/
-
 #include "X_misc.h"
 #include "gs-grab.h"
 #include "lock_util.h"
@@ -75,12 +72,6 @@ char* lock_get_theme()
 JS_EXPORT_API
 gboolean lock_try_unlock (const gchar *username,const gchar *password)
 {
-    g_message("face_login hide");
-/*    if (lock_use_face_recognition_login(lock_get_username()) && recognition_info.detect_is_enabled) {*/
-        /*gtk_main_quit();*/
-        /*return TRUE;*/
-    /*}*/
-
     gboolean succeed = FALSE;
 
     GDBusProxy *lock_proxy = NULL;
@@ -209,11 +200,8 @@ int main (int argc, char **argv)
 
     gtk_widget_show_all (container);
 
-    /*init_camera(argc, argv);*/
     /*turn_numlock_on ();*/
     gtk_main ();
-    /*destroy_camera();*/
-
     return 0;
 }
 

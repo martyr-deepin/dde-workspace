@@ -40,8 +40,6 @@
 #include "utils.h"
 #include "mutils.h"
 #include "background.h"
-/*#include "settings.h"*/
-/*#include "camera.h"*/
 
 #include "user.h"
 #include "session.h"
@@ -204,11 +202,6 @@ authenticated_complete(LightDMGreeter *greeter)
 JS_EXPORT_API
 gboolean greeter_start_session (const gchar *username, const gchar *password, const gchar *session)
 {
-/*    gboolean use_face_login = greeter_use_face_recognition_login(username);*/
-    gboolean use_face_login = FALSE;
-    if (use_face_login)
-        dbus_add_nopwdlogin((char*)username);
-
     gboolean ret = FALSE;
 
     if (handler != NULL) {
@@ -247,17 +240,14 @@ gboolean greeter_start_session (const gchar *username, const gchar *password, co
         ret = TRUE;
     }
 
-    if (use_face_login)
-        dbus_remove_nopwdlogin((char*)username);
-
     return ret;
 }
 
 int main (int argc, char **argv)
 {
     g_message("-------------greeter main--------------");
-    /* if (argc == 2 && 0 == g_strcmp0(argv[1], "-d")) */
-    g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
+    if (argc == 2 && 0 == g_strcmp0(argv[1], "-d"))
+        g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
 
 
     init_i18n ();
@@ -306,15 +296,12 @@ int main (int argc, char **argv)
     gdk_window_set_background_rgba (gdkwindow, &rgba);
     gdk_window_set_skip_taskbar_hint (gdkwindow, TRUE);
     gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
-    /*gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_XTERM));*/
 
     gtk_widget_show_all (container);
 
  //   monitor_resource_file("greeter", webview);
-    /*init_camera(argc, argv);*/
     /*turn_numlock_on ();*/
     gtk_main ();
-    /*destroy_camera();*/
     return 0;
 }
 

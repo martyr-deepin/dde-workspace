@@ -5,30 +5,22 @@ GEN_JSC_SOURCE2(JSC_LOCK_GEN "jsc" "lock" "lock.cfg" "dbus.cfg")
 GEN_DBUS_SOURCE(DBUS_GEN "jsc/dbus.go" "greeter")
 
 pkg_check_modules(LIGHTDM REQUIRED liblightdm-gobject-1)
-#pkg_check_modules(OPENCV REQUIRED opencv)
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS} ${LIGHTDM_INCLUDE_DIRS}
-    #${OPENCV_INCLUDE_DIRES}
     )
-
-#set(OPENCV_LIBS opencv_core opencv_imgproc opencv_objdetect)
 
 add_executable(${NAME} greeter.c user.c session.c keyboard.c theme.c mutils.c greeter_util.c ${JSC_GEN}
     ${DBUS_GEN}
-    #camera.c settings.c
     )
 add_dependencies(${NAME} ${NAME}_js)
 target_link_libraries(${NAME} dcom dbus ${DWEBVIEW_LIBRARIES} ${LIGHTDM_LIBRARIES}
-    #${OPENCV_LIBS}
     )
 
 add_executable(lock lock.c user.c theme.c lock_util.c mutils.c ${JSC_LOCK_GEN}
     ${DBUS_GEN}
-    #camera.c settings.c
     )
 add_dependencies(lock ${NAME}_js)
 target_link_libraries(lock dcom dbus ${DWEBVIEW_LIBRARIES} 
-    #${OPENCV_LIBS}
     )
 
 add_executable(switchtogreeter switchtogreeter.c)

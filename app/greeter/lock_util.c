@@ -23,7 +23,6 @@
 #include "lock_util.h"
 #include "user.h"
 #include "mutils.h"
-/*#include "camera.h"*/
 
 extern const gchar *username;
 
@@ -82,11 +81,8 @@ void lock_switch_user ()
     if (error != NULL) {
         g_warning ("switch to greeter error:%s\n", error->message);
         g_error_free (error);
-    } else {
-        /*gtk_main_quit();*/
-        g_message("face_login hide");
-        /*destroy_camera();*/
     }
+    /*gtk_main_quit();*/
 }
 
 JS_EXPORT_API
