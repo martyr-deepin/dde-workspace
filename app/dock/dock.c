@@ -122,9 +122,10 @@ gboolean leave_notify(GtkWidget* w G_GNUC_UNUSED,
     if ((e->mode == GDK_CROSSING_NORMAL || e->mode == GDK_CROSSING_TOUCH_END)
         && e->detail == GDK_NOTIFY_NONLINEAR_VIRTUAL &&
         !mouse_pointer_leave(e->x, e->y)) {
-        g_debug("leave dock");
+        g_debug("[%s] leave dock", __func__);
         update_hide_state();
         if (GD.is_webview_loaded) {
+            g_debug("[%s] leave-notify", __func__);
             js_post_signal("leave-notify");
         }
     }

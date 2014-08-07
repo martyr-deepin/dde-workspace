@@ -29,9 +29,7 @@ class GlobalMenu
 
         # console.log("showmenu:#{@menu.menu.menuJsonContent}")
         @menu.addListener(@on_itemselected).showMenu(x, y)
-        @menu.unregisterHook(->
-            _isRightclicked = false
-        )
+        @menu.unregisterHook(handleMenuUnregister)
 
     on_itemselected:(id)=>
         info = id.split(":")

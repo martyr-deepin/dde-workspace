@@ -212,6 +212,7 @@ class SystemTray extends SystemItem
         DCore.Dock.set_is_hovered(false)
         clearTimeout(@showEmWindowTimer)
         update_dock_region()
+        hideStatusManager?.updateState()
         if @isUnfolded
             return
 
