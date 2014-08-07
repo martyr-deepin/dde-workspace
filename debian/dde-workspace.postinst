@@ -1,0 +1,20 @@
+#!/bin/sh
+
+LIGHTDM_CONF="/etc/lightdm/lightdm.conf"
+
+autologin_user=$(grep ^autologin-user $LIGHTDM_CONF) 2>/dev/null
+autologin_user=${autologin_user#*=}
+
+LIGHTDM_SESSION="
+[SeatDefaults]
+greeter-session=lightdm-deepin-greeter
+user-session=deepin"
+if [ -n "${autologin_user}" ];then
+LIGHTDM_SESSION="${LIGHTDM_SESSION}
+autologin-user=${autologin_user}"
+fi
+echo "${LIGHTDM_SESSION}" | tee ${LIGHTDM_CONF} > /dev/null
+
+if [ "$1" = "configure" ];then
+	[ -e /etc/xdg/autostart/dde-osd.desktop ] && rm -f /etc/xdg/autostart/dde-osd.desktop || true
+fi
