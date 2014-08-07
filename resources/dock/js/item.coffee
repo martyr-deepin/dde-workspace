@@ -417,24 +417,29 @@ class AppItem extends Item
                 if display == 'none'
                     @openIndicator.style.display = 'none'
                     @hoverIndicator.style.display = 'none'
+                    @element.style.boxShadow = ''
+                    @element.style.borderColor = ''
                 else if img == CLASSIC_ACTIVE_IMG
                     @openIndicator.style.display = 'inline'
                     @hoverIndicator.style.display = 'none'
                     @element.style.boxShadow = 'rgba(92, 209, 255, .2) 0 0 2px'
                     @element.style.borderColor = 'rgba(92, 209, 255, .2)'
                 else
-                    @element.style.borderColor = 'rgba(92, 209, 255, .5)'
                     @openIndicator.style.display = 'none'
                     @hoverIndicator.style.display = 'inline'
                     @element.style.boxShadow = 'rgba(92, 209, 255, .5) 0 0 2px'
+                    @element.style.borderColor = 'rgba(92, 209, 255, .5)'
             else
                 @openIndicator.style.display = 'none'
                 @hoverIndicator.style.display = 'none'
+                @element.style.boxShadow = ''
                 @element.style.backgroundColor = bgColor
                 @element.style.borderColor = borderColor
                 console.log("#{@id} is not active window, #{@element.style.backgroundColor}, #{@element.style.borderColor}")
         else
-            console.warn("#{@id} display on modern mode")
+            console.log("#{@id} display on modern mode")
+            @element.style.borderColor = ''
+            @element.style.boxShadow = ''
             @hoverIndicator.style.display = 'none'
             @openIndicator.style.display = display
 
