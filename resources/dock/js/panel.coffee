@@ -79,7 +79,7 @@ class Panel
             ctx = @panel.getContext('2d')
             ctx.clearRect(0, 0, @panel.width, @panel.height)
             ctx.rect(0, 0, @panel.width, @panel.height)
-            ctx.fillStyle = 'rgba(0,0,0,.8)'
+            ctx.fillStyle = 'rgba(0,0,0,.6)'
             ctx.fill()
 
             y = 0
