@@ -217,9 +217,7 @@ _setup_dialog_labels (GFile* src, GFile* dest, GtkWidget* dialog G_GNUC_UNUSED)
 	{
 	    primary_text = g_strdup_printf (_("Do you want to merge with folder \"%s\"?"),
 		                            dest_name);
-	    message_extra = _("You will be asked before "
-		              "replacing any files in the folder that "
-			      "conflict with the files being copied.");
+	    message_extra = _("The merge operation will be asked to confirm before replacing any files in the folder conflicted.");
 	    if (src_mtime > dest_mtime)
 		message = g_strdup_printf (_("An older folder with the same "
 			                   "name already exists in \"%s\"."),
@@ -235,8 +233,7 @@ _setup_dialog_labels (GFile* src, GFile* dest, GtkWidget* dialog G_GNUC_UNUSED)
 	}
 	else
 	{
-	    message_extra = _("Replacing it will remove all files in the "
-		              "folder.");
+	    message_extra = _("All files in the folder will be removed  by replacing.");
 	    primary_text = g_strdup_printf (_("Do you want to replace folder \"%s\"?"),
 		                            dest_name);
 	    message = g_strdup_printf (_("A folder with the same name already "
@@ -246,7 +243,7 @@ _setup_dialog_labels (GFile* src, GFile* dest, GtkWidget* dialog G_GNUC_UNUSED)
     else
     {
 	primary_text = g_strdup_printf (_("Do you want to replace file \"%s\"?"), dest_name);
-	message_extra = _("Replacing it will overwrite its content.");
+	message_extra = _("The content will be overwritten by replacing.");
 	if (src_mtime > dest_mtime)
 	    message = g_strdup_printf (_("An older file with the same name "
 			               "already exists in \"%s\"."),

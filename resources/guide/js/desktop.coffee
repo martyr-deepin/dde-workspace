@@ -128,7 +128,7 @@ class DesktopCorner extends Page
     switch_page_timeout = null
     constructor:(@id)->
         super
-        @message = _("Slide the mouse to the four top corners, which can trigger four different events\nPlease move to the left up corner first to show or hide Launcher")
+        @message = _("Slide the mouse to the four top corners, which can trigger four different events\nPlease move to the upper left corner first to show or hide Launcher")
         @tips = _("tips：Please trigger successively by hints, click on the blank area to return")
         @show_message(@message)
         @show_tips(@tips)
