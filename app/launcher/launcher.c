@@ -414,7 +414,7 @@ void move_launcher(GtkWidget* widget, gpointer data G_GNUC_UNUSED)
 int main(int argc, char* argv[])
 {
     gtk_init(&argc, &argv);
-    g_log_set_default_handler((GLogFunc)log_to_file, "launcher");
+    g_log_set_default_handler((GLogFunc)log_to_file, "dde-launcher");
 
     GOptionContext* ctx = g_option_context_new("launcher");
     g_option_context_add_main_entries(ctx, entries, NULL);

@@ -483,7 +483,7 @@ int main(int argc, char* argv[])
     gtk_init(&argc, &argv);
     monitor_and_update_proxy();
 
-    g_log_set_default_handler((GLogFunc)log_to_file, "desktop");
+    g_log_set_default_handler((GLogFunc)log_to_file, "dde-desktop");
 
     set_default_theme("Deepin");
     set_desktop_env_name("Deepin");

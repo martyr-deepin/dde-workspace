@@ -43,6 +43,7 @@ int main (int argc, char **argv)
     init_i18n ();
 
     gtk_init (&argc, &argv);
+    g_log_set_default_handler((GLogFunc)log_to_file, "dde-guide");
 
     GtkWidget *webview = d_webview_new_with_uri (GET_HTML_PATH("guide"));
     gtk_container_add (GTK_CONTAINER(get_container()), GTK_WIDGET (webview));

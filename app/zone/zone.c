@@ -154,6 +154,7 @@ int main (int argc, char **argv)
     zone_gsettings = g_settings_new (ZONE_SCHEMA_ID);
 
     gtk_init (&argc, &argv);
+    g_log_set_default_handler((GLogFunc)log_to_file, "dde-zone");
 
     container = create_web_container (FALSE, TRUE);
 

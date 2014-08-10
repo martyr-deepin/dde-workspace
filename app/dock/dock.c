@@ -525,7 +525,7 @@ int main(int argc, char* argv[])
 #ifdef NDEBUG
     g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
 #endif
-    g_log_set_default_handler((GLogFunc)log_to_file, "dock");
+    g_log_set_default_handler((GLogFunc)log_to_file, "dde-dock");
 
     set_desktop_env_name("Deepin");
     set_default_theme("Deepin");

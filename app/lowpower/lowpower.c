@@ -128,6 +128,7 @@ int main (int argc, char **argv)
     check_version();
     init_i18n ();
     gtk_init (&argc, &argv);
+    g_log_set_default_handler((GLogFunc)log_to_file, "dde-lowpower");
 
     container = create_web_container (FALSE, TRUE);
 

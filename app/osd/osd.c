@@ -234,6 +234,7 @@ int main (int argc, char **argv)
     }
 
     gtk_init (&argc, &argv);
+    g_log_set_default_handler((GLogFunc)log_to_file, "dde-osd");
 
     container = create_web_container (FALSE, TRUE);
 
