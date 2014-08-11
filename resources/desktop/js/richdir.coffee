@@ -351,7 +351,7 @@ class RichDir extends DesktopEntry
                     that.hide_pop_block()
                 )
                 menu.addListener(w.block_do_itemselected.bind(this))
-                    .showMenu(evt.clientX, evt.clientY)
+                    .showMenu(evt.screenX, evt.screenY)
             )
 
             ele_ul.appendChild(ele)

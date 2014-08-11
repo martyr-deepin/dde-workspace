@@ -1051,7 +1051,7 @@ grid_right_click = (evt) ->
         new MenuItem(6, _("_Corner navigation")),
         new MenuItem(7, _("Pe_rsonalize"))
     )
-    menu.addListener(grid_do_itemselected).showMenu(evt.clientX, evt.clientY)
+    menu.addListener(grid_do_itemselected).showMenu(evt.screenX, evt.screenY)
     return
 
 
