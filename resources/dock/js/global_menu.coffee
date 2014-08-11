@@ -16,7 +16,7 @@ class GlobalMenu
                 @plugins["deepinAppletManager"] = dbus
         catch e
             console.warn e
-            @plugins["deepinAppletManager"]
+            delete @plugins["deepinAppletManager"]
         # console.log(settings.hideMode())
         items[settings.hideMode()].setChecked(true)
         @menu = new Menu(DEEPIN_MENU_TYPE.NORMAL)
