@@ -2,13 +2,19 @@
 
 import glob
 import os
+import re
 
-
-lang = ["zh_CN", "zh_TW","es","pt_BR"]
 
 coffee_files = []
 c_files = []
 except_dirs = ["dbus_test", "memory_test", "dominant_color"]
+
+def get_lang():
+    pos = glob.glob("./*.po")
+    for po in pos:
+        rec = re.compile("./([a-zA-Z_]+)\.po")
+        result = rec.match(po)
+        yield result.group(1)
 
 
 def get_files():
@@ -35,10 +41,10 @@ def get_files():
 
 
 def scan():
-    global coffee_files, c_files, lang
+    global coffee_files, c_files
     os.system("rm dde.pot")
-    for l in lang:
-        os.system("touch dde.pot")
+    os.system("touch dde.pot")
+    for l in get_lang():
         os.system("touch %s.po" % l)
 
         cmd= "xgettext --from-code=utf-8 -L python -j -o dde.pot " + " ".join(coffee_files)
