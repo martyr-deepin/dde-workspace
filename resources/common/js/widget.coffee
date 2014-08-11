@@ -110,7 +110,7 @@ class Widget extends Module
                     menu.unshift(DEEPIN_MENU_TYPE.NORMAL)
                     build_menu(menu)
                         ?.addListener(@on_itemselected)
-                        .showMenu(e.clientX, e.clientY)
+                        .showMenu(e.screenX, e.screenY)
                     e.preventDefault()
             )
 

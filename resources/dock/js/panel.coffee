@@ -54,7 +54,8 @@ class Panel
         e.preventDefault()
         e.stopPropagation()
         if @inEffectivePanelWorkarea(e.clientX, e.clientY)
-            @globalMenu.showMenu(e.clientX, e.clientY)
+            # console.warn("menu click posiition: #{e.screenX}, #{e.screenY}")
+            @globalMenu.showMenu(e.screenX, e.screenY)
             Preview_close_now()
             $tooltip?.hide()
 
