@@ -37,22 +37,3 @@ class End extends Page
         @choose_div.style.marginTop = "5em"
         @end.element.style.marginTop = "2em"
 
-    jump_create: ->
-        @message = _("Thanks for your patience to learn.You get the novice package")
-        @show_message(@message)
-        @tips = _("tips：Please receive in Deepin account")
-        @show_tips(@tips)
-        @get = new ButtonNext("get",_("Get"),@choose_div)
-        @get.create_button(=>
-            echo "open the deepin accounts web url"
-            enableZoneDetect(true)
-            DCore.Guide.quit()
-        )
-
-        @jump = create_element("div","jump_#{@id}",@get.element)
-        @jump.innerText = _("New users directly jump to the registration page")
-        @jump.style.marginLeft = "1.6em"
-        @jump.style.fontSize = "1.6em"
-        @jump.style.lineHeight = "4.0em"
-
-

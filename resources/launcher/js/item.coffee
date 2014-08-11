@@ -351,7 +351,7 @@ class Item extends Widget
                 clearTimeout(forceShowTimer)
                 DCore.Launcher.force_show(true)
                 # _("The operation may also remove other applications that depends on the item. Are you sure you want to uninstall the item?")
-                dialog.ShowUninstall(@icon, _("Are you sure to remove") + " \"#{@name}\" ", _("All dependences will be removed"), ["1", _("no"), "2", _("yes")])
+                dialog.ShowUninstall(@icon, _("Are you sure to remove") + " \"#{@name}\" ", _("All dependencies will be removed"), ["1", _("no"), "2", _("yes")])
                 isNotForceShow = false
             # when 100 then DCore.DEntry.report_bad_icon(@path)  # internal
         if isNotForceShow

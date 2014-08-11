@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-08 10:50+0800\n"
+"POT-Creation-Date: 2014-08-11 17:42+0800\n"
 "PO-Revision-Date: 2014-06-09 17:59+0800\n"
 "Last-Translator: Deepin Translation Team <support@linuxdeepin.com>\n"
 "Language-Team: Deepin Translation Team <support@linuxdeepin.com>\n"
@@ -299,11 +299,11 @@ msgstr "卸载"
 #: ../resources/launcher/js/item.coffee:354
 #: ../resources/dock/js/plugins/trash/trash.coffee:110
 msgid "Are you sure to remove"
-msgstr "你确定要卸载 "
+msgstr "您确定要卸载 "
 
 #: ../resources/launcher/js/item.coffee:354
 #: ../resources/dock/js/plugins/trash/trash.coffee:110
-msgid "All dependences will be removed"
+msgid "All dependencies will be removed"
 msgstr "所有依赖组件将会被卸载"
 
 #: ../resources/launcher/js/item.coffee:354
@@ -390,11 +390,11 @@ msgstr "无"
 
 #: ../resources/guide/js/dss.coffee:29
 msgid "Well, please trigger the lower right corner again"
-msgstr "很好！请你再次触发右下角"
+msgstr "很好！请您再次触发右下角"
 
 #: ../resources/guide/js/dss.coffee:30
 msgid "tips：Click the setting icon on dock to implement"
-msgstr "单击dock上的设置图标也可以实现"
+msgstr "提示：单击dock上的设置图标也可以实现"
 
 #: ../resources/guide/js/dss.coffee:69
 msgid "Here is the system setting area"
@@ -413,22 +413,6 @@ msgstr "祝贺,并感谢您的耐心学习！"
 #: ../resources/guide/js/end.coffee:30
 msgid "End"
 msgstr "结束"
-
-#: ../resources/guide/js/end.coffee:41
-msgid "Thanks for your patience to learn.You get the novice package"
-msgstr "感谢您的耐心学习！您获得了新手礼包"
-
-#: ../resources/guide/js/end.coffee:43
-msgid "tips：Please receive in Deepin account"
-msgstr "提示：请在深度账号内领取"
-
-#: ../resources/guide/js/end.coffee:45
-msgid "Get"
-msgstr "领取"
-
-#: ../resources/guide/js/end.coffee:53
-msgid "New users directly jump to the registration page"
-msgstr "新用户直接跳到注册页面"
 
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
@@ -515,8 +499,8 @@ msgid "Start"
 msgstr "开始"
 
 #: ../resources/guide/js/start.coffee:51
-msgid "I am older,exit directly"
-msgstr "我是老用户，直接退出"
+msgid "I am older. Exit directly."
+msgstr "我是老用户，直接退出。"
 
 #: ../resources/guide/js/launcher.coffee:29
 msgid ""
@@ -552,7 +536,7 @@ msgid ""
 "Use the keyboard to search for applications\n"
 "Try the \"deepin\" keyword to see which applications are shown"
 msgstr ""
-"使用键盘搜索来查找你想要的应用\n"
+"使用键盘搜索来查找您想要的应用\n"
 "我们来试试“deepin”这个关键字吧，看会显示哪些应用"
 
 #: ../resources/guide/js/launcher.coffee:164
@@ -565,7 +549,7 @@ msgstr "使用鼠标右键发送2个图标到桌面"
 
 #: ../resources/guide/js/launcher.coffee:180
 msgid "tips:You can add it to startup items or uninstall"
-msgstr "提示:你也可以将它添加至开机项或者卸载它"
+msgstr "提示:您也可以将它添加至开机项或者卸载它"
 
 #: ../resources/dock/js/global_menu.coffee:9
 msgid "keep _showing"
@@ -606,7 +590,7 @@ msgstr "关闭(_C)"
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
-msgstr "你已成功卸载 \"%1\""
+msgstr "您已成功卸载 \"%1\""
 
 #: ../resources/common/js/uninstaller.coffee:33
 msgid "\"%1\" failed to be uninstalled"
@@ -708,11 +692,11 @@ msgstr "替换"
 #: ../lib/dentry/fileops_error_dialog.c:218
 #, c-format
 msgid "Do you want to merge with folder \"%s\"?"
-msgstr "你确定要与文件夹“%s”合并吗？"
+msgstr "您确定要与文件夹“%s”合并吗？"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
 msgid ""
-"The merge operation will be asked to confirm before replacing any files in "
+"The merging operation will be asked to confirm before replacing any files in "
 "the folder conflicted."
 msgstr "合并操作将会在替换冲突文件时请求确认。"
 
@@ -732,18 +716,18 @@ msgid "Another folder with the same name already exists in \"%s\"."
 msgstr "在“%s”中有相同名称的一个文件夹已存在。"
 
 #: ../lib/dentry/fileops_error_dialog.c:236
-msgid "All files in the folder will be removed  by replacing."
-msgstr "回收站中的全部条目将被永久删除。"
+msgid "All files in the folder will be removed by replacing."
+msgstr "替换操作将移除文件夹中的所有文件。"
 
 #: ../lib/dentry/fileops_error_dialog.c:237
 #, c-format
 msgid "Do you want to replace folder \"%s\"?"
-msgstr "您确定要替换“%s“文件吗？"
+msgstr "您确定要替换“%s“文件夹吗？"
 
 #: ../lib/dentry/fileops_error_dialog.c:239
 #, c-format
 msgid "A folder with the same name already exists in \"%s\"."
-msgstr "在“%s”中已存在相同文件名的文件夹。"
+msgstr "在“%s”中已存在相同名称的文件夹。"
 
 #: ../lib/dentry/fileops_error_dialog.c:245
 #, c-format
@@ -752,22 +736,22 @@ msgstr "您确定要替换“%s”文件吗？"
 
 #: ../lib/dentry/fileops_error_dialog.c:246
 msgid "The content will be overwritten by replacing."
-msgstr ""
+msgstr "替换操作将覆盖它的内容"
 
 #: ../lib/dentry/fileops_error_dialog.c:248
 #, c-format
 msgid "An older file with the same name already exists in \"%s\"."
-msgstr "在“%s”中已存在较旧的相同文件名的文件。"
+msgstr "在“%s”中已存在较旧的相同名称的文件。"
 
 #: ../lib/dentry/fileops_error_dialog.c:252
 #, c-format
 msgid "A newer file with the same name already exists in \"%s\"."
-msgstr "在“%s”中已存在更新的相同文件名的文件。"
+msgstr "在“%s”中已存在更新的相同名称的文件。"
 
 #: ../lib/dentry/fileops_error_dialog.c:256
 #, c-format
 msgid "Another file with the same name already exists in \"%s\"."
-msgstr "在“%s”中已存在相同文件名的文件。"
+msgstr "在“%s”中已存在相同名称的文件。"
 
 #: ../lib/dentry/fileops_error_dialog.c:328
 msgid "Original file"
@@ -885,104 +869,17 @@ msgid "utilities"
 msgstr "实用工具"
 
 #: ../lib/category.c:56
-msgid "other"
+msgid "others"
 msgstr "其他"
 
-#~ msgid "Replacing it will remove all files in the folder."
-#~ msgstr "替换将移除文件夹中的所有文件。"
+#~ msgid "Thanks for your patience to learn.You get the novice package"
+#~ msgstr "感谢您的耐心学习！您获得了新手礼包"
 
-#~ msgid "Replacing it will overwrite its content."
-#~ msgstr "替换将覆盖它的内容。"
+#~ msgid "tips：Please receive in Deepin account"
+#~ msgstr "提示：请在深度账号内领取"
 
-#~ msgid "Oops...I can't recognize your face. "
-#~ msgstr "糟糕～无法识别您的面部信息。"
+#~ msgid "Get"
+#~ msgstr "领取"
 
-#~ msgid "Please login with your password or click your picture to retry."
-#~ msgstr "请使用密码登录或点击头像重试。"
-
-#~ msgid "%sRetry automatically in %ds"
-#~ msgstr "%s%d秒后自动重试"
-
-#~ msgid "All programs can be seen by scrolling the mouse up and down."
-#~ msgstr "上下滚动鼠标滚轮可以查看所有程序"
-
-#~ msgid "Cannot find Deepin Software Center."
-#~ msgstr "无法找到软件中心"
-
-#~ msgid ""
-#~ "Click the right mouse button on the application icon to call up the "
-#~ "context menu\n"
-#~ "Clicking on the menu item will achieve its function"
-#~ msgstr ""
-#~ "在应用图标上单击鼠标右键可以调出右键菜单\n"
-#~ "点击菜单项将实现其功能"
-
-#~ msgid "Close _All"
-#~ msgstr "关闭所有(_A)"
-
-#~ msgid "Computer"
-#~ msgstr "计算机"
-
-#~ msgid "Home"
-#~ msgstr "主文件夹"
-
-#~ msgid "Lock"
-#~ msgstr "锁定"
-
-#~ msgid "Log out"
-#~ msgstr "注销"
-
-#~ msgid "Software Center"
-#~ msgstr "软件中心"
-
-#~ msgid "Sort By _Frequency"
-#~ msgstr "按使用率排序(_F)"
-
-#~ msgid "Sort By _Name"
-#~ msgstr "按名字排序(_N)"
-
-#~ msgid "The item is invalid. Do you want to remove it from Dock?"
-#~ msgstr "该项无效。要把它从Dock上删除吗？"
-
-#~ msgid ""
-#~ "The operation may also remove other applications that depends on the "
-#~ "item. Are you sure you want to uninstall the item?"
-#~ msgstr "该操作可能会同时卸载其他相关软件，您确定要卸载该项吗？"
-
-#~ msgid "Type to search..."
-#~ msgstr "键入要搜索的关键字..."
-
-#~ msgid "Uninstall failed"
-#~ msgstr "卸载失败"
-
-#~ msgid "Workspace"
-#~ msgstr "工作区"
-
-#~ msgid "_Clean up %1 items"
-#~ msgstr "清空%1项(_C)"
-
-#~ msgid "_Clean up 1 item"
-#~ msgstr "清空1项(_C)"
-
-#~ msgid "_Dock me"
-#~ msgstr "驻留(_D)"
-
-#~ msgid "_New Window"
-#~ msgstr "新建窗口(_N)"
-
-#~ msgid "_Undock"
-#~ msgstr "移除驻留(_U)"
-
-#~ msgid "click login button to unlock"
-#~ msgstr "点击登录按钮来登录"
-
-#~ msgid "launcher"
-#~ msgstr "启动器"
-
-#~ msgid "shut down"
-#~ msgstr "关机"
-
-#~ msgid ""
-#~ "tips:You can also directly use the left mouse button to drag the icon to "
-#~ "the dock, favicon or trash"
-#~ msgstr "提示：你也可以直接用鼠标左键拖拽图标到dock、收藏图标或者垃圾箱上"
+#~ msgid "New users directly jump to the registration page"
+#~ msgstr "新用户直接跳到注册页面"

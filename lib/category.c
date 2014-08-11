@@ -53,7 +53,7 @@ void for_translate()
         _("development"),
         _("system"),
         _("utilities"),
-        _("other"),
+        _("others"),
         NULL
     };
 }

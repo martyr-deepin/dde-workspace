@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-08 10:50+0800\n"
+"POT-Creation-Date: 2014-08-11 17:42+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -301,7 +301,7 @@ msgstr ""
 
 #: ../resources/launcher/js/item.coffee:354
 #: ../resources/dock/js/plugins/trash/trash.coffee:110
-msgid "All dependences will be removed"
+msgid "All dependencies will be removed"
 msgstr ""
 
 #: ../resources/launcher/js/item.coffee:354
@@ -412,22 +412,6 @@ msgstr ""
 msgid "End"
 msgstr ""
 
-#: ../resources/guide/js/end.coffee:41
-msgid "Thanks for your patience to learn.You get the novice package"
-msgstr ""
-
-#: ../resources/guide/js/end.coffee:43
-msgid "tips：Please receive in Deepin account"
-msgstr ""
-
-#: ../resources/guide/js/end.coffee:45
-msgid "Get"
-msgstr ""
-
-#: ../resources/guide/js/end.coffee:53
-msgid "New users directly jump to the registration page"
-msgstr ""
-
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
 msgstr ""
@@ -509,7 +493,7 @@ msgid "Start"
 msgstr ""
 
 #: ../resources/guide/js/start.coffee:51
-msgid "I am older,exit directly"
+msgid "I am older. Exit directly."
 msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:29
@@ -702,7 +686,7 @@ msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:220
 msgid ""
-"The merge operation will be asked to confirm before replacing any files in "
+"The merging operation will be asked to confirm before replacing any files in "
 "the folder conflicted."
 msgstr ""
 
@@ -722,7 +706,7 @@ msgid "Another folder with the same name already exists in \"%s\"."
 msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:236
-msgid "All files in the folder will be removed  by replacing."
+msgid "All files in the folder will be removed by replacing."
 msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:237
@@ -875,5 +859,5 @@ msgid "utilities"
 msgstr ""
 
 #: ../lib/category.c:56
-msgid "other"
+msgid "others"
 msgstr ""

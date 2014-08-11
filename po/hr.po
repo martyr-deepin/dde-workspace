@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-03 15:03+0800\n"
+"POT-Creation-Date: 2014-08-11 17:42+0800\n"
 "PO-Revision-Date: 2014-07-03 05:01+0000\n"
 "Last-Translator: cxbii <chenxiangbang@linuxdeepin.com>\n"
 "Language-Team: Croatian (http://www.transifex.com/projects/p/deepin-desktop-"
@@ -20,11 +20,145 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
-#: resources/greeter/js/message.coffee:70
-msgid "\t\t\t\t-----No available desktop sessions!-----\n"
+#: ../resources/desktop/js/invalidlink.coffee:34
+#: ../resources/desktop/js/desktopentry.coffee:107
+#: ../resources/desktop/js/richdir.coffee:139
+#: ../resources/desktop/js/richdir.coffee:571
+msgid "_Delete"
+msgstr "_Obriši"
+
+#: ../resources/desktop/js/application.coffee:179
+#: ../resources/desktop/js/richdir.coffee:335
+#: ../resources/desktop/js/richdir.coffee:586
+msgid "The link is invalid. Do you want to delete it?"
+msgstr "Poveznica je neispravna. Želite li ju obrisati?"
+
+#: ../resources/desktop/js/application.coffee:179
+#: ../resources/desktop/js/desktopentry.coffee:151
+#: ../resources/desktop/js/richdir.coffee:335
+#: ../resources/desktop/js/richdir.coffee:586
+#: ../resources/dock/js/plugins/trash/trash.coffee:73
+msgid "Warning"
+msgstr "Upozorenje"
+
+#: ../resources/desktop/js/desktopentry.coffee:101
+#: ../resources/desktop/js/richdir.coffee:133
+#: ../resources/desktop/js/richdir.coffee:566
+#: ../resources/launcher/js/item.coffee:276
+#: ../resources/guide/js/launcher.coffee:235
+msgid "_Open"
+msgstr "_Otvori"
+
+#: ../resources/desktop/js/desktopentry.coffee:103
+#: ../resources/desktop/js/richdir.coffee:568
+msgid "Cu_t"
+msgstr "Iz_reži"
+
+#: ../resources/desktop/js/desktopentry.coffee:104
+#: ../resources/desktop/js/richdir.coffee:569
+msgid "_Copy"
+msgstr "_Kopiraj"
+
+#: ../resources/desktop/js/desktopentry.coffee:106
+#: ../resources/desktop/js/richdir.coffee:135
+msgid "_Rename"
+msgstr "_Preimenuj"
+
+#: ../resources/desktop/js/desktopentry.coffee:109
+#: ../resources/desktop/js/richdir.coffee:573
+msgid "_Properties"
+msgstr "_Svojstva"
+
+#: ../resources/desktop/js/desktopentry.coffee:115
+#: ../resources/desktop/js/desktopentry.coffee:122
+msgid "Co_mpress"
+msgstr "Za_pakiraj"
+
+#: ../resources/desktop/js/desktopentry.coffee:118
+#: ../resources/desktop/js/desktopentry.coffee:123
+msgid "_Extract"
+msgstr "_Raspakiraj"
+
+#: ../resources/desktop/js/desktopentry.coffee:119
+#: ../resources/desktop/js/desktopentry.coffee:124
+msgid "Extract _Here"
+msgstr "Raspakiraj _ovdje"
+
+#: ../resources/desktop/js/desktopentry.coffee:151
+#: ../resources/dock/js/plugins/trash/trash.coffee:73
+msgid "Can not open this file."
+msgstr "Nemoguće otvaranje ove datoteke."
+
+#: ../resources/desktop/js/grid.coffee:71 ../lib/dentry/fileops.c:403
+msgid "Untitled"
+msgstr "Bezimeno"
+
+#: ../resources/desktop/js/grid.coffee:1022
+msgid "_Name"
+msgstr "_Nazivu"
+
+#: ../resources/desktop/js/grid.coffee:1023
+msgid "Last modified _time"
+msgstr "Vremenu posljednje _promjene"
+
+#: ../resources/desktop/js/grid.coffee:1028
+msgid "_Folder"
+msgstr "_Mapa"
+
+#: ../resources/desktop/js/grid.coffee:1029
+msgid "_Text document"
+msgstr "_Tekstovni dokument"
+
+#: ../resources/desktop/js/grid.coffee:1045
+#: ../resources/guide/js/desktop.coffee:199
+msgid "_Sort by"
+msgstr "_Poredaj prema"
+
+#: ../resources/desktop/js/grid.coffee:1046
+#: ../resources/guide/js/desktop.coffee:200
+msgid "_New"
+msgstr "_Nova"
+
+#: ../resources/desktop/js/grid.coffee:1047
+#: ../resources/guide/js/desktop.coffee:201
+msgid "Open in _terminal"
+msgstr "Otvori u _terminalu"
+
+#: ../resources/desktop/js/grid.coffee:1048
+#: ../resources/guide/js/desktop.coffee:202
+msgid "_Paste"
+msgstr "_Zalijepi"
+
+#: ../resources/desktop/js/grid.coffee:1050
+#: ../resources/guide/js/desktop.coffee:204
+msgid "_Display settings"
+msgstr "_Postavke zaslona"
+
+#: ../resources/desktop/js/grid.coffee:1051
+#: ../resources/guide/js/desktop.coffee:205
+msgid "_Corner navigation"
 msgstr ""
 
-#: resources/greeter/js/message.coffee:100
+#: ../resources/desktop/js/grid.coffee:1052
+#: ../resources/guide/js/desktop.coffee:206
+msgid "Pe_rsonalize"
+msgstr "Os_obna prilagodba"
+
+#: ../resources/desktop/js/richdir.coffee:137
+msgid "_Ungroup"
+msgstr ""
+
+#: ../resources/greeter/js/message.coffee:105
+#: ../resources/greeter/js/message.coffee:82
+msgid "$ sudo reboot\n"
+msgstr "$ sudo reboot\n"
+
+#: ../resources/greeter/js/message.coffee:99
+#: ../resources/greeter/js/message.coffee:73
+msgid "Press Ctrl + Alt + F1\n"
+msgstr "Pritisni Ctrl + Alt + F1\n"
+
+#: ../resources/greeter/js/message.coffee:95
 msgid ""
 "\t\t\t\t-----The daemon of accounts has not started!-----\n"
 ")"
@@ -32,852 +166,707 @@ msgstr ""
 "\t\t\t\t-----Daemon računa nije pokrenut!-----\n"
 ")"
 
-#: lib/dentry/mime_actions.c:199
-#, c-format
-msgid "\"%s\" is an executable text file."
-msgstr "\"%s\" je tekstovna izvršna datoteka."
-
-#: resources/greeter/js/message.coffee:81
+#: ../resources/greeter/js/message.coffee:79
 msgid "$ sudo apt-get install deepin-desktop-Environment\n"
 msgstr "$ sudo apt-get install deepin-desktop-Environment\n"
 
-#: resources/greeter/js/message.coffee:110
-#: resources/greeter/js/message.coffee:84
-msgid "$ sudo reboot\n"
-msgstr "$ sudo reboot\n"
-
-#: app/greeter/mutils.c:84
-msgid "%a, %b %d, %Y"
+#: ../resources/greeter/js/message.coffee:68
+msgid "\t\t\t\t-----No available desktop sessions!-----\n"
 msgstr ""
 
-#: app/greeter/camera.c:235
-#, c-format
-msgid "%sRetry automatically in %ds"
-msgstr "%sPokušaj ponovno automatski za %ds"
+#: ../resources/greeter/js/user.coffee:471
+msgid "click login button to log in"
+msgstr "Klikni tipku prijave za prijavu"
 
-#: lib/dentry/fileops_error_dialog.c:242
-#, c-format
-msgid "A folder with the same name already exists in \"%s\"."
-msgstr "Mapa s istim nazivom već postoji u \"%s\"."
-
-#: lib/dentry/fileops_error_dialog.c:255
-#, c-format
-msgid "A newer file with the same name already exists in \"%s\"."
-msgstr "Novija datoteka s istim nazivom već postoji u \"%s\"."
-
-#: lib/dentry/fileops_error_dialog.c:228
-#, c-format
-msgid "A newer folder with the same name already exists in \"%s\"."
-msgstr "Novija mapa s istim nazivom već postoji u \"%s\"."
-
-#: resources/launcher/js/const.coffee:80
-msgid "Add to _favorites"
-msgstr "Dodaj u _omiljene"
-
-#: resources/zone/js/utils.coffee:10
-msgid "All Windows"
-msgstr "Svi prozori"
-
-#: resources/dock/js/plugins/trash/trash.coffee:107
-#: resources/launcher/js/item.coffee:339
-msgid "All dependences will be removed"
-msgstr "Sve međuovisnosti će biti uklonjene"
-
-#: lib/dentry/fileops_trash.c:68
-msgid "All items in the Trash will be permanently deleted."
-msgstr "Sve stavke u smeću biti će trajno obrisane."
-
-#: resources/guide/js/launcher.coffee:107
-msgid ""
-"All programs can be located by scrolling the mouse up and down.\n"
-"You can also click on the left classification navigation to locate"
-msgstr ""
-
-#: lib/dentry/fileops_error_dialog.c:251
-#, c-format
-msgid "An older file with the same name already exists in \"%s\"."
-msgstr "Starija datoteka s istim nazivom već postoji u \"%s\"."
-
-#: lib/dentry/fileops_error_dialog.c:224
-#, c-format
-msgid "An older folder with the same name already exists in \"%s\"."
-msgstr "Starija mapa s istim nazivom već postoji u \"%s\"."
-
-#: lib/dentry/fileops_error_dialog.c:259
-#, c-format
-msgid "Another file with the same name already exists in \"%s\"."
-msgstr "Druga datoteka s istim nazivom već postoji u \"%s\"."
-
-#: lib/dentry/fileops_error_dialog.c:232
-#, c-format
-msgid "Another folder with the same name already exists in \"%s\"."
-msgstr "Druga mapa s istim nazivom već postoji u \"%s\"."
-
-#: lib/dentry/entry.c:1415
-msgid "App Group"
-msgstr "Dodaj grupu"
-
-#: lib/dentry/fileops_error_dialog.c:126
-msgid "Apply this action to all files"
-msgstr "Primijeni ovu radnju na sve datoteke"
-
-#: resources/greeter/js/time.coffee:43
-msgid "Apr"
-msgstr "Tra"
-
-#: resources/dock/js/plugins/trash/trash.coffee:107
-#: resources/launcher/js/item.coffee:339
-msgid "Are you sure to remove"
-msgstr "Sigurno želite ukloniti"
-
-#: lib/dentry/fileops_delete.c:32
-msgid "Are you sure you want to permanently delete the files?"
-msgstr "Sigurno želite trajno obrisati datoteke?"
-
-#: resources/greeter/js/time.coffee:43
-msgid "Aug"
-msgstr "Kol"
-
-#: resources/desktop/js/desktopentry.coffee:151
-#: resources/dock/js/plugins/trash/trash.coffee:70
-msgid "Can not open this file."
-msgstr "Nemoguće otvaranje ove datoteke."
-
-#: lib/dentry/entry.c:746
-#, c-format
-msgid ""
-"Cannot rename the item to \"%s\". This may be caused by lack of permissions."
-msgstr ""
-
-#: resources/desktop/js/desktopentry.coffee:115
-#: resources/desktop/js/desktopentry.coffee:122
-msgid "Co_mpress"
-msgstr "Za_pakiraj"
-
-#: resources/zone/js/utils.coffee:10
-msgid "Control Center"
-msgstr "Središte upravljanja"
-
-#: resources/osd/js/display.coffee:42 lib/dentry/fileops.c:772
-msgid "Copy"
-msgstr "Kopiraj"
-
-#: resources/desktop/js/richdir.coffee:824
-#: resources/desktop/js/desktopentry.coffee:103
-msgid "Cu_t"
-msgstr "Iz_reži"
-
-#: resources/greeter/js/time.coffee:43
-msgid "Dec"
-msgstr "Pro"
-
-#: lib/dentry/fileops_delete.c:36
-msgid "Delete"
-msgstr "Obriši"
-
-#: lib/dentry/fileops_delete.c:29
-msgid "Delete Files"
-msgstr ""
-
-#: resources/zone/js/utils.coffee:10
-msgid "Desktop"
-msgstr "Radna površina"
-
-#: lib/dentry/fileops_error_dialog.c:218
-#, c-format
-msgid "Do you want to merge with folder \"%s\"?"
-msgstr ""
-
-#: lib/dentry/fileops_error_dialog.c:248
-#, c-format
-msgid "Do you want to replace file \"%s\"?"
-msgstr ""
-
-#: lib/dentry/fileops_error_dialog.c:240
-#, c-format
-msgid "Do you want to replace folder \"%s\"?"
-msgstr ""
-
-#: lib/dentry/mime_actions.c:198
-#, c-format
-msgid "Do you want to run \"%s\", or display its contents?"
-msgstr "Želite li pokrenuti \"%s\", ili prikazati sadražj?"
-
-#: app/dock/dock.c:323
-msgid "Dock failed to start, because Compiz is not enabled."
-msgstr ""
-
-#: lib/dentry/fileops_trash.c:58
-msgid "Empty Trash"
-msgstr "Isprazni smeće"
-
-#: lib/dentry/fileops_trash.c:71
-msgid "Empty _Trash"
-msgstr "Isprazni _smeće"
-
-#: lib/dentry/fileops_trash.c:67
-msgid "Empty all items from Trash?"
-msgstr "Isprazni sve stavke iz smeća?"
-
-#: resources/guide/js/end.coffee:32
-msgid "End"
-msgstr ""
-
-#: resources/greeter/js/powermenu.coffee:102
-msgid "Enter your password to %1"
-msgstr "Upišite svoju lozinku u %1"
-
-#: lib/dentry/fileops_error_reporting.c:106
-#: lib/dentry/fileops_error_reporting.c:191
-#, c-format
-msgid "Error while %s files"
-msgstr "Greška pri %s datoteka"
-
-#: resources/osd/js/display.coffee:43
-msgid "Expand"
-msgstr ""
-
-#: resources/desktop/js/desktopentry.coffee:119
-#: resources/desktop/js/desktopentry.coffee:124
-msgid "Extract _Here"
-msgstr "Raspakiraj _ovdje"
-
-#: resources/greeter/js/time.coffee:43
-msgid "Feb"
-msgstr "Velj"
-
-#: lib/dentry/fileops_error_dialog.c:63
-msgid "File conflict"
-msgstr "Sukob datoteka"
-
-#: resources/greeter/js/time.coffee:44
-msgid "Fri"
-msgstr "Pet"
-
-#: resources/guide/js/end.coffee:47
-msgid "Get"
-msgstr ""
-
-#: resources/greeter/js/usermenu.coffee:58
-msgid "Guest"
-msgstr "Gost"
-
-#: resources/guide/js/dss.coffee:77
-msgid "Here is the system setting area"
-msgstr ""
-
-#: resources/guide/js/start.coffee:54
-msgid "I am older,exit directly"
-msgstr ""
-
-#: lib/dentry/fileops_delete.c:33
-msgid "If you delete the files, they will be permanently lost."
-msgstr ""
-
-#: app/greeter/lock.c:134 app/greeter/greeter.c:194
-msgid "Invalid Password"
-msgstr "Neispravna lozinka"
-
-#: resources/greeter/js/time.coffee:43
+#: ../resources/greeter/js/time.coffee:43
 msgid "Jan"
 msgstr "Sij"
 
-#: resources/greeter/js/time.coffee:43
-msgid "Jul"
-msgstr "Srp"
+#: ../resources/greeter/js/time.coffee:43
+msgid "Feb"
+msgstr "Velj"
 
-#: resources/greeter/js/time.coffee:43
+#: ../resources/greeter/js/time.coffee:43
+msgid "Mar"
+msgstr "Ožu"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Apr"
+msgstr "Tra"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "May"
+msgstr "Svi"
+
+#: ../resources/greeter/js/time.coffee:43
 msgid "Jun"
 msgstr "Lip"
 
-#: resources/desktop/js/grid.coffee:1023
-msgid "Last modified _time"
-msgstr "Vremenu posljednje _promjene"
+#: ../resources/greeter/js/time.coffee:43
+msgid "Jul"
+msgstr "Srp"
 
-#: lib/dentry/fileops_error_dialog.c:340 lib/dentry/fileops_error_dialog.c:368
-msgid "Last modified:"
-msgstr "Zadnja pomjena:"
+#: ../resources/greeter/js/time.coffee:43
+msgid "Aug"
+msgstr "Kol"
 
-#: resources/zone/js/utils.coffee:10 resources/dock/js/main.coffee:221
+#: ../resources/greeter/js/time.coffee:43
+msgid "Sep"
+msgstr "Ruj"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Oct"
+msgstr "Lis"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Nov"
+msgstr "Stu"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Dec"
+msgstr "Pro"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Sun"
+msgstr "Ned"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Mon"
+msgstr "Pon"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Tue"
+msgstr "Uto"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Wed"
+msgstr "Sri"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Thu"
+msgstr "Čet"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Fri"
+msgstr "Pet"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Sat"
+msgstr "Sub"
+
+#: ../resources/greeter/js/usermenu.coffee:57
+msgid "Guest"
+msgstr "Gost"
+
+#: ../resources/greeter/js/powermenu.coffee:26
+msgid "Shut down"
+msgstr "Isključivanje"
+
+#: ../resources/greeter/js/powermenu.coffee:27
+msgid "Restart"
+msgstr "Ponovno pokretanje"
+
+#: ../resources/greeter/js/powermenu.coffee:28
+msgid "Suspend"
+msgstr "Suspenzija"
+
+#: ../resources/greeter/js/powermenu.coffee:90
+msgid "Enter your password to %1"
+msgstr "Upišite svoju lozinku u %1"
+
+#: ../resources/greeter/js/mediacontrol.coffee:167
+#, fuzzy
+msgid "Click button to Play"
+msgstr "Klikni tipku prijave za prijavu"
+
+#: ../resources/osd/js/display.coffee:42 ../lib/dentry/fileops.c:772
+msgid "Copy"
+msgstr "Kopiraj"
+
+#: ../resources/osd/js/display.coffee:43
+msgid "Expand"
+msgstr ""
+
+#: ../resources/osd/js/display.coffee:44
+msgid "Only the first Screen"
+msgstr "Samo prvi zaslon"
+
+#: ../resources/osd/js/display.coffee:45
+msgid "Only the second Screen"
+msgstr "Samo drugi zaslon"
+
+#: ../resources/launcher/js/item.coffee:283
+#: ../resources/guide/js/launcher.coffee:242
+msgid "_Uninstall"
+msgstr ""
+
+#: ../resources/launcher/js/item.coffee:354
+#: ../resources/dock/js/plugins/trash/trash.coffee:110
+msgid "Are you sure to remove"
+msgstr "Sigurno želite ukloniti"
+
+#: ../resources/launcher/js/item.coffee:354
+#: ../resources/dock/js/plugins/trash/trash.coffee:110
+msgid "All dependencies will be removed"
+msgstr "Sve međuovisnosti će biti uklonjene"
+
+#: ../resources/launcher/js/item.coffee:354
+#: ../resources/dock/js/plugins/trash/trash.coffee:110
+msgid "no"
+msgstr "ne"
+
+#: ../resources/launcher/js/item.coffee:354
+#: ../resources/dock/js/plugins/trash/trash.coffee:110
+msgid "yes"
+msgstr "da"
+
+#: ../resources/launcher/js/const.coffee:64
+msgid "_Hide the icon"
+msgstr "_Sakrij ikonu"
+
+#: ../resources/launcher/js/const.coffee:65
+msgid "_Display hidden icons"
+msgstr "_Prikaži skrivene ikone"
+
+#: ../resources/launcher/js/const.coffee:68
+msgid "_Hide this icon"
+msgstr "_Sakrij ovu ikonu"
+
+#: ../resources/launcher/js/const.coffee:69
+msgid "_Display this icon"
+msgstr "_Prikaži ovu ikonu"
+
+#: ../resources/launcher/js/const.coffee:72
+#: ../resources/guide/js/launcher.coffee:241
+msgid "_Add to autostart"
+msgstr "_Dodaj u atomatsko pokretanje"
+
+#: ../resources/launcher/js/const.coffee:73
+msgid "_Remove from autostart"
+msgstr "_Ukloni iz atomatskog pokretanja"
+
+#: ../resources/launcher/js/const.coffee:80
+msgid "Add to _favorites"
+msgstr "Dodaj u _omiljene"
+
+#: ../resources/launcher/js/const.coffee:81
+#: ../resources/guide/js/launcher.coffee:237
+msgid "Remove from _favorites"
+msgstr "Ukloni iz _omiljenih"
+
+#: ../resources/launcher/js/const.coffee:84
+#: ../resources/guide/js/launcher.coffee:238
+msgid "Send to d_esktop"
+msgstr "Pošalji na r_adnu površinu"
+
+#: ../resources/launcher/js/const.coffee:85
+#, fuzzy
+msgid "Remove from d_esktop"
+msgstr "Ukloni iz _omiljenih"
+
+#: ../resources/launcher/js/const.coffee:88
+#: ../resources/guide/js/launcher.coffee:239
+msgid "Send to do_ck"
+msgstr ""
+
+#: ../resources/launcher/js/const.coffee:89
+#, fuzzy
+msgid "Remove from do_ck"
+msgstr "Ukloni iz _omiljenih"
+
+#: ../resources/zone/js/utils.coffee:10
+msgid "Control Center"
+msgstr "Središte upravljanja"
+
+#: ../resources/zone/js/utils.coffee:10
+msgid "All Windows"
+msgstr "Svi prozori"
+
+#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:226
 msgid "Launcher"
 msgstr "Pokretač"
 
-#: resources/guide/js/desktop.coffee:29
+#: ../resources/zone/js/utils.coffee:10
+msgid "Desktop"
+msgstr "Radna površina"
+
+#: ../resources/zone/js/utils.coffee:10
+msgid "None"
+msgstr "Nepoznato"
+
+#: ../resources/guide/js/dss.coffee:29
+msgid "Well, please trigger the lower right corner again"
+msgstr ""
+
+#: ../resources/guide/js/dss.coffee:30
+msgid "tips：Click the setting icon on dock to implement"
+msgstr ""
+
+#: ../resources/guide/js/dss.coffee:69
+msgid "Here is the system setting area"
+msgstr ""
+
+#: ../resources/guide/js/dss.coffee:70
+msgid ""
+"tips：Hover the setting icon on dock to quickly implement some setting "
+"functions"
+msgstr ""
+
+#: ../resources/guide/js/end.coffee:25
+msgid "Thanks for your patience while learning. Congratulations."
+msgstr ""
+
+#: ../resources/guide/js/end.coffee:30
+msgid "End"
+msgstr ""
+
+#: ../resources/guide/js/welcome.coffee:35
+msgid "Welcome to use Deepin Operating System"
+msgstr ""
+
+#: ../resources/guide/js/welcome.coffee:38
+msgid "Prepare for operation ..."
+msgstr ""
+
+#: ../resources/guide/js/desktop.coffee:27
 msgid ""
 "Let's drag the other icon on the first icon \n"
 " to generate \"application group\""
 msgstr ""
 
-#: resources/greeter/js/time.coffee:43
-msgid "Mar"
-msgstr "Ožu"
-
-#: resources/greeter/js/time.coffee:43
-msgid "May"
-msgstr "Svi"
-
-#: lib/dentry/fileops_error_dialog.c:385
-msgid "Merge"
-msgstr "Spoji"
-
-#: resources/greeter/js/time.coffee:44
-msgid "Mon"
-msgstr "Pon"
-
-#: lib/dentry/fileops.c:566
-msgid "Move"
+#: ../resources/guide/js/desktop.coffee:119
+msgid "Well, you have learned how to create a \"application group\""
 msgstr ""
 
-#: resources/guide/js/start.coffee:28
-msgid "New Desktop"
+#: ../resources/guide/js/desktop.coffee:120
+msgid "tips：Right-click on the application group will provide more functions"
 msgstr ""
 
-#: resources/guide/js/start.coffee:28
-msgid "New Launcher"
+#: ../resources/guide/js/desktop.coffee:131
+msgid ""
+"Slide the mouse to the four top corners, which can trigger four different "
+"events\n"
+"Please move to the upper left corner first to show or hide Launcher"
 msgstr ""
 
-#: resources/guide/js/start.coffee:28
-msgid "New System Settings"
+#: ../resources/guide/js/desktop.coffee:132
+msgid ""
+"tips：Please trigger successively by hints, click on the blank area to return"
 msgstr ""
 
-#: app/desktop/desktop.c:236
-msgid "New directory"
-msgstr "Novi direktorij"
-
-#: app/desktop/desktop.c:225
-msgid "New file"
-msgstr "Nova datoteka"
-
-#: resources/guide/js/end.coffee:55
-msgid "New users directly jump to the registration page"
+#: ../resources/guide/js/desktop.coffee:136
+msgid "Show/Hide Launcher"
 msgstr ""
 
-#: resources/guide/js/desktop.coffee:152
+#: ../resources/guide/js/desktop.coffee:137
+msgid "Show/Hide Desktop"
+msgstr "Prikaži/Sakrij radnu površinu"
+
+#: ../resources/guide/js/desktop.coffee:138
+msgid "Show/Hide Control Center"
+msgstr ""
+
+#: ../resources/guide/js/desktop.coffee:139
 msgid "No default functions setted in right up corner"
 msgstr ""
 
-#: resources/zone/js/utils.coffee:10
-msgid "None"
-msgstr "Nepoznato"
-
-#: resources/greeter/js/time.coffee:43
-msgid "Nov"
-msgstr "Stu"
-
-#: resources/greeter/js/time.coffee:43
-msgid "Oct"
-msgstr "Lis"
-
-#: resources/osd/js/display.coffee:44
-msgid "Only the first Screen"
-msgstr "Samo prvi zaslon"
-
-#: resources/osd/js/display.coffee:45
-msgid "Only the second Screen"
-msgstr "Samo drugi zaslon"
-
-#: app/greeter/camera.c:47
-msgid "Oops...I can't recognize your face. "
-msgstr "Ups... Ne mogu prepoznati vaše lice."
-
-#: resources/desktop/js/grid.coffee:1047 resources/guide/js/desktop.coffee:222
-msgid "Open in _terminal"
-msgstr "Otvori u _terminalu"
-
-#: lib/dentry/fileops_error_dialog.c:331
-msgid "Original file"
-msgstr "Izvorna datoteka"
-
-#: resources/desktop/js/grid.coffee:1052 resources/guide/js/desktop.coffee:227
-msgid "Pe_rsonalize"
-msgstr "Os_obna prilagodba"
-
-#: resources/guide/js/launcher.coffee:96
-msgid ""
-"Please click on the \"All Applications\" icon , you will see all applications"
-msgstr ""
-
-#: app/greeter/camera.c:175
-msgid "Please login with your password or click your picture to retry."
-msgstr ""
-"Prijavite se s vašom lozinkom ili kliknite na svoju sliku za ponovni pokušaj."
-
-#: resources/guide/js/welcome.coffee:41
-msgid "Prepare for operation ..."
-msgstr ""
-
-#: resources/greeter/js/message.coffee:104
-#: resources/greeter/js/message.coffee:75
-msgid "Press Ctrl + Alt + F1\n"
-msgstr "Pritisni Ctrl + Alt + F1\n"
-
-#: lib/dentry/fileops_error_dialog.c:136
-msgid "Re_name"
-msgstr "Pr_eimenuj"
-
-#: resources/launcher/js/const.coffee:81
-#: resources/guide/js/launcher.coffee:244
-msgid "Remove from _favorites"
-msgstr "Ukloni iz _omiljenih"
-
-#: lib/dentry/fileops_error_dialog.c:141
-msgid "Replace"
-msgstr "Zamijeni"
-
-#: lib/dentry/fileops_error_dialog.c:359
-msgid "Replace with"
-msgstr "Zamijeni s(a)"
-
-#: lib/dentry/fileops_error_dialog.c:249
-msgid "Replacing it will overwrite its content."
-msgstr "Zamjena će prepisati sav sadržaj."
-
-#: lib/dentry/fileops_error_dialog.c:238
-msgid "Replacing it will remove all files in the folder."
-msgstr "Zamjena će ukloniti sve datoteke u mapi."
-
-#: lib/dentry/fileops_error_dialog.c:117
-msgid "Reset"
-msgstr ""
-
-#: resources/greeter/js/powermenu.coffee:52
-msgid "Restart"
-msgstr "Ponovno pokretanje"
-
-#: resources/guide/js/desktop.coffee:199
+#: ../resources/guide/js/desktop.coffee:181
 msgid ""
 "Right-click on desktop black area to call up the menu, select \"Corner "
 "navigation\" to set the corner used"
 msgstr ""
 
-#: lib/dentry/mime_actions.c:210
-msgid "Run in _Terminal"
-msgstr "Pokreni u _terminalu"
-
-#: resources/greeter/js/time.coffee:44
-msgid "Sat"
-msgstr "Sub"
-
-#: resources/launcher/js/item.coffee:269
-#: resources/guide/js/launcher.coffee:245
-msgid "Send to d_esktop"
-msgstr "Pošalji na r_adnu površinu"
-
-#: resources/launcher/js/item.coffee:272
-#: resources/guide/js/launcher.coffee:246
-msgid "Send to do_ck"
+#: ../resources/guide/js/desktop.coffee:182
+msgid "tips：Click on the interface of corner navigation blank area to return"
 msgstr ""
 
-#: resources/greeter/js/time.coffee:43
-msgid "Sep"
-msgstr "Ruj"
-
-#: resources/guide/js/desktop.coffee:151
-msgid "Show/Hide Control Center"
+#: ../resources/guide/js/start.coffee:28
+msgid "New Launcher"
 msgstr ""
 
-#: resources/guide/js/desktop.coffee:150
-msgid "Show/Hide Desktop"
-msgstr "Prikaži/Sakrij radnu površinu"
-
-#: resources/guide/js/desktop.coffee:149
-msgid "Show/Hide Launcher"
+#: ../resources/guide/js/start.coffee:28
+msgid "New Desktop"
 msgstr ""
 
-#: resources/greeter/js/powermenu.coffee:51
-msgid "Shut down"
-msgstr "Isključivanje"
-
-#: lib/dentry/fileops_error_dialog.c:332 lib/dentry/fileops_error_dialog.c:360
-msgid "Size:"
-msgstr "Veličina:"
-
-#: resources/guide/js/launcher.coffee:149
-msgid "Skip the step without scroll"
+#: ../resources/guide/js/start.coffee:28
+msgid "New System Settings"
 msgstr ""
 
-#: resources/guide/js/desktop.coffee:143
-msgid ""
-"Slide the mouse to the four top corners, which can trigger four different "
-"events\n"
-"Please move to the left up corner first to show or hide Launcher"
+#: ../resources/guide/js/start.coffee:29
+msgid "The following will guide you to learn how to use some new functions"
 msgstr ""
 
-#: resources/guide/js/launcher.coffee:32
+#: ../resources/guide/js/start.coffee:44
+msgid "Start"
+msgstr ""
+
+#: ../resources/guide/js/start.coffee:51
+msgid "I am older. Exit directly."
+msgstr ""
+
+#: ../resources/guide/js/launcher.coffee:29
 msgid ""
 "Sliding the mouse to the upper left corner or clicking on the launcher icon "
 "both can start \"Application Launcher\""
 msgstr ""
 
-#: resources/guide/js/start.coffee:47
-msgid "Start"
+#: ../resources/guide/js/launcher.coffee:70
+msgid ""
+"What shown in the first screen of \" launcher\" are the applications of "
+"collection"
 msgstr ""
 
-#: resources/greeter/js/time.coffee:44
-msgid "Sun"
-msgstr "Ned"
-
-#: resources/greeter/js/powermenu.coffee:53
-msgid "Suspend"
-msgstr "Suspenzija"
-
-#: resources/guide/js/end.coffee:26
-msgid "Thanks for your patience to learn.Congratulation!"
+#: ../resources/guide/js/launcher.coffee:85
+msgid ""
+"Please click on the \"All Applications\" icon , you will see all applications"
 msgstr ""
 
-#: resources/guide/js/end.coffee:43
-msgid "Thanks for your patience to learn.You get the novice package"
+#: ../resources/guide/js/launcher.coffee:95
+msgid ""
+"All programs can be located by scrolling the mouse up and down.\n"
+"You can also click on the left classification navigation to locate"
 msgstr ""
 
-#: resources/guide/js/start.coffee:29
-msgid "The following will guide you to learn how to use some new functions"
+#: ../resources/guide/js/launcher.coffee:133
+msgid "Skip the step without scroll"
 msgstr ""
 
-#: lib/dentry/entry.c:758
-msgid "The item could not be renamed"
+#: ../resources/guide/js/launcher.coffee:163
+msgid ""
+"Use the keyboard to search for applications\n"
+"Try the \"deepin\" keyword to see which applications are shown"
 msgstr ""
 
-#: resources/desktop/js/richdir.coffee:335
-#: resources/desktop/js/richdir.coffee:842
-#: resources/desktop/js/application.coffee:179
-msgid "The link is invalid. Do you want to delete it?"
-msgstr "Poveznica je neispravna. Želite li ju obrisati?"
+#: ../resources/guide/js/launcher.coffee:164
+msgid "tips：Please directly enter the word \"deepin\""
+msgstr ""
 
-#: lib/dentry/entry.c:752
+#: ../resources/guide/js/launcher.coffee:179
+msgid "Use the right mouse button to send two icons to the desktop"
+msgstr ""
+
+#: ../resources/guide/js/launcher.coffee:180
+msgid "tips:You can add it to startup items or uninstall"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:9
+msgid "keep _showing"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:10
+msgid "keep _hidden"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:11
+msgid "_auto hide"
+msgstr ""
+
+#: ../resources/dock/js/deepin_item.coffee:231
+msgid "_View as analog"
+msgstr ""
+
+#: ../resources/dock/js/deepin_item.coffee:232
+#: ../resources/dock/js/deepin_item.coffee:284
+msgid "_Time settings"
+msgstr ""
+
+#: ../resources/dock/js/deepin_item.coffee:283
+msgid "_View as digit"
+msgstr ""
+
+#: ../resources/dock/js/main.coffee:155 ../resources/dock/js/main.coffee:228
+msgid "Trash"
+msgstr "Smeće"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:29
+msgid "_Clean up"
+msgstr ""
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:33
+msgid "_Close"
+msgstr "_Zatvori"
+
+#: ../resources/common/js/uninstaller.coffee:32
+msgid "You have uninstalled \"%1\" successfully"
+msgstr ""
+
+#: ../resources/common/js/uninstaller.coffee:33
+msgid "\"%1\" failed to be uninstalled"
+msgstr ""
+
+#: ../app/desktop/desktop.c:225
+msgid "New file"
+msgstr "Nova datoteka"
+
+#: ../app/desktop/desktop.c:236
+msgid "New directory"
+msgstr "Novi direktorij"
+
+#: ../app/greeter/mutils.c:84
+msgid "%a, %b %d, %Y"
+msgstr ""
+
+#: ../app/greeter/lock.c:125 ../app/greeter/greeter.c:192
+msgid "Invalid Password"
+msgstr "Neispravna lozinka"
+
+#: ../app/dock/dock.c:330
+msgid "Dock failed to start, because Compiz is not enabled."
+msgstr ""
+
+#: ../lib/dentry/entry.c:746
+#, c-format
+msgid ""
+"Cannot rename the item to \"%s\". This may be caused by lack of permissions."
+msgstr ""
+
+#: ../lib/dentry/entry.c:752
 #, c-format
 msgid ""
 "There is already a file with name \"%s\" in this folder. Please consider a "
 "different name."
 msgstr ""
 
-#: resources/greeter/js/time.coffee:44
-msgid "Thu"
-msgstr "Čet"
-
-#: resources/dock/js/main.coffee:154 resources/dock/js/main.coffee:223
-msgid "Trash"
-msgstr "Smeće"
-
-#: resources/greeter/js/time.coffee:44
-msgid "Tue"
-msgstr "Uto"
-
-#: lib/dentry/fileops_error_dialog.c:336 lib/dentry/fileops_error_dialog.c:364
-msgid "Type:"
-msgstr "Vrsta:"
-
-#: resources/desktop/js/grid.coffee:71 lib/dentry/fileops.c:403
-msgid "Untitled"
-msgstr "Bezimeno"
-
-#: resources/guide/js/launcher.coffee:181
-msgid ""
-"Use the keyboard searching to find applications you want\n"
-"We try\"deepin\" keyword to see which applications shown"
+#: ../lib/dentry/entry.c:758
+msgid "The item could not be renamed"
 msgstr ""
 
-#: resources/guide/js/launcher.coffee:200
-msgid "Use the right mouse button to send two icons to the desktop"
-msgstr ""
-
-#: resources/desktop/js/richdir.coffee:335
-#: resources/desktop/js/richdir.coffee:842
-#: resources/desktop/js/desktopentry.coffee:151
-#: resources/desktop/js/application.coffee:179
-#: resources/dock/js/plugins/trash/trash.coffee:70
-msgid "Warning"
-msgstr "Upozorenje"
-
-#: resources/greeter/js/time.coffee:44
-msgid "Wed"
-msgstr "Sri"
-
-#: resources/guide/js/welcome.coffee:38
-msgid "Welcome to use Deepin Operating System"
-msgstr ""
-
-#: resources/guide/js/dss.coffee:30
-msgid "Well, please trigger the lower right corner again"
-msgstr ""
-
-#: resources/guide/js/desktop.coffee:129
-msgid "Well, you have learned how to create a \"application group\""
-msgstr ""
-
-#: resources/guide/js/launcher.coffee:80
-msgid ""
-"What shown in the first screen of \" launcher\" are the applications of "
-"collection"
-msgstr ""
-
-#: lib/dentry/fileops_error_dialog.c:220
-msgid ""
-"You will be asked before replacing any files in the folder that conflict "
-"with the files being copied."
-msgstr ""
-
-#: resources/launcher/js/const.coffee:72
-#: resources/guide/js/launcher.coffee:248
-msgid "_Add to autostart"
-msgstr "_Dodaj u atomatsko pokretanje"
-
-#: resources/dock/js/plugins/trash/trash.coffee:29
-msgid "_Clean up"
-msgstr ""
-
-#: resources/dock/js/plugins/trash/trash.coffee:33
-msgid "_Close"
-msgstr "_Zatvori"
-
-#: resources/desktop/js/richdir.coffee:825
-#: resources/desktop/js/desktopentry.coffee:104
-msgid "_Copy"
-msgstr "_Kopiraj"
-
-#: resources/desktop/js/grid.coffee:1051 resources/guide/js/desktop.coffee:226
-msgid "_Corner navigation"
-msgstr ""
-
-#: resources/desktop/js/invalidlink.coffee:34
-#: resources/desktop/js/richdir.coffee:139
-#: resources/desktop/js/richdir.coffee:827
-#: resources/desktop/js/desktopentry.coffee:107
-msgid "_Delete"
-msgstr "_Obriši"
-
-#: lib/dentry/mime_actions.c:211
-msgid "_Display"
-msgstr ""
-
-#: resources/launcher/js/const.coffee:65
-msgid "_Display hidden icons"
-msgstr "_Prikaži skrivene ikone"
-
-#: resources/desktop/js/grid.coffee:1050 resources/guide/js/desktop.coffee:225
-msgid "_Display settings"
-msgstr "_Postavke zaslona"
-
-#: resources/launcher/js/const.coffee:69
-msgid "_Display this icon"
-msgstr "_Prikaži ovu ikonu"
-
-#: resources/desktop/js/desktopentry.coffee:118
-#: resources/desktop/js/desktopentry.coffee:123
-msgid "_Extract"
-msgstr "_Raspakiraj"
-
-#: resources/desktop/js/grid.coffee:1028
-msgid "_Folder"
-msgstr "_Mapa"
-
-#: resources/launcher/js/const.coffee:64
-msgid "_Hide the icon"
-msgstr "_Sakrij ikonu"
-
-#: resources/launcher/js/const.coffee:68
-msgid "_Hide this icon"
-msgstr "_Sakrij ovu ikonu"
-
-#: resources/desktop/js/grid.coffee:1022
-msgid "_Name"
-msgstr "_Nazivu"
-
-#: resources/desktop/js/grid.coffee:1046 resources/guide/js/desktop.coffee:221
-msgid "_New"
-msgstr "_Nova"
-
-#: resources/desktop/js/richdir.coffee:133
-#: resources/desktop/js/richdir.coffee:822
-#: resources/desktop/js/desktopentry.coffee:101
-#: resources/launcher/js/item.coffee:266
-#: resources/guide/js/launcher.coffee:242
-msgid "_Open"
-msgstr "_Otvori"
-
-#: resources/desktop/js/grid.coffee:1048 resources/guide/js/desktop.coffee:223
-msgid "_Paste"
-msgstr "_Zalijepi"
-
-#: resources/desktop/js/richdir.coffee:829
-#: resources/desktop/js/desktopentry.coffee:109
-msgid "_Properties"
-msgstr "_Svojstva"
-
-#: resources/launcher/js/const.coffee:73
-msgid "_Remove from autostart"
-msgstr "_Ukloni iz atomatskog pokretanja"
-
-#: resources/desktop/js/richdir.coffee:135
-#: resources/desktop/js/desktopentry.coffee:106
-msgid "_Rename"
-msgstr "_Preimenuj"
-
-#: lib/dentry/mime_actions.c:213
-msgid "_Run"
-msgstr "_Pokreni"
-
-#: lib/dentry/fileops_error_dialog.c:106
-msgid "_Select a new name for the destination"
-msgstr "_Odaberi novi naziv odredišta"
-
-#: lib/dentry/fileops_error_dialog.c:133
-msgid "_Skip"
-msgstr "_Preskoči"
-
-#: resources/desktop/js/grid.coffee:1045 resources/guide/js/desktop.coffee:220
-msgid "_Sort by"
-msgstr "_Poredaj prema"
-
-#: resources/desktop/js/grid.coffee:1029
-msgid "_Text document"
-msgstr "_Tekstovni dokument"
-
-#: resources/dock/js/deepin_item.coffee:169
-#: resources/dock/js/deepin_item.coffee:221
-msgid "_Time settings"
-msgstr ""
-
-#: resources/desktop/js/richdir.coffee:137
-msgid "_Ungroup"
-msgstr ""
-
-#: resources/launcher/js/item.coffee:275
-#: resources/guide/js/launcher.coffee:249
-msgid "_Uninstall"
-msgstr ""
-
-#: resources/dock/js/deepin_item.coffee:168
-msgid "_View as analog"
-msgstr ""
-
-#: resources/dock/js/deepin_item.coffee:220
-msgid "_View as digit"
-msgstr ""
-
-#: resources/dock/js/global_menu.coffee:17
-msgid "_auto hide"
-msgstr ""
-
-#: lib/category.c:45
-msgid "all"
-msgstr "sve"
-
-#: resources/greeter/js/user.coffee:490
-msgid "click login button to log in"
-msgstr "Klikni tipku prijave za prijavu"
-
-#: lib/dentry/entry.c:833 lib/dentry/fileops.c:805
+#: ../lib/dentry/entry.c:833 ../lib/dentry/fileops.c:805
 msgid "copy"
 msgstr "kopiraj"
 
-#: lib/category.c:53
-msgid "development"
-msgstr "razvoj"
+#: ../lib/dentry/entry.c:1415
+msgid "App Group"
+msgstr "Dodaj grupu"
 
-#: lib/category.c:52
-msgid "education"
-msgstr "obrazovanje"
+#: ../lib/dentry/fileops.c:566
+msgid "Move"
+msgstr ""
 
-#: lib/category.c:48
-msgid "games"
-msgstr "Igre"
+#: ../lib/dentry/fileops_delete.c:29
+msgid "Delete Files"
+msgstr ""
 
-#: lib/category.c:49
-msgid "graphics"
-msgstr "grafika"
+#: ../lib/dentry/fileops_delete.c:32
+msgid "Are you sure you want to permanently delete the files?"
+msgstr "Sigurno želite trajno obrisati datoteke?"
 
-#: lib/category.c:51
-msgid "industry"
-msgstr "industrija"
+#: ../lib/dentry/fileops_delete.c:33
+msgid "If you delete the files, they will be permanently lost."
+msgstr ""
 
-#: lib/category.c:46
+#: ../lib/dentry/fileops_delete.c:36
+msgid "Delete"
+msgstr "Obriši"
+
+#: ../lib/dentry/fileops_error_dialog.c:63
+msgid "File conflict"
+msgstr "Sukob datoteka"
+
+#: ../lib/dentry/fileops_error_dialog.c:106
+msgid "_Select a new name for the destination"
+msgstr "_Odaberi novi naziv odredišta"
+
+#: ../lib/dentry/fileops_error_dialog.c:117
+msgid "Reset"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:126
+msgid "Apply this action to all files"
+msgstr "Primijeni ovu radnju na sve datoteke"
+
+#: ../lib/dentry/fileops_error_dialog.c:133
+msgid "_Skip"
+msgstr "_Preskoči"
+
+#: ../lib/dentry/fileops_error_dialog.c:136
+msgid "Re_name"
+msgstr "Pr_eimenuj"
+
+#: ../lib/dentry/fileops_error_dialog.c:141
+msgid "Replace"
+msgstr "Zamijeni"
+
+#: ../lib/dentry/fileops_error_dialog.c:218
+#, c-format
+msgid "Do you want to merge with folder \"%s\"?"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:220
+msgid ""
+"The merging operation will be asked to confirm before replacing any files in "
+"the folder conflicted."
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:222
+#, c-format
+msgid "An older folder with the same name already exists in \"%s\"."
+msgstr "Starija mapa s istim nazivom već postoji u \"%s\"."
+
+#: ../lib/dentry/fileops_error_dialog.c:226
+#, c-format
+msgid "A newer folder with the same name already exists in \"%s\"."
+msgstr "Novija mapa s istim nazivom već postoji u \"%s\"."
+
+#: ../lib/dentry/fileops_error_dialog.c:230
+#, c-format
+msgid "Another folder with the same name already exists in \"%s\"."
+msgstr "Druga mapa s istim nazivom već postoji u \"%s\"."
+
+#: ../lib/dentry/fileops_error_dialog.c:236
+#, fuzzy
+msgid "All files in the folder will be removed by replacing."
+msgstr "Sve stavke u smeću biti će trajno obrisane."
+
+#: ../lib/dentry/fileops_error_dialog.c:237
+#, c-format
+msgid "Do you want to replace folder \"%s\"?"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:239
+#, c-format
+msgid "A folder with the same name already exists in \"%s\"."
+msgstr "Mapa s istim nazivom već postoji u \"%s\"."
+
+#: ../lib/dentry/fileops_error_dialog.c:245
+#, c-format
+msgid "Do you want to replace file \"%s\"?"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:246
+msgid "The content will be overwritten by replacing."
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:248
+#, c-format
+msgid "An older file with the same name already exists in \"%s\"."
+msgstr "Starija datoteka s istim nazivom već postoji u \"%s\"."
+
+#: ../lib/dentry/fileops_error_dialog.c:252
+#, c-format
+msgid "A newer file with the same name already exists in \"%s\"."
+msgstr "Novija datoteka s istim nazivom već postoji u \"%s\"."
+
+#: ../lib/dentry/fileops_error_dialog.c:256
+#, c-format
+msgid "Another file with the same name already exists in \"%s\"."
+msgstr "Druga datoteka s istim nazivom već postoji u \"%s\"."
+
+#: ../lib/dentry/fileops_error_dialog.c:328
+msgid "Original file"
+msgstr "Izvorna datoteka"
+
+#: ../lib/dentry/fileops_error_dialog.c:329
+#: ../lib/dentry/fileops_error_dialog.c:357
+msgid "Size:"
+msgstr "Veličina:"
+
+#: ../lib/dentry/fileops_error_dialog.c:333
+#: ../lib/dentry/fileops_error_dialog.c:361
+msgid "Type:"
+msgstr "Vrsta:"
+
+#: ../lib/dentry/fileops_error_dialog.c:337
+#: ../lib/dentry/fileops_error_dialog.c:365
+msgid "Last modified:"
+msgstr "Zadnja pomjena:"
+
+#: ../lib/dentry/fileops_error_dialog.c:356
+msgid "Replace with"
+msgstr "Zamijeni s(a)"
+
+#: ../lib/dentry/fileops_error_dialog.c:382
+msgid "Merge"
+msgstr "Spoji"
+
+#: ../lib/dentry/fileops_error_reporting.c:106
+#: ../lib/dentry/fileops_error_reporting.c:191
+#, c-format
+msgid "Error while %s files"
+msgstr "Greška pri %s datoteka"
+
+#: ../lib/dentry/fileops_trash.c:58
+msgid "Empty Trash"
+msgstr "Isprazni smeće"
+
+#: ../lib/dentry/fileops_trash.c:67
+msgid "Empty all items from Trash?"
+msgstr "Isprazni sve stavke iz smeća?"
+
+#: ../lib/dentry/fileops_trash.c:68
+msgid "All items in the Trash will be permanently deleted."
+msgstr "Sve stavke u smeću biti će trajno obrisane."
+
+#: ../lib/dentry/fileops_trash.c:71
+msgid "Empty _Trash"
+msgstr "Isprazni _smeće"
+
+#: ../lib/dentry/mime_actions.c:198
+#, c-format
+msgid "Do you want to run \"%s\", or display its contents?"
+msgstr "Želite li pokrenuti \"%s\", ili prikazati sadražj?"
+
+#: ../lib/dentry/mime_actions.c:199
+#, c-format
+msgid "\"%s\" is an executable text file."
+msgstr "\"%s\" je tekstovna izvršna datoteka."
+
+#: ../lib/dentry/mime_actions.c:210
+msgid "Run in _Terminal"
+msgstr "Pokreni u _terminalu"
+
+#: ../lib/dentry/mime_actions.c:211
+msgid "_Display"
+msgstr ""
+
+#: ../lib/dentry/mime_actions.c:213
+msgid "_Run"
+msgstr "_Pokreni"
+
+#: ../lib/category.c:45
+msgid "all"
+msgstr "sve"
+
+#: ../lib/category.c:46
 msgid "internet"
 msgstr "internet"
 
-#: resources/dock/js/global_menu.coffee:16
-msgid "keep _hidden"
-msgstr ""
-
-#: resources/dock/js/global_menu.coffee:15
-msgid "keep _showing"
-msgstr ""
-
-#: lib/category.c:47
+#: ../lib/category.c:47
 msgid "multimedia"
 msgstr "multimedija"
 
-#: resources/dock/js/plugins/trash/trash.coffee:107
-#: resources/launcher/js/item.coffee:339
-msgid "no"
-msgstr "ne"
+#: ../lib/category.c:48
+msgid "games"
+msgstr "Igre"
 
-#: lib/category.c:56
-msgid "other"
-msgstr "ostalo"
+#: ../lib/category.c:49
+msgid "graphics"
+msgstr "grafika"
 
-#: lib/category.c:50
+#: ../lib/category.c:50
 msgid "productivity"
 msgstr "produktivnost"
 
-#: lib/category.c:54
+#: ../lib/category.c:51
+msgid "industry"
+msgstr "industrija"
+
+#: ../lib/category.c:52
+msgid "education"
+msgstr "obrazovanje"
+
+#: ../lib/category.c:53
+msgid "development"
+msgstr "razvoj"
+
+#: ../lib/category.c:54
 msgid "system"
 msgstr "sustav"
 
-#: resources/guide/js/launcher.coffee:201
-msgid "tips:You can add it to startup items or uninstall"
-msgstr ""
-
-#: resources/guide/js/desktop.coffee:200
-msgid "tips：Click on the interface of corner navigation blank area to return"
-msgstr ""
-
-#: resources/guide/js/dss.coffee:31
-msgid "tips：Click the setting icon on dock to implement"
-msgstr ""
-
-#: resources/guide/js/dss.coffee:78
-msgid ""
-"tips：Hover the setting icon on dock to quickly implement some setting "
-"functions"
-msgstr ""
-
-#: resources/guide/js/launcher.coffee:182
-msgid "tips：Please directly enter the word \"deepin\""
-msgstr ""
-
-#: resources/guide/js/end.coffee:45
-msgid "tips：Please receive in Deepin account"
-msgstr ""
-
-#: resources/guide/js/desktop.coffee:144
-msgid ""
-"tips：Please trigger successively by hints, click on the blank area to return"
-msgstr ""
-
-#: resources/guide/js/desktop.coffee:130
-msgid "tips：Right-click on the application group will provide more functions"
-msgstr ""
-
-#: lib/category.c:55
+#: ../lib/category.c:55
 msgid "utilities"
 msgstr "alati"
 
-#: resources/dock/js/plugins/trash/trash.coffee:107
-#: resources/launcher/js/item.coffee:339
-msgid "yes"
-msgstr "da"
-
-#~ msgid "Computer"
-#~ msgstr "Računalo"
-
-#~ msgid "Home"
-#~ msgstr "Osobna mapa"
-
-#~ msgid "Software Center"
-#~ msgstr "Centar softvera"
-
-#~ msgid "_Clean up %1 items"
-#~ msgstr "_Brisanje %1 stavaka"
-
-#~ msgid "_Clean up 1 item"
-#~ msgstr "_Brisanje 1 stavke"
+#: ../lib/category.c:56
+msgid "others"
+msgstr "ostalo"

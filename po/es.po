@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-08 10:50+0800\n"
+"POT-Creation-Date: 2014-08-11 17:42+0800\n"
 "PO-Revision-Date: 2014-07-03 14:41+0000\n"
 "Last-Translator: karlos2 <xkarlos2@hotmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/deepin-desktop-"
@@ -309,7 +309,7 @@ msgstr "Esta seguro de remover?"
 
 #: ../resources/launcher/js/item.coffee:354
 #: ../resources/dock/js/plugins/trash/trash.coffee:110
-msgid "All dependences will be removed"
+msgid "All dependencies will be removed"
 msgstr "Todas las dependencias serán removidas"
 
 #: ../resources/launcher/js/item.coffee:354
@@ -426,22 +426,6 @@ msgstr "Gracias por tu paciencia para aprender. Enhorabuena!"
 msgid "End"
 msgstr "Fin"
 
-#: ../resources/guide/js/end.coffee:41
-msgid "Thanks for your patience to learn.You get the novice package"
-msgstr "Gracias por tu paciencia para aprender. Obtuviste el nuevo paquete"
-
-#: ../resources/guide/js/end.coffee:43
-msgid "tips：Please receive in Deepin account"
-msgstr "consejo: Por favor recibir en cuenta Deepin"
-
-#: ../resources/guide/js/end.coffee:45
-msgid "Get"
-msgstr "Obtener"
-
-#: ../resources/guide/js/end.coffee:53
-msgid "New users directly jump to the registration page"
-msgstr "Nuevos usuarios saltan directo a la pagina de registro"
-
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
 msgstr "Bienvenido al uso del Sistema Operativo Deepin"
@@ -539,7 +523,8 @@ msgid "Start"
 msgstr "Iniciar"
 
 #: ../resources/guide/js/start.coffee:51
-msgid "I am older,exit directly"
+#, fuzzy
+msgid "I am older. Exit directly."
 msgstr "Soy mayor, salida directamente"
 
 #: ../resources/guide/js/launcher.coffee:29
@@ -749,9 +734,8 @@ msgid "Do you want to merge with folder \"%s\"?"
 msgstr "¿Usted desea combinar con la carpeta \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
-#, fuzzy
 msgid ""
-"The merge operation will be asked to confirm before replacing any files in "
+"The merging operation will be asked to confirm before replacing any files in "
 "the folder conflicted."
 msgstr ""
 "Se le preguntará antes de reemplazar los archivos en la carpeta que el "
@@ -774,7 +758,7 @@ msgstr "Otra carpeta con el mismo nombre ya existe en \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:236
 #, fuzzy
-msgid "All files in the folder will be removed  by replacing."
+msgid "All files in the folder will be removed by replacing."
 msgstr "Todos los Elementos en la Papelera serán borrados de forma permanente"
 
 #: ../lib/dentry/fileops_error_dialog.c:237
@@ -927,56 +911,17 @@ msgid "utilities"
 msgstr "utilidades"
 
 #: ../lib/category.c:56
-msgid "other"
+msgid "others"
 msgstr "otro"
 
-#~ msgid "Replacing it will remove all files in the folder."
-#~ msgstr "Reemplazarlo eliminará todos los archivos en la carpeta."
+#~ msgid "Thanks for your patience to learn.You get the novice package"
+#~ msgstr "Gracias por tu paciencia para aprender. Obtuviste el nuevo paquete"
 
-#~ msgid "Replacing it will overwrite its content."
-#~ msgstr "Reemplazarlo sobreescribirá su contenido."
+#~ msgid "tips：Please receive in Deepin account"
+#~ msgstr "consejo: Por favor recibir en cuenta Deepin"
 
-#~ msgid "Oops...I can't recognize your face. "
-#~ msgstr "Ups... No puedo reconocer tu cara."
+#~ msgid "Get"
+#~ msgstr "Obtener"
 
-#~ msgid "Please login with your password or click your picture to retry."
-#~ msgstr ""
-#~ "Por favor, inicia sesión con tu contraseña o haz clic en tu foto para "
-#~ "reintentar."
-
-#~ msgid "%sRetry automatically in %ds"
-#~ msgstr "%sIntentar automáticamente en %ds"
-
-#~ msgid ""
-#~ "Click the right mouse button on the application icon to call up the "
-#~ "context menu\n"
-#~ "Clicking on the menu item will achieve its function"
-#~ msgstr ""
-#~ "Haga clic en el botón derecho del ratón en el icono de la aplicación para "
-#~ "que aparezca el menú contextual \n"
-#~ "Al hacer clic en el elemento de menú logrará su función"
-
-#~ msgid "Computer"
-#~ msgstr "Equipo"
-
-#~ msgid "Home"
-#~ msgstr "Carpeta personal"
-
-#, fuzzy
-#~ msgid "Software Center"
-#~ msgstr "Centro de Control"
-
-#, fuzzy
-#~ msgid "_Clean up %1 items"
-#~ msgstr "_Limpiar"
-
-#, fuzzy
-#~ msgid "_Clean up 1 item"
-#~ msgstr "_Limpiar"
-
-#~ msgid ""
-#~ "tips:You can also directly use the left mouse button to drag the icon to "
-#~ "the dock, favicon or trash"
-#~ msgstr ""
-#~ "Consejos: También puede utilizar directamente el botón izquierdo del "
-#~ "ratón para arrastrar el icono hasta el muelle, favicon o basura"
+#~ msgid "New users directly jump to the registration page"
+#~ msgstr "Nuevos usuarios saltan directo a la pagina de registro"

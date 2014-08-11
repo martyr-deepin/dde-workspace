@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-07 16:25+0800\n"
+"POT-Creation-Date: 2014-08-11 17:42+0800\n"
 "PO-Revision-Date: 2014-07-05 18:58+0000\n"
 "Last-Translator: Maxximo88 <real.massimo@hotmail.it>\n"
 "Language-Team: Italian (http://www.transifex.com/projects/p/deepin-desktop-"
@@ -19,11 +19,145 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: resources/greeter/js/message.coffee:70
-msgid "\t\t\t\t-----No available desktop sessions!-----\n"
-msgstr "\t\t\t\t-----Non disponibile in questa session Desktop!-----\n"
+#: ../resources/desktop/js/invalidlink.coffee:34
+#: ../resources/desktop/js/desktopentry.coffee:107
+#: ../resources/desktop/js/richdir.coffee:139
+#: ../resources/desktop/js/richdir.coffee:571
+msgid "_Delete"
+msgstr "_Elimina"
 
-#: resources/greeter/js/message.coffee:100
+#: ../resources/desktop/js/application.coffee:179
+#: ../resources/desktop/js/richdir.coffee:335
+#: ../resources/desktop/js/richdir.coffee:586
+msgid "The link is invalid. Do you want to delete it?"
+msgstr "Questo link è invalido. Vuoi eliminarlo?"
+
+#: ../resources/desktop/js/application.coffee:179
+#: ../resources/desktop/js/desktopentry.coffee:151
+#: ../resources/desktop/js/richdir.coffee:335
+#: ../resources/desktop/js/richdir.coffee:586
+#: ../resources/dock/js/plugins/trash/trash.coffee:73
+msgid "Warning"
+msgstr "Attenzione"
+
+#: ../resources/desktop/js/desktopentry.coffee:101
+#: ../resources/desktop/js/richdir.coffee:133
+#: ../resources/desktop/js/richdir.coffee:566
+#: ../resources/launcher/js/item.coffee:276
+#: ../resources/guide/js/launcher.coffee:235
+msgid "_Open"
+msgstr "_Apri"
+
+#: ../resources/desktop/js/desktopentry.coffee:103
+#: ../resources/desktop/js/richdir.coffee:568
+msgid "Cu_t"
+msgstr "Tagli_a"
+
+#: ../resources/desktop/js/desktopentry.coffee:104
+#: ../resources/desktop/js/richdir.coffee:569
+msgid "_Copy"
+msgstr "_Copia"
+
+#: ../resources/desktop/js/desktopentry.coffee:106
+#: ../resources/desktop/js/richdir.coffee:135
+msgid "_Rename"
+msgstr "_Rinomina"
+
+#: ../resources/desktop/js/desktopentry.coffee:109
+#: ../resources/desktop/js/richdir.coffee:573
+msgid "_Properties"
+msgstr "_Proprietà"
+
+#: ../resources/desktop/js/desktopentry.coffee:115
+#: ../resources/desktop/js/desktopentry.coffee:122
+msgid "Co_mpress"
+msgstr "Co_mprimi"
+
+#: ../resources/desktop/js/desktopentry.coffee:118
+#: ../resources/desktop/js/desktopentry.coffee:123
+msgid "_Extract"
+msgstr "_Estrai"
+
+#: ../resources/desktop/js/desktopentry.coffee:119
+#: ../resources/desktop/js/desktopentry.coffee:124
+msgid "Extract _Here"
+msgstr "Estrai _Qui"
+
+#: ../resources/desktop/js/desktopentry.coffee:151
+#: ../resources/dock/js/plugins/trash/trash.coffee:73
+msgid "Can not open this file."
+msgstr "Non è possibile aprire il file."
+
+#: ../resources/desktop/js/grid.coffee:71 ../lib/dentry/fileops.c:403
+msgid "Untitled"
+msgstr "Senza titolo"
+
+#: ../resources/desktop/js/grid.coffee:1022
+msgid "_Name"
+msgstr "_Nome"
+
+#: ../resources/desktop/js/grid.coffee:1023
+msgid "Last modified _time"
+msgstr "Ultime modifiche _Età"
+
+#: ../resources/desktop/js/grid.coffee:1028
+msgid "_Folder"
+msgstr "_Cartella"
+
+#: ../resources/desktop/js/grid.coffee:1029
+msgid "_Text document"
+msgstr "_Documento di testo"
+
+#: ../resources/desktop/js/grid.coffee:1045
+#: ../resources/guide/js/desktop.coffee:199
+msgid "_Sort by"
+msgstr "_Ordina per"
+
+#: ../resources/desktop/js/grid.coffee:1046
+#: ../resources/guide/js/desktop.coffee:200
+msgid "_New"
+msgstr "_Nuovo"
+
+#: ../resources/desktop/js/grid.coffee:1047
+#: ../resources/guide/js/desktop.coffee:201
+msgid "Open in _terminal"
+msgstr "Apri nel _terminale"
+
+#: ../resources/desktop/js/grid.coffee:1048
+#: ../resources/guide/js/desktop.coffee:202
+msgid "_Paste"
+msgstr "_Incolla"
+
+#: ../resources/desktop/js/grid.coffee:1050
+#: ../resources/guide/js/desktop.coffee:204
+msgid "_Display settings"
+msgstr "Impostazioni _Display"
+
+#: ../resources/desktop/js/grid.coffee:1051
+#: ../resources/guide/js/desktop.coffee:205
+msgid "_Corner navigation"
+msgstr "_Angolo di navigazione"
+
+#: ../resources/desktop/js/grid.coffee:1052
+#: ../resources/guide/js/desktop.coffee:206
+msgid "Pe_rsonalize"
+msgstr "Pe_rsonalizza"
+
+#: ../resources/desktop/js/richdir.coffee:137
+msgid "_Ungroup"
+msgstr "_Sciogli"
+
+#: ../resources/greeter/js/message.coffee:105
+#: ../resources/greeter/js/message.coffee:82
+msgid "$ sudo reboot\n"
+msgstr "$ sudo reboot\n"
+
+#: ../resources/greeter/js/message.coffee:99
+#: ../resources/greeter/js/message.coffee:73
+msgid "Press Ctrl + Alt + F1\n"
+msgstr "Premi Ctrl + Alt + F1\n"
+
+#: ../resources/greeter/js/message.coffee:95
 msgid ""
 "\t\t\t\t-----The daemon of accounts has not started!-----\n"
 ")"
@@ -31,281 +165,272 @@ msgstr ""
 "\t\t\t\t-----Il daemon of accounts non è partito!-----\n"
 ")"
 
-#: lib/dentry/mime_actions.c:199
-#, c-format
-msgid "\"%s\" is an executable text file."
-msgstr "\"%s\" è un file di testo eseguibile."
-
-#: resources/greeter/js/message.coffee:81
+#: ../resources/greeter/js/message.coffee:79
 msgid "$ sudo apt-get install deepin-desktop-Environment\n"
 msgstr "$ sudo apt-get install deepin-desktop-Environment\n"
 
-#: resources/greeter/js/message.coffee:110
-#: resources/greeter/js/message.coffee:84
-msgid "$ sudo reboot\n"
-msgstr "$ sudo reboot\n"
+#: ../resources/greeter/js/message.coffee:68
+msgid "\t\t\t\t-----No available desktop sessions!-----\n"
+msgstr "\t\t\t\t-----Non disponibile in questa session Desktop!-----\n"
 
-#: app/greeter/mutils.c:84
-msgid "%a, %b %d, %Y"
-msgstr "%a, %b %d, %Y"
+#: ../resources/greeter/js/user.coffee:471
+msgid "click login button to log in"
+msgstr "Clicca sul bottone di Login per entrare"
 
-#: app/greeter/camera.c:235
-#, c-format
-msgid "%sRetry automatically in %ds"
-msgstr "%sRiprova automaticamente in %ds"
-
-#: lib/dentry/fileops_error_dialog.c:242
-#, c-format
-msgid "A folder with the same name already exists in \"%s\"."
-msgstr "Una cartella con lo stesso nome è presente in \"%s\"."
-
-#: lib/dentry/fileops_error_dialog.c:255
-#, c-format
-msgid "A newer file with the same name already exists in \"%s\"."
-msgstr "Un nuovo file con lo stesso nome è presente in \"%s\"."
-
-#: lib/dentry/fileops_error_dialog.c:228
-#, c-format
-msgid "A newer folder with the same name already exists in \"%s\"."
-msgstr "Una nuova versione con lo stesso nome esiste in\"%s\"."
-
-#: resources/launcher/js/const.coffee:80
-msgid "Add to _favorites"
-msgstr "Aggiungi ai _preferiti"
-
-#: resources/zone/js/utils.coffee:10
-msgid "All Windows"
-msgstr "Tutte le finestre"
-
-#: resources/dock/js/plugins/trash/trash.coffee:107
-#: resources/launcher/js/item.coffee:339
-msgid "All dependences will be removed"
-msgstr "Tutte le dipendenze saranno rimosse"
-
-#: lib/dentry/fileops_trash.c:68
-msgid "All items in the Trash will be permanently deleted."
-msgstr "Tutti i file del cestino saranno rimossi in modo permanente."
-
-#: resources/guide/js/launcher.coffee:107
-msgid ""
-"All programs can be located by scrolling the mouse up and down.\n"
-"You can also click on the left classification navigation to locate"
-msgstr ""
-"Tutti i programmi possono esser visionati con un semplice scroll del mouse.\n"
-"Puoi anche cliccare sul pannello di navigazione per categoria a sinistra."
-
-#: lib/dentry/fileops_error_dialog.c:251
-#, c-format
-msgid "An older file with the same name already exists in \"%s\"."
-msgstr "Una cartella con lo stesso nome esiste in \"%s\"."
-
-#: lib/dentry/fileops_error_dialog.c:224
-#, c-format
-msgid "An older folder with the same name already exists in \"%s\"."
-msgstr "Una versione vecchia con lo stesso nome esiste in \"%s\"."
-
-#: lib/dentry/fileops_error_dialog.c:259
-#, c-format
-msgid "Another file with the same name already exists in \"%s\"."
-msgstr "Un altro file con lo stesso nome è presente in \"%s\"."
-
-#: lib/dentry/fileops_error_dialog.c:232
-#, c-format
-msgid "Another folder with the same name already exists in \"%s\"."
-msgstr "Una cartella con lo stesso nome è presente in \"%s\"."
-
-#: lib/dentry/entry.c:1415
-msgid "App Group"
-msgstr "Aggiungi al Gruppo"
-
-#: lib/dentry/fileops_error_dialog.c:126
-msgid "Apply this action to all files"
-msgstr "Applica questa azione a tutti i file"
-
-#: resources/greeter/js/time.coffee:43
-msgid "Apr"
-msgstr "Apr"
-
-#: resources/dock/js/plugins/trash/trash.coffee:107
-#: resources/launcher/js/item.coffee:339
-msgid "Are you sure to remove"
-msgstr "Sicuro di voler rimuovere"
-
-#: lib/dentry/fileops_delete.c:32
-msgid "Are you sure you want to permanently delete the files?"
-msgstr "Sei sicuro di voler eliminare i file definitivamente?"
-
-#: resources/greeter/js/time.coffee:43
-msgid "Aug"
-msgstr "Ago"
-
-#: resources/desktop/js/desktopentry.coffee:151
-#: resources/dock/js/plugins/trash/trash.coffee:70
-msgid "Can not open this file."
-msgstr "Non è possibile aprire il file."
-
-#: lib/dentry/entry.c:746
-#, c-format
-msgid ""
-"Cannot rename the item to \"%s\". This may be caused by lack of permissions."
-msgstr ""
-"Non puoi rinominare l'oggetto in \"%s\". Questo potrebbe causare problemi di "
-"permessi."
-
-#: resources/desktop/js/desktopentry.coffee:115
-#: resources/desktop/js/desktopentry.coffee:122
-msgid "Co_mpress"
-msgstr "Co_mprimi"
-
-#: resources/zone/js/utils.coffee:10
-msgid "Control Center"
-msgstr "Control Center"
-
-#: resources/osd/js/display.coffee:42 lib/dentry/fileops.c:772
-msgid "Copy"
-msgstr "Copia"
-
-#: resources/desktop/js/richdir.coffee:569
-#: resources/desktop/js/desktopentry.coffee:103
-msgid "Cu_t"
-msgstr "Tagli_a"
-
-#: resources/greeter/js/time.coffee:43
-msgid "Dec"
-msgstr "Dic"
-
-#: lib/dentry/fileops_delete.c:36
-msgid "Delete"
-msgstr "Elimina"
-
-#: lib/dentry/fileops_delete.c:29
-msgid "Delete Files"
-msgstr "Cancella files"
-
-#: resources/zone/js/utils.coffee:10
-msgid "Desktop"
-msgstr "Desktop"
-
-#: lib/dentry/fileops_error_dialog.c:218
-#, c-format
-msgid "Do you want to merge with folder \"%s\"?"
-msgstr "Vuoi unire questa cartella a \"%s\"?"
-
-#: lib/dentry/fileops_error_dialog.c:248
-#, c-format
-msgid "Do you want to replace file \"%s\"?"
-msgstr "Vuoi sostituire il file \"%s\"?"
-
-#: lib/dentry/fileops_error_dialog.c:240
-#, c-format
-msgid "Do you want to replace folder \"%s\"?"
-msgstr "Vuoi sostituire la cartella \"%s\"?"
-
-#: lib/dentry/mime_actions.c:198
-#, c-format
-msgid "Do you want to run \"%s\", or display its contents?"
-msgstr "Vuoi eseguire \"%s\", oppure visualizzare il suo contenuto?"
-
-#: app/dock/dock.c:329
-msgid "Dock failed to start, because Compiz is not enabled."
-msgstr "La Dock non è partita, questo perché Compiz non è acceso."
-
-#: lib/dentry/fileops_trash.c:58
-msgid "Empty Trash"
-msgstr "Cestino vuoto"
-
-#: lib/dentry/fileops_trash.c:71
-msgid "Empty _Trash"
-msgstr "Cestino_Vuoto"
-
-#: lib/dentry/fileops_trash.c:67
-msgid "Empty all items from Trash?"
-msgstr "Svuotare il cestino?"
-
-#: resources/guide/js/end.coffee:32
-msgid "End"
-msgstr "Fine"
-
-#: resources/greeter/js/powermenu.coffee:102
-msgid "Enter your password to %1"
-msgstr "Immetti la password in %1"
-
-#: lib/dentry/fileops_error_reporting.c:106
-#: lib/dentry/fileops_error_reporting.c:191
-#, c-format
-msgid "Error while %s files"
-msgstr "Errore file %s"
-
-#: resources/osd/js/display.coffee:43
-msgid "Expand"
-msgstr "Espandi"
-
-#: resources/desktop/js/desktopentry.coffee:119
-#: resources/desktop/js/desktopentry.coffee:124
-msgid "Extract _Here"
-msgstr "Estrai _Qui"
-
-#: resources/greeter/js/time.coffee:43
-msgid "Feb"
-msgstr "Feb"
-
-#: lib/dentry/fileops_error_dialog.c:63
-msgid "File conflict"
-msgstr "Conflitto nel file"
-
-#: resources/greeter/js/time.coffee:44
-msgid "Fri"
-msgstr "Ven"
-
-#: resources/guide/js/end.coffee:47
-msgid "Get"
-msgstr "Get"
-
-#: resources/greeter/js/usermenu.coffee:58
-msgid "Guest"
-msgstr "Guest"
-
-#: resources/guide/js/dss.coffee:77
-msgid "Here is the system setting area"
-msgstr "Qui c'è l'area impostazioni di sistema"
-
-#: resources/guide/js/start.coffee:54
-msgid "I am older,exit directly"
-msgstr "Ne so di brutto, esci direttamente"
-
-#: lib/dentry/fileops_delete.c:33
-msgid "If you delete the files, they will be permanently lost."
-msgstr "Se li cancelli li perderai definitivamente."
-
-#: app/greeter/lock.c:134 app/greeter/greeter.c:194
-msgid "Invalid Password"
-msgstr "Password Non Valida"
-
-#: resources/greeter/js/time.coffee:43
+#: ../resources/greeter/js/time.coffee:43
 msgid "Jan"
 msgstr "Gen"
 
-#: resources/greeter/js/time.coffee:43
-msgid "Jul"
-msgstr "Lug"
+#: ../resources/greeter/js/time.coffee:43
+msgid "Feb"
+msgstr "Feb"
 
-#: resources/greeter/js/time.coffee:43
+#: ../resources/greeter/js/time.coffee:43
+msgid "Mar"
+msgstr "Mar"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Apr"
+msgstr "Apr"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "May"
+msgstr "Mag"
+
+#: ../resources/greeter/js/time.coffee:43
 msgid "Jun"
 msgstr "Giu"
 
-#: resources/desktop/js/grid.coffee:1023
-msgid "Last modified _time"
-msgstr "Ultime modifiche _Età"
+#: ../resources/greeter/js/time.coffee:43
+msgid "Jul"
+msgstr "Lug"
 
-#: lib/dentry/fileops_error_dialog.c:340 lib/dentry/fileops_error_dialog.c:368
-msgid "Last modified:"
-msgstr "Ultima modifica:"
+#: ../resources/greeter/js/time.coffee:43
+msgid "Aug"
+msgstr "Ago"
 
-#: resources/zone/js/utils.coffee:10 resources/dock/js/main.coffee:221
+#: ../resources/greeter/js/time.coffee:43
+msgid "Sep"
+msgstr "Set"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Oct"
+msgstr "Ott"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Nov"
+msgstr "Nov"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Dec"
+msgstr "Dic"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Sun"
+msgstr "Dom"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Mon"
+msgstr "Lun"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Tue"
+msgstr "Mar"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Wed"
+msgstr "Mer"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Thu"
+msgstr "Gio"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Fri"
+msgstr "Ven"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Sat"
+msgstr "Sab"
+
+#: ../resources/greeter/js/usermenu.coffee:57
+msgid "Guest"
+msgstr "Guest"
+
+#: ../resources/greeter/js/powermenu.coffee:26
+msgid "Shut down"
+msgstr "Arresta"
+
+#: ../resources/greeter/js/powermenu.coffee:27
+msgid "Restart"
+msgstr "Riavvia"
+
+#: ../resources/greeter/js/powermenu.coffee:28
+msgid "Suspend"
+msgstr "Sospendi"
+
+#: ../resources/greeter/js/powermenu.coffee:90
+msgid "Enter your password to %1"
+msgstr "Immetti la password in %1"
+
+#: ../resources/greeter/js/mediacontrol.coffee:167
+#, fuzzy
+msgid "Click button to Play"
+msgstr "Clicca sul bottone di Login per entrare"
+
+#: ../resources/osd/js/display.coffee:42 ../lib/dentry/fileops.c:772
+msgid "Copy"
+msgstr "Copia"
+
+#: ../resources/osd/js/display.coffee:43
+msgid "Expand"
+msgstr "Espandi"
+
+#: ../resources/osd/js/display.coffee:44
+msgid "Only the first Screen"
+msgstr "Solo la prima schermata"
+
+#: ../resources/osd/js/display.coffee:45
+msgid "Only the second Screen"
+msgstr "Solo la seconda schermata"
+
+#: ../resources/launcher/js/item.coffee:283
+#: ../resources/guide/js/launcher.coffee:242
+msgid "_Uninstall"
+msgstr "_Disinstalla"
+
+#: ../resources/launcher/js/item.coffee:354
+#: ../resources/dock/js/plugins/trash/trash.coffee:110
+msgid "Are you sure to remove"
+msgstr "Sicuro di voler rimuovere"
+
+#: ../resources/launcher/js/item.coffee:354
+#: ../resources/dock/js/plugins/trash/trash.coffee:110
+msgid "All dependencies will be removed"
+msgstr "Tutte le dipendenze saranno rimosse"
+
+#: ../resources/launcher/js/item.coffee:354
+#: ../resources/dock/js/plugins/trash/trash.coffee:110
+msgid "no"
+msgstr "No"
+
+#: ../resources/launcher/js/item.coffee:354
+#: ../resources/dock/js/plugins/trash/trash.coffee:110
+msgid "yes"
+msgstr "Si"
+
+#: ../resources/launcher/js/const.coffee:64
+msgid "_Hide the icon"
+msgstr "_Nascondi l'icona"
+
+#: ../resources/launcher/js/const.coffee:65
+msgid "_Display hidden icons"
+msgstr "_Mostra icone nascoste"
+
+#: ../resources/launcher/js/const.coffee:68
+msgid "_Hide this icon"
+msgstr "_Nascondi questa icona"
+
+#: ../resources/launcher/js/const.coffee:69
+msgid "_Display this icon"
+msgstr "_Mostra questa icona"
+
+#: ../resources/launcher/js/const.coffee:72
+#: ../resources/guide/js/launcher.coffee:241
+msgid "_Add to autostart"
+msgstr "_Aggiungi all'autostart"
+
+#: ../resources/launcher/js/const.coffee:73
+msgid "_Remove from autostart"
+msgstr "_Rimuovi dall'autostart"
+
+#: ../resources/launcher/js/const.coffee:80
+msgid "Add to _favorites"
+msgstr "Aggiungi ai _preferiti"
+
+#: ../resources/launcher/js/const.coffee:81
+#: ../resources/guide/js/launcher.coffee:237
+msgid "Remove from _favorites"
+msgstr "Rimuovi dai _preferiti"
+
+#: ../resources/launcher/js/const.coffee:84
+#: ../resources/guide/js/launcher.coffee:238
+msgid "Send to d_esktop"
+msgstr "Manda sul d_esktop"
+
+#: ../resources/launcher/js/const.coffee:85
+#, fuzzy
+msgid "Remove from d_esktop"
+msgstr "Rimuovi dai _preferiti"
+
+#: ../resources/launcher/js/const.coffee:88
+#: ../resources/guide/js/launcher.coffee:239
+msgid "Send to do_ck"
+msgstr "Invia alla do_ck"
+
+#: ../resources/launcher/js/const.coffee:89
+#, fuzzy
+msgid "Remove from do_ck"
+msgstr "Rimuovi dai _preferiti"
+
+#: ../resources/zone/js/utils.coffee:10
+msgid "Control Center"
+msgstr "Control Center"
+
+#: ../resources/zone/js/utils.coffee:10
+msgid "All Windows"
+msgstr "Tutte le finestre"
+
+#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:226
 msgid "Launcher"
 msgstr "Launcher"
 
-#: resources/guide/js/desktop.coffee:29
+#: ../resources/zone/js/utils.coffee:10
+msgid "Desktop"
+msgstr "Desktop"
+
+#: ../resources/zone/js/utils.coffee:10
+msgid "None"
+msgstr "No"
+
+#: ../resources/guide/js/dss.coffee:29
+msgid "Well, please trigger the lower right corner again"
+msgstr "Bene, tocca l'angolo in basso a destra nuovamente"
+
+#: ../resources/guide/js/dss.coffee:30
+msgid "tips：Click the setting icon on dock to implement"
+msgstr "Trucco: Clicca l'icona Impostazioni sulla Dock"
+
+#: ../resources/guide/js/dss.coffee:69
+msgid "Here is the system setting area"
+msgstr "Qui c'è l'area impostazioni di sistema"
+
+#: ../resources/guide/js/dss.coffee:70
+msgid ""
+"tips：Hover the setting icon on dock to quickly implement some setting "
+"functions"
+msgstr ""
+"Trucco: Prova l'icona Impostazioni sulla Dock per fare subito qualche "
+"cambiamento"
+
+#: ../resources/guide/js/end.coffee:25
+#, fuzzy
+msgid "Thanks for your patience while learning. Congratulations."
+msgstr "Grazie per la tua pazienza, hai finito!"
+
+#: ../resources/guide/js/end.coffee:30
+msgid "End"
+msgstr "Fine"
+
+#: ../resources/guide/js/welcome.coffee:35
+msgid "Welcome to use Deepin Operating System"
+msgstr "Benvenuto in Deepin Linux"
+
+#: ../resources/guide/js/welcome.coffee:38
+msgid "Prepare for operation ..."
+msgstr "Preparazione in corso..."
+
+#: ../resources/guide/js/desktop.coffee:27
 msgid ""
 "Let's drag the other icon on the first icon \n"
 " to generate \"application group\""
@@ -313,144 +438,48 @@ msgstr ""
 "Trascina le varie icone su una singola\n"
 "per creare un \"gruppo di applicazioni\""
 
-#: resources/greeter/js/time.coffee:43
-msgid "Mar"
-msgstr "Mar"
+#: ../resources/guide/js/desktop.coffee:119
+msgid "Well, you have learned how to create a \"application group\""
+msgstr "Bene, hai imparato come creare un \"gruppo di applicazioni\""
 
-#: resources/greeter/js/time.coffee:43
-msgid "May"
-msgstr "Mag"
+#: ../resources/guide/js/desktop.coffee:120
+msgid "tips：Right-click on the application group will provide more functions"
+msgstr "Trucco: Tasto destro sul \"gruppo applicazioni\" per maggiori funzioni"
 
-#: lib/dentry/fileops_error_dialog.c:385
-msgid "Merge"
-msgstr "Unire"
+#: ../resources/guide/js/desktop.coffee:131
+#, fuzzy
+msgid ""
+"Slide the mouse to the four top corners, which can trigger four different "
+"events\n"
+"Please move to the upper left corner first to show or hide Launcher"
+msgstr ""
+"Muovere il mouse sugli angoli ti permetterà di avere quattro azioni "
+"differenti\n"
+"Prova a muovere il mouse sull'angolo in alto a sinistra per mostrare o "
+"nascondere il Launcher"
 
-#: resources/greeter/js/time.coffee:44
-msgid "Mon"
-msgstr "Lun"
+#: ../resources/guide/js/desktop.coffee:132
+msgid ""
+"tips：Please trigger successively by hints, click on the blank area to return"
+msgstr "Trucco: Clicca sull'area vuota per tornare alla schermata precedente"
 
-#: lib/dentry/fileops.c:566
-msgid "Move"
-msgstr "Muovi"
+#: ../resources/guide/js/desktop.coffee:136
+msgid "Show/Hide Launcher"
+msgstr "Mostra/Nascondi Launcher"
 
-#: resources/guide/js/start.coffee:28
-msgid "New Desktop"
-msgstr "Nuovo desktop"
+#: ../resources/guide/js/desktop.coffee:137
+msgid "Show/Hide Desktop"
+msgstr "Mostra/Nascondi Desktop"
 
-#: resources/guide/js/start.coffee:28
-msgid "New Launcher"
-msgstr "Nuovo launcher"
+#: ../resources/guide/js/desktop.coffee:138
+msgid "Show/Hide Control Center"
+msgstr "Mostra/Nascondi Control Center"
 
-#: resources/guide/js/start.coffee:28
-msgid "New System Settings"
-msgstr "Nuove impostazioni di sistema"
-
-#: app/desktop/desktop.c:236
-msgid "New directory"
-msgstr "Nuova cartella"
-
-#: app/desktop/desktop.c:225
-msgid "New file"
-msgstr "Nuovo file"
-
-#: resources/guide/js/end.coffee:55
-msgid "New users directly jump to the registration page"
-msgstr "I nuovi utenti possono saltare subito alla pagina di registrazione"
-
-#: resources/guide/js/desktop.coffee:152
+#: ../resources/guide/js/desktop.coffee:139
 msgid "No default functions setted in right up corner"
 msgstr "Nessuna funzione di default impostata sull'angolo destro superiore"
 
-#: resources/zone/js/utils.coffee:10
-msgid "None"
-msgstr "No"
-
-#: resources/greeter/js/time.coffee:43
-msgid "Nov"
-msgstr "Nov"
-
-#: resources/greeter/js/time.coffee:43
-msgid "Oct"
-msgstr "Ott"
-
-#: resources/osd/js/display.coffee:44
-msgid "Only the first Screen"
-msgstr "Solo la prima schermata"
-
-#: resources/osd/js/display.coffee:45
-msgid "Only the second Screen"
-msgstr "Solo la seconda schermata"
-
-#: app/greeter/camera.c:47
-msgid "Oops...I can't recognize your face. "
-msgstr "Ops...Non riesco a riconoscere il tuo volto."
-
-#: resources/desktop/js/grid.coffee:1047 resources/guide/js/desktop.coffee:222
-msgid "Open in _terminal"
-msgstr "Apri nel _terminale"
-
-#: lib/dentry/fileops_error_dialog.c:331
-msgid "Original file"
-msgstr "File originale"
-
-#: resources/desktop/js/grid.coffee:1052 resources/guide/js/desktop.coffee:227
-msgid "Pe_rsonalize"
-msgstr "Pe_rsonalizza"
-
-#: resources/guide/js/launcher.coffee:96
-msgid ""
-"Please click on the \"All Applications\" icon , you will see all applications"
-msgstr "Clicca su \"Tutte le applicazioni\" per visualizzarle tutte"
-
-#: app/greeter/camera.c:175
-msgid "Please login with your password or click your picture to retry."
-msgstr ""
-"Per favore, fai il login con la tua password o clicca sulla tua foto per "
-"riprovare."
-
-#: resources/guide/js/welcome.coffee:41
-msgid "Prepare for operation ..."
-msgstr "Preparazione in corso..."
-
-#: resources/greeter/js/message.coffee:104
-#: resources/greeter/js/message.coffee:75
-msgid "Press Ctrl + Alt + F1\n"
-msgstr "Premi Ctrl + Alt + F1\n"
-
-#: lib/dentry/fileops_error_dialog.c:136
-msgid "Re_name"
-msgstr "Ri_nomina"
-
-#: resources/launcher/js/const.coffee:81
-#: resources/guide/js/launcher.coffee:244
-msgid "Remove from _favorites"
-msgstr "Rimuovi dai _preferiti"
-
-#: lib/dentry/fileops_error_dialog.c:141
-msgid "Replace"
-msgstr "Sostituisci"
-
-#: lib/dentry/fileops_error_dialog.c:359
-msgid "Replace with"
-msgstr "Sostituire con"
-
-#: lib/dentry/fileops_error_dialog.c:249
-msgid "Replacing it will overwrite its content."
-msgstr "Sostituiendolo verrà sovrascritto il contenuto."
-
-#: lib/dentry/fileops_error_dialog.c:238
-msgid "Replacing it will remove all files in the folder."
-msgstr "Sostituendolo verranno rimossi tutti i file dalla cartella."
-
-#: lib/dentry/fileops_error_dialog.c:117
-msgid "Reset"
-msgstr "Resetta"
-
-#: resources/greeter/js/powermenu.coffee:52
-msgid "Restart"
-msgstr "Riavvia"
-
-#: resources/guide/js/desktop.coffee:199
+#: ../resources/guide/js/desktop.coffee:181
 msgid ""
 "Right-click on desktop black area to call up the menu, select \"Corner "
 "navigation\" to set the corner used"
@@ -458,64 +487,36 @@ msgstr ""
 "Tasto destro su un'area vuota del desktop per richiamare il menu, "
 "selezionare \"Angolo di navigazione\" per impostare l'angolo usato"
 
-#: lib/dentry/mime_actions.c:210
-msgid "Run in _Terminal"
-msgstr "Esegui nel _Terminale"
+#: ../resources/guide/js/desktop.coffee:182
+msgid "tips：Click on the interface of corner navigation blank area to return"
+msgstr "Trucco: Clicca sull'area vuota dell'interfaccia d'angolo per tornare"
 
-#: resources/greeter/js/time.coffee:44
-msgid "Sat"
-msgstr "Sab"
+#: ../resources/guide/js/start.coffee:28
+msgid "New Launcher"
+msgstr "Nuovo launcher"
 
-#: resources/launcher/js/item.coffee:269
-#: resources/guide/js/launcher.coffee:245
-msgid "Send to d_esktop"
-msgstr "Manda sul d_esktop"
+#: ../resources/guide/js/start.coffee:28
+msgid "New Desktop"
+msgstr "Nuovo desktop"
 
-#: resources/launcher/js/item.coffee:272
-#: resources/guide/js/launcher.coffee:246
-msgid "Send to do_ck"
-msgstr "Invia alla do_ck"
+#: ../resources/guide/js/start.coffee:28
+msgid "New System Settings"
+msgstr "Nuove impostazioni di sistema"
 
-#: resources/greeter/js/time.coffee:43
-msgid "Sep"
-msgstr "Set"
+#: ../resources/guide/js/start.coffee:29
+msgid "The following will guide you to learn how to use some new functions"
+msgstr "Con questa guida imparerai ad usare le nuove funzioni introdotte"
 
-#: resources/guide/js/desktop.coffee:151
-msgid "Show/Hide Control Center"
-msgstr "Mostra/Nascondi Control Center"
+#: ../resources/guide/js/start.coffee:44
+msgid "Start"
+msgstr "Inizia"
 
-#: resources/guide/js/desktop.coffee:150
-msgid "Show/Hide Desktop"
-msgstr "Mostra/Nascondi Desktop"
+#: ../resources/guide/js/start.coffee:51
+#, fuzzy
+msgid "I am older. Exit directly."
+msgstr "Ne so di brutto, esci direttamente"
 
-#: resources/guide/js/desktop.coffee:149
-msgid "Show/Hide Launcher"
-msgstr "Mostra/Nascondi Launcher"
-
-#: resources/greeter/js/powermenu.coffee:51
-msgid "Shut down"
-msgstr "Arresta"
-
-#: lib/dentry/fileops_error_dialog.c:332 lib/dentry/fileops_error_dialog.c:360
-msgid "Size:"
-msgstr "Dimensioni:"
-
-#: resources/guide/js/launcher.coffee:149
-msgid "Skip the step without scroll"
-msgstr "Salta il passaggio senza scroll"
-
-#: resources/guide/js/desktop.coffee:143
-msgid ""
-"Slide the mouse to the four top corners, which can trigger four different "
-"events\n"
-"Please move to the left up corner first to show or hide Launcher"
-msgstr ""
-"Muovere il mouse sugli angoli ti permetterà di avere quattro azioni "
-"differenti\n"
-"Prova a muovere il mouse sull'angolo in alto a sinistra per mostrare o "
-"nascondere il Launcher"
-
-#: resources/guide/js/launcher.coffee:32
+#: ../resources/guide/js/launcher.coffee:29
 msgid ""
 "Sliding the mouse to the upper left corner or clicking on the launcher icon "
 "both can start \"Application Launcher\""
@@ -523,41 +524,126 @@ msgstr ""
 "Pssa il mouse sull'angolo sinistro superiore o clicca sull'icona del "
 "launcher per aprire il \"Launcher applicazioni\""
 
-#: resources/guide/js/start.coffee:47
-msgid "Start"
-msgstr "Inizia"
+#: ../resources/guide/js/launcher.coffee:70
+msgid ""
+"What shown in the first screen of \" launcher\" are the applications of "
+"collection"
+msgstr ""
+"Ciò che è mostrato nella prima schermata del Launcher sono le applicazioni "
+"da \"collezione\""
 
-#: resources/greeter/js/time.coffee:44
-msgid "Sun"
-msgstr "Dom"
+#: ../resources/guide/js/launcher.coffee:85
+msgid ""
+"Please click on the \"All Applications\" icon , you will see all applications"
+msgstr "Clicca su \"Tutte le applicazioni\" per visualizzarle tutte"
 
-#: resources/greeter/js/powermenu.coffee:53
-msgid "Suspend"
-msgstr "Sospendi"
+#: ../resources/guide/js/launcher.coffee:95
+msgid ""
+"All programs can be located by scrolling the mouse up and down.\n"
+"You can also click on the left classification navigation to locate"
+msgstr ""
+"Tutti i programmi possono esser visionati con un semplice scroll del mouse.\n"
+"Puoi anche cliccare sul pannello di navigazione per categoria a sinistra."
 
-#: resources/guide/js/end.coffee:26
-msgid "Thanks for your patience to learn.Congratulation!"
-msgstr "Grazie per la tua pazienza, hai finito!"
+#: ../resources/guide/js/launcher.coffee:133
+msgid "Skip the step without scroll"
+msgstr "Salta il passaggio senza scroll"
 
-#: resources/guide/js/end.coffee:43
-msgid "Thanks for your patience to learn.You get the novice package"
-msgstr "Grazie per la pazienza e benvenuto!"
+#: ../resources/guide/js/launcher.coffee:163
+#, fuzzy
+msgid ""
+"Use the keyboard to search for applications\n"
+"Try the \"deepin\" keyword to see which applications are shown"
+msgstr ""
+"Usa la tastiera per cercare le applicazioni\n"
+"Prova a cercare \"Deepin\" per vedere che applicazioni verranno trovate"
 
-#: resources/guide/js/start.coffee:29
-msgid "The following will guide you to learn how to use some new functions"
-msgstr "Con questa guida imparerai ad usare le nuove funzioni introdotte"
+#: ../resources/guide/js/launcher.coffee:164
+msgid "tips：Please directly enter the word \"deepin\""
+msgstr "Trucco: Digita subito \"Deepin\""
 
-#: lib/dentry/entry.c:758
-msgid "The item could not be renamed"
-msgstr "Questo oggetto non può esser rinominato."
+#: ../resources/guide/js/launcher.coffee:179
+msgid "Use the right mouse button to send two icons to the desktop"
+msgstr "Usa il tasto destro per inviare due icone sul Desktop"
 
-#: resources/desktop/js/richdir.coffee:335
-#: resources/desktop/js/richdir.coffee:587
-#: resources/desktop/js/application.coffee:179
-msgid "The link is invalid. Do you want to delete it?"
-msgstr "Questo link è invalido. Vuoi eliminarlo?"
+#: ../resources/guide/js/launcher.coffee:180
+msgid "tips:You can add it to startup items or uninstall"
+msgstr "Trucco: puoi aggiungerlo allo startup o disinstallarlo"
 
-#: lib/dentry/entry.c:752
+#: ../resources/dock/js/global_menu.coffee:9
+msgid "keep _showing"
+msgstr "_Mostra"
+
+#: ../resources/dock/js/global_menu.coffee:10
+msgid "keep _hidden"
+msgstr "_Nascondi"
+
+#: ../resources/dock/js/global_menu.coffee:11
+msgid "_auto hide"
+msgstr "_Nascondi automaticamente"
+
+#: ../resources/dock/js/deepin_item.coffee:231
+msgid "_View as analog"
+msgstr "_Mostra analogico"
+
+#: ../resources/dock/js/deepin_item.coffee:232
+#: ../resources/dock/js/deepin_item.coffee:284
+msgid "_Time settings"
+msgstr "_Impostazioni orario"
+
+#: ../resources/dock/js/deepin_item.coffee:283
+msgid "_View as digit"
+msgstr "_Mostra digitale"
+
+#: ../resources/dock/js/main.coffee:155 ../resources/dock/js/main.coffee:228
+msgid "Trash"
+msgstr "Cestino"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:29
+msgid "_Clean up"
+msgstr "_Pulisci"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:33
+msgid "_Close"
+msgstr "_Chiudi"
+
+#: ../resources/common/js/uninstaller.coffee:32
+msgid "You have uninstalled \"%1\" successfully"
+msgstr ""
+
+#: ../resources/common/js/uninstaller.coffee:33
+msgid "\"%1\" failed to be uninstalled"
+msgstr ""
+
+#: ../app/desktop/desktop.c:225
+msgid "New file"
+msgstr "Nuovo file"
+
+#: ../app/desktop/desktop.c:236
+msgid "New directory"
+msgstr "Nuova cartella"
+
+#: ../app/greeter/mutils.c:84
+msgid "%a, %b %d, %Y"
+msgstr "%a, %b %d, %Y"
+
+#: ../app/greeter/lock.c:125 ../app/greeter/greeter.c:192
+msgid "Invalid Password"
+msgstr "Password Non Valida"
+
+#: ../app/dock/dock.c:330
+msgid "Dock failed to start, because Compiz is not enabled."
+msgstr "La Dock non è partita, questo perché Compiz non è acceso."
+
+#: ../lib/dentry/entry.c:746
+#, c-format
+msgid ""
+"Cannot rename the item to \"%s\". This may be caused by lack of permissions."
+msgstr ""
+"Non puoi rinominare l'oggetto in \"%s\". Questo potrebbe causare problemi di "
+"permessi."
+
+#: ../lib/dentry/entry.c:752
 #, c-format
 msgid ""
 "There is already a file with name \"%s\" in this folder. Please consider a "
@@ -566,361 +652,260 @@ msgstr ""
 "C'è già un file chiamato \"%s\" in questa cartella. Digita un nome "
 "differente."
 
-#: resources/greeter/js/time.coffee:44
-msgid "Thu"
-msgstr "Gio"
+#: ../lib/dentry/entry.c:758
+msgid "The item could not be renamed"
+msgstr "Questo oggetto non può esser rinominato."
 
-#: resources/dock/js/main.coffee:154 resources/dock/js/main.coffee:223
-msgid "Trash"
-msgstr "Cestino"
+#: ../lib/dentry/entry.c:833 ../lib/dentry/fileops.c:805
+msgid "copy"
+msgstr "copia"
 
-#: resources/greeter/js/time.coffee:44
-msgid "Tue"
-msgstr "Mar"
+#: ../lib/dentry/entry.c:1415
+msgid "App Group"
+msgstr "Aggiungi al Gruppo"
 
-#: lib/dentry/fileops_error_dialog.c:336 lib/dentry/fileops_error_dialog.c:364
-msgid "Type:"
-msgstr "Tipo:"
+#: ../lib/dentry/fileops.c:566
+msgid "Move"
+msgstr "Muovi"
 
-#: resources/desktop/js/grid.coffee:71 lib/dentry/fileops.c:403
-msgid "Untitled"
-msgstr "Senza titolo"
+#: ../lib/dentry/fileops_delete.c:29
+msgid "Delete Files"
+msgstr "Cancella files"
 
-#: resources/guide/js/launcher.coffee:181
+#: ../lib/dentry/fileops_delete.c:32
+msgid "Are you sure you want to permanently delete the files?"
+msgstr "Sei sicuro di voler eliminare i file definitivamente?"
+
+#: ../lib/dentry/fileops_delete.c:33
+msgid "If you delete the files, they will be permanently lost."
+msgstr "Se li cancelli li perderai definitivamente."
+
+#: ../lib/dentry/fileops_delete.c:36
+msgid "Delete"
+msgstr "Elimina"
+
+#: ../lib/dentry/fileops_error_dialog.c:63
+msgid "File conflict"
+msgstr "Conflitto nel file"
+
+#: ../lib/dentry/fileops_error_dialog.c:106
+msgid "_Select a new name for the destination"
+msgstr "_Seleziona un nuovo nome per la destinazione"
+
+#: ../lib/dentry/fileops_error_dialog.c:117
+msgid "Reset"
+msgstr "Resetta"
+
+#: ../lib/dentry/fileops_error_dialog.c:126
+msgid "Apply this action to all files"
+msgstr "Applica questa azione a tutti i file"
+
+#: ../lib/dentry/fileops_error_dialog.c:133
+msgid "_Skip"
+msgstr "_Salta"
+
+#: ../lib/dentry/fileops_error_dialog.c:136
+msgid "Re_name"
+msgstr "Ri_nomina"
+
+#: ../lib/dentry/fileops_error_dialog.c:141
+msgid "Replace"
+msgstr "Sostituisci"
+
+#: ../lib/dentry/fileops_error_dialog.c:218
+#, c-format
+msgid "Do you want to merge with folder \"%s\"?"
+msgstr "Vuoi unire questa cartella a \"%s\"?"
+
+#: ../lib/dentry/fileops_error_dialog.c:220
 msgid ""
-"Use the keyboard searching to find applications you want\n"
-"We try\"deepin\" keyword to see which applications shown"
-msgstr ""
-"Usa la tastiera per cercare le applicazioni\n"
-"Prova a cercare \"Deepin\" per vedere che applicazioni verranno trovate"
-
-#: resources/guide/js/launcher.coffee:200
-msgid "Use the right mouse button to send two icons to the desktop"
-msgstr "Usa il tasto destro per inviare due icone sul Desktop"
-
-#: resources/desktop/js/richdir.coffee:335
-#: resources/desktop/js/richdir.coffee:587
-#: resources/desktop/js/desktopentry.coffee:151
-#: resources/desktop/js/application.coffee:179
-#: resources/dock/js/plugins/trash/trash.coffee:70
-msgid "Warning"
-msgstr "Attenzione"
-
-#: resources/greeter/js/time.coffee:44
-msgid "Wed"
-msgstr "Mer"
-
-#: resources/guide/js/welcome.coffee:38
-msgid "Welcome to use Deepin Operating System"
-msgstr "Benvenuto in Deepin Linux"
-
-#: resources/guide/js/dss.coffee:30
-msgid "Well, please trigger the lower right corner again"
-msgstr "Bene, tocca l'angolo in basso a destra nuovamente"
-
-#: resources/guide/js/desktop.coffee:129
-msgid "Well, you have learned how to create a \"application group\""
-msgstr "Bene, hai imparato come creare un \"gruppo di applicazioni\""
-
-#: resources/guide/js/launcher.coffee:80
-msgid ""
-"What shown in the first screen of \" launcher\" are the applications of "
-"collection"
-msgstr ""
-"Ciò che è mostrato nella prima schermata del Launcher sono le applicazioni "
-"da \"collezione\""
-
-#: lib/dentry/fileops_error_dialog.c:220
-msgid ""
-"You will be asked before replacing any files in the folder that conflict "
-"with the files being copied."
+"The merging operation will be asked to confirm before replacing any files in "
+"the folder conflicted."
 msgstr ""
 "Ti verrà chiesto prima di sostituire tutti i file in una cartella che hanno "
 "un conflitto con quelli originali."
 
-#: resources/launcher/js/const.coffee:72
-#: resources/guide/js/launcher.coffee:248
-msgid "_Add to autostart"
-msgstr "_Aggiungi all'autostart"
+#: ../lib/dentry/fileops_error_dialog.c:222
+#, c-format
+msgid "An older folder with the same name already exists in \"%s\"."
+msgstr "Una versione vecchia con lo stesso nome esiste in \"%s\"."
 
-#: resources/dock/js/plugins/trash/trash.coffee:29
-msgid "_Clean up"
-msgstr "_Pulisci"
+#: ../lib/dentry/fileops_error_dialog.c:226
+#, c-format
+msgid "A newer folder with the same name already exists in \"%s\"."
+msgstr "Una nuova versione con lo stesso nome esiste in\"%s\"."
 
-#: resources/dock/js/plugins/trash/trash.coffee:33
-msgid "_Close"
-msgstr "_Chiudi"
+#: ../lib/dentry/fileops_error_dialog.c:230
+#, c-format
+msgid "Another folder with the same name already exists in \"%s\"."
+msgstr "Una cartella con lo stesso nome è presente in \"%s\"."
 
-#: resources/desktop/js/richdir.coffee:570
-#: resources/desktop/js/desktopentry.coffee:104
-msgid "_Copy"
-msgstr "_Copia"
+#: ../lib/dentry/fileops_error_dialog.c:236
+#, fuzzy
+msgid "All files in the folder will be removed by replacing."
+msgstr "Tutti i file del cestino saranno rimossi in modo permanente."
 
-#: resources/desktop/js/grid.coffee:1051 resources/guide/js/desktop.coffee:226
-msgid "_Corner navigation"
-msgstr "_Angolo di navigazione"
+#: ../lib/dentry/fileops_error_dialog.c:237
+#, c-format
+msgid "Do you want to replace folder \"%s\"?"
+msgstr "Vuoi sostituire la cartella \"%s\"?"
 
-#: resources/desktop/js/invalidlink.coffee:34
-#: resources/desktop/js/richdir.coffee:139
-#: resources/desktop/js/richdir.coffee:572
-#: resources/desktop/js/desktopentry.coffee:107
-msgid "_Delete"
-msgstr "_Elimina"
+#: ../lib/dentry/fileops_error_dialog.c:239
+#, c-format
+msgid "A folder with the same name already exists in \"%s\"."
+msgstr "Una cartella con lo stesso nome è presente in \"%s\"."
 
-#: lib/dentry/mime_actions.c:211
+#: ../lib/dentry/fileops_error_dialog.c:245
+#, c-format
+msgid "Do you want to replace file \"%s\"?"
+msgstr "Vuoi sostituire il file \"%s\"?"
+
+#: ../lib/dentry/fileops_error_dialog.c:246
+msgid "The content will be overwritten by replacing."
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:248
+#, c-format
+msgid "An older file with the same name already exists in \"%s\"."
+msgstr "Una cartella con lo stesso nome esiste in \"%s\"."
+
+#: ../lib/dentry/fileops_error_dialog.c:252
+#, c-format
+msgid "A newer file with the same name already exists in \"%s\"."
+msgstr "Un nuovo file con lo stesso nome è presente in \"%s\"."
+
+#: ../lib/dentry/fileops_error_dialog.c:256
+#, c-format
+msgid "Another file with the same name already exists in \"%s\"."
+msgstr "Un altro file con lo stesso nome è presente in \"%s\"."
+
+#: ../lib/dentry/fileops_error_dialog.c:328
+msgid "Original file"
+msgstr "File originale"
+
+#: ../lib/dentry/fileops_error_dialog.c:329
+#: ../lib/dentry/fileops_error_dialog.c:357
+msgid "Size:"
+msgstr "Dimensioni:"
+
+#: ../lib/dentry/fileops_error_dialog.c:333
+#: ../lib/dentry/fileops_error_dialog.c:361
+msgid "Type:"
+msgstr "Tipo:"
+
+#: ../lib/dentry/fileops_error_dialog.c:337
+#: ../lib/dentry/fileops_error_dialog.c:365
+msgid "Last modified:"
+msgstr "Ultima modifica:"
+
+#: ../lib/dentry/fileops_error_dialog.c:356
+msgid "Replace with"
+msgstr "Sostituire con"
+
+#: ../lib/dentry/fileops_error_dialog.c:382
+msgid "Merge"
+msgstr "Unire"
+
+#: ../lib/dentry/fileops_error_reporting.c:106
+#: ../lib/dentry/fileops_error_reporting.c:191
+#, c-format
+msgid "Error while %s files"
+msgstr "Errore file %s"
+
+#: ../lib/dentry/fileops_trash.c:58
+msgid "Empty Trash"
+msgstr "Cestino vuoto"
+
+#: ../lib/dentry/fileops_trash.c:67
+msgid "Empty all items from Trash?"
+msgstr "Svuotare il cestino?"
+
+#: ../lib/dentry/fileops_trash.c:68
+msgid "All items in the Trash will be permanently deleted."
+msgstr "Tutti i file del cestino saranno rimossi in modo permanente."
+
+#: ../lib/dentry/fileops_trash.c:71
+msgid "Empty _Trash"
+msgstr "Cestino_Vuoto"
+
+#: ../lib/dentry/mime_actions.c:198
+#, c-format
+msgid "Do you want to run \"%s\", or display its contents?"
+msgstr "Vuoi eseguire \"%s\", oppure visualizzare il suo contenuto?"
+
+#: ../lib/dentry/mime_actions.c:199
+#, c-format
+msgid "\"%s\" is an executable text file."
+msgstr "\"%s\" è un file di testo eseguibile."
+
+#: ../lib/dentry/mime_actions.c:210
+msgid "Run in _Terminal"
+msgstr "Esegui nel _Terminale"
+
+#: ../lib/dentry/mime_actions.c:211
 msgid "_Display"
 msgstr "_Display"
 
-#: resources/launcher/js/const.coffee:65
-msgid "_Display hidden icons"
-msgstr "_Mostra icone nascoste"
-
-#: resources/desktop/js/grid.coffee:1050 resources/guide/js/desktop.coffee:225
-msgid "_Display settings"
-msgstr "Impostazioni _Display"
-
-#: resources/launcher/js/const.coffee:69
-msgid "_Display this icon"
-msgstr "_Mostra questa icona"
-
-#: resources/desktop/js/desktopentry.coffee:118
-#: resources/desktop/js/desktopentry.coffee:123
-msgid "_Extract"
-msgstr "_Estrai"
-
-#: resources/desktop/js/grid.coffee:1028
-msgid "_Folder"
-msgstr "_Cartella"
-
-#: resources/launcher/js/const.coffee:64
-msgid "_Hide the icon"
-msgstr "_Nascondi l'icona"
-
-#: resources/launcher/js/const.coffee:68
-msgid "_Hide this icon"
-msgstr "_Nascondi questa icona"
-
-#: resources/desktop/js/grid.coffee:1022
-msgid "_Name"
-msgstr "_Nome"
-
-#: resources/desktop/js/grid.coffee:1046 resources/guide/js/desktop.coffee:221
-msgid "_New"
-msgstr "_Nuovo"
-
-#: resources/desktop/js/richdir.coffee:133
-#: resources/desktop/js/richdir.coffee:567
-#: resources/desktop/js/desktopentry.coffee:101
-#: resources/launcher/js/item.coffee:266
-#: resources/guide/js/launcher.coffee:242
-msgid "_Open"
-msgstr "_Apri"
-
-#: resources/desktop/js/grid.coffee:1048 resources/guide/js/desktop.coffee:223
-msgid "_Paste"
-msgstr "_Incolla"
-
-#: resources/desktop/js/richdir.coffee:574
-#: resources/desktop/js/desktopentry.coffee:109
-msgid "_Properties"
-msgstr "_Proprietà"
-
-#: resources/launcher/js/const.coffee:73
-msgid "_Remove from autostart"
-msgstr "_Rimuovi dall'autostart"
-
-#: resources/desktop/js/richdir.coffee:135
-#: resources/desktop/js/desktopentry.coffee:106
-msgid "_Rename"
-msgstr "_Rinomina"
-
-#: lib/dentry/mime_actions.c:213
+#: ../lib/dentry/mime_actions.c:213
 msgid "_Run"
 msgstr "_Avvia"
 
-#: lib/dentry/fileops_error_dialog.c:106
-msgid "_Select a new name for the destination"
-msgstr "_Seleziona un nuovo nome per la destinazione"
-
-#: lib/dentry/fileops_error_dialog.c:133
-msgid "_Skip"
-msgstr "_Salta"
-
-#: resources/desktop/js/grid.coffee:1045 resources/guide/js/desktop.coffee:220
-msgid "_Sort by"
-msgstr "_Ordina per"
-
-#: resources/desktop/js/grid.coffee:1029
-msgid "_Text document"
-msgstr "_Documento di testo"
-
-#: resources/dock/js/deepin_item.coffee:169
-#: resources/dock/js/deepin_item.coffee:221
-msgid "_Time settings"
-msgstr "_Impostazioni orario"
-
-#: resources/desktop/js/richdir.coffee:137
-msgid "_Ungroup"
-msgstr "_Sciogli"
-
-#: resources/launcher/js/item.coffee:275
-#: resources/guide/js/launcher.coffee:249
-msgid "_Uninstall"
-msgstr "_Disinstalla"
-
-#: resources/dock/js/deepin_item.coffee:168
-msgid "_View as analog"
-msgstr "_Mostra analogico"
-
-#: resources/dock/js/deepin_item.coffee:220
-msgid "_View as digit"
-msgstr "_Mostra digitale"
-
-#: resources/dock/js/global_menu.coffee:17
-msgid "_auto hide"
-msgstr "_Nascondi automaticamente"
-
-#: lib/category.c:45
+#: ../lib/category.c:45
 msgid "all"
 msgstr "tutti"
 
-#: resources/greeter/js/user.coffee:491
-msgid "click login button to log in"
-msgstr "Clicca sul bottone di Login per entrare"
-
-#: lib/dentry/entry.c:833 lib/dentry/fileops.c:805
-msgid "copy"
-msgstr "copia"
-
-#: lib/category.c:53
-msgid "development"
-msgstr "sviluppo"
-
-#: lib/category.c:52
-msgid "education"
-msgstr "educazione"
-
-#: lib/category.c:48
-msgid "games"
-msgstr "giochi"
-
-#: lib/category.c:49
-msgid "graphics"
-msgstr "grafica"
-
-#: lib/category.c:51
-msgid "industry"
-msgstr "industria"
-
-#: lib/category.c:46
+#: ../lib/category.c:46
 msgid "internet"
 msgstr "internet"
 
-#: resources/dock/js/global_menu.coffee:16
-msgid "keep _hidden"
-msgstr "_Nascondi"
-
-#: resources/dock/js/global_menu.coffee:15
-msgid "keep _showing"
-msgstr "_Mostra"
-
-#: lib/category.c:47
+#: ../lib/category.c:47
 msgid "multimedia"
 msgstr "multimedia"
 
-#: resources/dock/js/plugins/trash/trash.coffee:107
-#: resources/launcher/js/item.coffee:339
-msgid "no"
-msgstr "No"
+#: ../lib/category.c:48
+msgid "games"
+msgstr "giochi"
 
-#: lib/category.c:56
-msgid "other"
-msgstr "altro"
+#: ../lib/category.c:49
+msgid "graphics"
+msgstr "grafica"
 
-#: lib/category.c:50
+#: ../lib/category.c:50
 msgid "productivity"
 msgstr "produttività"
 
-#: lib/category.c:54
+#: ../lib/category.c:51
+msgid "industry"
+msgstr "industria"
+
+#: ../lib/category.c:52
+msgid "education"
+msgstr "educazione"
+
+#: ../lib/category.c:53
+msgid "development"
+msgstr "sviluppo"
+
+#: ../lib/category.c:54
 msgid "system"
 msgstr "sistema"
 
-#: resources/guide/js/launcher.coffee:201
-msgid "tips:You can add it to startup items or uninstall"
-msgstr "Trucco: puoi aggiungerlo allo startup o disinstallarlo"
-
-#: resources/guide/js/desktop.coffee:200
-msgid "tips：Click on the interface of corner navigation blank area to return"
-msgstr "Trucco: Clicca sull'area vuota dell'interfaccia d'angolo per tornare"
-
-#: resources/guide/js/dss.coffee:31
-msgid "tips：Click the setting icon on dock to implement"
-msgstr "Trucco: Clicca l'icona Impostazioni sulla Dock"
-
-#: resources/guide/js/dss.coffee:78
-msgid ""
-"tips：Hover the setting icon on dock to quickly implement some setting "
-"functions"
-msgstr ""
-"Trucco: Prova l'icona Impostazioni sulla Dock per fare subito qualche "
-"cambiamento"
-
-#: resources/guide/js/launcher.coffee:182
-msgid "tips：Please directly enter the word \"deepin\""
-msgstr "Trucco: Digita subito \"Deepin\""
-
-#: resources/guide/js/end.coffee:45
-msgid "tips：Please receive in Deepin account"
-msgstr "Trucco: Ricevi nell'account Deepin"
-
-#: resources/guide/js/desktop.coffee:144
-msgid ""
-"tips：Please trigger successively by hints, click on the blank area to return"
-msgstr "Trucco: Clicca sull'area vuota per tornare alla schermata precedente"
-
-#: resources/guide/js/desktop.coffee:130
-msgid "tips：Right-click on the application group will provide more functions"
-msgstr "Trucco: Tasto destro sul \"gruppo applicazioni\" per maggiori funzioni"
-
-#: lib/category.c:55
+#: ../lib/category.c:55
 msgid "utilities"
 msgstr "utilità"
 
-#: resources/dock/js/plugins/trash/trash.coffee:107
-#: resources/launcher/js/item.coffee:339
-msgid "yes"
-msgstr "Si"
+#: ../lib/category.c:56
+msgid "others"
+msgstr "altro"
 
-#~ msgid ""
-#~ "Click the right mouse button on the application icon to call up the "
-#~ "context menu\n"
-#~ "Clicking on the menu item will achieve its function"
-#~ msgstr ""
-#~ "Clicca col tasto destro sull'icona applicazioni per richiamare il menu "
-#~ "contestuale\n"
-#~ "Cliccando sul menu potrai utilizzare le funzioni mostrate"
+#~ msgid "Thanks for your patience to learn.You get the novice package"
+#~ msgstr "Grazie per la pazienza e benvenuto!"
 
-#~ msgid "Computer"
-#~ msgstr "Computer"
+#~ msgid "tips：Please receive in Deepin account"
+#~ msgstr "Trucco: Ricevi nell'account Deepin"
 
-#~ msgid "Home"
-#~ msgstr "Home"
+#~ msgid "Get"
+#~ msgstr "Get"
 
-#, fuzzy
-#~ msgid "Software Center"
-#~ msgstr "Control Center"
-
-#, fuzzy
-#~ msgid "_Clean up %1 items"
-#~ msgstr "_Pulisci"
-
-#, fuzzy
-#~ msgid "_Clean up 1 item"
-#~ msgstr "_Pulisci"
-
-#~ msgid ""
-#~ "tips:You can also directly use the left mouse button to drag the icon to "
-#~ "the dock, favicon or trash"
-#~ msgstr ""
-#~ "Trucco: Puoi anche usare direttamente il tasto sinistro per spostare le "
-#~ "icone sulla Dock, Favicon o cestino"
+#~ msgid "New users directly jump to the registration page"
+#~ msgstr "I nuovi utenti possono saltare subito alla pagina di registrazione"

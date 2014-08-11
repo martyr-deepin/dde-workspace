@@ -107,7 +107,7 @@ class Trash extends PostfixedItem
             else
                 icon = DCore.get_theme_icon(@data.icon, 48)
             icon = DCore.backup_app_icon(icon)
-            dialog.ShowUninstall(icon, _("Are you sure to remove") + " \"#{@data.name}\" ", _("All dependences will be removed"), ["1", _("no"), "2", _("yes")])
+            dialog.ShowUninstall(icon, _("Are you sure to remove") + " \"#{@data.name}\" ", _("All dependencies will be removed"), ["1", _("no"), "2", _("yes")])
         else if dnd_is_file(evt) or dnd_is_desktop(evt)
             tmp_list = []
             for file in dt.files

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-08 10:50+0800\n"
+"POT-Creation-Date: 2014-08-11 17:42+0800\n"
 "PO-Revision-Date: 2014-07-05 19:02+0000\n"
 "Last-Translator: electricface <songwentai@linuxdeepin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/deepin-"
@@ -304,7 +304,7 @@ msgstr "你確定要刪除"
 
 #: ../resources/launcher/js/item.coffee:354
 #: ../resources/dock/js/plugins/trash/trash.coffee:110
-msgid "All dependences will be removed"
+msgid "All dependencies will be removed"
 msgstr "所有依賴的軟件包都將被刪除"
 
 #: ../resources/launcher/js/item.coffee:354
@@ -418,22 +418,6 @@ msgstr "謝謝您的耐心學習，祝賀您！"
 msgid "End"
 msgstr "結束"
 
-#: ../resources/guide/js/end.coffee:41
-msgid "Thanks for your patience to learn.You get the novice package"
-msgstr "謝謝您的耐心學習，您獲得了新手禮包"
-
-#: ../resources/guide/js/end.coffee:43
-msgid "tips：Please receive in Deepin account"
-msgstr "提示：請到深度賬號接收"
-
-#: ../resources/guide/js/end.coffee:45
-msgid "Get"
-msgstr "取得"
-
-#: ../resources/guide/js/end.coffee:53
-msgid "New users directly jump to the registration page"
-msgstr "新用戶直接跳到註冊頁面"
-
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
 msgstr "歡迎使用深度操作系統"
@@ -517,7 +501,8 @@ msgid "Start"
 msgstr "開始"
 
 #: ../resources/guide/js/start.coffee:51
-msgid "I am older,exit directly"
+#, fuzzy
+msgid "I am older. Exit directly."
 msgstr "我是老手，直接退出"
 
 #: ../resources/guide/js/launcher.coffee:29
@@ -714,9 +699,8 @@ msgid "Do you want to merge with folder \"%s\"?"
 msgstr "你想要合併資料夾「%s」 嗎？"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
-#, fuzzy
 msgid ""
-"The merge operation will be asked to confirm before replacing any files in "
+"The merging operation will be asked to confirm before replacing any files in "
 "the folder conflicted."
 msgstr "合併操作將會在取代衝突檔案時請求確認。"
 
@@ -737,7 +721,7 @@ msgstr "在「%s」中有相同名稱的一個資料夾已存在。"
 
 #: ../lib/dentry/fileops_error_dialog.c:236
 #, fuzzy
-msgid "All files in the folder will be removed  by replacing."
+msgid "All files in the folder will be removed by replacing."
 msgstr "回收筒中的全部項目將被永久刪除。"
 
 #: ../lib/dentry/fileops_error_dialog.c:237
@@ -890,38 +874,17 @@ msgid "utilities"
 msgstr "公用程式"
 
 #: ../lib/category.c:56
-msgid "other"
+msgid "others"
 msgstr "其他"
 
-#~ msgid "Replacing it will remove all files in the folder."
-#~ msgstr "替換將移除資料夾中的所有檔案。"
+#~ msgid "Thanks for your patience to learn.You get the novice package"
+#~ msgstr "謝謝您的耐心學習，您獲得了新手禮包"
 
-#~ msgid "Replacing it will overwrite its content."
-#~ msgstr "取代將覆蓋它的內容。"
+#~ msgid "tips：Please receive in Deepin account"
+#~ msgstr "提示：請到深度賬號接收"
 
-#~ msgid "Oops...I can't recognize your face. "
-#~ msgstr "糟糕～無法識別您的臉部資訊"
+#~ msgid "Get"
+#~ msgstr "取得"
 
-#~ msgid "Please login with your password or click your picture to retry."
-#~ msgstr "請使用密碼登入或點選帳號圖片重試"
-
-#~ msgid "%sRetry automatically in %ds"
-#~ msgstr "%s%d秒後自動重試"
-
-#~ msgid "Computer"
-#~ msgstr "電腦"
-
-#~ msgid "Home"
-#~ msgstr "推薦首頁"
-
-#, fuzzy
-#~ msgid "Software Center"
-#~ msgstr "控制中心"
-
-#, fuzzy
-#~ msgid "_Clean up %1 items"
-#~ msgstr "清理(_C)"
-
-#, fuzzy
-#~ msgid "_Clean up 1 item"
-#~ msgstr "清理(_C)"
+#~ msgid "New users directly jump to the registration page"
+#~ msgstr "新用戶直接跳到註冊頁面"
