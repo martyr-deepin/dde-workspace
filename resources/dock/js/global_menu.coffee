@@ -14,6 +14,9 @@ class GlobalMenu
             dbus = DCore.DBus.session("dde.dock.entry.AppletManager")
             if dbus and not @plugins["deepinAppletManager"]
                 @plugins["deepinAppletManager"] = dbus
+        catch e
+            console.warn e
+            @plugins["deepinAppletManager"]
         # console.log(settings.hideMode())
         items[settings.hideMode()].setChecked(true)
         @menu = new Menu(DEEPIN_MENU_TYPE.NORMAL)
