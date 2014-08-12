@@ -266,10 +266,6 @@ class PWContainer extends Widget
         console.log("_calc_size: get offset: #{offset}")
         @border.style.webkitTransform = "translateX(#{offset}px)"
 
-        bottom = PREVIEW_BOTTOM[settings.displayMode()]
-        if @border.style.border != "#{bottom}px"
-                @border.style.bottom = "#{bottom}px"
-
     append: (pw)->
         @_current_pws[pw.w_id] = true
         @element.appendChild(pw.element)
@@ -415,7 +411,7 @@ class PreviewWindow extends Widget
             @setTitle(@title_str)
             @update_size()
 
-            if activeWindow.active_window == @w_id
+            if get_active_window() == @w_id
                 @to_active()
             else
                 @to_normal()

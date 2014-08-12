@@ -1,46 +1,12 @@
 MAX_SCALE = 1
-HideMode =
-    KeepShowing: 0
-    KeepHidden: 1
-    AutoHide: 2
-
-HideModeNameMap =
-    "keep-showing": 0
-    "keep-hidden": 1
-    "auto-hide": 2
-
-DisplayMode =
-    Modern: 0
-    Classic: 1
-
-DisplayModeNameMap =
-    "modern": 0
-    "classic": 1
-
-ALL_ITEM_HEIGHT[DisplayMode.Classic] = 46.0
-ALL_ITEM_HEIGHT[DisplayMode.Modern] = 60.0
 ITEM_HEIGHT = 60.0
-
-ALL_ITEM_WIDTH[DisplayMode.Classic] = 48.0
-ALL_ITEM_WIDTH[DisplayMode.Modern] = 54.0
 ITEM_WIDTH = 54.0
 
-ALL_ICON_WIDTH[DisplayMode.Classic] = 32.0
-ALL_ICON_WIDTH[DisplayMode.Modern] = 48.0
 ICON_WIDTH = 48.0
-
-ALL_ICON_HEIGHT[DisplayMode.Classic] = 32.0
-ALL_ICON_HEIGHT[DisplayMode.Modern] = 48.0
 ICON_HEIGHT = 48.0
 
-ALL_DOCK_HEIGHT[DisplayMode.Classic] = 48.0
-ALL_DOCK_HEIGHT[DisplayMode.Modern] = 68.0
 DOCK_HEIGHT = 68.0
-
-ALL_PANEL_HEIGHT[DisplayMode.Classic] = 48.0
-ALL_PANEL_HEIGHT[DisplayMode.Modern] = 60.0
 PANEL_HEIGHT = 60
-
 PANEL_MARGIN = 36
 
 PANEL_LEFT_IMAGE = 'img/panel/panel_left.svg'
@@ -57,8 +23,6 @@ THREE_MARGIN_STEP = 3.0
 TWO_MARGIN_STEP = 2.0
 
 
-PREVIEW_BOTTOM[DisplayMode.Classic] = 48.0
-PREVIEW_BOTTOM[DisplayMode.Modern] = 64.0
 PREVIEW_CORNER_RADIUS = 4
 PREVIEW_SHADOW_BLUR = 6
 PREVIEW_CONTAINER_HEIGHT = 160
@@ -90,9 +54,6 @@ FULL_TRASH_ICON = "user-trash-full"
 
 SHORT_INDICATOR = "img/indicator-short.svg"
 LONG_INDICATOR = "img/indicator-long.svg"
-
-CLASSIC_ACTIVE_IMG = 'img/active.png'
-CLASSIC_ACTIVE_HOVER_IMG = 'img/active_hover.png'
 
 ITEM_TYPE_NULL = ''
 ITEM_TYPE_APP = "App"

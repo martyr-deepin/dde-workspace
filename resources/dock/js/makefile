@@ -10,7 +10,6 @@ all: ${com_coffee} \
 	dragtarget.coffee\
 	config.coffee \
 	utils.coffee\
-	switcher.coffee\
 	region.coffee\
 	hide_status.coffee\
 	settings.coffee\
@@ -19,10 +18,10 @@ all: ${com_coffee} \
 	panel.coffee\
 	app_list.coffee \
 	entry_proxy.coffee\
-	client_manager.coffee\
 	active_window.coffee\
 	preview.coffee\
 	embed_window.coffee\
+	client_manager.coffee\
 	item.coffee \
 	deepin_item.coffee\
 	${plugin_dir}/show_desktop.coffee\

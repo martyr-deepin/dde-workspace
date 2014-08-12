@@ -173,11 +173,11 @@ class ArrowToolTip extends ToolTipBase
         # ctx.globalAlpha = 0.8
         ctx.beginPath()
 
-        ctx.moveTo(leftX - radius, topY)
+        ctx.moveTo(offsetForShadow, topY)
         ctx.arc(arch['TopLeft'].ox, arch['TopLeft'].oy, arch['TopLeft'].radius,
                 arch['TopLeft'].startAngle, arch['TopLeft'].endAngle)
 
-        ctx.lineTo(rightX, topY - radius)
+        ctx.lineTo(rightX, offsetForShadow)
 
         ctx.arc(arch['TopRight'].ox, arch['TopRight'].oy, arch['TopRight'].radius,
                 arch['TopRight'].startAngle, arch['TopRight'].endAngle)
@@ -188,27 +188,14 @@ class ArrowToolTip extends ToolTipBase
                 arch['BottomRight'].startAngle, arch['BottomRight'].endAngle)
 
         # bottom line
-        #
-        # calculate the offset for trangle
-        page_xy= get_page_xy(@buddy, 0, 0)
-        offset = (@buddy.clientWidth - ArrowToolTip.container.clientWidth) / 2
-
-        x = parseInt((page_xy.x + offset).toFixed())
-        if x > 0
-            x = x + ArrowToolTip.container.clientWidth
-            if x > screen.width
-                x = x - screen.width
-            else
-                x = 0
-
-        ctx.lineTo(leftX + padding.horizontal + (content.clientWidth + triangle.width) / 2 + x,
+        ctx.lineTo(leftX + padding.horizontal + (content.clientWidth + triangle.width) / 2,
                    bottomY + radius)
 
         # triangle
-        ctx.lineTo(leftX + padding.horizontal + content.clientWidth / 2 + x,
+        ctx.lineTo(leftX + padding.horizontal + content.clientWidth / 2,
                    bottomY + radius + triangle.height)
 
-        ctx.lineTo(leftX + padding.horizontal + (content.clientWidth - triangle.width)/2 + x,
+        ctx.lineTo(leftX + padding.horizontal + (content.clientWidth - triangle.width)/2,
                    bottomY + radius)
 
         # bottom line
@@ -234,8 +221,8 @@ class ArrowToolTip extends ToolTipBase
 
         ctx.restore()
 
-        ArrowToolTip.content.style.top = topY + padding.vertical - offsetForRadius
-        ArrowToolTip.content.style.left = leftX + padding.horizontal
+        ArrowToolTip.content.style.top = offsetForShadow + padding.vertical + radius - offsetForRadius
+        ArrowToolTip.content.style.left = offsetForShadow + padding.horizontal + radius
 
     show: =>
         super
@@ -265,7 +252,5 @@ class ArrowToolTip extends ToolTipBase
 
         x = parseInt((page_xy.x + offset).toFixed())
         x = 0 if x < 0
-        if x + ArrowToolTip.container.clientWidth > screen.width
-            x = screen.width - ArrowToolTip.container.clientWidth
         y = document.body.clientHeight - page_xy.y
         ArrowToolTip.move_to(@, x, y)

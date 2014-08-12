@@ -37,18 +37,7 @@ void handle_delete(GFile* f);
 
 static GHashTable* _monitor_table = NULL;
 static GFile* _desktop_file = NULL;
-static GFile* _trash_can = NULL;
 static int _inotify_fd = -1;
-
-void trash_changed()
-{
-    GFileInfo* info = g_file_query_info(_trash_can, G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT, G_FILE_QUERY_INFO_NONE, NULL, NULL);
-    int count = g_file_info_get_attribute_uint32(info, G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT);
-    g_object_unref(info);
-    JSObjectRef value = json_create();
-    json_append_number(value, "value", count);
-    js_post_message("trash_count_changed", value);
-}
 
 PRIVATE
 void _add_monitor_directory(GFile* f)
@@ -80,10 +69,6 @@ void install_monitor()
         g_timeout_add(50, (GSourceFunc)_inotify_poll, NULL);
 
         _desktop_file = g_file_new_for_commandline_arg(DESKTOP_DIR());
-        _trash_can = g_file_new_for_uri("trash:///");
-        GFileMonitor* m = g_file_monitor(_trash_can, G_FILE_MONITOR_NONE, NULL, NULL);
-        g_signal_connect(m, "changed", G_CALLBACK(trash_changed), NULL);
-
         _add_monitor_directory(_desktop_file);
 
         GDir *dir =  g_dir_open(DESKTOP_DIR(), 0, NULL);
@@ -127,7 +112,6 @@ void handle_delete(GFile* f)
 
 void handle_update(GFile* f)
 {
-    // g_message("handle_update");
     if (g_file_query_file_type(f, G_FILE_QUERY_INFO_NONE ,NULL) != G_FILE_TYPE_UNKNOWN) {
         char* path = g_file_get_path(f);
         Entry* entry = dentry_create_by_path(path);

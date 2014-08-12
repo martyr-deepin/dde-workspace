@@ -24,45 +24,25 @@
 #include "dock_config.h"
 
 #define SCHEMA_ID "com.deepin.dde.dock"
-#define HIDE_MODE_KEY "hide-mode"
-#define DISPLAY_MODE_KEY "display-mode"
 
 
 struct _GlobalData GD;
+void update_dock_size_mode();
 void dock_update_hide_mode();
-void _change_workarea_height(int height);
-
-#define MODERN_DOCK_HEIGHT 68
-#define MODERN_DOCK_PANEL_HEIGHT 60
-
-#define CLASSIC_DOCK_HEIGHT 48
-#define CLASSIC_DOCK_PANEL_HEIGHT 48
 
 void setting_changed(GSettings* s, gchar* key, gpointer user_data G_GNUC_UNUSED)
 {
-    if (g_strcmp0(key, HIDE_MODE_KEY) == 0) {
+    if (g_strcmp0(key, "hide-mode") == 0) {
         GD.config.hide_mode = g_settings_get_enum(s, key);
+        void _change_workarea_height(int height);
         if (GD.config.hide_mode == NO_HIDE_MODE ) {
-            _change_workarea_height(GD.dock_height);
+            extern int _dock_height;
+            _change_workarea_height(_dock_height);
         } else {
             _change_workarea_height(0);
         }
         g_debug("setting_changed");
-    } else if (g_strcmp0(key, DISPLAY_MODE_KEY) == 0) {
-        GD.config.display_mode = g_settings_get_enum(s, key);
-        if (GD.config.display_mode == CLASSIC_MODE) {
-            GD.dock_height = CLASSIC_DOCK_HEIGHT;
-            GD.dock_panel_height = CLASSIC_DOCK_PANEL_HEIGHT;
-        } else {
-            GD.dock_height = MODERN_DOCK_HEIGHT;
-            GD.dock_panel_height = MODERN_DOCK_PANEL_HEIGHT;
-        }
-
-        if (GD.config.hide_mode == NO_HIDE_MODE ) {
-            _change_workarea_height(GD.dock_height);
-        } else {
-            _change_workarea_height(0);
-        }
+        // dock_update_hide_mode();
     }
 }
 
@@ -70,18 +50,9 @@ void init_config()
 {
     GD.config.color = 0;
     GD.is_webview_loaded = FALSE;
-    GD.dock_panel_width = 0;
 
     GSettings* s = g_settings_new(SCHEMA_ID);
-    GD.config.hide_mode = g_settings_get_enum(s, HIDE_MODE_KEY);
-    GD.config.display_mode = g_settings_get_enum(s, DISPLAY_MODE_KEY);
-    if (GD.config.display_mode == CLASSIC_MODE) {
-        GD.dock_height = CLASSIC_DOCK_HEIGHT;
-        GD.dock_panel_height = CLASSIC_DOCK_PANEL_HEIGHT;
-    } else {
-        GD.dock_height = MODERN_DOCK_HEIGHT;
-        GD.dock_panel_height = MODERN_DOCK_PANEL_HEIGHT;
-    }
     g_signal_connect(s, "changed", G_CALLBACK(setting_changed), NULL);
+    g_signal_emit_by_name(s, "changed", "hide-mode", NULL);
 }
 

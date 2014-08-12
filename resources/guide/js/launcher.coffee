@@ -26,7 +26,7 @@ class LauncherLaunch extends Page
         enableZoneDetect(true)
         @dock = new Dock()
         @launcher = new Launcher()
-        @message = _("\"Application Launcher\" can be started by sliding the mouse to the upper left corner or clicking on the launcher.")
+        @message = _("Sliding the mouse to the upper left corner or clicking on the launcher icon both can start \"Application Launcher\"")
         @show_message(@message)
         @corner_leftup = new Pointer("corner_leftup",@element)
         @corner_leftup.create_pointer(AREA_TYPE.corner,POS_TYPE.leftup)
@@ -67,7 +67,7 @@ class LauncherCollect extends Page
                 guide?.switch_page(@,"LauncherAllApps")
             ,t_mid_switch_page)
         )
-        @message = _("What shown in the first screen of \"launcher\" are the applications collected.")
+        @message = _("What shown in the first screen of \" launcher\" are the applications of collection")
         @show_message(@message)
         @msg_tips.style.marginTop = "150px"
 
@@ -82,7 +82,7 @@ class LauncherAllApps extends Page
         @pointer.enable_area_icon("#{@img_src}/category_normal.png",64,64)
         @pointer.set_area_pos(CATE_LEFT - 2,CATE_LEFT - 2)
         @pointer.show_animation()
-        @message = _("Please click on the \"All Applications\" icon, you will see all applications.")
+        @message = _("Please click on the \"All Applications\" icon , you will see all applications")
         @show_message(@message)
 
 class LauncherScroll extends Page
@@ -161,7 +161,7 @@ class LauncherSearch extends Page
         super
         new Launcher()?.show() if DEBUG
         @message = _("Use the keyboard to search for applications\nTry the \"deepin\" keyword to see which applications are shown")
-        @tips = _("tips: Please directly enter the word \"deepin\"")
+        @tips = _("tips：Please directly enter the word \"deepin\"")
         @show_message(@message)
         @show_tips(@tips)
 
@@ -177,7 +177,7 @@ class LauncherMenu extends Page
         super
         @launcher = new Launcher()
         @message = _("Use the right mouse button to send two icons to the desktop")
-        @tips = _("tips: You can add it to startup items or uninstall it")
+        @tips = _("tips:You can add it to startup items or uninstall")
         @show_message(@message)
         @show_tips(@tips)
         @signal()

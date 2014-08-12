@@ -61,8 +61,6 @@ class HideStatusManager
             return
         _CW.style.webkitTransform = cw
         $("#panel").style.webkitTransform = panel
-        if settings.displayMode() == DisplayMode.Classic
-            $("#trayarea").style.webkitTransform = cw
 
         clearTimeout(changeDockRegionTimer)
         changeDockRegionTimer = setTimeout(@changeDockRegion, 400)

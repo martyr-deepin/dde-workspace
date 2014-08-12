@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-12 17:45+0800\n"
+"POT-Creation-Date: 2014-08-11 17:42+0800\n"
 "PO-Revision-Date: 2014-07-03 05:01+0000\n"
 "Last-Translator: andrej55 <andrej.marsetic@gmail.com>\n"
 "Language-Team: Slovenian (http://www.transifex.com/projects/p/deepin-desktop-"
@@ -20,15 +20,278 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
 "%100==4 ? 2 : 3);\n"
 
-#: ../resources/launcher/js/item.coffee:276
-#: ../resources/guide/js/launcher.coffee:235
+#: ../resources/desktop/js/invalidlink.coffee:34
+#: ../resources/desktop/js/desktopentry.coffee:107
+#: ../resources/desktop/js/richdir.coffee:139
+#: ../resources/desktop/js/richdir.coffee:571
+msgid "_Delete"
+msgstr "_Izbriši"
+
+#: ../resources/desktop/js/application.coffee:179
+#: ../resources/desktop/js/richdir.coffee:335
+#: ../resources/desktop/js/richdir.coffee:586
+msgid "The link is invalid. Do you want to delete it?"
+msgstr "Ta povezava ni pravilna. Ali jo želite izbrisati?"
+
+#: ../resources/desktop/js/application.coffee:179
+#: ../resources/desktop/js/desktopentry.coffee:151
+#: ../resources/desktop/js/richdir.coffee:335
+#: ../resources/desktop/js/richdir.coffee:586
+#: ../resources/dock/js/plugins/trash/trash.coffee:73
+msgid "Warning"
+msgstr "Opozorilo"
+
+#: ../resources/desktop/js/desktopentry.coffee:101
 #: ../resources/desktop/js/richdir.coffee:133
 #: ../resources/desktop/js/richdir.coffee:566
-#: ../resources/desktop/js/desktopentry.coffee:101
-#: ../resources/desktop/js/specialitem.coffee:51
-#: ../resources/desktop/js/specialitem.coffee:147
+#: ../resources/launcher/js/item.coffee:276
+#: ../resources/guide/js/launcher.coffee:235
 msgid "_Open"
 msgstr "_Odpri"
+
+#: ../resources/desktop/js/desktopentry.coffee:103
+#: ../resources/desktop/js/richdir.coffee:568
+msgid "Cu_t"
+msgstr "Iz_reži"
+
+#: ../resources/desktop/js/desktopentry.coffee:104
+#: ../resources/desktop/js/richdir.coffee:569
+msgid "_Copy"
+msgstr "_Kopiraj"
+
+#: ../resources/desktop/js/desktopentry.coffee:106
+#: ../resources/desktop/js/richdir.coffee:135
+msgid "_Rename"
+msgstr "_Preimenuj"
+
+#: ../resources/desktop/js/desktopentry.coffee:109
+#: ../resources/desktop/js/richdir.coffee:573
+msgid "_Properties"
+msgstr "_Lastnosti"
+
+#: ../resources/desktop/js/desktopentry.coffee:115
+#: ../resources/desktop/js/desktopentry.coffee:122
+msgid "Co_mpress"
+msgstr "S_tisni"
+
+#: ../resources/desktop/js/desktopentry.coffee:118
+#: ../resources/desktop/js/desktopentry.coffee:123
+msgid "_Extract"
+msgstr "_Izvleci"
+
+#: ../resources/desktop/js/desktopentry.coffee:119
+#: ../resources/desktop/js/desktopentry.coffee:124
+msgid "Extract _Here"
+msgstr "Izvleci_Sem"
+
+#: ../resources/desktop/js/desktopentry.coffee:151
+#: ../resources/dock/js/plugins/trash/trash.coffee:73
+msgid "Can not open this file."
+msgstr "Datoteke ne morem odpreti."
+
+#: ../resources/desktop/js/grid.coffee:71 ../lib/dentry/fileops.c:403
+msgid "Untitled"
+msgstr "Neimenovan"
+
+#: ../resources/desktop/js/grid.coffee:1022
+msgid "_Name"
+msgstr "_Ime"
+
+#: ../resources/desktop/js/grid.coffee:1023
+msgid "Last modified _time"
+msgstr "Datum_spremembe"
+
+#: ../resources/desktop/js/grid.coffee:1028
+msgid "_Folder"
+msgstr "_Mapa"
+
+#: ../resources/desktop/js/grid.coffee:1029
+msgid "_Text document"
+msgstr "_Besedilni dokument"
+
+#: ../resources/desktop/js/grid.coffee:1045
+#: ../resources/guide/js/desktop.coffee:199
+msgid "_Sort by"
+msgstr "_Razvrsti po"
+
+#: ../resources/desktop/js/grid.coffee:1046
+#: ../resources/guide/js/desktop.coffee:200
+msgid "_New"
+msgstr "_Nov"
+
+#: ../resources/desktop/js/grid.coffee:1047
+#: ../resources/guide/js/desktop.coffee:201
+msgid "Open in _terminal"
+msgstr "Odpri v _terminalu"
+
+#: ../resources/desktop/js/grid.coffee:1048
+#: ../resources/guide/js/desktop.coffee:202
+msgid "_Paste"
+msgstr "_Prilepi"
+
+#: ../resources/desktop/js/grid.coffee:1050
+#: ../resources/guide/js/desktop.coffee:204
+msgid "_Display settings"
+msgstr "_Nastavitve zaslona"
+
+#: ../resources/desktop/js/grid.coffee:1051
+#: ../resources/guide/js/desktop.coffee:205
+msgid "_Corner navigation"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:1052
+#: ../resources/guide/js/desktop.coffee:206
+msgid "Pe_rsonalize"
+msgstr "Pr_ilagodi"
+
+#: ../resources/desktop/js/richdir.coffee:137
+msgid "_Ungroup"
+msgstr "_Razdruži"
+
+#: ../resources/greeter/js/message.coffee:105
+#: ../resources/greeter/js/message.coffee:82
+msgid "$ sudo reboot\n"
+msgstr "$ sudo reboot \n"
+
+#: ../resources/greeter/js/message.coffee:99
+#: ../resources/greeter/js/message.coffee:73
+msgid "Press Ctrl + Alt + F1\n"
+msgstr "Pritisni Ctrl + Alt + F1\n"
+
+#: ../resources/greeter/js/message.coffee:95
+msgid ""
+"\t\t\t\t-----The daemon of accounts has not started!-----\n"
+")"
+msgstr ""
+
+#: ../resources/greeter/js/message.coffee:79
+msgid "$ sudo apt-get install deepin-desktop-Environment\n"
+msgstr ""
+
+#: ../resources/greeter/js/message.coffee:68
+msgid "\t\t\t\t-----No available desktop sessions!-----\n"
+msgstr "     -----Ni razpoložljive namizne seje-----\n"
+
+#: ../resources/greeter/js/user.coffee:471
+msgid "click login button to log in"
+msgstr "kliknite na gumb za prijavo, da se prijavite"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Jan"
+msgstr "Jan"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Feb"
+msgstr "Feb"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Mar"
+msgstr "Mar"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Apr"
+msgstr "Apr"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "May"
+msgstr "Maj"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Jun"
+msgstr "Jun"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Jul"
+msgstr "Jul"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Aug"
+msgstr "Avg"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Sep"
+msgstr "Sep"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Oct"
+msgstr "Okt"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Nov"
+msgstr "Nov"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Dec"
+msgstr "Dec"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Sun"
+msgstr "Ned"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Mon"
+msgstr "Pon"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Tue"
+msgstr "Tor"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Wed"
+msgstr "Sre"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Thu"
+msgstr "Čet"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Fri"
+msgstr "Pet"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Sat"
+msgstr "Sob"
+
+#: ../resources/greeter/js/usermenu.coffee:57
+msgid "Guest"
+msgstr "Gost"
+
+#: ../resources/greeter/js/powermenu.coffee:26
+msgid "Shut down"
+msgstr "Zaustavitev sistema"
+
+#: ../resources/greeter/js/powermenu.coffee:27
+msgid "Restart"
+msgstr "Vnovični zagon"
+
+#: ../resources/greeter/js/powermenu.coffee:28
+msgid "Suspend"
+msgstr "V mirovanje"
+
+#: ../resources/greeter/js/powermenu.coffee:90
+msgid "Enter your password to %1"
+msgstr "Vpišite svoje geslo na %1"
+
+#: ../resources/greeter/js/mediacontrol.coffee:167
+#, fuzzy
+msgid "Click button to Play"
+msgstr "kliknite na gumb za prijavo, da se prijavite"
+
+#: ../resources/osd/js/display.coffee:42 ../lib/dentry/fileops.c:772
+msgid "Copy"
+msgstr "Kopiraj"
+
+#: ../resources/osd/js/display.coffee:43
+msgid "Expand"
+msgstr "Razširi"
+
+#: ../resources/osd/js/display.coffee:44
+msgid "Only the first Screen"
+msgstr "Le prvi zaslon"
+
+#: ../resources/osd/js/display.coffee:45
+msgid "Only the second Screen"
+msgstr "Le drugi zaslon"
 
 #: ../resources/launcher/js/item.coffee:283
 #: ../resources/guide/js/launcher.coffee:242
@@ -109,128 +372,43 @@ msgstr "Dodaj na pu_lt"
 msgid "Remove from do_ck"
 msgstr "Odstrani iz _priljubljenih "
 
-#: ../resources/osd/js/display.coffee:42 ../lib/dentry/fileops.c:772
-msgid "Copy"
-msgstr "Kopiraj"
+#: ../resources/zone/js/utils.coffee:10
+msgid "Control Center"
+msgstr "Kontrolni center"
 
-#: ../resources/osd/js/display.coffee:43
-msgid "Expand"
-msgstr "Razširi"
+#: ../resources/zone/js/utils.coffee:10
+msgid "All Windows"
+msgstr "Vsa okna"
 
-#: ../resources/osd/js/display.coffee:44
-msgid "Only the first Screen"
-msgstr "Le prvi zaslon"
-
-#: ../resources/osd/js/display.coffee:45
-msgid "Only the second Screen"
-msgstr "Le drugi zaslon"
-
-#: ../resources/dock/js/deepin_item.coffee:241
-msgid "_View as analog"
-msgstr "_Pogled v analognem načinu"
-
-#: ../resources/dock/js/deepin_item.coffee:242
-#: ../resources/dock/js/deepin_item.coffee:294
-msgid "_Time settings"
-msgstr "_Nastavitev časa"
-
-#: ../resources/dock/js/deepin_item.coffee:293
-msgid "_View as digit"
-msgstr "_Pogled v digitalnem načinu"
-
-#: ../resources/dock/js/main.coffee:154 ../resources/dock/js/main.coffee:227
-#: ../resources/desktop/js/specialitem.coffee:87
-msgid "Trash"
-msgstr "Smetnjak"
-
-#: ../resources/dock/js/main.coffee:225 ../resources/zone/js/utils.coffee:10
+#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:226
 msgid "Launcher"
 msgstr "Zaganjalnik"
 
-#: ../resources/dock/js/global_menu.coffee:9
-#, fuzzy
-msgid "Keep _showing"
-msgstr "obdrži_prikazano"
+#: ../resources/zone/js/utils.coffee:10
+msgid "Desktop"
+msgstr "Namizje"
 
-#: ../resources/dock/js/global_menu.coffee:10
-#, fuzzy
-msgid "Keep _hidden"
-msgstr "obdrži_skrito"
+#: ../resources/zone/js/utils.coffee:10
+msgid "None"
+msgstr "Nihče"
 
-#: ../resources/dock/js/global_menu.coffee:11
-#, fuzzy
-msgid "_Auto hide"
-msgstr "_samodejno skrij"
-
-#: ../resources/dock/js/global_menu.coffee:23
-msgid "_Efficient mode"
+#: ../resources/guide/js/dss.coffee:29
+msgid "Well, please trigger the lower right corner again"
 msgstr ""
 
-#: ../resources/dock/js/global_menu.coffee:24
-msgid "_Fashion mode"
+#: ../resources/guide/js/dss.coffee:30
+msgid "tips：Click the setting icon on dock to implement"
+msgstr "Nasvet: Kliknite ikono nastavitve na jo vstavite v dock "
+
+#: ../resources/guide/js/dss.coffee:69
+msgid "Here is the system setting area"
+msgstr "Tukaj je območje nastavitev sistema"
+
+#: ../resources/guide/js/dss.coffee:70
+msgid ""
+"tips：Hover the setting icon on dock to quickly implement some setting "
+"functions"
 msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:40
-#, fuzzy
-msgid "_Dock setting"
-msgstr "_Nastavitev časa"
-
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Sun"
-msgstr "Ned"
-
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Mon"
-msgstr "Pon"
-
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Tue"
-msgstr "Tor"
-
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Wed"
-msgstr "Sre"
-
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Thu"
-msgstr "Čet"
-
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Fri"
-msgstr "Pet"
-
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Sat"
-msgstr "Sob"
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:29
-#: ../resources/desktop/js/specialitem.coffee:156
-msgid "_Empty"
-msgstr ""
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:33
-msgid "_Close"
-msgstr "_Zapri"
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:73
-#: ../resources/desktop/js/desktopentry.coffee:151
-msgid "Can not open this file."
-msgstr "Datoteke ne morem odpreti."
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:73
-#: ../resources/desktop/js/application.coffee:179
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
-#: ../resources/desktop/js/desktopentry.coffee:151
-msgid "Warning"
-msgstr "Opozorilo"
 
 #: ../resources/guide/js/end.coffee:25
 #, fuzzy
@@ -241,71 +419,65 @@ msgstr "Hvala za potrpljenje pri učenju. Čestitam! "
 msgid "End"
 msgstr "Konec"
 
-#: ../resources/guide/js/launcher.coffee:29
+#: ../resources/guide/js/welcome.coffee:35
+msgid "Welcome to use Deepin Operating System"
+msgstr "Dobrodošli v Deepin operacijskem sistemu"
+
+#: ../resources/guide/js/welcome.coffee:38
+msgid "Prepare for operation ..."
+msgstr "Priprava za operacijo..."
+
+#: ../resources/guide/js/desktop.coffee:27
 msgid ""
-"\"Application Launcher\" can be started by sliding the mouse to the upper "
-"left corner or clicking on the launcher."
+"Let's drag the other icon on the first icon \n"
+" to generate \"application group\""
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:70
+#: ../resources/guide/js/desktop.coffee:119
+msgid "Well, you have learned how to create a \"application group\""
+msgstr "No,naučili ste se, kako ustvariti \"Zahtevek za skupino\""
+
+#: ../resources/guide/js/desktop.coffee:120
+msgid "tips：Right-click on the application group will provide more functions"
+msgstr ""
+
+#: ../resources/guide/js/desktop.coffee:131
 msgid ""
-"What shown in the first screen of \"launcher\" are the applications "
-"collected."
+"Slide the mouse to the four top corners, which can trigger four different "
+"events\n"
+"Please move to the upper left corner first to show or hide Launcher"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:85
+#: ../resources/guide/js/desktop.coffee:132
 msgid ""
-"Please click on the \"All Applications\" icon, you will see all applications."
+"tips：Please trigger successively by hints, click on the blank area to return"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:95
+#: ../resources/guide/js/desktop.coffee:136
+msgid "Show/Hide Launcher"
+msgstr "Prikaži / skrij Launcher"
+
+#: ../resources/guide/js/desktop.coffee:137
+msgid "Show/Hide Desktop"
+msgstr "Prikaži/Skrij namizje"
+
+#: ../resources/guide/js/desktop.coffee:138
+msgid "Show/Hide Control Center"
+msgstr "Prikaži / skrij Control Center"
+
+#: ../resources/guide/js/desktop.coffee:139
+msgid "No default functions setted in right up corner"
+msgstr ""
+
+#: ../resources/guide/js/desktop.coffee:181
 msgid ""
-"All programs can be located by scrolling the mouse up and down.\n"
-"You can also click on the left classification navigation to locate"
+"Right-click on desktop black area to call up the menu, select \"Corner "
+"navigation\" to set the corner used"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:133
-msgid "Skip the step without scroll"
+#: ../resources/guide/js/desktop.coffee:182
+msgid "tips：Click on the interface of corner navigation blank area to return"
 msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:163
-msgid ""
-"Use the keyboard to search for applications\n"
-"Try the \"deepin\" keyword to see which applications are shown"
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:164
-#, fuzzy
-msgid "tips: Please directly enter the word \"deepin\""
-msgstr "Nasvet: Prosimo neposredno vnesti besedo \"deepin\""
-
-#: ../resources/guide/js/launcher.coffee:179
-msgid "Use the right mouse button to send two icons to the desktop"
-msgstr "Z desno tipko miške pošljite dve ikoni na namizje"
-
-#: ../resources/guide/js/launcher.coffee:180
-msgid "tips: You can add it to startup items or uninstall it"
-msgstr ""
-
-#: ../resources/guide/js/dss.coffee:29
-msgid "Well, please trigger the lower right corner again"
-msgstr ""
-
-#: ../resources/guide/js/dss.coffee:30
-#, fuzzy
-msgid "tips: Click the setting icon on dock to implement"
-msgstr "Nasvet: Kliknite ikono nastavitve na jo vstavite v dock "
-
-#: ../resources/guide/js/dss.coffee:69
-msgid "Here is the system setting area"
-msgstr "Tukaj je območje nastavitev sistema"
-
-#: ../resources/guide/js/dss.coffee:70
-#, fuzzy
-msgid ""
-"tips: Hover the setting icon on dock to quickly implement some setting "
-"functions"
-msgstr "Nasvet: Kliknite ikono nastavitve na jo vstavite v dock "
 
 #: ../resources/guide/js/start.coffee:28
 msgid "New Launcher"
@@ -331,304 +503,87 @@ msgstr "Začni"
 msgid "I am older. Exit directly."
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:27
+#: ../resources/guide/js/launcher.coffee:29
 msgid ""
-"Let's drag the other icon on the first icon \n"
-" to generate \"application group\""
+"Sliding the mouse to the upper left corner or clicking on the launcher icon "
+"both can start \"Application Launcher\""
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:116
-msgid "Well, you have learned how to create a \"application group\""
-msgstr "No,naučili ste se, kako ustvariti \"Zahtevek za skupino\""
-
-#: ../resources/guide/js/desktop.coffee:117
-msgid "tips: Right-click on the application group will provide more functions"
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:128
+#: ../resources/guide/js/launcher.coffee:70
 msgid ""
-"Slide the mouse to the four top corners, which can trigger four different "
-"events\n"
-"Please move to the upper left corner first to show or hide Launcher"
+"What shown in the first screen of \" launcher\" are the applications of "
+"collection"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:129
+#: ../resources/guide/js/launcher.coffee:85
 msgid ""
-"tips: Please trigger successively by hints, click on the blank area to return"
+"Please click on the \"All Applications\" icon , you will see all applications"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:133
-msgid "Show/Hide Launcher"
-msgstr "Prikaži / skrij Launcher"
-
-#: ../resources/guide/js/desktop.coffee:134
-msgid "Show/Hide Desktop"
-msgstr "Prikaži/Skrij namizje"
-
-#: ../resources/guide/js/desktop.coffee:135
-msgid "Show/Hide Control Center"
-msgstr "Prikaži / skrij Control Center"
-
-#: ../resources/guide/js/desktop.coffee:136
-msgid "No default functions setted in right up corner"
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:178
+#: ../resources/guide/js/launcher.coffee:95
 msgid ""
-"Right-click on desktop black area to call up the menu, select \"Corner "
-"navigation\" to set the corner used"
+"All programs can be located by scrolling the mouse up and down.\n"
+"You can also click on the left classification navigation to locate"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:179
-msgid "tips: Click on the interface of corner navigation blank area to return"
+#: ../resources/guide/js/launcher.coffee:133
+msgid "Skip the step without scroll"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:196
-#: ../resources/desktop/js/grid.coffee:1045
-msgid "_Sort by"
-msgstr "_Razvrsti po"
-
-#: ../resources/guide/js/desktop.coffee:197
-#: ../resources/desktop/js/grid.coffee:1046
-msgid "_New"
-msgstr "_Nov"
-
-#: ../resources/guide/js/desktop.coffee:198
-#: ../resources/desktop/js/grid.coffee:1047
-msgid "Open in _terminal"
-msgstr "Odpri v _terminalu"
-
-#: ../resources/guide/js/desktop.coffee:199
-#: ../resources/desktop/js/grid.coffee:1048
-msgid "_Paste"
-msgstr "_Prilepi"
-
-#: ../resources/guide/js/desktop.coffee:201
-#: ../resources/desktop/js/grid.coffee:1050
-msgid "_Display settings"
-msgstr "_Nastavitve zaslona"
-
-#: ../resources/guide/js/desktop.coffee:202
-#: ../resources/desktop/js/grid.coffee:1051
-msgid "_Corner navigation"
+#: ../resources/guide/js/launcher.coffee:163
+msgid ""
+"Use the keyboard to search for applications\n"
+"Try the \"deepin\" keyword to see which applications are shown"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:203
-#: ../resources/desktop/js/grid.coffee:1052
-msgid "Pe_rsonalize"
-msgstr "Pr_ilagodi"
+#: ../resources/guide/js/launcher.coffee:164
+msgid "tips：Please directly enter the word \"deepin\""
+msgstr "Nasvet: Prosimo neposredno vnesti besedo \"deepin\""
 
-#: ../resources/guide/js/welcome.coffee:35
-msgid "Welcome to use Deepin Operating System"
-msgstr "Dobrodošli v Deepin operacijskem sistemu"
+#: ../resources/guide/js/launcher.coffee:179
+msgid "Use the right mouse button to send two icons to the desktop"
+msgstr "Z desno tipko miške pošljite dve ikoni na namizje"
 
-#: ../resources/guide/js/welcome.coffee:38
-msgid "Prepare for operation ..."
-msgstr "Priprava za operacijo..."
-
-#: ../resources/zone/js/utils.coffee:10
-msgid "Control Center"
-msgstr "Kontrolni center"
-
-#: ../resources/zone/js/utils.coffee:10
-msgid "All Windows"
-msgstr "Vsa okna"
-
-#: ../resources/zone/js/utils.coffee:10
-msgid "Desktop"
-msgstr "Namizje"
-
-#: ../resources/zone/js/utils.coffee:10
-msgid "None"
-msgstr "Nihče"
-
-#: ../resources/desktop/js/invalidlink.coffee:34
-#: ../resources/desktop/js/richdir.coffee:139
-#: ../resources/desktop/js/richdir.coffee:571
-#: ../resources/desktop/js/desktopentry.coffee:107
-msgid "_Delete"
-msgstr "_Izbriši"
-
-#: ../resources/desktop/js/application.coffee:179
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
-msgid "The link is invalid. Do you want to delete it?"
-msgstr "Ta povezava ni pravilna. Ali jo želite izbrisati?"
-
-#: ../resources/desktop/js/richdir.coffee:135
-#: ../resources/desktop/js/desktopentry.coffee:106
-msgid "_Rename"
-msgstr "_Preimenuj"
-
-#: ../resources/desktop/js/richdir.coffee:137
-msgid "_Ungroup"
-msgstr "_Razdruži"
-
-#: ../resources/desktop/js/richdir.coffee:568
-#: ../resources/desktop/js/desktopentry.coffee:103
-msgid "Cu_t"
-msgstr "Iz_reži"
-
-#: ../resources/desktop/js/richdir.coffee:569
-#: ../resources/desktop/js/desktopentry.coffee:104
-msgid "_Copy"
-msgstr "_Kopiraj"
-
-#: ../resources/desktop/js/richdir.coffee:573
-#: ../resources/desktop/js/desktopentry.coffee:109
-#: ../resources/desktop/js/specialitem.coffee:53
-msgid "_Properties"
-msgstr "_Lastnosti"
-
-#: ../resources/desktop/js/grid.coffee:71 ../lib/dentry/fileops.c:403
-msgid "Untitled"
-msgstr "Neimenovan"
-
-#: ../resources/desktop/js/grid.coffee:1022
-msgid "_Name"
-msgstr "_Ime"
-
-#: ../resources/desktop/js/grid.coffee:1023
-msgid "Last modified _time"
-msgstr "Datum_spremembe"
-
-#: ../resources/desktop/js/grid.coffee:1028
-msgid "_Folder"
-msgstr "_Mapa"
-
-#: ../resources/desktop/js/grid.coffee:1029
-msgid "_Text document"
-msgstr "_Besedilni dokument"
-
-#: ../resources/desktop/js/desktopentry.coffee:115
-#: ../resources/desktop/js/desktopentry.coffee:122
-msgid "Co_mpress"
-msgstr "S_tisni"
-
-#: ../resources/desktop/js/desktopentry.coffee:118
-#: ../resources/desktop/js/desktopentry.coffee:123
-msgid "_Extract"
-msgstr "_Izvleci"
-
-#: ../resources/desktop/js/desktopentry.coffee:119
-#: ../resources/desktop/js/desktopentry.coffee:124
-msgid "Extract _Here"
-msgstr "Izvleci_Sem"
-
-#: ../resources/desktop/js/specialitem.coffee:34
-msgid "Computer"
+#: ../resources/guide/js/launcher.coffee:180
+msgid "tips:You can add it to startup items or uninstall"
 msgstr ""
 
-#: ../resources/desktop/js/specialitem.coffee:152
-#, fuzzy
-msgid "_Clean up %1 items"
+#: ../resources/dock/js/global_menu.coffee:9
+msgid "keep _showing"
+msgstr "obdrži_prikazano"
+
+#: ../resources/dock/js/global_menu.coffee:10
+msgid "keep _hidden"
+msgstr "obdrži_skrito"
+
+#: ../resources/dock/js/global_menu.coffee:11
+msgid "_auto hide"
+msgstr "_samodejno skrij"
+
+#: ../resources/dock/js/deepin_item.coffee:231
+msgid "_View as analog"
+msgstr "_Pogled v analognem načinu"
+
+#: ../resources/dock/js/deepin_item.coffee:232
+#: ../resources/dock/js/deepin_item.coffee:284
+msgid "_Time settings"
+msgstr "_Nastavitev časa"
+
+#: ../resources/dock/js/deepin_item.coffee:283
+msgid "_View as digit"
+msgstr "_Pogled v digitalnem načinu"
+
+#: ../resources/dock/js/main.coffee:155 ../resources/dock/js/main.coffee:228
+msgid "Trash"
+msgstr "Smetnjak"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:29
+msgid "_Clean up"
 msgstr "_Počisti"
 
-#: ../resources/desktop/js/specialitem.coffee:154
-#, fuzzy
-msgid "_Clean up 1 item"
-msgstr "_Počisti"
-
-#: ../resources/greeter/js/user.coffee:471
-msgid "click login button to log in"
-msgstr "kliknite na gumb za prijavo, da se prijavite"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Jan"
-msgstr "Jan"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Feb"
-msgstr "Feb"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Mar"
-msgstr "Mar"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Apr"
-msgstr "Apr"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "May"
-msgstr "Maj"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Jun"
-msgstr "Jun"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Jul"
-msgstr "Jul"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Aug"
-msgstr "Avg"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Sep"
-msgstr "Sep"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Oct"
-msgstr "Okt"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Nov"
-msgstr "Nov"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Dec"
-msgstr "Dec"
-
-#: ../resources/greeter/js/usermenu.coffee:57
-msgid "Guest"
-msgstr "Gost"
-
-#: ../resources/greeter/js/powermenu.coffee:26
-msgid "Shut down"
-msgstr "Zaustavitev sistema"
-
-#: ../resources/greeter/js/powermenu.coffee:27
-msgid "Restart"
-msgstr "Vnovični zagon"
-
-#: ../resources/greeter/js/powermenu.coffee:28
-msgid "Suspend"
-msgstr "V mirovanje"
-
-#: ../resources/greeter/js/powermenu.coffee:90
-msgid "Enter your password to %1"
-msgstr "Vpišite svoje geslo na %1"
-
-#: ../resources/greeter/js/message.coffee:105
-#: ../resources/greeter/js/message.coffee:82
-msgid "$ sudo reboot\n"
-msgstr "$ sudo reboot \n"
-
-#: ../resources/greeter/js/message.coffee:99
-#: ../resources/greeter/js/message.coffee:73
-msgid "Press Ctrl + Alt + F1\n"
-msgstr "Pritisni Ctrl + Alt + F1\n"
-
-#: ../resources/greeter/js/message.coffee:95
-msgid ""
-"\t\t\t\t-----The daemon of accounts has not started!-----\n"
-")"
-msgstr ""
-
-#: ../resources/greeter/js/message.coffee:79
-msgid "$ sudo apt-get install deepin-desktop-Environment\n"
-msgstr ""
-
-#: ../resources/greeter/js/message.coffee:68
-msgid "\t\t\t\t-----No available desktop sessions!-----\n"
-msgstr "     -----Ni razpoložljive namizne seje-----\n"
-
-#: ../resources/greeter/js/mediacontrol.coffee:167
-#, fuzzy
-msgid "Click button to Play"
-msgstr "kliknite na gumb za prijavo, da se prijavite"
+#: ../resources/dock/js/plugins/trash/trash.coffee:33
+msgid "_Close"
+msgstr "_Zapri"
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
@@ -638,15 +593,11 @@ msgstr ""
 msgid "\"%1\" failed to be uninstalled"
 msgstr ""
 
-#: ../app/dock/dock.c:322
-msgid "Dock failed to start, because Compiz is not enabled."
-msgstr "Dok se ni uspel zagnati, ker  Compiz ni omogočen."
-
-#: ../app/desktop/desktop.c:278
+#: ../app/desktop/desktop.c:225
 msgid "New file"
 msgstr "Nova datoteka"
 
-#: ../app/desktop/desktop.c:289
+#: ../app/desktop/desktop.c:236
 msgid "New directory"
 msgstr "Nov imenik"
 
@@ -657,6 +608,10 @@ msgstr "%a, %b %d, %Y"
 #: ../app/greeter/lock.c:125 ../app/greeter/greeter.c:192
 msgid "Invalid Password"
 msgstr "Napačno geslo"
+
+#: ../app/dock/dock.c:330
+msgid "Dock failed to start, because Compiz is not enabled."
+msgstr "Dok se ni uspel zagnati, ker  Compiz ni omogočen."
 
 #: ../lib/dentry/entry.c:746
 #, c-format
@@ -914,9 +869,6 @@ msgstr "Pripomočki"
 #: ../lib/category.c:56
 msgid "others"
 msgstr "Ostalo"
-
-#~ msgid "_Clean up"
-#~ msgstr "_Počisti"
 
 #~ msgid "Get"
 #~ msgstr "Pridobi"

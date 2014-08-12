@@ -107,12 +107,6 @@ class SystemItem extends AppItem
     position: ['AppletNetwork', 'AppletDiskMount', 'AppletPower', 'AppletSound']
     constructor:(@id, icon, title)->
         super(@id, icon, title, $("#system"))
-        @element.classList.add("AppletItem")
-        # @imgWarp.classList.add("AppletItemImg")
-        @imgContainer.classList.add("AppletItemImg")
-        @img.classList.add("AppletItemImg")
-        @imgHover.classList.add("AppletItemImg")
-        @imgDark.classList.add("AppletItemImg")
         @img.draggable = false
         parentNode = $("#system")
         parentNode.appendChild(@element)
@@ -123,16 +117,12 @@ class SystemItem extends AppItem
         parentNode.appendChild($("#system-tray")) if $("#system-tray")
         parentNode.appendChild($("#time")) if $("#time")
 
+
     isFirstElementChild:->
         $("#system").firstElementChild.isEqualNode(@element)
 
     isLastElementChild:->
         $("#system").lastElementChild.isEqualNode(@element)
-
-    on_mouseover:=>
-        super
-        if settings.displayMode() == DisplayMode.Classic
-            @displayIcon()
 
     on_dragover:(e)=>
         e.stopPropagation()

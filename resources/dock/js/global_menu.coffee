@@ -6,9 +6,9 @@ class GlobalMenu
         @menu?.destroy()
         @menu = null
         items = [
-            new RadioBoxMenuItem('dockHideMode:radio:keep-showing', _("Keep _showing")),
-            new RadioBoxMenuItem('dockHideMode:radio:keep-hidden', _("Keep _hidden"))
-            new RadioBoxMenuItem('dockHideMode:radio:auto-hide', _("_Auto hide")),
+            new RadioBoxMenuItem('dockHideMode:radio:keep-showing', _("keep _showing")),
+            new RadioBoxMenuItem('dockHideMode:radio:keep-hidden', _("keep _hidden"))
+            new RadioBoxMenuItem('dockHideMode:radio:auto-hide', _("_auto hide")),
         ]
         try
             dbus = DCore.DBus.session("dde.dock.entry.AppletManager")
@@ -20,13 +20,6 @@ class GlobalMenu
         # console.log(settings.hideMode())
         items[settings.hideMode()].setChecked(true)
         @menu = new Menu(DEEPIN_MENU_TYPE.NORMAL)
-        classic = new RadioBoxMenuItem("dockDisplayMode:radio:classic", _("_Efficient mode"))
-        modern = new RadioBoxMenuItem("dockDisplayMode:radio:modern", _("_Fashion mode"))
-        if settings.displayMode() == DisplayMode.Classic
-            classic.setChecked(true)
-        else
-            modern.setChecked(true)
-        @menu.append(classic, modern).addSeparator()
         @menu.append.apply(@menu, items)
 
         if Object.keys(@plugins).length > 0
@@ -37,7 +30,6 @@ class GlobalMenu
             for info in infos
                 @menu.append(new CheckBoxMenuItem("#{groupName}:checkbox:#{info[0]}", info[1]).setChecked(info[2]))
 
-        @menu.addSeparator().append(new MenuItem("dockSetting", _("_Dock setting")))
         # console.log("showmenu:#{@menu.menu.menuJsonContent}")
         @menu.addListener(@on_itemselected).showMenu(x, y)
         @menu.unregisterHook(handleMenuUnregister)
@@ -45,28 +37,17 @@ class GlobalMenu
     on_itemselected:(id)=>
         info = id.split(":")
         groupName = info[0]
-        realId = info[2] || null
+        realId = info[2]
         console.log("globalMenu: groupName: #{groupName}, realId: #{realId}")
         switch groupName
             when "dockHideMode"
                 settings.setHideMode(HideModeNameMap[realId])
-            when "dockDisplayMode"
-                for own k, v of $DBus
-                    item = Widget.look_up(k)
-                    if item and item.isApp?() and item.isActive?()
-                        item.hide_open_indicator()
-
-                settings.setDisplayMode(DisplayModeNameMap[realId])
             when "deepinAppletManager"
                 dbus = @plugins[groupName]
                 if not dbus
                     console.warn("cannot get dbus of #{groupName}")
                     return
                 dbus.ToggleApplet(realId)
-            when "dockSetting"
-                # TODO:
-                # toggle dock setting panel.
-                console.log("toggle dock setting panel")
 
         _isRightclicked = false
         @menu.unregister()

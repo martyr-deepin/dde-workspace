@@ -1,4 +1,13 @@
 workareaTimer = null
+HideMode =
+    KeepShowing: 0
+    KeepHidden: 1
+    AutoHide: 2
+
+HideModeNameMap =
+    "keep-showing": 0
+    "keep-hidden": 1
+    "auto-hide": 2
 
 class Setting
     constructor:->
@@ -18,31 +27,6 @@ class Setting
             console.log("mode changed to #{mode}")
             hideStatusManager.updateState()
         )
-        @dbus.connect("DisplayModeChanged", (mode)=>
-            console.log("DisplayModeChanged is emited")
-
-            @updateSize(mode)
-
-            # TODO:
-            # switch between different mode.
-            switch mode
-                when DisplayMode.Classic
-                    switchToClassicMode()
-                    $("#trayarea").style.webkitTransform = 'translateY(0)'
-                    systemTray?.updateTrayIcon()
-                when DisplayMode.Modern
-                    switchToModernMode()
-        )
-
-    updateSize:(mode)->
-        if typedef DisplayMode[mode] == undefined
-            return
-        DOCK_HEIGHT = ALL_DOCK_HEIGHT[mode]
-        PANEL_HEIGHT = ALL_PANEL_HEIGHT[mode]
-        ITEM_HEIGHT = ALL_ITEM_HEIGHT[mode]
-        ITEM_WIDTH = ALL_ITEM_WIDTH[mode]
-        ICON_WIDTH = ALL_ICON_WIDTH[mode]
-        ICON_HEIGHT = ALL_ICON_HEIGHT[mode]
 
     hideMode:->
         mode = @dbus.GetHideMode_sync()
@@ -52,9 +36,3 @@ class Setting
     setHideMode:(id)->
         console.log("setHideMode: #{id}")
         @dbus.SetHideMode(id)
-
-    displayMode:->
-        return @dbus.GetDisplayMode_sync()
-
-    setDisplayMode:(id)->
-        @dbus.SetDisplayMode(id)

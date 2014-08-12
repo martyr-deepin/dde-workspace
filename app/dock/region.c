@@ -20,11 +20,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
-#include "dock_config.h"
 #include "region.h"
 #include "dwebview.h"
 #include "dock_hide.h"
 
+#define BOARD_HEIGHT 60
+
+extern int _dock_height;
 
 cairo_region_t* _region = NULL;
 GdkWindow* _win = NULL;
@@ -72,7 +74,7 @@ gboolean _help_do_window_region(cairo_region_t* region)
         cairo_rectangle_int_t rec;
         for (int i = 0, num = cairo_region_num_rectangles(region); i < num; ++i) {
             cairo_region_get_rectangle(region, i, &rec);
-            g_debug("region %d: x: %d, y: %d, width: %d, height: %d", i, rec.x, rec.y, rec.width, rec.height);
+            g_debug("region %d: %d, %d, %d, %d", i, rec.x, rec.y, rec.width, rec.height);
         };
     }
 #endif
@@ -126,7 +128,7 @@ void dock_force_set_region(double x, double y, double items_width, double panel_
 
         cairo_rectangle_int_t tmp = {
             (int)x + _base_rect.x,
-            (int)y + GD.dock_height + _base_rect.y - 1,
+            (int)y + _dock_height + _base_rect.y - 1,
             (int)panel_width,
             1
         };
@@ -146,13 +148,9 @@ void dock_force_set_region(double x, double y, double items_width, double panel_
                 __func__, tmp.x, tmp.y, tmp.width, tmp.height);
 
         cairo_rectangle_int_t dock_board_rect = _base_rect;
-        if (GD.config.display_mode == CLASSIC_MODE) {
-            dock_board_rect.x = 0;
-        } else {
-            dock_board_rect.x = tmp.x - (panel_width - items_width) / 2;
-        }
-        dock_board_rect.y = tmp.y + GD.dock_height - GD.dock_panel_height;
-        dock_board_rect.height = GD.dock_panel_height;
+        dock_board_rect.x = tmp.x - (panel_width - items_width) / 2;
+        dock_board_rect.y = tmp.y + _dock_height - BOARD_HEIGHT;
+        dock_board_rect.height = BOARD_HEIGHT;
         dock_board_rect.width = (int)panel_width;
 
         g_debug("[%s] dock board region: x: %d, y: %d, width: %d, height: %d",

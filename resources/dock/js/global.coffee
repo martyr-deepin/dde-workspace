@@ -1,8 +1,5 @@
 # console.log=->
 
-
-$DBus = {}
-activeWindow = null
 _dropped = false
 _lastHover = null
 _isDragging = false

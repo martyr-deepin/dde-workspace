@@ -27,7 +27,7 @@ class DssLaunch extends Page
         @dss = new Dss()
 
         @message = _("Well, please trigger the lower right corner again")
-        @tips = _("tips: Click the setting icon on dock to implement")
+        @tips = _("tips：Click the setting icon on dock to implement")
         @show_message(@message)
         @show_tips(@tips)
 
@@ -67,7 +67,7 @@ class DssArea extends Page
             DCore.Guide.restack()
         ,200)
         @message = _("Here is the system setting area")
-        @tips = _("tips: Hover the setting icon on dock to quickly implement some setting functions")
+        @tips = _("tips：Hover the setting icon on dock to quickly implement some setting functions")
         @show_message(@message)
         @show_tips(@tips)
 
