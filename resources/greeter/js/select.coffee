@@ -41,11 +41,11 @@ class Select extends Widget
         @boxscroll.style.overflowY = "scroll" if @lists.length > @max_show
         @li = []
         @a = []
-        @ul = create_element("ul","",@boxscroll)
+        @ul = create_element("ul","select_ul",@boxscroll)
         for each,i in @lists
-            @li[i] = create_element("li","",@ul)
+            @li[i] = create_element("li","select_li",@ul)
             @li[i].setAttribute("style","height:#{EACH_HEIGHT}px;line-height:#{EACH_HEIGHT}px;")
-            @a[i] = create_element("a","",@li[i])
+            @a[i] = create_element("a","select_a",@li[i])
             @li[i].setAttribute("id",each)
             @a[i].innerText = each
 
@@ -59,18 +59,20 @@ class Select extends Widget
                 #@li[i].removeEventListener("mouseout",@unselect_css(i))
             else
                 @unselect_css(i)
-                @li[i].addEventListener("mouseover",@hover_css(i))
-                @li[i].addEventListener("mouseout",@unselect_css(i))
+                #@li[i].addEventListener("mouseover",@hover_css(i))
+                #@li[i].addEventListener("mouseout",@unselect_css(i))
 
     unselect_css: (i) =>
         echo "unselect_css:#{i}"
         @li[i].style.background = "no-repeat"
+        @li[i].style.backgroundPosition = "5px 11px"
         @li[i].style.backgroundColor = "rgba(0,0,0,0.4)"
         @a[i].style.color = "#FFFFFF"
 
     hover_css: (i) =>
         echo "hover_css:#{i}"
         @li[i].style.background = "no-repeat"
+        @li[i].style.backgroundPosition = "5px 11px"
         @li[i].style.backgroundColor = "rgba(0,0,0,0.7)"
         @a[i].style.color = "#FFFFFF"
 

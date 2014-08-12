@@ -10,37 +10,37 @@
     border:rgba(255,255,255,0.2) 1px solid;
     border-radius:0.4em;
 }
-#boxscroll ul{
+.select_ul {
     padding:0;
     margin:0;
     list-style:none;
 }
-#boxscroll li{
+.select_li {
     overflow:hidden;
     text-overflow:ellipsis;
     padding:0px 5px 0px 25px;
 }
-#boxscroll a {
+.select_a {
     color: #FFFFFF;
     font-size: 13px;
 }
-#boxscroll li:hover {
+.select_li:hover {
     cursor:pointer;
+    background:no-repeat;
     background-color:rgba(0,0,0,0.7);
 }
 
-#boxscroll li:hover a{
+.select_a:hover {
     color:#FFFFFF;
 }
 
 .nicescroll-rails > div {
     background: -webkit-gradient(linear, left top, left bottom,  from(#000),  to(#000));
-    -webkit-border-radius: 6px;
-    border-radius: 6px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
 }
 .nicescroll-rails:hover {
-    background: rgba(0,0,0,0.7);
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
     -webkit-box-shadow: none;
 }
