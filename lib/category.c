@@ -33,7 +33,7 @@
 
 #define DEEPIN_SOFTWARE_CENTER_DATA_DIR    "/usr/share/deepin-software-center/data"
 #define DATA_NEWEST_ID    DEEPIN_SOFTWARE_CENTER_DATA_DIR"/data_newest_id.ini"
-#define CATEGORY_NAME_DB_PATH   DEEPIN_SOFTWARE_CENTER_DATA_DIR"/update/%s/desktop/desktop.db"
+#define CATEGORY_NAME_DB_PATH   DEEPIN_SOFTWARE_CENTER_DATA_DIR"/update/%s/desktop/desktop2014.db"
 #define CATEGORY_INDEX_DB_PATH   DEEPIN_SOFTWARE_CENTER_DATA_DIR"/update/%s/category/category.db"
 
 

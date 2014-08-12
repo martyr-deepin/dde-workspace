@@ -1258,20 +1258,20 @@ gboolean _is_valid_category(char const* category)
     char** filter = g_key_file_get_string_list(filter_file, "Main", "filter", &size, NULL);
 
     for (guint i = 0; i < size; ++i) {
-        char* lowcase_filter = g_utf8_casefold(filter[i], -1);
-        char* lowcase_category = g_utf8_casefold(category, -1);
+        char* uppercase_filter = g_strdup(filter[i]);
+        char* uppercase_category = g_strdup(category);
 
-        g_debug("compare #%s# with #%s#: %d", lowcase_category, lowcase_filter, 0 == g_strcmp0(lowcase_category, lowcase_filter));
+        g_debug("compare #%s# with #%s#: %d", uppercase_category, uppercase_filter, 0 == g_strcmp0(uppercase_category, uppercase_filter));
 
-        if (0 == g_strcmp0(lowcase_category, lowcase_filter)) {
+        if (0 == g_strcmp0(uppercase_category, uppercase_filter)) {
             is_valid = FALSE;
-            g_free(lowcase_category);
-            g_free(lowcase_filter);
+            g_free(uppercase_category);
+            g_free(uppercase_filter);
             break;
         }
 
-        g_free(lowcase_category);
-        g_free(lowcase_filter);
+        g_free(uppercase_category);
+        g_free(uppercase_filter);
     }
 
     g_strfreev(filter);
@@ -1298,19 +1298,19 @@ gboolean _is_generic_category(char const* category)
     gsize size = 0;
     char** filter = g_key_file_get_string_list(filter_file, "Aux", "filter", &size, NULL);
     for (int i = 0; filter[i] != NULL; ++i) {
-        char* lowcase_category = g_utf8_casefold(category, -1);
-        char* lowcase_filter = g_utf8_casefold(filter[i], -1);
+        char* uppercase_category = g_strdup(category);
+        char* uppercase_filter = g_strdup(filter[i]);
 
-        g_debug("compare #%s# with #%s#: %d", lowcase_filter, lowcase_category, 0 == g_strcmp0(lowcase_category, lowcase_filter));
-        if (0 == g_strcmp0(lowcase_category, lowcase_filter)) {
+        g_debug("compare #%s# with #%s#: %d", uppercase_filter, uppercase_category, 0 == g_strcmp0(uppercase_category, uppercase_filter));
+        if (0 == g_strcmp0(uppercase_category, uppercase_filter)) {
             is_generic = TRUE;
-            g_free(lowcase_category);
-            g_free(lowcase_filter);
+            g_free(uppercase_category);
+            g_free(uppercase_filter);
             break;
         }
 
-        g_free(lowcase_category);
-        g_free(lowcase_filter);
+        g_free(uppercase_category);
+        g_free(uppercase_filter);
     }
 
     g_strfreev(filter);
@@ -1359,26 +1359,26 @@ GHashTable* _count_categories(ArrayContainer const fs)
         }
 
         for (int j = 0; categories[j] != NULL && categories[j][0] != '\0'; ++j) {
-            char* low_case_category = g_utf8_casefold(categories[j], -1);
+            char* uppercase_category = g_strdup(categories[j]);
 
-            if (g_hash_table_contains(set, low_case_category)) {
-                g_free(low_case_category);
+            if (g_hash_table_contains(set, uppercase_category)) {
+                g_free(uppercase_category);
                 continue;
             }
 
-            // Do not free low_case_category explicitly, use g_hash_table_unref
-            // to free low_case_category, so that do not duplicate it here.
-            g_hash_table_add(set, low_case_category);
+            // Do not free uppercase_category explicitly, use g_hash_table_unref
+            // to free uppercase_category, so that do not duplicate it here.
+            g_hash_table_add(set, uppercase_category);
 
-            if (_is_valid_category(low_case_category)) {
-                g_debug("[%s] === insert category: %s (lowcase: %s)", __func__,
-                        categories[j], low_case_category);
+            if (_is_valid_category(uppercase_category)) {
+                g_debug("[%s] === insert category: %s (uppercase: %s) uppercase_category and categories:%s", __func__,
+                        categories[j], uppercase_category,categories[j]);
 
                 int value =
                     GPOINTER_TO_INT(g_hash_table_lookup(categories_count,
-                                                        low_case_category));
+                                                        uppercase_category));
                 g_hash_table_insert(categories_count,
-                                    g_strdup(low_case_category),
+                                    g_strdup(uppercase_category),
                                     GINT_TO_POINTER(value + 1));
             }
         }
@@ -1447,6 +1447,7 @@ out:
     g_ptr_array_unref(candidate_categories);
     g_hash_table_unref(categories_count);
 
+    g_debug("_get_group_name_from_category_field:%s",group_name);
     return group_name;
 }
 
@@ -1465,16 +1466,19 @@ PRIVATE
 char* _lookup(char const* basename)
 {
     char* category_name = NULL;
+    char* desktop_name = g_strdup_printf("%s.desktop",basename);
 
     GString* sql = g_string_new("select first_category_name from desktop where desktop_name = \"");
-    g_string_append(sql, basename);
+    g_string_append(sql, desktop_name);
     g_string_append(sql, "\";");
 
     search_database(get_category_name_db_path(), sql->str, _get_category_name,
                     &category_name);
 
     g_string_free(sql, TRUE);
-
+    g_free(desktop_name);
+    
+    g_debug("_lookup:==%s==;return==%s==",desktop_name,category_name);
     return category_name;
 }
 
@@ -1486,9 +1490,12 @@ char* _get_category(GDesktopAppInfo* app)
     char* category = _lookup(basename);
     g_free(basename);
 
-    if (category == NULL || category[0] == '\0')
+    if (category == NULL || category[0] == '\0'){
+        g_debug("_get_category NULL");
         return NULL;
+    }
 
+    g_debug("_get_category:%s",category);
     return category;
 }
 
@@ -1517,11 +1524,13 @@ char* _get_group_name_from_software_center(ArrayContainer const fs)
     }
 
     g_free(another_category);
+    g_debug("_get_group_name_from_software_center:%s",category);
     return category;
 
 errorout:
     g_free(category);
     g_free(another_category);
+    g_debug("_get_group_name_from_software_center is NULL");
     return NULL;
 }
 
