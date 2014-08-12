@@ -97,18 +97,15 @@ class DesktopRichDir extends Page
         @corner_leftup.show_animation()
 
     signal: ->
-        signal_times = 0
-        signal_times_switch = 1 * (desktop_file_numbers - 1)
-        @desktop?.item_signal(=>
-            signal_times++
-            echo "richdir_signal times:#{signal_times}"
-            if signal_times == signal_times_switch then signal_times = 0
-            else return
+        @switch_page_start = false
+        @desktop?.richdir_signal(=>
+            if @switch_page_start then return
             setTimeout(=>
-                @desktop?.item_signal_disconnect()
+                @desktop?.richdir_signal_disconnect()
                 DCore.Guide.enable_guide_region()
                 clearInterval(hand_interval)
                 clearTimeout(timeout_check_if_done)
+                @switch_page_start = true
                 guide?.switch_page(@,"DesktopRichDirCreated")
             ,t_min_switch_page)
         )

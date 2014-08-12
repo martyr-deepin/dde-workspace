@@ -8,7 +8,7 @@ func main() {
 		SessionDBUS("com.deepin.dde.desktop"),
 		Method("FocusChanged", Callback("desktop_focus_changed"), Arg("value:gboolean")),
 		Signal("ItemUpdate"),
-		Signal("RichdirUpdate"),
+		Signal("RichdirCreate"),
 	)
     OUTPUT_END()
 }

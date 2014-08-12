@@ -32,7 +32,6 @@
 #include "jsextension.h"
 #include <gio/gdesktopappinfo.h>
 
-extern void desktop_richdir_update();
 //FIXME: implemented in lib/dentry/mime_actions.c
 //       move to a suitable place?
 void desktop_run_in_terminal(char* executable);
@@ -94,7 +93,6 @@ Entry* desktop_get_computer_entry()
 char* desktop_get_transient_icon (Entry* p1)
 {
     g_message("desktop_get_transient_icon");
-    desktop_richdir_update();
     char* ticon_path = NULL;
     char* p1_path = dentry_get_icon_path(p1);
     g_message("p1_path:%s",p1_path);

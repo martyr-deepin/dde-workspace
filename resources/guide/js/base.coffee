@@ -53,13 +53,13 @@ class Desktop
         @dbus?.connect("ItemUpdate",@item_signal_cb)
 
     richdir_signal: (@richdir_signal_cb) ->
-        @dbus?.connect("RichdirUpdate",@richdir_signal_cb)
+        @dbus?.connect("RichdirCreate",@richdir_signal_cb)
 
     item_signal_disconnect: ->
         @dbus?.dis_connect("ItemUpdate",@item_signal_cb)
 
     richdir_signal_disconnect: ->
-        @dbus?.dis_connect("RichdirUpdate",@richdir_signal_cb)
+        @dbus?.dis_connect("RichdirCreate",@richdir_signal_cb)
 
 class Dss
     DSS = "com.deepin.dde.ControlCenter"

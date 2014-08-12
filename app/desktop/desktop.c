@@ -74,6 +74,58 @@ PRIVATE Window __DESKTOP_XID[3]= {0};
 PRIVATE
 GFile* _get_useable_file(const char* basename);
 
+
+DBUS_EXPORT_API
+void desktop_item_update()
+{
+    GError* err = NULL;
+    GDBusConnection* conn = g_bus_get_sync(G_BUS_TYPE_SESSION, NULL, &err);
+    if (err != NULL) {
+        g_warning("%s", err->message);
+        g_error_free(err);
+        return;
+    }
+    g_dbus_connection_emit_signal(conn,
+                                  NULL,
+                                  "/com/deepin/dde/desktop",
+                                  "com.deepin.dde.desktop",
+                                  "ItemUpdate",
+                                  NULL,
+                                  &err
+                                  );
+    g_object_unref(conn);
+    if (err != NULL) {
+        g_warning("desktop emit ItemUpdate signal failed: %s", err->message);
+        g_error_free(err);
+    }
+}
+
+DBUS_EXPORT_API
+void desktop_richdir_create_signal()
+{
+    GError* err = NULL;
+    GDBusConnection* conn = g_bus_get_sync(G_BUS_TYPE_SESSION, NULL, &err);
+    if (err != NULL) {
+        g_warning("%s", err->message);
+        g_error_free(err);
+        return;
+    }
+    g_dbus_connection_emit_signal(conn,
+                                  NULL,
+                                  "/com/deepin/dde/desktop",
+                                  "com.deepin.dde.desktop",
+                                  "RichdirCreate",
+                                  NULL,
+                                  &err
+                                  );
+    g_object_unref(conn);
+    if (err != NULL) {
+        g_warning("desktop emit RichdirCreate signal failed: %s", err->message);
+        g_error_free(err);
+    }
+}
+
+
 JS_EXPORT_API
 JSObjectRef desktop_get_desktop_entries()
 {
@@ -173,6 +225,7 @@ GFile* desktop_create_rich_dir(ArrayContainer fs)
 
     g_file_make_directory(dir, NULL, NULL);
     dentry_move(fs, dir, TRUE);
+    desktop_richdir_create_signal();
 
     return dir;
 }
@@ -612,54 +665,4 @@ void desktop_emit_webview_ok()
     dde_session_register();
 }
 
-
-DBUS_EXPORT_API
-void desktop_item_update()
-{
-    GError* err = NULL;
-    GDBusConnection* conn = g_bus_get_sync(G_BUS_TYPE_SESSION, NULL, &err);
-    if (err != NULL) {
-        g_warning("%s", err->message);
-        g_error_free(err);
-        return;
-    }
-    g_dbus_connection_emit_signal(conn,
-                                  NULL,
-                                  "/com/deepin/dde/desktop",
-                                  "com.deepin.dde.desktop",
-                                  "ItemUpdate",
-                                  NULL,
-                                  &err
-                                  );
-    g_object_unref(conn);
-    if (err != NULL) {
-        g_warning("desktop emit ItemUpdate signal failed: %s", err->message);
-        g_error_free(err);
-    }
-}
-
-DBUS_EXPORT_API
-void desktop_richdir_update()
-{
-    GError* err = NULL;
-    GDBusConnection* conn = g_bus_get_sync(G_BUS_TYPE_SESSION, NULL, &err);
-    if (err != NULL) {
-        g_warning("%s", err->message);
-        g_error_free(err);
-        return;
-    }
-    g_dbus_connection_emit_signal(conn,
-                                  NULL,
-                                  "/com/deepin/dde/desktop",
-                                  "com.deepin.dde.desktop",
-                                  "RichdirUpdate",
-                                  NULL,
-                                  &err
-                                  );
-    g_object_unref(conn);
-    if (err != NULL) {
-        g_warning("desktop emit RichdirUpdate signal failed: %s", err->message);
-        g_error_free(err);
-    }
-}
 
