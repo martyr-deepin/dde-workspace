@@ -6,7 +6,7 @@
 }
 
 #boxscroll {
-    width:220px;
+    width:240px;
     border:rgba(255,255,255,0.2) 1px solid;
     border-radius:0.4em;
 }
@@ -18,27 +18,29 @@
 #boxscroll li{
     overflow:hidden;
     text-overflow:ellipsis;
-    padding:0px 10px 0px 25px;
+    padding:0px 5px 0px 25px;
 }
 #boxscroll a {
-	color: #FFFFFF;
-	font-size: 15px;
+    color: #FFFFFF;
+    font-size: 13px;
 }
 #boxscroll li:hover {
     cursor:pointer;
-	background-color:rgba(0,0,0,0.7);
+    background-color:rgba(0,0,0,0.7);
 }
 
 #boxscroll li:hover a{
-	color:#FFFFFF;
+    color:#FFFFFF;
 }
 
 .nicescroll-rails > div {
-	background: -webkit-gradient(  linear, left top, left bottom,  from(#000),  to(#000));
-	-webkit-border-radius: 6px;border-radius: 6px;
+    background: -webkit-gradient(linear, left top, left bottom,  from(#000),  to(#000));
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
 }
 .nicescroll-rails:hover {
-	background: rgba(0,0,0,0.7);
-	-webkit-border-radius: 5px;border-radius: 5px;
-	-webkit-box-shadow: none;
+    background: rgba(0,0,0,0.7);
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: none;
 }
