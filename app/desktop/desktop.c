@@ -44,6 +44,7 @@
 #include "DBUS_desktop.h"
 #include "desktop.h"
 
+#define DESKTOP_CONFIG "desktop/config.ini"
 #define DESKTOP_SCHEMA_ID "com.deepin.dde.desktop"
 
 #define DOCK_SCHEMA_ID "com.deepin.dde.dock"
@@ -52,7 +53,13 @@
 #define HIDE_MODE_INTELLIGENT 1
 #define HIDE_MODE_KEEPHIDDEN 2
 #define HIDE_MODE_AUTOHIDDEN 3
-#define DESKTOP_CONFIG "desktop/config.ini"
+#define DOCK_DISPLAY_MODE "display-mode"
+#define DISPLAY_MODE_DEFAULT 0
+#define DISPLAY_MODE_MODERN 0
+#define DISPLAY_MODE_CLASSIC 1
+
+#define SHOW_COMPUTER_ICON "show-computer-icon"
+#define SHOW_TRASH_ICON "show-trash-icon"
 
 #define APP_DEFAULT_ICON "application-default-icon"
 
@@ -292,6 +299,20 @@ GFile* desktop_new_directory(const char* name_add_before)
     return dir;
 }
 
+JS_EXPORT_API
+gboolean desktop_get_config_boolean(const char* key_name)
+{
+    gboolean retval = g_settings_get_boolean(desktop_gsettings, key_name);
+
+    return retval;
+}
+JS_EXPORT_API
+gboolean desktop_set_config_boolean(const char* key_name,gboolean value)
+{
+    gboolean retval = g_settings_set_boolean(desktop_gsettings, key_name,value);
+    return retval;
+}
+
 PRIVATE gboolean update_workarea_size(GSettings* dock_gsettings)
 {
     int x, y, width, height;
@@ -322,13 +343,28 @@ PRIVATE gboolean update_workarea_size(GSettings* dock_gsettings)
     return FALSE;
 }
 
+PRIVATE void dock_display_mode_changed(GSettings* settings)
+{
+    int  display_mode = g_settings_get_enum (settings, DOCK_DISPLAY_MODE);
+    g_debug ("dock_display_mode_changed: %d", display_mode);
+    if (display_mode == DISPLAY_MODE_CLASSIC){
+        desktop_set_config_boolean(SHOW_COMPUTER_ICON,true);
+        desktop_set_config_boolean(SHOW_TRASH_ICON,true);
+    }else{
+        desktop_set_config_boolean(SHOW_COMPUTER_ICON,false);
+        desktop_set_config_boolean(SHOW_TRASH_ICON,false);
+    }
+}
+
 PRIVATE void dock_config_changed(GSettings* settings, char* key, gpointer usr_data G_GNUC_UNUSED)
 {
-    if (g_strcmp0 (key, DOCK_HIDE_MODE))
-        return;
-
-    g_debug ("dock config changed");
-    update_workarea_size (settings);
+    g_debug ("dock config changed key:%s",key);
+    if (0 == g_strcmp0(key, DOCK_HIDE_MODE)){
+        update_workarea_size (settings);
+    }else if (0 == g_strcmp0(key, DOCK_DISPLAY_MODE)){
+        dock_display_mode_changed(settings);
+    }
+    return;
 }
 
 
@@ -380,19 +416,7 @@ PRIVATE void desktop_plugins_changed(GSettings* settings, char* key G_GNUC_UNUSE
     js_post_message("plugins_changed", json);
 }
 
-JS_EXPORT_API
-gboolean desktop_get_config_boolean(const char* key_name)
-{
-    gboolean retval = g_settings_get_boolean(desktop_gsettings, key_name);
 
-    return retval;
-}
-JS_EXPORT_API
-gboolean desktop_set_config_boolean(const char* key_name,gboolean value)
-{
-    gboolean retval = g_settings_set_boolean(desktop_gsettings, key_name,value);
-    return retval;
-}
 JS_EXPORT_API
 char* desktop_get_data_dir()
 {
@@ -660,6 +684,8 @@ void desktop_emit_webview_ok()
         //desktop, dock GSettings
         dock_gsettings = g_settings_new (DOCK_SCHEMA_ID);
         g_signal_connect (dock_gsettings, "changed::hide-mode",
+                          G_CALLBACK(dock_config_changed), NULL);
+        g_signal_connect (dock_gsettings, "changed::display-mode",
                           G_CALLBACK(dock_config_changed), NULL);
 
         desktop_gsettings = g_settings_new (DESKTOP_SCHEMA_ID);
