@@ -22,12 +22,12 @@
             <description>move to left-down corner to show</description>
         </key>
         <key type="as" name="black-list">
-            <default>['0 A.D.']</default>
+            <default>[]</default>
             <summary>zone black list</summary>
             <description>fobidden zone if app in this list</description>
         </key>
         <key type="as" name="white-list">
-            <default>['dde-launcher']</default>
+            <default>[]</default>
             <summary>zone white list</summary>
             <description>fobidden zone if app not in this list</description>
         </key>
