@@ -75,11 +75,11 @@ class Time extends SystemItem
         d = new Date()
         @timeContent.textContent = ""
 
-        # TODO: week
-        if true
-            @timeContent.textContent += "#{Time.weekday[d.getDay()]} "
-
-        @timeContent.textContent += "#{d.toLocaleDateString()}"
+        # # TODO: week
+        # if true
+        #     @timeContent.textContent += "#{Time.weekday[d.getDay()]} "
+        #
+        # @timeContent.textContent += "#{d.toLocaleDateString()}"
 
         hour = @hour(24, true)
         @timeContent.textContent += " #{hour}"

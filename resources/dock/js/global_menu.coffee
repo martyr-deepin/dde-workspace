@@ -37,7 +37,7 @@ class GlobalMenu
             for info in infos
                 @menu.append(new CheckBoxMenuItem("#{groupName}:checkbox:#{info[0]}", info[1]).setChecked(info[2]))
 
-        @menu.addSeparator().append(new MenuItem("dockSetting", _("_Dock setting")))
+        # @menu.addSeparator().append(new MenuItem("dockSetting", _("_Dock setting")))
         # console.log("showmenu:#{@menu.menu.menuJsonContent}")
         @menu.addListener(@on_itemselected).showMenu(x, y)
         @menu.unregisterHook(handleMenuUnregister)
