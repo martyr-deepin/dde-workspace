@@ -155,7 +155,8 @@ class Panel
         else
             apps = $s(".AppItem")
             panel_width = ITEM_WIDTH * apps.length
-            return panel_width
+            # FIXME: clientWidth is 0 on switching mode.
+            return $("#container").clientWidth || panel_width
 
     @getPanelWidth:->
         @getPanelMiddleWidth() + PANEL_MARGIN * 2

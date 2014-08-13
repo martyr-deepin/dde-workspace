@@ -180,6 +180,7 @@ class SystemTray extends SystemItem
 
     updatePanel:=>
         calc_app_item_size()
+        # panel.set_width($("#container").clientWidth)
         update_dock_region($("#container").clientWidth)
         @calcTimer = webkitRequestAnimationFrame(@updatePanel)
 
@@ -280,12 +281,14 @@ class SystemTray extends SystemItem
         if @upperItemNumber > 2
             clearTimeout(@hideTimer)
             @hideTimer = setTimeout(=>
+                @displayIcon()
                 @img.style.display = ''
                 @panel.style.display = 'none'
                 webkitCancelAnimationFrame(@calcTimer)
                 update_dock_region()
             , ANIMATION_TIME)
         else
+            @displayIcon()
             @img.style.display = ''
             @panel.style.display = 'none'
             webkitCancelAnimationFrame(@calcTimer)
@@ -297,6 +300,7 @@ class SystemTray extends SystemItem
         e.stopPropagation()
         if @upperItemNumber <= 2
             return
+
         if @isUnfolded
             @fold()
         else
@@ -309,3 +313,7 @@ class SystemTray extends SystemItem
         DCore.Dock.set_is_hovered(false)
         update_dock_region($("#container").clientWidth)
         Preview_close_now()
+
+    on_mousedown: (e)=>
+
+    on_mouseup: (e)=>
