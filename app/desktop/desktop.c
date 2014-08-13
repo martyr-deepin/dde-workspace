@@ -40,6 +40,7 @@
 #include "dcore.h"
 #include <dwebview.h>
 #include "utils.h"
+#include "desktop_utils.h"
 #include "session_register.h"
 #include "DBUS_desktop.h"
 #include "desktop.h"
@@ -475,11 +476,6 @@ void send_lost_focus()
 {
     js_post_signal("lost_focus");
 }
-gboolean on_leave(GtkWidget* widget G_GNUC_UNUSED, GdkEventCrossing* event G_GNUC_UNUSED)
-{
-    send_lost_focus();
-    return FALSE;
-}
 
 void send_get_focus()
 {
@@ -585,7 +581,7 @@ int main(int argc, char* argv[])
     gtk_widget_realize(container);
     gtk_widget_realize(webview);
     g_signal_connect (webview, "draw", G_CALLBACK(erase_background), NULL);
-    g_signal_connect (webview, "leave-notify-event", G_CALLBACK(on_leave), NULL);
+    g_signal_connect (webview, "button-press-event", G_CALLBACK(force_get_input_focus), NULL);
 
     GdkScreen* screen = gtk_window_get_screen(GTK_WINDOW(container));
     g_signal_connect(screen, "size-changed", G_CALLBACK(screen_change_size), gtk_widget_get_window(container));
@@ -628,6 +624,8 @@ PRIVATE GdkFilterReturn watch_root_window(GdkXEvent *gxevent, GdkEvent* event G_
     XPropertyEvent *xevt = (XPropertyEvent*)gxevent;
 
     if (xevt->type == PropertyNotify) {
+	//TODO: cache the atom of "_NET_WORKAREA" and "_NET_ACTIVE_WINDOW"
+	//
 	if (xevt->atom == gdk_x11_get_xatom_by_name("_NET_WORKAREA")) {
 	    g_message("GET _NET_WORKAREA change on rootwindow");
 	    GSettings* dock_gsettings = user_data;

@@ -22,6 +22,7 @@
 
 #include <stdlib.h>
 #include <gtk/gtk.h>
+#include <gdk/gdkx.h>
 #include <glib/gstdio.h>
 #include <string.h>
 #include "i18n.h"
@@ -102,3 +103,11 @@ char* desktop_get_transient_icon (Entry* p1)
     return ticon_path;
 }
 
+
+gboolean force_get_input_focus(GtkWidget* widget)
+{
+    g_return_if_fail(gtk_widget_get_realized(widget));
+
+    XSetInputFocus(gdk_x11_get_default_xdisplay(), GDK_WINDOW_XID(gtk_widget_get_window(widget)), RevertToPointerRoot, CurrentTime);
+    return FALSE;
+}

@@ -43,7 +43,6 @@
 #ifndef DESKTOP_H
 #define DESKTOP_H
 
-#include "utils.h"
 
 #define DESKTOP_MAJOR_VERSION 0
 #define DESKTOP_MINOR_VERSION 0

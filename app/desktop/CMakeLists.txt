@@ -7,7 +7,7 @@ GEN_DBUS_SOURCE(DBUS_GEN "jsc/dbus.go" "desktop")
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS})
 
-SET(SRC_LIST desktop.c inotify_item.c utils.c proxy.c ${JSC_GEN} ${DBUS_GEN})
+SET(SRC_LIST desktop.c inotify_item.c desktop_utils.c proxy.c ${JSC_GEN} ${DBUS_GEN})
 
 add_executable(${NAME} ${SRC_LIST})
 add_dependencies(${NAME} ${NAME}_js)
