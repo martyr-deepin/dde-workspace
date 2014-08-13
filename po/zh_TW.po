@@ -512,7 +512,7 @@ msgstr "在此解壓縮(_H)"
 
 #: ../resources/desktop/js/specialitem.coffee:34
 msgid "Computer"
-msgstr ""
+msgstr "計算機"
 
 #: ../resources/desktop/js/specialitem.coffee:152
 msgid "_Clean up %1 items"
