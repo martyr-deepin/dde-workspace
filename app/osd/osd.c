@@ -42,7 +42,6 @@
 #include "utils.h"
 
 #define ID_NAME "desktop.app.osd"
-
 #define CHOICE_HTML_PATH "file://"RESOURCE_DIR"/osd/osd.html"
 
 #define SHUTDOWN_MAJOR_VERSION 2
@@ -54,6 +53,11 @@ static GKeyFile* shutdown_config = NULL;
 
 PRIVATE GtkWidget* container = NULL;
 /*PRIVATE GtkStyleContext *style_context;*/
+guint grab_timeout;
+guint grab_remove_timeout;
+
+#define HARDWARE_KEYCODE_SUPER 133
+#define HARDWARE_KEYCODE_P 33
 
 static struct {
     gboolean is_AudioUp;
@@ -122,10 +126,37 @@ const char* osd_get_argv()
     return input;
 }
 
+PRIVATE
+gboolean keyboard_grab (){
+    int status = gdk_keyboard_grab(gtk_widget_get_window(container), FALSE, GDK_CURRENT_TIME);
+    g_debug("keyboard grab:%d===%d",status,GDK_GRAB_SUCCESS);
+    if (status == GDK_GRAB_SUCCESS){
+        g_source_remove(grab_remove_timeout);
+        return FALSE;
+    }else{
+        return TRUE;
+    }
+}
+
+JS_EXPORT_API
+void osd_grab (){
+    grab_timeout = g_timeout_add(50,(GSourceFunc)keyboard_grab,NULL);
+    grab_remove_timeout = g_timeout_add(1000,(GSourceFunc)g_source_remove,(gpointer)grab_timeout);
+}
+
+JS_EXPORT_API
+void osd_ungrab (){
+    gdk_keyboard_ungrab(GDK_CURRENT_TIME);
+}
+
 JS_EXPORT_API
 void osd_quit()
 {
+    g_warning("osd_quit");
     g_key_file_free(shutdown_config);
+    if(option.is_SwitchMonitors){
+        gdk_keyboard_ungrab(GDK_CURRENT_TIME);
+    }
     gtk_main_quit();
 }
 
@@ -148,10 +179,35 @@ prevent_exit (GtkWidget* w G_GNUC_UNUSED, GdkEvent* e G_GNUC_UNUSED)
     return TRUE;
 }
 
+
 static void
-G_GNUC_UNUSED sigterm_cb (int signum G_GNUC_UNUSED)
+sigterm_cb (int signum G_GNUC_UNUSED)
 {
     gtk_main_quit ();
+}
+
+
+static void
+show_cb (GtkWindow* container G_GNUC_UNUSED, gpointer data G_GNUC_UNUSED)
+{
+    osd_grab();
+}
+
+static gboolean
+key_release_cb (GtkWidget* w G_GNUC_UNUSED, GdkEventKey*e, gpointer user_data G_GNUC_UNUSED){
+    guint16 keycode = e->hardware_keycode;
+    g_message("event type:%d,keycode:%d",e->type,keycode);
+    if(keycode == HARDWARE_KEYCODE_SUPER){
+        js_post_signal("key-release-super");
+    }else if(keycode == HARDWARE_KEYCODE_P){
+        js_post_signal("key-release-p");
+    }
+    return FALSE;
+}
+
+JS_EXPORT_API
+void osd_spawn_command(gchar* cmd){
+    spawn_command_sync(cmd,FALSE);
 }
 
 PRIVATE
@@ -177,11 +233,7 @@ JS_EXPORT_API
 void osd_set_focus(gboolean focus)
 {
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
-    if(focus){
-       gdk_window_focus (gdkwindow, 0);
-    }
-    gdk_window_set_focus_on_map (gdkwindow, !focus);
-    gdk_window_set_accept_focus (gdkwindow, focus);
+    gdk_window_set_accept_focus(gdkwindow,focus);
 }
 
 #define KEYBOARD_SCHEMA_ID "com.deepin.dde.keyboard"
@@ -197,8 +249,9 @@ gboolean osd_capslock_toggle()
 
 int main (int argc, char **argv)
 {
-    if (argc == 2 && 0 == g_strcmp0(argv[1], "-d"))
-        g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
+    g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
+    
+    signal (SIGTERM, sigterm_cb);
     if (is_application_running(ID_NAME)) {
         g_warning("another instance of application dde-osd is running...\n");
         return 0;
@@ -242,21 +295,28 @@ int main (int argc, char **argv)
 
     GtkWidget *webview = d_webview_new_with_uri (CHOICE_HTML_PATH);
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
+
     g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
+    if(option.is_SwitchMonitors){
+        g_signal_connect (container, "show", G_CALLBACK (show_cb), NULL);
+        g_signal_connect (webview, "key-release-event", G_CALLBACK(key_release_cb), NULL);
+    }
 
     gtk_widget_realize (container);
     gtk_widget_realize (webview);
 
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
+    if(option.is_SwitchMonitors){
+        gdk_window_set_events(gdkwindow,GDK_KEY_RELEASE_MASK);
+    }
     gdk_window_set_opacity (gdkwindow, 0.5);
     gdk_window_set_keep_above (gdkwindow, TRUE);
-    osd_set_focus(FALSE);
     gdk_window_set_override_redirect(gdkwindow, TRUE);
+    osd_set_focus(FALSE);
 
     gtk_widget_show_all (container);
 
     gtk_main ();
-
     return 0;
 }
 

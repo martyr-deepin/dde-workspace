@@ -19,16 +19,10 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 _b = document.body
-FOCUS = null
 
 osd = {}
 
 DEBUG = false
-setFocus = (focus)->
-    FOCUS = focus
-    FOCUS = true if DEBUG
-    DCore.Osd.set_focus(FOCUS)
-
 
 TIME_HIDE = 1500
 TIME_PRESS = 5
@@ -42,22 +36,15 @@ allElsHide = ->
             el.style.display = "none"
 
 osdHide = ->
-    return if FOCUS
-    echo "osdHide : #{timeout_osdHide}"
-
-    allElsHide()
-    DCore.Osd.hide()
+    echo "osdHide"
     clearTimeout(timeout_osdHide)
     DCore.Osd.quit()
-    return
 
 osdShow = ->
     allElsHide()
     DCore.Osd.show()
     document.body.opacity = "0"
     jQuery(document.body).animate({opacity:'1';},500)
-
-#osdHide()
 
 click_time = 0
 _b.addEventListener("click",(e)=>
@@ -68,7 +55,7 @@ _b.addEventListener("click",(e)=>
     times = 3 if DEBUG
     if click_time % times == 0
         click_time = 0
-        DCore.Osd.hide()
+        osdHide()
 )
 
 _b.addEventListener("contextmenu",(e)=>

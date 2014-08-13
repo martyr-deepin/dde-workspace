@@ -22,8 +22,8 @@ class Keyboard
                 KEYBOARD.path,
                 KEYBOARD.interface
             )
-            @CurrentLayout = @getCurrentLayout()
             @getAllLayoutList()
+            @CurrentLayout = @getCurrentLayout()
         catch e
             echo " DBusKeyboard :#{KEYBOARD} ---#{e}---"
 
@@ -44,9 +44,6 @@ class Keyboard
         echo "@CurrentLayout : #{@CurrentLayout} ; @CurrentLayout_en:#{@CurrentLayout_en}"
         return @CurrentLayout
 
-    getCurrentLayoutIndex: ->
-        return j for each ,j in @UserLayoutList when @getCurrentLayout() is each
-
     setCurrentLayout: (layout)->
         @CurrentLayout = layout
         @CurrentLayout_en = @UserLayoutList_en[i] for l,i in @UserLayoutList when l is @CurrentLayout
@@ -59,11 +56,11 @@ keyboardList = null
 
 osd.SwitchLayout = (keydown)->
     if !keydown then return if mode is "dbus"
-    setFocus(false)
 
     keyboard = new Keyboard() if not keyboard?
     keyboard.updateUserLayoutList()
     echo "UserLayoutList.length: #{keyboard.UserLayoutList.length}"
+
     if keyboard.UserLayoutList.length < 2
         osdHide()
         return
@@ -71,17 +68,12 @@ osd.SwitchLayout = (keydown)->
     if not keyboardList?
         keyboardList = new ListChoose("KeyboardList")
         keyboardList.setParent(_b)
-        keyboardList.setSize(160,null)
-        #keyboardList.setSize(160,180)
         keyboardList.ListAllBuild(keyboard.UserLayoutList,keyboard.getCurrentLayout())
-        keyboardList.setKeyupListener(KEYCODE.WIN,=>
-            keyboard.setCurrentLayout(keyboardList.current)
-        )
+        keyboardList.setSize(180,218)
     else
-        keyboardList.chooseOption()
+        keyboardList?.chooseOption()
     clearTimeout(timeout_osdHide)
     timeout_osdHide = setTimeout(=>
-        document.body.style.maxLength = "160px"
         keyboard.setCurrentLayout(keyboardList.current)
         osdHide()
     ,TIME_HIDE)

@@ -116,7 +116,7 @@ class FcitxOSD extends Widget
         super
         echo "New FcitxOSD :#{@id}"
         _b.appendChild(@element)
-
+        inject_css(@element,"css/fcitx.css")
         @fcitx = new Fcitx()
         @fcitx.fcitxSignalsConnect(@cbIMState)
 

@@ -18,6 +18,9 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 class ListChoose extends Widget
+    LI_SIZE =
+        w:180
+        h:40
     constructor:(@id)->
         super
         echo "New ListChoose :#{@id}"
@@ -28,6 +31,7 @@ class ListChoose extends Widget
         @li_span = []
         @isFromList = false
         @currentIndex = 0
+        @length = null
 
         @show()
 
@@ -46,89 +50,89 @@ class ListChoose extends Widget
         @element.style.bottom = bottom
 
     setSize:(@whole_w,@whole_h)->
-        @element.style.width = @whole_w
-        @element.style.height = @whole_h
+        @element.style.width = @whole_w if @whole_w
+        @boxscroll.style.maxHeight = @whole_h if @whole_h
 
-    ListAllBuild:(@list,@current) ->
+    boxscroll_remove: ->
+        @element.removeChild(@boxscroll) if @boxscroll
+        @boxscroll = null
+
+    ListAllBuild:(@list,@current,@max_show = 5) ->
+        inject_css(@element,"css/listchoose.css")
         echo "ListAllBuild @current: #{@current}"
+        @length = @list.length
         if !(@current in @list)
             echo "#{@current} isnt in #{@list.toString()} ,and then return"
             return
-        @Listul = create_element("ul","Listul",@element)
+
+        @boxscroll = create_element("div","boxscroll",@element)
+        @boxscroll.setAttribute("id","boxscroll")
+        @boxscroll.style.overflowY = "scroll" if @list.length > @max_show
+ 
+        @Listul = create_element("ul","Listul",@boxscroll)
         for each,i in @list
             @li[i] = create_element("li","li",@Listul)
             @li[i].setAttribute("id",each)
+            @li[i].style.height = LI_SIZE.h
             @li_span[i] = create_element("span","li_span",@li[i])
             @li_span[i].textContent = each
             @currentIndex = i if each is @current
+        @setCurrentCss()
 
-        echo "@currentIndex:#{@currentIndex} is @current :#{@current}"
-        @setBackground(@currentIndex)
-
-    get_current_index: ->
-        @currentIndex = i for each,i in @list when each is @current
+    getCurrentIndex: ->
         return @currentIndex
 
-    setBackground: (index)=>
-        return if not @li[0]?
-        echo "setBackground:#{index}"
+    unselectCss: (i) =>
+        #@li[i].style.backgroundColor = "rgba(0,0,0,0.4)"
+        @li_span[i].style.color = "#FFFFFF"
+
+    selectCss: (i) =>
+        #@li[i].style.backgroundColor = "rgba(0,0,0,0.6)"
+        @li_span[i].style.color = "#01bdff"
+
+    setCurrentCss: ->
         @show()
-        jQuery(@element).scroll()
-        @currentIndex = @checkIndex(index)
-        for li,i in @li
-            if i == @currentIndex
-                li.style.border = "rgba(255,255,255,0.5) 2px solid"
-                li.style.backgroundColor = "rgb(0,0,0)"
-                #li.focus()
+        echo "setCurrentCss currentIndex:#{@currentIndex}"
+        for each,i in @list
+            if i is @currentIndex
+                @selectCss(@currentIndex)
             else
-                li.style.border = "rgba(255,255,255,0.0) 2px solid"
-                li.style.backgroundColor = null
-                #li.blur()
+                @unselectCss(i)
 
     checkIndex:(index)->
-        max = @list.length - 1
+        max = @length - 1
         if index > max then index = 0
         else if index < 0 then index = max
         return index
 
     chooseOption: =>
-        document.body.style.maxLength = "180px"
         clearTimeout(timeout_osdHide)
+        @isFromList = true
         @prevIndex = @currentIndex
         @currentIndex++
         @currentIndex = @checkIndex(@currentIndex)
-        @current = @list[@currentIndex]
-        echo "ChooseIndex from #{@prevIndex} to #{@currentIndex}"
         osdShow()
-        @setBackground(@currentIndex)
-        @isFromList = true
-        @element.focus()
-
-        @element.removeEventListener("keyup",@keyup)
-        @element.addEventListener("keyup",@keyup)
+        @setCurrentCss()
+        @current = @list[@currentIndex]
         return @current
 
-    keyup: (e) =>
-        echo "keyup:#{e.which}"
-        if e.which == @keyup_code and @isFromList is true
-            @isFromList = false
-            clearTimeout(timeout_osdHide)
-            document.body.style.maxLength = "160px"
-            osdHide()
-            @keyup_cb?()
-
-    setKeyupListener:(@keyup_code,@keyup_cb)->
+    setKeyupListener:(keyup_code,keyup_cb)->
+        document.body.addEventListener("keyup",(e)=>
+            echo "keyup:#{e.which};keyup_code_demo:#{keyup_code}"
+            if e.which == keyup_code and @isFromList is true
+                @isFromList = false
+                clearTimeout(timeout_osdHide)
+                echo "setKeyupListener keyup_cb"
+                keyup_cb?()
+        )
 
     setClickCb: (cb) ->
         that = @
         for li in @li
             li.addEventListener("click",->
                 that.current = this.id
-                that.get_current_index()
+                that.currentIndex = i for each,i in that.list when each is that.current
                 clearTimeout(timeout_osdHide)
-                document.body.style.maxLength = "160px"
                 osdHide()
                 cb?()
             )
-
-

@@ -1,0 +1,42 @@
+html{
+    border-radius:6px;
+}
+
+.ImgListChoose{
+    height:140px;
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+    border:rgba(255,255,255,0.2) 1px solid;
+    border-radius:6px;
+}
+
+.Img_listul{
+    display:-webkit-box;
+    -webkit-box-orient:horizontal;
+}
+
+.Img_li{
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    margin:20px 30px 40px 30px;
+}
+
+.Img_li_img{
+}
+
+.Img_li_text{
+    width:100%;
+    margin-top:10px;
+    text-align:center;
+    color: #FFF;
+    font-size:15px;
+    text-shadow: 0 2px 2px rgba(0,0,0,0.5);
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+
+
+
+

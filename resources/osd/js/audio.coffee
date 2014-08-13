@@ -29,7 +29,6 @@ class Audio extends Widget
 
     constructor:(@id)->
         super
-        @valueEach = []
         _b.appendChild(@element)
         @getDBusAudio()
         @getDBusDefaultSink(@DefaultSink)
@@ -113,7 +112,6 @@ AudioCls = null
 
 osd.AudioUp = (keydown) ->
     if keydown then return if mode is "dbus"
-    setFocus(false)
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioUp"
     AudioCls.updateDBusDefaultSink()
@@ -122,7 +120,6 @@ osd.AudioUp = (keydown) ->
 
 osd.AudioDown = (keydown) ->
     if keydown then return if mode is "dbus"
-    setFocus(false)
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioDown"
     AudioCls.updateDBusDefaultSink()
@@ -131,7 +128,6 @@ osd.AudioDown = (keydown) ->
 
 osd.AudioMute = (keydown) ->
     if keydown then return if mode is "dbus"
-    setFocus(false)
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioMute"
     AudioCls.updateDBusDefaultSink()

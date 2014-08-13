@@ -434,10 +434,11 @@ void spawn_command_sync (const char* command,gboolean sync)
 {
     GError *error = NULL;
     const gchar *cmd = g_strdup_printf ("%s",command);
-    g_message ("g_spawn_command_line_sync:%s",cmd);
     if(sync){
+        g_message ("g_spawn_command_line_sync:%s",cmd);
         g_spawn_command_line_sync (cmd, NULL, NULL, NULL, &error);
     }else{
+        g_message ("g_spawn_command_line_async:%s",cmd);
         g_spawn_command_line_async (cmd, &error);
     }
     if (error != NULL) {

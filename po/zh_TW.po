@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-12 17:45+0800\n"
+"POT-Creation-Date: 2014-08-14 20:53+0800\n"
 "PO-Revision-Date: 2014-07-05 19:02+0000\n"
 "Last-Translator: electricface <songwentai@linuxdeepin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/deepin-"
@@ -19,15 +19,301 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../resources/launcher/js/item.coffee:276
-#: ../resources/guide/js/launcher.coffee:235
-#: ../resources/desktop/js/richdir.coffee:133
-#: ../resources/desktop/js/richdir.coffee:566
+#: ../resources/desktop/js/invalidlink.coffee:34
+#: ../resources/desktop/js/desktopentry.coffee:107
+#: ../resources/desktop/js/richdir.coffee:139
+#: ../resources/desktop/js/richdir.coffee:571
+msgid "_Delete"
+msgstr "刪除(_D)"
+
+#: ../resources/desktop/js/application.coffee:179
+#: ../resources/desktop/js/richdir.coffee:335
+#: ../resources/desktop/js/richdir.coffee:586
+msgid "The link is invalid. Do you want to delete it?"
+msgstr "此鏈接無效，是否需要刪除它？"
+
+#: ../resources/desktop/js/application.coffee:179
+#: ../resources/desktop/js/desktopentry.coffee:151
+#: ../resources/desktop/js/richdir.coffee:335
+#: ../resources/desktop/js/richdir.coffee:586
+#: ../resources/dock/js/plugins/trash/trash.coffee:76
+msgid "Warning"
+msgstr "警告"
+
 #: ../resources/desktop/js/desktopentry.coffee:101
 #: ../resources/desktop/js/specialitem.coffee:51
 #: ../resources/desktop/js/specialitem.coffee:147
+#: ../resources/desktop/js/richdir.coffee:133
+#: ../resources/desktop/js/richdir.coffee:566
+#: ../resources/launcher/js/item.coffee:276
+#: ../resources/guide/js/launcher.coffee:235
 msgid "_Open"
 msgstr "開啟(_O)"
+
+#: ../resources/desktop/js/desktopentry.coffee:103
+#: ../resources/desktop/js/richdir.coffee:568
+msgid "Cu_t"
+msgstr "剪下(_T)"
+
+#: ../resources/desktop/js/desktopentry.coffee:104
+#: ../resources/desktop/js/richdir.coffee:569
+msgid "_Copy"
+msgstr "複製(_C)"
+
+#: ../resources/desktop/js/desktopentry.coffee:106
+#: ../resources/desktop/js/richdir.coffee:135
+msgid "_Rename"
+msgstr "重新命名(_R)"
+
+#: ../resources/desktop/js/desktopentry.coffee:109
+#: ../resources/desktop/js/specialitem.coffee:53
+#: ../resources/desktop/js/richdir.coffee:573
+msgid "_Properties"
+msgstr "屬性(_P)"
+
+#: ../resources/desktop/js/desktopentry.coffee:115
+#: ../resources/desktop/js/desktopentry.coffee:122
+msgid "Co_mpress"
+msgstr "壓縮檔案(_M)"
+
+#: ../resources/desktop/js/desktopentry.coffee:118
+#: ../resources/desktop/js/desktopentry.coffee:123
+msgid "_Extract"
+msgstr "解壓縮檔案(_E)"
+
+#: ../resources/desktop/js/desktopentry.coffee:119
+#: ../resources/desktop/js/desktopentry.coffee:124
+msgid "Extract _Here"
+msgstr "在此解壓縮(_H)"
+
+#: ../resources/desktop/js/desktopentry.coffee:151
+#: ../resources/dock/js/plugins/trash/trash.coffee:76
+msgid "Can not open this file."
+msgstr "無法開啟此檔案。"
+
+#: ../resources/desktop/js/specialitem.coffee:34
+msgid "Computer"
+msgstr "計算機"
+
+#: ../resources/desktop/js/specialitem.coffee:87
+#: ../resources/dock/js/main.coffee:161 ../resources/dock/js/main.coffee:236
+msgid "Trash"
+msgstr "回收筒"
+
+#: ../resources/desktop/js/specialitem.coffee:152
+msgid "_Clean up %1 items"
+msgstr "清理%1項(_C)"
+
+#: ../resources/desktop/js/specialitem.coffee:154
+msgid "_Clean up 1 item"
+msgstr "清理1項(_C)"
+
+#: ../resources/desktop/js/specialitem.coffee:156
+#: ../resources/dock/js/plugins/trash/trash.coffee:29
+msgid "_Empty"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:71 ../lib/dentry/fileops.c:403
+msgid "Untitled"
+msgstr "無標題"
+
+#: ../resources/desktop/js/grid.coffee:1022
+msgid "_Name"
+msgstr "名稱(_N)"
+
+#: ../resources/desktop/js/grid.coffee:1023
+msgid "Last modified _time"
+msgstr "最後修改時間(_T)"
+
+#: ../resources/desktop/js/grid.coffee:1028
+msgid "_Folder"
+msgstr "資料夾(_F)"
+
+#: ../resources/desktop/js/grid.coffee:1029
+msgid "_Text document"
+msgstr "文字文件(_T)"
+
+#: ../resources/desktop/js/grid.coffee:1045
+#: ../resources/guide/js/desktop.coffee:196
+msgid "_Sort by"
+msgstr "排序方式(_S)"
+
+#: ../resources/desktop/js/grid.coffee:1046
+#: ../resources/guide/js/desktop.coffee:197
+msgid "_New"
+msgstr "新增(_N)"
+
+#: ../resources/desktop/js/grid.coffee:1047
+#: ../resources/guide/js/desktop.coffee:198
+msgid "Open in _terminal"
+msgstr "在終端機中打開(_T)"
+
+#: ../resources/desktop/js/grid.coffee:1048
+#: ../resources/guide/js/desktop.coffee:199
+msgid "_Paste"
+msgstr "貼上(_P)"
+
+#: ../resources/desktop/js/grid.coffee:1050
+#: ../resources/guide/js/desktop.coffee:201
+msgid "_Display settings"
+msgstr "顯示設定(_D)"
+
+#: ../resources/desktop/js/grid.coffee:1051
+#: ../resources/guide/js/desktop.coffee:202
+msgid "_Corner navigation"
+msgstr "熱區設置(_C)"
+
+#: ../resources/desktop/js/grid.coffee:1052
+#: ../resources/guide/js/desktop.coffee:203
+msgid "Pe_rsonalize"
+msgstr "個人化(_R)"
+
+#: ../resources/desktop/js/richdir.coffee:137
+msgid "_Ungroup"
+msgstr "取消群組(_U)"
+
+#: ../resources/greeter/js/message.coffee:105
+#: ../resources/greeter/js/message.coffee:82
+msgid "$ sudo reboot\n"
+msgstr ""
+
+#: ../resources/greeter/js/message.coffee:99
+#: ../resources/greeter/js/message.coffee:73
+msgid "Press Ctrl + Alt + F1\n"
+msgstr ""
+
+#: ../resources/greeter/js/message.coffee:95
+msgid ""
+"\t\t\t\t-----The daemon of accounts has not started!-----\n"
+")"
+msgstr ""
+
+#: ../resources/greeter/js/message.coffee:79
+msgid "$ sudo apt-get install deepin-desktop-Environment\n"
+msgstr ""
+
+#: ../resources/greeter/js/message.coffee:68
+msgid "\t\t\t\t-----No available desktop sessions!-----\n"
+msgstr "沒有覈實的桌面繪畫\n"
+
+#: ../resources/greeter/js/user.coffee:471
+msgid "click login button to log in"
+msgstr "點擊登錄按鈕來登錄"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Jan"
+msgstr "1月"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Feb"
+msgstr "2月"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Mar"
+msgstr "3月"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Apr"
+msgstr "4月"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "May"
+msgstr "5月"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Jun"
+msgstr "6月"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Jul"
+msgstr "7月"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Aug"
+msgstr "8月"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Sep"
+msgstr "9月"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Oct"
+msgstr "10月"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Nov"
+msgstr "11月"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Dec"
+msgstr "12月"
+
+#: ../resources/greeter/js/time.coffee:44
+#: ../resources/dock/js/plugins/time/time.coffee:2
+msgid "Sun"
+msgstr "星期日"
+
+#: ../resources/greeter/js/time.coffee:44
+#: ../resources/dock/js/plugins/time/time.coffee:2
+msgid "Mon"
+msgstr "星期一"
+
+#: ../resources/greeter/js/time.coffee:44
+#: ../resources/dock/js/plugins/time/time.coffee:2
+msgid "Tue"
+msgstr "星期二"
+
+#: ../resources/greeter/js/time.coffee:44
+#: ../resources/dock/js/plugins/time/time.coffee:2
+msgid "Wed"
+msgstr "星期三"
+
+#: ../resources/greeter/js/time.coffee:44
+#: ../resources/dock/js/plugins/time/time.coffee:2
+msgid "Thu"
+msgstr "星期四"
+
+#: ../resources/greeter/js/time.coffee:44
+#: ../resources/dock/js/plugins/time/time.coffee:2
+msgid "Fri"
+msgstr "星期五"
+
+#: ../resources/greeter/js/time.coffee:44
+#: ../resources/dock/js/plugins/time/time.coffee:2
+msgid "Sat"
+msgstr "星期六"
+
+#: ../resources/greeter/js/usermenu.coffee:57
+msgid "Guest"
+msgstr "來賓"
+
+#: ../resources/greeter/js/powermenu.coffee:26
+msgid "Shut down"
+msgstr "關機"
+
+#: ../resources/greeter/js/powermenu.coffee:27
+msgid "Restart"
+msgstr "重新啟動"
+
+#: ../resources/greeter/js/powermenu.coffee:28
+msgid "Suspend"
+msgstr "暫停"
+
+#: ../resources/greeter/js/powermenu.coffee:90
+msgid "Enter your password to %1"
+msgstr "請輸入你的密碼到 %1"
+
+#: ../resources/greeter/js/mediacontrol.coffee:167
+msgid "Click button to Play"
+msgstr "單擊播放按鈕"
+
+#: ../resources/osd/js/monitor.coffee:38
+msgid "Duplicate"
+msgstr ""
+
+#: ../resources/osd/js/monitor.coffee:39
+msgid "Extend"
+msgstr ""
 
 #: ../resources/launcher/js/item.coffee:283
 #: ../resources/guide/js/launcher.coffee:242
@@ -35,22 +321,22 @@ msgid "_Uninstall"
 msgstr "卸載(_U)"
 
 #: ../resources/launcher/js/item.coffee:354
-#: ../resources/dock/js/plugins/trash/trash.coffee:110
+#: ../resources/dock/js/plugins/trash/trash.coffee:113
 msgid "Are you sure to remove"
 msgstr "你確定要刪除"
 
 #: ../resources/launcher/js/item.coffee:354
-#: ../resources/dock/js/plugins/trash/trash.coffee:110
+#: ../resources/dock/js/plugins/trash/trash.coffee:113
 msgid "All dependencies will be removed"
 msgstr "所有依賴的軟件包都將被刪除"
 
 #: ../resources/launcher/js/item.coffee:354
-#: ../resources/dock/js/plugins/trash/trash.coffee:110
+#: ../resources/dock/js/plugins/trash/trash.coffee:113
 msgid "no"
 msgstr "否"
 
 #: ../resources/launcher/js/item.coffee:354
-#: ../resources/dock/js/plugins/trash/trash.coffee:110
+#: ../resources/dock/js/plugins/trash/trash.coffee:113
 msgid "yes"
 msgstr "是"
 
@@ -106,181 +392,25 @@ msgstr "釘選到 Dock(_C)"
 msgid "Remove from do_ck"
 msgstr "從任務欄移除(_F)"
 
-#: ../resources/osd/js/display.coffee:42 ../lib/dentry/fileops.c:772
-msgid "Copy"
-msgstr "複製"
+#: ../resources/zone/js/utils.coffee:10
+msgid "Control Center"
+msgstr "控制中心"
 
-#: ../resources/osd/js/display.coffee:43
-msgid "Expand"
-msgstr "展開"
+#: ../resources/zone/js/utils.coffee:10
+msgid "All Windows"
+msgstr "所有窗口"
 
-#: ../resources/osd/js/display.coffee:44
-msgid "Only the first Screen"
-msgstr "僅在第一屏顯示"
-
-#: ../resources/osd/js/display.coffee:45
-msgid "Only the second Screen"
-msgstr "僅在第二屏顯示"
-
-#: ../resources/dock/js/deepin_item.coffee:241
-msgid "_View as analog"
-msgstr "顯示傳統時鍾(_V)"
-
-#: ../resources/dock/js/deepin_item.coffee:242
-#: ../resources/dock/js/deepin_item.coffee:294
-msgid "_Time settings"
-msgstr "時間設定(_T)"
-
-#: ../resources/dock/js/deepin_item.coffee:293
-msgid "_View as digit"
-msgstr "顯示數字時鍾"
-
-#: ../resources/dock/js/main.coffee:154 ../resources/dock/js/main.coffee:227
-#: ../resources/desktop/js/specialitem.coffee:87
-msgid "Trash"
-msgstr "回收筒"
-
-#: ../resources/dock/js/main.coffee:225 ../resources/zone/js/utils.coffee:10
+#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:234
 msgid "Launcher"
 msgstr "啟動器"
 
-#: ../resources/dock/js/global_menu.coffee:9
-msgid "Keep _showing"
-msgstr "一直顯示(_S)"
+#: ../resources/zone/js/utils.coffee:10
+msgid "Desktop"
+msgstr "桌面歌詞"
 
-#: ../resources/dock/js/global_menu.coffee:10
-msgid "Keep _hidden"
-msgstr "一直隱藏(_H)"
-
-#: ../resources/dock/js/global_menu.coffee:11
-msgid "_Auto hide"
-msgstr "自動隱藏(_A)"
-
-#: ../resources/dock/js/global_menu.coffee:23
-msgid "_Efficient mode"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:24
-msgid "_Fashion mode"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:40
-msgid "_Dock setting"
-msgstr "任務欄設定(_T)"
-
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Sun"
-msgstr "星期日"
-
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Mon"
-msgstr "星期一"
-
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Tue"
-msgstr "星期二"
-
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Wed"
-msgstr "星期三"
-
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Thu"
-msgstr "星期四"
-
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Fri"
-msgstr "星期五"
-
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Sat"
-msgstr "星期六"
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:29
-#: ../resources/desktop/js/specialitem.coffee:156
-msgid "_Empty"
-msgstr ""
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:33
-msgid "_Close"
-msgstr "關閉(_C)"
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:73
-#: ../resources/desktop/js/desktopentry.coffee:151
-msgid "Can not open this file."
-msgstr "無法開啟此檔案。"
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:73
-#: ../resources/desktop/js/application.coffee:179
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
-#: ../resources/desktop/js/desktopentry.coffee:151
-msgid "Warning"
-msgstr "警告"
-
-#: ../resources/guide/js/end.coffee:25
-msgid "Thanks for your patience while learning. Congratulations."
-msgstr "謝謝您的耐心學習，祝賀您！"
-
-#: ../resources/guide/js/end.coffee:30
-msgid "End"
-msgstr "結束"
-
-#: ../resources/guide/js/launcher.coffee:29
-msgid ""
-"\"Application Launcher\" can be started by sliding the mouse to the upper "
-"left corner or clicking on the launcher."
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:70
-msgid ""
-"What shown in the first screen of \"launcher\" are the applications "
-"collected."
-msgstr "啓動器的第一屏展示的是您收藏的程式"
-
-#: ../resources/guide/js/launcher.coffee:85
-msgid ""
-"Please click on the \"All Applications\" icon, you will see all applications."
-msgstr "請點擊 “所有程式” 圖標，你將看到所有應用程式"
-
-#: ../resources/guide/js/launcher.coffee:95
-msgid ""
-"All programs can be located by scrolling the mouse up and down.\n"
-"You can also click on the left classification navigation to locate"
-msgstr ""
-"滾動鼠標滾輪可以瀏覽所有程式\n"
-"您也可以點擊右側的分類圖標來定位"
-
-#: ../resources/guide/js/launcher.coffee:133
-msgid "Skip the step without scroll"
-msgstr "鼠標沒有滾輪，跳此步驟"
-
-#: ../resources/guide/js/launcher.coffee:163
-msgid ""
-"Use the keyboard to search for applications\n"
-"Try the \"deepin\" keyword to see which applications are shown"
-msgstr ""
-"使用鍵盤搜索來查找你想要的應用\n"
-"我們來試試「deepin」這個關鍵詞吧，看會顯示那些程式"
-
-#: ../resources/guide/js/launcher.coffee:164
-msgid "tips: Please directly enter the word \"deepin\""
-msgstr "提示：請直接輸入單詞 「deepin」"
-
-#: ../resources/guide/js/launcher.coffee:179
-msgid "Use the right mouse button to send two icons to the desktop"
-msgstr "單機鼠標右鍵打開菜單，發送兩個圖標到桌面"
-
-#: ../resources/guide/js/launcher.coffee:180
-msgid "tips: You can add it to startup items or uninstall it"
-msgstr "提示：您可以將它加入登錄後自啓動或卸載它"
+#: ../resources/zone/js/utils.coffee:10
+msgid "None"
+msgstr "沒有"
 
 #: ../resources/guide/js/dss.coffee:29
 msgid "Well, please trigger the lower right corner again"
@@ -300,29 +430,21 @@ msgid ""
 "functions"
 msgstr "提示：將鼠標指針移動到任務欄圖標上將可進行一些快捷方便的功能設定"
 
-#: ../resources/guide/js/start.coffee:28
-msgid "New Launcher"
-msgstr "新啓動器"
+#: ../resources/guide/js/end.coffee:25
+msgid "Thanks for your patience while learning. Congratulations."
+msgstr "謝謝您的耐心學習，祝賀您！"
 
-#: ../resources/guide/js/start.coffee:28
-msgid "New Desktop"
-msgstr "新桌面"
+#: ../resources/guide/js/end.coffee:30
+msgid "End"
+msgstr "結束"
 
-#: ../resources/guide/js/start.coffee:28
-msgid "New System Settings"
-msgstr "新控制中心"
+#: ../resources/guide/js/welcome.coffee:35
+msgid "Welcome to use Deepin Operating System"
+msgstr "歡迎使用深度操作系統"
 
-#: ../resources/guide/js/start.coffee:29
-msgid "The following will guide you to learn how to use some new functions"
-msgstr "之後將應道您學習如何使用這些新功能"
-
-#: ../resources/guide/js/start.coffee:44
-msgid "Start"
-msgstr "開始"
-
-#: ../resources/guide/js/start.coffee:51
-msgid "I am older. Exit directly."
-msgstr "我是老手，直接退出"
+#: ../resources/guide/js/welcome.coffee:38
+msgid "Prepare for operation ..."
+msgstr "準備中 ..."
 
 #: ../resources/guide/js/desktop.coffee:27
 msgid ""
@@ -378,249 +500,115 @@ msgstr "在桌面空餘位置右鍵單機打開右鍵菜單，選擇 “熱區�
 msgid "tips: Click on the interface of corner navigation blank area to return"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:196
-#: ../resources/desktop/js/grid.coffee:1045
-msgid "_Sort by"
-msgstr "排序方式(_S)"
+#: ../resources/guide/js/start.coffee:28
+msgid "New Launcher"
+msgstr "新啓動器"
 
-#: ../resources/guide/js/desktop.coffee:197
-#: ../resources/desktop/js/grid.coffee:1046
-msgid "_New"
-msgstr "新增(_N)"
+#: ../resources/guide/js/start.coffee:28
+msgid "New Desktop"
+msgstr "新桌面"
 
-#: ../resources/guide/js/desktop.coffee:198
-#: ../resources/desktop/js/grid.coffee:1047
-msgid "Open in _terminal"
-msgstr "在終端機中打開(_T)"
+#: ../resources/guide/js/start.coffee:28
+msgid "New System Settings"
+msgstr "新控制中心"
 
-#: ../resources/guide/js/desktop.coffee:199
-#: ../resources/desktop/js/grid.coffee:1048
-msgid "_Paste"
-msgstr "貼上(_P)"
+#: ../resources/guide/js/start.coffee:29
+msgid "The following will guide you to learn how to use some new functions"
+msgstr "之後將應道您學習如何使用這些新功能"
 
-#: ../resources/guide/js/desktop.coffee:201
-#: ../resources/desktop/js/grid.coffee:1050
-msgid "_Display settings"
-msgstr "顯示設定(_D)"
+#: ../resources/guide/js/start.coffee:44
+msgid "Start"
+msgstr "開始"
 
-#: ../resources/guide/js/desktop.coffee:202
-#: ../resources/desktop/js/grid.coffee:1051
-msgid "_Corner navigation"
-msgstr "熱區設置(_C)"
+#: ../resources/guide/js/start.coffee:51
+msgid "I am older. Exit directly."
+msgstr "我是老手，直接退出"
 
-#: ../resources/guide/js/desktop.coffee:203
-#: ../resources/desktop/js/grid.coffee:1052
-msgid "Pe_rsonalize"
-msgstr "個人化(_R)"
-
-#: ../resources/guide/js/welcome.coffee:35
-msgid "Welcome to use Deepin Operating System"
-msgstr "歡迎使用深度操作系統"
-
-#: ../resources/guide/js/welcome.coffee:38
-msgid "Prepare for operation ..."
-msgstr "準備中 ..."
-
-#: ../resources/zone/js/utils.coffee:10
-msgid "Control Center"
-msgstr "控制中心"
-
-#: ../resources/zone/js/utils.coffee:10
-msgid "All Windows"
-msgstr "所有窗口"
-
-#: ../resources/zone/js/utils.coffee:10
-msgid "Desktop"
-msgstr "桌面歌詞"
-
-#: ../resources/zone/js/utils.coffee:10
-msgid "None"
-msgstr "沒有"
-
-#: ../resources/desktop/js/invalidlink.coffee:34
-#: ../resources/desktop/js/richdir.coffee:139
-#: ../resources/desktop/js/richdir.coffee:571
-#: ../resources/desktop/js/desktopentry.coffee:107
-msgid "_Delete"
-msgstr "刪除(_D)"
-
-#: ../resources/desktop/js/application.coffee:179
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
-msgid "The link is invalid. Do you want to delete it?"
-msgstr "此鏈接無效，是否需要刪除它？"
-
-#: ../resources/desktop/js/richdir.coffee:135
-#: ../resources/desktop/js/desktopentry.coffee:106
-msgid "_Rename"
-msgstr "重新命名(_R)"
-
-#: ../resources/desktop/js/richdir.coffee:137
-msgid "_Ungroup"
-msgstr "取消群組(_U)"
-
-#: ../resources/desktop/js/richdir.coffee:568
-#: ../resources/desktop/js/desktopentry.coffee:103
-msgid "Cu_t"
-msgstr "剪下(_T)"
-
-#: ../resources/desktop/js/richdir.coffee:569
-#: ../resources/desktop/js/desktopentry.coffee:104
-msgid "_Copy"
-msgstr "複製(_C)"
-
-#: ../resources/desktop/js/richdir.coffee:573
-#: ../resources/desktop/js/desktopentry.coffee:109
-#: ../resources/desktop/js/specialitem.coffee:53
-msgid "_Properties"
-msgstr "屬性(_P)"
-
-#: ../resources/desktop/js/grid.coffee:71 ../lib/dentry/fileops.c:403
-msgid "Untitled"
-msgstr "無標題"
-
-#: ../resources/desktop/js/grid.coffee:1022
-msgid "_Name"
-msgstr "名稱(_N)"
-
-#: ../resources/desktop/js/grid.coffee:1023
-msgid "Last modified _time"
-msgstr "最後修改時間(_T)"
-
-#: ../resources/desktop/js/grid.coffee:1028
-msgid "_Folder"
-msgstr "資料夾(_F)"
-
-#: ../resources/desktop/js/grid.coffee:1029
-msgid "_Text document"
-msgstr "文字文件(_T)"
-
-#: ../resources/desktop/js/desktopentry.coffee:115
-#: ../resources/desktop/js/desktopentry.coffee:122
-msgid "Co_mpress"
-msgstr "壓縮檔案(_M)"
-
-#: ../resources/desktop/js/desktopentry.coffee:118
-#: ../resources/desktop/js/desktopentry.coffee:123
-msgid "_Extract"
-msgstr "解壓縮檔案(_E)"
-
-#: ../resources/desktop/js/desktopentry.coffee:119
-#: ../resources/desktop/js/desktopentry.coffee:124
-msgid "Extract _Here"
-msgstr "在此解壓縮(_H)"
-
-#: ../resources/desktop/js/specialitem.coffee:34
-msgid "Computer"
-msgstr "計算機"
-
-#: ../resources/desktop/js/specialitem.coffee:152
-msgid "_Clean up %1 items"
-msgstr "清理%1項(_C)"
-
-#: ../resources/desktop/js/specialitem.coffee:154
-msgid "_Clean up 1 item"
-msgstr "清理1項(_C)"
-
-#: ../resources/greeter/js/user.coffee:471
-msgid "click login button to log in"
-msgstr "點擊登錄按鈕來登錄"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Jan"
-msgstr "1月"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Feb"
-msgstr "2月"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Mar"
-msgstr "3月"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Apr"
-msgstr "4月"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "May"
-msgstr "5月"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Jun"
-msgstr "6月"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Jul"
-msgstr "7月"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Aug"
-msgstr "8月"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Sep"
-msgstr "9月"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Oct"
-msgstr "10月"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Nov"
-msgstr "11月"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Dec"
-msgstr "12月"
-
-#: ../resources/greeter/js/usermenu.coffee:57
-msgid "Guest"
-msgstr "來賓"
-
-#: ../resources/greeter/js/powermenu.coffee:26
-msgid "Shut down"
-msgstr "關機"
-
-#: ../resources/greeter/js/powermenu.coffee:27
-msgid "Restart"
-msgstr "重新啟動"
-
-#: ../resources/greeter/js/powermenu.coffee:28
-msgid "Suspend"
-msgstr "暫停"
-
-#: ../resources/greeter/js/powermenu.coffee:90
-msgid "Enter your password to %1"
-msgstr "請輸入你的密碼到 %1"
-
-#: ../resources/greeter/js/message.coffee:105
-#: ../resources/greeter/js/message.coffee:82
-msgid "$ sudo reboot\n"
-msgstr ""
-
-#: ../resources/greeter/js/message.coffee:99
-#: ../resources/greeter/js/message.coffee:73
-msgid "Press Ctrl + Alt + F1\n"
-msgstr ""
-
-#: ../resources/greeter/js/message.coffee:95
+#: ../resources/guide/js/launcher.coffee:29
 msgid ""
-"\t\t\t\t-----The daemon of accounts has not started!-----\n"
-")"
+"\"Application Launcher\" can be started by sliding the mouse to the upper "
+"left corner or clicking on the launcher."
 msgstr ""
 
-#: ../resources/greeter/js/message.coffee:79
-msgid "$ sudo apt-get install deepin-desktop-Environment\n"
+#: ../resources/guide/js/launcher.coffee:70
+msgid ""
+"What shown in the first screen of \"launcher\" are the applications "
+"collected."
+msgstr "啓動器的第一屏展示的是您收藏的程式"
+
+#: ../resources/guide/js/launcher.coffee:85
+msgid ""
+"Please click on the \"All Applications\" icon, you will see all applications."
+msgstr "請點擊 “所有程式” 圖標，你將看到所有應用程式"
+
+#: ../resources/guide/js/launcher.coffee:95
+msgid ""
+"All programs can be located by scrolling the mouse up and down.\n"
+"You can also click on the left classification navigation to locate"
+msgstr ""
+"滾動鼠標滾輪可以瀏覽所有程式\n"
+"您也可以點擊右側的分類圖標來定位"
+
+#: ../resources/guide/js/launcher.coffee:133
+msgid "Skip the step without scroll"
+msgstr "鼠標沒有滾輪，跳此步驟"
+
+#: ../resources/guide/js/launcher.coffee:163
+msgid ""
+"Use the keyboard to search for applications\n"
+"Try the \"deepin\" keyword to see which applications are shown"
+msgstr ""
+"使用鍵盤搜索來查找你想要的應用\n"
+"我們來試試「deepin」這個關鍵詞吧，看會顯示那些程式"
+
+#: ../resources/guide/js/launcher.coffee:164
+msgid "tips: Please directly enter the word \"deepin\""
+msgstr "提示：請直接輸入單詞 「deepin」"
+
+#: ../resources/guide/js/launcher.coffee:179
+msgid "Use the right mouse button to send two icons to the desktop"
+msgstr "單機鼠標右鍵打開菜單，發送兩個圖標到桌面"
+
+#: ../resources/guide/js/launcher.coffee:180
+msgid "tips: You can add it to startup items or uninstall it"
+msgstr "提示：您可以將它加入登錄後自啓動或卸載它"
+
+#: ../resources/dock/js/global_menu.coffee:9
+msgid "Keep _showing"
+msgstr "一直顯示(_S)"
+
+#: ../resources/dock/js/global_menu.coffee:10
+msgid "Keep _hidden"
+msgstr "一直隱藏(_H)"
+
+#: ../resources/dock/js/global_menu.coffee:11
+msgid "_Auto hide"
+msgstr "自動隱藏(_A)"
+
+#: ../resources/dock/js/global_menu.coffee:23
+msgid "_Efficient mode"
 msgstr ""
 
-#: ../resources/greeter/js/message.coffee:68
-msgid "\t\t\t\t-----No available desktop sessions!-----\n"
-msgstr "沒有覈實的桌面繪畫\n"
+#: ../resources/dock/js/global_menu.coffee:24
+msgid "_Fashion mode"
+msgstr ""
 
-#: ../resources/greeter/js/mediacontrol.coffee:167
-msgid "Click button to Play"
-msgstr "單擊播放按鈕"
+#: ../resources/dock/js/deepin_item.coffee:243
+msgid "_View as analog"
+msgstr "顯示傳統時鍾(_V)"
+
+#: ../resources/dock/js/deepin_item.coffee:244
+#: ../resources/dock/js/deepin_item.coffee:296
+msgid "_Time settings"
+msgstr "時間設定(_T)"
+
+#: ../resources/dock/js/deepin_item.coffee:295
+msgid "_View as digit"
+msgstr "顯示數字時鍾"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:33
+msgid "_Close"
+msgstr "關閉(_C)"
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
@@ -630,15 +618,11 @@ msgstr "您已經成功卸載 \"%1\""
 msgid "\"%1\" failed to be uninstalled"
 msgstr "\"%1\"卸載失敗"
 
-#: ../app/dock/dock.c:322
-msgid "Dock failed to start, because Compiz is not enabled."
-msgstr "由於 Compiz 程序未啓用，任務欄啓動失敗"
-
-#: ../app/desktop/desktop.c:278
+#: ../app/desktop/desktop.c:286
 msgid "New file"
 msgstr "新增檔案"
 
-#: ../app/desktop/desktop.c:289
+#: ../app/desktop/desktop.c:297
 msgid "New directory"
 msgstr "新增資料夾"
 
@@ -649,6 +633,10 @@ msgstr "%Y年%b月%d日 %a"
 #: ../app/greeter/lock.c:125 ../app/greeter/greeter.c:192
 msgid "Invalid Password"
 msgstr "密碼錯誤"
+
+#: ../app/dock/dock.c:321
+msgid "Dock failed to start, because Compiz is not enabled."
+msgstr "由於 Compiz 程序未啓用，任務欄啓動失敗"
 
 #: ../lib/dentry/entry.c:746
 #, c-format
@@ -678,6 +666,10 @@ msgstr "應用程式啟動群組"
 #: ../lib/dentry/fileops.c:566
 msgid "Move"
 msgstr "移動"
+
+#: ../lib/dentry/fileops.c:772
+msgid "Copy"
+msgstr "複製"
 
 #: ../lib/dentry/fileops_delete.c:29
 msgid "Delete Files"
@@ -905,6 +897,18 @@ msgstr "公用程式"
 #: ../lib/category.c:56
 msgid "others"
 msgstr "其他"
+
+#~ msgid "Expand"
+#~ msgstr "展開"
+
+#~ msgid "Only the first Screen"
+#~ msgstr "僅在第一屏顯示"
+
+#~ msgid "Only the second Screen"
+#~ msgstr "僅在第二屏顯示"
+
+#~ msgid "_Dock setting"
+#~ msgstr "任務欄設定(_T)"
 
 #~ msgid "_Clean up"
 #~ msgstr "清理(_C)"

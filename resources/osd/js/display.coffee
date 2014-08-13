@@ -25,30 +25,13 @@ class Display extends Widget
         name: DISPLAY
         path: "/com/deepin/daemon/Display/MonitorLVDS1"
         interface: "com.deepin.daemon.Display.Monitor"
-    DEFAULT_DISPLAY_MODE = 0
 
     constructor:(@id)->
         super
         echo "New Display :#{@id}"
-        @Monitors = []
-        @DBusMonitors = []
-        @DBusOpenedMonitors = []
         @MonitorsName = []
-        @OpenedMonitorsName = []
-        @FeaturrMonitorsName = []
-        @valueEach = []
-
-        @DisplayModeList = [
-            _("Copy"),
-            _("Expand"),
-            _("Only the first Screen"),
-            _("Only the second Screen")
-        ]
-        @DisplayModeValue = [-1,0,1,2]
-        #-1 copy
-        #0 expand
-        #1 onlyCurrentScreen
-        #2 onlySecondScreen
+        @MonitorsFullName = []
+        @FeatureMonitorsName = []
 
         _b.appendChild(@element)
         @getDBus()
@@ -59,43 +42,25 @@ class Display extends Widget
     getDBus:->
         try
             @DBusDisplay = DCore.DBus.session(DISPLAY)
-            @Monitors = @DBusDisplay.Monitors
-            @DisplayMode = @DBusDisplay.DisplayMode
-            @HasChanged = @DBusDisplay.HasChanged
+            keys = Object.keys(@DBusDisplay.Brightness)
+            for key in keys
+                @MonitorsName.push(key)
+                @MonitorsFullName.push(key)
             @PrimarMonitorName = @DBusDisplay.Primary
+            @getFeatureMonitorsName()
         catch e
             echo "Display DBus :#{DISPLAY} ---#{e}---"
 
-        try
-            for path in @Monitors
-                DISPLAY_MONITORS.path = path
-                DBusMonitor = DCore.DBus.session_object(
-                    DISPLAY_MONITORS.name,
-                    DISPLAY_MONITORS.path,
-                    DISPLAY_MONITORS.interface
-                )
-                @DBusMonitors.push(DBusMonitor)
-                @MonitorsName.push(DBusMonitor.FullName)
-                if DBusMonitor.Opened
-                    @OpenedMonitorsName.push(DBusMonitor.FullName)
-                    @DBusOpenedMonitors.push(DBusMonitor)
-                if DBusMonitor.FullName is @PrimarMonitorName
-                    @DBusPrimarMonitor = DBusMonitor
-            @getFeaturrMonitorsName()
-        catch e
-            echo "getDBusMonitors ERROR: ---#{e}---"
+    getFullName:(name)->
+        return @MonitorsFullName[i] for _name,i in @MonitorsName when _name is name
 
-    getDBusMonitor:(name)->
-        return dbus = monitor for monitor in @DBusMonitors when monitor.FullName is name
-
-    getFeaturrMonitorsName: ->
-        @FeaturrMonitorsName = []
+    getFeatureMonitorsName: ->
+        @FeatureMonitorsName = []
         for name in @MonitorsName
             if @DBusDisplay.QueryOutputFeature_sync(name) == 1
-                echo "FeaturrMonitorsName.push(#{name})"
-                @FeaturrMonitorsName.push(name)
-        echo @FeaturrMonitorsName
-        return @FeaturrMonitorsName
+                echo "FeatureMonitorsName.push(#{name})"
+                @FeatureMonitorsName.push(name)
+        return @FeatureMonitorsName[0]
 
     getBrightness:(name)->
         @Brightness = @DBusDisplay.Brightness
@@ -107,67 +72,8 @@ class Display extends Widget
         echo "getBrightness :#{name}:#{value};"
         return value
 
-    getPrimarBrightnessValue:->
-        @getBrightness(@PrimarMonitorName)
-
     getFeatureBrightnessValue:->
-        @getBrightness(@FeaturrMonitorsName[0])
-
-    getCurrentMode:->
-        @DisplayMode = @DBusDisplay.DisplayMode
-        if @DisplayMode is null then @DisplayMode = 0
-        @currentMode = @DisplayModeList[i] for each,i in @DisplayModeValue when vale == @DisplayMode
-        return @currentMode
-
-    setCurrentMode:(current)->
-        Modei = i for each,i in @DisplayModeList when each is current
-        ModeChoose = @DisplayModeValue[Modei]
-        @switchDisplayMode2(ModeChoose)
-
-    switchDisplayMode2:(ModeChoose)->
-        setFocus(true)
-        osdHide()
-
-        if @Monitors.length < 2 then return
-        if ModeChoose > @Monitors.length then ModeChoose = -1
-
-        echo "SwitchMode to (#{ModeChoose})"
-        @DBusDisplay.SwitchMode_sync(ModeChoose)
-
-
-    switchDisplayMode:(ModeChoose)->
-        setFocus(false)
-        osdHide()
-
-        if @DBusMonitors.length == 1 then return
-        @DisplayMode = @DBusDisplay.DisplayMode
-        if not @DisplayMode? then @DisplayMode = 0
-        @DisplayMode++
-        if @DisplayMode > @DBusMonitors.length then @DisplayMode = -1
-
-        ModeChoose = @DisplayMode
-        echo "SwitchMode to (#{ModeChoose})"
-        @DBusDisplay.SwitchMode_sync(ModeChoose)
-        @FromSwitchMonitors = false
-
-
-    showDisplayMode:->
-        clearTimeout(@timepress)
-        clearTimeout(timeout_osdHide)
-        @timepress = setTimeout(=>
-            osdShow()
-            @element.style.display = "block"
-
-            @DisplayMode = @DBusDisplay.DisplayMode
-            ImgIndex = @DisplayMode
-            if ImgIndex >= 2 then ImgIndex = 2
-            imgName = "#{@id}_#{ImgIndex}"
-            set_bg(@,imgName,@preDisplayImg)
-            @preDisplayImg = imgName
-
-            timeout_osdHide = setTimeout(osdHide,TIME_HIDE)
-        ,TIME_PRESS)
-
+        @getBrightness(@FeatureMonitorsName[0])
 
     showBrightness:->
         clearTimeout(@timepress)
@@ -189,46 +95,16 @@ class Display extends Widget
 
 
 BrightCls = null
-displayModeList = null
 
 osd.BrightnessUp = (keydown)->
     if !keydown then return if mode is "dbus"
-    setFocus(false)
     BrightCls  = new Display("Brightness") if not BrightCls?
     BrightCls.id = "BrightnessUp"
     BrightCls.showBrightness()
 
 osd.BrightnessDown = (keydown)->
     if !keydown then return if mode is "dbus"
-    setFocus(false)
     BrightCls  = new Display("Brightness") if not BrightCls?
     BrightCls.id = "BrightnessUp"#the backgroundImage is same ,so the @id can equal to BrightnessUp
     BrightCls.showBrightness()
-
-osd.SwitchMonitors = (keydown)->
-    CHOOSEMODE = false
-    if !keydown then return if mode is "dbus"
-    if CHOOSEMODE then setFocus(true)
-    else setFocus(false)
-    BrightCls  = new Display("DisplaySwitch") if not BrightCls?
-    BrightCls.id = "DisplaySwitch"
-    echo BrightCls.Monitors.length
-
-    if BrightCls.Monitors.length < 2
-        osdHide()
-        return
-
-    if not CHOOSEMODE
-        BrightCls.showDisplayMode()
-        return
-
-    if not displayModeList?
-        displayModeList = new ListChoose("displayModeList")
-        displayModeList.setParent(_b)
-        displayModeList.setSize("100%","100%")
-        displayModeList.ListAllBuild(BrightCls.DisplayModeList,BrightCls.getCurrentMode())
-        displayModeList.setKeyupListener(KEYCODE.WIN,=>
-            BrightCls.setCurrentMode(BrightCls.currentMode)
-        )
-    BrightCls.currentMode = displayModeList.chooseIndex()
 

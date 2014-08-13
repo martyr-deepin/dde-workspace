@@ -1,41 +1,39 @@
+html{
+    border-radius:6px;
+}
+
+
 .ListChoose{
     display:-webkit-box;
     -webkit-box-pack:center;
     -webkit-box-align:center;
-    overflow-y:scroll;
-}
-
-.ListChoose::-webkit-scrollbar {
-    width:4px;
-}
-
-.Listul{
-    margin:0;
-    padding:0;
-    width:130px;
-    height:180px;
+    border:rgba(255,255,255,0.2) 1px solid;
+    border-radius:6px;
 }
 
 .li{
-    height:33px;
-    width:100%;
     list-style:none;
+    border-radius:3px;
+    margin-left:-40px;
     overflow:hidden;
-    text-align:center;
-    /*cursor:pointer;*/
-    border-radius:6px; 
+    text-overflow:hidden;
 }
 .li span{
-    height:100%;
-    width:100%;
-    line-height:33px;
-    /*display:table-cell;*/
-    /*padding:7px 10px;*/
     text-shadow:0 0.2em 0.2em rgba(0,0,0,0.4);
-    font-size:1.6em;
-    font-weight:normal; 
-    color:#afafaf;
+    height:40px;
+    line-height:40px;
+    font-size:14px;
+    margin-left:20px;
+    color:#FFF;
+}
 
-    overflow:hidden;
-    text-overflow:ellipsis;
+.nicescroll-rails > div {
+    background: -webkit-gradient(linear, left top, left bottom,  from(#000),  to(#000));
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+}
+.nicescroll-rails:hover {
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: none;
 }

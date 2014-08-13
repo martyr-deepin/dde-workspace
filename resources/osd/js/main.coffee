@@ -11,16 +11,17 @@ check_mediakey_signal= ->
     catch e
         echo "Error:-----DBusMediaKey:#{e}"
     for own signal of osd
-        DBusMediaKey?.connect(signal, do (signal_each = signal)->
-            (keydown)->
-                echo signal_each + "-----------"
-                mode = "dbus"
-                osd[signal_each](keydown)
-        )
+        if signal isnt "SwitchMonitors"
+            DBusMediaKey?.connect(signal, do (signal_each = signal)->
+                (keydown)->
+                    echo signal_each + "-------callback"
+                    mode = "dbus"
+                    allElsHide()
+                    osd[signal_each](keydown)
+            )
 
+check_mediakey_signal()
 
 input_argv = DCore.Osd.get_argv()
 console.log "input_argv:#{input_argv}"
 osd[input_argv]()
-
-check_mediakey_signal()
