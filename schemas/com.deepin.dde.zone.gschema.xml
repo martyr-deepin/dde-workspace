@@ -21,6 +21,11 @@
             <summary>left down corner</summary>
             <description>move to left-down corner to show</description>
         </key>
+        <key type="as" name="black-list">
+            <default>['0 A.D.']</default>
+            <summary>zone black list</summary>
+            <description>fobidden zone if app in this list</description>
+        </key>
         <key type="as" name="white-list">
             <default>['dde-launcher']</default>
             <summary>zone white list</summary>
