@@ -702,9 +702,13 @@ class AppItem extends Item
             _isRightclicked = false
             return
 
+        screenOffset =
+            x: e.screenX - e.pageX
+            y: e.screenY - e.pageY
+
         menu =
-            x: xy.x + clientHalfWidth
-            y: xy.y
+            x: xy.x + clientHalfWidth + screenOffset.x
+            y: xy.y + screenOffset.y
             isDockMenu: true
             cornerDirection: DEEPIN_MENU_CORNER_DIRECTION.DOWN
             menuJsonContent: menuContent
