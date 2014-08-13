@@ -28,27 +28,35 @@ calc_app_item_size = ->
 
     # update_dock_region($("#container").clientWidth)
     if panel
-        panel.set_width($("#container").clientWidth)
+        panel.set_width(Panel.getPanelMiddleWidth())
 
 update_dock_region = do->
     lastWidth = null
     (w, h=DOCK_HEIGHT)->
-        console.log("update_dock_region: last Width: #{lastWidth}, height: #{h}")
         if w
             lastWidth = w
         else if lastWidth
             w = lastWidth
         # console.log("width: #{w}")
+        console.log("[update_dock_region] last Width: #{lastWidth}, w: #{w}, height: #{h}")
         apps = $s(".AppItem")
-        last = apps[apps.length-1]
-        if last and last.clientWidth != 0
-            app_len = ITEM_WIDTH * apps.length
-            left_offset = (screen.width - app_len) / 2
-            panel_width = ITEM_WIDTH * apps.length + PANEL_MARGIN * 2
-            # console.log("set dock region height to #{DOCK_HEIGHT}")
-            # if setting.hideMode() != HideMode.Showing
-            #     h = 0
+        if apps.length > 0
+            if w
+                app_len = w
+            else
+                app_len = ITEM_WIDTH * apps.length
+            panel_width = Panel.getPanelWidth()
+            switch settings.displayMode()
+                when DisplayMode.Classic
+                    left_offset = 0
+                when DisplayMode.Modern
+                    left_offset = (screen.width - app_len) / 2
+                    # console.log("set dock region height to #{DOCK_HEIGHT}")
+                    # if setting.hideMode() != HideMode.Showing
+                    #     h = 0
             DCore.Dock.force_set_region(left_offset, 0, ICON_SCALE * ITEM_WIDTH * apps.length, panel_width, h)
+        else
+            console.warn("[update_dock_region] $s('.AppItem').length == 0")
 
 _b.onresize = ->
     calc_app_item_size()

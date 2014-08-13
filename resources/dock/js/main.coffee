@@ -1,7 +1,3 @@
-DCore.signal_connect("in_mini_mode", ->)
-DCore.signal_connect("in_normal_mode", ->)
-DCore.signal_connect("close_window", (info)->)
-DCore.signal_connect("active_window", (info)->)
 DCore.signal_connect("message_notify", (info)->)
 
 DCore.signal_connect("embed_window_configure_changed", (info)->
@@ -114,6 +110,11 @@ _b.addEventListener("drop", (e)->
 )
 
 settings = new Setting()
+settings.updateSize(settings.displayMode())
+if settings.displayMode() == DisplayMode.Classic
+    switchToClassicMode()
+    # FIXME: hide tray icons.
+
 hideStatusManager = new HideStatusManager(settings.hideMode())
 
 show_desktop = new ShowDesktop()
@@ -122,8 +123,6 @@ panel = new Panel("panel")
 panel.draw()
 
 app_list = new AppList("app_list")
-
-$DBus = {}
 
 EntryManager =
     name:"com.deepin.daemon.Dock"
@@ -258,12 +257,17 @@ initDock = ->
         calc_app_item_size()
         _CW.style.webkitTransform = "translateY(0)"
         panel.panel.style.webkitTransform = "translateY(0)"
+        $("#trayarea").style.webkitTransform = 'translateY(0)' if settings.displayMode() == DisplayMode.Classic
         hideStatusManager.updateState()
         update_dock_region($("#container").clientWidth)
         setTimeout(->
             READY_FOR_TRAY_ICONS = true
+            if settings.displayMode() == DisplayMode.Classic
+                systemTray?.showAllIcons()
         , ANIMATION_TIME)
     , 1000)
+    if not activeWindow
+        activeWindow= new ActiveWindow(clientManager.CurrentActiveWindow_sync())
 
 
 time = new Time("time", "js/plugins/time/img/time.png", "")

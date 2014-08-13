@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-11 17:42+0800\n"
+"POT-Creation-Date: 2014-08-12 17:45+0800\n"
 "PO-Revision-Date: 2014-07-03 05:01+0000\n"
 "Last-Translator: trid <tristan.denni@viacesi.fr>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/deepin-desktop-"
@@ -20,280 +20,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: ../resources/desktop/js/invalidlink.coffee:34
-#: ../resources/desktop/js/desktopentry.coffee:107
-#: ../resources/desktop/js/richdir.coffee:139
-#: ../resources/desktop/js/richdir.coffee:571
-msgid "_Delete"
-msgstr "_Supprimer"
-
-#: ../resources/desktop/js/application.coffee:179
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
-msgid "The link is invalid. Do you want to delete it?"
-msgstr "Le lien est invalide. Voulez-vous le supprimer?"
-
-#: ../resources/desktop/js/application.coffee:179
-#: ../resources/desktop/js/desktopentry.coffee:151
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
-#: ../resources/dock/js/plugins/trash/trash.coffee:73
-msgid "Warning"
-msgstr "Attention"
-
-#: ../resources/desktop/js/desktopentry.coffee:101
-#: ../resources/desktop/js/richdir.coffee:133
-#: ../resources/desktop/js/richdir.coffee:566
 #: ../resources/launcher/js/item.coffee:276
 #: ../resources/guide/js/launcher.coffee:235
+#: ../resources/desktop/js/richdir.coffee:133
+#: ../resources/desktop/js/richdir.coffee:566
+#: ../resources/desktop/js/desktopentry.coffee:101
+#: ../resources/desktop/js/specialitem.coffee:51
+#: ../resources/desktop/js/specialitem.coffee:147
 msgid "_Open"
 msgstr "_Ouvrir"
-
-#: ../resources/desktop/js/desktopentry.coffee:103
-#: ../resources/desktop/js/richdir.coffee:568
-msgid "Cu_t"
-msgstr "Cou_per"
-
-#: ../resources/desktop/js/desktopentry.coffee:104
-#: ../resources/desktop/js/richdir.coffee:569
-msgid "_Copy"
-msgstr "_Copier"
-
-#: ../resources/desktop/js/desktopentry.coffee:106
-#: ../resources/desktop/js/richdir.coffee:135
-msgid "_Rename"
-msgstr "_Renommer"
-
-#: ../resources/desktop/js/desktopentry.coffee:109
-#: ../resources/desktop/js/richdir.coffee:573
-msgid "_Properties"
-msgstr "_Propriétés"
-
-#: ../resources/desktop/js/desktopentry.coffee:115
-#: ../resources/desktop/js/desktopentry.coffee:122
-msgid "Co_mpress"
-msgstr "Co_mpresser"
-
-#: ../resources/desktop/js/desktopentry.coffee:118
-#: ../resources/desktop/js/desktopentry.coffee:123
-msgid "_Extract"
-msgstr "_Extraire"
-
-#: ../resources/desktop/js/desktopentry.coffee:119
-#: ../resources/desktop/js/desktopentry.coffee:124
-msgid "Extract _Here"
-msgstr "Extraire_Ici"
-
-#: ../resources/desktop/js/desktopentry.coffee:151
-#: ../resources/dock/js/plugins/trash/trash.coffee:73
-msgid "Can not open this file."
-msgstr "Impossible d'ouvrir ce fichier"
-
-#: ../resources/desktop/js/grid.coffee:71 ../lib/dentry/fileops.c:403
-msgid "Untitled"
-msgstr "Sans nom"
-
-#: ../resources/desktop/js/grid.coffee:1022
-msgid "_Name"
-msgstr "_Nom"
-
-#: ../resources/desktop/js/grid.coffee:1023
-msgid "Last modified _time"
-msgstr "Date de dernière modification"
-
-#: ../resources/desktop/js/grid.coffee:1028
-msgid "_Folder"
-msgstr "_Dossier"
-
-#: ../resources/desktop/js/grid.coffee:1029
-msgid "_Text document"
-msgstr "document _Texte"
-
-#: ../resources/desktop/js/grid.coffee:1045
-#: ../resources/guide/js/desktop.coffee:199
-msgid "_Sort by"
-msgstr "_Classer par"
-
-#: ../resources/desktop/js/grid.coffee:1046
-#: ../resources/guide/js/desktop.coffee:200
-msgid "_New"
-msgstr "_Nouveau"
-
-#: ../resources/desktop/js/grid.coffee:1047
-#: ../resources/guide/js/desktop.coffee:201
-msgid "Open in _terminal"
-msgstr "Ouvrir dans un _terminal"
-
-#: ../resources/desktop/js/grid.coffee:1048
-#: ../resources/guide/js/desktop.coffee:202
-msgid "_Paste"
-msgstr "_Coller"
-
-#: ../resources/desktop/js/grid.coffee:1050
-#: ../resources/guide/js/desktop.coffee:204
-msgid "_Display settings"
-msgstr "paramètres d'_Affichage"
-
-#: ../resources/desktop/js/grid.coffee:1051
-#: ../resources/guide/js/desktop.coffee:205
-msgid "_Corner navigation"
-msgstr "Navigation dans un _Coin"
-
-#: ../resources/desktop/js/grid.coffee:1052
-#: ../resources/guide/js/desktop.coffee:206
-msgid "Pe_rsonalize"
-msgstr "Pe_rsonnaliser"
-
-#: ../resources/desktop/js/richdir.coffee:137
-msgid "_Ungroup"
-msgstr "_Dégrouper"
-
-#: ../resources/greeter/js/message.coffee:105
-#: ../resources/greeter/js/message.coffee:82
-msgid "$ sudo reboot\n"
-msgstr "$ sudo reboot\n"
-
-#: ../resources/greeter/js/message.coffee:99
-#: ../resources/greeter/js/message.coffee:73
-msgid "Press Ctrl + Alt + F1\n"
-msgstr "Appuyer sur Ctrl + Alt + F1\n"
-
-#: ../resources/greeter/js/message.coffee:95
-msgid ""
-"\t\t\t\t-----The daemon of accounts has not started!-----\n"
-")"
-msgstr ""
-"⇥⇥⇥⇥-----Le démon des comptes ne s'est pas lancé!-----\n"
-")"
-
-#: ../resources/greeter/js/message.coffee:79
-msgid "$ sudo apt-get install deepin-desktop-Environment\n"
-msgstr "$ sudo apt-get install deepin-desktop-Environment\n"
-
-#: ../resources/greeter/js/message.coffee:68
-msgid "\t\t\t\t-----No available desktop sessions!-----\n"
-msgstr "⇥⇥⇥⇥-----Pas de session utilisateur disponible!-----\n"
-
-#: ../resources/greeter/js/user.coffee:471
-msgid "click login button to log in"
-msgstr "cliquez sur le bouton \"se connecter\" pour vous connecter"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Jan"
-msgstr "Jan"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Feb"
-msgstr "Fév"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Mar"
-msgstr "Mar"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Apr"
-msgstr "Avr"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "May"
-msgstr "Mai"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Jun"
-msgstr "Juin"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Jul"
-msgstr "Juil"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Aug"
-msgstr "Août"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Sep"
-msgstr "Sept"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Oct"
-msgstr "Oct"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Nov"
-msgstr "Nov"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Dec"
-msgstr "Déc"
-
-#: ../resources/greeter/js/time.coffee:44
-msgid "Sun"
-msgstr "Dim"
-
-#: ../resources/greeter/js/time.coffee:44
-msgid "Mon"
-msgstr "Lun"
-
-#: ../resources/greeter/js/time.coffee:44
-msgid "Tue"
-msgstr "Mar"
-
-#: ../resources/greeter/js/time.coffee:44
-msgid "Wed"
-msgstr "Mer"
-
-#: ../resources/greeter/js/time.coffee:44
-msgid "Thu"
-msgstr "Jeu"
-
-#: ../resources/greeter/js/time.coffee:44
-msgid "Fri"
-msgstr "Ven"
-
-#: ../resources/greeter/js/time.coffee:44
-msgid "Sat"
-msgstr "Sam"
-
-#: ../resources/greeter/js/usermenu.coffee:57
-msgid "Guest"
-msgstr "Invité"
-
-#: ../resources/greeter/js/powermenu.coffee:26
-msgid "Shut down"
-msgstr "Éteindre "
-
-#: ../resources/greeter/js/powermenu.coffee:27
-msgid "Restart"
-msgstr "Redémarrer "
-
-#: ../resources/greeter/js/powermenu.coffee:28
-msgid "Suspend"
-msgstr "Mise en veille "
-
-#: ../resources/greeter/js/powermenu.coffee:90
-msgid "Enter your password to %1"
-msgstr "Saisissez votre mot de passe pour %1"
-
-#: ../resources/greeter/js/mediacontrol.coffee:167
-#, fuzzy
-msgid "Click button to Play"
-msgstr "cliquez sur le bouton \"se connecter\" pour vous connecter"
-
-#: ../resources/osd/js/display.coffee:42 ../lib/dentry/fileops.c:772
-msgid "Copy"
-msgstr "Copier "
-
-#: ../resources/osd/js/display.coffee:43
-msgid "Expand"
-msgstr "Augmenter"
-
-#: ../resources/osd/js/display.coffee:44
-msgid "Only the first Screen"
-msgstr "Le premier écran uniquement"
-
-#: ../resources/osd/js/display.coffee:45
-msgid "Only the second Screen"
-msgstr "Le deuxième écran uniquement"
 
 #: ../resources/launcher/js/item.coffee:283
 #: ../resources/guide/js/launcher.coffee:242
@@ -374,45 +109,128 @@ msgstr "Épingler au lan_ceur"
 msgid "Remove from do_ck"
 msgstr "Supprimer des _favoris"
 
-#: ../resources/zone/js/utils.coffee:10
-msgid "Control Center"
-msgstr "Centre de contrôle"
+#: ../resources/osd/js/display.coffee:42 ../lib/dentry/fileops.c:772
+msgid "Copy"
+msgstr "Copier "
 
-#: ../resources/zone/js/utils.coffee:10
-msgid "All Windows"
-msgstr "Toutes les fenêtres"
+#: ../resources/osd/js/display.coffee:43
+msgid "Expand"
+msgstr "Augmenter"
 
-#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:226
+#: ../resources/osd/js/display.coffee:44
+msgid "Only the first Screen"
+msgstr "Le premier écran uniquement"
+
+#: ../resources/osd/js/display.coffee:45
+msgid "Only the second Screen"
+msgstr "Le deuxième écran uniquement"
+
+#: ../resources/dock/js/deepin_item.coffee:241
+msgid "_View as analog"
+msgstr "_Affichage analogique"
+
+#: ../resources/dock/js/deepin_item.coffee:242
+#: ../resources/dock/js/deepin_item.coffee:294
+msgid "_Time settings"
+msgstr "paramètres de l'_Heure"
+
+#: ../resources/dock/js/deepin_item.coffee:293
+msgid "_View as digit"
+msgstr "_Affichage digital"
+
+#: ../resources/dock/js/main.coffee:154 ../resources/dock/js/main.coffee:227
+#: ../resources/desktop/js/specialitem.coffee:87
+msgid "Trash"
+msgstr "Corbeille"
+
+#: ../resources/dock/js/main.coffee:225 ../resources/zone/js/utils.coffee:10
 msgid "Launcher"
 msgstr "Lanceur"
 
-#: ../resources/zone/js/utils.coffee:10
-msgid "Desktop"
-msgstr "Bureau"
+#: ../resources/dock/js/global_menu.coffee:9
+#, fuzzy
+msgid "Keep _showing"
+msgstr "Maintenir _affiché"
 
-#: ../resources/zone/js/utils.coffee:10
-msgid "None"
-msgstr "Aucun"
+#: ../resources/dock/js/global_menu.coffee:10
+#, fuzzy
+msgid "Keep _hidden"
+msgstr "Maintenir _masqué"
 
-#: ../resources/guide/js/dss.coffee:29
-msgid "Well, please trigger the lower right corner again"
-msgstr "Veuillez toucher à nouveau le coin inférieur droit"
+#: ../resources/dock/js/global_menu.coffee:11
+#, fuzzy
+msgid "_Auto hide"
+msgstr "_masquer automatiquement"
 
-#: ../resources/guide/js/dss.coffee:30
-msgid "tips：Click the setting icon on dock to implement"
-msgstr "Astuce: cliquez sur l'icône paramètres du dock pour implémenter"
-
-#: ../resources/guide/js/dss.coffee:69
-msgid "Here is the system setting area"
-msgstr "Ici se trouve la zone de paramétrage du système"
-
-#: ../resources/guide/js/dss.coffee:70
-msgid ""
-"tips：Hover the setting icon on dock to quickly implement some setting "
-"functions"
+#: ../resources/dock/js/global_menu.coffee:23
+msgid "_Efficient mode"
 msgstr ""
-"Astuce: survolez l'icône paramètres du dock pour implémenter rapidement "
-"certaines fonctions de paramétrage"
+
+#: ../resources/dock/js/global_menu.coffee:24
+msgid "_Fashion mode"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:40
+#, fuzzy
+msgid "_Dock setting"
+msgstr "paramètres de l'_Heure"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Sun"
+msgstr "Dim"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Mon"
+msgstr "Lun"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Tue"
+msgstr "Mar"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Wed"
+msgstr "Mer"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Thu"
+msgstr "Jeu"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Fri"
+msgstr "Ven"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Sat"
+msgstr "Sam"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:29
+#: ../resources/desktop/js/specialitem.coffee:156
+msgid "_Empty"
+msgstr ""
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:33
+msgid "_Close"
+msgstr "_Fermer"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:73
+#: ../resources/desktop/js/desktopentry.coffee:151
+msgid "Can not open this file."
+msgstr "Impossible d'ouvrir ce fichier"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:73
+#: ../resources/desktop/js/application.coffee:179
+#: ../resources/desktop/js/richdir.coffee:335
+#: ../resources/desktop/js/richdir.coffee:586
+#: ../resources/desktop/js/desktopentry.coffee:151
+msgid "Warning"
+msgstr "Attention"
 
 #: ../resources/guide/js/end.coffee:25
 #, fuzzy
@@ -423,126 +241,28 @@ msgstr "Merci pour votre patience."
 msgid "End"
 msgstr "Fin"
 
-#: ../resources/guide/js/welcome.coffee:35
-msgid "Welcome to use Deepin Operating System"
-msgstr "Bienvenue dans le système d'exploitation Deepin."
-
-#: ../resources/guide/js/welcome.coffee:38
-msgid "Prepare for operation ..."
-msgstr "Préparation de l'opération..."
-
-#: ../resources/guide/js/desktop.coffee:27
-msgid ""
-"Let's drag the other icon on the first icon \n"
-" to generate \"application group\""
-msgstr ""
-"Glissez l'icône sur la première\n"
-"pour créer un \"groupe d'application\""
-
-#: ../resources/guide/js/desktop.coffee:119
-msgid "Well, you have learned how to create a \"application group\""
-msgstr "Vous avez appris à créer un \"groupe d'applications\"."
-
-#: ../resources/guide/js/desktop.coffee:120
-msgid "tips：Right-click on the application group will provide more functions"
-msgstr ""
-"Astuce: clic-droit sur un groupe d'applications pour disposer de davantage "
-"de fonctionnalités."
-
-#: ../resources/guide/js/desktop.coffee:131
-#, fuzzy
-msgid ""
-"Slide the mouse to the four top corners, which can trigger four different "
-"events\n"
-"Please move to the upper left corner first to show or hide Launcher"
-msgstr ""
-"Le déplacement du curseur dans les quartes coins de l'écran peut déclencher "
-"quatre évènements différents.\n"
-"Pour commencer, veuillez déplacer le curseur dans le coin supérieur gauche "
-"pour afficher ou masquer le lanceur."
-
-#: ../resources/guide/js/desktop.coffee:132
-msgid ""
-"tips：Please trigger successively by hints, click on the blank area to return"
-msgstr ""
-"Astuce : Veuillez faire le déclenchement successivement par allusion, "
-"cliquer dans la zone vide pour renvoyer"
-
-#: ../resources/guide/js/desktop.coffee:136
-msgid "Show/Hide Launcher"
-msgstr "Afficher/Masquer le lanceur"
-
-#: ../resources/guide/js/desktop.coffee:137
-msgid "Show/Hide Desktop"
-msgstr "Afficher/Masquer le Bureau"
-
-#: ../resources/guide/js/desktop.coffee:138
-msgid "Show/Hide Control Center"
-msgstr "Afficher/Masquer le Centre de contrôle."
-
-#: ../resources/guide/js/desktop.coffee:139
-msgid "No default functions setted in right up corner"
-msgstr "Aucune fonction configurée par défaut dans le coin supérieur droit."
-
-#: ../resources/guide/js/desktop.coffee:181
-msgid ""
-"Right-click on desktop black area to call up the menu, select \"Corner "
-"navigation\" to set the corner used"
-msgstr ""
-"Faites un Clic-droit sur la zone noire du bureau pour afficher le menu. "
-"Sélectionnez \"Actions des coins\" pour configurer les coins utilisés."
-
-#: ../resources/guide/js/desktop.coffee:182
-msgid "tips：Click on the interface of corner navigation blank area to return"
-msgstr ""
-"Astuce : Cliquer dans la zone vide de navigation dans le coin de l'interface "
-"pour renvoyer le résultat"
-
-#: ../resources/guide/js/start.coffee:28
-msgid "New Launcher"
-msgstr "Nouveau lanceur"
-
-#: ../resources/guide/js/start.coffee:28
-msgid "New Desktop"
-msgstr "Nouveau bureau"
-
-#: ../resources/guide/js/start.coffee:28
-msgid "New System Settings"
-msgstr "Nouveau Paramètre système"
-
-#: ../resources/guide/js/start.coffee:29
-msgid "The following will guide you to learn how to use some new functions"
-msgstr ""
-"Nous allons désormais apprendre à utiliser de nouvelles fonctionnalités."
-
-#: ../resources/guide/js/start.coffee:44
-msgid "Start"
-msgstr "Démarrer"
-
-#: ../resources/guide/js/start.coffee:51
-#, fuzzy
-msgid "I am older. Exit directly."
-msgstr "Je suis plus vieux, quittez directement"
-
 #: ../resources/guide/js/launcher.coffee:29
+#, fuzzy
 msgid ""
-"Sliding the mouse to the upper left corner or clicking on the launcher icon "
-"both can start \"Application Launcher\""
+"\"Application Launcher\" can be started by sliding the mouse to the upper "
+"left corner or clicking on the launcher."
 msgstr ""
 "Glisser la souris dans le coin en haut à gauche ou cliquer sur l'icône du "
 "lanceur permettent tout deux de lancer le \"Lanceur d'application\""
 
 #: ../resources/guide/js/launcher.coffee:70
+#, fuzzy
 msgid ""
-"What shown in the first screen of \" launcher\" are the applications of "
-"collection"
+"What shown in the first screen of \"launcher\" are the applications "
+"collected."
 msgstr ""
 "Ce qui est montré dans le premier écran du \"lanceur\" sont les applications "
 "de la collection"
 
 #: ../resources/guide/js/launcher.coffee:85
+#, fuzzy
 msgid ""
-"Please click on the \"All Applications\" icon , you will see all applications"
+"Please click on the \"All Applications\" icon, you will see all applications."
 msgstr ""
 "Veuillez cliquer sur l'icône \"Toutes les applications\", vous verrez ainsi "
 "toutes les applications"
@@ -573,7 +293,8 @@ msgstr ""
 "apparaîtront"
 
 #: ../resources/guide/js/launcher.coffee:164
-msgid "tips：Please directly enter the word \"deepin\""
+#, fuzzy
+msgid "tips: Please directly enter the word \"deepin\""
 msgstr "Astuces : Taper directement le mot \"deepin\""
 
 #: ../resources/guide/js/launcher.coffee:179
@@ -582,46 +303,377 @@ msgstr ""
 "Utilisez le clic-droit de la souris pour envoyer deux icônes vers le bureau."
 
 #: ../resources/guide/js/launcher.coffee:180
-msgid "tips:You can add it to startup items or uninstall"
+#, fuzzy
+msgid "tips: You can add it to startup items or uninstall it"
 msgstr ""
 "Astuces : Vous pouvez l'ajouter aux éléments de démarrage ou le désinstaller"
 
-#: ../resources/dock/js/global_menu.coffee:9
-msgid "keep _showing"
-msgstr "Maintenir _affiché"
+#: ../resources/guide/js/dss.coffee:29
+msgid "Well, please trigger the lower right corner again"
+msgstr "Veuillez toucher à nouveau le coin inférieur droit"
 
-#: ../resources/dock/js/global_menu.coffee:10
-msgid "keep _hidden"
-msgstr "Maintenir _masqué"
+#: ../resources/guide/js/dss.coffee:30
+#, fuzzy
+msgid "tips: Click the setting icon on dock to implement"
+msgstr "Astuce: cliquez sur l'icône paramètres du dock pour implémenter"
 
-#: ../resources/dock/js/global_menu.coffee:11
-msgid "_auto hide"
-msgstr "_masquer automatiquement"
+#: ../resources/guide/js/dss.coffee:69
+msgid "Here is the system setting area"
+msgstr "Ici se trouve la zone de paramétrage du système"
 
-#: ../resources/dock/js/deepin_item.coffee:231
-msgid "_View as analog"
-msgstr "_Affichage analogique"
+#: ../resources/guide/js/dss.coffee:70
+#, fuzzy
+msgid ""
+"tips: Hover the setting icon on dock to quickly implement some setting "
+"functions"
+msgstr ""
+"Astuce: survolez l'icône paramètres du dock pour implémenter rapidement "
+"certaines fonctions de paramétrage"
 
-#: ../resources/dock/js/deepin_item.coffee:232
-#: ../resources/dock/js/deepin_item.coffee:284
-msgid "_Time settings"
-msgstr "paramètres de l'_Heure"
+#: ../resources/guide/js/start.coffee:28
+msgid "New Launcher"
+msgstr "Nouveau lanceur"
 
-#: ../resources/dock/js/deepin_item.coffee:283
-msgid "_View as digit"
-msgstr "_Affichage digital"
+#: ../resources/guide/js/start.coffee:28
+msgid "New Desktop"
+msgstr "Nouveau bureau"
 
-#: ../resources/dock/js/main.coffee:155 ../resources/dock/js/main.coffee:228
-msgid "Trash"
-msgstr "Corbeille"
+#: ../resources/guide/js/start.coffee:28
+msgid "New System Settings"
+msgstr "Nouveau Paramètre système"
 
-#: ../resources/dock/js/plugins/trash/trash.coffee:29
-msgid "_Clean up"
+#: ../resources/guide/js/start.coffee:29
+msgid "The following will guide you to learn how to use some new functions"
+msgstr ""
+"Nous allons désormais apprendre à utiliser de nouvelles fonctionnalités."
+
+#: ../resources/guide/js/start.coffee:44
+msgid "Start"
+msgstr "Démarrer"
+
+#: ../resources/guide/js/start.coffee:51
+#, fuzzy
+msgid "I am older. Exit directly."
+msgstr "Je suis plus vieux, quittez directement"
+
+#: ../resources/guide/js/desktop.coffee:27
+msgid ""
+"Let's drag the other icon on the first icon \n"
+" to generate \"application group\""
+msgstr ""
+"Glissez l'icône sur la première\n"
+"pour créer un \"groupe d'application\""
+
+#: ../resources/guide/js/desktop.coffee:116
+msgid "Well, you have learned how to create a \"application group\""
+msgstr "Vous avez appris à créer un \"groupe d'applications\"."
+
+#: ../resources/guide/js/desktop.coffee:117
+#, fuzzy
+msgid "tips: Right-click on the application group will provide more functions"
+msgstr ""
+"Astuce: clic-droit sur un groupe d'applications pour disposer de davantage "
+"de fonctionnalités."
+
+#: ../resources/guide/js/desktop.coffee:128
+#, fuzzy
+msgid ""
+"Slide the mouse to the four top corners, which can trigger four different "
+"events\n"
+"Please move to the upper left corner first to show or hide Launcher"
+msgstr ""
+"Le déplacement du curseur dans les quartes coins de l'écran peut déclencher "
+"quatre évènements différents.\n"
+"Pour commencer, veuillez déplacer le curseur dans le coin supérieur gauche "
+"pour afficher ou masquer le lanceur."
+
+#: ../resources/guide/js/desktop.coffee:129
+#, fuzzy
+msgid ""
+"tips: Please trigger successively by hints, click on the blank area to return"
+msgstr ""
+"Astuce : Veuillez faire le déclenchement successivement par allusion, "
+"cliquer dans la zone vide pour renvoyer"
+
+#: ../resources/guide/js/desktop.coffee:133
+msgid "Show/Hide Launcher"
+msgstr "Afficher/Masquer le lanceur"
+
+#: ../resources/guide/js/desktop.coffee:134
+msgid "Show/Hide Desktop"
+msgstr "Afficher/Masquer le Bureau"
+
+#: ../resources/guide/js/desktop.coffee:135
+msgid "Show/Hide Control Center"
+msgstr "Afficher/Masquer le Centre de contrôle."
+
+#: ../resources/guide/js/desktop.coffee:136
+msgid "No default functions setted in right up corner"
+msgstr "Aucune fonction configurée par défaut dans le coin supérieur droit."
+
+#: ../resources/guide/js/desktop.coffee:178
+msgid ""
+"Right-click on desktop black area to call up the menu, select \"Corner "
+"navigation\" to set the corner used"
+msgstr ""
+"Faites un Clic-droit sur la zone noire du bureau pour afficher le menu. "
+"Sélectionnez \"Actions des coins\" pour configurer les coins utilisés."
+
+#: ../resources/guide/js/desktop.coffee:179
+#, fuzzy
+msgid "tips: Click on the interface of corner navigation blank area to return"
+msgstr ""
+"Astuce : Cliquer dans la zone vide de navigation dans le coin de l'interface "
+"pour renvoyer le résultat"
+
+#: ../resources/guide/js/desktop.coffee:196
+#: ../resources/desktop/js/grid.coffee:1045
+msgid "_Sort by"
+msgstr "_Classer par"
+
+#: ../resources/guide/js/desktop.coffee:197
+#: ../resources/desktop/js/grid.coffee:1046
+msgid "_New"
+msgstr "_Nouveau"
+
+#: ../resources/guide/js/desktop.coffee:198
+#: ../resources/desktop/js/grid.coffee:1047
+msgid "Open in _terminal"
+msgstr "Ouvrir dans un _terminal"
+
+#: ../resources/guide/js/desktop.coffee:199
+#: ../resources/desktop/js/grid.coffee:1048
+msgid "_Paste"
+msgstr "_Coller"
+
+#: ../resources/guide/js/desktop.coffee:201
+#: ../resources/desktop/js/grid.coffee:1050
+msgid "_Display settings"
+msgstr "paramètres d'_Affichage"
+
+#: ../resources/guide/js/desktop.coffee:202
+#: ../resources/desktop/js/grid.coffee:1051
+msgid "_Corner navigation"
+msgstr "Navigation dans un _Coin"
+
+#: ../resources/guide/js/desktop.coffee:203
+#: ../resources/desktop/js/grid.coffee:1052
+msgid "Pe_rsonalize"
+msgstr "Pe_rsonnaliser"
+
+#: ../resources/guide/js/welcome.coffee:35
+msgid "Welcome to use Deepin Operating System"
+msgstr "Bienvenue dans le système d'exploitation Deepin."
+
+#: ../resources/guide/js/welcome.coffee:38
+msgid "Prepare for operation ..."
+msgstr "Préparation de l'opération..."
+
+#: ../resources/zone/js/utils.coffee:10
+msgid "Control Center"
+msgstr "Centre de contrôle"
+
+#: ../resources/zone/js/utils.coffee:10
+msgid "All Windows"
+msgstr "Toutes les fenêtres"
+
+#: ../resources/zone/js/utils.coffee:10
+msgid "Desktop"
+msgstr "Bureau"
+
+#: ../resources/zone/js/utils.coffee:10
+msgid "None"
+msgstr "Aucun"
+
+#: ../resources/desktop/js/invalidlink.coffee:34
+#: ../resources/desktop/js/richdir.coffee:139
+#: ../resources/desktop/js/richdir.coffee:571
+#: ../resources/desktop/js/desktopentry.coffee:107
+msgid "_Delete"
+msgstr "_Supprimer"
+
+#: ../resources/desktop/js/application.coffee:179
+#: ../resources/desktop/js/richdir.coffee:335
+#: ../resources/desktop/js/richdir.coffee:586
+msgid "The link is invalid. Do you want to delete it?"
+msgstr "Le lien est invalide. Voulez-vous le supprimer?"
+
+#: ../resources/desktop/js/richdir.coffee:135
+#: ../resources/desktop/js/desktopentry.coffee:106
+msgid "_Rename"
+msgstr "_Renommer"
+
+#: ../resources/desktop/js/richdir.coffee:137
+msgid "_Ungroup"
+msgstr "_Dégrouper"
+
+#: ../resources/desktop/js/richdir.coffee:568
+#: ../resources/desktop/js/desktopentry.coffee:103
+msgid "Cu_t"
+msgstr "Cou_per"
+
+#: ../resources/desktop/js/richdir.coffee:569
+#: ../resources/desktop/js/desktopentry.coffee:104
+msgid "_Copy"
+msgstr "_Copier"
+
+#: ../resources/desktop/js/richdir.coffee:573
+#: ../resources/desktop/js/desktopentry.coffee:109
+#: ../resources/desktop/js/specialitem.coffee:53
+msgid "_Properties"
+msgstr "_Propriétés"
+
+#: ../resources/desktop/js/grid.coffee:71 ../lib/dentry/fileops.c:403
+msgid "Untitled"
+msgstr "Sans nom"
+
+#: ../resources/desktop/js/grid.coffee:1022
+msgid "_Name"
+msgstr "_Nom"
+
+#: ../resources/desktop/js/grid.coffee:1023
+msgid "Last modified _time"
+msgstr "Date de dernière modification"
+
+#: ../resources/desktop/js/grid.coffee:1028
+msgid "_Folder"
+msgstr "_Dossier"
+
+#: ../resources/desktop/js/grid.coffee:1029
+msgid "_Text document"
+msgstr "document _Texte"
+
+#: ../resources/desktop/js/desktopentry.coffee:115
+#: ../resources/desktop/js/desktopentry.coffee:122
+msgid "Co_mpress"
+msgstr "Co_mpresser"
+
+#: ../resources/desktop/js/desktopentry.coffee:118
+#: ../resources/desktop/js/desktopentry.coffee:123
+msgid "_Extract"
+msgstr "_Extraire"
+
+#: ../resources/desktop/js/desktopentry.coffee:119
+#: ../resources/desktop/js/desktopentry.coffee:124
+msgid "Extract _Here"
+msgstr "Extraire_Ici"
+
+#: ../resources/desktop/js/specialitem.coffee:34
+msgid "Computer"
+msgstr ""
+
+#: ../resources/desktop/js/specialitem.coffee:152
+#, fuzzy
+msgid "_Clean up %1 items"
 msgstr "_Nettoyage"
 
-#: ../resources/dock/js/plugins/trash/trash.coffee:33
-msgid "_Close"
-msgstr "_Fermer"
+#: ../resources/desktop/js/specialitem.coffee:154
+#, fuzzy
+msgid "_Clean up 1 item"
+msgstr "_Nettoyage"
+
+#: ../resources/greeter/js/user.coffee:471
+msgid "click login button to log in"
+msgstr "cliquez sur le bouton \"se connecter\" pour vous connecter"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Jan"
+msgstr "Jan"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Feb"
+msgstr "Fév"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Mar"
+msgstr "Mar"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Apr"
+msgstr "Avr"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "May"
+msgstr "Mai"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Jun"
+msgstr "Juin"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Jul"
+msgstr "Juil"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Aug"
+msgstr "Août"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Sep"
+msgstr "Sept"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Oct"
+msgstr "Oct"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Nov"
+msgstr "Nov"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Dec"
+msgstr "Déc"
+
+#: ../resources/greeter/js/usermenu.coffee:57
+msgid "Guest"
+msgstr "Invité"
+
+#: ../resources/greeter/js/powermenu.coffee:26
+msgid "Shut down"
+msgstr "Éteindre "
+
+#: ../resources/greeter/js/powermenu.coffee:27
+msgid "Restart"
+msgstr "Redémarrer "
+
+#: ../resources/greeter/js/powermenu.coffee:28
+msgid "Suspend"
+msgstr "Mise en veille "
+
+#: ../resources/greeter/js/powermenu.coffee:90
+msgid "Enter your password to %1"
+msgstr "Saisissez votre mot de passe pour %1"
+
+#: ../resources/greeter/js/message.coffee:105
+#: ../resources/greeter/js/message.coffee:82
+msgid "$ sudo reboot\n"
+msgstr "$ sudo reboot\n"
+
+#: ../resources/greeter/js/message.coffee:99
+#: ../resources/greeter/js/message.coffee:73
+msgid "Press Ctrl + Alt + F1\n"
+msgstr "Appuyer sur Ctrl + Alt + F1\n"
+
+#: ../resources/greeter/js/message.coffee:95
+msgid ""
+"\t\t\t\t-----The daemon of accounts has not started!-----\n"
+")"
+msgstr ""
+"⇥⇥⇥⇥-----Le démon des comptes ne s'est pas lancé!-----\n"
+")"
+
+#: ../resources/greeter/js/message.coffee:79
+msgid "$ sudo apt-get install deepin-desktop-Environment\n"
+msgstr "$ sudo apt-get install deepin-desktop-Environment\n"
+
+#: ../resources/greeter/js/message.coffee:68
+msgid "\t\t\t\t-----No available desktop sessions!-----\n"
+msgstr "⇥⇥⇥⇥-----Pas de session utilisateur disponible!-----\n"
+
+#: ../resources/greeter/js/mediacontrol.coffee:167
+#, fuzzy
+msgid "Click button to Play"
+msgstr "cliquez sur le bouton \"se connecter\" pour vous connecter"
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
@@ -631,11 +683,15 @@ msgstr ""
 msgid "\"%1\" failed to be uninstalled"
 msgstr ""
 
-#: ../app/desktop/desktop.c:225
+#: ../app/dock/dock.c:322
+msgid "Dock failed to start, because Compiz is not enabled."
+msgstr "Le dock n'a pu démarrer car Compiz n'est pas activé."
+
+#: ../app/desktop/desktop.c:278
 msgid "New file"
 msgstr "Nouveau fichier"
 
-#: ../app/desktop/desktop.c:236
+#: ../app/desktop/desktop.c:289
 msgid "New directory"
 msgstr "Nouveau dossier"
 
@@ -646,10 +702,6 @@ msgstr "%a, %d, %b, %Y"
 #: ../app/greeter/lock.c:125 ../app/greeter/greeter.c:192
 msgid "Invalid Password"
 msgstr "Mot de Passe invalide"
-
-#: ../app/dock/dock.c:330
-msgid "Dock failed to start, because Compiz is not enabled."
-msgstr "Le dock n'a pu démarrer car Compiz n'est pas activé."
 
 #: ../lib/dentry/entry.c:746
 #, c-format
@@ -913,6 +965,9 @@ msgstr "utilitaires"
 #: ../lib/category.c:56
 msgid "others"
 msgstr "autres"
+
+#~ msgid "_Clean up"
+#~ msgstr "_Nettoyage"
 
 #~ msgid "Thanks for your patience to learn.You get the novice package"
 #~ msgstr "Merci pour votre patience, vous disposez de la panoplie novice."
