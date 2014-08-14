@@ -18,6 +18,12 @@ class SystemTray extends SystemItem
         @button.addEventListener('mouseover', @on_mouseover)
         @button.addEventListener('click', @on_button_click)
 
+        if settings and settings.displayMode() != DisplayMode.Modern
+            @isShowing = true
+            @isUnfolded = true # tmp
+        else
+            @isShowing = false
+
         try
             @core = get_dbus(
                 'session',
@@ -32,15 +38,9 @@ class SystemTray extends SystemItem
 
         @items = []
         @clearItems()
-        # console.log("TrayIcons: #{@items}")
-        for item, i in @items
-            # console.log("#{item} add to SystemTray")
-            $EW.create(item, false)
-            # $EW.hide(item)
-            $EW.undraw(item)
 
         @core.connect("Added", (xid)=>
-            console.log("#{xid} is Added")
+            console.log("tray icon: #{xid} is Added, #{@isShowing}")
             @items.unshift(xid) if @items.indexOf(xid) == -1
             $EW.create(xid, true)
             if @isShowing
@@ -126,6 +126,8 @@ class SystemTray extends SystemItem
 
 
         @updateTrayIcon()
+
+        @core.RetryManager_sync()
 
     clearItems:->
         if Array.isArray @core.TrayIcons

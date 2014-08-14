@@ -20,7 +20,6 @@ SET(SRC_LIST
 	draw.c
 	region.c
 	monitor.c
-	trayicons.c
 	${JSC_GEN} ${DBUS_GEN})
 
 add_executable(${NAME} ${SRC_LIST})

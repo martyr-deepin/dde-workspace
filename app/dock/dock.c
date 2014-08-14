@@ -35,7 +35,6 @@
 #include "DBUS_dock.h"
 #include "monitor.h"
 #include "display_info.h"
-#include "trayicons.h"
 #include "session_register.h"
 
 #define DOCK_CONFIG "dock/config.ini"
@@ -331,7 +330,6 @@ void dock_emit_webview_ok()
         inited = TRUE;
         init_config();
         init_dock_guard_window();
-        require_manager_trayicons();
     }
 
     g_warning("[%s]", __func__);
