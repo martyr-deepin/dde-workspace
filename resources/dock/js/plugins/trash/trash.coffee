@@ -31,11 +31,14 @@ class Trash extends PostfixedItem
         menu.unregisterHook(handleMenuUnregister)
         if @is_opened
             menu.append(new MenuItem(2, _("_Close")))
+        screenOffset =
+            x: e.screenX - e.pageX
+            y: e.screenY - e.pageY
         xy = get_page_xy(@element)
         # echo menu
         menu.addListener(@on_itemselected).showMenu(
-            xy.x + (@element.clientWidth / 2),
-            xy.y + OFFSET_DOWN,
+            xy.x + (@element.clientWidth / 2) + screenOffset.x,
+            xy.y + screenOffset.y,
             DEEPIN_MENU_CORNER_DIRECTION.DOWN
         )
 

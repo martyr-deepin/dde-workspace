@@ -118,7 +118,6 @@ ANALOG_CLOCK =
     'id':'dde_analog_clock'
     'type': "analog"
 
-OFFSET_DOWN = 7
 DEEPIN_APPTRAY = "dapptray"
 NOTIFY_FLAG = "img/bage.svg"
 
