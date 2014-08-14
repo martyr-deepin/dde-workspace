@@ -7,12 +7,13 @@ class Time extends SystemItem
         for name in ['hourHeight', 'hourLow', 'minHeight', 'minLow']
             @loadBit(name)
 
-        @timeContent = create_element(tag:'div', id:"timeContent")
-        @element.insertBefore(@timeContent, @imgWarp)
+        timeWarp = create_element(tag:'div', id:'timeWarp')
+        @timeContent = create_element(tag:'div', id:"timeContent", timeWarp)
+        @element.insertBefore(timeWarp, @imgWarp)
 
-        @element.addEventListener("mouseover", @on_mouseover)
-        @element.addEventListener("mouseout", @on_mouseout)
-        @element.addEventListener("click", @on_mouseup)
+        timeWarp.addEventListener("mouseover", @on_mouseover)
+        timeWarp.addEventListener("mouseout", @on_mouseout)
+        timeWarp.addEventListener("click", @on_mouseup)
 
         @update_time()
         @update_id = setInterval(@update_time, 1000)

@@ -652,7 +652,7 @@ class AppItem extends Item
 
     on_mouseout:(e)=>
         super
-        console.log("mouseout")
+        console.log("#{@id} mouseout")
         clearTimeout(@showEmWindowTimer)
         if @isNormal()
             if Preview_container.is_showing

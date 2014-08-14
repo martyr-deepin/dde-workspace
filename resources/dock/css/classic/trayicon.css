@@ -17,6 +17,12 @@
   margin-left: 8px;
 }
 
+#timeWarp {
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
+}
+
 #time .imgWarp {
   display: none;
 }
