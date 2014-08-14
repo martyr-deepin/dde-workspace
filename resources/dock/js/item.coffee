@@ -627,6 +627,8 @@ class AppItem extends Item
                     extraHeight = PREVIEW_TRIANGLE.height + 6 + PREVIEW_WINDOW_BORDER_WIDTH + PREVIEW_CONTAINER_BORDER_WIDTH + size.height
                     # console.log("Preview_show callback: #{c}")
                     x = xy.x + w/2 - size.width/2
+                    if x + size.width > screen.width
+                        x -= x + size.width - screen.width + PREVIEW_WINDOW_BORDER_WIDTH + PREVIEW_CONTAINER_BORDER_WIDTH + PREVIEW_SHADOW_BLUR
                     y = xy.y - extraHeight
                     # console.log("Move Window to #{x}, #{y}")
                     ew.move(ew.xids[0], x, y)
