@@ -135,7 +135,7 @@ void dock_force_set_region(double x, double y, double items_width, double panel_
     } else {
         g_debug("[%s] set region to 2 union block", __func__);
 
-        cairo_rectangle_int_t tmp = {
+        cairo_rectangle_int_t item_region = {
             (int)x + _base_rect.x,
             (int)y + _base_rect.y,
             (int)items_width,
@@ -143,15 +143,15 @@ void dock_force_set_region(double x, double y, double items_width, double panel_
         };
 
         g_debug("[%s] dock items region: x: %d, y: %d, width: %d, height: %d",
-                __func__, tmp.x, tmp.y, tmp.width, tmp.height);
+                __func__, item_region.x, item_region.y, item_region.width, item_region.height);
 
         cairo_rectangle_int_t dock_board_rect = _base_rect;
         if (GD.config.display_mode == CLASSIC_MODE) {
             dock_board_rect.x = 0;
         } else {
-            dock_board_rect.x = tmp.x - (panel_width - items_width) / 2;
+            dock_board_rect.x = item_region.x - (panel_width - items_width) / 2;
         }
-        dock_board_rect.y = tmp.y + GD.dock_height - GD.dock_panel_height;
+        dock_board_rect.y = item_region.y + GD.dock_height - GD.dock_panel_height;
         dock_board_rect.height = GD.dock_panel_height;
         dock_board_rect.width = (int)panel_width;
 
@@ -163,7 +163,7 @@ void dock_force_set_region(double x, double y, double items_width, double panel_
                 dock_board_rect.height);
 
         _region = cairo_region_create_rectangle(&dock_board_rect);
-        cairo_region_union_rectangle(_region, &tmp);
+        cairo_region_union_rectangle(_region, &item_region);
     }
 
     do_window_shape_combine_region(_region);

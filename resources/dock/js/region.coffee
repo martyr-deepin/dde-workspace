@@ -32,13 +32,15 @@ calc_app_item_size = ->
 
 update_dock_region = do->
     lastWidth = null
-    (w, h=DOCK_HEIGHT)->
+    (w, h)->
+        settings?.updateSize(settings.displayMode())
+        h = DOCK_HEIGHT unless h
         if w
             lastWidth = w
         else if lastWidth
             w = lastWidth
         # console.log("width: #{w}")
-        console.log("[update_dock_region] last Width: #{lastWidth}, w: #{w}, height: #{h}")
+        console.log("[update_dock_region] last Width: #{lastWidth}, item width: #{w}, height: #{h}")
         apps = $s(".AppItem")
         if apps.length > 0
             if w
@@ -54,14 +56,17 @@ update_dock_region = do->
                     # console.log("set dock region height to #{DOCK_HEIGHT}")
                     # if setting.hideMode() != HideMode.Showing
                     #     h = 0
-            DCore.Dock.force_set_region(left_offset, 0, ICON_SCALE * ITEM_WIDTH * apps.length, panel_width, h)
+            # console.warn("[update_dock_region] last Width: #{lastWidth}, item width: #{w}, height: #{h}, left_offset: #{left_offset}")
+            DCore.Dock.force_set_region(left_offset, 0, w, panel_width, h)
         else
             console.warn("[update_dock_region] $s('.AppItem').length == 0")
 
 _b.onresize = ->
     calc_app_item_size()
+    # console.warn("[body.onresize] update_dock_region")
     update_dock_region($("#container").clientWidth)
 
 clearRegion = ->
     DCore.Dock.set_is_hovered(false)
+    # console.warn("[clearRegion] update_dock_region")
     update_dock_region()

@@ -64,6 +64,7 @@ class Item extends Widget
         else
             @container?.appendChild?(@element)
 
+        # console.warn("Item.ctor")
         update_dock_region($("#container").clientWidth)
 
     change_icon: (src)->
@@ -140,6 +141,7 @@ class Item extends Widget
     on_rightclick:(e)=>
         _isRightclicked = true
         DCore.Dock.set_is_hovered(false)
+        # console.warn("[Item.on_rightclick] update_dock_region")
         update_dock_region($("#container").clientWidth)
         e.preventDefault()
         e.stopPropagation()
@@ -164,6 +166,7 @@ class Item extends Widget
         e.preventDefault()
         console.log(@id + ' dragend')
         clearTimeout(@removeTimer || null)
+        # console.warn("[Item.on_dragend] update_dock_region")
         update_dock_region()
         _lastHover?.reset()
         @element.style.position = ''
@@ -294,6 +297,7 @@ class Item extends Widget
     on_dragleave: (e)=>
         console.log("dragleave")
         clearTimeout(activeWindowTimer)
+        # console.warn("[Item.on_dragleave] update_dock_region")
         update_dock_region()
         e.preventDefault()
         e.stopPropagation()
@@ -323,6 +327,7 @@ class Item extends Widget
             fileList = tmp_list.join()
             console.log("drop to open: #{fileList}")
             @core?.onDrop(fileList)
+        # console.warn("[Item.on_drop] update_dock_region")
         update_dock_region()
 
 
@@ -537,6 +542,7 @@ class AppItem extends Item
             super
             @destroy_tooltip()
             calc_app_item_size()
+            # console.warn("[AppItem.destroy] update_dock_region")
             update_dock_region($("#container").clientWidth)
         else
             if Preview_container._current_group && @id == Preview_container._current_group.id
@@ -657,10 +663,12 @@ class AppItem extends Item
                 DCore.Dock.require_all_region()
                 normal_mouseout_id = setTimeout(->
                     console.log("showing, update dock region")
+                    # console.warn("[AppItem.on_mouseout] update_dock_region")
                     update_dock_region()
                 , 1000)
             else
                 console.log("normal mouseout, preview window is NOT showing")
+                # console.warn("[AppItem.on_mouseout] update_dock_region")
                 update_dock_region()
                 normal_mouseout_id = setTimeout(->
                     hideStatusManager.updateState()
@@ -674,6 +682,7 @@ class AppItem extends Item
                 console.log "Preview_container is not showing"
                 # calc_app_item_size()
                 hide_id = setTimeout(=>
+                    # console.warn("[AppItem.on_mouseout] update_dock_region")
                     update_dock_region()
                     hideStatusManager.updateState()
                     # @embedWindows?.hide()
@@ -682,6 +691,7 @@ class AppItem extends Item
                 console.log "item mouseout, Preview_container is showing"
                 DCore.Dock.require_all_region()
                 hide_id = setTimeout(=>
+                    # console.warn("[AppItem.on_mouseout] update_dock_region")
                     update_dock_region()
                     Preview_close_now(@)
                     hideStatusManager.updateState()

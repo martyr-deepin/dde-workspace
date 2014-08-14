@@ -15,7 +15,7 @@ switchToClassicMode = ->
     for own k, v of $DBus
         item = Widget.look_up(k)
         if item and item.isApp?()
-            console.log("#{item.id} switch to classic mode")
+            # console.log("#{item.id} switch to classic mode")
             item.openIndicator.src = CLASSIC_ACTIVE_IMG
             item.hoverIndicator.src = CLASSIC_ACTIVE_HOVER_IMG
 
@@ -30,15 +30,16 @@ switchToModernMode = ->
     for own k, v of $DBus
         item = Widget.look_up(k)
         if item and item.isApp?()
-            console.log("#{item.id} switch to modern mode")
+            # console.log("#{item.id} switch to modern mode")
             item.openIndicator.src = OPEN_INDICATOR
             item.hoverIndicator.src = OPEN_INDICATOR
 
 update_dock=->
-    console.log("panel #{Panel.getPanelMiddleWidth()}")
+    console.log("[update_dock] panel #{Panel.getPanelMiddleWidth()}")
 
     panel.set_height(PANEL_HEIGHT)
     panel.set_width(Panel.getPanelMiddleWidth())
+    # console.log("[update_dock] update_dock_region")
     update_dock_region(Panel.getPanelMiddleWidth())
 
     panel.redraw()

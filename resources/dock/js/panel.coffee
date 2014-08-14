@@ -54,6 +54,7 @@ class Panel
         if @inEffectivePanelWorkarea(e.clientX, e.clientY)
             show_desktop.toggle()
             calc_app_item_size()
+            # console.warn("[Panel.on_click] update_dock_region")
             update_dock_region()
             Preview_close_now(_lastCliengGroup)
 
@@ -138,14 +139,15 @@ class Panel
                 Widget.look_up("le_#{appid}")?.notify()
 
     updateWithAnimation:=>
-        # console.warn("panel update with animation")
         @cancelAnimation()
+        console.warn("[Panel.updateWithAnimation] update_dock_region")
         update_dock_region($("#container").clientWidth)
         panel.set_width(Panel.getPanelMiddleWidth())
         @calcTimer = webkitRequestAnimationFrame(@updateWithAnimation)
 
     cancelAnimation:=>
         webkitCancelAnimationFrame(@calcTimer || null)
+        console.warn("[Panel.cancelAnimation] update_dock_region")
         update_dock_region($("#container").clientWidth)
 
     # TODO: remove it.

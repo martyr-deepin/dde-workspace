@@ -183,6 +183,7 @@ class SystemTray extends SystemItem
     updatePanel:=>
         calc_app_item_size()
         # panel.set_width($("#container").clientWidth)
+        # console.warn("[SystemTray.updatePanel] update_dock_region")
         update_dock_region($("#container").clientWidth)
         @calcTimer = webkitRequestAnimationFrame(@updatePanel)
 
@@ -236,6 +237,7 @@ class SystemTray extends SystemItem
         # super
         DCore.Dock.set_is_hovered(false)
         clearTimeout(@showEmWindowTimer)
+        # console.warn("[SystemTray.on_mouseout] update_dock_region")
         update_dock_region()
         hideStatusManager?.updateState()
         if @isUnfolded
@@ -263,12 +265,14 @@ class SystemTray extends SystemItem
                 webkitCancelAnimationFrame(@calcTimer)
                 @updateTrayIcon()
                 @showAllIcons()
+                # console.warn("[SystemTray.unfold] update_dock_region")
                 update_dock_region()
                 console.log("update dock region")
             , ANIMATION_TIME)
         else
             webkitCancelAnimationFrame(@calcTimer)
             @showAllIcons()
+            # console.warn("[SystemTray.unfold] update_dock_region")
             update_dock_region()
 
     fold: (e)=>
@@ -287,6 +291,7 @@ class SystemTray extends SystemItem
                 @img.style.display = ''
                 @panel.style.display = 'none'
                 webkitCancelAnimationFrame(@calcTimer)
+                # console.warn("[SystemTray.fold] update_dock_region")
                 update_dock_region()
             , ANIMATION_TIME)
         else
@@ -294,6 +299,7 @@ class SystemTray extends SystemItem
             @img.style.display = ''
             @panel.style.display = 'none'
             webkitCancelAnimationFrame(@calcTimer)
+            # console.warn("[SystemTray.fold] update_dock_region")
             update_dock_region()
 
         @hideButton()
@@ -313,6 +319,7 @@ class SystemTray extends SystemItem
         e.preventDefault()
         e.stopPropagation()
         DCore.Dock.set_is_hovered(false)
+        # console.warn("[SystemTray.on_rightclick] update_dock_region")
         update_dock_region($("#container").clientWidth)
         Preview_close_now()
 

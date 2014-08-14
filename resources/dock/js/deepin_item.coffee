@@ -23,10 +23,12 @@ class Applet extends Item
             DCore.Dock.require_all_region()
             normal_mouseout_id = setTimeout(->
                 calc_app_item_size()
+                # console.warn("[Applet.on_mouseout] update_dock_region")
                 update_dock_region()
             , 1000)
         else
             calc_app_item_size()
+            # console.warn("[Applet.on_mouseout] update_dock_region")
             update_dock_region()
             setTimeout(->
                 # DCore.Dock.update_hide_mode()

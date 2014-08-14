@@ -28,6 +28,7 @@ class HideStatusManager
             switch state
                 when HideState.Showing
                     clearTimeout(changeToHideTimer)
+                    # console.warn("[HideStateManager.changeDockRegion] update_dock_region")
                     update_dock_region()
                     @changeToShow()
                 when HideState.Hidding
@@ -107,5 +108,6 @@ class HideStatusManager
             # update_dock_region(null, regionHeight)
 
         console.log("set workarea height to #{regionHeight}")
+        # console.warn("[HideStateManager.changeDockRegion] update_dock_region")
         update_dock_region(null, regionHeight)
         # c code handles workarea height

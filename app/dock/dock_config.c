@@ -22,15 +22,20 @@
  **/
 #include <gtk/gtk.h>
 #include "dock_config.h"
+#include "display_info.h"
+#include "jsextension.h"
 
 #define SCHEMA_ID "com.deepin.dde.dock"
 #define HIDE_MODE_KEY "hide-mode"
 #define DISPLAY_MODE_KEY "display-mode"
 
 
+extern struct DisplayInfo dock;
 struct _GlobalData GD;
 void dock_update_hide_mode();
 void _change_workarea_height(int height);
+gboolean workaround_change_workarea_height(int height);
+void dock_force_set_region(double x, double y, double items_width, double panel_width, double height);
 
 #define MODERN_DOCK_HEIGHT 68
 #define MODERN_DOCK_PANEL_HEIGHT 60
@@ -58,11 +63,17 @@ void setting_changed(GSettings* s, gchar* key, gpointer user_data G_GNUC_UNUSED)
             GD.dock_panel_height = MODERN_DOCK_PANEL_HEIGHT;
         }
 
+        // _base_rect and workarea should be updated,
+        // workaround_change_workarea_height will do it.
         if (GD.config.hide_mode == NO_HIDE_MODE ) {
-            _change_workarea_height(GD.dock_height);
+            workaround_change_workarea_height(GD.dock_height);
         } else {
-            _change_workarea_height(0);
+            workaround_change_workarea_height(0);
         }
+
+        // update dock region, otherwise, the effective input region is a
+        // rectangle with screen width.
+        js_post_signal("display-mode-changed");
     }
 }
 

@@ -48,6 +48,7 @@ class AppList
         _lastHover?.reset()
         dt = e.dataTransfer
         DCore.Dock.set_is_hovered(false)
+        # console.warn("[AppList.on_drop] update_dock_region")
         update_dock_region()
         if dnd_is_desktop(e)
             # console.log("is desktop")
@@ -82,6 +83,7 @@ class AppList
             sortDockedItem()
 
         updatePanel()
+        # console.warn("[AppList.on_drop] update_dock_region")
         update_dock_region()
 
     on_dragover: (e) =>
@@ -92,6 +94,7 @@ class AppList
     on_dragleave: (e)=>
         clearTimeout(showIndicatorTimer)
         console.log("app_list dragleave")
+        # console.warn("[AppList.on_dragleave] update_dock_region")
         update_dock_region()
         e.stopPropagation()
         e.preventDefault()
