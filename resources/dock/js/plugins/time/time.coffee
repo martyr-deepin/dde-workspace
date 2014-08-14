@@ -48,10 +48,12 @@ class Time extends SystemItem
 
     on_mouseover:=>
         super
+        @hide_open_indicator()
         # @set_tooltip((new Date()).toLocaleDateString())
 
     on_mouseout:=>
         super
+        @hide_open_indicator()
 
     on_mouseup:(e)=>
         super
