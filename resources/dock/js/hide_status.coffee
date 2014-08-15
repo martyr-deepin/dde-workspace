@@ -34,11 +34,15 @@ class HideStatusManager
             switch trigger
                 when Trigger.Show
                     clearTimeout(changeToHideTimer)
+                    if @state == HideState.Shown
+                        return
                     if debugRegion
-                        console.warn("[HideStateManager.changeDockRegion] update_dock_region")
+                        console.warn("[ChangeState] update_dock_region")
                     update_dock_region()
                     @changeToShow()
                 when Trigger.Hide
+                    if @state == HideState.Hidden
+                        return
                     if _dropped
                         clearTimeout(changeToHideTimer)
                         changeToHideTimer = setTimeout(=>
@@ -50,8 +54,12 @@ class HideStatusManager
                         @changeToHide()
         )
 
+        _CW.addEventListener("webkitTransitionEnd", (e)=>
+            @changeDockRegion()
+        )
+
     setState: (state)->
-        console.warn("set state to #{HideStateMap[state]}")
+        console.log("set state to #{HideStateMap[state]}")
         @state = state
         @dbus?.SetState(state)
 
@@ -65,17 +73,19 @@ class HideStatusManager
 
     changeState: (state, cw, panel)->
         if DCore.Dock.is_hovered()
-            console.log("changeState dock is hovered")
+            console.log("[changeState] dock is hovered")
             return
+
         @setState(state)
+
+        # clearTimeout(changeDockRegionTimer)
+        # changeDockRegionTimer = setTimeout(@changeDockRegion, SHOW_HIDE_ANIMATION_TIME)
+
         _CW.style.webkitTransform = cw
         $("#panel").style.webkitTransform = panel
         switch settings.displayMode()
             when DisplayMode.Efficient, DisplayMode.Classic
                 $("#trayarea").style.webkitTransform = cw
-
-        clearTimeout(changeDockRegionTimer)
-        changeDockRegionTimer = setTimeout(@changeDockRegion, SHOW_HIDE_ANIMATION_TIME)
 
     changeToHide:()->
         console.log("changeToHide: change to hide")

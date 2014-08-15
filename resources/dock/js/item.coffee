@@ -116,12 +116,13 @@ class Item extends Widget
         # clearRegion()
 
     on_mouseover:(e)=>
+        @destroy_tooltip()
         @on_mousemove(e)
 
         if _isRightclicked || settings.hideMode() != HideMode.KeepShowing and hideStatusManager.state != HideState.Shown
-            console.log("_isRightclicked: #{_isRightclicked}")
-            console.log("hide mode is keep-showing: #{settings.hideMode() != HideMode.KeepShowing}")
-            console.log("hide state is not Shown: #{hideStatusManager.state != HideState.Shown}")
+            console.warn("_isRightclicked: #{_isRightclicked}")
+            console.warn("hide mode is keep-showing: #{settings.hideMode() == HideMode.KeepShowing}")
+            console.warn("hide state is not Shown: #{hideStatusManager.state != HideState.Shown}")
             $tooltip?.hide()
             return
         console.log("mouseover, require_all_region")
@@ -143,13 +144,15 @@ class Item extends Widget
         update_dock_region($("#container").clientWidth)
         e.preventDefault()
         e.stopPropagation()
-        @tooltip?.hide()
+        # @tooltip?.hide()
+        @destroy_tooltip()
 
     on_mousedown:(e)=>
         if e.button != 0
             return
         Preview_close_now()
-        @tooltip?.hide()
+        # @tooltip?.hide()
+        @destroy_tooltip()
         @displayIcon('dark')
 
     on_mouseup:(e)=>
@@ -217,7 +220,8 @@ class Item extends Widget
         DCore.Dock.require_all_region()
         return if @is_fixed_pos
         if @isNormal()
-            @tooltip?.hide()
+            # @tooltip?.hide()
+            @destroy_tooltip()
         dt = e.dataTransfer
         dt.setData(DEEPIN_ITEM_ID, @id)
         console.log("DEEPIN_ITEM_ID: #{@id}")
@@ -416,7 +420,7 @@ class AppItem extends Item
                         v = DCore.get_theme_icon(value, 48)
                         @change_icon(v)
                 when ITEM_DATA_FIELD.title
-                    @set_tooltip(value)
+                    @set_tooltip(value || "Unknown")
         )
 
     hide_open_indicator:->
@@ -576,8 +580,12 @@ class AppItem extends Item
         super
         if _isRightclicked || settings.hideMode() != HideMode.KeepShowing and hideStatusManager.state != HideState.Shown
             console.log("hide state is not Shown")
+            @destroy_tooltip()
+            # $tooltip?.hide()
             return
+        console.warn("#{@isNormal()} || #{@isNormalApplet()}")
         if @isNormal() || @isNormalApplet()
+            @set_tooltip(@core.title() || "Unknown")
             console.log("app item is normal")
             clearTimeout(hide_id)
             closePreviewWindowTimer = setTimeout(->
@@ -666,6 +674,7 @@ class AppItem extends Item
                     console.warn("[AppItem.on_mouseout] update_dock_region")
                 update_dock_region()
                 normal_mouseout_id = setTimeout(->
+                    console.warn("update dock hide state")
                     hideStatusManager.updateState()
                 , 500)
         else
@@ -680,6 +689,7 @@ class AppItem extends Item
                     if debugRegion
                         console.warn("[AppItem.on_mouseout] update_dock_region")
                     update_dock_region()
+                    console.warn("update dock hide state")
                     hideStatusManager.updateState()
                     # @embedWindows?.hide()
                 , 300)
@@ -691,6 +701,7 @@ class AppItem extends Item
                         console.warn("[AppItem.on_mouseout] update_dock_region")
                     update_dock_region()
                     Preview_close_now(@)
+                    console.warn("update dock hide state")
                     hideStatusManager.updateState()
                 , 1000)
 

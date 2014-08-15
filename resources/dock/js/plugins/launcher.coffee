@@ -1,5 +1,5 @@
 class LauncherItem extends PrefixedItem
-    constructor: (@id, icon, title)->
+    constructor: (@id, icon, @title)->
         super
         @element.classList.add("Activator")
         @set_tooltip(title)
@@ -9,6 +9,10 @@ class LauncherItem extends PrefixedItem
         DCore.signal_connect("launcher_destroy", =>
             @show(false)
         )
+
+    on_mouseover:(e)=>
+        super
+        @set_tooltip(@title)
 
     on_mouseup: (e)=>
         super

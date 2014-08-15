@@ -1,7 +1,7 @@
 dialog = null
 
 class Trash extends PostfixedItem
-    constructor:(@id, icon, title)->
+    constructor:(@id, icon, @title)->
         super
         # @imgContainer.draggable = true
         @set_tooltip(title)
@@ -19,6 +19,10 @@ class Trash extends PostfixedItem
         DCore.signal_connect("trash_count_changed", (info)=>
             @update(info.value)
         )
+
+    on_mouseover:(e)=>
+        super
+        @set_tooltip(@title)
 
     on_rightclick: (e)=>
         super
