@@ -476,6 +476,7 @@ void primary_changed_handler(GDBusConnection* conn G_GNUC_UNUSED,
     struct DisplayInfo* rect = (struct DisplayInfo*)data;
     g_variant_get(parameters, "((nnqq))", &rect->x, &rect->y, &rect->width, &rect->height);
     _update_dock_size(rect->x, rect->y, rect->width, rect->height);
+    js_post_signal("resolution-changed");
 }
 
 

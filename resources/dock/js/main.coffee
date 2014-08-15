@@ -1,11 +1,15 @@
 DCore.signal_connect("message_notify", (info)->)
 DCore.signal_connect("display-mode-changed", ->
-    # console.warn("display-mode-changed")
+    console.log("display-mode-changed")
     if settings
         settings.updateSize(settings.displayMode())
     if debugRegion
         console.warn("[display-mode-changed] update_dock_region")
     update_dock_region(Panel.getPanelMiddleWidth())
+)
+DCore.signal_connect("resolution-changed", ->
+    console.log("resolution-changed")
+    systemTray?.updateTrayIcon()
 )
 
 DCore.signal_connect("embed_window_configure_changed", (info)->
