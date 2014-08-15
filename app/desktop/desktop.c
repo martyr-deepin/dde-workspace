@@ -697,6 +697,8 @@ void desktop_emit_webview_ok()
         setup_root_window_watcher(container, dock_gsettings);
     }
     update_workarea_size (dock_gsettings);
+    //check dock display-mode first and set desktop_gsettings
+    dock_display_mode_changed(dock_gsettings);
     dde_session_register();
 }
 
