@@ -142,6 +142,7 @@ gboolean enter_notify(GtkWidget* w G_GNUC_UNUSED,
         if (is_mouse_in_dock()) {
             g_debug("enter dock");
             update_hide_state();
+            dbus_dock_daemon_cancel_toggle_show();
         }
     }
 

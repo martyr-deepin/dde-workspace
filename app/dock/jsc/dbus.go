@@ -37,6 +37,10 @@ func main() {
 			Callback("UpdateState"),
 			// Arg("tmp:gboolean"),
 		),
+		Method(
+			"dbus_dock_daemon_cancel_toggle_show",
+			Callback("CancelToggleShow"),
+		),
 	)
 	OUTPUT_END()
 }
