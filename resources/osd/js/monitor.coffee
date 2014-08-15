@@ -56,7 +56,8 @@ class Monitor extends Display
 
     switchDisplayMode:(mode)->
         value = mode.value
-        echo "SwitchMode(#{value});mode.name:#{mode.name};"
+        value = DEFAULT_DISPLAY_MODE if value > @MonitorsName.length or value < MODE.min
+        echo "SwitchMode(#{value})"
         cmd = "dbus-send --dest=com.deepin.daemon.Display --type=method_call /com/deepin/daemon/Display com.deepin.daemon.Display.SwitchMode int16:#{value}"
         DCore.Osd.spawn_command(cmd)
 
