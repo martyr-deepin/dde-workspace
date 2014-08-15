@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-14 20:53+0800\n"
+"POT-Creation-Date: 2014-08-15 17:51+0800\n"
 "PO-Revision-Date: 2014-07-02 12:04+0000\n"
 "Last-Translator: cxbii <chenxiangbang@linuxdeepin.com>\n"
 "Language-Team: Slovak (http://www.transifex.com/projects/p/deepin-desktop-"
@@ -95,7 +95,7 @@ msgid "Computer"
 msgstr ""
 
 #: ../resources/desktop/js/specialitem.coffee:87
-#: ../resources/dock/js/main.coffee:161 ../resources/dock/js/main.coffee:236
+#: ../resources/dock/js/main.coffee:168 ../resources/dock/js/main.coffee:245
 msgid "Trash"
 msgstr "Kôš"
 
@@ -403,7 +403,7 @@ msgstr ""
 msgid "All Windows"
 msgstr ""
 
-#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:234
+#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:243
 msgid "Launcher"
 msgstr "Spúšťač"
 
@@ -522,7 +522,7 @@ msgid "Start"
 msgstr "Spustiť"
 
 #: ../resources/guide/js/start.coffee:51
-msgid "I am older. Exit directly."
+msgid "I am an experienced user. Exit directly."
 msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:29
@@ -631,7 +631,7 @@ msgstr "%a, %b %d, %Y"
 msgid "Invalid Password"
 msgstr "Nesprávne heslo"
 
-#: ../app/dock/dock.c:321
+#: ../app/dock/dock.c:322
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr ""
 

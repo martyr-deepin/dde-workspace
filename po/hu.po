@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-14 20:53+0800\n"
+"POT-Creation-Date: 2014-08-15 17:51+0800\n"
 "PO-Revision-Date: 2014-07-03 05:01+0000\n"
 "Last-Translator: Laszlo Espadas <kw@kardiweb.org>\n"
 "Language-Team: Hungarian (http://www.transifex.com/projects/p/deepin-desktop-"
@@ -96,7 +96,7 @@ msgid "Computer"
 msgstr ""
 
 #: ../resources/desktop/js/specialitem.coffee:87
-#: ../resources/dock/js/main.coffee:161 ../resources/dock/js/main.coffee:236
+#: ../resources/dock/js/main.coffee:168 ../resources/dock/js/main.coffee:245
 msgid "Trash"
 msgstr "Lomtár"
 
@@ -401,7 +401,7 @@ msgstr "Rendszerbeállítások "
 msgid "All Windows"
 msgstr "Összes ablak"
 
-#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:234
+#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:243
 msgid "Launcher"
 msgstr "Indító"
 
@@ -520,7 +520,7 @@ msgid "Start"
 msgstr "Start"
 
 #: ../resources/guide/js/start.coffee:51
-msgid "I am older. Exit directly."
+msgid "I am an experienced user. Exit directly."
 msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:29
@@ -629,7 +629,7 @@ msgstr ""
 msgid "Invalid Password"
 msgstr "Hibás jelszó"
 
-#: ../app/dock/dock.c:321
+#: ../app/dock/dock.c:322
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr ""
 

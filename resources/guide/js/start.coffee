@@ -48,7 +48,7 @@ class Start extends Page
         @start.element.style.marginTop = "2em"
 
         @older = create_element("div","older",@element)
-        @older.innerText = _("I am older. Exit directly.")
+        @older.innerText = _("I am an experienced user. Exit directly.")
         @older.addEventListener("click",(e) =>
             e.stopPropagation()
             enableZoneDetect(true)

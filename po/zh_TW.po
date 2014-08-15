@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-14 20:53+0800\n"
+"POT-Creation-Date: 2014-08-15 17:51+0800\n"
 "PO-Revision-Date: 2014-07-05 19:02+0000\n"
 "Last-Translator: electricface <songwentai@linuxdeepin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/deepin-"
@@ -96,7 +96,7 @@ msgid "Computer"
 msgstr "計算機"
 
 #: ../resources/desktop/js/specialitem.coffee:87
-#: ../resources/dock/js/main.coffee:161 ../resources/dock/js/main.coffee:236
+#: ../resources/dock/js/main.coffee:168 ../resources/dock/js/main.coffee:245
 msgid "Trash"
 msgstr "回收筒"
 
@@ -400,7 +400,7 @@ msgstr "控制中心"
 msgid "All Windows"
 msgstr "所有窗口"
 
-#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:234
+#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:243
 msgid "Launcher"
 msgstr "啟動器"
 
@@ -521,7 +521,7 @@ msgid "Start"
 msgstr "開始"
 
 #: ../resources/guide/js/start.coffee:51
-msgid "I am older. Exit directly."
+msgid "I am an experienced user. Exit directly."
 msgstr "我是老手，直接退出"
 
 #: ../resources/guide/js/launcher.coffee:29
@@ -634,7 +634,7 @@ msgstr "%Y年%b月%d日 %a"
 msgid "Invalid Password"
 msgstr "密碼錯誤"
 
-#: ../app/dock/dock.c:321
+#: ../app/dock/dock.c:322
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr "由於 Compiz 程序未啓用，任務欄啓動失敗"
 

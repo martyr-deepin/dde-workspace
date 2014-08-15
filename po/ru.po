@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-14 20:53+0800\n"
+"POT-Creation-Date: 2014-08-15 17:51+0800\n"
 "PO-Revision-Date: 2014-07-03 17:01+0000\n"
 "Last-Translator: Fox909 <ffox909@mail.ru>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/deepin-desktop-"
@@ -99,7 +99,7 @@ msgid "Computer"
 msgstr ""
 
 #: ../resources/desktop/js/specialitem.coffee:87
-#: ../resources/dock/js/main.coffee:161 ../resources/dock/js/main.coffee:236
+#: ../resources/dock/js/main.coffee:168 ../resources/dock/js/main.coffee:245
 msgid "Trash"
 msgstr "Корзина"
 
@@ -410,7 +410,7 @@ msgstr "Центр управления"
 msgid "All Windows"
 msgstr "Все окна"
 
-#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:234
+#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:243
 msgid "Launcher"
 msgstr "Лаунчер"
 
@@ -549,8 +549,7 @@ msgid "Start"
 msgstr "Начать"
 
 #: ../resources/guide/js/start.coffee:51
-#, fuzzy
-msgid "I am older. Exit directly."
+msgid "I am an experienced user. Exit directly."
 msgstr "Я старше, выйти напрямую"
 
 #: ../resources/guide/js/launcher.coffee:29
@@ -678,7 +677,7 @@ msgstr "%a, %b %d, %Y"
 msgid "Invalid Password"
 msgstr "Неверный пароль"
 
-#: ../app/dock/dock.c:321
+#: ../app/dock/dock.c:322
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr "Ошибка запуска панели: отключён плагин Compiz"
 
