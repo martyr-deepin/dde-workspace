@@ -1,4 +1,5 @@
 mode = "argv"
+signal_old = null
 
 check_mediakey_signal= ->
     #MediaKey DBus
@@ -14,9 +15,10 @@ check_mediakey_signal= ->
         if signal isnt "SwitchMonitors"
             DBusMediaKey?.connect(signal, do (signal_each = signal)->
                 (keydown)->
+                    allElsHide() if signal_old isnt signal
+                    signal_old = signal
                     echo signal_each + "-------callback"
                     mode = "dbus"
-                    allElsHide()
                     osd[signal_each](keydown)
             )
 
