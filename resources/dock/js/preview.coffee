@@ -288,7 +288,8 @@ class PWContainer extends Widget
         # Object.keys(@_current_pws).forEach((w_id)->
         #     Widget.look_up("pw"+w_id)?.destroy()
         # )
-        # console.warn("[PWContainer.close] update_dock_region")
+        if debugRegion
+            console.warn("[PWContainer.close] update_dock_region")
         update_dock_region()
 
     show_group: (group, allocation, cb)->
@@ -360,11 +361,13 @@ Preview_close_now = (client)->
         else
             console.log("no tooltip, not hovered")
             DCore.Dock.set_is_hovered(false)
-        # console.warn("[Preview_close_now.close_timer] update_dock_region")
+        if debugRegion
+            console.warn("[Preview_close_now.close_timer] update_dock_region")
         update_dock_region(Panel.getPanelMiddleWidth())
     , 300)
     _previewCloseUpdateStateTimer = setTimeout(->
-        # console.warn("[Preview_close_now.update_state_timer] update_dock_region")
+        if debugRegion
+            console.warn("[Preview_close_now.update_state_timer] update_dock_region")
         update_dock_region(Panel.getPanelMiddleWidth())
         hideStatusManager.updateState()
     , 500)

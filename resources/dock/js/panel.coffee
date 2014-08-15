@@ -54,7 +54,8 @@ class Panel
         if @inEffectivePanelWorkarea(e.clientX, e.clientY)
             show_desktop.toggle()
             calc_app_item_size()
-            # console.warn("[Panel.on_click] update_dock_region")
+            if debugRegion
+                console.warn("[Panel.on_click] update_dock_region")
             update_dock_region()
             Preview_close_now(_lastCliengGroup)
 

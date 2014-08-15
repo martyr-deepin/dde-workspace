@@ -34,7 +34,7 @@ update_dock_region = do->
     lastWidth = null
     (w, h)->
         settings?.updateSize(settings.displayMode())
-        h = DOCK_HEIGHT unless h
+        h = DOCK_HEIGHT unless h?
         if w
             lastWidth = w
         else if lastWidth
@@ -63,10 +63,12 @@ update_dock_region = do->
 
 _b.onresize = ->
     calc_app_item_size()
-    # console.warn("[body.onresize] update_dock_region")
+    if debugRegion
+        console.warn("[body.onresize] update_dock_region")
     update_dock_region($("#container").clientWidth)
 
 clearRegion = ->
     DCore.Dock.set_is_hovered(false)
-    # console.warn("[clearRegion] update_dock_region")
+    if debugRegion
+        console.warn("[clearRegion] update_dock_region")
     update_dock_region()

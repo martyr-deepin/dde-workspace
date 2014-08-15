@@ -42,7 +42,8 @@ class Time extends SystemItem
 
     on_rightclick:(e)->
         DCore.Dock.set_is_hovered(false)
-        # console.warn("[time.on_rightclick] update_dock_region")
+        if debugRegion
+            console.warn("[time.on_rightclick] update_dock_region")
         update_dock_region($("#container").clientWidth)
         e.preventDefault()
         e.stopPropagation()

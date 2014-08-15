@@ -28,7 +28,8 @@ class HideStatusManager
             switch state
                 when HideState.Showing
                     clearTimeout(changeToHideTimer)
-                    # console.warn("[HideStateManager.changeDockRegion] update_dock_region")
+                    if debugRegion
+                        console.warn("[HideStateManager.changeDockRegion] update_dock_region")
                     update_dock_region()
                     @changeToShow()
                 when HideState.Hidding
@@ -101,13 +102,13 @@ class HideStatusManager
 
         # return
         regionHeight = DOCK_HEIGHT
-        console.log("panel webkitTransform: #{$("#panel").style.webkitTransform}")
+        console.log("panel webkitTransform: ##{$("#panel").style.webkitTransform}#")
         if $("#panel").style.webkitTransform == ""
+            console.log("[HideStateManager.changeDockRegion] hide dock region")
             regionHeight = 0
-            console.log("hide dock region")
-            # update_dock_region(null, regionHeight)
 
-        console.log("set workarea height to #{regionHeight}")
-        # console.warn("[HideStateManager.changeDockRegion] update_dock_region")
+        console.log("[HideStateManager.changeDockRegion] set workarea height to #{regionHeight}")
+        if debugRegion
+            console.warn("[HideStateManager.changeDockRegion] update_dock_region: #{regionHeight}")
         update_dock_region(null, regionHeight)
         # c code handles workarea height

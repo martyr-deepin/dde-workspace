@@ -1,6 +1,6 @@
 # console.log=->
 
-
+debugRegion = false
 $DBus = {}
 activeWindow = null
 _dropped = false

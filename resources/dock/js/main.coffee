@@ -3,6 +3,8 @@ DCore.signal_connect("display-mode-changed", ->
     # console.warn("display-mode-changed")
     if settings
         settings.updateSize(settings.displayMode())
+    if debugRegion
+        console.warn("[display-mode-changed] update_dock_region")
     update_dock_region(Panel.getPanelMiddleWidth())
 )
 
@@ -83,7 +85,8 @@ _b.addEventListener("drop", (e)->
     e.preventDefault()
     console.log("drop on body")
     DCore.Dock.set_is_hovered(false)
-    # console.warn("[body.drop] update_dock_region")
+    if debugRegion
+        console.warn("[body.drop] update_dock_region")
     update_dock_region()
     s_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
     _dragTarget = _dragTargetManager.getHandle(s_id)
@@ -207,7 +210,8 @@ initDock = ->
         initDockedAppPosition()
         setTimeout(->
             calc_app_item_size()
-            # console.warn("[entryManager.Added] update_dock_region")
+            if debugRegion
+                console.warn("[entryManager.Added] update_dock_region")
             update_dock_region($("#container").clientWidth)
             if systemTray?.isShowing
                 systemTray.updateTrayIcon()
@@ -224,7 +228,8 @@ initDock = ->
         deleteItem(id)
         calc_app_item_size()
         systemTray?.updateTrayIcon()
-        # console.warn("[entryManager.Removed] update_dock_region")
+        if debugRegion
+            console.warn("[entryManager.Removed] update_dock_region")
         update_dock_region($("#container").clientWidth)
     )
 
@@ -257,7 +262,8 @@ initDock = ->
             READY_FOR_TRAY_ICONS = true
             calc_app_item_size()
             hideStatusManager.updateState()
-            # console.warn("[initDock] update_dock_region")
+            if debugRegion
+                console.warn("[initDock] update_dock_region")
             update_dock_region($("#container").clientWidth)
         , 1000)
         return
@@ -269,7 +275,8 @@ initDock = ->
         panel.panel.style.webkitTransform = "translateY(0)"
         $("#trayarea").style.webkitTransform = 'translateY(0)' if settings.displayMode() == DisplayMode.Classic
         hideStatusManager.updateState()
-        # console.warn("[initDock] update_dock_region")
+        if debugRegion
+            console.warn("[initDock] update_dock_region")
         update_dock_region($("#container").clientWidth)
         setTimeout(->
             READY_FOR_TRAY_ICONS = true

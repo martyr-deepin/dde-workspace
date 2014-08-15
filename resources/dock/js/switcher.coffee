@@ -39,7 +39,8 @@ update_dock=->
 
     panel.set_height(PANEL_HEIGHT)
     panel.set_width(Panel.getPanelMiddleWidth())
-    # console.log("[update_dock] update_dock_region")
+    if debugRegion
+        console.log("[update_dock] update_dock_region")
     update_dock_region(Panel.getPanelMiddleWidth())
 
     panel.redraw()
