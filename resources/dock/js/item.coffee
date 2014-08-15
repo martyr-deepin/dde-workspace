@@ -779,18 +779,21 @@ class AppItem extends Item
             # console.log("select id: #{id}")
             d?.HandleMenuItem(id)
 
+    startSuccess:=>
+        if @isNormal() and settings.displayMode() != DisplayMode.Classic
+            @openNotify()
+
+    startError:=>
+        console.log("activate failed")
+        dockedAppManager.Undock(@id)
+
     on_mouseup:(e)=>
         super
         if e.button != 0
             return
 
-        if not @core.activate?(0,0)
-            console.log("activate failed")
-            dockedAppManager.Undock(@id)
-            return
         console.log("on_click")
-        if @isNormal() and settings.displayMode() != DisplayMode.Classic
-            @openNotify()
+        @core.activate?(0, 0, @startSuccess, @startError)
 
     openNotify:->
         @openingIndicator.style.display = 'inline'

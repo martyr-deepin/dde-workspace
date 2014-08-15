@@ -73,8 +73,8 @@ class EntryProxy
     isApp:->
         @type() == ITEM_TYPE.app
 
-    activate:(x,y)->
-        @dbus?.Activate_sync(x, y)
+    activate:(x,y, successCB=null, errorCB=null)->
+        @dbus?.Activate(x, y, successCB, errorCB)
 
     handleMenuItem:(itemId)->
         @dbus?.HandleMenuItem(itemId)
