@@ -74,7 +74,7 @@ class ListChoose extends Widget
             @li[i] = create_element("li","li",@Listul)
             @li[i].setAttribute("id",each)
             @li[i].style.height = LI_SIZE.h
-            @li_span[i] = create_element("span","li_span",@li[i])
+            @li_span[i] = create_element("a","li_span",@li[i])
             @li_span[i].textContent = each
             @currentIndex = i if each is @current
         @setCurrentCss()
@@ -83,11 +83,11 @@ class ListChoose extends Widget
         return @currentIndex
 
     unselectCss: (i) =>
-        #@li[i].style.backgroundColor = "rgba(0,0,0,0.4)"
+        jQuery(@li[i]).removeClass('active')
         @li_span[i].style.color = "#FFFFFF"
 
     selectCss: (i) =>
-        #@li[i].style.backgroundColor = "rgba(0,0,0,0.6)"
+        jQuery(@li[i]).addClass('active')
         @li_span[i].style.color = "#01bdff"
 
     setCurrentCss: ->

@@ -1,5 +1,6 @@
 html{
     border-radius:6px;
+    background-color:rgba(0,0,0,0.4);
 }
 
 
@@ -18,7 +19,12 @@ html{
     overflow:hidden;
     text-overflow:hidden;
 }
-.li span{
+
+#boxscroll li.active{
+    background-color:rgba(0,0,0,0.6)
+}
+
+.li a{
     text-shadow:0 0.2em 0.2em rgba(0,0,0,0.4);
     height:40px;
     line-height:40px;
