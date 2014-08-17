@@ -15,24 +15,35 @@
     margin:0;
     list-style:none;
 }
-.select_li {
+#boxscroll li{
     overflow:hidden;
     text-overflow:ellipsis;
     padding:0px 5px 0px 25px;
 }
-.select_a {
+#boxscroll a{
     color: #FFFFFF;
     font-size: 13px;
 }
-.select_li:hover {
+#boxscroll li:hover {
     cursor:pointer;
-    background:no-repeat;
+    background-color:rgba(0,0,0,0.7);
+}
+#boxscroll li:hover a{
+    color:#FFFFFF;
+}
+
+.select_li_unselected {
+    background-color:rgba(0,0,0,0.4);
+}
+
+.select_li_selected {
+    background-image:url(../images/select_dark_hover.png);
+    background-repeat:no-repeat;
+    background-position:5px 10px;
     background-color:rgba(0,0,0,0.7);
 }
 
-.select_a:hover {
-    color:#FFFFFF;
-}
+
 
 .nicescroll-rails > div {
     background: -webkit-gradient(linear, left top, left bottom,  from(#000),  to(#000));

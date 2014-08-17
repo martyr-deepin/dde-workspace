@@ -34,7 +34,6 @@ class Select extends Widget
 
     boxscroll_create: (@max_show = 5) ->
         @boxscroll_remove()
-        #@triangle = create_img("triangle","images/triangle.png",@element)
         @boxscroll = create_element("div","boxscroll",@element)
         @boxscroll.setAttribute("id","boxscroll")
         @boxscroll.style.maxHeight = EACH_HEIGHT * @max_show
@@ -49,38 +48,28 @@ class Select extends Widget
             @li[i].setAttribute("id",each)
             @a[i].innerText = each
 
+        @ul.addEventListener("mouseover",=>
+            for li,i in @li
+                @unselect_css(i)
+        )
+
     check_selected_css: ->
         @selected = @current
         if @li.length == 0 then @boxscroll_create()
         for each,i in @lists
             if each is @current
                 @select_css(i)
-                #@li[i].removeEventListener("mouseover",@hover_css(i))
-                #@li[i].removeEventListener("mouseout",@unselect_css(i))
             else
                 @unselect_css(i)
-                #@li[i].addEventListener("mouseover",@hover_css(i))
-                #@li[i].addEventListener("mouseout",@unselect_css(i))
 
     unselect_css: (i) =>
         echo "unselect_css:#{i}"
-        @li[i].style.background = "no-repeat"
-        @li[i].style.backgroundPosition = "5px 11px"
-        @li[i].style.backgroundColor = "rgba(0,0,0,0.4)"
-        @a[i].style.color = "#FFFFFF"
-
-    hover_css: (i) =>
-        echo "hover_css:#{i}"
-        @li[i].style.background = "no-repeat"
-        @li[i].style.backgroundPosition = "5px 11px"
-        @li[i].style.backgroundColor = "rgba(0,0,0,0.7)"
+        @li[i].setAttribute('class',"select_li_unselected")
         @a[i].style.color = "#FFFFFF"
 
     select_css: (i) =>
         echo "select_css:#{i}"
-        @li[i].style.background = "url(\"images/select_dark_hover.png\") no-repeat"
-        @li[i].style.backgroundPosition = "5px 11px"
-        @li[i].style.backgroundColor = "rgba(0,0,0,0.7)"
+        @li[i].setAttribute('class',"select_li_selected")
         @a[i].style.color = "#01bdff"
 
     set_cb:(@cb) ->
