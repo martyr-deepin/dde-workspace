@@ -21,6 +21,9 @@
 _b = document.body
 
 osd = {}
+signal_old = null
+signal_changed = true
+osd_is_hide = false
 
 DEBUG = false
 
@@ -28,21 +31,25 @@ TIME_HIDE = 1500
 TIME_PRESS = 5
 timeout_osdHide = null
 
-
 allElsHide = ->
+    echo "allElsHide"
     els = _b.children
     for el in els
-        if el.tagName = "DIV"
-            el.style.display = "none"
+        el.style.display = "none"
 
 osdHide = ->
     echo "osdHide"
     clearTimeout(timeout_osdHide)
+    osd_is_hide = true
     DCore.Osd.quit()
 
 osdShow = ->
-    allElsHide()
+    echo "osdShow"
+    #if !osd_is_hide and !signal_changed then return
+    if !osd_is_hide or signal_changed then allElsHide()
+
     DCore.Osd.show()
+    osd_is_hide = false
     document.body.opacity = "0"
     jQuery(document.body).animate({opacity:'1';},500)
 

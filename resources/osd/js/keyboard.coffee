@@ -24,6 +24,7 @@ class Keyboard
             )
             @getAllLayoutList()
             @CurrentLayout = @getCurrentLayout()
+            @updateUserLayoutList()
         catch e
             echo " DBusKeyboard :#{KEYBOARD} ---#{e}---"
 
@@ -33,6 +34,7 @@ class Keyboard
         @UserLayoutList = []
         for l in @UserLayoutList_en
            @UserLayoutList.push(@AlllayoutList[l])
+        echo "UserLayoutList.length: #{@UserLayoutList.length}"
         return @UserLayoutList
 
     getAllLayoutList: ->
@@ -58,13 +60,12 @@ osd.SwitchLayout = (keydown)->
     if !keydown then return if mode is "dbus"
 
     keyboard = new Keyboard() if not keyboard?
-    keyboard.updateUserLayoutList()
-    echo "UserLayoutList.length: #{keyboard.UserLayoutList.length}"
 
     if keyboard.UserLayoutList.length < 2
         osdHide()
         return
 
+    osdShow()
     if not keyboardList?
         keyboardList = new ListChoose("KeyboardList")
         keyboardList.setParent(_b)
@@ -72,6 +73,7 @@ osd.SwitchLayout = (keydown)->
         keyboardList.setSize(180,218)
     else
         keyboardList?.chooseOption()
+        keyboardList?.scrollOption()
     clearTimeout(timeout_osdHide)
     timeout_osdHide = setTimeout(=>
         keyboard.setCurrentLayout(keyboardList.current)

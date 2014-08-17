@@ -52,12 +52,14 @@ class ListChoose extends Widget
     setSize:(@whole_w,@whole_h)->
         @element.style.width = @whole_w if @whole_w
         @boxscroll.style.maxHeight = @whole_h if @whole_h
+        @max_show = Math.floor(@whole_h / LI_SIZE.h)
+        @boxscroll.style.overflowY = "scroll" if @list.length > @max_show
 
     boxscroll_remove: ->
         @element.removeChild(@boxscroll) if @boxscroll
         @boxscroll = null
 
-    ListAllBuild:(@list,@current,@max_show = 5) ->
+    ListAllBuild:(@list,@current) ->
         inject_css(@element,"css/listchoose.css")
         echo "ListAllBuild @current: #{@current}"
         @length = @list.length
@@ -67,7 +69,6 @@ class ListChoose extends Widget
 
         @boxscroll = create_element("div","boxscroll",@element)
         @boxscroll.setAttribute("id","boxscroll")
-        @boxscroll.style.overflowY = "scroll" if @list.length > @max_show
  
         @Listul = create_element("ul","Listul",@boxscroll)
         for each,i in @list
@@ -105,13 +106,21 @@ class ListChoose extends Widget
         else if index < 0 then index = max
         return index
 
-    chooseOption: =>
+    scrollOption: ->
+        if @list.length <= @max_show then return
+        scroll = jQuery('#boxscroll').getNiceScroll().eq(0)
+        if @currentIndex == 0
+            scroll.doScrollBy(LI_SIZE.h * @list.length)
+        else if @currentIndex > @max_show / 2
+            scroll.doScrollBy(-1 * LI_SIZE.h)
+
+    chooseOption: ->
         clearTimeout(timeout_osdHide)
         @isFromList = true
         @prevIndex = @currentIndex
         @currentIndex++
         @currentIndex = @checkIndex(@currentIndex)
-        osdShow()
+        #echo "chooseOption from #{@prevIndex} to #{@currentIndex}"
         @setCurrentCss()
         @current = @list[@currentIndex]
         return @current
