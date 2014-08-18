@@ -70,7 +70,7 @@ osd.SwitchLayout = (keydown)->
         keyboardList = new ListChoose("KeyboardList")
         keyboardList.setParent(_b)
         keyboardList.ListAllBuild(keyboard.UserLayoutList,keyboard.getCurrentLayout())
-        keyboardList.setSize(180,218)
+        keyboardList.setSize(180,210)
     else
         keyboardList?.chooseOption()
         keyboardList?.scrollOption()

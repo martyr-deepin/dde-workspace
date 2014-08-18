@@ -52,7 +52,7 @@
 static GKeyFile* shutdown_config = NULL;
 
 PRIVATE GtkWidget* container = NULL;
-/*PRIVATE GtkStyleContext *style_context;*/
+
 guint grab_timeout;
 guint grab_remove_timeout;
 
@@ -246,6 +246,11 @@ gboolean osd_capslock_toggle()
     return capslock_toggle;
 }
 
+JS_EXPORT_API
+void osd_set_background(double opacity){
+    GdkWindow* gdkwindow = gtk_widget_get_window (container);
+    gdk_window_set_opacity (gdkwindow, opacity);
+}
 
 int main (int argc, char **argv)
 {
@@ -309,7 +314,7 @@ int main (int argc, char **argv)
     if(option.is_SwitchMonitors){
         gdk_window_set_events(gdkwindow,GDK_KEY_RELEASE_MASK);
     }
-    gdk_window_set_opacity (gdkwindow, 0.5);
+    osd_set_background(0.5);
     gdk_window_set_keep_above (gdkwindow, TRUE);
     gdk_window_set_override_redirect(gdkwindow, TRUE);
     osd_set_focus(FALSE);

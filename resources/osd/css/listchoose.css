@@ -1,35 +1,39 @@
 html{
     border-radius:6px;
-    background-color:rgba(0,0,0,0.4);
+    background-color:rgba(0,0,0,0.8);
 }
-
 
 .ListChoose{
     display:-webkit-box;
     -webkit-box-pack:center;
-    -webkit-box-align:center;
     border:rgba(255,255,255,0.2) 1px solid;
     border-radius:6px;
+    padding:6px 2px 6px 2px;
+}
+
+.Listul{
+    width:170px;
+    margin-left:-40px;
+    margin-top:0px;
 }
 
 .li{
+    padding-left:20px;
     list-style:none;
     border-radius:3px;
-    margin-left:-40px;
     overflow:hidden;
     text-overflow:hidden;
 }
 
 #boxscroll li.active{
-    background-color:rgba(0,0,0,0.6)
+    background-color:rgba(0,0,0,1.0)
 }
 
 .li a{
     text-shadow:0 0.2em 0.2em rgba(0,0,0,0.4);
     height:40px;
     line-height:40px;
-    font-size:14px;
-    margin-left:20px;
+    font-size:13px;
     color:#FFF;
 }
 

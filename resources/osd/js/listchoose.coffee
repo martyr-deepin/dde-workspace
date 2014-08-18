@@ -19,7 +19,7 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 class ListChoose extends Widget
     LI_SIZE =
-        w:180
+        w:170
         h:40
     constructor:(@id)->
         super
@@ -71,6 +71,7 @@ class ListChoose extends Widget
         @boxscroll.setAttribute("id","boxscroll")
  
         @Listul = create_element("ul","Listul",@boxscroll)
+        @Listul.style.width = LI_SIZE.w
         for each,i in @list
             @li[i] = create_element("li","li",@Listul)
             @li[i].setAttribute("id",each)
