@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-15 17:51+0800\n"
+"POT-Creation-Date: 2014-08-18 15:38+0800\n"
 "PO-Revision-Date: 2014-07-03 05:01+0000\n"
 "Last-Translator: Adel Ramadan\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/projects/p/deepin-"
@@ -199,9 +199,9 @@ msgstr "$ sudo apt-get install deepin-desktop-Environment\n"
 msgid "\t\t\t\t-----No available desktop sessions!-----\n"
 msgstr "\t\t\t\t-----No hay sesiones de escritorio disponibles!-----\n"
 
-#: ../resources/greeter/js/user.coffee:471
-msgid "click login button to log in"
-msgstr "Pulse el boton de inicio de sesion para iniciar sesión"
+#: ../resources/greeter/js/user.coffee:456
+msgid "Login"
+msgstr ""
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jan"
@@ -905,6 +905,9 @@ msgstr ""
 #: ../lib/category.c:56
 msgid "others"
 msgstr ""
+
+#~ msgid "click login button to log in"
+#~ msgstr "Pulse el boton de inicio de sesion para iniciar sesión"
 
 #~ msgid "Expand"
 #~ msgstr "Expandir"

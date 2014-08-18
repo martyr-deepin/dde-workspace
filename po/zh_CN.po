@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-15 17:51+0800\n"
+"POT-Creation-Date: 2014-08-18 15:38+0800\n"
 "PO-Revision-Date: 2014-06-09 17:59+0800\n"
 "Last-Translator: Deepin Translation Team <support@linuxdeepin.com>\n"
 "Language-Team: Deepin Translation Team <support@linuxdeepin.com>\n"
@@ -196,9 +196,9 @@ msgstr "$ sudo apt-get install deepin-desktop-Environment\n"
 msgid "\t\t\t\t-----No available desktop sessions!-----\n"
 msgstr "\t\t\t\t-----无可用的桌面环境!-----\n"
 
-#: ../resources/greeter/js/user.coffee:471
-msgid "click login button to log in"
-msgstr "点击登录按钮来登录"
+#: ../resources/greeter/js/user.coffee:456
+msgid "Login"
+msgstr "登录"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jan"
@@ -899,6 +899,9 @@ msgstr "实用工具"
 #: ../lib/category.c:56
 msgid "others"
 msgstr "其他"
+
+#~ msgid "click login button to log in"
+#~ msgstr "点击登录按钮来登录"
 
 #~ msgid "Expand"
 #~ msgstr "扩展"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-15 17:51+0800\n"
+"POT-Creation-Date: 2014-08-18 15:38+0800\n"
 "PO-Revision-Date: 2014-07-05 19:02+0000\n"
 "Last-Translator: electricface <songwentai@linuxdeepin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/deepin-"
@@ -196,9 +196,9 @@ msgstr ""
 msgid "\t\t\t\t-----No available desktop sessions!-----\n"
 msgstr "沒有覈實的桌面繪畫\n"
 
-#: ../resources/greeter/js/user.coffee:471
-msgid "click login button to log in"
-msgstr "點擊登錄按鈕來登錄"
+#: ../resources/greeter/js/user.coffee:456
+msgid "Login"
+msgstr ""
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jan"
@@ -897,6 +897,9 @@ msgstr "公用程式"
 #: ../lib/category.c:56
 msgid "others"
 msgstr "其他"
+
+#~ msgid "click login button to log in"
+#~ msgstr "點擊登錄按鈕來登錄"
 
 #~ msgid "Expand"
 #~ msgstr "展開"

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-15 17:51+0800\n"
+"POT-Creation-Date: 2014-08-18 15:38+0800\n"
 "PO-Revision-Date: 2014-07-03 17:01+0000\n"
 "Last-Translator: Fox909 <ffox909@mail.ru>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/deepin-desktop-"
@@ -203,9 +203,9 @@ msgstr "$ sudo apt install deepin-desktop-Environment\n"
 msgid "\t\t\t\t-----No available desktop sessions!-----\n"
 msgstr "\t\t\t\t-----Нет доступных сессий Рабочего стола!-----\n"
 
-#: ../resources/greeter/js/user.coffee:471
-msgid "click login button to log in"
-msgstr "нажать кнопку входа для авторизации"
+#: ../resources/greeter/js/user.coffee:456
+msgid "Login"
+msgstr ""
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jan"
@@ -947,6 +947,9 @@ msgstr "утилиты"
 #: ../lib/category.c:56
 msgid "others"
 msgstr "другое"
+
+#~ msgid "click login button to log in"
+#~ msgstr "нажать кнопку входа для авторизации"
 
 #~ msgid "Expand"
 #~ msgstr "Расширить"

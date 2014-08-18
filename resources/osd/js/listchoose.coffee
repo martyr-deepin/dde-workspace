@@ -77,7 +77,7 @@ class ListChoose extends Widget
             @li[i].setAttribute("id",each)
             @li[i].style.height = LI_SIZE.h
             @li_span[i] = create_element("a","li_span",@li[i])
-            @li_span[i].textContent = each
+            @li_span[i].innerText = each
             @currentIndex = i if each is @current
         @setCurrentCss()
 

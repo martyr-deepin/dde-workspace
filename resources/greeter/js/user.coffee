@@ -377,12 +377,12 @@ class LoginEntry extends Widget
         @is_need_pwd = accounts?.is_need_pwd(accounts.get_user_id(@username))
         echo "#{@id} , #{@username} is_need_pwd is #{@is_need_pwd}"
 
-        @password_create()
-        @keyboard_img_create()
+        if @is_need_pwd
+            @password_create()
+            @keyboard_img_create()
         @loginbutton_create()
 
     password_create: ->
-        if !@is_need_pwd then return
         @password_div = create_element("div", "password_div", @element)
         @password = create_element("input", "password", @password_div)
         @password.type = "password"
@@ -390,7 +390,6 @@ class LoginEntry extends Widget
         @password_eventlistener()
 
     keyboard_img_create: ->
-        if !@is_need_pwd then return
         if !is_greeter then @keyboard_dbus = new Keyboard()
         if is_greeter then @layouts = DCore.Greeter.get_user_layouts(@username)
         else @layouts = @keyboard_dbus.updateUserLayoutList()
@@ -445,16 +444,16 @@ class LoginEntry extends Widget
 
 
     loginbutton_create: ->
-        @loginbutton = create_img("loginbutton", "",null)
-        @loginbutton.type = "button"
-        @loginbutton.src = "#{img_src_before}#{@id}_normal.png"
         if @is_need_pwd
-            @password_div.appendChild(@loginbutton)
+            @loginbutton = create_img("loginbutton", "#{img_src_before}#{@id}_normal.png",@password_div)
+            @loginbutton.type = "button"
             @loginbutton.style.position = "relative"
             @loginbutton.style.right = "3.15em"
             @loginbutton.style.bottom = "0.2em"
         else
-            @element.appendChild(@loginbutton)
+            @loginbutton = create_element("div","loginbutton_unpwd",@element)
+            @loginbutton.type = "button"
+            @loginbutton.innerText = _("Login")
             @element.style.marginTop = "0.6em"
         @loginbutton.addEventListener("mouseout", =>
             power_flag = false
@@ -467,11 +466,6 @@ class LoginEntry extends Widget
                 @loginbutton.src = "#{img_src_before}#{@id}_normal.png"
         )
         @loginbutton_eventlistener()
-        if @username is guest_name
-            @password_error(_("click login button to log in"))
-            @loginbutton.disable = false
-            @loginbutton.style.pointer = "cursor"
-            @password?.setAttribute("readonly","readonly")
 
     show:->
         @element.style.display = "-webkit-box"
@@ -545,7 +539,6 @@ class LoginEntry extends Widget
         return true
 
     input_password_again:->
-        if !@is_need_pwd then return
         @password?.style.color = "rgba(255,255,255,0.5)"
         @password?.style.fontSize = "2.0em"
         @password?.style.paddingBottom = "0.2em"
@@ -556,7 +549,6 @@ class LoginEntry extends Widget
         @password?.value = null
 
     password_error:(msg)->
-        if !@is_need_pwd then return
         @password?.style.color = "#F4AF53"
         @password?.style.fontSize = "1.5em"
         @password?.style.paddingBottom = "0.4em"

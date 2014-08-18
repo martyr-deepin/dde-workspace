@@ -31,7 +31,7 @@ html{
     text-align:center;
     color: #FFF;
     font-size:15px;
-    text-shadow: 0 2px 2px rgba(0,0,0,0.5);
+    text-shadow: 0 1px 4px rgba(0,0,0,1.0);
     overflow:hidden;
     text-overflow:ellipsis;
 }

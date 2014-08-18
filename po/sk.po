@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-15 17:51+0800\n"
+"POT-Creation-Date: 2014-08-18 15:38+0800\n"
 "PO-Revision-Date: 2014-07-02 12:04+0000\n"
 "Last-Translator: cxbii <chenxiangbang@linuxdeepin.com>\n"
 "Language-Team: Slovak (http://www.transifex.com/projects/p/deepin-desktop-"
@@ -197,8 +197,8 @@ msgstr ""
 msgid "\t\t\t\t-----No available desktop sessions!-----\n"
 msgstr ""
 
-#: ../resources/greeter/js/user.coffee:471
-msgid "click login button to log in"
+#: ../resources/greeter/js/user.coffee:456
+msgid "Login"
 msgstr ""
 
 #: ../resources/greeter/js/time.coffee:43

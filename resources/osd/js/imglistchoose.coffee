@@ -42,7 +42,7 @@ class ImgListChoose extends ListChoose
             @img_srcs_hover[i] = "#{@img_src}/#{each.img}_hover.#{@img_type}"
             @li_img[i] = create_img("Img_li_img",@img_srcs[i],@li[i])
             @li_text[i] = create_element("div","Img_li_text",@li[i])
-            @li_text[i].textContent = each.name
+            @li_text[i].innerText = each.name
             @currentIndex = i if each is @current 
         @setCurrentCss()
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-15 17:51+0800\n"
+"POT-Creation-Date: 2014-08-18 15:38+0800\n"
 "PO-Revision-Date: 2014-07-03 05:01+0000\n"
 "Last-Translator: Laszlo Espadas <kw@kardiweb.org>\n"
 "Language-Team: Hungarian (http://www.transifex.com/projects/p/deepin-desktop-"
@@ -196,9 +196,9 @@ msgstr "$ sudo apt-get install deepin-desktop-Environment\n"
 msgid "\t\t\t\t-----No available desktop sessions!-----\n"
 msgstr ""
 
-#: ../resources/greeter/js/user.coffee:471
-msgid "click login button to log in"
-msgstr "kattintsunk a bejelentkezés gombra a bejelentkezéshez"
+#: ../resources/greeter/js/user.coffee:456
+msgid "Login"
+msgstr ""
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jan"
@@ -892,6 +892,9 @@ msgstr "segédprogramok"
 #: ../lib/category.c:56
 msgid "others"
 msgstr "egyéb"
+
+#~ msgid "click login button to log in"
+#~ msgstr "kattintsunk a bejelentkezés gombra a bejelentkezéshez"
 
 #~ msgid "Expand"
 #~ msgstr "Kiterjeszt"
