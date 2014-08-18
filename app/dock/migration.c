@@ -62,6 +62,7 @@ void dock_draw_window_preview(JSValueRef canvas, double xid, double dest_width, 
         g_warning("[%s] get GdkWindow failed", __func__);
         return;
     }
+    gdk_window_set_events(win, GDK_STRUCTURE_MASK);
 
     if (JSValueIsNull(get_global_context(), canvas)) {
         g_warning("[%s] draw_window_preview with null canvas!", __func__);
