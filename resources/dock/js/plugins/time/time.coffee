@@ -1,24 +1,24 @@
 class Time extends SystemItem
     @weekday: [_("Sun"), _("Mon"), _("Tue"), _("Wed"), _("Thu"), _("Fri"), _("Sat")]
-    constructor:->
-        super
-        @time = create_element('div', 'DigitClockTime', @imgWarp)
+    constructor:(@id, icon, @title)->
+        super(@id, icon, @title)
+        @time = create_element('div', 'DigitClockTime', @imgWrap)
 
         for name in ['hourHeight', 'hourLow', 'minHeight', 'minLow']
             @loadBit(name)
 
-        timeWarp = create_element(tag:'div', id:'timeWarp')
-        @timeContent = create_element(tag:'div', id:"timeContent", timeWarp)
-        @element.insertBefore(timeWarp, @imgWarp)
+        timeWrap = create_element(tag:'div', id:'timeWrap')
+        @timeContent = create_element(tag:'div', id:"timeContent", timeWrap)
+        @element.insertBefore(timeWrap, @imgWrap)
 
-        timeWarp.addEventListener("mouseover", @on_mouseover)
-        timeWarp.addEventListener("mouseout", @on_mouseout)
-        timeWarp.addEventListener("click", @on_mouseup)
+        timeWrap.addEventListener("mouseover", @on_mouseover)
+        timeWrap.addEventListener("mouseout", @on_mouseout)
+        timeWrap.addEventListener("click", @on_mouseup)
 
         @update_time()
         @update_id = setInterval(@update_time, 1000)
         @type = DIGIT_CLOCK['type']
-        @indicatorWarp.style.display = 'none'
+        @indicatorWrap.style.display = 'none'
 
     loadBit:(name)->
         this[name] = create_element(tag:'div', class:'timeNumber', @time)
@@ -71,9 +71,9 @@ class Time extends SystemItem
 
     update_time: =>
         switch settings.displayMode()
-            when DisplayMode.Classic
+            when DisplayMode.Efficient, DisplayMode.Classic
                 @update_time_for_classic_mode()
-            when DisplayMode.Modern
+            when DisplayMode.Fashion
                 @update_time_for_modern_mode()
 
     update_time_for_classic_mode: =>

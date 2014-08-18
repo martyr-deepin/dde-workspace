@@ -388,7 +388,7 @@ gboolean workaround_change_workarea_height(int height)
         gdk_flush();
         g_timeout_add(1000, (GSourceFunc)workaround_change_workarea_height, GINT_TO_POINTER(height));
     } else {
-        g_debug("OK: workaround_change_workarea_height: %d = %d - %d - %d + %d\n",
+        g_warning("OK: workaround_change_workarea_height: %d = %d - %d - %d + %d\n",
                 workarea_height, gdk_screen_height(), dock.height, dock.y, height);
         _change_workarea_height(workarea_height);
         // cannot use workarea_height to initialize the y axis and dock height.
@@ -458,8 +458,6 @@ void _update_dock_size(gint16 x, gint16 y, guint16 w, guint16 h)
     gdk_window_flush(DOCK_GDK_WINDOW());
 
     dock_change_workarea_height(GD.dock_height);
-
-    // init_region(DOCK_GDK_WINDOW(), 0, h - GD.dock_height, w, GD.dock_height);
 }
 
 

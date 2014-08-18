@@ -12,13 +12,13 @@ calc_app_item_size = ->
     item_num = 0
     for i in [0...container_list.length]
         item_num += container_list[i].children.length
-    client_width = $("#containerWarp").clientWidth
+    client_width = $("#containerWrap").clientWidth
     w = clamp(client_width / item_num, 34, ITEM_WIDTH * MAX_SCALE)
     ICON_SCALE = clamp(w / ITEM_WIDTH, 0, MAX_SCALE)
     # console.log "new ICON_SCALE: #{ICON_SCALE}"
 
     for i in apps
-        Widget.look_up(i.id)?.update_scale()
+        # Widget.look_up(i.id)?.update_scale()
 
         h = w * (ITEM_HEIGHT / ITEM_WIDTH)
         # apps are moved up, so add 8
@@ -49,13 +49,10 @@ update_dock_region = do->
                 app_len = ITEM_WIDTH * apps.length
             panel_width = Panel.getPanelWidth()
             switch settings.displayMode()
-                when DisplayMode.Classic
+                when DisplayMode.Efficient, DisplayMode.Classic
                     left_offset = 0
-                when DisplayMode.Modern
+                when DisplayMode.Fashion
                     left_offset = (screen.width - app_len) / 2
-                    # console.log("set dock region height to #{DOCK_HEIGHT}")
-                    # if setting.hideMode() != HideMode.Showing
-                    #     h = 0
             # console.warn("[update_dock_region] last Width: #{lastWidth}, item width: #{w}, height: #{h}, left_offset: #{left_offset}")
             DCore.Dock.force_set_region(left_offset, 0, w, panel_width, h)
         else

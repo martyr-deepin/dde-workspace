@@ -116,6 +116,10 @@ void dock_force_set_region(double x, double y, double items_width, double panel_
         g_debug("[%s] dock is hovered", __func__);
         return;
     }
+    if (GD.config.display_mode == UNKNOWN_MODE) {
+        g_debug("[%s] display mode unknown now.", __func__);
+        return;
+    }
 
     g_debug("[%s] dock base rect: x:%d, y:%d, width: %d, height: %d", __func__,
             _base_rect.x, _base_rect.y, _base_rect.width, _base_rect.height);
@@ -146,10 +150,16 @@ void dock_force_set_region(double x, double y, double items_width, double panel_
                 __func__, item_region.x, item_region.y, item_region.width, item_region.height);
 
         cairo_rectangle_int_t dock_board_rect = _base_rect;
-        if (GD.config.display_mode == CLASSIC_MODE) {
-            dock_board_rect.x = 0;
-        } else {
+        switch (GD.config.display_mode) {
+        case FASHION_MODE:
+            g_debug("[%s] fashion mode", __func__);
             dock_board_rect.x = item_region.x - (panel_width - items_width) / 2;
+            break;
+        case EFFICIENT_MODE:
+        case CLASSIC_MODE:
+            g_debug("[%s] efficient/classic mode", __func__);
+            dock_board_rect.x = 0;
+            break;
         }
         dock_board_rect.y = item_region.y + GD.dock_height - GD.dock_panel_height;
         dock_board_rect.height = GD.dock_panel_height;

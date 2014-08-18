@@ -30,5 +30,7 @@ all: ${com_coffee} \
 	${plugin_dir}/trash/trash.coffee\
 	${plugin_dir}/time/time.coffee\
 	${plugin_dir}/system_tray.coffee\
+	signal.coffee\
+	event.coffee\
 	main.coffee
 	coffee -cj dock.js $^

@@ -1,128 +1,12 @@
-DCore.signal_connect("message_notify", (info)->)
-DCore.signal_connect("display-mode-changed", ->
-    console.log("display-mode-changed")
-    if settings
-        settings.updateSize(settings.displayMode())
-    if debugRegion
-        console.warn("[display-mode-changed] update_dock_region")
-    update_dock_region(Panel.getPanelMiddleWidth())
-)
-DCore.signal_connect("resolution-changed", ->
-    console.log("resolution-changed")
-    systemTray?.updateTrayIcon()
-)
-
-DCore.signal_connect("embed_window_configure_changed", (info)->
-    # console.log("embed_window_configure_changed")
-    # console.log(info)
-)
-DCore.signal_connect("embed_window_configure_request", (info)->
-    # console.log(info)
-
-    item = $EW_MAP[info.XID]
-    if not item
-        console.log("get item from #{info.XID} failed")
-        return
-
-    Preview_container._calc_size(info)
-    setTimeout(->
-        console.log(item.element)
-        console.log("Move Window to #{info.x}, #{info.y}")
-        item.moveApplet(info)
-    , 50)
-)
-DCore.signal_connect("embed_window_destroyed", (info)->
-    # console.log("embed_window_destroyed")
-    delete $EW_MAP[info.XID]
-    # console.log(info)
-)
-DCore.signal_connect("embed_window_enter", (info)->
-    console.log("embed_window_enter")
-    __clear_timeout()
-    clearTimeout(tooltip_hide_id)
-    clearTimeout(hide_id)
-    # console.log(info)
-)
-DCore.signal_connect("embed_window_leave", (info)->
-    console.log("embed_window_leave")
-    # console.log(info)
-)
-
-_b.addEventListener("click", (e)->
-    e.preventDefault()
-    console.log("click on body")
-    clearRegion()
-)
-_b.addEventListener("contextmenu", (e)->
-    e.preventDefault()
-    console.log("rightclick on body")
-    clearRegion()
-)
-_b.addEventListener("dragenter", (e)->
-    console.log("dragenter to body")
-    _lastHover?.reset()
-    updatePanel()
-    # DCore.Dock.require_all_region()
-)
-_b.addEventListener("dragover", (e)->
-    app_list.element.style.width = ''
-    s_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
-    console.log("dragover ##{s_id}# on body")
-    t = Widget.look_up(s_id)
-    if not t
-        return
-
-    e.preventDefault()
-
-    if e.y > screen.height - DOCK_HEIGHT - ITEM_HEIGHT
-        e.dataTransfer.dropEffect = 'copy'
-    else
-        e.dataTransfer.dropEffect = 'move'
-)
-_b.addEventListener("drop", (e)->
-    e.stopPropagation()
-    e.preventDefault()
-    console.log("drop on body")
-    DCore.Dock.set_is_hovered(false)
-    if debugRegion
-        console.warn("[body.drop] update_dock_region")
-    update_dock_region()
-    s_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
-    _dragTarget = _dragTargetManager.getHandle(s_id)
-    if e.y > screen.height - DOCK_HEIGHT - ITEM_HEIGHT
-        console.log("not working area")
-        _dragTarget?.dragToBack = false
-        _dragTarget?.back(e.x, e.y)
-        _dragTargetManager.remove(s_id)
-        return
-    s_widget = Widget.look_up(s_id)
-    if not s_widget
-        return
-
-    if s_widget.isNormal()
-        _dragTarget.dragToBack = false
-        _dragTarget.reset()
-        calc_app_item_size()
-
-        t = s_widget.element
-        t.style.position = "fixed"
-        _b.appendChild(t)
-        t.style.left = "#{e.x - ITEM_WIDTH / 2}px"
-        t.style.top = "#{e.y - ITEM_HEIGHT / 2}px"
-        s_widget.destroyWidthAnimation()
-        _dragTarget.removeImg()
-        _dragTargetManager.remove(s_id)
-        console.log("drag target is normal, remove it")
-    else
-        console.log("drag target is runtime, back to applist")
-        _dragTarget.dragToBack = true
-)
-
 settings = new Setting()
 settings.updateSize(settings.displayMode())
-if settings.displayMode() == DisplayMode.Classic
-    switchToClassicMode()
-    # FIXME: hide tray icons.
+switch settings.displayMode()
+    when DisplayMode.Fashion
+        switchToFashionMode()
+    when DisplayMode.Efficient
+        switchToEfficientMode()
+    when DisplayMode.Classic
+        switchToClassicMode()
 
 hideStatusManager = new HideStatusManager(settings.hideMode())
 
@@ -272,15 +156,18 @@ initDock = ->
         calc_app_item_size()
         _CW.style.webkitTransform = "translateY(0)"
         panel.panel.style.webkitTransform = "translateY(0)"
-        $("#trayarea").style.webkitTransform = 'translateY(0)' if settings.displayMode() == DisplayMode.Classic
+        $("#trayarea").style.webkitTransform = 'translateY(0)' #if settings.displayMode() != DisplayMode.Fashion
         hideStatusManager.updateState()
         if debugRegion
             console.warn("[initDock] update_dock_region")
         update_dock_region($("#container").clientWidth)
         setTimeout(->
             READY_FOR_TRAY_ICONS = true
-            if settings.displayMode() == DisplayMode.Classic
-                systemTray?.showAllIcons()
+            if settings.displayMode() != DisplayMode.Fashion and systemTray
+                systemTray.isShowing = true
+                systemTray.updateTrayIcon()
+                # TODO:
+                systemTray.showAllIcons()
         , ANIMATION_TIME)
     , 1000)
     if not activeWindow
@@ -289,3 +176,6 @@ initDock = ->
 
 time = new Time("time", "js/plugins/time/img/time.png", "")
 initDock()
+setTimeout(->
+    updateMaxClientListWidth()
+, 2000)

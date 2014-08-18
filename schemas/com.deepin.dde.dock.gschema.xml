@@ -10,8 +10,9 @@
         <value value="1" nick="analog" />
     </enum>
     <enum id="com.deepin.dde.dock.DisplayMode">
-        <value value="0" nick="modern" />
-        <value value="1" nick="classic" />
+        <value value="0" nick="fashion" />
+        <value value="1" nick="efficient" />
+        <value value="2" nick="classic" />
     </enum>
 
     <schema path="/com/deepin/dde/dock/" id="com.deepin.dde.dock">
@@ -31,7 +32,7 @@
             <description>The default apps which is docked when dock is started.</description>
         </key>
         <key name="display-mode" enum="com.deepin.dde.dock.DisplayMode">
-            <default>'modern'</default>
+            <default>'fashion'</default>
             <summary>The display mode.</summary>
             <description>The dock gets different display mode, for instance, dock looks like win7 taskbar on classic mode.</description>
         </key>

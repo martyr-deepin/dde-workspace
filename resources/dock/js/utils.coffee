@@ -97,7 +97,7 @@ deleteItem = (id)->
     i = Widget.look_up(id)
     if i
         i.destroy()
-    else
+    # else
         # console.log("#{id} not eixst")
 
     if DCore.Dock.is_hovered()
@@ -202,3 +202,16 @@ drawLine = (ctx, x0, y0, x1, y1, opt)->
 
     ctx.stroke()
 
+
+updateMaxClientListWidth = ->
+    if settings.displayMode() == DisplayMode.Classic
+        trayWidth = 0
+        if systemTray and systemTray.items
+            trayWidth = (TRAY_ICON_WIDTH + TRAY_ICON_MARGIN * 2) * systemTray.items.length
+            console.warn(TRAY_ICON_WIDTH + TRAY_ICON_MARGIN * 2)
+            console.warn(systemTray.items.length)
+        console.warn("trayWidth: #{trayWidth}, applet:#{$("#trayarea").clientWidth}")
+        width = screen.width - $("#trayarea").clientWidth - 32 - trayWidth
+        $("#app_list").style.width = width - $("#pre_fixed").clientWidth
+    else
+        $("#app_list").style.width = ''

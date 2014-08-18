@@ -26,17 +26,23 @@ class Setting
             # TODO:
             # switch between different mode.
             switch mode
+                when DisplayMode.Fashion
+                    switchToFashionMode()
+                when DisplayMode.Efficient
+                    switchToEfficientMode()
+                    $("#trayarea").style.webkitTransform = 'translateY(0)'
+                    systemTray?.updateTrayIcon()
                 when DisplayMode.Classic
                     switchToClassicMode()
                     $("#trayarea").style.webkitTransform = 'translateY(0)'
                     systemTray?.updateTrayIcon()
-                when DisplayMode.Modern
-                    switchToModernMode()
         )
 
     updateSize:(mode)->
         if typeof DisplayMode[mode] == undefined
+            console.warn("#{mode} is not defined")
             return
+        console.log("updateSize: #{mode} #{DisplayName[mode]}")
         DOCK_HEIGHT = ALL_DOCK_HEIGHT[mode]
         PANEL_HEIGHT = ALL_PANEL_HEIGHT[mode]
         ITEM_HEIGHT = ALL_ITEM_HEIGHT[mode]

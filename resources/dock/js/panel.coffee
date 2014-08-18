@@ -27,29 +27,31 @@ class Panel
         # @panel.addEventListener("resize", @redraw)
 
         @panel.addEventListener("click", @on_click)
-        $("#containerWarp").addEventListener("click", @on_click)
+        $("#containerWrap").addEventListener("click", @on_click)
 
         @globalMenu = new GlobalMenu()
         @panel.addEventListener("contextmenu", @on_rightclick)
-        $("#containerWarp").addEventListener("contextmenu", @on_rightclick)
+        $("#containerWrap").addEventListener("contextmenu", @on_rightclick)
 
         @has_notifications = false
 
     inEffectivePanelWorkarea: (x, y)=>
-        if settings.displayMode() == DisplayMode.Classic
-            true
-        else
-            margin = (screen.width - @panel.width) / 2
-            itemMargin = (screen.width - $("#container").clientWidth) / 2
-            # console.log("clickPointer: (#{x}, #{y}),\nx: [#{margin}, #{itemMargin}), (#{screen.width - itemMargin}, #{screen.width - margin}]\ny:#{screen.height - DOCK_HEIGHT + ITEM_HEIGHT}")
-            y > screen.height - DOCK_HEIGHT + ICON_HEIGHT || (x >= margin && x < itemMargin || x > screen.width - itemMargin && x <= screen.width - margin)
+        switch settings.displayMode()
+            when DisplayMode.Efficient, DisplayMode.Classic
+                true
+            when DisplayMode.Fashion
+                margin = (screen.width - @panel.width) / 2
+                itemMargin = (screen.width - $("#container").clientWidth) / 2
+                # console.log("clickPointer: (#{x}, #{y}),\nx: [#{margin}, #{itemMargin}), (#{screen.width - itemMargin}, #{screen.width - margin}]\ny:#{screen.height - DOCK_HEIGHT + ITEM_HEIGHT}")
+                return y > screen.height - DOCK_HEIGHT + ICON_HEIGHT || (x >= margin && x < itemMargin || x > screen.width - itemMargin && x <= screen.width - margin)
 
     on_click: (e)=>
         e.stopPropagation()
         e.preventDefault()
 
-        if settings.displayMode() == DisplayMode.Classic
-            return
+        switch settings.displayMode()
+            when DisplayMode.Efficient, DisplayMode.Classic
+                return
 
         if @inEffectivePanelWorkarea(e.clientX, e.clientY)
             show_desktop.toggle()
@@ -78,30 +80,32 @@ class Panel
         @draw()
 
     draw: =>
-        if settings.displayMode() == DisplayMode.Classic
-            ctx = @panel.getContext('2d')
-            ctx.clearRect(0, 0, @panel.width, @panel.height)
-            ctx.rect(0, 0, @panel.width, @panel.height)
-            ctx.fillStyle = 'rgba(0,0,0,.6)'
-            ctx.fill()
+        switch settings.displayMode()
+            # TODO:
+            when DisplayMode.Efficient, DisplayMode.Classic
+                ctx = @panel.getContext('2d')
+                ctx.clearRect(0, 0, @panel.width, @panel.height)
+                ctx.rect(0, 0, @panel.width, @panel.height)
+                ctx.fillStyle = 'rgba(0,0,0,.6)'
+                ctx.fill()
 
-            y = 0
-            blackLineHeight = 1
-            drawLine(ctx, 0, y, @panel.width, y, lineColor: 'rgba(0,0,0,.6)', lineWidth: blackLineHeight)
+                y = 0
+                blackLineHeight = 1
+                drawLine(ctx, 0, y, @panel.width, y, lineColor: 'rgba(0,0,0,.6)', lineWidth: blackLineHeight)
 
-            y = blackLineHeight
-            whiteLineHeight = 1
-            drawLine(ctx, 0, y, @panel.width, y, lineColor: 'rgba(255,255,255,.15)', lineWidth: whiteLineHeight)
-        else
-            DCore.Dock.draw_panel(
-                @panel,
-                PANEL_LEFT_IMAGE,
-                PANEL_MIDDLE_IMAGE,
-                PANEL_RIGHT_IMAGE,
-                @panel.width,
-                PANEL_MARGIN,
-                PANEL_HEIGHT
-            )
+                y = blackLineHeight
+                whiteLineHeight = 1
+                drawLine(ctx, 0, y, @panel.width, y, lineColor: 'rgba(255,255,255,.15)', lineWidth: whiteLineHeight)
+            when DisplayMode.Fashion
+                DCore.Dock.draw_panel(
+                    @panel,
+                    PANEL_LEFT_IMAGE,
+                    PANEL_MIDDLE_IMAGE,
+                    PANEL_RIGHT_IMAGE,
+                    @panel.width,
+                    PANEL_MARGIN,
+                    PANEL_HEIGHT
+                )
         DCore.Dock.update_guard_window_width(@panel.width)
 
     _set_width: (w)->
@@ -153,13 +157,14 @@ class Panel
 
     # TODO: remove it.
     @getPanelMiddleWidth:->
-        if settings.displayMode() == DisplayMode.Classic
-            return screen.width
-        else
-            apps = $s(".AppItem")
-            panel_width = ITEM_WIDTH * apps.length
-            # FIXME: clientWidth is 0 on switching mode.
-            return $("#container").clientWidth || panel_width
+        switch settings.displayMode()
+            when DisplayMode.Efficient, DisplayMode.Classic
+                return screen.width
+
+        apps = $s(".AppItem")
+        panel_width = ITEM_WIDTH * apps.length
+        # FIXME: clientWidth is 0 on switching mode.
+        return $("#container").clientWidth || panel_width
 
     @getPanelWidth:->
         @getPanelMiddleWidth() + PANEL_MARGIN * 2

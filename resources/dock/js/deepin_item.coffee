@@ -4,9 +4,9 @@ class Applet extends Item
         super
         @type = ITEM_TYPE_APPLET
 
-        @indicatorWarp = create_element(tag:'div', class:"indicatorWarp", @element)
-        @openingIndicator = create_img(src:OPENING_INDICATOR, class:"indicator OpeningIndicator", @indicatorWarp)
-        @openIndicator = create_img(src:OPEN_INDICATOR, class:"indicator OpenIndicator", @indicatorWarp)
+        @indicatorWrap = create_element(tag:'div', class:"indicatorWrap", @element)
+        @openingIndicator = create_img(src:OPENING_INDICATOR, class:"indicator OpeningIndicator", @indicatorWrap)
+        @openIndicator = create_img(src:OPEN_INDICATOR, class:"indicator OpenIndicator", @indicatorWrap)
         @openIndicator.style.display = 'none'
 
     on_mouseover: (e) =>
@@ -109,8 +109,11 @@ class SystemItem extends AppItem
     position: ['AppletNetwork', 'AppletDiskMount', 'AppletPower', 'AppletSound']
     constructor:(@id, icon, title)->
         super(@id, icon, title, $("#system"))
+        @windowTitleWrap.style.display = 'none'
         @element.classList.add("AppletItem")
-        # @imgWarp.classList.add("AppletItemImg")
+        @element.classList.add("Activator")
+        @element.classList.remove("ClientGroup")
+        # @imgWrap.classList.add("AppletItemImg")
         @imgContainer.classList.add("AppletItemImg")
         @img.classList.add("AppletItemImg")
         @imgHover.classList.add("AppletItemImg")
@@ -133,8 +136,9 @@ class SystemItem extends AppItem
 
     on_mouseover:=>
         super
-        if settings.displayMode() == DisplayMode.Classic
-            @displayIcon()
+        switch settings.displayMode()
+            when DisplayMode.Efficient, DisplayMode.Classic
+                @displayIcon()
 
     on_dragover:(e)=>
         e.stopPropagation()

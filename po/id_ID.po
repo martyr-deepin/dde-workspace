@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-18 15:38+0800\n"
+"POT-Creation-Date: 2014-08-20 11:16+0800\n"
 "PO-Revision-Date: 2014-07-05 22:30+0000\n"
 "Last-Translator: arvernester <dedy.yugo.purwanto@gmail.com>\n"
 "Language-Team: Indonesian (Indonesia) (http://www.transifex.com/projects/p/"
@@ -20,304 +20,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../resources/desktop/js/invalidlink.coffee:34
-#: ../resources/desktop/js/desktopentry.coffee:107
-#: ../resources/desktop/js/richdir.coffee:139
-#: ../resources/desktop/js/richdir.coffee:571
-msgid "_Delete"
-msgstr "_Hapus"
-
-#: ../resources/desktop/js/application.coffee:179
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
-msgid "The link is invalid. Do you want to delete it?"
-msgstr "Tautan tidak valid. Apakah Anda ingin menghapusnya?"
-
-#: ../resources/desktop/js/application.coffee:179
-#: ../resources/desktop/js/desktopentry.coffee:151
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
-#: ../resources/dock/js/plugins/trash/trash.coffee:76
-msgid "Warning"
-msgstr "Peringatan"
-
+#: ../resources/launcher/js/item.coffee:276
+#: ../resources/guide/js/launcher.coffee:235
+#: ../resources/desktop/js/richdir.coffee:133
+#: ../resources/desktop/js/richdir.coffee:566
 #: ../resources/desktop/js/desktopentry.coffee:101
 #: ../resources/desktop/js/specialitem.coffee:51
 #: ../resources/desktop/js/specialitem.coffee:147
-#: ../resources/desktop/js/richdir.coffee:133
-#: ../resources/desktop/js/richdir.coffee:566
-#: ../resources/launcher/js/item.coffee:276
-#: ../resources/guide/js/launcher.coffee:235
 msgid "_Open"
 msgstr "_Buka"
-
-#: ../resources/desktop/js/desktopentry.coffee:103
-#: ../resources/desktop/js/richdir.coffee:568
-msgid "Cu_t"
-msgstr "Po_tong"
-
-#: ../resources/desktop/js/desktopentry.coffee:104
-#: ../resources/desktop/js/richdir.coffee:569
-msgid "_Copy"
-msgstr "_Duplikat"
-
-#: ../resources/desktop/js/desktopentry.coffee:106
-#: ../resources/desktop/js/richdir.coffee:135
-msgid "_Rename"
-msgstr "_Ubah Nama"
-
-#: ../resources/desktop/js/desktopentry.coffee:109
-#: ../resources/desktop/js/specialitem.coffee:53
-#: ../resources/desktop/js/richdir.coffee:573
-msgid "_Properties"
-msgstr "_Properti"
-
-#: ../resources/desktop/js/desktopentry.coffee:115
-#: ../resources/desktop/js/desktopentry.coffee:122
-msgid "Co_mpress"
-msgstr "Ko_mpres"
-
-#: ../resources/desktop/js/desktopentry.coffee:118
-#: ../resources/desktop/js/desktopentry.coffee:123
-msgid "_Extract"
-msgstr "_Ekstrak"
-
-#: ../resources/desktop/js/desktopentry.coffee:119
-#: ../resources/desktop/js/desktopentry.coffee:124
-msgid "Extract _Here"
-msgstr "Ekstrak_Di Sini"
-
-#: ../resources/desktop/js/desktopentry.coffee:151
-#: ../resources/dock/js/plugins/trash/trash.coffee:76
-msgid "Can not open this file."
-msgstr "Tidak bisa membuka berkas ini."
-
-#: ../resources/desktop/js/specialitem.coffee:34
-msgid "Computer"
-msgstr ""
-
-#: ../resources/desktop/js/specialitem.coffee:87
-#: ../resources/dock/js/main.coffee:168 ../resources/dock/js/main.coffee:245
-msgid "Trash"
-msgstr "Tong sampah"
-
-#: ../resources/desktop/js/specialitem.coffee:152
-#, fuzzy
-msgid "_Clean up %1 items"
-msgstr "_Bersihkan"
-
-#: ../resources/desktop/js/specialitem.coffee:154
-#, fuzzy
-msgid "_Clean up 1 item"
-msgstr "_Bersihkan"
-
-#: ../resources/desktop/js/specialitem.coffee:156
-#: ../resources/dock/js/plugins/trash/trash.coffee:29
-msgid "_Empty"
-msgstr ""
-
-#: ../resources/desktop/js/grid.coffee:71 ../lib/dentry/fileops.c:403
-msgid "Untitled"
-msgstr "Tanpa Judul"
-
-#: ../resources/desktop/js/grid.coffee:1022
-msgid "_Name"
-msgstr "_Nama"
-
-#: ../resources/desktop/js/grid.coffee:1023
-msgid "Last modified _time"
-msgstr "Berdasarkan tanggal _perubahan"
-
-#: ../resources/desktop/js/grid.coffee:1028
-msgid "_Folder"
-msgstr "_Folder"
-
-#: ../resources/desktop/js/grid.coffee:1029
-msgid "_Text document"
-msgstr "_Dokumen teks"
-
-#: ../resources/desktop/js/grid.coffee:1045
-#: ../resources/guide/js/desktop.coffee:196
-msgid "_Sort by"
-msgstr "_Sortir berdasarkan"
-
-#: ../resources/desktop/js/grid.coffee:1046
-#: ../resources/guide/js/desktop.coffee:197
-msgid "_New"
-msgstr "_Baru"
-
-#: ../resources/desktop/js/grid.coffee:1047
-#: ../resources/guide/js/desktop.coffee:198
-msgid "Open in _terminal"
-msgstr "Buka di _terminal"
-
-#: ../resources/desktop/js/grid.coffee:1048
-#: ../resources/guide/js/desktop.coffee:199
-msgid "_Paste"
-msgstr "_Tempel"
-
-#: ../resources/desktop/js/grid.coffee:1050
-#: ../resources/guide/js/desktop.coffee:201
-msgid "_Display settings"
-msgstr "_Pengaturan Tampilan"
-
-#: ../resources/desktop/js/grid.coffee:1051
-#: ../resources/guide/js/desktop.coffee:202
-msgid "_Corner navigation"
-msgstr "_Navigasi Pojok"
-
-#: ../resources/desktop/js/grid.coffee:1052
-#: ../resources/guide/js/desktop.coffee:203
-msgid "Pe_rsonalize"
-msgstr "Pe_rsonalisasi"
-
-#: ../resources/desktop/js/richdir.coffee:137
-msgid "_Ungroup"
-msgstr "_Ungroup"
-
-#: ../resources/greeter/js/message.coffee:105
-#: ../resources/greeter/js/message.coffee:82
-msgid "$ sudo reboot\n"
-msgstr "$ sudo reboot\n"
-
-#: ../resources/greeter/js/message.coffee:99
-#: ../resources/greeter/js/message.coffee:73
-msgid "Press Ctrl + Alt + F1\n"
-msgstr "Tekan Ctrl + Alt + F1\n"
-
-#: ../resources/greeter/js/message.coffee:95
-msgid ""
-"\t\t\t\t-----The daemon of accounts has not started!-----\n"
-")"
-msgstr ""
-
-#: ../resources/greeter/js/message.coffee:79
-msgid "$ sudo apt-get install deepin-desktop-Environment\n"
-msgstr "$ sudo apt-get install deepin-desktop-Environment\n"
-
-#: ../resources/greeter/js/message.coffee:68
-msgid "\t\t\t\t-----No available desktop sessions!-----\n"
-msgstr ""
-
-#: ../resources/greeter/js/user.coffee:456
-msgid "Login"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Jan"
-msgstr "Jan"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Feb"
-msgstr "Feb"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Mar"
-msgstr "Mar"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Apr"
-msgstr "Apr"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "May"
-msgstr "Mei"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Jun"
-msgstr "Jun"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Jul"
-msgstr "Jul"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Aug"
-msgstr "Agu"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Sep"
-msgstr "Sep"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Oct"
-msgstr "Okt"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Nov"
-msgstr "Nov"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Dec"
-msgstr "Des"
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Sun"
-msgstr "Ming"
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Mon"
-msgstr "Sen"
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Tue"
-msgstr "Sel"
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Wed"
-msgstr "Rab"
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Thu"
-msgstr "Kam"
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Fri"
-msgstr "Jum"
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Sat"
-msgstr "Sab"
-
-#: ../resources/greeter/js/usermenu.coffee:57
-msgid "Guest"
-msgstr "Tamu"
-
-#: ../resources/greeter/js/powermenu.coffee:26
-msgid "Shut down"
-msgstr "Matikan"
-
-#: ../resources/greeter/js/powermenu.coffee:27
-msgid "Restart"
-msgstr "Nyalakan ulang"
-
-#: ../resources/greeter/js/powermenu.coffee:28
-msgid "Suspend"
-msgstr "Suspensi"
-
-#: ../resources/greeter/js/powermenu.coffee:90
-msgid "Enter your password to %1"
-msgstr "Masukkan kata kunci pada %1"
-
-#: ../resources/greeter/js/mediacontrol.coffee:167
-#, fuzzy
-msgid "Click button to Play"
-msgstr "klik tombol login untuk masuk"
-
-#: ../resources/osd/js/monitor.coffee:38
-msgid "Duplicate"
-msgstr ""
-
-#: ../resources/osd/js/monitor.coffee:39
-msgid "Extend"
-msgstr ""
 
 #: ../resources/launcher/js/item.coffee:283
 #: ../resources/guide/js/launcher.coffee:242
@@ -398,45 +109,118 @@ msgstr "Kirim ke do_ck"
 msgid "Remove from do_ck"
 msgstr "Hapus dari _favorit"
 
-#: ../resources/zone/js/utils.coffee:10
-msgid "Control Center"
-msgstr "Pusat Kontrol"
+#: ../resources/osd/js/monitor.coffee:38
+msgid "Duplicate"
+msgstr ""
 
-#: ../resources/zone/js/utils.coffee:10
-msgid "All Windows"
-msgstr "Semua Jendela"
+#: ../resources/osd/js/monitor.coffee:39
+msgid "Extend"
+msgstr ""
 
-#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:243
+#: ../resources/dock/js/deepin_item.coffee:247
+msgid "_View as analog"
+msgstr "_Lihat sebagai analog"
+
+#: ../resources/dock/js/deepin_item.coffee:248
+#: ../resources/dock/js/deepin_item.coffee:300
+msgid "_Time settings"
+msgstr "_Pengaturan waktu"
+
+#: ../resources/dock/js/deepin_item.coffee:299
+msgid "_View as digit"
+msgstr "_Lihat sebagai angka"
+
+#: ../resources/dock/js/main.coffee:47 ../resources/dock/js/main.coffee:124
+#: ../resources/desktop/js/specialitem.coffee:87
+msgid "Trash"
+msgstr "Tong sampah"
+
+#: ../resources/dock/js/main.coffee:122 ../resources/zone/js/utils.coffee:10
 msgid "Launcher"
 msgstr "Peluncur"
 
-#: ../resources/zone/js/utils.coffee:10
-msgid "Desktop"
-msgstr "Desktop"
-
-#: ../resources/zone/js/utils.coffee:10
-msgid "None"
-msgstr "None"
-
-#: ../resources/guide/js/dss.coffee:29
-msgid "Well, please trigger the lower right corner again"
-msgstr "Oow, silakan arahkan ke pojok kanan bawah lagi"
-
-#: ../resources/guide/js/dss.coffee:30
+#: ../resources/dock/js/global_menu.coffee:9
 #, fuzzy
-msgid "tips: Click the setting icon on dock to implement"
-msgstr "tips: Klik ikon setting pada dok untuk menjalankannya"
+msgid "Keep _showing"
+msgstr "tetap _tampilkan"
 
-#: ../resources/guide/js/dss.coffee:69
-msgid "Here is the system setting area"
-msgstr "Area Pengaturan Sistem"
-
-#: ../resources/guide/js/dss.coffee:70
+#: ../resources/dock/js/global_menu.coffee:10
 #, fuzzy
-msgid ""
-"tips: Hover the setting icon on dock to quickly implement some setting "
-"functions"
-msgstr "tips: Klik ikon setting pada dok untuk menjalankannya"
+msgid "Keep _hidden"
+msgstr "tetap _sembunyikan"
+
+#: ../resources/dock/js/global_menu.coffee:11
+msgid "_Auto hide"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:24
+msgid "_Fashion mode"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:25
+msgid "_Efficient mode"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:26
+msgid "_Classic mode"
+msgstr ""
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Sun"
+msgstr "Ming"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Mon"
+msgstr "Sen"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Tue"
+msgstr "Sel"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Wed"
+msgstr "Rab"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Thu"
+msgstr "Kam"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Fri"
+msgstr "Jum"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Sat"
+msgstr "Sab"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:29
+#: ../resources/desktop/js/specialitem.coffee:156
+msgid "_Empty"
+msgstr ""
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:33
+msgid "_Close"
+msgstr "_Tutup"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:76
+#: ../resources/desktop/js/desktopentry.coffee:151
+msgid "Can not open this file."
+msgstr "Tidak bisa membuka berkas ini."
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:76
+#: ../resources/desktop/js/application.coffee:179
+#: ../resources/desktop/js/richdir.coffee:335
+#: ../resources/desktop/js/richdir.coffee:586
+#: ../resources/desktop/js/desktopentry.coffee:151
+msgid "Warning"
+msgstr "Peringatan"
 
 #: ../resources/guide/js/end.coffee:25
 #, fuzzy
@@ -446,93 +230,6 @@ msgstr "Terimakasih atas kesabaran Anda untuk belajar. Selamat!"
 #: ../resources/guide/js/end.coffee:30
 msgid "End"
 msgstr "Akhir"
-
-#: ../resources/guide/js/welcome.coffee:35
-msgid "Welcome to use Deepin Operating System"
-msgstr "Selamat menggunakan Sistem Operasi Linux Deepin"
-
-#: ../resources/guide/js/welcome.coffee:38
-msgid "Prepare for operation ..."
-msgstr "Persiapan untuk operasi ..."
-
-#: ../resources/guide/js/desktop.coffee:27
-msgid ""
-"Let's drag the other icon on the first icon \n"
-" to generate \"application group\""
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:116
-msgid "Well, you have learned how to create a \"application group\""
-msgstr ""
-"Baiklah, Anda sudah mempelajari bagaimana membuat sebuah \"grup aplikasi\""
-
-#: ../resources/guide/js/desktop.coffee:117
-#, fuzzy
-msgid "tips: Right-click on the application group will provide more functions"
-msgstr "tips: Klik kanan pada group aplikasi akan memberikan fungsi lainnya"
-
-#: ../resources/guide/js/desktop.coffee:128
-msgid ""
-"Slide the mouse to the four top corners, which can trigger four different "
-"events\n"
-"Please move to the upper left corner first to show or hide Launcher"
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:129
-msgid ""
-"tips: Please trigger successively by hints, click on the blank area to return"
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:133
-msgid "Show/Hide Launcher"
-msgstr "Tampilkan/Sembunyikan Peluncur"
-
-#: ../resources/guide/js/desktop.coffee:134
-msgid "Show/Hide Desktop"
-msgstr "Tampilkan/Sembunyikan Desktop"
-
-#: ../resources/guide/js/desktop.coffee:135
-msgid "Show/Hide Control Center"
-msgstr "Tampilkan/Sembunyikan Pusat Kendali"
-
-#: ../resources/guide/js/desktop.coffee:136
-msgid "No default functions setted in right up corner"
-msgstr "Tidak ada fungsi bawaan yang diset pada pojok kanan atas"
-
-#: ../resources/guide/js/desktop.coffee:178
-msgid ""
-"Right-click on desktop black area to call up the menu, select \"Corner "
-"navigation\" to set the corner used"
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:179
-msgid "tips: Click on the interface of corner navigation blank area to return"
-msgstr ""
-
-#: ../resources/guide/js/start.coffee:28
-msgid "New Launcher"
-msgstr "Peluncur Baru"
-
-#: ../resources/guide/js/start.coffee:28
-msgid "New Desktop"
-msgstr "Desktop Baru"
-
-#: ../resources/guide/js/start.coffee:28
-msgid "New System Settings"
-msgstr "Pengaturan Sistem Baru"
-
-#: ../resources/guide/js/start.coffee:29
-msgid "The following will guide you to learn how to use some new functions"
-msgstr ""
-"Panduan berikut akan memandu Anda belajar menggunakan beberapa fungsi baru"
-
-#: ../resources/guide/js/start.coffee:44
-msgid "Start"
-msgstr "Mulai"
-
-#: ../resources/guide/js/start.coffee:51
-msgid "I am an experienced user. Exit directly."
-msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:29
 msgid ""
@@ -588,44 +285,351 @@ msgstr "Gunakan tombol klik kanan untuk mengirim dua icon ke desktop"
 msgid "tips: You can add it to startup items or uninstall it"
 msgstr "tips:Anda dapat menambah ke startup atau uninstall"
 
-#: ../resources/dock/js/global_menu.coffee:9
+#: ../resources/guide/js/dss.coffee:29
+msgid "Well, please trigger the lower right corner again"
+msgstr "Oow, silakan arahkan ke pojok kanan bawah lagi"
+
+#: ../resources/guide/js/dss.coffee:30
 #, fuzzy
-msgid "Keep _showing"
-msgstr "tetap _tampilkan"
+msgid "tips: Click the setting icon on dock to implement"
+msgstr "tips: Klik ikon setting pada dok untuk menjalankannya"
 
-#: ../resources/dock/js/global_menu.coffee:10
+#: ../resources/guide/js/dss.coffee:69
+msgid "Here is the system setting area"
+msgstr "Area Pengaturan Sistem"
+
+#: ../resources/guide/js/dss.coffee:70
 #, fuzzy
-msgid "Keep _hidden"
-msgstr "tetap _sembunyikan"
+msgid ""
+"tips: Hover the setting icon on dock to quickly implement some setting "
+"functions"
+msgstr "tips: Klik ikon setting pada dok untuk menjalankannya"
 
-#: ../resources/dock/js/global_menu.coffee:11
-msgid "_Auto hide"
+#: ../resources/guide/js/start.coffee:28
+msgid "New Launcher"
+msgstr "Peluncur Baru"
+
+#: ../resources/guide/js/start.coffee:28
+msgid "New Desktop"
+msgstr "Desktop Baru"
+
+#: ../resources/guide/js/start.coffee:28
+msgid "New System Settings"
+msgstr "Pengaturan Sistem Baru"
+
+#: ../resources/guide/js/start.coffee:29
+msgid "The following will guide you to learn how to use some new functions"
+msgstr ""
+"Panduan berikut akan memandu Anda belajar menggunakan beberapa fungsi baru"
+
+#: ../resources/guide/js/start.coffee:44
+msgid "Start"
+msgstr "Mulai"
+
+#: ../resources/guide/js/start.coffee:51
+msgid "I am an experienced user. Exit directly."
 msgstr ""
 
-#: ../resources/dock/js/global_menu.coffee:23
-msgid "_Efficient mode"
+#: ../resources/guide/js/desktop.coffee:27
+msgid ""
+"Let's drag the other icon on the first icon \n"
+" to generate \"application group\""
 msgstr ""
 
-#: ../resources/dock/js/global_menu.coffee:24
-msgid "_Fashion mode"
+#: ../resources/guide/js/desktop.coffee:116
+msgid "Well, you have learned how to create a \"application group\""
+msgstr ""
+"Baiklah, Anda sudah mempelajari bagaimana membuat sebuah \"grup aplikasi\""
+
+#: ../resources/guide/js/desktop.coffee:117
+#, fuzzy
+msgid "tips: Right-click on the application group will provide more functions"
+msgstr "tips: Klik kanan pada group aplikasi akan memberikan fungsi lainnya"
+
+#: ../resources/guide/js/desktop.coffee:128
+msgid ""
+"Slide the mouse to the four top corners, which can trigger four different "
+"events\n"
+"Please move to the upper left corner first to show or hide Launcher"
 msgstr ""
 
-#: ../resources/dock/js/deepin_item.coffee:243
-msgid "_View as analog"
-msgstr "_Lihat sebagai analog"
+#: ../resources/guide/js/desktop.coffee:129
+msgid ""
+"tips: Please trigger successively by hints, click on the blank area to return"
+msgstr ""
 
-#: ../resources/dock/js/deepin_item.coffee:244
-#: ../resources/dock/js/deepin_item.coffee:296
-msgid "_Time settings"
-msgstr "_Pengaturan waktu"
+#: ../resources/guide/js/desktop.coffee:133
+msgid "Show/Hide Launcher"
+msgstr "Tampilkan/Sembunyikan Peluncur"
 
-#: ../resources/dock/js/deepin_item.coffee:295
-msgid "_View as digit"
-msgstr "_Lihat sebagai angka"
+#: ../resources/guide/js/desktop.coffee:134
+msgid "Show/Hide Desktop"
+msgstr "Tampilkan/Sembunyikan Desktop"
 
-#: ../resources/dock/js/plugins/trash/trash.coffee:33
-msgid "_Close"
-msgstr "_Tutup"
+#: ../resources/guide/js/desktop.coffee:135
+msgid "Show/Hide Control Center"
+msgstr "Tampilkan/Sembunyikan Pusat Kendali"
+
+#: ../resources/guide/js/desktop.coffee:136
+msgid "No default functions setted in right up corner"
+msgstr "Tidak ada fungsi bawaan yang diset pada pojok kanan atas"
+
+#: ../resources/guide/js/desktop.coffee:178
+msgid ""
+"Right-click on desktop black area to call up the menu, select \"Corner "
+"navigation\" to set the corner used"
+msgstr ""
+
+#: ../resources/guide/js/desktop.coffee:179
+msgid "tips: Click on the interface of corner navigation blank area to return"
+msgstr ""
+
+#: ../resources/guide/js/desktop.coffee:196
+#: ../resources/desktop/js/grid.coffee:1045
+msgid "_Sort by"
+msgstr "_Sortir berdasarkan"
+
+#: ../resources/guide/js/desktop.coffee:197
+#: ../resources/desktop/js/grid.coffee:1046
+msgid "_New"
+msgstr "_Baru"
+
+#: ../resources/guide/js/desktop.coffee:198
+#: ../resources/desktop/js/grid.coffee:1047
+msgid "Open in _terminal"
+msgstr "Buka di _terminal"
+
+#: ../resources/guide/js/desktop.coffee:199
+#: ../resources/desktop/js/grid.coffee:1048
+msgid "_Paste"
+msgstr "_Tempel"
+
+#: ../resources/guide/js/desktop.coffee:201
+#: ../resources/desktop/js/grid.coffee:1050
+msgid "_Display settings"
+msgstr "_Pengaturan Tampilan"
+
+#: ../resources/guide/js/desktop.coffee:202
+#: ../resources/desktop/js/grid.coffee:1051
+msgid "_Corner navigation"
+msgstr "_Navigasi Pojok"
+
+#: ../resources/guide/js/desktop.coffee:203
+#: ../resources/desktop/js/grid.coffee:1052
+msgid "Pe_rsonalize"
+msgstr "Pe_rsonalisasi"
+
+#: ../resources/guide/js/welcome.coffee:35
+msgid "Welcome to use Deepin Operating System"
+msgstr "Selamat menggunakan Sistem Operasi Linux Deepin"
+
+#: ../resources/guide/js/welcome.coffee:38
+msgid "Prepare for operation ..."
+msgstr "Persiapan untuk operasi ..."
+
+#: ../resources/zone/js/utils.coffee:10
+msgid "Control Center"
+msgstr "Pusat Kontrol"
+
+#: ../resources/zone/js/utils.coffee:10
+msgid "All Windows"
+msgstr "Semua Jendela"
+
+#: ../resources/zone/js/utils.coffee:10
+msgid "Desktop"
+msgstr "Desktop"
+
+#: ../resources/zone/js/utils.coffee:10
+msgid "None"
+msgstr "None"
+
+#: ../resources/desktop/js/invalidlink.coffee:34
+#: ../resources/desktop/js/richdir.coffee:139
+#: ../resources/desktop/js/richdir.coffee:571
+#: ../resources/desktop/js/desktopentry.coffee:107
+msgid "_Delete"
+msgstr "_Hapus"
+
+#: ../resources/desktop/js/application.coffee:179
+#: ../resources/desktop/js/richdir.coffee:335
+#: ../resources/desktop/js/richdir.coffee:586
+msgid "The link is invalid. Do you want to delete it?"
+msgstr "Tautan tidak valid. Apakah Anda ingin menghapusnya?"
+
+#: ../resources/desktop/js/richdir.coffee:135
+#: ../resources/desktop/js/desktopentry.coffee:106
+msgid "_Rename"
+msgstr "_Ubah Nama"
+
+#: ../resources/desktop/js/richdir.coffee:137
+msgid "_Ungroup"
+msgstr "_Ungroup"
+
+#: ../resources/desktop/js/richdir.coffee:568
+#: ../resources/desktop/js/desktopentry.coffee:103
+msgid "Cu_t"
+msgstr "Po_tong"
+
+#: ../resources/desktop/js/richdir.coffee:569
+#: ../resources/desktop/js/desktopentry.coffee:104
+msgid "_Copy"
+msgstr "_Duplikat"
+
+#: ../resources/desktop/js/richdir.coffee:573
+#: ../resources/desktop/js/desktopentry.coffee:109
+#: ../resources/desktop/js/specialitem.coffee:53
+msgid "_Properties"
+msgstr "_Properti"
+
+#: ../resources/desktop/js/grid.coffee:71 ../lib/dentry/fileops.c:403
+msgid "Untitled"
+msgstr "Tanpa Judul"
+
+#: ../resources/desktop/js/grid.coffee:1022
+msgid "_Name"
+msgstr "_Nama"
+
+#: ../resources/desktop/js/grid.coffee:1023
+msgid "Last modified _time"
+msgstr "Berdasarkan tanggal _perubahan"
+
+#: ../resources/desktop/js/grid.coffee:1028
+msgid "_Folder"
+msgstr "_Folder"
+
+#: ../resources/desktop/js/grid.coffee:1029
+msgid "_Text document"
+msgstr "_Dokumen teks"
+
+#: ../resources/desktop/js/desktopentry.coffee:115
+#: ../resources/desktop/js/desktopentry.coffee:122
+msgid "Co_mpress"
+msgstr "Ko_mpres"
+
+#: ../resources/desktop/js/desktopentry.coffee:118
+#: ../resources/desktop/js/desktopentry.coffee:123
+msgid "_Extract"
+msgstr "_Ekstrak"
+
+#: ../resources/desktop/js/desktopentry.coffee:119
+#: ../resources/desktop/js/desktopentry.coffee:124
+msgid "Extract _Here"
+msgstr "Ekstrak_Di Sini"
+
+#: ../resources/desktop/js/specialitem.coffee:34
+msgid "Computer"
+msgstr ""
+
+#: ../resources/desktop/js/specialitem.coffee:152
+#, fuzzy
+msgid "_Clean up %1 items"
+msgstr "_Bersihkan"
+
+#: ../resources/desktop/js/specialitem.coffee:154
+#, fuzzy
+msgid "_Clean up 1 item"
+msgstr "_Bersihkan"
+
+#: ../resources/greeter/js/user.coffee:456
+msgid "Login"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Jan"
+msgstr "Jan"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Feb"
+msgstr "Feb"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Mar"
+msgstr "Mar"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Apr"
+msgstr "Apr"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "May"
+msgstr "Mei"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Jun"
+msgstr "Jun"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Jul"
+msgstr "Jul"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Aug"
+msgstr "Agu"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Sep"
+msgstr "Sep"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Oct"
+msgstr "Okt"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Nov"
+msgstr "Nov"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Dec"
+msgstr "Des"
+
+#: ../resources/greeter/js/usermenu.coffee:57
+msgid "Guest"
+msgstr "Tamu"
+
+#: ../resources/greeter/js/powermenu.coffee:26
+msgid "Shut down"
+msgstr "Matikan"
+
+#: ../resources/greeter/js/powermenu.coffee:27
+msgid "Restart"
+msgstr "Nyalakan ulang"
+
+#: ../resources/greeter/js/powermenu.coffee:28
+msgid "Suspend"
+msgstr "Suspensi"
+
+#: ../resources/greeter/js/powermenu.coffee:90
+msgid "Enter your password to %1"
+msgstr "Masukkan kata kunci pada %1"
+
+#: ../resources/greeter/js/message.coffee:105
+#: ../resources/greeter/js/message.coffee:82
+msgid "$ sudo reboot\n"
+msgstr "$ sudo reboot\n"
+
+#: ../resources/greeter/js/message.coffee:99
+#: ../resources/greeter/js/message.coffee:73
+msgid "Press Ctrl + Alt + F1\n"
+msgstr "Tekan Ctrl + Alt + F1\n"
+
+#: ../resources/greeter/js/message.coffee:95
+msgid ""
+"\t\t\t\t-----The daemon of accounts has not started!-----\n"
+")"
+msgstr ""
+
+#: ../resources/greeter/js/message.coffee:79
+msgid "$ sudo apt-get install deepin-desktop-Environment\n"
+msgstr "$ sudo apt-get install deepin-desktop-Environment\n"
+
+#: ../resources/greeter/js/message.coffee:68
+msgid "\t\t\t\t-----No available desktop sessions!-----\n"
+msgstr ""
+
+#: ../resources/greeter/js/mediacontrol.coffee:167
+#, fuzzy
+msgid "Click button to Play"
+msgstr "klik tombol login untuk masuk"
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
@@ -634,6 +638,10 @@ msgstr ""
 #: ../resources/common/js/uninstaller.coffee:33
 msgid "\"%1\" failed to be uninstalled"
 msgstr ""
+
+#: ../app/dock/dock.c:322
+msgid "Dock failed to start, because Compiz is not enabled."
+msgstr "Dock tidak terbuka, karena Compis tidak diaktifkan."
 
 #: ../app/desktop/desktop.c:286
 msgid "New file"
@@ -650,10 +658,6 @@ msgstr "%a, %b %d, %Y"
 #: ../app/greeter/lock.c:125 ../app/greeter/greeter.c:192
 msgid "Invalid Password"
 msgstr "Kata Sandi Salah"
-
-#: ../app/dock/dock.c:322
-msgid "Dock failed to start, because Compiz is not enabled."
-msgstr "Dock tidak terbuka, karena Compis tidak diaktifkan."
 
 #: ../lib/dentry/entry.c:746
 #, c-format

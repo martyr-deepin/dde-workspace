@@ -1,12 +1,9 @@
-TRAY_ICON_WIDTH = 16
-TRAY_ICON_HEIGHT = 16
-TRAY_ICON_MARGIN = 8
 
 class SystemTray extends SystemItem
     constructor:(@id, icon, title)->
         super
         @imgContainer.removeEventListener("mouseout", @on_mouseout)
-        @panel = create_element(tag:"div", class:"SystemTrayPanel", @imgWarp)
+        @panel = create_element(tag:"div", class:"SystemTrayPanel", @imgWrap)
         @panel.style.display = 'none'
         @panel.addEventListener("mouseover", @on_mouseover)
         @panel.addEventListener("mouseout", @on_mouseout)
@@ -14,15 +11,14 @@ class SystemTray extends SystemItem
         @panel.addEventListener("contextmenu", @on_rightclick)
         @openIndicator.style.display = 'none'
         @isUnfolded = false
-        @button = create_element(tag:'div', class:'TrayFoldButton', @imgWarp)
+        @button = create_element(tag:'div', class:'TrayFoldButton', @imgWrap)
         @button.addEventListener('mouseover', @on_mouseover)
         @button.addEventListener('click', @on_button_click)
 
-        if settings and settings.displayMode() != DisplayMode.Modern
-            @isShowing = true
+        @isShowing = false
+        if settings and settings.displayMode() != DisplayMode.Fashion
+            # TODO: fold tray icons
             @isUnfolded = true # tmp
-        else
-            @isShowing = false
 
         try
             @core = get_dbus(
@@ -59,8 +55,10 @@ class SystemTray extends SystemItem
                 setTimeout(=>
                     @updateTrayIcon()
                     calc_app_item_size()
+                    updateMaxClientListWidth()
                 , ANIMATION_TIME)
             else
+                updateMaxClientListWidth()
                 $EW.undraw(xid)
                 # $EW.hide(xid)
         )
@@ -99,16 +97,18 @@ class SystemTray extends SystemItem
                 @hideButton()
                 if @isUnfolded
                     @fold()
+                updateMaxClientListWidth()
                 return
 
             # TODO:
             # another way to fold for classic mode.
-            if @isShowing and settings.displayMode() != DisplayMode.Classic
+            if @isShowing and settings.displayMode() == DisplayMode.Fashion
                 if @items.length == 4
                     @hideButton()
                     if @isUnfolded
                         @fold()
 
+            updateMaxClientListWidth()
                 # @isShowing = true
                 # @img.style.display = 'none'
                 # @panel.style.display = ''
@@ -137,10 +137,12 @@ class SystemTray extends SystemItem
         run_callback_after_prop_changed(
             =>
                 switch settings.displayMode()
+                    when DisplayMode.Efficient
+                        @updateTrayIconForEfficient()
                     when DisplayMode.Classic
                         @updateTrayIconForClassic()
-                    when DisplayMode.Modern
-                        @updateTrayIconForModern()
+                    when DisplayMode.Fashion
+                        @updateTrayIconForFashion()
             $("#system").offsetTop
             -> $("#system").offsetTop
             50
@@ -150,6 +152,16 @@ class SystemTray extends SystemItem
     updateTrayIconForClassic:=>
         # console.warn("updateTrayIconForClassic")
         trayarea = $("#trayarea")
+        y = (DOCK_HEIGHT - TRAY_ICON_HEIGHT) / 2 + trayarea.offsetTop
+        for item, i in @items
+            x = trayarea.offsetLeft + TRAY_ICON_MARGIN - (i + 1) * (TRAY_ICON_WIDTH + TRAY_ICON_MARGIN * 2)
+            # console.warn("move #{item} to #{x}x#{y}")
+            $EW.move_resize(item, x, y, TRAY_ICON_WIDTH, TRAY_ICON_HEIGHT)
+            # @showAllIcons()
+
+    updateTrayIconForEfficient:=>
+        # console.warn("updateTrayIconForEfficient")
+        trayarea = $("#trayarea")
         y = (44 - TRAY_ICON_HEIGHT) / 2 + trayarea.offsetTop
         for item, i in @items
             x = trayarea.offsetLeft + TRAY_ICON_MARGIN - (i + 1) * (TRAY_ICON_WIDTH + TRAY_ICON_MARGIN * 2)
@@ -157,7 +169,7 @@ class SystemTray extends SystemItem
             $EW.move_resize(item, x, y, TRAY_ICON_WIDTH, TRAY_ICON_HEIGHT)
             # @showAllIcons()
 
-    updateTrayIconForModern:=>
+    updateTrayIconForFashion:=>
         #console.log("update the order: #{@items}")
         @upperItemNumber = Math.max(Math.ceil(@items.length / 2), 2)
         if @items.length > 4 && @items.length % 2 == 0

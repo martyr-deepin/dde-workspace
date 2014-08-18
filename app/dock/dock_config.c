@@ -31,28 +31,46 @@
 
 
 extern struct DisplayInfo dock;
-struct _GlobalData GD;
+struct _GlobalData GD = {
+    .config= {
+        .display_mode = UNKNOWN_MODE,
+        .hide_mode = 0,
+    },
+};
 void dock_update_hide_mode();
 void _change_workarea_height(int height);
 gboolean workaround_change_workarea_height(int height);
 void dock_force_set_region(double x, double y, double items_width, double panel_width, double height);
 
-#define MODERN_DOCK_HEIGHT 68
-#define MODERN_DOCK_PANEL_HEIGHT 60
+#define FASHION_DOCK_HEIGHT 68
+#define FASHION_DOCK_PANEL_HEIGHT 60
 
-#define CLASSIC_DOCK_HEIGHT 48
-#define CLASSIC_DOCK_PANEL_HEIGHT 48
+#define EFFICIENT_DOCK_HEIGHT 48
+#define EFFICIENT_DOCK_PANEL_HEIGHT 48
+
+#define CLASSIC_DOCK_HEIGHT 36
+#define CLASSIC_DOCK_PANEL_HEIGHT 36
+
+
+#define UPDATE_DOCK_SIZE(mode) do { switch (mode) { \
+        case FASHION_MODE:\
+            GD.dock_height = FASHION_DOCK_HEIGHT;\
+            GD.dock_panel_height = FASHION_DOCK_PANEL_HEIGHT;\
+            break;\
+        case EFFICIENT_MODE:\
+            GD.dock_height = EFFICIENT_DOCK_HEIGHT;\
+            GD.dock_panel_height = EFFICIENT_DOCK_PANEL_HEIGHT;\
+            break;\
+        case CLASSIC_MODE:\
+            GD.dock_height = CLASSIC_DOCK_HEIGHT;\
+            GD.dock_panel_height = CLASSIC_DOCK_PANEL_HEIGHT;\
+            break;\
+}} while(0)
 
 void setting_changed(GSettings* s, gchar* key, gpointer user_data G_GNUC_UNUSED)
 {
     GD.config.display_mode = g_settings_get_enum(s, key);
-    if (GD.config.display_mode == CLASSIC_MODE) {
-        GD.dock_height = CLASSIC_DOCK_HEIGHT;
-        GD.dock_panel_height = CLASSIC_DOCK_PANEL_HEIGHT;
-    } else {
-        GD.dock_height = MODERN_DOCK_HEIGHT;
-        GD.dock_panel_height = MODERN_DOCK_PANEL_HEIGHT;
-    }
+    UPDATE_DOCK_SIZE(GD.config.display_mode);
 
     // _base_rect and workarea should be updated,
     // workaround_change_workarea_height will do it.
@@ -72,16 +90,24 @@ void init_config()
     GD.config.color = 0;
     GD.is_webview_loaded = FALSE;
     GD.dock_panel_width = 0;
+    GD.dock_height = 0;
+    GD.dock_panel_height = 0;
+    GD.config.display_mode = UNKNOWN_MODE;
 
     GSettings* s = g_settings_new(SCHEMA_ID);
     GD.config.hide_mode = g_settings_get_enum(s, HIDE_MODE_KEY);
     GD.config.display_mode = g_settings_get_enum(s, DISPLAY_MODE_KEY);
-    if (GD.config.display_mode == CLASSIC_MODE) {
-        GD.dock_height = CLASSIC_DOCK_HEIGHT;
-        GD.dock_panel_height = CLASSIC_DOCK_PANEL_HEIGHT;
-    } else {
-        GD.dock_height = MODERN_DOCK_HEIGHT;
-        GD.dock_panel_height = MODERN_DOCK_PANEL_HEIGHT;
+    UPDATE_DOCK_SIZE(GD.config.display_mode);
+    switch (GD.config.display_mode) {
+    case FASHION_MODE:
+        g_debug("[%s] fashion mode: %d", __func__, GD.config.display_mode);
+        break;
+    case EFFICIENT_MODE:
+        g_debug("[%s] efficient mode: %d", __func__, GD.config.display_mode);
+        break;
+    case CLASSIC_MODE:
+        g_debug("[%s] classic mode: %d", __func__, GD.config.display_mode);
+        break;
     }
     g_signal_connect(s, "changed::"DISPLAY_MODE_KEY, G_CALLBACK(setting_changed), NULL);
 }

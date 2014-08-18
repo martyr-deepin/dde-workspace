@@ -27,7 +27,7 @@
 #define APP_NAME "dock"
 
 enum {NO_HIDE_MODE=0, INTELLIGENT_HIDE_MODE=3, ALWAYS_HIDE_MODE=1, AUTO_HIDE_MODE=2} HideMode;
-enum {MODERN_MODE, CLASSIC_MODE};
+enum {UNKNOWN_MODE=-1, FASHION_MODE, EFFICIENT_MODE, CLASSIC_MODE};
 struct _DockConfig {
     int display_mode;
     int hide_mode;

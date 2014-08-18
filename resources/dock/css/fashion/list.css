@@ -19,13 +19,13 @@
     /* -webkit-transition-timing-function: ease-in; */
 }
 
-.imgWarp{
+.imgWrap{
   /* position:relative; */
   display: -webkit-box;
   -webkit-box-pack:center;
   /* border:black 1px solid; */
 }
-.indicatorWarp{
+.indicatorWrap{
   position:relative;
   top: 9px;
   text-align: center;
@@ -88,4 +88,10 @@
     position: absolute;
     top: 5px;
     left: 3px;
+}
+.HoverOpenIndicator {
+  display: none;
+}
+.windowTitleWrap {
+  display: none;
 }

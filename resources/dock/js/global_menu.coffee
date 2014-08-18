@@ -20,13 +20,14 @@ class GlobalMenu
         # console.log(settings.hideMode())
         items[settings.hideMode()].setChecked(true)
         @menu = new Menu(DEEPIN_MENU_TYPE.NORMAL)
-        classic = new RadioBoxMenuItem("dockDisplayMode:radio:classic", _("_Efficient mode"))
-        modern = new RadioBoxMenuItem("dockDisplayMode:radio:modern", _("_Fashion mode"))
-        if settings.displayMode() == DisplayMode.Classic
-            classic.setChecked(true)
-        else
-            modern.setChecked(true)
-        @menu.append(classic, modern).addSeparator()
+        displayModes = [
+            new RadioBoxMenuItem("dockDisplayMode:radio:fashion", _("_Fashion mode")),
+            new RadioBoxMenuItem("dockDisplayMode:radio:efficient", _("_Efficient mode")),
+            new RadioBoxMenuItem("dockDisplayMode:radio:classic", _("_Classic mode"))
+        ]
+        displayModes[settings.displayMode()].setChecked(true)
+        @menu.append.apply(@menu, displayModes)
+        @menu.addSeparator()
         @menu.append.apply(@menu, items)
 
         if Object.keys(@plugins).length > 0

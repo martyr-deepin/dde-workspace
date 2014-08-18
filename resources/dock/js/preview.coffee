@@ -398,8 +398,8 @@ class PreviewWindow extends Widget
             @canvas.width = @canvas.height = 1
 
             @close_button = create_element("div", "PWClose", @canvas_container)
-            @normalImg = create_img(src:"img/close_normal.png", @close_button)
-            @hoverImg = create_img(src:"img/close_hover.png", @close_button)
+            @normalImg = create_img(src:PREVIEW_CLOSE_BUTTON, @close_button)
+            @hoverImg = create_img(src:PREVIEW_CLOSE_HOVER_BUTTON, @close_button)
             @hoverImg.style.display = 'none'
             @close_button.addEventListener('click', (e)=>
                 e.stopPropagation()
