@@ -27,13 +27,8 @@ DCore.signal_connect("embed_window_configure_request", (info)->
     Preview_container._calc_size(info)
     setTimeout(->
         console.log(item.element)
-        xy = get_page_xy(item.element)
-        w = item.element.clientWidth || 0
-        extraHeight = PREVIEW_TRIANGLE.height + 6 + PREVIEW_WINDOW_BORDER_WIDTH + PREVIEW_CONTAINER_BORDER_WIDTH + info.height
-        x = xy.x + w/2 - info.width/2
-        y = xy.y - extraHeight
-        console.log("Move Window to #{x}, #{y}")
-        $EW.move(info.XID, x, y)
+        console.log("Move Window to #{info.x}, #{info.y}")
+        item.moveApplet(info)
     , 50)
 )
 DCore.signal_connect("embed_window_destroyed", (info)->

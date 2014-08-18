@@ -613,8 +613,6 @@ class AppItem extends Item
             _clear_item_timeout()
 
             _lastCliengGroup = @
-            xy = get_page_xy(@element)
-            w = @element.clientWidth || 0
             # console.log("mouseover: "+xy.y + ","+xy.x, +"clientWidth"+w)
             console.log("ClientGroup mouseover")
             # DCore.Dock.require_all_region()
@@ -634,27 +632,32 @@ class AppItem extends Item
                 catch e
                     console.log(e)
                 Preview_show(@, size, (c)=>
-                    ew = @embedWindows
-                    # 6 for container's blur
-                    extraHeight = PREVIEW_TRIANGLE.height + 6 + PREVIEW_WINDOW_BORDER_WIDTH + PREVIEW_CONTAINER_BORDER_WIDTH + size.height
-                    # console.log("Preview_show callback: #{c}")
-                    x = xy.x + w/2 - size.width/2
-                    if x + size.width > screen.width
-                        x -= x + size.width - screen.width + PREVIEW_WINDOW_BORDER_WIDTH + PREVIEW_CONTAINER_BORDER_WIDTH + PREVIEW_SHADOW_BLUR
-                    y = xy.y - extraHeight
-                    # console.log("Move Window to #{x}, #{y}")
-                    ew.move(ew.xids[0], x, y)
-                    clearTimeout(@showEmWindowTimer || null)
+                    @moveApplet(size)
 
+                    clearTimeout(@showEmWindowTimer || null)
                     if Preview_container.border.classList.contains("moveAnimation")
                         console.log("show window after animation")
                         @showEmWindowTimer = setTimeout(->
-                            ew.show()
+                            @embedWindows.show()
                         , 400)
                     else
                         console.log("show window immiditely")
-                        ew.show()
+                        @embedWindows.show()
                 )
+
+    moveApplet: (size)=>
+        ew = @embedWindows
+        xy = get_page_xy(@element)
+        w = @element.clientWidth || 0
+        extraSize = PREVIEW_SHADOW_BLUR + PREVIEW_WINDOW_BORDER_WIDTH + PREVIEW_CONTAINER_BORDER_WIDTH
+        extraHeight = PREVIEW_TRIANGLE.height + extraSize + size.height
+        # console.log("Preview_show callback: #{c}")
+        x = xy.x + w/2 - size.width/2
+        if x + size.width > screen.width
+            x -= x + size.width - screen.width + extraSize
+        y = xy.y - extraHeight
+        # console.log("Move Window to #{x}, #{y}")
+        ew.move(ew.xids[0], x, y)
 
     on_mouseout:(e)=>
         super
