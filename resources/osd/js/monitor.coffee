@@ -23,28 +23,27 @@
 #1 onlyCurrentScreen
 #2 onlySecondScreen
 MODE =
-    duplicate:-1
-    extend:0
-    only_init:1
-    min:-1
-    max:2
-DEFAULT_DISPLAY_MODE = MODE.extend
+    duplicate:1
+    extend:2
+    onlyone:3
+    min:1
+    max:3
+    default:2
 
 class Monitor extends Display
 
     constructor:(@id)->
         super
         @MonitorListChoose = [
-            {name:_("Duplicate"),value:MODE.duplicate,img:"duplicate"},
-            {name:_("Extend"),value:MODE.extend,img:"extend"}
+            {fullname:_("Duplicate"),value:MODE.duplicate,name:"",img:"duplicate"},
+            {fullname:_("Extend"),value:MODE.extend,name:"",img:"extend"}
         ]
         @setMode = {}
 
     createDisplayMonitorsList: ->
         MODE.max = @MonitorsName.length
-        only_init = MODE.only_init
         for name in @MonitorsName
-            mode = {name:@getFullName(name),value:only_init++,img:"onlyone"}
+            mode = {fullname:@getFullName(name),value:MODE.onlyone,name:name,img:"onlyone"}
             @MonitorListChoose.push(mode)
         echo "@MonitorListChoose.length:#{@MonitorListChoose.length}"
 
@@ -55,10 +54,11 @@ class Monitor extends Display
         return @currentMode
 
     switchDisplayMode:(mode)->
-        value = mode.value
-        value = DEFAULT_DISPLAY_MODE if value > @MonitorsName.length or value < MODE.min
-        echo "SwitchMode(#{value})"
-        cmd = "dbus-send --dest=com.deepin.daemon.Display --type=method_call /com/deepin/daemon/Display com.deepin.daemon.Display.SwitchMode int16:#{value}"
+        echo "SwitchMode(#{mode.value},#{mode.name}) fullname:#{mode.fullname}"
+        #if not @DBusDisplay?
+        #    @DBusDisplay = DCore.DBus.session(DISPLAY)
+        #@DBusDisplay.SwitchMode(mode.value,mode.name)
+        cmd = "dbus-send --dest=com.deepin.daemon.Display --type=method_call /com/deepin/daemon/Display com.deepin.daemon.Display.SwitchMode int16:#{mode.value} string:\"#{mode.name}\""
         DCore.Osd.spawn_command(cmd)
 
 MonitorListChoose = null
