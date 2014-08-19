@@ -134,11 +134,18 @@ class SystemTray extends SystemItem
             @items = @core.TrayIcons.slice(0) || []
 
     updateTrayIcon:=>
-        switch settings.displayMode()
-            when DisplayMode.Classic
-                @updateTrayIconForClassic()
-            when DisplayMode.Modern
-                @updateTrayIconForModern()
+        run_callback_after_prop_changed(
+            =>
+                switch settings.displayMode()
+                    when DisplayMode.Classic
+                        @updateTrayIconForClassic()
+                    when DisplayMode.Modern
+                        @updateTrayIconForModern()
+            $("#system").offsetTop
+            -> $("#system").offsetTop
+            50
+            1000
+        )
 
     updateTrayIconForClassic:=>
         # console.warn("updateTrayIconForClassic")

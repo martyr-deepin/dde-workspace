@@ -298,3 +298,26 @@ set_pos_center = (el,y_scale = 0.8,x_scale = 0.8)  ->
     el.style.top = "#{top}px"
     el.style.left = "#{left}px"
 
+run_callback_after_prop_changed = (callback, init_value, get_prop_func,
+            interval, duration, timeout_callback)->
+    if init_value != get_prop_func()
+        #the best situation, we didn't need poll the change of prop.
+        callback()
+        return
+
+    runner = (elapsed)->
+        if init_value != get_prop_func()
+            callback()
+        else
+            elapsed = elapsed + interval
+            if elapsed < duration
+                setTimeout(->
+                    runner(elapsed)
+                , interval)
+            else
+                timeout_callabck?()
+
+    #must be called once, because the callback may be not invoked.
+    callback()
+
+    runner(interval)
