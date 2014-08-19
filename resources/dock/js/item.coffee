@@ -637,7 +637,7 @@ class AppItem extends Item
                     clearTimeout(@showEmWindowTimer || null)
                     if Preview_container.border.classList.contains("moveAnimation")
                         console.log("show window after animation")
-                        @showEmWindowTimer = setTimeout(->
+                        @showEmWindowTimer = setTimeout(=>
                             @embedWindows.show()
                         , 400)
                     else
