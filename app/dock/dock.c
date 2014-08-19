@@ -451,8 +451,8 @@ void _update_dock_size(gint16 x, gint16 y, guint16 w, guint16 h)
     gdk_flush();
 
     g_debug("[%s] %dx%d(%d, %d)", __func__, w, h, x, y);
-    gdk_window_move_resize(WEBVIEW_GDK_WINDOW(), x, y, w, h);
     gdk_window_move_resize(DOCK_GDK_WINDOW(), x, y, w, h);
+    gdk_window_move_resize(WEBVIEW_GDK_WINDOW(), 0, 0, w, h);
 
     gdk_window_flush(WEBVIEW_GDK_WINDOW());
     gdk_window_flush(DOCK_GDK_WINDOW());
