@@ -23,7 +23,7 @@
     width:6em;
     height:6em;
     cursor:pointer;
-    
+
     opacity:0.0;
 }
 .prevuserinfo:hover{
@@ -195,27 +195,38 @@
 }
 
 .loginbutton_unpwd{
-    width:160px;
+    width:140px;
     height:36px;
     z-index:15;
-    background-image:url(../images/userinfo/login_unpwd_normal.png);
-    background-repeat:no-repeat;
     cursor:pointer;
 
     overflow:hidden;
     text-overflow:clip;
-    
+
     line-height:36px;
     font-size:1.6em;
     font-weight:normal;
     color:rgb(0,0,0);
     text-align:center;
-    word-spacing:1.6em;
+
+    -webkit-transition:all 150ms linear 0s;
+    background:-webkit-gradient(linear, left top, left bottom, from(rgba(244,175,83,1)), to(rgba(232,134,42,1)));
+    border:rgba(0,0,0,0.8) solid 1px;
+    box-shadow: 0 0 1px 1px rgba(0,0,0,0.1);
+    box-shadow:0 0 1px 1px rgba(255,255,255,0.7) inset;
+    border-radius:4px;
 }
 
+.loginbutton_unpwd:lang(zh),.loginbutton_unpwd:lang(jp){
+    text-indent:16px;
+    letter-spacing:16px;
+}
+
+.loginbutton_unpwd:hover{
+    background:-webkit-gradient(linear, left top, left bottom, from(rgba(232,134,42,1)), to(rgba(244,175,83,1)));
+}
 .loginbutton_unpwd:active{
-    background-image:url(../images/userinfo/login_unpwd_press.png);
-    background-repeat:no-repeat;
+    background:-webkit-gradient(linear, left top, left bottom, from(rgba(232,134,42,1)), to(rgba(244,175,83,1)));
 }
 
 .keyboard_img
