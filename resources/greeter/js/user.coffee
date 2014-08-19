@@ -124,51 +124,6 @@ class User extends Widget
         _current_user.animate_prev()
 
 
-    prev_next_userinfo_create:->
-        opacity = "0.8"
-        if @userinfo_all.length < 2 then return
-        @switchuser_div = create_element("div","switchuser_div",@element)
-        @prevuserinfo = create_element("div","prevuserinfo",@switchuser_div)
-        @prevuserinfo_img = create_img("prevuserinfo_img",img_src_before + "left_normal.png",@prevuserinfo)
-        @nextuserinfo = create_element("div","nextuserinfo",@switchuser_div)
-        @nextuserinfo_img = create_img("nextuserinfo_img",img_src_before + "right_normal.png",@nextuserinfo)
-
-        jQuery(@switchuser_div).hover((e)=>
-           @prevuserinfo.style.opacity = "0.8"
-           @nextuserinfo.style.opacity = "0.8"
-        ,(e)=>
-           @prevuserinfo.style.opacity = "0.0"
-           @nextuserinfo.style.opacity = "0.0"
-        )
-
-        @normal_hover_click_cb(@prevuserinfo_img,
-            img_src_before + "left_normal.png",
-            img_src_before + "left_hover.png",
-            img_src_before + "left_press.png",=>
-                @switch_userinfo("next")
-        )
-        @normal_hover_click_cb(@nextuserinfo_img,
-            img_src_before + "right_normal.png",
-            img_src_before + "right_hover.png",
-            img_src_before + "right_press.png",=>
-                @switch_userinfo("prev")
-        )
-
-    normal_hover_click_cb: (el,normal,hover,click,click_cb) ->
-        jQuery(el).hover((e)->
-            el.src = hover
-            el.style.opacity = "0.8"
-        ,(e)->
-            el.src = normal
-        )
-        el.addEventListener("click",=>
-            el.style.opacity = "0.8"
-            el.src = click
-            click_cb?()
-        ) if click
-
-
-
 class UserInfo extends Widget
     constructor: (@id, @username, @usericon)->
         super

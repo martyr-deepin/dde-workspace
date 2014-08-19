@@ -42,12 +42,11 @@ class Greeter extends Widget
         )
 
 
-    keydown_listener:(e,user)->
-        echo "greeter keydown_listener"
+    keydown_listener:(e)->
         if e.which == LEFT_ARROW
-            user?.switch_userinfo("next")
-        else if e.which == RIGHT_ARROW
             user?.switch_userinfo("prev")
+        else if e.which == RIGHT_ARROW
+            user?.switch_userinfo("next")
 
     isOnlyOneSession:->
         @sessions = DCore.Greeter.get_sessions()
@@ -108,7 +107,6 @@ powermenu = new PowerMenu(div_power)
 powermenu.new_power_menu()
 
 usermenu = null
-#user.prev_next_userinfo_create() if user.userinfo_all.length > 1
 if user.userinfo_all.length > 1
     div_userchoose = create_element("div","div_userchoose",_b)
     div_userchoose.setAttribute("id","div_userchoose")
@@ -118,19 +116,6 @@ if user.userinfo_all.length > 1
 else
     $("#div_desktop")?.style.right = "11em"
 
-document.body.addEventListener("keydown",(e)->
-    try
-        if is_greeter
-            echo "greeter keydown"
-            powermenu?.keydown_listener(e)
-            desktopmenu?.keydown_listener(e)
-            if user.userinfo_all.length < 2 then return
-            usermenu?.keydown_listener(e)
-            if powermenu.ComboBox.menu.is_hide()
-                if not desktopmenu?
-                    greeter.keydown_listener(e,user)
-                else if desktopmenu.ComboBox.menu.is_hide()
-                    greeter.keydown_listener(e,user)
-    catch e
-        echo "#{e}"
+body_keydown_listener((e)->
+    greeter.keydown_listener(e)
 )

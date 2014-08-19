@@ -90,6 +90,7 @@ powermenu.new_power_menu()
 
 
 mediacontrol = new MediaControl()
+div_media_control = null
 if mediacontrol.check_launched()
     div_media_control = create_element("div","div_media_control",_b)
     div_media_control.setAttribute("id","div_media_control")
@@ -104,14 +105,7 @@ if not is_livecd
     s.button_switch()
     $("#div_switchuser").appendChild(s.element)
 
-document.body.addEventListener("keydown",(e)->
-    try
-        if !is_greeter
-            if powermenu?.ComboBox.menu.is_hide()
-                mediacontrol?.keydown_listener(e)
-            else
-                powermenu?.keydown_listener(e)
-    catch e
-        echo "#{e}"
-)
 
+body_keydown_listener((e)->
+    mediacontrol?.keydown_listener(e) if div_media_control?
+)

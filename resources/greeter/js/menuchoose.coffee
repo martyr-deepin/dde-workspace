@@ -20,7 +20,7 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class MenuChoose extends Widget
-    choose_num = -1
+    choose_num = 0
     select_state_confirm = false
 
     #var for animation
@@ -42,6 +42,7 @@ class MenuChoose extends Widget
     constructor: (@id,@parent = document.body)->
         super
         inject_css(_b,"css/menuchoose.css")
+        @from_enter = false
         @current = @id
         @option = []
         @option_disable = []
@@ -74,7 +75,6 @@ class MenuChoose extends Widget
         @animation_end = false
         animation_opt_text_show = (i)=>
             if i != @opt.length - 1 then return
-            #echo "opt_text[#{i}] show"
             for tmp in @opt_text
                 jQuery(tmp).animate(
                     {opacity:'1.0';},
@@ -85,7 +85,6 @@ class MenuChoose extends Widget
 
 
         animation_opt_move_show = (i,t_delay)=>
-            #echo "animation_opt_move_show(#{i})"
             text_el = @opt_text[i]
             img_el = @opt_img[i]
             opt_el = @opt[i]
@@ -125,12 +124,13 @@ class MenuChoose extends Widget
         @animation_end = false
         animation_user_show = (i)=>
             if i != 0 then return
-            echo "animation_user_show(#{i})"
             @element.style.display = "none"
             _current_user?.show()
-            if @frame_click and @id is "user_menuchoose"
-                uid = localStorage.getItem("menu_current_id_user")
-                user?.switch_to_userinfo(uid)
+            if @id is "user_menuchoose"
+                if @frame_click or @from_enter
+                    echo "hide switch_to_userinfo(#{@current})"
+                    @from_enter = false
+                    user?.switch_to_userinfo(@current)
             $("#div_users").style.display = "-webkit-box"
             jQuery('.div_users').delay(t_userinfo_show_delay).animate(
                 {opacity:'1.0';},
@@ -140,7 +140,6 @@ class MenuChoose extends Widget
             )
 
         animation_opt_move_hide = (i,t_delay)=>
-            #echo "animation_opt_move_hide(#{i})"
             text_el = @opt_text[i]
             img_el = @opt_img[i]
             opt_el = @opt[i]
@@ -153,7 +152,6 @@ class MenuChoose extends Widget
                         {opacity:'0.5';left:XMove;},
                         t_min,
                         'linear',=>
-                            #echo "opt_el[#{i}] Move From #{opt_el.style.left} To #{XEndHide}"
                             time = (t_min + t_delay) / 2
                             animation_scale(img_el,1.0,time)
                             jQuery(opt_el).animate(
@@ -264,7 +262,6 @@ class MenuChoose extends Widget
                 i = this.value
                 that.frame_click = true
                 that.click_state(i)
-                that.current = that.option[i]
                 that.fade(i)
             )
 
@@ -273,11 +270,11 @@ class MenuChoose extends Widget
     set_callback: (@cb)->
 
     fade:(i)->
+        @current = @option[i]
         if @is_disable(i) then return
-        echo "--------------fade:#{@option[i]}---------------"
-        @hide()
+        echo "--------------fade:#{@current}---------------"
         @cb(@option[i], @option_text[i])
-
+        @hide()
 
     check_disable: ->
         for bt,i in @opt
@@ -336,23 +333,19 @@ class MenuChoose extends Widget
         GetinFromKey = true
         switch e.which
             when LEFT_ARROW
-                choose_num--
-                if choose_num == -1 then choose_num = @opt.length - 1
-                #if @is_disable(choose_num) then choose_num--
-                #if choose_num == -1 then choose_num = @opt.length - 1
+                choose_num = choose_num - 1
+                if choose_num < 0 then choose_num = @opt.length - 1
                 @select_state(choose_num)
             when RIGHT_ARROW
-                choose_num++
-                if choose_num == @opt.length then choose_num = 0
-                #if @is_disable(choose_num) then choose_num++
-                #if choose_num == @opt.length then choose_num = 0
+                choose_num = choose_num + 1
+                if choose_num > @opt.length - 1 then choose_num = 0
                 @select_state(choose_num)
             when ENTER_KEY
-                i = choose_num
-                @fade(i)
+                @from_enter = true
+                @fade(choose_num)
             when ESC_KEY
                 destory_all()
-        echo "to choose_num #{choose_num}}"
+        echo "to choose_num #{choose_num}"
 
     is_hide:->
         if @element.style.display is "none" then return true
@@ -437,8 +430,7 @@ class ComboBox extends Widget
 
 
     set_current: (current)->
-        #current = current.toLowerCase()
-        @menu.current = current
+        #@menu.current = current
         @current_text?.textContent = current
         localStorage.setItem("menu_current_id_#{@id}",current)
         return current
