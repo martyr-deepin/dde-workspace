@@ -20,21 +20,11 @@
 
 
 class SwitchUser extends Widget
-    DisplayManager =
-        name:"org.freedesktop.DisplayManager",
-        path:"/org/freedesktop/DisplayManager/Seat0",
-        interface:"org.freedesktop.DisplayManager.Seat",
-
     constructor: ()->
         super
         clearInterval(draw_camera_id)
         draw_camera_id = null
         document.body.style.fontSize = "62.5%"
-        @switch_dbus = DCore.DBus.sys_object(
-            DisplayManager.name,
-            DisplayManager.path,
-            DisplayManager.interface
-        )
 
     button_switch:->
         @users_id = accounts.users_id
@@ -56,21 +46,5 @@ class SwitchUser extends Widget
 
     SwitchToGreeter:->
         echo "SwitchToGreeter"
-        try
-            enableZoneDetect(true)
-            if @switch_dbus?.CanSwitch
-                @switch_dbus.SwitchToGreeter()
-            else
-                DCore.Lock.switch_user()
-        catch error
-            echo "can not find the switch dbus,perhaps you only have one userAccount!"
-            DCore.Lock.switch_user()
-            return false
-
-    SwitchToUser:(username,session_name)->
-        try
-            @switch_dbus.SwitchToUser_sync(username,session_name)
-        catch error
-            echo "can not find the switch dbus,perhaps you only have one userAccount!"
-            return false
-
+        enableZoneDetect(true)
+        DCore.Lock.switch_user()
