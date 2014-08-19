@@ -207,8 +207,6 @@
     font-weight:normal;
     color:rgb(0,0,0);
     text-align:center;
-    text-indent:1.6em;
-    white-space:nowrap;
     overflow:hidden;
     text-overflow:clip;
 }
