@@ -202,13 +202,15 @@
     background-repeat:no-repeat;
     cursor:pointer;
 
+    overflow:hidden;
+    text-overflow:clip;
+    
     line-height:36px;
     font-size:1.6em;
     font-weight:normal;
     color:rgb(0,0,0);
     text-align:center;
-    overflow:hidden;
-    text-overflow:clip;
+    word-spacing:1.6em;
 }
 
 .loginbutton_unpwd:active{

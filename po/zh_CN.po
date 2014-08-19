@@ -198,7 +198,7 @@ msgstr "\t\t\t\t-----无可用的桌面环境!-----\n"
 
 #: ../resources/greeter/js/user.coffee:456
 msgid "Login"
-msgstr "登录"
+msgstr "登 录"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jan"
