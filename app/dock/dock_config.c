@@ -45,36 +45,26 @@ void dock_force_set_region(double x, double y, double items_width, double panel_
 
 void setting_changed(GSettings* s, gchar* key, gpointer user_data G_GNUC_UNUSED)
 {
-    if (g_strcmp0(key, HIDE_MODE_KEY) == 0) {
-        GD.config.hide_mode = g_settings_get_enum(s, key);
-        if (GD.config.hide_mode == NO_HIDE_MODE ) {
-            _change_workarea_height(GD.dock_height);
-        } else {
-            _change_workarea_height(0);
-        }
-        g_debug("setting_changed");
-    } else if (g_strcmp0(key, DISPLAY_MODE_KEY) == 0) {
-        GD.config.display_mode = g_settings_get_enum(s, key);
-        if (GD.config.display_mode == CLASSIC_MODE) {
-            GD.dock_height = CLASSIC_DOCK_HEIGHT;
-            GD.dock_panel_height = CLASSIC_DOCK_PANEL_HEIGHT;
-        } else {
-            GD.dock_height = MODERN_DOCK_HEIGHT;
-            GD.dock_panel_height = MODERN_DOCK_PANEL_HEIGHT;
-        }
-
-        // _base_rect and workarea should be updated,
-        // workaround_change_workarea_height will do it.
-        if (GD.config.hide_mode == NO_HIDE_MODE ) {
-            workaround_change_workarea_height(GD.dock_height);
-        } else {
-            workaround_change_workarea_height(0);
-        }
-
-        // update dock region, otherwise, the effective input region is a
-        // rectangle with screen width.
-        js_post_signal("display-mode-changed");
+    GD.config.display_mode = g_settings_get_enum(s, key);
+    if (GD.config.display_mode == CLASSIC_MODE) {
+        GD.dock_height = CLASSIC_DOCK_HEIGHT;
+        GD.dock_panel_height = CLASSIC_DOCK_PANEL_HEIGHT;
+    } else {
+        GD.dock_height = MODERN_DOCK_HEIGHT;
+        GD.dock_panel_height = MODERN_DOCK_PANEL_HEIGHT;
     }
+
+    // _base_rect and workarea should be updated,
+    // workaround_change_workarea_height will do it.
+    if (GD.config.hide_mode == NO_HIDE_MODE ) {
+        workaround_change_workarea_height(GD.dock_height);
+    } else {
+        workaround_change_workarea_height(0);
+    }
+
+    // update dock region, otherwise, the effective input region is a
+    // rectangle with screen width.
+    js_post_signal("display-mode-changed");
 }
 
 void init_config()
@@ -93,6 +83,6 @@ void init_config()
         GD.dock_height = MODERN_DOCK_HEIGHT;
         GD.dock_panel_height = MODERN_DOCK_PANEL_HEIGHT;
     }
-    g_signal_connect(s, "changed", G_CALLBACK(setting_changed), NULL);
+    g_signal_connect(s, "changed::"DISPLAY_MODE_KEY, G_CALLBACK(setting_changed), NULL);
 }
 

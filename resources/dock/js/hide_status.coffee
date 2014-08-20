@@ -110,5 +110,5 @@ class HideStatusManager
         console.log("[HideStateManager.changeDockRegion] set workarea height to #{regionHeight}")
         if debugRegion
             console.warn("[HideStateManager.changeDockRegion] update_dock_region: #{regionHeight}")
+        DCore.Dock.change_workarea_height(regionHeight)
         update_dock_region(null, regionHeight)
-        # c code handles workarea height
