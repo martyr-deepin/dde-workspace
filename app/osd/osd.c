@@ -40,6 +40,7 @@
 #include "dwebview.h"
 #include "i18n.h"
 #include "utils.h"
+#include "display_info.h"
 
 #define ID_NAME "desktop.app.osd"
 #define CHOICE_HTML_PATH "file://"RESOURCE_DIR"/osd/osd.html"
@@ -319,6 +320,7 @@ int main (int argc, char **argv)
     gdk_window_set_override_redirect(gdkwindow, TRUE);
     osd_set_focus(FALSE);
 
+    only_show_in_primary(container);
     gtk_widget_show_all (container);
 
     gtk_main ();
