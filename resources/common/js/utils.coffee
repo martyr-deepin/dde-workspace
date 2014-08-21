@@ -315,7 +315,7 @@ run_callback_after_prop_changed = (callback, init_value, get_prop_func,
                     runner(elapsed)
                 , interval)
             else
-                timeout_callabck?()
+                timeout_callback?()
 
     #must be called once, because the callback may be not invoked.
     callback()

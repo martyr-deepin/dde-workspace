@@ -136,18 +136,19 @@ class SystemTray extends SystemItem
     updateTrayIcon:=>
         run_callback_after_prop_changed(
             =>
-                switch settings.displayMode()
-                    when DisplayMode.Efficient
-                        @updateTrayIconForEfficient()
-                    when DisplayMode.Classic
-                        @updateTrayIconForClassic()
-                    when DisplayMode.Fashion
-                        @updateTrayIconForFashion()
-            $("#system").offsetTop
-            -> $("#system").offsetTop
+                @updateTrayIconForMode(settings.displayMode())
+            $("#panel").offsetTop
+            -> $("#panel").offsetTop
             50
             1000
         )
+
+    updateTrayIconForMode: (mode)=>
+        name = DisplayName[mode]
+        if not name?
+            return
+        name = name[0].toUpperCase() + name.substr(1).toLowerCase()
+        @["updateTrayIconFor#{name}"]?()
 
     updateTrayIconForClassic:=>
         # console.warn("updateTrayIconForClassic")
