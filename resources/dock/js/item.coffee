@@ -47,7 +47,6 @@ class Item extends Widget
         @tooltip = null
         @element.classList.add("AppItem")
 
-        @imgContainer.draggable=true
         e = document.getElementsByName(@id)
         if e.length != 0
             e = e[0]
