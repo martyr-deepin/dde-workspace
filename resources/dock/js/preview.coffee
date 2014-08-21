@@ -421,6 +421,9 @@ class PreviewWindow extends Widget
             @setTitle(@title_str)
             @update_size()
 
+            if not activeWindow
+                activeWindow= new ActiveWindow(clientManager.CurrentActiveWindow_sync())
+
             if activeWindow.active_window == @w_id
                 @to_active()
             else

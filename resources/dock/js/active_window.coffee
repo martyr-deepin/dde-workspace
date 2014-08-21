@@ -16,6 +16,7 @@ class ActiveWindow
 
 clientManager?.connect("ActiveWindowChanged", (xid)->
     console.log("ActiveWindowChanged")
+    activeWindow= new ActiveWindow(xid) unless activeWindow
 
     if activeWindow.itemId
         origItem = Widget.look_up(activeWindow.itemId)
