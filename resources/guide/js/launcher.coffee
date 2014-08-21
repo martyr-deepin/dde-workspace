@@ -139,14 +139,14 @@ class LauncherScroll extends Page
     rect_pointer_create: ->
         @rect = new Rect("collectApp",@element)
         @rect.create_rect(CATE_WIDTH,CATE_HEIGHT)
-        rect_top = (screen.height  - @rect.height) / 2
+        rect_top = (primary_info.height  - @rect.height) / 2
         @rect.set_pos(CATE_LEFT,rect_top - CATE_TOP_DELTA)
         @pointer = new Pointer("category",@element)
         @pointer.create_pointer(AREA_TYPE.circle,POS_TYPE.leftup,=>
             simulate_click(CLICK_TYPE.leftclick,@,"LauncherSearch")
         )
         @pointer.enable_area_icon("#{@img_src}/graphics100.png",36,36)
-        pointer_top = (screen.height  - @pointer.pointer_height) / 2
+        pointer_top = (primary_info.height  - @pointer.pointer_height) / 2
         @pointer.set_area_pos(CATE_LEFT,pointer_top - CATE_TOP_DELTA)
         @pointer.show_animation()
 

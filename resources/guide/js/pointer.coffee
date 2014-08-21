@@ -74,7 +74,7 @@ class Pointer extends Widget
         @area_icon?.style.width = w
         @area_icon?.style.height = h
 
-    set_area_pos : (x,y,position_type = "fixed",type = POS_TYPE.leftup) ->
+    set_area_pos : (x,y,position_type = "absolute",type = POS_TYPE.leftup) ->
         set_pos(@element,x,y,position_type,type)
         #@show_animation()
 

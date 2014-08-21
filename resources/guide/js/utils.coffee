@@ -1,17 +1,20 @@
 DEBUG = false
 ESC_KEYSYM_TO_CODE = 0xff08
 
+primary_info =
+    x:0
+    y:0
+    width:1366
+    height:768
+
 #launcher
 COLLECT_LEFT = 110
-COLLECT_WIDTH = screen.width - COLLECT_LEFT * 2
 EACH_APP_HEIGHT = 120
 EACH_APP_WIDTH = 120
 EACH_APP_MARGIN_LEFT = 40
 EACH_APP_MARGIN_TOP = 60
 
 COLLECT_APP_NUMBERS = 10
-COLLECT_APP_LINE_NUM = Math.ceil((COLLECT_APP_NUMBERS * EACH_APP_WIDTH + (COLLECT_APP_NUMBERS - 1) * EACH_APP_MARGIN_LEFT) / COLLECT_WIDTH)
-COLLECT_HEIGHT = COLLECT_APP_LINE_NUM * EACH_APP_HEIGHT + (COLLECT_APP_LINE_NUM - 1) * EACH_APP_MARGIN_TOP
 COLLECT_TOP = 84
 
 CATE_TOP_DELTA = 5
@@ -22,8 +25,11 @@ CATE_EACH_WIDTH = 62
 CATE_WIDTH = CATE_EACH_WIDTH
 CATE_HEIGHT = CATE_EACH_HEIGHT * CATE_NUMBERS
 
-
 #dock
+COLLECT_WIDTH = primary_info.width - COLLECT_LEFT * 2
+COLLECT_APP_LINE_NUM = Math.ceil((COLLECT_APP_NUMBERS * EACH_APP_WIDTH + (COLLECT_APP_NUMBERS - 1) * EACH_APP_MARGIN_LEFT) / COLLECT_WIDTH)
+COLLECT_HEIGHT = COLLECT_APP_LINE_NUM * EACH_APP_HEIGHT + (COLLECT_APP_LINE_NUM - 1) * EACH_APP_MARGIN_TOP
+
 DOCK_PADDING = 24
 ICON_MARGIN_H = 7
 ICON_MARGIN_V_TOP = 3
@@ -63,8 +69,8 @@ POS_TYPE =
     down:"down"
     up:"up"
 
-set_pos = (el,x,y,position_type = "fixed",type = POS_TYPE.leftup)->
-    el.style.position = position_type
+set_pos = (el,x,y,position_type = "absolute",type = POS_TYPE.leftup)->
+    el.style.position = "absolute"
     switch type
         when POS_TYPE.leftup
             el.style.left = x
@@ -174,9 +180,9 @@ if DCore
 
 
 set_center = (el,w,h,x_scale = 1,y_scale = 0.8) ->
-    top = (screen.height  - h) / 2 * y_scale
-    left = (screen.width  - w) / 2 * x_scale
-    el.style.position = "fixed"
+    top = (primary_info.height  - h) / 2 * y_scale
+    left = (primary_info.width  - w) / 2 * x_scale
+    el.style.position = "absolute"
     el.style.top = "#{top}px"
     el.style.left = "#{left}px"
 
@@ -194,7 +200,7 @@ show_webinspector = ->
 
 shadow_light = (el,type = "circle") ->
     document.body.style.background = "rgba(0,0,0,0.0)"
-    #遮罩效果 
+    #遮罩效果
     cover = create_element("span","text_cover_tans",guide?.element)
     cover.style.width =  el.style.width
     cover.style.height =  el.style.width
@@ -202,7 +208,7 @@ shadow_light = (el,type = "circle") ->
     cover.style.left =  el.offsetLeft
     cover.style.top =  el.offsetTop
     guide.element.style.overflow = "hidden"
-    border_width = screen.width
+    border_width = primary_info.width
     cover.style.border = "#{border_width}px solid rgba(0,0,0,0.3)"
     cover.style.borderRadius = "50%" if type is "circle"
     cover.style.borderRadius = "1" if type is "rect"

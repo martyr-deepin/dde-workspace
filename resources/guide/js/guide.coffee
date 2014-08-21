@@ -4,10 +4,14 @@ class Guide extends Widget
         super
         @pages = []
         echo "new Guide"
-        document.body.style.height = screen.height
-        document.body.style.width = screen.width
-        echo screen.width + "*" + screen.height
         document.body.appendChild(@element)
+
+    set_size: (info) =>
+        @element.style.position = "fixed"
+        @element.style.left = info.x
+        @element.style.top = info.y
+        @element.style.height = info.height
+        @element.style.width = info.width
 
     add_page: (cls) ->
         try
@@ -117,5 +121,3 @@ class Guide extends Widget
                 echo "cls_name is #{cls_name}"
         @add_page(page)
 
-guide = null
-guide = new Guide()

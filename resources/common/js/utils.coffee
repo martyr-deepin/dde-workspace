@@ -291,13 +291,6 @@ getRandomInt = (min,max) ->
     c = max - min + 1
     return Math.floor(Math.random() * c + min)
 
-set_pos_center = (el,y_scale = 0.8,x_scale = 0.8)  ->
-    top = (screen.height  - el.clientHeight) / 2 * y_scale
-    left = (screen.width  - el.clientWidth) / 2 * x_scale
-    el.style.position = "absolute"
-    el.style.top = "#{top}px"
-    el.style.left = "#{left}px"
-
 run_callback_after_prop_changed = (callback, init_value, get_prop_func,
             interval, duration, timeout_callback)->
     if init_value != get_prop_func()
