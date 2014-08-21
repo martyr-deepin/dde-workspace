@@ -134,7 +134,6 @@ int main (int argc, char **argv)
 
     GtkWidget *webview = d_webview_new_with_uri (CHOICE_HTML_PATH);
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
-    monitors_adaptive(container,webview);
 
 #ifdef NDEBUG
     grab = gs_grab_new ();

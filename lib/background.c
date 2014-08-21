@@ -102,22 +102,6 @@ void background_info_clear(BackgroundInfo* info)
 }
 
 
-void monitors_adaptive(GtkWidget* container, GtkWidget* child)
-{
-    ensure_fullscreen (container);
-    gtk_window_fullscreen (GTK_WINDOW (container));
-    
-    GdkScreen *screen;
-    GdkRectangle geometry;
-
-    screen = gdk_screen_get_default();
-    gdk_screen_get_monitor_geometry (screen, gdk_screen_get_primary_monitor(screen), &geometry);
-    g_message("primary monitor width:%d,height:%d;",geometry.width,geometry.height);
-    gtk_window_move (GTK_WINDOW (child), geometry.x, geometry.y);
-    gtk_window_resize (GTK_WINDOW (child), geometry.width, geometry.height);
-
-}
-
 BackgroundInfo* create_background_info(GtkWidget* container, GtkWidget* child)
 {
     g_message("create_background_info");

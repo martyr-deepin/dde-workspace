@@ -285,9 +285,8 @@ int main (int argc, char **argv)
     webview = d_webview_new_with_uri (GREETER_HTML_PATH);
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
 
-    monitors_adaptive(container,webview);
     set_theme_background(container,webview);
-    
+
     gtk_widget_realize (webview);
     gtk_widget_realize (container);
 

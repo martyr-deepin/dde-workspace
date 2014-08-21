@@ -22,12 +22,17 @@ class Zone extends Widget
     constructor:->
         super
         echo "Zone"
-        document.body.style.height = window.innerHeight
-        document.body.style.width = window.innerWidth
         document.body.appendChild(@element)
         @setZoneConfigAll()
         @setZoneLauncher()
         enableZoneDetect(false)
+
+    set_size: (info) =>
+        @element.style.position = "fixed"
+        @element.style.left = info.x
+        @element.style.top = info.y
+        @element.style.height = info.height
+        @element.style.width = info.width
 
     setZoneConfigAll: ->
         getZoneConfig()
@@ -47,19 +52,4 @@ class Zone extends Widget
             for tmp in option_text
                 @opt[i].insert(tmp)
             @opt[i].option_build()
-
-zone = new Zone()
-zone.option_build()
-
-document.body.addEventListener("click",(e)=>
-    e.stopPropagation()
-    return if DEBUG
-    enableZoneDetect(true)
-    DCore.Zone.quit()
-)
-
-document.body.addEventListener("contextmenu",(e)=>
-    e.preventDefault()
-    e.stopPropagation()
-)
 

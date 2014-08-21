@@ -178,7 +178,6 @@ int main (int argc, char **argv)
     container = create_web_container (FALSE, TRUE);
     GtkWidget* webview = d_webview_new_with_uri (LOCK_HTML_PATH);
     gtk_container_add (GTK_CONTAINER (container), GTK_WIDGET (webview));
-    monitors_adaptive(container,webview);
     set_theme_background(container,webview);
 
 #ifdef NDEBUG

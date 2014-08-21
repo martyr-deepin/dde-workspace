@@ -32,13 +32,15 @@
 #include <signal.h>
 #include <X11/XKBlib.h>
 
-
 #include "X_misc.h"
 #include "gs-grab.h"
-#include "jsextension.h"
-#include "dwebview.h"
 #include "i18n.h"
 #include "utils.h"
+
+#include "jsextension.h"
+#include "dwebview.h"
+#include "session_register.h"
+#include "display_info.h"
 
 #include "background.h"
 #include "zone.h"
@@ -67,6 +69,28 @@ GSettings* zone_gsettings = NULL;
 PRIVATE
 gint t_id;
 #endif
+
+
+void notify_primary_size()
+{
+    struct DisplayInfo info;
+    update_display_info(&info);
+    JSObjectRef size_info = json_create();
+    json_append_number(size_info, "x", info.x);
+    json_append_number(size_info, "y", info.y);
+    json_append_number(size_info, "width", info.width);
+    json_append_number(size_info, "height", info.height);
+    js_post_message("primary_size_changed", size_info);
+}
+
+JS_EXPORT_API
+void zone_emit_webview_ok()
+{
+    dde_session_register();
+    notify_primary_size();
+}
+
+
 
 JS_EXPORT_API
 void zone_quit()
@@ -160,7 +184,6 @@ int main (int argc, char **argv)
 
     GtkWidget *webview = d_webview_new_with_uri (HTML_PATH);
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
-    monitors_adaptive(container,webview);
 
 #ifdef NDEBUG
     grab = gs_grab_new ();
@@ -173,12 +196,12 @@ int main (int argc, char **argv)
     gtk_widget_realize (container);
     gtk_widget_realize (webview);
 
+    only_show_in_primary_with_bg_in_others(container,webview);
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
-    gdk_window_move_resize(gdkwindow, 0, 0, gdk_screen_width(), gdk_screen_height());
+    gdk_window_set_override_redirect (gdkwindow, TRUE);
 
 #ifdef NDEBUG
     gdk_window_set_keep_above (gdkwindow, TRUE);
-    gdk_window_set_override_redirect (gdkwindow, TRUE);
 #endif
 
     gtk_widget_show_all (container);
