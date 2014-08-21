@@ -26,6 +26,7 @@ class DesktopEntry extends Item
     constructor : ->
         super
         @add_css_class("DesktopEntry")
+        @unregisterMenu_connect()
 
 
     do_dragstart : (evt) ->
@@ -96,7 +97,7 @@ class DesktopEntry extends Item
             @display_not_hover()
         return
 
-    do_buildmenu : ->
+    buildmenu : ->
         menu = []
         menu.push([1, _("_Open")])
         menu.push([])
@@ -124,6 +125,19 @@ class DesktopEntry extends Item
                 menu.splice(4, 0, [13, _("Extract _Here")])
                 menu.splice(5, 0, [])
         return menu
+
+    unregisterMenu_connect: ->
+        @element.addEventListener("contextmenu", (e) =>
+            menu = @buildmenu()
+            menu.unshift(DEEPIN_MENU_TYPE.NORMAL)
+            build_menu(menu)
+                    ?.addListener(@on_itemselected)
+                    .showMenu(e.screenX, e.screenY)
+                    .unregisterHook(=>
+                        DCore.Desktop.force_get_input_focus()
+                    )
+            e.preventDefault()
+        )
 
 
     on_itemselected : (evt) =>

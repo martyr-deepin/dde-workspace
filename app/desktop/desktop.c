@@ -469,6 +469,7 @@ gboolean prevent_exit(GtkWidget* w G_GNUC_UNUSED, GdkEvent* e G_GNUC_UNUSED)
 }
 
 GtkWidget* container = NULL;
+GtkWidget* webview = NULL;
 GdkWindow* gdkwindow = NULL;
 GtkIMContext* im_context = NULL;
 
@@ -548,6 +549,12 @@ gboolean desktop_check_version_equal_set(const char* version_set)
     return result;
 }
 
+JS_EXPORT_API
+void desktop_force_get_input_focus()
+{
+    force_get_input_focus(webview);
+}
+
 int main(int argc, char* argv[])
 {
     if (is_application_running(DESKTOP_ID_NAME)) {
@@ -572,7 +579,7 @@ int main(int argc, char* argv[])
     ensure_fullscreen(container);
     g_signal_connect(container, "delete-event", G_CALLBACK(prevent_exit), NULL);
 
-    GtkWidget *webview = d_webview_new_with_uri(GET_HTML_PATH("desktop"));
+    webview = d_webview_new_with_uri(GET_HTML_PATH("desktop"));
     gdk_error_trap_push();
 
     gtk_window_set_skip_pager_hint(GTK_WINDOW(container), TRUE);
