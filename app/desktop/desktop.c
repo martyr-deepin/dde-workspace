@@ -43,6 +43,7 @@
 #include "desktop_utils.h"
 #include "session_register.h"
 #include "DBUS_desktop.h"
+#include "display_info.h"
 #include "desktop.h"
 
 #define DESKTOP_CONFIG "desktop/config.ini"
@@ -50,14 +51,13 @@
 
 #define DOCK_SCHEMA_ID "com.deepin.dde.dock"
 #define DOCK_HIDE_MODE "hide-mode"
-#define HIDE_MODE_DEFAULT 0
-#define HIDE_MODE_INTELLIGENT 1
-#define HIDE_MODE_KEEPHIDDEN 2
-#define HIDE_MODE_AUTOHIDDEN 3
+#define HIDE_MODE_KEEPSHOWING 0
+#define HIDE_MODE_KEEPHIDDEN 1
+#define HIDE_MODE_AUTOHIDDEN 2
 #define DOCK_DISPLAY_MODE "display-mode"
-#define DISPLAY_MODE_DEFAULT 0
 #define DISPLAY_MODE_MODERN 0
-#define DISPLAY_MODE_CLASSIC 1
+#define DISPLAY_MODE_EFFICIENT 1
+#define DISPLAY_MODE_CLASSIC 2
 
 #define SHOW_COMPUTER_ICON "show-computer-icon"
 #define SHOW_TRASH_ICON "show-trash-icon"
@@ -69,6 +69,12 @@ extern void monitor_and_update_proxy();
 PRIVATE
 GSettings* desktop_gsettings = NULL;
 GSettings* dock_gsettings = NULL;
+
+PRIVATE GtkWidget* container = NULL;
+PRIVATE GtkWidget* webview = NULL;
+PRIVATE GtkIMContext* im_context = NULL;
+
+struct DisplayInfo info;
 
 extern void install_monitor();
 PRIVATE
@@ -325,9 +331,7 @@ PRIVATE gboolean update_workarea_size(GSettings* dock_gsettings)
 
     int  hide_mode = g_settings_get_enum (dock_gsettings, DOCK_HIDE_MODE);
     g_debug ("hide mode: %d", hide_mode);
-    if ((hide_mode==HIDE_MODE_AUTOHIDDEN)||
-	(hide_mode==HIDE_MODE_INTELLIGENT))
-    {
+    if ((hide_mode==HIDE_MODE_KEEPSHOWING)){
         //reserve the bottom (60 x width) area even dock is not show
         int root_height = gdk_screen_get_height (gdk_screen_get_default ());
         if (y + height + 60 > root_height)
@@ -340,7 +344,6 @@ PRIVATE gboolean update_workarea_size(GSettings* dock_gsettings)
     json_append_number(workarea_info, "width", width);
     json_append_number(workarea_info, "height", height);
     js_post_message("workarea_changed", workarea_info);
-
     return FALSE;
 }
 
@@ -348,7 +351,7 @@ PRIVATE void dock_display_mode_changed(GSettings* settings)
 {
     int  display_mode = g_settings_get_enum (settings, DOCK_DISPLAY_MODE);
     g_debug ("dock_display_mode_changed: %d", display_mode);
-    if (display_mode == DISPLAY_MODE_CLASSIC){
+    if (display_mode == DISPLAY_MODE_CLASSIC || display_mode == DISPLAY_MODE_EFFICIENT){
         desktop_set_config_boolean(SHOW_COMPUTER_ICON,true);
         desktop_set_config_boolean(SHOW_TRASH_ICON,true);
     }else{
@@ -448,6 +451,30 @@ gboolean desktop_file_exist_in_desktop(char* name)
 
 //TODO: connect gtk_icon_theme changed.
 
+void notify_screen_size()
+{
+    struct DisplayInfo info;
+    update_screen_info(&info);
+    JSObjectRef size_info = json_create();
+    json_append_number(size_info, "x", info.x);
+    json_append_number(size_info, "y", info.y);
+    json_append_number(size_info, "width", info.width);
+    json_append_number(size_info, "height", info.height);
+    js_post_message("screen_size_changed", size_info);
+}
+
+void notify_primary_size()
+{
+    struct DisplayInfo info;
+    update_display_info(&info);
+    JSObjectRef size_info = json_create();
+    json_append_number(size_info, "x", info.x);
+    json_append_number(size_info, "y", info.y);
+    json_append_number(size_info, "width", info.width);
+    json_append_number(size_info, "height", info.height);
+    js_post_message("primary_size_changed", size_info);
+}
+
 PRIVATE
 void screen_change_size(GdkScreen *screen, GdkWindow *w)
 {
@@ -459,7 +486,7 @@ void screen_change_size(GdkScreen *screen, GdkWindow *w)
         geo.min_width = 0;
         geo.min_height = 0;
         gdk_window_set_geometry_hints(w, &geo, GDK_HINT_MIN_SIZE);
-        gdk_window_move_resize(w, 0, 0, screen_width, screen_height);
+        gdk_window_move_resize(w, 0,0, screen_width, screen_height);
     }
 }
 
@@ -467,11 +494,6 @@ gboolean prevent_exit(GtkWidget* w G_GNUC_UNUSED, GdkEvent* e G_GNUC_UNUSED)
 {
     return true;
 }
-
-GtkWidget* container = NULL;
-GtkWidget* webview = NULL;
-GdkWindow* gdkwindow = NULL;
-GtkIMContext* im_context = NULL;
 
 void send_lost_focus()
 {
@@ -509,6 +531,7 @@ void desktop_set_position_input(double x , double y)
     GdkRectangle area = {(int)x, (int)y, width, height};
 
     gtk_im_context_focus_in(im_context);
+    GdkWindow* gdkwindow = gtk_widget_get_window(container);
     gtk_im_context_set_client_window(im_context, gdkwindow);
     gtk_im_context_set_cursor_location(im_context, &area);
 }
@@ -555,8 +578,28 @@ void desktop_force_get_input_focus()
     force_get_input_focus(webview);
 }
 
+PRIVATE
+void primary_changed_handler(GDBusConnection* conn G_GNUC_UNUSED,
+                             const gchar* sender_name G_GNUC_UNUSED,
+                             const gchar* object_path G_GNUC_UNUSED,
+                             const gchar* interface_name G_GNUC_UNUSED,
+                             const gchar* signal_name G_GNUC_UNUSED,
+                             GVariant* parameters G_GNUC_UNUSED,
+                             gpointer data G_GNUC_UNUSED
+                             )
+{
+    struct DisplayInfo* rect = (struct DisplayInfo*)data;
+    g_variant_get(parameters, "((nnqq))", &rect->x, &rect->y, &rect->width, &rect->height);
+    g_debug("rect:%d,%d,%d,%d",rect->x,rect->y,rect->width,rect->height);
+    notify_screen_size();
+    notify_primary_size();
+}
+
 int main(int argc, char* argv[])
 {
+    if (argc == 2 && 0 == g_strcmp0(argv[1], "-d")){
+        g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
+    }
     if (is_application_running(DESKTOP_ID_NAME)) {
         g_warning("another instance of application desktop is running...\n");
         return 0;
@@ -590,6 +633,7 @@ int main(int argc, char* argv[])
     g_signal_connect (webview, "draw", G_CALLBACK(erase_background), NULL);
     g_signal_connect (webview, "button-press-event", G_CALLBACK(force_get_input_focus), NULL);
 
+    listen_primary_changed_signal(primary_changed_handler, &info, NULL);
     GdkScreen* screen = gtk_window_get_screen(GTK_WINDOW(container));
     g_signal_connect(screen, "size-changed", G_CALLBACK(screen_change_size), gtk_widget_get_window(container));
 
@@ -601,7 +645,7 @@ int main(int argc, char* argv[])
     gtk_widget_show_all(container);
     g_signal_connect (container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
-    gdkwindow = gtk_widget_get_window(container);
+    GdkWindow* gdkwindow = gtk_widget_get_window(container);
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba(gdkwindow, &rgba);
 
@@ -631,31 +675,31 @@ PRIVATE GdkFilterReturn watch_root_window(GdkXEvent *gxevent, GdkEvent* event G_
     XPropertyEvent *xevt = (XPropertyEvent*)gxevent;
 
     if (xevt->type == PropertyNotify) {
-	//TODO: cache the atom of "_NET_WORKAREA" and "_NET_ACTIVE_WINDOW"
-	//
-	if (xevt->atom == gdk_x11_get_xatom_by_name("_NET_WORKAREA")) {
-	    g_message("GET _NET_WORKAREA change on rootwindow");
-	    GSettings* dock_gsettings = user_data;
-	    update_workarea_size (dock_gsettings);
-	    return GDK_FILTER_CONTINUE;
-	} else if (xevt->atom == gdk_x11_get_xatom_by_name("_NET_ACTIVE_WINDOW")) {
-	    Window active_window=0;
-	    gboolean state = False;
-	    if ((state = get_atom_value_by_name(xevt->display, xevt->window, "_NET_ACTIVE_WINDOW", &active_window, get_atom_value_for_index,0))) {
-		static gboolean has_focus= False;
+    //TODO: cache the atom of "_NET_WORKAREA" and "_NET_ACTIVE_WINDOW"
+    //
+    if (xevt->atom == gdk_x11_get_xatom_by_name("_NET_WORKAREA")) {
+        g_message("GET _NET_WORKAREA change on rootwindow");
+        GSettings* dock_gsettings = user_data;
+        update_workarea_size (dock_gsettings);
+        return GDK_FILTER_CONTINUE;
+    } else if (xevt->atom == gdk_x11_get_xatom_by_name("_NET_ACTIVE_WINDOW")) {
+        Window active_window=0;
+        gboolean state = False;
+        if ((state = get_atom_value_by_name(xevt->display, xevt->window, "_NET_ACTIVE_WINDOW", &active_window, get_atom_value_for_index,0))) {
+        static gboolean has_focus= False;
 
-		for (size_t i=0; i < sizeof(__DESKTOP_XID)/sizeof(Window); i++) {
-		    if (__DESKTOP_XID[i] == active_window) {
-			has_focus = True;
-			desktop_focus_changed(has_focus);
-			return GDK_FILTER_CONTINUE;
-		    }
-		}
+        for (size_t i=0; i < sizeof(__DESKTOP_XID)/sizeof(Window); i++) {
+            if (__DESKTOP_XID[i] == active_window) {
+            has_focus = True;
+            desktop_focus_changed(has_focus);
+            return GDK_FILTER_CONTINUE;
+            }
+        }
 
-		has_focus = False;
-		desktop_focus_changed(has_focus);
-	    }
-	}
+        has_focus = False;
+        desktop_focus_changed(has_focus);
+        }
+    }
     }
     return GDK_FILTER_CONTINUE;
 }
@@ -707,6 +751,7 @@ void desktop_emit_webview_ok()
     //check dock display-mode first and set desktop_gsettings
     dock_display_mode_changed(dock_gsettings);
     dde_session_register();
+    notify_primary_size();
 }
 
 
