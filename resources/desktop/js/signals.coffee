@@ -119,6 +119,7 @@ do_desktop_config_changed = ->
     return
 
 do_workarea_changed = (allo) ->
+    console.log "do_workarea_changed:#{allo.x},#{allo.y},#{allo.width},#{allo.height}"
     update_gird_position(allo.x + 4, allo.y + 4, allo.width - 8, allo.height - 8)
     init_occupy_table()
     place_desktop_items()

@@ -48,16 +48,21 @@
 
 #define DESKTOP_CONFIG "desktop/config.ini"
 #define DESKTOP_SCHEMA_ID "com.deepin.dde.desktop"
-
 #define DOCK_SCHEMA_ID "com.deepin.dde.dock"
-#define DOCK_HIDE_MODE "hide-mode"
+
+#define HIDE_MODE_KEY "hide-mode"
 #define HIDE_MODE_KEEPSHOWING 0
 #define HIDE_MODE_KEEPHIDDEN 1
 #define HIDE_MODE_AUTOHIDDEN 2
-#define DOCK_DISPLAY_MODE "display-mode"
-#define DISPLAY_MODE_MODERN 0
-#define DISPLAY_MODE_EFFICIENT 1
-#define DISPLAY_MODE_CLASSIC 2
+
+#define DISPLAY_MODE_KEY "display-mode"
+#define FASHION_MODE 0
+#define EFFICIENT_MODE 1
+#define CLASSIC_MODE 2
+
+#define FASHION_DOCK_HEIGHT 68
+#define EFFICIENT_DOCK_HEIGHT 48
+#define CLASSIC_DOCK_HEIGHT 36
 
 #define SHOW_COMPUTER_ICON "show-computer-icon"
 #define SHOW_TRASH_ICON "show-trash-icon"
@@ -74,7 +79,8 @@ PRIVATE GtkWidget* container = NULL;
 PRIVATE GtkWidget* webview = NULL;
 PRIVATE GtkIMContext* im_context = NULL;
 
-struct DisplayInfo info;
+struct DisplayInfo primaryInfo;
+PRIVATE int dock_height = 0;
 
 extern void install_monitor();
 PRIVATE
@@ -320,52 +326,88 @@ gboolean desktop_set_config_boolean(const char* key_name,gboolean value)
     return retval;
 }
 
-PRIVATE gboolean update_workarea_size(GSettings* dock_gsettings)
+PRIVATE
+int get_workarea_height(int primary_height)
 {
-    int x, y, width, height;
-    get_workarea_size(&x, &y, &width, &height);
-    if (width == 0 || height == 0) {
-        g_timeout_add(200, (GSourceFunc)update_workarea_size, dock_gsettings);
-        return FALSE;
+    int area_heigth = primary_height;
+    int  hide_mode = g_settings_get_enum (dock_gsettings, HIDE_MODE_KEY);
+    if (hide_mode == HIDE_MODE_KEEPSHOWING){
+        int  display_mode = g_settings_get_enum (dock_gsettings, DISPLAY_MODE_KEY);
+        switch(display_mode)
+        {
+            case FASHION_MODE:
+                dock_height = FASHION_DOCK_HEIGHT;
+                break;
+            case EFFICIENT_MODE:
+                dock_height = EFFICIENT_DOCK_HEIGHT;
+                break;
+            case CLASSIC_MODE:
+                dock_height = CLASSIC_DOCK_HEIGHT;
+                break;
+            default:
+                dock_height = EFFICIENT_DOCK_HEIGHT;
+                break;
+        }
+    }else{
+        dock_height = 0;
     }
+    area_heigth = primary_height - dock_height;
+    return area_heigth;
+}
 
-    int  hide_mode = g_settings_get_enum (dock_gsettings, DOCK_HIDE_MODE);
-    g_debug ("hide mode: %d", hide_mode);
-    if ((hide_mode==HIDE_MODE_KEEPSHOWING)){
-        //reserve the bottom (60 x width) area even dock is not show
-        int root_height = gdk_screen_get_height (gdk_screen_get_default ());
-        if (y + height + 60 > root_height)
-            height = root_height - 60 -y;
+PRIVATE gboolean update_workarea_size()
+{
+    update_display_info(&primaryInfo);
+    if (primaryInfo.width == 0 || primaryInfo.height == 0) {
+        g_timeout_add(200, (GSourceFunc)update_workarea_size, NULL);
+        return G_SOURCE_REMOVE;
     }
-
+    int height = get_workarea_height(primaryInfo.height);
     JSObjectRef workarea_info = json_create();
-    json_append_number(workarea_info, "x", x);
-    json_append_number(workarea_info, "y", y);
-    json_append_number(workarea_info, "width", width);
+    json_append_number(workarea_info, "x", 0);
+    json_append_number(workarea_info, "y", 0);
+    json_append_number(workarea_info, "width", primaryInfo.width);
     json_append_number(workarea_info, "height", height);
+    g_debug("[%s]:workarea_changed signal:%d*%d(%d,%d)",__func__,primaryInfo.width,height,primaryInfo.x,primaryInfo.y);
     js_post_message("workarea_changed", workarea_info);
-    return FALSE;
+    return G_SOURCE_REMOVE;
+}
+
+PRIVATE void dock_hide_mode_changed(GSettings* settings G_GNUC_UNUSED)
+{
+    update_workarea_size();
 }
 
 PRIVATE void dock_display_mode_changed(GSettings* settings)
 {
-    int  display_mode = g_settings_get_enum (settings, DOCK_DISPLAY_MODE);
-    g_debug ("dock_display_mode_changed: %d", display_mode);
-    if (display_mode == DISPLAY_MODE_CLASSIC || display_mode == DISPLAY_MODE_EFFICIENT){
-        desktop_set_config_boolean(SHOW_COMPUTER_ICON,true);
-        desktop_set_config_boolean(SHOW_TRASH_ICON,true);
-    }else{
-        desktop_set_config_boolean(SHOW_COMPUTER_ICON,false);
-        desktop_set_config_boolean(SHOW_TRASH_ICON,false);
+    int  display_mode = g_settings_get_enum (settings, DISPLAY_MODE_KEY);
+    g_debug ("[%s]: %d",__func__ ,display_mode);
+    switch(display_mode)
+    {
+        case FASHION_MODE:
+            desktop_set_config_boolean(SHOW_COMPUTER_ICON,false);
+            desktop_set_config_boolean(SHOW_TRASH_ICON,false);
+            break;
+        case EFFICIENT_MODE:
+            desktop_set_config_boolean(SHOW_COMPUTER_ICON,true);
+            desktop_set_config_boolean(SHOW_TRASH_ICON,true);
+            break;
+        case CLASSIC_MODE:
+            desktop_set_config_boolean(SHOW_COMPUTER_ICON,true);
+            desktop_set_config_boolean(SHOW_TRASH_ICON,true);
+            break;
+        default:
+            break;
     }
+    update_workarea_size ();
 }
 
 PRIVATE void dock_config_changed(GSettings* settings, char* key, gpointer usr_data G_GNUC_UNUSED)
 {
     g_debug ("dock config changed key:%s",key);
-    if (0 == g_strcmp0(key, DOCK_HIDE_MODE)){
-        update_workarea_size (settings);
-    }else if (0 == g_strcmp0(key, DOCK_DISPLAY_MODE)){
+    if (0 == g_strcmp0(key, HIDE_MODE_KEY)){
+        dock_hide_mode_changed(settings);
+    }else if (0 == g_strcmp0(key, DISPLAY_MODE_KEY)){
         dock_display_mode_changed(settings);
     }
     return;
@@ -450,46 +492,6 @@ gboolean desktop_file_exist_in_desktop(char* name)
 
 
 //TODO: connect gtk_icon_theme changed.
-
-void notify_screen_size()
-{
-    struct DisplayInfo info;
-    update_screen_info(&info);
-    JSObjectRef size_info = json_create();
-    json_append_number(size_info, "x", info.x);
-    json_append_number(size_info, "y", info.y);
-    json_append_number(size_info, "width", info.width);
-    json_append_number(size_info, "height", info.height);
-    js_post_message("screen_size_changed", size_info);
-}
-
-void notify_primary_size()
-{
-    struct DisplayInfo info;
-    update_display_info(&info);
-    JSObjectRef size_info = json_create();
-    json_append_number(size_info, "x", info.x);
-    json_append_number(size_info, "y", info.y);
-    json_append_number(size_info, "width", info.width);
-    json_append_number(size_info, "height", info.height);
-    js_post_message("primary_size_changed", size_info);
-}
-
-PRIVATE
-void screen_change_size(GdkScreen *screen, GdkWindow *w)
-{
-    int screen_width = gdk_screen_get_width(screen);
-    int screen_height = gdk_screen_get_height(screen);
-
-    if (w) {
-        GdkGeometry geo = {0};
-        geo.min_width = 0;
-        geo.min_height = 0;
-        gdk_window_set_geometry_hints(w, &geo, GDK_HINT_MIN_SIZE);
-        gdk_window_move_resize(w, 0,0, screen_width, screen_height);
-    }
-}
-
 gboolean prevent_exit(GtkWidget* w G_GNUC_UNUSED, GdkEvent* e G_GNUC_UNUSED)
 {
     return true;
@@ -579,6 +581,39 @@ void desktop_force_get_input_focus()
 }
 
 PRIVATE
+void move_to_primary_unrealized(GtkWidget* container)
+{
+    GdkGeometry geo = {0};
+    geo.min_height = 0;
+    geo.min_width = 0;
+    update_display_info(&primaryInfo);
+    g_debug("[%s] primaryInfo: %dx%d(%d, %d)", __func__, primaryInfo.width, primaryInfo.height, primaryInfo.x, primaryInfo.y);
+    gtk_window_set_geometry_hints(GTK_WINDOW(container), NULL, &geo, GDK_HINT_MIN_SIZE);
+    gtk_widget_set_size_request(container, primaryInfo.width, primaryInfo.height);
+    gtk_window_move(GTK_WINDOW(container), primaryInfo.x, primaryInfo.y);
+}
+
+
+PRIVATE
+void move_to_primary_realized(GtkWidget* container)
+{
+    GdkGeometry geo = {0};
+    geo.min_height = 0;
+    geo.min_width = 0;
+    update_display_info(&primaryInfo);
+    g_debug("[%s] primaryInfo: %dx%d(%d, %d)", __func__, primaryInfo.width, primaryInfo.height, primaryInfo.x, primaryInfo.y);
+    if (gtk_widget_get_realized(container)) {
+        GdkWindow* gdk = gtk_widget_get_window(container);
+        gdk_window_set_geometry_hints(gdk, &geo, GDK_HINT_MIN_SIZE);
+        gdk_window_move_resize(gdk, primaryInfo.x, primaryInfo.y,primaryInfo.width,primaryInfo.height );
+        gdk_window_flush(gdk);
+    }
+    update_workarea_size();
+}
+
+
+
+PRIVATE
 void primary_changed_handler(GDBusConnection* conn G_GNUC_UNUSED,
                              const gchar* sender_name G_GNUC_UNUSED,
                              const gchar* object_path G_GNUC_UNUSED,
@@ -588,11 +623,7 @@ void primary_changed_handler(GDBusConnection* conn G_GNUC_UNUSED,
                              gpointer data G_GNUC_UNUSED
                              )
 {
-    struct DisplayInfo* rect = (struct DisplayInfo*)data;
-    g_variant_get(parameters, "((nnqq))", &rect->x, &rect->y, &rect->width, &rect->height);
-    g_debug("rect:%d,%d,%d,%d",rect->x,rect->y,rect->width,rect->height);
-    notify_screen_size();
-    notify_primary_size();
+    move_to_primary_realized(container);
 }
 
 int main(int argc, char* argv[])
@@ -619,7 +650,7 @@ int main(int argc, char* argv[])
     set_desktop_env_name("Deepin");
 
     container = create_web_container(FALSE, FALSE);
-    ensure_fullscreen(container);
+    move_to_primary_unrealized(container);
     g_signal_connect(container, "delete-event", G_CALLBACK(prevent_exit), NULL);
 
     webview = d_webview_new_with_uri(GET_HTML_PATH("desktop"));
@@ -633,9 +664,9 @@ int main(int argc, char* argv[])
     g_signal_connect (webview, "draw", G_CALLBACK(erase_background), NULL);
     g_signal_connect (webview, "button-press-event", G_CALLBACK(force_get_input_focus), NULL);
 
-    listen_primary_changed_signal(primary_changed_handler, &info, NULL);
+    listen_primary_changed_signal(primary_changed_handler, &primaryInfo, NULL);
     GdkScreen* screen = gtk_window_get_screen(GTK_WINDOW(container));
-    g_signal_connect(screen, "size-changed", G_CALLBACK(screen_change_size), gtk_widget_get_window(container));
+    g_signal_connect(screen, "size-changed", G_CALLBACK(move_to_primary_realized), container);
 
     set_wmspec_desktop_hint(gtk_widget_get_window(container));
 
@@ -663,7 +694,6 @@ int main(int argc, char* argv[])
     __DESKTOP_XID[0] = GDK_WINDOW_XID(gtk_widget_get_window(container));
     __DESKTOP_XID[1] = GDK_WINDOW_XID(gtk_widget_get_window(webview));
     __DESKTOP_XID[2] = GDK_WINDOW_XID(fw);
-
     gtk_main();
     unwatch_workarea_changes(container);
     return 0;
@@ -679,8 +709,11 @@ PRIVATE GdkFilterReturn watch_root_window(GdkXEvent *gxevent, GdkEvent* event G_
     //
     if (xevt->atom == gdk_x11_get_xatom_by_name("_NET_WORKAREA")) {
         g_message("GET _NET_WORKAREA change on rootwindow");
-        GSettings* dock_gsettings = user_data;
-        update_workarea_size (dock_gsettings);
+        dock_gsettings = user_data;
+        //TODO:check if the change caused by dde-dock
+        //if FALSE then update_workarea_size
+        //or dont update_workarea_size in dock_display_mode_changed and dock_hide_mode_changed function
+        update_workarea_size ();
         return GDK_FILTER_CONTINUE;
     } else if (xevt->atom == gdk_x11_get_xatom_by_name("_NET_ACTIVE_WINDOW")) {
         Window active_window=0;
@@ -747,11 +780,8 @@ void desktop_emit_webview_ok()
 
         setup_root_window_watcher(container, dock_gsettings);
     }
-    update_workarea_size (dock_gsettings);
-    //check dock display-mode first and set desktop_gsettings
     dock_display_mode_changed(dock_gsettings);
     dde_session_register();
-    notify_primary_size();
 }
 
 
