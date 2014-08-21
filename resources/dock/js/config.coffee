@@ -157,7 +157,7 @@ ITEM_DATA_FIELD =
     status: "app-status"
     menu: "menu"
 
-ANIMATION_TIME = 400
+SHOW_HIDE_ANIMATION_TIME = 250
 
 TRASH_ID = "filemanager-trash"
 

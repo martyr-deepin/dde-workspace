@@ -29,7 +29,7 @@ body {
 }
 
 .container_animation{
-  -webkit-transition: -webkit-transform 400ms;
+  -webkit-transition: -webkit-transform 250ms;
 }
 
 .fixed_center {

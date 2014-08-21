@@ -56,7 +56,7 @@ class SystemTray extends SystemItem
                     @updateTrayIcon()
                     calc_app_item_size()
                     updateMaxClientListWidth()
-                , ANIMATION_TIME)
+                , SHOW_HIDE_ANIMATION_TIME)
             else
                 updateMaxClientListWidth()
                 $EW.undraw(xid)
@@ -121,7 +121,7 @@ class SystemTray extends SystemItem
             setTimeout(=>
                 @updateTrayIcon()
                 calc_app_item_size()
-            , ANIMATION_TIME)
+            , SHOW_HIDE_ANIMATION_TIME)
         )
 
 
@@ -290,7 +290,7 @@ class SystemTray extends SystemItem
                     console.warn("[SystemTray.unfold] update_dock_region")
                 update_dock_region()
                 console.log("update dock region")
-            , ANIMATION_TIME)
+            , SHOW_HIDE_ANIMATION_TIME)
         else
             webkitCancelAnimationFrame(@calcTimer)
             @showAllIcons()
@@ -317,7 +317,7 @@ class SystemTray extends SystemItem
                 if debugRegion
                     console.warn("[SystemTray.fold] update_dock_region")
                 update_dock_region()
-            , ANIMATION_TIME)
+            , SHOW_HIDE_ANIMATION_TIME)
         else
             @displayIcon()
             @img.style.display = ''

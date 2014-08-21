@@ -168,7 +168,7 @@ initDock = ->
                 systemTray.updateTrayIcon()
                 # TODO:
                 systemTray.showAllIcons()
-        , ANIMATION_TIME)
+        , SHOW_HIDE_ANIMATION_TIME)
     , 1000)
     if not activeWindow
         activeWindow= new ActiveWindow(clientManager.CurrentActiveWindow_sync())

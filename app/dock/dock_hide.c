@@ -113,7 +113,7 @@ PRIVATE GdkFilterReturn _monitor_guard_window(GdkXEvent* xevent,
     if (xev->type == GenericEvent) {
         if (e->evtype == EnterNotify) {
             g_debug("enter guard window");
-            _update_hide_state(500);
+            _update_hide_state(400);
             dbus_dock_daemon_cancel_toggle_show();
         } else if (e->evtype == LeaveNotify) {
             g_debug("leave guard window");

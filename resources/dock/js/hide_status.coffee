@@ -68,7 +68,7 @@ class HideStatusManager
                 $("#trayarea").style.webkitTransform = cw
 
         clearTimeout(changeDockRegionTimer)
-        changeDockRegionTimer = setTimeout(@changeDockRegion, 400)
+        changeDockRegionTimer = setTimeout(@changeDockRegion, SHOW_HIDE_ANIMATION_TIME)
 
     changeToHide:()->
         console.log("changeToHide: change to hide")
@@ -92,7 +92,7 @@ class HideStatusManager
                 # console.log("system tray is showing")
                 systemTray.minShow()
             DCore.Dock.set_is_hovered(false)
-        , 400)
+        , SHOW_HIDE_ANIMATION_TIME)
 
     changeDockRegion: =>
         console.log("changeDockRegion")
