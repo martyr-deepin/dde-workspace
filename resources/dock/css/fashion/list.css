@@ -25,6 +25,13 @@
   -webkit-box-pack:center;
   /* border:black 1px solid; */
 }
+.Activator .indicatorWrap {
+  display: none;
+}
+.ClientGroup{
+}
+.ClientGroup_hover {
+}
 .indicatorWrap{
   position:relative;
   top: 9px;
