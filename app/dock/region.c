@@ -34,7 +34,7 @@ static gboolean _isHovered = FALSE;
 
 gboolean dock_is_hovered()
 {
-    return _isHovered;
+    return is_mouse_in_dock() && _isHovered;
 }
 
 
@@ -94,7 +94,7 @@ PRIVATE
 void do_window_shape_combine_region(cairo_region_t* region)
 {
     if (_do_shape_timer_id != -1)
-	g_source_remove(_do_shape_timer_id);
+        g_source_remove(_do_shape_timer_id);
     _do_shape_timer_id = g_timeout_add(100, (GSourceFunc)_help_do_window_region, region);
 }
 

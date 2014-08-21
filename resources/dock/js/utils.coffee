@@ -4,44 +4,49 @@ itemDBus = (path)->
     interface: "dde.dock.EntryProxyer"
 
 
-moveHoverInfo = ->
-    # TODO: clearTimeout ???
-    setTimeout(_moveHoverInfo, 300)
+moveHoverInfo = do->
+    moveHoverInfoTimer = null
+    ->
+        clearTime(moveHoverInfoTimer)
+        moveHoverInfoTimer = setTimeout(_moveHoverInfo, 300)
 
 _moveHoverInfo = ->
     el = document.elementFromPoint($mousePosition.x, $mousePosition.y)
-    try
-        itemEl = el.parentNode.parentNode.parentNode
-    catch
-        console.log("the mouse hoverd is not item")
-        itemEl = null
 
     if el
         console.log("#{el.tagName}##{el.id||""}")
+        if el.tagName != "IMG"
+            itemEl = null
+     else
+         console.log("[_moveHoverInfo] get element failed")
+         return
 
-    if el and el.tagName != "IMG"
+    try
+        itemEl = el.parentNode.parentNode.parentNode
+    catch
+        console.log("[_moveHoverInfo] the mouse hoverd is not item")
         itemEl = null
 
     if itemEl == null
-        console.log("get element failed")
+        console.log("[_moveHoverInfo] get item element failed")
         DCore.Dock.set_is_hovered(false)
         $tooltip?.hide()
         Preview_close()
         systemTray?.updateTrayIcon()
         return
 
-    console.log("element id: #{itemEl.id}")
+    console.log("[_moveHoverInfo] element id: #{itemEl.id}")
     item = Widget.look_up(itemEl.id)
 
     if not item
-        console.log("get item failed")
+        console.log("[_moveHoverInfo] get item failed")
         DCore.Dock.set_is_hovered(false)
         $tooltip?.hide()
         Preview_close()
         systemTray?.updateTrayIcon()
         return
 
-    console.log("item id: #{item.id}, #{item.isRuntimeApplet()}")
+    console.log("[_moveHoverInfo] item id: #{item.id}, #{item.isRuntimeApplet()}")
     if item.isNormal() or item.isNormalApplet()
         Preview_close_now()
         console.log("this item should show tooltip")
@@ -84,10 +89,9 @@ createItem = (d)->
         if item.isApp() and item.isActive()
             item.show_open_indicator()
 
-    if not DCore.Dock.is_hovered()
-        return
-
-    moveHoverInfo()
+    if DCore.Dock.is_hovered()
+        console.warn("[create item] dock is hoverd")
+        moveHoverInfo()
 
 
 deleteItem = (id)->
@@ -101,7 +105,7 @@ deleteItem = (id)->
         # console.log("#{id} not eixst")
 
     if DCore.Dock.is_hovered()
-        console.log("delete item, is hovered")
+        console.warn("delete item, is hovered")
         moveHoverInfo()
 
 
