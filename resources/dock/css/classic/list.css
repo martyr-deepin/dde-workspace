@@ -127,6 +127,7 @@
 .AppletItemImg {
   width:16px;
   height: 16px;
+  margin: 0;
 }
 
 .SystemItem .imgWrap {

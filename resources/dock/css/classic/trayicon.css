@@ -1,13 +1,13 @@
 #system {
-  height: 36px;
+  height: 34px;
 }
 #trayarea{
   -webkit-transition: -webkit-transform 400ms;
   -webkit-transform: translateY(110%);
   position: fixed;
-  bottom: 1px;
+  bottom: 0px;
   right: 32px;
-  height: 36px;
+  height: 34px;
 }
 
 #system-tray {
@@ -18,7 +18,7 @@
   width: auto;
   margin: 0;
   margin-left: 8px;
-  height: 36px;
+  height: 34px;
 }
 
 #timeWrap {

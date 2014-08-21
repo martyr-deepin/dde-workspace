@@ -153,7 +153,7 @@ class SystemTray extends SystemItem
     updateTrayIconForClassic:=>
         # console.warn("updateTrayIconForClassic")
         trayarea = $("#trayarea")
-        y = (DOCK_HEIGHT - TRAY_ICON_HEIGHT) / 2 + trayarea.offsetTop
+        y = (DOCK_HEIGHT - TRAY_ICON_HEIGHT) / 2 + trayarea.offsetTop - 1
         for item, i in @items
             x = trayarea.offsetLeft + TRAY_ICON_MARGIN - (i + 1) * (TRAY_ICON_WIDTH + TRAY_ICON_MARGIN * 2)
             # console.warn("move #{item} to #{x}x#{y}")
