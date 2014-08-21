@@ -213,6 +213,9 @@ class SystemTray extends SystemItem
             $EW.undraw(item)
 
     showAllIcons:=>
+        if hideStatusManager and hideStatusManager.state != HideState.Shown
+            console.log("[showAllIcons] #{HideStateMap[hideStatusManager.state]}")
+            return
         for item in @items
             $EW.show(item)
 
@@ -232,6 +235,9 @@ class SystemTray extends SystemItem
         @minShow()
 
     minShow:=>
+        if hideStatusManager and hideStatusManager.state != HideState.Shown
+            console.log("[showAllIcons] #{HideStateMap[hideStatusManager.state]}")
+            return
         @isShowing = true
         @img.style.display = 'none'
         @panel.style.display = ''

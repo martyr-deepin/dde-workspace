@@ -48,6 +48,7 @@ class HideStatusManager
         )
 
     setState: (state)->
+        # console.log("set state to #{HideStateMap[state]}")
         @dbus?.SetState(state)
 
     updateState:()->
@@ -95,7 +96,7 @@ class HideStatusManager
         , SHOW_HIDE_ANIMATION_TIME)
 
     changeDockRegion: =>
-        console.log("changeDockRegion")
+        console.log("changeDockRegion, #{HideStateMap[@state]}")
         if @state == HideState.Showing
             @setState(HideState.Shown)
         else if @state == HideState.Hidding
