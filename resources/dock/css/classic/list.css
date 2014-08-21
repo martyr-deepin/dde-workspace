@@ -19,7 +19,7 @@
 
 .Activator{
   margin: 0 2px;
-  width: 36px;
+  width: 34px;
 }
 .ClientGroup{
   margin: 0 2px;
@@ -68,6 +68,16 @@
   border-radius: 5px;
   width: 24px;
   height: 24px;
+}
+
+.Activator .AppItemImg {
+  margin: 0 5px;
+}
+
+.ClientGroup .AppItemImg {
+  margin: 0 8px;
+}
+.ClientGroup_hover .AppItemImg {
   margin: 0 8px;
 }
 
@@ -78,6 +88,7 @@
 
 .OpenIndicator {
   width: 100%;
+  height: 100%;
 }
 .HoverOpenIndicator {
   width: 100%;
@@ -135,7 +146,7 @@
 }
 
 .windowTitleWrap {
-  width: 70%;
+  -webkit-box-flex: 1;
   height: 24px;
   margin-right: 8px;
 }
