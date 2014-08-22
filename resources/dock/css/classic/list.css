@@ -169,7 +169,7 @@
 
 .active {
   box-shadow: rgba(92, 209, 255, .2) 0 0 2px;
-  border-color: rgba(92, 209, 255, .2);
+  border-color: rgba(92, 209, 255, .3);
 }
 .active .OpenIndicator {
   display: inline;
@@ -183,7 +183,7 @@
 
 .active_hover {
   box-shadow: rgba(92, 209, 255, .5) 0 0 2px;
-  border-color: rgba(92, 209, 255, .5);
+  border-color: rgba(92, 209, 255, .6);
 }
 .active_hover .OpenIndicator {
   display: none;

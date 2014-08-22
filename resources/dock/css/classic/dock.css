@@ -37,7 +37,7 @@ body {
 
 #containerWrap{
   position:fixed;
-  bottom:0px;
+  bottom:1px;
   -webkit-transform: translateY(110%);
   display: -webkit-box;
   -webkit-box-pack:center;

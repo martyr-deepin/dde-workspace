@@ -25,7 +25,7 @@
   -webkit-box-pack:center;
   /* border:black 1px solid; */
 }
-.Activator .indicatorWrap {
+.Activator .OpenIndicator {
   display: none;
 }
 .ClientGroup{
