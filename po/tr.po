@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-20 11:16+0800\n"
+"POT-Creation-Date: 2014-08-22 11:12+0800\n"
 "PO-Revision-Date: 2014-07-07 01:41+0000\n"
 "Last-Translator: Ömer GÖK <omergok@outlook.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/deepin-desktop-"
@@ -19,15 +19,306 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: ../resources/launcher/js/item.coffee:276
-#: ../resources/guide/js/launcher.coffee:235
-#: ../resources/desktop/js/richdir.coffee:133
-#: ../resources/desktop/js/richdir.coffee:566
-#: ../resources/desktop/js/desktopentry.coffee:101
+#: ../resources/desktop/js/invalidlink.coffee:34
+#: ../resources/desktop/js/desktopentry.coffee:108
+#: ../resources/desktop/js/richdir.coffee:139
+#: ../resources/desktop/js/richdir.coffee:571
+msgid "_Delete"
+msgstr "_Sil"
+
+#: ../resources/desktop/js/application.coffee:179
+#: ../resources/desktop/js/richdir.coffee:335
+#: ../resources/desktop/js/richdir.coffee:586
+msgid "The link is invalid. Do you want to delete it?"
+msgstr "Bu bağlantı geçersiz. Bunu silmek istiyor musun?"
+
+#: ../resources/desktop/js/application.coffee:179
+#: ../resources/desktop/js/desktopentry.coffee:165
+#: ../resources/desktop/js/richdir.coffee:335
+#: ../resources/desktop/js/richdir.coffee:586
+#: ../resources/dock/js/plugins/trash/trash.coffee:76
+msgid "Warning"
+msgstr "Uyarı"
+
+#: ../resources/desktop/js/desktopentry.coffee:102
 #: ../resources/desktop/js/specialitem.coffee:51
 #: ../resources/desktop/js/specialitem.coffee:147
+#: ../resources/desktop/js/richdir.coffee:133
+#: ../resources/desktop/js/richdir.coffee:566
+#: ../resources/launcher/js/item.coffee:276
+#: ../resources/guide/js/launcher.coffee:235
 msgid "_Open"
 msgstr "_Aç"
+
+#: ../resources/desktop/js/desktopentry.coffee:104
+#: ../resources/desktop/js/richdir.coffee:568
+msgid "Cu_t"
+msgstr "K_es"
+
+#: ../resources/desktop/js/desktopentry.coffee:105
+#: ../resources/desktop/js/richdir.coffee:569
+msgid "_Copy"
+msgstr "_Kopyala"
+
+#: ../resources/desktop/js/desktopentry.coffee:107
+#: ../resources/desktop/js/richdir.coffee:135
+msgid "_Rename"
+msgstr "_Yeniden Adlandır"
+
+#: ../resources/desktop/js/desktopentry.coffee:110
+#: ../resources/desktop/js/specialitem.coffee:53
+#: ../resources/desktop/js/richdir.coffee:573
+msgid "_Properties"
+msgstr "_Özellikler"
+
+#: ../resources/desktop/js/desktopentry.coffee:116
+#: ../resources/desktop/js/desktopentry.coffee:123
+msgid "Co_mpress"
+msgstr "A_rşivle"
+
+#: ../resources/desktop/js/desktopentry.coffee:119
+#: ../resources/desktop/js/desktopentry.coffee:124
+msgid "_Extract"
+msgstr "_Arşivden Çıkar"
+
+#: ../resources/desktop/js/desktopentry.coffee:120
+#: ../resources/desktop/js/desktopentry.coffee:125
+msgid "Extract _Here"
+msgstr "Buraya _Çıkar"
+
+#: ../resources/desktop/js/desktopentry.coffee:165
+#: ../resources/dock/js/plugins/trash/trash.coffee:76
+msgid "Can not open this file."
+msgstr "Bu dosyla açılamıyor."
+
+#: ../resources/desktop/js/specialitem.coffee:34
+msgid "Computer"
+msgstr ""
+
+#: ../resources/desktop/js/specialitem.coffee:87
+#: ../resources/dock/js/main.coffee:47 ../resources/dock/js/main.coffee:124
+msgid "Trash"
+msgstr "Çöp"
+
+#: ../resources/desktop/js/specialitem.coffee:152
+#, fuzzy
+msgid "_Clean up %1 items"
+msgstr "_Sil"
+
+#: ../resources/desktop/js/specialitem.coffee:154
+#, fuzzy
+msgid "_Clean up 1 item"
+msgstr "_Sil"
+
+#: ../resources/desktop/js/specialitem.coffee:156
+#: ../resources/dock/js/plugins/trash/trash.coffee:29
+msgid "_Empty"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:71 ../lib/dentry/fileops.c:403
+msgid "Untitled"
+msgstr "Başlıksız"
+
+#: ../resources/desktop/js/grid.coffee:1022
+msgid "_Name"
+msgstr "_İsim"
+
+#: ../resources/desktop/js/grid.coffee:1023
+msgid "Last modified _time"
+msgstr "Son Düzenleme _Tarihi"
+
+#: ../resources/desktop/js/grid.coffee:1028
+msgid "_Folder"
+msgstr "_Klasör"
+
+#: ../resources/desktop/js/grid.coffee:1029
+msgid "_Text document"
+msgstr "_Metin Belgesi"
+
+#: ../resources/desktop/js/grid.coffee:1045
+#: ../resources/guide/js/desktop.coffee:196
+msgid "_Sort by"
+msgstr "_Sırala"
+
+#: ../resources/desktop/js/grid.coffee:1046
+#: ../resources/guide/js/desktop.coffee:197
+msgid "_New"
+msgstr "_Yeni"
+
+#: ../resources/desktop/js/grid.coffee:1047
+#: ../resources/guide/js/desktop.coffee:198
+msgid "Open in _terminal"
+msgstr "_Terminalde Aç"
+
+#: ../resources/desktop/js/grid.coffee:1048
+#: ../resources/guide/js/desktop.coffee:199
+msgid "_Paste"
+msgstr "Ya_pıştır"
+
+#: ../resources/desktop/js/grid.coffee:1050
+#: ../resources/guide/js/desktop.coffee:201
+msgid "_Display settings"
+msgstr "Seçenekleri _Görüntüle"
+
+#: ../resources/desktop/js/grid.coffee:1051
+#: ../resources/guide/js/desktop.coffee:202
+msgid "_Corner navigation"
+msgstr "_Köşe gezinme"
+
+#: ../resources/desktop/js/grid.coffee:1052
+#: ../resources/guide/js/desktop.coffee:203
+msgid "Pe_rsonalize"
+msgstr "Ki_şiselleştir"
+
+#: ../resources/desktop/js/richdir.coffee:137
+msgid "_Ungroup"
+msgstr "_Gruplandırma"
+
+#: ../resources/greeter/js/message.coffee:105
+#: ../resources/greeter/js/message.coffee:82
+msgid "$ sudo reboot\n"
+msgstr "$ sudo reboot\n"
+
+#: ../resources/greeter/js/message.coffee:99
+#: ../resources/greeter/js/message.coffee:73
+msgid "Press Ctrl + Alt + F1\n"
+msgstr "Ctrl + Alt + F1'e basın\n"
+
+#: ../resources/greeter/js/message.coffee:95
+msgid ""
+"\t\t\t\t-----The daemon of accounts has not started!-----\n"
+")"
+msgstr ""
+"\t\t\t\t-----Hesapların arka plan programı başlamamıştır!-----\n"
+")"
+
+#: ../resources/greeter/js/message.coffee:79
+msgid "$ sudo apt-get install deepin-desktop-Environment\n"
+msgstr "$ sudo apt-get install deepin-desktop-Environment\n"
+
+#: ../resources/greeter/js/message.coffee:68
+msgid "\t\t\t\t-----No available desktop sessions!-----\n"
+msgstr "\t\t\t\t-----Kullanılabilir masaüstü oturumu yok!-----\n"
+
+#: ../resources/greeter/js/user.coffee:411
+msgid "Login"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Jan"
+msgstr "Oca"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Feb"
+msgstr "Şub"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Mar"
+msgstr "Mar"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Apr"
+msgstr "Nis"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "May"
+msgstr "May"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Jun"
+msgstr "Haz"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Jul"
+msgstr "Tem"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Aug"
+msgstr "Ağu"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Sep"
+msgstr "Eyl"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Oct"
+msgstr "Eki"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Nov"
+msgstr "Kas"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Dec"
+msgstr "Ara"
+
+#: ../resources/greeter/js/time.coffee:44
+#: ../resources/dock/js/plugins/time/time.coffee:2
+msgid "Sun"
+msgstr "Paz"
+
+#: ../resources/greeter/js/time.coffee:44
+#: ../resources/dock/js/plugins/time/time.coffee:2
+msgid "Mon"
+msgstr "Pzt"
+
+#: ../resources/greeter/js/time.coffee:44
+#: ../resources/dock/js/plugins/time/time.coffee:2
+msgid "Tue"
+msgstr "Sal"
+
+#: ../resources/greeter/js/time.coffee:44
+#: ../resources/dock/js/plugins/time/time.coffee:2
+msgid "Wed"
+msgstr "Çrş"
+
+#: ../resources/greeter/js/time.coffee:44
+#: ../resources/dock/js/plugins/time/time.coffee:2
+msgid "Thu"
+msgstr "Prş"
+
+#: ../resources/greeter/js/time.coffee:44
+#: ../resources/dock/js/plugins/time/time.coffee:2
+msgid "Fri"
+msgstr "Cum"
+
+#: ../resources/greeter/js/time.coffee:44
+#: ../resources/dock/js/plugins/time/time.coffee:2
+msgid "Sat"
+msgstr "Cmt"
+
+#: ../resources/greeter/js/usermenu.coffee:57
+msgid "Guest"
+msgstr "Misafir"
+
+#: ../resources/greeter/js/powermenu.coffee:26
+msgid "Shut down"
+msgstr "Kapat"
+
+#: ../resources/greeter/js/powermenu.coffee:27
+msgid "Restart"
+msgstr "Tekrar başlat"
+
+#: ../resources/greeter/js/powermenu.coffee:28
+msgid "Suspend"
+msgstr "Askıya al"
+
+#: ../resources/greeter/js/powermenu.coffee:90
+msgid "Enter your password to %1"
+msgstr "%1 e şifrenizi girin"
+
+#: ../resources/greeter/js/mediacontrol.coffee:167
+#, fuzzy
+msgid "Click button to Play"
+msgstr "giriş için giriş tuşuna tıklayın"
+
+#: ../resources/osd/js/monitor.coffee:38
+msgid "Duplicate"
+msgstr ""
+
+#: ../resources/osd/js/monitor.coffee:39
+msgid "Extend"
+msgstr ""
 
 #: ../resources/launcher/js/item.coffee:283
 #: ../resources/guide/js/launcher.coffee:242
@@ -108,189 +399,25 @@ msgstr "do_ck bara gönder"
 msgid "Remove from do_ck"
 msgstr " _favorilerden kaldır"
 
-#: ../resources/osd/js/monitor.coffee:38
-msgid "Duplicate"
-msgstr ""
+#: ../resources/zone/js/utils.coffee:10
+msgid "Control Center"
+msgstr "Kontrol Merkezi"
 
-#: ../resources/osd/js/monitor.coffee:39
-msgid "Extend"
-msgstr ""
+#: ../resources/zone/js/utils.coffee:10
+msgid "All Windows"
+msgstr "Tüm Pencereler"
 
-#: ../resources/dock/js/deepin_item.coffee:247
-msgid "_View as analog"
-msgstr "_Analog olarak göster"
-
-#: ../resources/dock/js/deepin_item.coffee:248
-#: ../resources/dock/js/deepin_item.coffee:300
-msgid "_Time settings"
-msgstr "_Zaman ayarları"
-
-#: ../resources/dock/js/deepin_item.coffee:299
-msgid "_View as digit"
-msgstr "_Dijital olarak göster"
-
-#: ../resources/dock/js/main.coffee:47 ../resources/dock/js/main.coffee:124
-#: ../resources/desktop/js/specialitem.coffee:87
-msgid "Trash"
-msgstr "Çöp"
-
-#: ../resources/dock/js/main.coffee:122 ../resources/zone/js/utils.coffee:10
+#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:122
 msgid "Launcher"
 msgstr "Başlatıcı"
 
-#: ../resources/dock/js/global_menu.coffee:9
-#, fuzzy
-msgid "Keep _showing"
-msgstr "göstermeyi _tutun"
+#: ../resources/zone/js/utils.coffee:10
+msgid "Desktop"
+msgstr "Masaüstü"
 
-#: ../resources/dock/js/global_menu.coffee:10
-#, fuzzy
-msgid "Keep _hidden"
-msgstr "gizlemeyi _tutun"
-
-#: ../resources/dock/js/global_menu.coffee:11
-#, fuzzy
-msgid "_Auto hide"
-msgstr "_otomatik gizle"
-
-#: ../resources/dock/js/global_menu.coffee:24
-msgid "_Fashion mode"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:25
-msgid "_Efficient mode"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:26
-msgid "_Classic mode"
-msgstr ""
-
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Sun"
-msgstr "Paz"
-
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Mon"
-msgstr "Pzt"
-
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Tue"
-msgstr "Sal"
-
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Wed"
-msgstr "Çrş"
-
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Thu"
-msgstr "Prş"
-
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Fri"
-msgstr "Cum"
-
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Sat"
-msgstr "Cmt"
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:29
-#: ../resources/desktop/js/specialitem.coffee:156
-msgid "_Empty"
-msgstr ""
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:33
-msgid "_Close"
-msgstr "_Kapat"
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:76
-#: ../resources/desktop/js/desktopentry.coffee:151
-msgid "Can not open this file."
-msgstr "Bu dosyla açılamıyor."
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:76
-#: ../resources/desktop/js/application.coffee:179
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
-#: ../resources/desktop/js/desktopentry.coffee:151
-msgid "Warning"
-msgstr "Uyarı"
-
-#: ../resources/guide/js/end.coffee:25
-#, fuzzy
-msgid "Thanks for your patience while learning. Congratulations."
-msgstr "Öğrenmek sabrınız için teşekkür ederiz. Tebrikler!"
-
-#: ../resources/guide/js/end.coffee:30
-msgid "End"
-msgstr "Son"
-
-#: ../resources/guide/js/launcher.coffee:29
-#, fuzzy
-msgid ""
-"\"Application Launcher\" can be started by sliding the mouse to the upper "
-"left corner or clicking on the launcher."
-msgstr ""
-"Fareyi sol üst köşeye kaydırarak veya başlatıcı ikona tıklanacak \"Uygulama "
-"Başlatıcısı\" başlatılabilir"
-
-#: ../resources/guide/js/launcher.coffee:70
-#, fuzzy
-msgid ""
-"What shown in the first screen of \"launcher\" are the applications "
-"collected."
-msgstr ""
-"\"başlatıcı\" nın ilk ekranında koleksiyonun hangi uygulamaları gösterdiği "
-"seçilir"
-
-#: ../resources/guide/js/launcher.coffee:85
-#, fuzzy
-msgid ""
-"Please click on the \"All Applications\" icon, you will see all applications."
-msgstr ""
-"Lütfen \"Tüm Uygulamalar\" simgesine tıklayarak , tüm uygulamaları "
-"görebilirsiniz"
-
-#: ../resources/guide/js/launcher.coffee:95
-msgid ""
-"All programs can be located by scrolling the mouse up and down.\n"
-"You can also click on the left classification navigation to locate"
-msgstr ""
-"Tüm uygulamalar fare ile yukarı ve aşşağı kayrılılarak konumlandırılabilir.\n"
-"Ayrıca sol sınıflandırmaya tıklanarakta konumlandırılabilir"
-
-#: ../resources/guide/js/launcher.coffee:133
-msgid "Skip the step without scroll"
-msgstr "Kaydırmadan adımı atla"
-
-#: ../resources/guide/js/launcher.coffee:163
-#, fuzzy
-msgid ""
-"Use the keyboard to search for applications\n"
-"Try the \"deepin\" keyword to see which applications are shown"
-msgstr ""
-"Klavye ile arama kullanılarak istenilen uygulama aranabilir\n"
-"Biz \"deepin\" anahtar kelimesini kullanarak bazı uygulamalar gösterilir"
-
-#: ../resources/guide/js/launcher.coffee:164
-#, fuzzy
-msgid "tips: Please directly enter the word \"deepin\""
-msgstr "ipuçu: Doğrudan kelimeyi girin \"deepin\""
-
-#: ../resources/guide/js/launcher.coffee:179
-msgid "Use the right mouse button to send two icons to the desktop"
-msgstr "Masaüstüne iki simge göndermek için sağ fare düğmesini kullanın"
-
-#: ../resources/guide/js/launcher.coffee:180
-#, fuzzy
-msgid "tips: You can add it to startup items or uninstall it"
-msgstr "ipucu:Başlangıç nesnelerine ekleyebilirsin veya kaldırılabilirsin"
+#: ../resources/zone/js/utils.coffee:10
+msgid "None"
+msgstr "Yok"
 
 #: ../resources/guide/js/dss.coffee:29
 msgid "Well, please trigger the lower right corner again"
@@ -314,31 +441,22 @@ msgstr ""
 "ipucu: Hızla bazı ayar işlevlerini uygulamak için panel ayarlama simgesine "
 "üzerine getirin"
 
-#: ../resources/guide/js/start.coffee:28
-msgid "New Launcher"
-msgstr "Yeni Başlatıcı"
+#: ../resources/guide/js/end.coffee:25
+#, fuzzy
+msgid "Thanks for your patience while learning. Congratulations."
+msgstr "Öğrenmek sabrınız için teşekkür ederiz. Tebrikler!"
 
-#: ../resources/guide/js/start.coffee:28
-msgid "New Desktop"
-msgstr "Yeni Pencere"
+#: ../resources/guide/js/end.coffee:30
+msgid "End"
+msgstr "Son"
 
-#: ../resources/guide/js/start.coffee:28
-msgid "New System Settings"
-msgstr "Yeni Sistem Ayarları"
+#: ../resources/guide/js/welcome.coffee:35
+msgid "Welcome to use Deepin Operating System"
+msgstr "Deepin İşletim Sistemine Hoş geldiniz"
 
-#: ../resources/guide/js/start.coffee:29
-msgid "The following will guide you to learn how to use some new functions"
-msgstr ""
-"Aşağıdaki bazı yeni fonksiyonlar nasıl kullanılacağını öğrenmek için "
-"rehberlik edecek"
-
-#: ../resources/guide/js/start.coffee:44
-msgid "Start"
-msgstr "Başla"
-
-#: ../resources/guide/js/start.coffee:51
-msgid "I am an experienced user. Exit directly."
-msgstr "Ben büyüğüm, doğrudan çık"
+#: ../resources/guide/js/welcome.coffee:38
+msgid "Prepare for operation ..."
+msgstr "Işlem için hazırlama..."
 
 #: ../resources/guide/js/desktop.coffee:27
 msgid ""
@@ -405,254 +523,136 @@ msgstr ""
 msgid "tips: Click on the interface of corner navigation blank area to return"
 msgstr "ipucu：Köşeden arayüze geri dönmwk için arayüze tıklayın"
 
-#: ../resources/guide/js/desktop.coffee:196
-#: ../resources/desktop/js/grid.coffee:1045
-msgid "_Sort by"
-msgstr "_Sırala"
+#: ../resources/guide/js/start.coffee:28
+msgid "New Launcher"
+msgstr "Yeni Başlatıcı"
 
-#: ../resources/guide/js/desktop.coffee:197
-#: ../resources/desktop/js/grid.coffee:1046
-msgid "_New"
-msgstr "_Yeni"
+#: ../resources/guide/js/start.coffee:28
+msgid "New Desktop"
+msgstr "Yeni Pencere"
 
-#: ../resources/guide/js/desktop.coffee:198
-#: ../resources/desktop/js/grid.coffee:1047
-msgid "Open in _terminal"
-msgstr "_Terminalde Aç"
+#: ../resources/guide/js/start.coffee:28
+msgid "New System Settings"
+msgstr "Yeni Sistem Ayarları"
 
-#: ../resources/guide/js/desktop.coffee:199
-#: ../resources/desktop/js/grid.coffee:1048
-msgid "_Paste"
-msgstr "Ya_pıştır"
-
-#: ../resources/guide/js/desktop.coffee:201
-#: ../resources/desktop/js/grid.coffee:1050
-msgid "_Display settings"
-msgstr "Seçenekleri _Görüntüle"
-
-#: ../resources/guide/js/desktop.coffee:202
-#: ../resources/desktop/js/grid.coffee:1051
-msgid "_Corner navigation"
-msgstr "_Köşe gezinme"
-
-#: ../resources/guide/js/desktop.coffee:203
-#: ../resources/desktop/js/grid.coffee:1052
-msgid "Pe_rsonalize"
-msgstr "Ki_şiselleştir"
-
-#: ../resources/guide/js/welcome.coffee:35
-msgid "Welcome to use Deepin Operating System"
-msgstr "Deepin İşletim Sistemine Hoş geldiniz"
-
-#: ../resources/guide/js/welcome.coffee:38
-msgid "Prepare for operation ..."
-msgstr "Işlem için hazırlama..."
-
-#: ../resources/zone/js/utils.coffee:10
-msgid "Control Center"
-msgstr "Kontrol Merkezi"
-
-#: ../resources/zone/js/utils.coffee:10
-msgid "All Windows"
-msgstr "Tüm Pencereler"
-
-#: ../resources/zone/js/utils.coffee:10
-msgid "Desktop"
-msgstr "Masaüstü"
-
-#: ../resources/zone/js/utils.coffee:10
-msgid "None"
-msgstr "Yok"
-
-#: ../resources/desktop/js/invalidlink.coffee:34
-#: ../resources/desktop/js/richdir.coffee:139
-#: ../resources/desktop/js/richdir.coffee:571
-#: ../resources/desktop/js/desktopentry.coffee:107
-msgid "_Delete"
-msgstr "_Sil"
-
-#: ../resources/desktop/js/application.coffee:179
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
-msgid "The link is invalid. Do you want to delete it?"
-msgstr "Bu bağlantı geçersiz. Bunu silmek istiyor musun?"
-
-#: ../resources/desktop/js/richdir.coffee:135
-#: ../resources/desktop/js/desktopentry.coffee:106
-msgid "_Rename"
-msgstr "_Yeniden Adlandır"
-
-#: ../resources/desktop/js/richdir.coffee:137
-msgid "_Ungroup"
-msgstr "_Gruplandırma"
-
-#: ../resources/desktop/js/richdir.coffee:568
-#: ../resources/desktop/js/desktopentry.coffee:103
-msgid "Cu_t"
-msgstr "K_es"
-
-#: ../resources/desktop/js/richdir.coffee:569
-#: ../resources/desktop/js/desktopentry.coffee:104
-msgid "_Copy"
-msgstr "_Kopyala"
-
-#: ../resources/desktop/js/richdir.coffee:573
-#: ../resources/desktop/js/desktopentry.coffee:109
-#: ../resources/desktop/js/specialitem.coffee:53
-msgid "_Properties"
-msgstr "_Özellikler"
-
-#: ../resources/desktop/js/grid.coffee:71 ../lib/dentry/fileops.c:403
-msgid "Untitled"
-msgstr "Başlıksız"
-
-#: ../resources/desktop/js/grid.coffee:1022
-msgid "_Name"
-msgstr "_İsim"
-
-#: ../resources/desktop/js/grid.coffee:1023
-msgid "Last modified _time"
-msgstr "Son Düzenleme _Tarihi"
-
-#: ../resources/desktop/js/grid.coffee:1028
-msgid "_Folder"
-msgstr "_Klasör"
-
-#: ../resources/desktop/js/grid.coffee:1029
-msgid "_Text document"
-msgstr "_Metin Belgesi"
-
-#: ../resources/desktop/js/desktopentry.coffee:115
-#: ../resources/desktop/js/desktopentry.coffee:122
-msgid "Co_mpress"
-msgstr "A_rşivle"
-
-#: ../resources/desktop/js/desktopentry.coffee:118
-#: ../resources/desktop/js/desktopentry.coffee:123
-msgid "_Extract"
-msgstr "_Arşivden Çıkar"
-
-#: ../resources/desktop/js/desktopentry.coffee:119
-#: ../resources/desktop/js/desktopentry.coffee:124
-msgid "Extract _Here"
-msgstr "Buraya _Çıkar"
-
-#: ../resources/desktop/js/specialitem.coffee:34
-msgid "Computer"
+#: ../resources/guide/js/start.coffee:29
+msgid "The following will guide you to learn how to use some new functions"
 msgstr ""
+"Aşağıdaki bazı yeni fonksiyonlar nasıl kullanılacağını öğrenmek için "
+"rehberlik edecek"
 
-#: ../resources/desktop/js/specialitem.coffee:152
+#: ../resources/guide/js/start.coffee:44
+msgid "Start"
+msgstr "Başla"
+
+#: ../resources/guide/js/start.coffee:51
+msgid "I am an experienced user. Exit directly."
+msgstr "Ben büyüğüm, doğrudan çık"
+
+#: ../resources/guide/js/launcher.coffee:29
 #, fuzzy
-msgid "_Clean up %1 items"
-msgstr "_Sil"
-
-#: ../resources/desktop/js/specialitem.coffee:154
-#, fuzzy
-msgid "_Clean up 1 item"
-msgstr "_Sil"
-
-#: ../resources/greeter/js/user.coffee:456
-msgid "Login"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Jan"
-msgstr "Oca"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Feb"
-msgstr "Şub"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Mar"
-msgstr "Mar"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Apr"
-msgstr "Nis"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "May"
-msgstr "May"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Jun"
-msgstr "Haz"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Jul"
-msgstr "Tem"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Aug"
-msgstr "Ağu"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Sep"
-msgstr "Eyl"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Oct"
-msgstr "Eki"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Nov"
-msgstr "Kas"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Dec"
-msgstr "Ara"
-
-#: ../resources/greeter/js/usermenu.coffee:57
-msgid "Guest"
-msgstr "Misafir"
-
-#: ../resources/greeter/js/powermenu.coffee:26
-msgid "Shut down"
-msgstr "Kapat"
-
-#: ../resources/greeter/js/powermenu.coffee:27
-msgid "Restart"
-msgstr "Tekrar başlat"
-
-#: ../resources/greeter/js/powermenu.coffee:28
-msgid "Suspend"
-msgstr "Askıya al"
-
-#: ../resources/greeter/js/powermenu.coffee:90
-msgid "Enter your password to %1"
-msgstr "%1 e şifrenizi girin"
-
-#: ../resources/greeter/js/message.coffee:105
-#: ../resources/greeter/js/message.coffee:82
-msgid "$ sudo reboot\n"
-msgstr "$ sudo reboot\n"
-
-#: ../resources/greeter/js/message.coffee:99
-#: ../resources/greeter/js/message.coffee:73
-msgid "Press Ctrl + Alt + F1\n"
-msgstr "Ctrl + Alt + F1'e basın\n"
-
-#: ../resources/greeter/js/message.coffee:95
 msgid ""
-"\t\t\t\t-----The daemon of accounts has not started!-----\n"
-")"
+"\"Application Launcher\" can be started by sliding the mouse to the upper "
+"left corner or clicking on the launcher."
 msgstr ""
-"\t\t\t\t-----Hesapların arka plan programı başlamamıştır!-----\n"
-")"
+"Fareyi sol üst köşeye kaydırarak veya başlatıcı ikona tıklanacak \"Uygulama "
+"Başlatıcısı\" başlatılabilir"
 
-#: ../resources/greeter/js/message.coffee:79
-msgid "$ sudo apt-get install deepin-desktop-Environment\n"
-msgstr "$ sudo apt-get install deepin-desktop-Environment\n"
-
-#: ../resources/greeter/js/message.coffee:68
-msgid "\t\t\t\t-----No available desktop sessions!-----\n"
-msgstr "\t\t\t\t-----Kullanılabilir masaüstü oturumu yok!-----\n"
-
-#: ../resources/greeter/js/mediacontrol.coffee:167
+#: ../resources/guide/js/launcher.coffee:70
 #, fuzzy
-msgid "Click button to Play"
-msgstr "giriş için giriş tuşuna tıklayın"
+msgid ""
+"What shown in the first screen of \"launcher\" are the applications "
+"collected."
+msgstr ""
+"\"başlatıcı\" nın ilk ekranında koleksiyonun hangi uygulamaları gösterdiği "
+"seçilir"
+
+#: ../resources/guide/js/launcher.coffee:85
+#, fuzzy
+msgid ""
+"Please click on the \"All Applications\" icon, you will see all applications."
+msgstr ""
+"Lütfen \"Tüm Uygulamalar\" simgesine tıklayarak , tüm uygulamaları "
+"görebilirsiniz"
+
+#: ../resources/guide/js/launcher.coffee:95
+msgid ""
+"All programs can be located by scrolling the mouse up and down.\n"
+"You can also click on the left classification navigation to locate"
+msgstr ""
+"Tüm uygulamalar fare ile yukarı ve aşşağı kayrılılarak konumlandırılabilir.\n"
+"Ayrıca sol sınıflandırmaya tıklanarakta konumlandırılabilir"
+
+#: ../resources/guide/js/launcher.coffee:133
+msgid "Skip the step without scroll"
+msgstr "Kaydırmadan adımı atla"
+
+#: ../resources/guide/js/launcher.coffee:163
+#, fuzzy
+msgid ""
+"Use the keyboard to search for applications\n"
+"Try the \"deepin\" keyword to see which applications are shown"
+msgstr ""
+"Klavye ile arama kullanılarak istenilen uygulama aranabilir\n"
+"Biz \"deepin\" anahtar kelimesini kullanarak bazı uygulamalar gösterilir"
+
+#: ../resources/guide/js/launcher.coffee:164
+#, fuzzy
+msgid "tips: Please directly enter the word \"deepin\""
+msgstr "ipuçu: Doğrudan kelimeyi girin \"deepin\""
+
+#: ../resources/guide/js/launcher.coffee:179
+msgid "Use the right mouse button to send two icons to the desktop"
+msgstr "Masaüstüne iki simge göndermek için sağ fare düğmesini kullanın"
+
+#: ../resources/guide/js/launcher.coffee:180
+#, fuzzy
+msgid "tips: You can add it to startup items or uninstall it"
+msgstr "ipucu:Başlangıç nesnelerine ekleyebilirsin veya kaldırılabilirsin"
+
+#: ../resources/dock/js/global_menu.coffee:9
+#, fuzzy
+msgid "Keep _showing"
+msgstr "göstermeyi _tutun"
+
+#: ../resources/dock/js/global_menu.coffee:10
+#, fuzzy
+msgid "Keep _hidden"
+msgstr "gizlemeyi _tutun"
+
+#: ../resources/dock/js/global_menu.coffee:11
+#, fuzzy
+msgid "_Auto hide"
+msgstr "_otomatik gizle"
+
+#: ../resources/dock/js/global_menu.coffee:24
+msgid "_Fashion mode"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:25
+msgid "_Efficient mode"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:26
+msgid "_Classic mode"
+msgstr ""
+
+#: ../resources/dock/js/deepin_item.coffee:247
+msgid "_View as analog"
+msgstr "_Analog olarak göster"
+
+#: ../resources/dock/js/deepin_item.coffee:248
+#: ../resources/dock/js/deepin_item.coffee:300
+msgid "_Time settings"
+msgstr "_Zaman ayarları"
+
+#: ../resources/dock/js/deepin_item.coffee:299
+msgid "_View as digit"
+msgstr "_Dijital olarak göster"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:33
+msgid "_Close"
+msgstr "_Kapat"
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
@@ -662,15 +662,11 @@ msgstr ""
 msgid "\"%1\" failed to be uninstalled"
 msgstr ""
 
-#: ../app/dock/dock.c:322
-msgid "Dock failed to start, because Compiz is not enabled."
-msgstr "Dock bar başlatılamadı, çünkü Compiz aktif değil."
-
-#: ../app/desktop/desktop.c:286
+#: ../app/desktop/desktop.c:292
 msgid "New file"
 msgstr "Yeni dosya"
 
-#: ../app/desktop/desktop.c:297
+#: ../app/desktop/desktop.c:303
 msgid "New directory"
 msgstr "Yeni dizin"
 
@@ -679,8 +675,12 @@ msgid "%a, %b %d, %Y"
 msgstr "%a, %b %d, %Y"
 
 #: ../app/greeter/lock.c:125 ../app/greeter/greeter.c:192
-msgid "Invalid Password"
+msgid "Wrong Password"
 msgstr "Yanlış Şifre"
+
+#: ../app/dock/dock.c:322
+msgid "Dock failed to start, because Compiz is not enabled."
+msgstr "Dock bar başlatılamadı, çünkü Compiz aktif değil."
 
 #: ../lib/dentry/entry.c:746
 #, c-format

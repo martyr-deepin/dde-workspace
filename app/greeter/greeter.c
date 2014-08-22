@@ -189,7 +189,7 @@ authenticated_complete(LightDMGreeter *greeter)
     if (!lightdm_greeter_get_is_authenticated (greeter)) {
         g_warning("authenticated auth-failed\n");
         JSObjectRef error_message = json_create();
-        json_append_string(error_message, "error", _("Invalid Password"));
+        json_append_string(error_message, "error", _("Wrong Password"));
         js_post_message("auth-failed", error_message);
         return;
     }

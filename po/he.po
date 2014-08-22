@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-20 11:16+0800\n"
+"POT-Creation-Date: 2014-08-22 11:12+0800\n"
 "PO-Revision-Date: 2014-07-02 12:04+0000\n"
 "Last-Translator: cxbii <chenxiangbang@linuxdeepin.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/projects/p/deepin-desktop-"
@@ -18,15 +18,303 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../resources/launcher/js/item.coffee:276
-#: ../resources/guide/js/launcher.coffee:235
-#: ../resources/desktop/js/richdir.coffee:133
-#: ../resources/desktop/js/richdir.coffee:566
-#: ../resources/desktop/js/desktopentry.coffee:101
+#: ../resources/desktop/js/invalidlink.coffee:34
+#: ../resources/desktop/js/desktopentry.coffee:108
+#: ../resources/desktop/js/richdir.coffee:139
+#: ../resources/desktop/js/richdir.coffee:571
+msgid "_Delete"
+msgstr "_מחיקה"
+
+#: ../resources/desktop/js/application.coffee:179
+#: ../resources/desktop/js/richdir.coffee:335
+#: ../resources/desktop/js/richdir.coffee:586
+msgid "The link is invalid. Do you want to delete it?"
+msgstr ""
+
+#: ../resources/desktop/js/application.coffee:179
+#: ../resources/desktop/js/desktopentry.coffee:165
+#: ../resources/desktop/js/richdir.coffee:335
+#: ../resources/desktop/js/richdir.coffee:586
+#: ../resources/dock/js/plugins/trash/trash.coffee:76
+msgid "Warning"
+msgstr "אזהרה"
+
+#: ../resources/desktop/js/desktopentry.coffee:102
 #: ../resources/desktop/js/specialitem.coffee:51
 #: ../resources/desktop/js/specialitem.coffee:147
+#: ../resources/desktop/js/richdir.coffee:133
+#: ../resources/desktop/js/richdir.coffee:566
+#: ../resources/launcher/js/item.coffee:276
+#: ../resources/guide/js/launcher.coffee:235
 msgid "_Open"
 msgstr "_פתיחה"
+
+#: ../resources/desktop/js/desktopentry.coffee:104
+#: ../resources/desktop/js/richdir.coffee:568
+msgid "Cu_t"
+msgstr "_גזירה"
+
+#: ../resources/desktop/js/desktopentry.coffee:105
+#: ../resources/desktop/js/richdir.coffee:569
+msgid "_Copy"
+msgstr "_העתקה"
+
+#: ../resources/desktop/js/desktopentry.coffee:107
+#: ../resources/desktop/js/richdir.coffee:135
+msgid "_Rename"
+msgstr "_שינוי שם"
+
+#: ../resources/desktop/js/desktopentry.coffee:110
+#: ../resources/desktop/js/specialitem.coffee:53
+#: ../resources/desktop/js/richdir.coffee:573
+msgid "_Properties"
+msgstr "מאפיינים"
+
+#: ../resources/desktop/js/desktopentry.coffee:116
+#: ../resources/desktop/js/desktopentry.coffee:123
+msgid "Co_mpress"
+msgstr "_דחיסה"
+
+#: ../resources/desktop/js/desktopentry.coffee:119
+#: ../resources/desktop/js/desktopentry.coffee:124
+msgid "_Extract"
+msgstr "_כיווץ"
+
+#: ../resources/desktop/js/desktopentry.coffee:120
+#: ../resources/desktop/js/desktopentry.coffee:125
+msgid "Extract _Here"
+msgstr "_כיווץ לכאן"
+
+#: ../resources/desktop/js/desktopentry.coffee:165
+#: ../resources/dock/js/plugins/trash/trash.coffee:76
+msgid "Can not open this file."
+msgstr "אין אפשרות לפתוח הקובץ"
+
+#: ../resources/desktop/js/specialitem.coffee:34
+msgid "Computer"
+msgstr ""
+
+#: ../resources/desktop/js/specialitem.coffee:87
+#: ../resources/dock/js/main.coffee:47 ../resources/dock/js/main.coffee:124
+msgid "Trash"
+msgstr "אשפה"
+
+#: ../resources/desktop/js/specialitem.coffee:152
+#, fuzzy
+msgid "_Clean up %1 items"
+msgstr "_ניקוי"
+
+#: ../resources/desktop/js/specialitem.coffee:154
+#, fuzzy
+msgid "_Clean up 1 item"
+msgstr "_ניקוי"
+
+#: ../resources/desktop/js/specialitem.coffee:156
+#: ../resources/dock/js/plugins/trash/trash.coffee:29
+msgid "_Empty"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:71 ../lib/dentry/fileops.c:403
+msgid "Untitled"
+msgstr "ללא כותרת"
+
+#: ../resources/desktop/js/grid.coffee:1022
+msgid "_Name"
+msgstr "_שם"
+
+#: ../resources/desktop/js/grid.coffee:1023
+msgid "Last modified _time"
+msgstr "מועד שינוי אחרון"
+
+#: ../resources/desktop/js/grid.coffee:1028
+msgid "_Folder"
+msgstr "_ספריה"
+
+#: ../resources/desktop/js/grid.coffee:1029
+msgid "_Text document"
+msgstr "_מסמך טקסט"
+
+#: ../resources/desktop/js/grid.coffee:1045
+#: ../resources/guide/js/desktop.coffee:196
+msgid "_Sort by"
+msgstr "_מיון לפי"
+
+#: ../resources/desktop/js/grid.coffee:1046
+#: ../resources/guide/js/desktop.coffee:197
+msgid "_New"
+msgstr "_חדש"
+
+#: ../resources/desktop/js/grid.coffee:1047
+#: ../resources/guide/js/desktop.coffee:198
+msgid "Open in _terminal"
+msgstr "פתיחה במסוף"
+
+#: ../resources/desktop/js/grid.coffee:1048
+#: ../resources/guide/js/desktop.coffee:199
+msgid "_Paste"
+msgstr "_הדבקה"
+
+#: ../resources/desktop/js/grid.coffee:1050
+#: ../resources/guide/js/desktop.coffee:201
+msgid "_Display settings"
+msgstr "_הגדרות תצוגה"
+
+#: ../resources/desktop/js/grid.coffee:1051
+#: ../resources/guide/js/desktop.coffee:202
+msgid "_Corner navigation"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:1052
+#: ../resources/guide/js/desktop.coffee:203
+msgid "Pe_rsonalize"
+msgstr "_התאמה אישית"
+
+#: ../resources/desktop/js/richdir.coffee:137
+msgid "_Ungroup"
+msgstr "_ללא הקבצה"
+
+#: ../resources/greeter/js/message.coffee:105
+#: ../resources/greeter/js/message.coffee:82
+msgid "$ sudo reboot\n"
+msgstr ""
+
+#: ../resources/greeter/js/message.coffee:99
+#: ../resources/greeter/js/message.coffee:73
+msgid "Press Ctrl + Alt + F1\n"
+msgstr ""
+
+#: ../resources/greeter/js/message.coffee:95
+msgid ""
+"\t\t\t\t-----The daemon of accounts has not started!-----\n"
+")"
+msgstr ""
+
+#: ../resources/greeter/js/message.coffee:79
+msgid "$ sudo apt-get install deepin-desktop-Environment\n"
+msgstr ""
+
+#: ../resources/greeter/js/message.coffee:68
+msgid "\t\t\t\t-----No available desktop sessions!-----\n"
+msgstr ""
+
+#: ../resources/greeter/js/user.coffee:411
+msgid "Login"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Jan"
+msgstr "ינואר"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Feb"
+msgstr "פברואר"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Mar"
+msgstr "מרץ"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Apr"
+msgstr "אפריל"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "May"
+msgstr "מאי"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Jun"
+msgstr "יוני"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Jul"
+msgstr "יולי"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Aug"
+msgstr "אוגוסט"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Sep"
+msgstr "ספטמבר"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Oct"
+msgstr "אוקטובר"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Nov"
+msgstr "נובמבר"
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Dec"
+msgstr "דצמבר"
+
+#: ../resources/greeter/js/time.coffee:44
+#: ../resources/dock/js/plugins/time/time.coffee:2
+msgid "Sun"
+msgstr "ראשון"
+
+#: ../resources/greeter/js/time.coffee:44
+#: ../resources/dock/js/plugins/time/time.coffee:2
+msgid "Mon"
+msgstr "שני"
+
+#: ../resources/greeter/js/time.coffee:44
+#: ../resources/dock/js/plugins/time/time.coffee:2
+msgid "Tue"
+msgstr "שלישי"
+
+#: ../resources/greeter/js/time.coffee:44
+#: ../resources/dock/js/plugins/time/time.coffee:2
+msgid "Wed"
+msgstr "רביעי"
+
+#: ../resources/greeter/js/time.coffee:44
+#: ../resources/dock/js/plugins/time/time.coffee:2
+msgid "Thu"
+msgstr "חמישי"
+
+#: ../resources/greeter/js/time.coffee:44
+#: ../resources/dock/js/plugins/time/time.coffee:2
+msgid "Fri"
+msgstr "שישי"
+
+#: ../resources/greeter/js/time.coffee:44
+#: ../resources/dock/js/plugins/time/time.coffee:2
+msgid "Sat"
+msgstr "שבת"
+
+#: ../resources/greeter/js/usermenu.coffee:57
+msgid "Guest"
+msgstr ""
+
+#: ../resources/greeter/js/powermenu.coffee:26
+msgid "Shut down"
+msgstr "כיבוי"
+
+#: ../resources/greeter/js/powermenu.coffee:27
+msgid "Restart"
+msgstr "הפעלה מחדש"
+
+#: ../resources/greeter/js/powermenu.coffee:28
+msgid "Suspend"
+msgstr "השהיה"
+
+#: ../resources/greeter/js/powermenu.coffee:90
+msgid "Enter your password to %1"
+msgstr ""
+
+#: ../resources/greeter/js/mediacontrol.coffee:167
+msgid "Click button to Play"
+msgstr ""
+
+#: ../resources/osd/js/monitor.coffee:38
+msgid "Duplicate"
+msgstr ""
+
+#: ../resources/osd/js/monitor.coffee:39
+msgid "Extend"
+msgstr ""
 
 #: ../resources/launcher/js/item.coffee:283
 #: ../resources/guide/js/launcher.coffee:242
@@ -107,168 +395,24 @@ msgstr ""
 msgid "Remove from do_ck"
 msgstr "_הסרה מהפעלה אוטומטית"
 
-#: ../resources/osd/js/monitor.coffee:38
-msgid "Duplicate"
+#: ../resources/zone/js/utils.coffee:10
+msgid "Control Center"
 msgstr ""
 
-#: ../resources/osd/js/monitor.coffee:39
-msgid "Extend"
+#: ../resources/zone/js/utils.coffee:10
+msgid "All Windows"
 msgstr ""
 
-#: ../resources/dock/js/deepin_item.coffee:247
-msgid "_View as analog"
-msgstr "_הצגה כאנלוגי"
-
-#: ../resources/dock/js/deepin_item.coffee:248
-#: ../resources/dock/js/deepin_item.coffee:300
-msgid "_Time settings"
-msgstr "_הגדרת זמן"
-
-#: ../resources/dock/js/deepin_item.coffee:299
-msgid "_View as digit"
-msgstr "_הצגה כדיגיטלי"
-
-#: ../resources/dock/js/main.coffee:47 ../resources/dock/js/main.coffee:124
-#: ../resources/desktop/js/specialitem.coffee:87
-msgid "Trash"
-msgstr "אשפה"
-
-#: ../resources/dock/js/main.coffee:122 ../resources/zone/js/utils.coffee:10
+#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:122
 msgid "Launcher"
 msgstr "-משגר"
 
-#: ../resources/dock/js/global_menu.coffee:9
-msgid "Keep _showing"
+#: ../resources/zone/js/utils.coffee:10
+msgid "Desktop"
 msgstr ""
 
-#: ../resources/dock/js/global_menu.coffee:10
-msgid "Keep _hidden"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:11
-msgid "_Auto hide"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:24
-msgid "_Fashion mode"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:25
-msgid "_Efficient mode"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:26
-msgid "_Classic mode"
-msgstr ""
-
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Sun"
-msgstr "ראשון"
-
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Mon"
-msgstr "שני"
-
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Tue"
-msgstr "שלישי"
-
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Wed"
-msgstr "רביעי"
-
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Thu"
-msgstr "חמישי"
-
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Fri"
-msgstr "שישי"
-
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Sat"
-msgstr "שבת"
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:29
-#: ../resources/desktop/js/specialitem.coffee:156
-msgid "_Empty"
-msgstr ""
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:33
-msgid "_Close"
-msgstr "_סגירה"
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:76
-#: ../resources/desktop/js/desktopentry.coffee:151
-msgid "Can not open this file."
-msgstr "אין אפשרות לפתוח הקובץ"
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:76
-#: ../resources/desktop/js/application.coffee:179
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
-#: ../resources/desktop/js/desktopentry.coffee:151
-msgid "Warning"
-msgstr "אזהרה"
-
-#: ../resources/guide/js/end.coffee:25
-msgid "Thanks for your patience while learning. Congratulations."
-msgstr ""
-
-#: ../resources/guide/js/end.coffee:30
-msgid "End"
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:29
-msgid ""
-"\"Application Launcher\" can be started by sliding the mouse to the upper "
-"left corner or clicking on the launcher."
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:70
-msgid ""
-"What shown in the first screen of \"launcher\" are the applications "
-"collected."
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:85
-msgid ""
-"Please click on the \"All Applications\" icon, you will see all applications."
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:95
-msgid ""
-"All programs can be located by scrolling the mouse up and down.\n"
-"You can also click on the left classification navigation to locate"
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:133
-msgid "Skip the step without scroll"
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:163
-msgid ""
-"Use the keyboard to search for applications\n"
-"Try the \"deepin\" keyword to see which applications are shown"
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:164
-msgid "tips: Please directly enter the word \"deepin\""
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:179
-msgid "Use the right mouse button to send two icons to the desktop"
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:180
-msgid "tips: You can add it to startup items or uninstall it"
+#: ../resources/zone/js/utils.coffee:10
+msgid "None"
 msgstr ""
 
 #: ../resources/guide/js/dss.coffee:29
@@ -289,28 +433,20 @@ msgid ""
 "functions"
 msgstr ""
 
-#: ../resources/guide/js/start.coffee:28
-msgid "New Launcher"
+#: ../resources/guide/js/end.coffee:25
+msgid "Thanks for your patience while learning. Congratulations."
 msgstr ""
 
-#: ../resources/guide/js/start.coffee:28
-msgid "New Desktop"
+#: ../resources/guide/js/end.coffee:30
+msgid "End"
 msgstr ""
 
-#: ../resources/guide/js/start.coffee:28
-msgid "New System Settings"
+#: ../resources/guide/js/welcome.coffee:35
+msgid "Welcome to use Deepin Operating System"
 msgstr ""
 
-#: ../resources/guide/js/start.coffee:29
-msgid "The following will guide you to learn how to use some new functions"
-msgstr ""
-
-#: ../resources/guide/js/start.coffee:44
-msgid "Start"
-msgstr ""
-
-#: ../resources/guide/js/start.coffee:51
-msgid "I am an experienced user. Exit directly."
+#: ../resources/guide/js/welcome.coffee:38
+msgid "Prepare for operation ..."
 msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:27
@@ -365,251 +501,115 @@ msgstr ""
 msgid "tips: Click on the interface of corner navigation blank area to return"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:196
-#: ../resources/desktop/js/grid.coffee:1045
-msgid "_Sort by"
-msgstr "_מיון לפי"
-
-#: ../resources/guide/js/desktop.coffee:197
-#: ../resources/desktop/js/grid.coffee:1046
-msgid "_New"
-msgstr "_חדש"
-
-#: ../resources/guide/js/desktop.coffee:198
-#: ../resources/desktop/js/grid.coffee:1047
-msgid "Open in _terminal"
-msgstr "פתיחה במסוף"
-
-#: ../resources/guide/js/desktop.coffee:199
-#: ../resources/desktop/js/grid.coffee:1048
-msgid "_Paste"
-msgstr "_הדבקה"
-
-#: ../resources/guide/js/desktop.coffee:201
-#: ../resources/desktop/js/grid.coffee:1050
-msgid "_Display settings"
-msgstr "_הגדרות תצוגה"
-
-#: ../resources/guide/js/desktop.coffee:202
-#: ../resources/desktop/js/grid.coffee:1051
-msgid "_Corner navigation"
+#: ../resources/guide/js/start.coffee:28
+msgid "New Launcher"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:203
-#: ../resources/desktop/js/grid.coffee:1052
-msgid "Pe_rsonalize"
-msgstr "_התאמה אישית"
-
-#: ../resources/guide/js/welcome.coffee:35
-msgid "Welcome to use Deepin Operating System"
+#: ../resources/guide/js/start.coffee:28
+msgid "New Desktop"
 msgstr ""
 
-#: ../resources/guide/js/welcome.coffee:38
-msgid "Prepare for operation ..."
+#: ../resources/guide/js/start.coffee:28
+msgid "New System Settings"
 msgstr ""
 
-#: ../resources/zone/js/utils.coffee:10
-msgid "Control Center"
+#: ../resources/guide/js/start.coffee:29
+msgid "The following will guide you to learn how to use some new functions"
 msgstr ""
 
-#: ../resources/zone/js/utils.coffee:10
-msgid "All Windows"
+#: ../resources/guide/js/start.coffee:44
+msgid "Start"
 msgstr ""
 
-#: ../resources/zone/js/utils.coffee:10
-msgid "Desktop"
+#: ../resources/guide/js/start.coffee:51
+msgid "I am an experienced user. Exit directly."
 msgstr ""
 
-#: ../resources/zone/js/utils.coffee:10
-msgid "None"
-msgstr ""
-
-#: ../resources/desktop/js/invalidlink.coffee:34
-#: ../resources/desktop/js/richdir.coffee:139
-#: ../resources/desktop/js/richdir.coffee:571
-#: ../resources/desktop/js/desktopentry.coffee:107
-msgid "_Delete"
-msgstr "_מחיקה"
-
-#: ../resources/desktop/js/application.coffee:179
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
-msgid "The link is invalid. Do you want to delete it?"
-msgstr ""
-
-#: ../resources/desktop/js/richdir.coffee:135
-#: ../resources/desktop/js/desktopentry.coffee:106
-msgid "_Rename"
-msgstr "_שינוי שם"
-
-#: ../resources/desktop/js/richdir.coffee:137
-msgid "_Ungroup"
-msgstr "_ללא הקבצה"
-
-#: ../resources/desktop/js/richdir.coffee:568
-#: ../resources/desktop/js/desktopentry.coffee:103
-msgid "Cu_t"
-msgstr "_גזירה"
-
-#: ../resources/desktop/js/richdir.coffee:569
-#: ../resources/desktop/js/desktopentry.coffee:104
-msgid "_Copy"
-msgstr "_העתקה"
-
-#: ../resources/desktop/js/richdir.coffee:573
-#: ../resources/desktop/js/desktopentry.coffee:109
-#: ../resources/desktop/js/specialitem.coffee:53
-msgid "_Properties"
-msgstr "מאפיינים"
-
-#: ../resources/desktop/js/grid.coffee:71 ../lib/dentry/fileops.c:403
-msgid "Untitled"
-msgstr "ללא כותרת"
-
-#: ../resources/desktop/js/grid.coffee:1022
-msgid "_Name"
-msgstr "_שם"
-
-#: ../resources/desktop/js/grid.coffee:1023
-msgid "Last modified _time"
-msgstr "מועד שינוי אחרון"
-
-#: ../resources/desktop/js/grid.coffee:1028
-msgid "_Folder"
-msgstr "_ספריה"
-
-#: ../resources/desktop/js/grid.coffee:1029
-msgid "_Text document"
-msgstr "_מסמך טקסט"
-
-#: ../resources/desktop/js/desktopentry.coffee:115
-#: ../resources/desktop/js/desktopentry.coffee:122
-msgid "Co_mpress"
-msgstr "_דחיסה"
-
-#: ../resources/desktop/js/desktopentry.coffee:118
-#: ../resources/desktop/js/desktopentry.coffee:123
-msgid "_Extract"
-msgstr "_כיווץ"
-
-#: ../resources/desktop/js/desktopentry.coffee:119
-#: ../resources/desktop/js/desktopentry.coffee:124
-msgid "Extract _Here"
-msgstr "_כיווץ לכאן"
-
-#: ../resources/desktop/js/specialitem.coffee:34
-msgid "Computer"
-msgstr ""
-
-#: ../resources/desktop/js/specialitem.coffee:152
-#, fuzzy
-msgid "_Clean up %1 items"
-msgstr "_ניקוי"
-
-#: ../resources/desktop/js/specialitem.coffee:154
-#, fuzzy
-msgid "_Clean up 1 item"
-msgstr "_ניקוי"
-
-#: ../resources/greeter/js/user.coffee:456
-msgid "Login"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Jan"
-msgstr "ינואר"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Feb"
-msgstr "פברואר"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Mar"
-msgstr "מרץ"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Apr"
-msgstr "אפריל"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "May"
-msgstr "מאי"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Jun"
-msgstr "יוני"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Jul"
-msgstr "יולי"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Aug"
-msgstr "אוגוסט"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Sep"
-msgstr "ספטמבר"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Oct"
-msgstr "אוקטובר"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Nov"
-msgstr "נובמבר"
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Dec"
-msgstr "דצמבר"
-
-#: ../resources/greeter/js/usermenu.coffee:57
-msgid "Guest"
-msgstr ""
-
-#: ../resources/greeter/js/powermenu.coffee:26
-msgid "Shut down"
-msgstr "כיבוי"
-
-#: ../resources/greeter/js/powermenu.coffee:27
-msgid "Restart"
-msgstr "הפעלה מחדש"
-
-#: ../resources/greeter/js/powermenu.coffee:28
-msgid "Suspend"
-msgstr "השהיה"
-
-#: ../resources/greeter/js/powermenu.coffee:90
-msgid "Enter your password to %1"
-msgstr ""
-
-#: ../resources/greeter/js/message.coffee:105
-#: ../resources/greeter/js/message.coffee:82
-msgid "$ sudo reboot\n"
-msgstr ""
-
-#: ../resources/greeter/js/message.coffee:99
-#: ../resources/greeter/js/message.coffee:73
-msgid "Press Ctrl + Alt + F1\n"
-msgstr ""
-
-#: ../resources/greeter/js/message.coffee:95
+#: ../resources/guide/js/launcher.coffee:29
 msgid ""
-"\t\t\t\t-----The daemon of accounts has not started!-----\n"
-")"
+"\"Application Launcher\" can be started by sliding the mouse to the upper "
+"left corner or clicking on the launcher."
 msgstr ""
 
-#: ../resources/greeter/js/message.coffee:79
-msgid "$ sudo apt-get install deepin-desktop-Environment\n"
+#: ../resources/guide/js/launcher.coffee:70
+msgid ""
+"What shown in the first screen of \"launcher\" are the applications "
+"collected."
 msgstr ""
 
-#: ../resources/greeter/js/message.coffee:68
-msgid "\t\t\t\t-----No available desktop sessions!-----\n"
+#: ../resources/guide/js/launcher.coffee:85
+msgid ""
+"Please click on the \"All Applications\" icon, you will see all applications."
 msgstr ""
 
-#: ../resources/greeter/js/mediacontrol.coffee:167
-msgid "Click button to Play"
+#: ../resources/guide/js/launcher.coffee:95
+msgid ""
+"All programs can be located by scrolling the mouse up and down.\n"
+"You can also click on the left classification navigation to locate"
 msgstr ""
+
+#: ../resources/guide/js/launcher.coffee:133
+msgid "Skip the step without scroll"
+msgstr ""
+
+#: ../resources/guide/js/launcher.coffee:163
+msgid ""
+"Use the keyboard to search for applications\n"
+"Try the \"deepin\" keyword to see which applications are shown"
+msgstr ""
+
+#: ../resources/guide/js/launcher.coffee:164
+msgid "tips: Please directly enter the word \"deepin\""
+msgstr ""
+
+#: ../resources/guide/js/launcher.coffee:179
+msgid "Use the right mouse button to send two icons to the desktop"
+msgstr ""
+
+#: ../resources/guide/js/launcher.coffee:180
+msgid "tips: You can add it to startup items or uninstall it"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:9
+msgid "Keep _showing"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:10
+msgid "Keep _hidden"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:11
+msgid "_Auto hide"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:24
+msgid "_Fashion mode"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:25
+msgid "_Efficient mode"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:26
+msgid "_Classic mode"
+msgstr ""
+
+#: ../resources/dock/js/deepin_item.coffee:247
+msgid "_View as analog"
+msgstr "_הצגה כאנלוגי"
+
+#: ../resources/dock/js/deepin_item.coffee:248
+#: ../resources/dock/js/deepin_item.coffee:300
+msgid "_Time settings"
+msgstr "_הגדרת זמן"
+
+#: ../resources/dock/js/deepin_item.coffee:299
+msgid "_View as digit"
+msgstr "_הצגה כדיגיטלי"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:33
+msgid "_Close"
+msgstr "_סגירה"
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
@@ -619,15 +619,11 @@ msgstr ""
 msgid "\"%1\" failed to be uninstalled"
 msgstr ""
 
-#: ../app/dock/dock.c:322
-msgid "Dock failed to start, because Compiz is not enabled."
-msgstr ""
-
-#: ../app/desktop/desktop.c:286
+#: ../app/desktop/desktop.c:292
 msgid "New file"
 msgstr "קובץ חדש"
 
-#: ../app/desktop/desktop.c:297
+#: ../app/desktop/desktop.c:303
 msgid "New directory"
 msgstr "ספריה חדשה"
 
@@ -636,8 +632,12 @@ msgid "%a, %b %d, %Y"
 msgstr ""
 
 #: ../app/greeter/lock.c:125 ../app/greeter/greeter.c:192
-msgid "Invalid Password"
+msgid "Wrong Password"
 msgstr "סיסמא לא חוקית"
+
+#: ../app/dock/dock.c:322
+msgid "Dock failed to start, because Compiz is not enabled."
+msgstr ""
 
 #: ../lib/dentry/entry.c:746
 #, c-format
