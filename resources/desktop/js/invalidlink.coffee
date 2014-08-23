@@ -29,7 +29,7 @@ class InvalidLink extends DesktopEntry
         super(icon)
 
 
-    do_buildmenu : ->
+    buildmenu : ->
         [
             [9, _("_Delete")]
         ]

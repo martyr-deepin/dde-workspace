@@ -128,7 +128,7 @@ class RichDir extends DesktopEntry
         return
 
 
-    do_buildmenu : ->
+    buildmenu : ->
         menus = []
         menus.push([1, _("_Open")])
         menus.push([])

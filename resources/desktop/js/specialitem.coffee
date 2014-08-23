@@ -46,7 +46,7 @@ class ComputerVDir extends DesktopEntry
     #     ""
 
 
-    do_buildmenu : ->
+    buildmenu : ->
         [
             [1, _("_Open")],
             [],
@@ -142,7 +142,7 @@ class TrashVDir extends DesktopEntry
         return
 
 
-    do_buildmenu : ->
+    buildmenu : ->
         menus = []
         menus.push([1, _("_Open")])
         menus.push([])
