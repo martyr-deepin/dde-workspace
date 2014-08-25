@@ -1,8 +1,9 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
+# fedesanchez <fedesanchez888@gmail.com>, 2014
 # Mariano Agüero <nero1000000@gmail.com>, 2014
 # seba.wetzel <seba.wetzel@gmail.com>, 2014
 msgid ""
@@ -10,14 +11,13 @@ msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-08-22 11:12+0800\n"
-"PO-Revision-Date: 2014-07-03 05:01+0000\n"
-"Last-Translator: cxbii <chenxiangbang@linuxdeepin.com>\n"
-"Language-Team: Spanish (Argentina) (http://www.transifex.com/projects/p/"
-"deepin-desktop-environment/language/es_AR/)\n"
-"Language: es_AR\n"
+"PO-Revision-Date: 2014-08-22 04:43+0000\n"
+"Last-Translator: szd_liufei <liufei@linuxdeepin.com>\n"
+"Language-Team: Spanish (Argentina) (http://www.transifex.com/projects/p/deepin-desktop-environment/language/es_AR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: es_AR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../resources/desktop/js/invalidlink.coffee:34
@@ -94,7 +94,7 @@ msgstr "No se puede abrir este archivo."
 
 #: ../resources/desktop/js/specialitem.coffee:34
 msgid "Computer"
-msgstr ""
+msgstr "Equipo"
 
 #: ../resources/desktop/js/specialitem.coffee:87
 #: ../resources/dock/js/main.coffee:47 ../resources/dock/js/main.coffee:124
@@ -102,14 +102,12 @@ msgid "Trash"
 msgstr "Papelera"
 
 #: ../resources/desktop/js/specialitem.coffee:152
-#, fuzzy
 msgid "_Clean up %1 items"
-msgstr "_Limpiar"
+msgstr "_Limpiar %1 elementos"
 
 #: ../resources/desktop/js/specialitem.coffee:154
-#, fuzzy
 msgid "_Clean up 1 item"
-msgstr "_Limpiar"
+msgstr "_Limpiar 1 elemento"
 
 #: ../resources/desktop/js/specialitem.coffee:156
 #: ../resources/dock/js/plugins/trash/trash.coffee:29
@@ -164,7 +162,7 @@ msgstr "Configuración de _pantalla"
 #: ../resources/desktop/js/grid.coffee:1051
 #: ../resources/guide/js/desktop.coffee:202
 msgid "_Corner navigation"
-msgstr ""
+msgstr "_Navegación de esquina"
 
 #: ../resources/desktop/js/grid.coffee:1052
 #: ../resources/guide/js/desktop.coffee:203
@@ -189,9 +187,7 @@ msgstr "Presiona Ctrl + Alt + F1\n"
 msgid ""
 "\t\t\t\t-----The daemon of accounts has not started!-----\n"
 ")"
-msgstr ""
-"\t\t\t\t----------El demonio de cuentas no ha iniciado!-----\n"
-")"
+msgstr "\t\t\t\t----------El demonio de cuentas no ha iniciado!-----\n)"
 
 #: ../resources/greeter/js/message.coffee:79
 msgid "$ sudo apt-get install deepin-desktop-Environment\n"
@@ -199,7 +195,7 @@ msgstr "$ sudo apt-get install deepin-desktop-environment\n"
 
 #: ../resources/greeter/js/message.coffee:68
 msgid "\t\t\t\t-----No available desktop sessions!-----\n"
-msgstr ""
+msgstr "-----No hay sesiones de escritorio disponibles!-----\n"
 
 #: ../resources/greeter/js/user.coffee:411
 msgid "Login"
@@ -309,9 +305,8 @@ msgid "Enter your password to %1"
 msgstr "Ingrese su contraseña %1"
 
 #: ../resources/greeter/js/mediacontrol.coffee:167
-#, fuzzy
 msgid "Click button to Play"
-msgstr "para iniciar sesión haga clic en el botón iniciar sesión"
+msgstr ""
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
@@ -334,7 +329,7 @@ msgstr "Esta seguro de remover?"
 #: ../resources/launcher/js/item.coffee:354
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
 msgid "All dependencies will be removed"
-msgstr "Todas las dependencias serán removidas"
+msgstr ""
 
 #: ../resources/launcher/js/item.coffee:354
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
@@ -386,9 +381,8 @@ msgid "Send to d_esktop"
 msgstr "Enviar al _Escritorio"
 
 #: ../resources/launcher/js/const.coffee:85
-#, fuzzy
 msgid "Remove from d_esktop"
-msgstr "Remover de _favoritos"
+msgstr "Quitar del _Escritorio"
 
 #: ../resources/launcher/js/const.coffee:88
 #: ../resources/guide/js/launcher.coffee:239
@@ -396,9 +390,8 @@ msgid "Send to do_ck"
 msgstr "Enviar al do_ck"
 
 #: ../resources/launcher/js/const.coffee:89
-#, fuzzy
 msgid "Remove from do_ck"
-msgstr "Remover de _favoritos"
+msgstr "Quitar del do_ck"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "Control Center"
@@ -439,9 +432,8 @@ msgid ""
 msgstr ""
 
 #: ../resources/guide/js/end.coffee:25
-#, fuzzy
 msgid "Thanks for your patience while learning. Congratulations."
-msgstr "Gracias por su paciencia para aprender. Felicitaciones!"
+msgstr "Gracias por su paciencia mientras aprendía. Felicitaciones."
 
 #: ../resources/guide/js/end.coffee:30
 msgid "End"
@@ -449,17 +441,17 @@ msgstr "Fin"
 
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
-msgstr ""
+msgstr "Bienvenidos a utilizar Deepin Sistema Operativo"
 
 #: ../resources/guide/js/welcome.coffee:38
 msgid "Prepare for operation ..."
-msgstr ""
+msgstr "Prepararse para operación ..."
 
 #: ../resources/guide/js/desktop.coffee:27
 msgid ""
 "Let's drag the other icon on the first icon \n"
 " to generate \"application group\""
-msgstr ""
+msgstr "Vamos a arrastrar el otro icono sobre el primer icono\npara generar \"grupo de aplicaciones\""
 
 #: ../resources/guide/js/desktop.coffee:116
 msgid "Well, you have learned how to create a \"application group\""
@@ -471,14 +463,14 @@ msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:128
 msgid ""
-"Slide the mouse to the four top corners, which can trigger four different "
-"events\n"
+"Slide the mouse to the four top corners, which can trigger four different events\n"
 "Please move to the upper left corner first to show or hide Launcher"
 msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:129
 msgid ""
-"tips: Please trigger successively by hints, click on the blank area to return"
+"tips: Please trigger successively by hints, click on the blank area to "
+"return"
 msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:133
@@ -495,14 +487,13 @@ msgstr "Mostrar/Ocultar el Centro de Control"
 
 #: ../resources/guide/js/desktop.coffee:136
 msgid "No default functions setted in right up corner"
-msgstr ""
-"No hay funciones por defecto configuradas en la esquina superior derecha"
+msgstr "No hay funciones por defecto configuradas en la esquina superior derecha"
 
 #: ../resources/guide/js/desktop.coffee:178
 msgid ""
 "Right-click on desktop black area to call up the menu, select \"Corner "
 "navigation\" to set the corner used"
-msgstr ""
+msgstr "Haga clic derecho en el área negra del escritorio para abrir el menú, seleccione \"navegación de esquina\" para ajustar el ángulo utilizado"
 
 #: ../resources/guide/js/desktop.coffee:179
 msgid "tips: Click on the interface of corner navigation blank area to return"
@@ -530,7 +521,7 @@ msgstr "Iniciar"
 
 #: ../resources/guide/js/start.coffee:51
 msgid "I am an experienced user. Exit directly."
-msgstr "Soy mayor, salir directamente"
+msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:29
 msgid ""
@@ -545,28 +536,26 @@ msgid ""
 msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:85
-#, fuzzy
 msgid ""
-"Please click on the \"All Applications\" icon, you will see all applications."
+"Please click on the \"All Applications\" icon, you will see all "
+"applications."
 msgstr ""
-"Por favor haz click en el icono \"Todas las Aplicaciones\", veras todas las "
-"aplicaciones"
 
 #: ../resources/guide/js/launcher.coffee:95
 msgid ""
 "All programs can be located by scrolling the mouse up and down.\n"
 "You can also click on the left classification navigation to locate"
-msgstr ""
+msgstr "Todos los programas pueden ser localizados desplazando el ratón hacia arriba y hacia abajo.\nTambién puede hacer clic en la barra de navegación izquierda para localizar la clasificación"
 
 #: ../resources/guide/js/launcher.coffee:133
 msgid "Skip the step without scroll"
-msgstr ""
+msgstr "Saltar el paso sin desplazamiento"
 
 #: ../resources/guide/js/launcher.coffee:163
 msgid ""
 "Use the keyboard to search for applications\n"
 "Try the \"deepin\" keyword to see which applications are shown"
-msgstr ""
+msgstr "Utilice el teclado para buscar las aplicaciones que desee \nTrate con la palabra clave \"Deepin\" para ver qué aplicaciones aparecen"
 
 #: ../resources/guide/js/launcher.coffee:164
 msgid "tips: Please directly enter the word \"deepin\""
@@ -581,14 +570,12 @@ msgid "tips: You can add it to startup items or uninstall it"
 msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:9
-#, fuzzy
 msgid "Keep _showing"
-msgstr "mantener_mostrando"
+msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:10
-#, fuzzy
 msgid "Keep _hidden"
-msgstr "mantener_oculto"
+msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:11
 msgid "_Auto hide"
@@ -613,7 +600,7 @@ msgstr "_Ver como analógico"
 #: ../resources/dock/js/deepin_item.coffee:248
 #: ../resources/dock/js/deepin_item.coffee:300
 msgid "_Time settings"
-msgstr ""
+msgstr "Ajustes de _Tiempo"
 
 #: ../resources/dock/js/deepin_item.coffee:299
 msgid "_View as digit"
@@ -625,11 +612,11 @@ msgstr "_Cerrar"
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
-msgstr ""
+msgstr "Se ha desinstalado \"%1\" correctamente"
 
 #: ../resources/common/js/uninstaller.coffee:33
 msgid "\"%1\" failed to be uninstalled"
-msgstr ""
+msgstr "\"%1\" falló al desintalarse"
 
 #: ../app/desktop/desktop.c:292
 msgid "New file"
@@ -645,7 +632,7 @@ msgstr "%a, %b %d, %Y"
 
 #: ../app/greeter/lock.c:125 ../app/greeter/greeter.c:192
 msgid "Wrong Password"
-msgstr "Contraseña Incorrecta"
+msgstr ""
 
 #: ../app/dock/dock.c:322
 msgid "Dock failed to start, because Compiz is not enabled."
@@ -655,18 +642,14 @@ msgstr "El dock fallo al iniciar, porque Compiz no esta activado."
 #, c-format
 msgid ""
 "Cannot rename the item to \"%s\". This may be caused by lack of permissions."
-msgstr ""
-"No se puede renombrar el elemento a \"%s\". Esto puede ser causado por la "
-"falta de permisos."
+msgstr "No se puede renombrar el elemento a \"%s\". Esto puede ser causado por la falta de permisos."
 
 #: ../lib/dentry/entry.c:752
 #, c-format
 msgid ""
 "There is already a file with name \"%s\" in this folder. Please consider a "
 "different name."
-msgstr ""
-"Ya hay archivos con el nombre \"%s\" en esta carpeta. Por favor considere un "
-"nombre diferente."
+msgstr "Ya hay archivos con el nombre \"%s\" en esta carpeta. Por favor considere un nombre diferente."
 
 #: ../lib/dentry/entry.c:758
 msgid "The item could not be renamed"
@@ -739,11 +722,9 @@ msgstr "Quiere combinar con la carpeta \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
 msgid ""
-"The merging operation will be asked to confirm before replacing any files in "
-"the folder conflicted."
+"The merging operation will be asked to confirm before replacing any files in"
+" the folder conflicted."
 msgstr ""
-"Seras consultado antes de reemplazar cualquier archivo en la carpeta que "
-"tenga conflictos con los archivos a ser copiados."
 
 #: ../lib/dentry/fileops_error_dialog.c:222
 #, c-format
@@ -761,10 +742,8 @@ msgid "Another folder with the same name already exists in \"%s\"."
 msgstr "Otra carpeta con el mismo nombre ya existe en \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:236
-#, fuzzy
 msgid "All files in the folder will be removed by replacing."
 msgstr ""
-"Todos los elementos de la papelera serán eliminados de forma permanente."
 
 #: ../lib/dentry/fileops_error_dialog.c:237
 #, c-format
@@ -843,8 +822,7 @@ msgstr "¿Vaciar todos los elementos de la papelera?"
 
 #: ../lib/dentry/fileops_trash.c:68
 msgid "All items in the Trash will be permanently deleted."
-msgstr ""
-"Todos los elementos de la papelera serán eliminados de forma permanente."
+msgstr "Todos los elementos de la papelera serán eliminados de forma permanente."
 
 #: ../lib/dentry/fileops_trash.c:71
 msgid "Empty _Trash"
@@ -918,26 +896,4 @@ msgstr "utilidades"
 
 #: ../lib/category.c:56
 msgid "others"
-msgstr "otro"
-
-#~ msgid "click login button to log in"
-#~ msgstr "para iniciar sesión haga clic en el botón iniciar sesión"
-
-#~ msgid "Expand"
-#~ msgstr "Expandir"
-
-#~ msgid "Only the first Screen"
-#~ msgstr "Solo la primera Pantalla"
-
-#~ msgid "Only the second Screen"
-#~ msgstr "Solo la segunda Pantalla"
-
-#, fuzzy
-#~ msgid "_Dock setting"
-#~ msgstr "Configuración de _pantalla"
-
-#~ msgid "_Clean up"
-#~ msgstr "_Limpiar"
-
-#~ msgid "Get"
-#~ msgstr "Obetener"
+msgstr ""

@@ -1,21 +1,21 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
+# Carl Andersen <carl@manjaro.dk>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-08-22 11:12+0800\n"
-"PO-Revision-Date: 2014-07-07 06:31+0000\n"
-"Last-Translator: electricface <songwentai@linuxdeepin.com>\n"
-"Language-Team: Danish (http://www.transifex.com/projects/p/deepin-desktop-"
-"environment/language/da/)\n"
-"Language: da\n"
+"PO-Revision-Date: 2014-08-22 04:43+0000\n"
+"Last-Translator: szd_liufei <liufei@linuxdeepin.com>\n"
+"Language-Team: Danish (http://www.transifex.com/projects/p/deepin-desktop-environment/language/da/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: da\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../resources/desktop/js/invalidlink.coffee:34
@@ -29,7 +29,7 @@ msgstr "_Slet"
 #: ../resources/desktop/js/richdir.coffee:335
 #: ../resources/desktop/js/richdir.coffee:586
 msgid "The link is invalid. Do you want to delete it?"
-msgstr ""
+msgstr "Linket er ugyldigt. Ønsker du at slette det?"
 
 #: ../resources/desktop/js/application.coffee:179
 #: ../resources/desktop/js/desktopentry.coffee:165
@@ -92,7 +92,7 @@ msgstr "Kan ikke åbne denne fil."
 
 #: ../resources/desktop/js/specialitem.coffee:34
 msgid "Computer"
-msgstr ""
+msgstr "Computer"
 
 #: ../resources/desktop/js/specialitem.coffee:87
 #: ../resources/dock/js/main.coffee:47 ../resources/dock/js/main.coffee:124
@@ -100,14 +100,12 @@ msgid "Trash"
 msgstr "Parpirkurv"
 
 #: ../resources/desktop/js/specialitem.coffee:152
-#, fuzzy
 msgid "_Clean up %1 items"
-msgstr "_Ryd op"
+msgstr "_ Ryd op %1 emner"
 
 #: ../resources/desktop/js/specialitem.coffee:154
-#, fuzzy
 msgid "_Clean up 1 item"
-msgstr "_Ryd op"
+msgstr "_Ryd op 1 emne"
 
 #: ../resources/desktop/js/specialitem.coffee:156
 #: ../resources/dock/js/plugins/trash/trash.coffee:29
@@ -162,7 +160,7 @@ msgstr "_Vis indstillinger"
 #: ../resources/desktop/js/grid.coffee:1051
 #: ../resources/guide/js/desktop.coffee:202
 msgid "_Corner navigation"
-msgstr ""
+msgstr "_ ​​Hjørne navigation"
 
 #: ../resources/desktop/js/grid.coffee:1052
 #: ../resources/guide/js/desktop.coffee:203
@@ -176,26 +174,26 @@ msgstr "_Ikke-grupperede"
 #: ../resources/greeter/js/message.coffee:105
 #: ../resources/greeter/js/message.coffee:82
 msgid "$ sudo reboot\n"
-msgstr ""
+msgstr "$ sudo reboot\n"
 
 #: ../resources/greeter/js/message.coffee:99
 #: ../resources/greeter/js/message.coffee:73
 msgid "Press Ctrl + Alt + F1\n"
-msgstr ""
+msgstr "Tryk Ctrl + Alt + F1\n"
 
 #: ../resources/greeter/js/message.coffee:95
 msgid ""
 "\t\t\t\t-----The daemon of accounts has not started!-----\n"
 ")"
-msgstr ""
+msgstr "⇥⇥⇥⇥-----Dæmonen for kontoer er ikke startet!-----\n)"
 
 #: ../resources/greeter/js/message.coffee:79
 msgid "$ sudo apt-get install deepin-desktop-Environment\n"
-msgstr ""
+msgstr "$ sudo apt-get install deepin-desktop-Environment\n"
 
 #: ../resources/greeter/js/message.coffee:68
 msgid "\t\t\t\t-----No available desktop sessions!-----\n"
-msgstr ""
+msgstr "⇥⇥⇥⇥-----Ingen tilgængelige desktop sessioner!-----\n"
 
 #: ../resources/greeter/js/user.coffee:411
 msgid "Login"
@@ -302,7 +300,7 @@ msgstr "Stanby"
 
 #: ../resources/greeter/js/powermenu.coffee:90
 msgid "Enter your password to %1"
-msgstr ""
+msgstr "Indtast din adgangskode til %1"
 
 #: ../resources/greeter/js/mediacontrol.coffee:167
 msgid "Click button to Play"
@@ -319,12 +317,12 @@ msgstr ""
 #: ../resources/launcher/js/item.coffee:283
 #: ../resources/guide/js/launcher.coffee:242
 msgid "_Uninstall"
-msgstr ""
+msgstr "_Afinstaller"
 
 #: ../resources/launcher/js/item.coffee:354
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
 msgid "Are you sure to remove"
-msgstr ""
+msgstr "Er du sikker på at det skal fjernes"
 
 #: ../resources/launcher/js/item.coffee:354
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
@@ -334,16 +332,16 @@ msgstr ""
 #: ../resources/launcher/js/item.coffee:354
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
 msgid "no"
-msgstr ""
+msgstr "nej"
 
 #: ../resources/launcher/js/item.coffee:354
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
 msgid "yes"
-msgstr ""
+msgstr "ja"
 
 #: ../resources/launcher/js/const.coffee:64
 msgid "_Hide the icon"
-msgstr ""
+msgstr "_Skjule ikonet"
 
 #: ../resources/launcher/js/const.coffee:65
 msgid "_Display hidden icons"
@@ -368,12 +366,12 @@ msgstr "_Fjern fra autostart"
 
 #: ../resources/launcher/js/const.coffee:80
 msgid "Add to _favorites"
-msgstr ""
+msgstr "Tilføj til _favoritter"
 
 #: ../resources/launcher/js/const.coffee:81
 #: ../resources/guide/js/launcher.coffee:237
 msgid "Remove from _favorites"
-msgstr ""
+msgstr "Fjern fra _favoritter"
 
 #: ../resources/launcher/js/const.coffee:84
 #: ../resources/guide/js/launcher.coffee:238
@@ -381,9 +379,8 @@ msgid "Send to d_esktop"
 msgstr "Send til d_esktop"
 
 #: ../resources/launcher/js/const.coffee:85
-#, fuzzy
 msgid "Remove from d_esktop"
-msgstr "_Fjern fra autostart"
+msgstr "Fjern fra d_esktop"
 
 #: ../resources/launcher/js/const.coffee:88
 #: ../resources/guide/js/launcher.coffee:239
@@ -391,9 +388,8 @@ msgid "Send to do_ck"
 msgstr "Send til do_ck"
 
 #: ../resources/launcher/js/const.coffee:89
-#, fuzzy
 msgid "Remove from do_ck"
-msgstr "_Fjern fra autostart"
+msgstr "Fjern fra do_ck"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "Control Center"
@@ -401,7 +397,7 @@ msgstr "Kontrol Center"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "All Windows"
-msgstr ""
+msgstr "Alle vinduer"
 
 #: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:122
 msgid "Launcher"
@@ -417,7 +413,7 @@ msgstr "Ingen"
 
 #: ../resources/guide/js/dss.coffee:29
 msgid "Well, please trigger the lower right corner again"
-msgstr ""
+msgstr "Okay, Prøv venligst at gå ned til nederste højre hjørne igen"
 
 #: ../resources/guide/js/dss.coffee:30
 msgid "tips: Click the setting icon on dock to implement"
@@ -425,7 +421,7 @@ msgstr ""
 
 #: ../resources/guide/js/dss.coffee:69
 msgid "Here is the system setting area"
-msgstr ""
+msgstr "Her er system indstillingsområde"
 
 #: ../resources/guide/js/dss.coffee:70
 msgid ""
@@ -435,29 +431,29 @@ msgstr ""
 
 #: ../resources/guide/js/end.coffee:25
 msgid "Thanks for your patience while learning. Congratulations."
-msgstr ""
+msgstr "Tak for din tålmodighed, mens undervisningen stod på. Tillykke med Deepin."
 
 #: ../resources/guide/js/end.coffee:30
 msgid "End"
-msgstr ""
+msgstr "Slut"
 
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
-msgstr ""
+msgstr "Velkommen til Deepin Operating System. Håber at du får glæde af det."
 
 #: ../resources/guide/js/welcome.coffee:38
 msgid "Prepare for operation ..."
-msgstr ""
+msgstr "Forbered til drift..."
 
 #: ../resources/guide/js/desktop.coffee:27
 msgid ""
 "Let's drag the other icon on the first icon \n"
 " to generate \"application group\""
-msgstr ""
+msgstr "Lad os trække det andet ikon på det første ikon\nFor at generere en \"program gruppe\""
 
 #: ../resources/guide/js/desktop.coffee:116
 msgid "Well, you have learned how to create a \"application group\""
-msgstr ""
+msgstr "Okay, nu har du lært, hvordan du opretter en \"program gruppe\""
 
 #: ../resources/guide/js/desktop.coffee:117
 msgid "tips: Right-click on the application group will provide more functions"
@@ -465,19 +461,19 @@ msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:128
 msgid ""
-"Slide the mouse to the four top corners, which can trigger four different "
-"events\n"
+"Slide the mouse to the four top corners, which can trigger four different events\n"
 "Please move to the upper left corner first to show or hide Launcher"
 msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:129
 msgid ""
-"tips: Please trigger successively by hints, click on the blank area to return"
+"tips: Please trigger successively by hints, click on the blank area to "
+"return"
 msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:133
 msgid "Show/Hide Launcher"
-msgstr ""
+msgstr "Vis/Skjul Programmer"
 
 #: ../resources/guide/js/desktop.coffee:134
 msgid "Show/Hide Desktop"
@@ -485,17 +481,17 @@ msgstr "Vis/Skjul Desktop"
 
 #: ../resources/guide/js/desktop.coffee:135
 msgid "Show/Hide Control Center"
-msgstr ""
+msgstr "Vis/skjul Kontrolcenter"
 
 #: ../resources/guide/js/desktop.coffee:136
 msgid "No default functions setted in right up corner"
-msgstr ""
+msgstr "Ingen standard funktioner tilføjet øverst oppe i højre hjørne"
 
 #: ../resources/guide/js/desktop.coffee:178
 msgid ""
 "Right-click on desktop black area to call up the menu, select \"Corner "
 "navigation\" to set the corner used"
-msgstr ""
+msgstr "Højreklik på skrivebordet frie område for at kalde menuen, vælg \"Hjørne navigation\" for at indstille hjørne anvendelse"
 
 #: ../resources/guide/js/desktop.coffee:179
 msgid "tips: Click on the interface of corner navigation blank area to return"
@@ -503,19 +499,19 @@ msgstr ""
 
 #: ../resources/guide/js/start.coffee:28
 msgid "New Launcher"
-msgstr ""
+msgstr "Nyt program"
 
 #: ../resources/guide/js/start.coffee:28
 msgid "New Desktop"
-msgstr ""
+msgstr "Ny Desktop"
 
 #: ../resources/guide/js/start.coffee:28
 msgid "New System Settings"
-msgstr ""
+msgstr "Nye Systemindstillinger"
 
 #: ../resources/guide/js/start.coffee:29
 msgid "The following will guide you to learn how to use some new functions"
-msgstr ""
+msgstr "Følgende vil guide dig til at lære at bruge nogle af de nye funktioner"
 
 #: ../resources/guide/js/start.coffee:44
 msgid "Start"
@@ -539,24 +535,25 @@ msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:85
 msgid ""
-"Please click on the \"All Applications\" icon, you will see all applications."
+"Please click on the \"All Applications\" icon, you will see all "
+"applications."
 msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:95
 msgid ""
 "All programs can be located by scrolling the mouse up and down.\n"
 "You can also click on the left classification navigation to locate"
-msgstr ""
+msgstr "Alle programmer kan ses ved at scrolle musen op og ned.\nDu kan også klikke på venstre klassificering navigation til at lokalisere"
 
 #: ../resources/guide/js/launcher.coffee:133
 msgid "Skip the step without scroll"
-msgstr ""
+msgstr "Spring trinnet over uden scroll"
 
 #: ../resources/guide/js/launcher.coffee:163
 msgid ""
 "Use the keyboard to search for applications\n"
 "Try the \"deepin\" keyword to see which applications are shown"
-msgstr ""
+msgstr "Brug tastaturet til at søge efter programmer\nPrøv søgeordet \"deepin\"  for at se, hvilke programmer der vises"
 
 #: ../resources/guide/js/launcher.coffee:164
 msgid "tips: Please directly enter the word \"deepin\""
@@ -564,7 +561,7 @@ msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:179
 msgid "Use the right mouse button to send two icons to the desktop"
-msgstr ""
+msgstr "Brug højre museknap til at sende to ikoner til skrivebordet"
 
 #: ../resources/guide/js/launcher.coffee:180
 msgid "tips: You can add it to startup items or uninstall it"
@@ -613,11 +610,11 @@ msgstr "_Luk"
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
-msgstr ""
+msgstr "Du har afinstalleret \"%1\" med succes "
 
 #: ../resources/common/js/uninstaller.coffee:33
 msgid "\"%1\" failed to be uninstalled"
-msgstr ""
+msgstr "\"%1\" fejlede i at blve at afinstalleret"
 
 #: ../app/desktop/desktop.c:292
 msgid "New file"
@@ -633,28 +630,28 @@ msgstr "%a, %d %b, %Y"
 
 #: ../app/greeter/lock.c:125 ../app/greeter/greeter.c:192
 msgid "Wrong Password"
-msgstr "Ugyldig kodeord"
+msgstr ""
 
 #: ../app/dock/dock.c:322
 msgid "Dock failed to start, because Compiz is not enabled."
-msgstr ""
+msgstr "Dock kan ikke starte, fordi Compiz ikke er aktiveret."
 
 #: ../lib/dentry/entry.c:746
 #, c-format
 msgid ""
 "Cannot rename the item to \"%s\". This may be caused by lack of permissions."
-msgstr ""
+msgstr "Kan ikke omdøbe elementet til \"%s\". . Dette kan være forårsaget af mangel på tilladelser."
 
 #: ../lib/dentry/entry.c:752
 #, c-format
 msgid ""
 "There is already a file with name \"%s\" in this folder. Please consider a "
 "different name."
-msgstr ""
+msgstr "Der findes allerede en fil med navnet \"%s\" i denne mappe. Overvej venligst et andet navn."
 
 #: ../lib/dentry/entry.c:758
 msgid "The item could not be renamed"
-msgstr ""
+msgstr "Emnet kunne ikke omdøbes"
 
 #: ../lib/dentry/entry.c:833 ../lib/dentry/fileops.c:805
 msgid "copy"
@@ -666,7 +663,7 @@ msgstr "Program-gruppe"
 
 #: ../lib/dentry/fileops.c:566
 msgid "Move"
-msgstr ""
+msgstr "Fjern"
 
 #: ../lib/dentry/fileops.c:772
 msgid "Copy"
@@ -682,7 +679,7 @@ msgstr "Er du sikker på at du permanent vil slette filene?"
 
 #: ../lib/dentry/fileops_delete.c:33
 msgid "If you delete the files, they will be permanently lost."
-msgstr ""
+msgstr "Hvis du sletter filerne, vil de blive tabt for bestandigt."
 
 #: ../lib/dentry/fileops_delete.c:36
 msgid "Delete"
@@ -719,12 +716,12 @@ msgstr "Erstat"
 #: ../lib/dentry/fileops_error_dialog.c:218
 #, c-format
 msgid "Do you want to merge with folder \"%s\"?"
-msgstr ""
+msgstr "Ønsker du at fusionere med mappen \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
 msgid ""
-"The merging operation will be asked to confirm before replacing any files in "
-"the folder conflicted."
+"The merging operation will be asked to confirm before replacing any files in"
+" the folder conflicted."
 msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:222
@@ -743,14 +740,13 @@ msgid "Another folder with the same name already exists in \"%s\"."
 msgstr "En anden mappe med samme navn eksisterer allerede i \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:236
-#, fuzzy
 msgid "All files in the folder will be removed by replacing."
-msgstr "Alle emner i skraldespanden vil permanent blive slettet."
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:237
 #, c-format
 msgid "Do you want to replace folder \"%s\"?"
-msgstr ""
+msgstr "Ønsker du at erstatte mappen \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:239
 #, c-format
@@ -760,7 +756,7 @@ msgstr "En mappe med samme navn eksisterer allerede i \"%s\"."
 #: ../lib/dentry/fileops_error_dialog.c:245
 #, c-format
 msgid "Do you want to replace file \"%s\"?"
-msgstr ""
+msgstr "Ønsker du at udskifte filen \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:246
 msgid "The content will be overwritten by replacing."
@@ -898,17 +894,4 @@ msgstr "programværktøjer"
 
 #: ../lib/category.c:56
 msgid "others"
-msgstr "andre"
-
-#~ msgid "Expand"
-#~ msgstr "Udvid"
-
-#, fuzzy
-#~ msgid "_Dock setting"
-#~ msgstr "_Tidsindstillinger"
-
-#~ msgid "_Clean up"
-#~ msgstr "_Ryd op"
-
-#~ msgid "Get"
-#~ msgstr "Get"
+msgstr ""

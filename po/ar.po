@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # monzerissa169 <monzerissa169@yahoo.com>, 2014
 msgid ""
@@ -9,16 +9,14 @@ msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-08-22 11:12+0800\n"
-"PO-Revision-Date: 2014-07-03 05:01+0000\n"
-"Last-Translator: monzerissa169 <monzerissa169@yahoo.com>\n"
-"Language-Team: Arabic (http://www.transifex.com/projects/p/deepin-desktop-"
-"environment/language/ar/)\n"
-"Language: ar\n"
+"PO-Revision-Date: 2014-08-22 04:43+0000\n"
+"Last-Translator: szd_liufei <liufei@linuxdeepin.com>\n"
+"Language-Team: Arabic (http://www.transifex.com/projects/p/deepin-desktop-environment/language/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+"Language: ar\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #: ../resources/desktop/js/invalidlink.coffee:34
 #: ../resources/desktop/js/desktopentry.coffee:108
@@ -94,7 +92,7 @@ msgstr "لا يمكن فتح هذا الملف."
 
 #: ../resources/desktop/js/specialitem.coffee:34
 msgid "Computer"
-msgstr ""
+msgstr "الكمبيوتر"
 
 #: ../resources/desktop/js/specialitem.coffee:87
 #: ../resources/dock/js/main.coffee:47 ../resources/dock/js/main.coffee:124
@@ -102,14 +100,12 @@ msgid "Trash"
 msgstr "المهملات"
 
 #: ../resources/desktop/js/specialitem.coffee:152
-#, fuzzy
 msgid "_Clean up %1 items"
-msgstr "_تنظيف"
+msgstr "تنظي_ف %1 عناصر"
 
 #: ../resources/desktop/js/specialitem.coffee:154
-#, fuzzy
 msgid "_Clean up 1 item"
-msgstr "_تنظيف"
+msgstr "تنظي_ف عنصر 1"
 
 #: ../resources/desktop/js/specialitem.coffee:156
 #: ../resources/dock/js/plugins/trash/trash.coffee:29
@@ -189,9 +185,7 @@ msgstr "اضغط Ctrl + Alt + F1\n"
 msgid ""
 "\t\t\t\t-----The daemon of accounts has not started!-----\n"
 ")"
-msgstr ""
-"⇥⇥⇥⇥-----مطلق الحسابات لم يعمل بعد-----\n"
-")"
+msgstr "⇥⇥⇥⇥-----مطلق الحسابات لم يعمل بعد-----\n)"
 
 #: ../resources/greeter/js/message.coffee:79
 msgid "$ sudo apt-get install deepin-desktop-Environment\n"
@@ -309,9 +303,8 @@ msgid "Enter your password to %1"
 msgstr "أدخل كلمة السرفي %1"
 
 #: ../resources/greeter/js/mediacontrol.coffee:167
-#, fuzzy
 msgid "Click button to Play"
-msgstr "اضغط زر الدخول للدخول"
+msgstr ""
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
@@ -334,7 +327,7 @@ msgstr "هل أنت متأكد من الأزالة"
 #: ../resources/launcher/js/item.coffee:354
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
 msgid "All dependencies will be removed"
-msgstr "سوف تزال كل المتعلفات"
+msgstr ""
 
 #: ../resources/launcher/js/item.coffee:354
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
@@ -386,9 +379,8 @@ msgid "Send to d_esktop"
 msgstr "إرسال إلى _سطح المكتب "
 
 #: ../resources/launcher/js/const.coffee:85
-#, fuzzy
 msgid "Remove from d_esktop"
-msgstr "أزل من _التفضيلات"
+msgstr ""
 
 #: ../resources/launcher/js/const.coffee:88
 #: ../resources/guide/js/launcher.coffee:239
@@ -396,9 +388,8 @@ msgid "Send to do_ck"
 msgstr "إرسال إلى الرصيف"
 
 #: ../resources/launcher/js/const.coffee:89
-#, fuzzy
 msgid "Remove from do_ck"
-msgstr "أزل من _التفضيلات"
+msgstr ""
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "Control Center"
@@ -425,25 +416,22 @@ msgid "Well, please trigger the lower right corner again"
 msgstr "حسنا, رجاء مرّ فوق الزاوية السفلية اليمنى مرة أخرة"
 
 #: ../resources/guide/js/dss.coffee:30
-#, fuzzy
 msgid "tips: Click the setting icon on dock to implement"
-msgstr "فائدة, اضغط أيقونة الإعدادات على الرف للتنفيذ"
+msgstr ""
 
 #: ../resources/guide/js/dss.coffee:69
 msgid "Here is the system setting area"
 msgstr "هنا منطقة إعدادات النظام"
 
 #: ../resources/guide/js/dss.coffee:70
-#, fuzzy
 msgid ""
 "tips: Hover the setting icon on dock to quickly implement some setting "
 "functions"
-msgstr "فائدة, اضغط أيقونة الإعدادات على الرف للتنفيذ"
+msgstr ""
 
 #: ../resources/guide/js/end.coffee:25
-#, fuzzy
 msgid "Thanks for your patience while learning. Congratulations."
-msgstr "شكرا لصبرك على التعلم. مبارك"
+msgstr ""
 
 #: ../resources/guide/js/end.coffee:30
 msgid "End"
@@ -461,29 +449,26 @@ msgstr "تحضير العملية ..."
 msgid ""
 "Let's drag the other icon on the first icon \n"
 " to generate \"application group\""
-msgstr ""
-"دعنا نسحب الأيقونة الأخرى على الأولى \n"
-"لتشكيل \"مجموعة تطبيقات\""
+msgstr "دعنا نسحب الأيقونة الأخرى على الأولى \nلتشكيل \"مجموعة تطبيقات\""
 
 #: ../resources/guide/js/desktop.coffee:116
 msgid "Well, you have learned how to create a \"application group\""
 msgstr "حسنا, لقد تعلمت كيف تشكل \"مجموعة تطبيقات\""
 
 #: ../resources/guide/js/desktop.coffee:117
-#, fuzzy
 msgid "tips: Right-click on the application group will provide more functions"
-msgstr "فائدة: بالضغط على مجموعة التطبيقات بالزر الأيمن سيعطيك خيارات أكثر"
+msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:128
 msgid ""
-"Slide the mouse to the four top corners, which can trigger four different "
-"events\n"
+"Slide the mouse to the four top corners, which can trigger four different events\n"
 "Please move to the upper left corner first to show or hide Launcher"
 msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:129
 msgid ""
-"tips: Please trigger successively by hints, click on the blank area to return"
+"tips: Please trigger successively by hints, click on the blank area to "
+"return"
 msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:133
@@ -534,16 +519,13 @@ msgstr "ابدأ"
 
 #: ../resources/guide/js/start.coffee:51
 msgid "I am an experienced user. Exit directly."
-msgstr "أنا أكبر, اخرج مباشرة"
+msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:29
-#, fuzzy
 msgid ""
 "\"Application Launcher\" can be started by sliding the mouse to the upper "
 "left corner or clicking on the launcher."
 msgstr ""
-"المرور بالفأرة على الزاوية العليا اليسرى أو الضغط على أيقونة البرامج كليهما "
-"سيبدأ \"مطلق التطبيقات\""
 
 #: ../resources/guide/js/launcher.coffee:70
 msgid ""
@@ -552,10 +534,10 @@ msgid ""
 msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:85
-#, fuzzy
 msgid ""
-"Please click on the \"All Applications\" icon, you will see all applications."
-msgstr "رجاء اضغط على أيقونة \"كل التطبيقات\", سترى كل التطبيقات"
+"Please click on the \"All Applications\" icon, you will see all "
+"applications."
+msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:95
 msgid ""
@@ -574,33 +556,28 @@ msgid ""
 msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:164
-#, fuzzy
 msgid "tips: Please directly enter the word \"deepin\""
-msgstr "فائدة: رجاء أدخل مباشرة الكلمة \"ديب\""
+msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:179
 msgid "Use the right mouse button to send two icons to the desktop"
 msgstr "استخدم زر الفأرة الأيمن لإرسال أيقونتين لسطح المكتب"
 
 #: ../resources/guide/js/launcher.coffee:180
-#, fuzzy
 msgid "tips: You can add it to startup items or uninstall it"
-msgstr "يمكنك إضافتها لقائمة بدء التشغيل أو الإزالة"
+msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:9
-#, fuzzy
 msgid "Keep _showing"
-msgstr "ابق _ظاهرا"
+msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:10
-#, fuzzy
 msgid "Keep _hidden"
-msgstr "ابق _مخفيا"
+msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:11
-#, fuzzy
 msgid "_Auto hide"
-msgstr "إخفاء تلقائي"
+msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:24
 msgid "_Fashion mode"
@@ -653,7 +630,7 @@ msgstr "%a, %b %d, %Y"
 
 #: ../app/greeter/lock.c:125 ../app/greeter/greeter.c:192
 msgid "Wrong Password"
-msgstr "كلمة المرور غير صحيحة"
+msgstr ""
 
 #: ../app/dock/dock.c:322
 msgid "Dock failed to start, because Compiz is not enabled."
@@ -743,8 +720,8 @@ msgstr "هل تريد أن تدمجه بالمجلد \"%s\" ؟"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
 msgid ""
-"The merging operation will be asked to confirm before replacing any files in "
-"the folder conflicted."
+"The merging operation will be asked to confirm before replacing any files in"
+" the folder conflicted."
 msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:222
@@ -763,9 +740,8 @@ msgid "Another folder with the same name already exists in \"%s\"."
 msgstr "مجلد أخر يحمل نفس الإسم موجود أصلا في \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:236
-#, fuzzy
 msgid "All files in the folder will be removed by replacing."
-msgstr "كل العناصر في المهملات سيتم حذفها نهائياً."
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:237
 #, c-format
@@ -918,32 +894,4 @@ msgstr "الملحقات"
 
 #: ../lib/category.c:56
 msgid "others"
-msgstr "أخرى"
-
-#~ msgid "click login button to log in"
-#~ msgstr "اضغط زر الدخول للدخول"
-
-#~ msgid "Expand"
-#~ msgstr "توسيع"
-
-#~ msgid "Only the first Screen"
-#~ msgstr "في الشاشة الأولى فقط"
-
-#~ msgid "Only the second Screen"
-#~ msgstr "في الشاشة الثانية فقط"
-
-#, fuzzy
-#~ msgid "_Dock setting"
-#~ msgstr "إ_عدادات الوقت"
-
-#~ msgid "_Clean up"
-#~ msgstr "_تنظيف"
-
-#~ msgid "Thanks for your patience to learn.You get the novice package"
-#~ msgstr "شكرا لصبرك على التعلم. لقد حصلت على الجائزة الأبتدائية"
-
-#~ msgid "Get"
-#~ msgstr "احصل"
-
-#~ msgid "New users directly jump to the registration page"
-#~ msgstr "ليقفز الأغرار لصفحة التسجيل"
+msgstr ""

@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # yakup <mutouk@yandex.ru>, 2014
 msgid ""
@@ -9,14 +9,13 @@ msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-08-22 11:12+0800\n"
-"PO-Revision-Date: 2014-07-07 01:41+0000\n"
-"Last-Translator: Ömer GÖK <omergok@outlook.com>\n"
-"Language-Team: Turkish (http://www.transifex.com/projects/p/deepin-desktop-"
-"environment/language/tr/)\n"
-"Language: tr\n"
+"PO-Revision-Date: 2014-08-22 22:02+0000\n"
+"Last-Translator: yakup <mutouk@yandex.ru>\n"
+"Language-Team: Turkish (http://www.transifex.com/projects/p/deepin-desktop-environment/language/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: tr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: ../resources/desktop/js/invalidlink.coffee:34
@@ -93,7 +92,7 @@ msgstr "Bu dosyla açılamıyor."
 
 #: ../resources/desktop/js/specialitem.coffee:34
 msgid "Computer"
-msgstr ""
+msgstr "Bilgisayar"
 
 #: ../resources/desktop/js/specialitem.coffee:87
 #: ../resources/dock/js/main.coffee:47 ../resources/dock/js/main.coffee:124
@@ -101,19 +100,17 @@ msgid "Trash"
 msgstr "Çöp"
 
 #: ../resources/desktop/js/specialitem.coffee:152
-#, fuzzy
 msgid "_Clean up %1 items"
-msgstr "_Sil"
+msgstr "%1 _Öğeyi Sil "
 
 #: ../resources/desktop/js/specialitem.coffee:154
-#, fuzzy
 msgid "_Clean up 1 item"
-msgstr "_Sil"
+msgstr "1 Öğeyi _Sil"
 
 #: ../resources/desktop/js/specialitem.coffee:156
 #: ../resources/dock/js/plugins/trash/trash.coffee:29
 msgid "_Empty"
-msgstr ""
+msgstr "_Boş"
 
 #: ../resources/desktop/js/grid.coffee:71 ../lib/dentry/fileops.c:403
 msgid "Untitled"
@@ -188,9 +185,7 @@ msgstr "Ctrl + Alt + F1'e basın\n"
 msgid ""
 "\t\t\t\t-----The daemon of accounts has not started!-----\n"
 ")"
-msgstr ""
-"\t\t\t\t-----Hesapların arka plan programı başlamamıştır!-----\n"
-")"
+msgstr "\t\t\t\t-----Hesapların arka plan programı başlamamıştır!-----\n)"
 
 #: ../resources/greeter/js/message.coffee:79
 msgid "$ sudo apt-get install deepin-desktop-Environment\n"
@@ -202,7 +197,7 @@ msgstr "\t\t\t\t-----Kullanılabilir masaüstü oturumu yok!-----\n"
 
 #: ../resources/greeter/js/user.coffee:411
 msgid "Login"
-msgstr ""
+msgstr "Giriş"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jan"
@@ -308,17 +303,16 @@ msgid "Enter your password to %1"
 msgstr "%1 e şifrenizi girin"
 
 #: ../resources/greeter/js/mediacontrol.coffee:167
-#, fuzzy
 msgid "Click button to Play"
-msgstr "giriş için giriş tuşuna tıklayın"
+msgstr "Oynamak için Butona Tıklayın"
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
-msgstr ""
+msgstr "Çoğalt"
 
 #: ../resources/osd/js/monitor.coffee:39
 msgid "Extend"
-msgstr ""
+msgstr "Uzat"
 
 #: ../resources/launcher/js/item.coffee:283
 #: ../resources/guide/js/launcher.coffee:242
@@ -385,9 +379,8 @@ msgid "Send to d_esktop"
 msgstr "Masaüstüne _gönder"
 
 #: ../resources/launcher/js/const.coffee:85
-#, fuzzy
 msgid "Remove from d_esktop"
-msgstr " _favorilerden kaldır"
+msgstr "m_asaüstünden kaldır"
 
 #: ../resources/launcher/js/const.coffee:88
 #: ../resources/guide/js/launcher.coffee:239
@@ -395,9 +388,8 @@ msgid "Send to do_ck"
 msgstr "do_ck bara gönder"
 
 #: ../resources/launcher/js/const.coffee:89
-#, fuzzy
 msgid "Remove from do_ck"
-msgstr " _favorilerden kaldır"
+msgstr "p_anelden kaldır"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "Control Center"
@@ -424,27 +416,22 @@ msgid "Well, please trigger the lower right corner again"
 msgstr "Öyleyse, lütfen sağ alt köşeden tekrar tetikleyebilirsiniz"
 
 #: ../resources/guide/js/dss.coffee:30
-#, fuzzy
 msgid "tips: Click the setting icon on dock to implement"
-msgstr "ipucu：Uygulamak için panel ayar simgesine tıklayın"
+msgstr "ipucu: Uygulamak için panel ayar simgesine tıklayın"
 
 #: ../resources/guide/js/dss.coffee:69
 msgid "Here is the system setting area"
 msgstr "Burası sistem ayarı alanı"
 
 #: ../resources/guide/js/dss.coffee:70
-#, fuzzy
 msgid ""
 "tips: Hover the setting icon on dock to quickly implement some setting "
 "functions"
-msgstr ""
-"ipucu: Hızla bazı ayar işlevlerini uygulamak için panel ayarlama simgesine "
-"üzerine getirin"
+msgstr "ipucu: Bazı ayar işlevlerini ayarlamak için panel ayarlama simgesine tıklayın"
 
 #: ../resources/guide/js/end.coffee:25
-#, fuzzy
 msgid "Thanks for your patience while learning. Congratulations."
-msgstr "Öğrenmek sabrınız için teşekkür ederiz. Tebrikler!"
+msgstr "Öğrenme sabrınız için teşekkür ederiz. Tebrik ederiz."
 
 #: ../resources/guide/js/end.coffee:30
 msgid "End"
@@ -462,37 +449,27 @@ msgstr "Işlem için hazırlama..."
 msgid ""
 "Let's drag the other icon on the first icon \n"
 " to generate \"application group\""
-msgstr ""
-"Diğer ikonu ilk ikonun üzerine bırakarak\n"
-"\"uygulama grubu\" oluşturulabilir"
+msgstr "Diğer ikonu ilk ikonun üzerine bırakarak\n\"uygulama grubu\" oluşturulabilir"
 
 #: ../resources/guide/js/desktop.coffee:116
 msgid "Well, you have learned how to create a \"application group\""
 msgstr "İyi, şimdi sen nasıl \"uygulama grubu\" oluşturacağını öğrendin"
 
 #: ../resources/guide/js/desktop.coffee:117
-#, fuzzy
 msgid "tips: Right-click on the application group will provide more functions"
-msgstr ""
-"ipuçu: Uygulama grubu üzerinde sağ tıklayınca daha fazla işlev sağlayacak"
+msgstr "ipuçu: Uygulama grubu üzerinde sağ tıklayınca daha fazla işlev gösterilecek"
 
 #: ../resources/guide/js/desktop.coffee:128
-#, fuzzy
 msgid ""
-"Slide the mouse to the four top corners, which can trigger four different "
-"events\n"
+"Slide the mouse to the four top corners, which can trigger four different events\n"
 "Please move to the upper left corner first to show or hide Launcher"
-msgstr ""
-"Fareyi ekrandaki dört köşeden birine kaydırmak, dört olaydan birini "
-"tetikleyecektir\n"
-"Başlatıcıyı göstermek veya gizlemek için fareyi sol üst köşeye kaydırın"
+msgstr "Fareyi ekrandaki dört köşeden birine sürükleyerek, dört olaydan birini çalıştıracaktır\nBaşlatıcıyı göstermek veya gizlemek için fareyi sol üst köşeye sürükleyin"
 
 #: ../resources/guide/js/desktop.coffee:129
-#, fuzzy
 msgid ""
-"tips: Please trigger successively by hints, click on the blank area to return"
-msgstr ""
-"ipucu：İpuçlarından fare kaydırılarak, boş alana tıklanarak geri dönülebilir"
+"tips: Please trigger successively by hints, click on the blank area to "
+"return"
+msgstr "ipucu：İpuçlarından fare sürükleyerek, boş alana tıklanarak geri dönülebilir"
 
 #: ../resources/guide/js/desktop.coffee:133
 msgid "Show/Hide Launcher"
@@ -514,14 +491,11 @@ msgstr "Sağ üst köşede ayarlı varsayılan fonksiyon yok"
 msgid ""
 "Right-click on desktop black area to call up the menu, select \"Corner "
 "navigation\" to set the corner used"
-msgstr ""
-"Menüyü açmak için masaüstünde siyah alan üzerinde sağ tıklayın, \"Köşe "
-"gezinme\" seçilelerek köşe kullanılır"
+msgstr "Menüyü açmak için masaüstünde siyah alan üzerinde sağ tıklayın, \"Köşe gezinme\" seçilelerek köşe kullanılır"
 
 #: ../resources/guide/js/desktop.coffee:179
-#, fuzzy
 msgid "tips: Click on the interface of corner navigation blank area to return"
-msgstr "ipucu：Köşeden arayüze geri dönmwk için arayüze tıklayın"
+msgstr "ipucu：Köşeden arayüze geri dönmek için arayüze tıklayın"
 
 #: ../resources/guide/js/start.coffee:28
 msgid "New Launcher"
@@ -537,9 +511,7 @@ msgstr "Yeni Sistem Ayarları"
 
 #: ../resources/guide/js/start.coffee:29
 msgid "The following will guide you to learn how to use some new functions"
-msgstr ""
-"Aşağıdaki bazı yeni fonksiyonlar nasıl kullanılacağını öğrenmek için "
-"rehberlik edecek"
+msgstr "Aşağıdaki bazı yeni fonksiyonlar nasıl kullanılacağını öğrenmek için rehberlik edecek"
 
 #: ../resources/guide/js/start.coffee:44
 msgid "Start"
@@ -547,95 +519,77 @@ msgstr "Başla"
 
 #: ../resources/guide/js/start.coffee:51
 msgid "I am an experienced user. Exit directly."
-msgstr "Ben büyüğüm, doğrudan çık"
+msgstr "Ben uzman kullanıcıyım, Doğrudan çık."
 
 #: ../resources/guide/js/launcher.coffee:29
-#, fuzzy
 msgid ""
 "\"Application Launcher\" can be started by sliding the mouse to the upper "
 "left corner or clicking on the launcher."
-msgstr ""
-"Fareyi sol üst köşeye kaydırarak veya başlatıcı ikona tıklanacak \"Uygulama "
-"Başlatıcısı\" başlatılabilir"
+msgstr "Fareyi sol üst köşeye sürükleyerek veya başlatıcı ikona tıklayarak \"Uygulama Başlatıcısı\" çalıştırılabilir."
 
 #: ../resources/guide/js/launcher.coffee:70
-#, fuzzy
 msgid ""
 "What shown in the first screen of \"launcher\" are the applications "
 "collected."
-msgstr ""
-"\"başlatıcı\" nın ilk ekranında koleksiyonun hangi uygulamaları gösterdiği "
-"seçilir"
+msgstr "\"başlatıcı\" nın ilk ekranında koleksiyondan hangi uygulamaların gösterileceği seçilir."
 
 #: ../resources/guide/js/launcher.coffee:85
-#, fuzzy
 msgid ""
-"Please click on the \"All Applications\" icon, you will see all applications."
-msgstr ""
-"Lütfen \"Tüm Uygulamalar\" simgesine tıklayarak , tüm uygulamaları "
-"görebilirsiniz"
+"Please click on the \"All Applications\" icon, you will see all "
+"applications."
+msgstr "Lütfen \"Tüm Uygulamalar\" simgesine tıklayarak, tüm uygulamaları görebilirsiniz"
 
 #: ../resources/guide/js/launcher.coffee:95
 msgid ""
 "All programs can be located by scrolling the mouse up and down.\n"
 "You can also click on the left classification navigation to locate"
-msgstr ""
-"Tüm uygulamalar fare ile yukarı ve aşşağı kayrılılarak konumlandırılabilir.\n"
-"Ayrıca sol sınıflandırmaya tıklanarakta konumlandırılabilir"
+msgstr "Tüm uygulamalar fare ile yukarı ve aşşağı kayrılılarak konumlandırılabilir.\nAyrıca sol sınıflandırmaya tıklanarakta konumlandırılabilir"
 
 #: ../resources/guide/js/launcher.coffee:133
 msgid "Skip the step without scroll"
 msgstr "Kaydırmadan adımı atla"
 
 #: ../resources/guide/js/launcher.coffee:163
-#, fuzzy
 msgid ""
 "Use the keyboard to search for applications\n"
 "Try the \"deepin\" keyword to see which applications are shown"
-msgstr ""
-"Klavye ile arama kullanılarak istenilen uygulama aranabilir\n"
-"Biz \"deepin\" anahtar kelimesini kullanarak bazı uygulamalar gösterilir"
+msgstr "Klavye ile arama kullanılarak istenilen uygulama aranabilir\nBiz \"deepin\" anahtar kelimesini kullanarak bazı uygulamalar gösterilir"
 
 #: ../resources/guide/js/launcher.coffee:164
-#, fuzzy
 msgid "tips: Please directly enter the word \"deepin\""
-msgstr "ipuçu: Doğrudan kelimeyi girin \"deepin\""
+msgstr "ipucu: Lütfen direkt olarak \"deepin\" kelimesini yazın"
 
 #: ../resources/guide/js/launcher.coffee:179
 msgid "Use the right mouse button to send two icons to the desktop"
 msgstr "Masaüstüne iki simge göndermek için sağ fare düğmesini kullanın"
 
 #: ../resources/guide/js/launcher.coffee:180
-#, fuzzy
 msgid "tips: You can add it to startup items or uninstall it"
-msgstr "ipucu:Başlangıç nesnelerine ekleyebilirsin veya kaldırılabilirsin"
+msgstr "ipucu: Başlangıç nesnelerine ekleyebilirsin veya kaldırılabilirsin"
 
 #: ../resources/dock/js/global_menu.coffee:9
-#, fuzzy
 msgid "Keep _showing"
-msgstr "göstermeyi _tutun"
+msgstr "Göstermeyi _tutun"
 
 #: ../resources/dock/js/global_menu.coffee:10
-#, fuzzy
 msgid "Keep _hidden"
-msgstr "gizlemeyi _tutun"
+msgstr "Gizlemeyi _tutun"
 
 #: ../resources/dock/js/global_menu.coffee:11
-#, fuzzy
 msgid "_Auto hide"
-msgstr "_otomatik gizle"
+msgstr "_Otomatik gizle"
 
 #: ../resources/dock/js/global_menu.coffee:24
 msgid "_Fashion mode"
-msgstr ""
+msgstr "_Tasarımsal mod"
 
 #: ../resources/dock/js/global_menu.coffee:25
 msgid "_Efficient mode"
-msgstr ""
+msgstr "_Verimli mod"
 
 #: ../resources/dock/js/global_menu.coffee:26
 msgid "_Classic mode"
-msgstr ""
+msgstr "_Klasik mod"
 
 #: ../resources/dock/js/deepin_item.coffee:247
 msgid "_View as analog"
@@ -656,11 +610,11 @@ msgstr "_Kapat"
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
-msgstr ""
+msgstr "\"%1\" başarıyla kaldırıldı"
 
 #: ../resources/common/js/uninstaller.coffee:33
 msgid "\"%1\" failed to be uninstalled"
-msgstr ""
+msgstr "\"%1\" kaldırılması başarısız oldu"
 
 #: ../app/desktop/desktop.c:292
 msgid "New file"
@@ -686,17 +640,14 @@ msgstr "Dock bar başlatılamadı, çünkü Compiz aktif değil."
 #, c-format
 msgid ""
 "Cannot rename the item to \"%s\". This may be caused by lack of permissions."
-msgstr ""
-"\"%s\" 'e yeniden adlandırma yapılamaz. Bu belki izinlerin eksikliğinden "
-"kaynaklanmaktadır."
+msgstr "\"%s\" 'e yeniden adlandırma yapılamaz. Bu belki izinlerin eksikliğinden kaynaklanmaktadır."
 
 #: ../lib/dentry/entry.c:752
 #, c-format
 msgid ""
 "There is already a file with name \"%s\" in this folder. Please consider a "
 "different name."
-msgstr ""
-"Klasör içinde zaten bu isim \"%s\" burada var. Farklı bir ad düşünün lütfen."
+msgstr "Klasör içinde zaten bu isim \"%s\" burada var. Farklı bir ad düşünün lütfen."
 
 #: ../lib/dentry/entry.c:758
 msgid "The item could not be renamed"
@@ -769,11 +720,9 @@ msgstr "KlasörÜ \"%s\" ile birleştirmek ister misiniz?"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
 msgid ""
-"The merging operation will be asked to confirm before replacing any files in "
-"the folder conflicted."
-msgstr ""
-"Klasördeki herhangibir dosyayı değiştirmeden önce soracak kopyalanan "
-"dosyaların çakışmaması için."
+"The merging operation will be asked to confirm before replacing any files in"
+" the folder conflicted."
+msgstr "Klasörü birleştirirken çakışan dosyaları değiştirmeden önce ne yapılacağını sor."
 
 #: ../lib/dentry/fileops_error_dialog.c:222
 #, c-format
@@ -791,9 +740,8 @@ msgid "Another folder with the same name already exists in \"%s\"."
 msgstr "Aynı ada sahip başka bir klasör zaten mevcut \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:236
-#, fuzzy
 msgid "All files in the folder will be removed by replacing."
-msgstr "Çöpteki bütün dosyalar kalıcı olarak silinecek."
+msgstr "Klasördeki tüm dosyalar değiştirmek tarafından kaldırıldı."
 
 #: ../lib/dentry/fileops_error_dialog.c:237
 #, c-format
@@ -812,7 +760,7 @@ msgstr "\"%s\" dosyasını değiştirmek istiyor musunuz?"
 
 #: ../lib/dentry/fileops_error_dialog.c:246
 msgid "The content will be overwritten by replacing."
-msgstr ""
+msgstr "Bu içerik değiştirme tarafından üzerine yazılacak."
 
 #: ../lib/dentry/fileops_error_dialog.c:248
 #, c-format
@@ -946,35 +894,4 @@ msgstr "yardımcı uygulamalar"
 
 #: ../lib/category.c:56
 msgid "others"
-msgstr "diğer"
-
-#~ msgid "click login button to log in"
-#~ msgstr "giriş için giriş tuşuna tıklayın"
-
-#~ msgid "Expand"
-#~ msgstr "Genişlet"
-
-#~ msgid "Only the first Screen"
-#~ msgstr "Yanlız ilk Ekran"
-
-#~ msgid "Only the second Screen"
-#~ msgstr "Yanlız ikinci Ekran"
-
-#, fuzzy
-#~ msgid "_Dock setting"
-#~ msgstr "_Zaman ayarları"
-
-#~ msgid "_Clean up"
-#~ msgstr "_Sil"
-
-#~ msgid "Thanks for your patience to learn.You get the novice package"
-#~ msgstr "Öğrenirken sabrınız için teşekkür ederiz. yeni bir paket al"
-
-#~ msgid "tips：Please receive in Deepin account"
-#~ msgstr "ipucu: Lütfen Deepin hesabı alın "
-
-#~ msgid "Get"
-#~ msgstr "Al"
-
-#~ msgid "New users directly jump to the registration page"
-#~ msgstr "Yeni kullanıcılar doğrudan kayıt sayfasına atlayabilir"
+msgstr "diğerleri"

@@ -1,22 +1,22 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # electricface <songwentai@linuxdeepin.com>, 2014
+# freddy4212 <freddy4212@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-08-22 11:12+0800\n"
-"PO-Revision-Date: 2014-07-05 19:02+0000\n"
-"Last-Translator: electricface <songwentai@linuxdeepin.com>\n"
-"Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/deepin-"
-"desktop-environment/language/zh_TW/)\n"
-"Language: zh_TW\n"
+"PO-Revision-Date: 2014-08-25 03:50+0000\n"
+"Last-Translator: freddy4212 <freddy4212@gmail.com>\n"
+"Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/deepin-desktop-environment/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: zh_TW\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../resources/desktop/js/invalidlink.coffee:34
@@ -93,25 +93,25 @@ msgstr "無法開啟此檔案。"
 
 #: ../resources/desktop/js/specialitem.coffee:34
 msgid "Computer"
-msgstr "計算機"
+msgstr "電腦"
 
 #: ../resources/desktop/js/specialitem.coffee:87
 #: ../resources/dock/js/main.coffee:47 ../resources/dock/js/main.coffee:124
 msgid "Trash"
-msgstr "回收筒"
+msgstr "回收統"
 
 #: ../resources/desktop/js/specialitem.coffee:152
 msgid "_Clean up %1 items"
-msgstr "清理%1項(_C)"
+msgstr "清理 %1 項(_C)"
 
 #: ../resources/desktop/js/specialitem.coffee:154
 msgid "_Clean up 1 item"
-msgstr "清理1項(_C)"
+msgstr "清理 1 項(_C)"
 
 #: ../resources/desktop/js/specialitem.coffee:156
 #: ../resources/dock/js/plugins/trash/trash.coffee:29
 msgid "_Empty"
-msgstr ""
+msgstr "清空回收桶(_E)"
 
 #: ../resources/desktop/js/grid.coffee:71 ../lib/dentry/fileops.c:403
 msgid "Untitled"
@@ -161,7 +161,7 @@ msgstr "顯示設定(_D)"
 #: ../resources/desktop/js/grid.coffee:1051
 #: ../resources/guide/js/desktop.coffee:202
 msgid "_Corner navigation"
-msgstr "熱區設置(_C)"
+msgstr "熱區設定(_C)"
 
 #: ../resources/desktop/js/grid.coffee:1052
 #: ../resources/guide/js/desktop.coffee:203
@@ -175,30 +175,30 @@ msgstr "取消群組(_U)"
 #: ../resources/greeter/js/message.coffee:105
 #: ../resources/greeter/js/message.coffee:82
 msgid "$ sudo reboot\n"
-msgstr ""
+msgstr "$ sudo reboot\n"
 
 #: ../resources/greeter/js/message.coffee:99
 #: ../resources/greeter/js/message.coffee:73
 msgid "Press Ctrl + Alt + F1\n"
-msgstr ""
+msgstr "按下 Ctrl + Alt + F1\n"
 
 #: ../resources/greeter/js/message.coffee:95
 msgid ""
 "\t\t\t\t-----The daemon of accounts has not started!-----\n"
 ")"
-msgstr ""
+msgstr "\t\t\t\t-----帳號服務尚未啟動！-----\n)"
 
 #: ../resources/greeter/js/message.coffee:79
 msgid "$ sudo apt-get install deepin-desktop-Environment\n"
-msgstr ""
+msgstr "$ sudo apt-get install deepin-desktop-Environment\n"
 
 #: ../resources/greeter/js/message.coffee:68
 msgid "\t\t\t\t-----No available desktop sessions!-----\n"
-msgstr "沒有覈實的桌面繪畫\n"
+msgstr "\t\t\t\t-----沒有可使用的桌面環境！-----\n"
 
 #: ../resources/greeter/js/user.coffee:411
 msgid "Login"
-msgstr ""
+msgstr "登入"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jan"
@@ -301,19 +301,19 @@ msgstr "待命"
 
 #: ../resources/greeter/js/powermenu.coffee:90
 msgid "Enter your password to %1"
-msgstr "請輸入你的密碼到 %1"
+msgstr "請輸入你的密碼以完成 %1"
 
 #: ../resources/greeter/js/mediacontrol.coffee:167
 msgid "Click button to Play"
-msgstr "單擊播放按鈕"
+msgstr "單擊按鈕播放"
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
-msgstr ""
+msgstr "同步"
 
 #: ../resources/osd/js/monitor.coffee:39
 msgid "Extend"
-msgstr ""
+msgstr "延伸"
 
 #: ../resources/launcher/js/item.coffee:283
 #: ../resources/guide/js/launcher.coffee:242
@@ -328,7 +328,7 @@ msgstr "你確定要刪除"
 #: ../resources/launcher/js/item.coffee:354
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
 msgid "All dependencies will be removed"
-msgstr "所有依賴的軟件包都將被刪除"
+msgstr "所有依賴的套件都將被刪除"
 
 #: ../resources/launcher/js/item.coffee:354
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
@@ -342,11 +342,11 @@ msgstr "是"
 
 #: ../resources/launcher/js/const.coffee:64
 msgid "_Hide the icon"
-msgstr "隱藏此圖標(_H)"
+msgstr "隱藏此圖試(_H)"
 
 #: ../resources/launcher/js/const.coffee:65
 msgid "_Display hidden icons"
-msgstr "顯示已隱藏圖示(_D)"
+msgstr "顯示已隱藏的圖示(_D)"
 
 #: ../resources/launcher/js/const.coffee:68
 msgid "_Hide this icon"
@@ -359,20 +359,20 @@ msgstr "顯示該圖示(_D)"
 #: ../resources/launcher/js/const.coffee:72
 #: ../resources/guide/js/launcher.coffee:241
 msgid "_Add to autostart"
-msgstr "加入到「自動啟動」(_A)"
+msgstr "加入到開機啟動項目(_A)"
 
 #: ../resources/launcher/js/const.coffee:73
 msgid "_Remove from autostart"
-msgstr "從「自動啟動」中移除(_R)"
+msgstr "從開機啟動項目中移除(_R)"
 
 #: ../resources/launcher/js/const.coffee:80
 msgid "Add to _favorites"
-msgstr "添加到收藏(_F)"
+msgstr "添加到最愛(_F)"
 
 #: ../resources/launcher/js/const.coffee:81
 #: ../resources/guide/js/launcher.coffee:237
 msgid "Remove from _favorites"
-msgstr "從收藏移除(_F)"
+msgstr "從最愛中移除(_F)"
 
 #: ../resources/launcher/js/const.coffee:84
 #: ../resources/guide/js/launcher.coffee:238
@@ -390,7 +390,7 @@ msgstr "釘選到 Dock(_C)"
 
 #: ../resources/launcher/js/const.coffee:89
 msgid "Remove from do_ck"
-msgstr "從任務欄移除(_F)"
+msgstr "從 Dock 移除(_C)"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "Control Center"
@@ -398,7 +398,7 @@ msgstr "控制中心"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "All Windows"
-msgstr "所有窗口"
+msgstr "所有視窗"
 
 #: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:122
 msgid "Launcher"
@@ -406,7 +406,7 @@ msgstr "啟動器"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "Desktop"
-msgstr "桌面歌詞"
+msgstr "桌面"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "None"
@@ -414,25 +414,25 @@ msgstr "沒有"
 
 #: ../resources/guide/js/dss.coffee:29
 msgid "Well, please trigger the lower right corner again"
-msgstr "好的，請再次觸發右下角的熱區"
+msgstr "很好，請再次觸發右下角的熱區"
 
 #: ../resources/guide/js/dss.coffee:30
 msgid "tips: Click the setting icon on dock to implement"
-msgstr "提示：點擊任務欄上的設置圖標"
+msgstr "提示：點擊 Dock 上的設定圖示"
 
 #: ../resources/guide/js/dss.coffee:69
 msgid "Here is the system setting area"
-msgstr "這裏是控制中心"
+msgstr "這裡是控制中心"
 
 #: ../resources/guide/js/dss.coffee:70
 msgid ""
 "tips: Hover the setting icon on dock to quickly implement some setting "
 "functions"
-msgstr "提示：將鼠標指針移動到任務欄圖標上將可進行一些快捷方便的功能設定"
+msgstr "提示：將鼠標指標移動到 Dodk 圖示上將可進行一些方便的功能設定"
 
 #: ../resources/guide/js/end.coffee:25
 msgid "Thanks for your patience while learning. Congratulations."
-msgstr "謝謝您的耐心學習，祝賀您！"
+msgstr "謝謝您的耐心學習，恭喜您！"
 
 #: ../resources/guide/js/end.coffee:30
 msgid "End"
@@ -440,43 +440,41 @@ msgstr "結束"
 
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
-msgstr "歡迎使用深度操作系統"
+msgstr "歡迎使用 Deepin 作業系統"
 
 #: ../resources/guide/js/welcome.coffee:38
 msgid "Prepare for operation ..."
-msgstr "準備中 ..."
+msgstr "正在準備..."
 
 #: ../resources/guide/js/desktop.coffee:27
 msgid ""
 "Let's drag the other icon on the first icon \n"
 " to generate \"application group\""
-msgstr ""
-"讓我們拖動另一個圖標到第一個圖標上\n"
-"來組成程式組"
+msgstr "讓我們拖動另一個圖示到第一個圖示上\n來組成 \"應用程式群組\""
 
 #: ../resources/guide/js/desktop.coffee:116
 msgid "Well, you have learned how to create a \"application group\""
-msgstr "好的，您已經學會了如何創建一個程式組"
+msgstr "很好，您已經學會了如何建立一個 \" 應用程式群組\""
 
 #: ../resources/guide/js/desktop.coffee:117
 msgid "tips: Right-click on the application group will provide more functions"
-msgstr "提示：在程式組上右鍵單機將看到更多功能"
+msgstr "提示：在應用程式群組上單擊右鍵將看到更多功能"
 
 #: ../resources/guide/js/desktop.coffee:128
 msgid ""
-"Slide the mouse to the four top corners, which can trigger four different "
-"events\n"
+"Slide the mouse to the four top corners, which can trigger four different events\n"
 "Please move to the upper left corner first to show or hide Launcher"
-msgstr ""
+msgstr "將滑鼠指標移動至四個角落,可以觸發四種不同的事件\n移動至左上角可以顯示/隱藏啟動器"
 
 #: ../resources/guide/js/desktop.coffee:129
 msgid ""
-"tips: Please trigger successively by hints, click on the blank area to return"
-msgstr ""
+"tips: Please trigger successively by hints, click on the blank area to "
+"return"
+msgstr "提示：請跟隨指示依次觸發，點擊空白區域即可返回"
 
 #: ../resources/guide/js/desktop.coffee:133
 msgid "Show/Hide Launcher"
-msgstr "顯示/隱藏啓動器"
+msgstr "顯示/隱藏啟動器"
 
 #: ../resources/guide/js/desktop.coffee:134
 msgid "Show/Hide Desktop"
@@ -488,21 +486,21 @@ msgstr "顯示/隱藏控制中心"
 
 #: ../resources/guide/js/desktop.coffee:136
 msgid "No default functions setted in right up corner"
-msgstr "右上角默認沒有設置功能"
+msgstr "右上角預設沒有功能"
 
 #: ../resources/guide/js/desktop.coffee:178
 msgid ""
 "Right-click on desktop black area to call up the menu, select \"Corner "
 "navigation\" to set the corner used"
-msgstr "在桌面空餘位置右鍵單機打開右鍵菜單，選擇 “熱區設置” 來設置熱區功能"
+msgstr "在桌面空餘位置單擊右鍵打開選單，選擇 \"熱區設定\" 來設定熱區功能"
 
 #: ../resources/guide/js/desktop.coffee:179
 msgid "tips: Click on the interface of corner navigation blank area to return"
-msgstr ""
+msgstr "提示：點區熱點設定的空白區域即可返回"
 
 #: ../resources/guide/js/start.coffee:28
 msgid "New Launcher"
-msgstr "新啓動器"
+msgstr "新啟動器"
 
 #: ../resources/guide/js/start.coffee:28
 msgid "New Desktop"
@@ -514,7 +512,7 @@ msgstr "新控制中心"
 
 #: ../resources/guide/js/start.coffee:29
 msgid "The following will guide you to learn how to use some new functions"
-msgstr "之後將應道您學習如何使用這些新功能"
+msgstr "之後將教您學習如何使用這些新功能"
 
 #: ../resources/guide/js/start.coffee:44
 msgid "Start"
@@ -522,32 +520,31 @@ msgstr "開始"
 
 #: ../resources/guide/js/start.coffee:51
 msgid "I am an experienced user. Exit directly."
-msgstr "我是老手，直接退出"
+msgstr "我是老用戶，直接退出"
 
 #: ../resources/guide/js/launcher.coffee:29
 msgid ""
 "\"Application Launcher\" can be started by sliding the mouse to the upper "
 "left corner or clicking on the launcher."
-msgstr ""
+msgstr "將滑鼠只標移動至左上角或者點擊啟動器圖示都可以打開\"應用程式啟動器\""
 
 #: ../resources/guide/js/launcher.coffee:70
 msgid ""
 "What shown in the first screen of \"launcher\" are the applications "
 "collected."
-msgstr "啓動器的第一屏展示的是您收藏的程式"
+msgstr "啟動器一開始展示的是您最愛的應用程式"
 
 #: ../resources/guide/js/launcher.coffee:85
 msgid ""
-"Please click on the \"All Applications\" icon, you will see all applications."
-msgstr "請點擊 “所有程式” 圖標，你將看到所有應用程式"
+"Please click on the \"All Applications\" icon, you will see all "
+"applications."
+msgstr "請點擊 “所有程式” 圖示，你將看到所有應用程式"
 
 #: ../resources/guide/js/launcher.coffee:95
 msgid ""
 "All programs can be located by scrolling the mouse up and down.\n"
 "You can also click on the left classification navigation to locate"
-msgstr ""
-"滾動鼠標滾輪可以瀏覽所有程式\n"
-"您也可以點擊右側的分類圖標來定位"
+msgstr "滾動鼠標滾輪可以瀏覽所有程式\n您也可以點擊左側的分類圖標來定位"
 
 #: ../resources/guide/js/launcher.coffee:133
 msgid "Skip the step without scroll"
@@ -557,21 +554,19 @@ msgstr "鼠標沒有滾輪，跳此步驟"
 msgid ""
 "Use the keyboard to search for applications\n"
 "Try the \"deepin\" keyword to see which applications are shown"
-msgstr ""
-"使用鍵盤搜索來查找你想要的應用\n"
-"我們來試試「deepin」這個關鍵詞吧，看會顯示那些程式"
+msgstr "使用鍵盤搜尋來尋找您想要的應用程式\n我們來試試 \"deepin\" 這個關鍵字吧，看會顯示那些應用程式"
 
 #: ../resources/guide/js/launcher.coffee:164
 msgid "tips: Please directly enter the word \"deepin\""
-msgstr "提示：請直接輸入單詞 「deepin」"
+msgstr "提示：請直接輸入單字 \"deepin\""
 
 #: ../resources/guide/js/launcher.coffee:179
 msgid "Use the right mouse button to send two icons to the desktop"
-msgstr "單機鼠標右鍵打開菜單，發送兩個圖標到桌面"
+msgstr "單擊滑鼠右鍵打開選單，發送兩個圖示到桌面"
 
 #: ../resources/guide/js/launcher.coffee:180
 msgid "tips: You can add it to startup items or uninstall it"
-msgstr "提示：您可以將它加入登錄後自啓動或卸載它"
+msgstr "提示：您可以將它加入開機啟動項目或解除安裝它"
 
 #: ../resources/dock/js/global_menu.coffee:9
 msgid "Keep _showing"
@@ -591,15 +586,15 @@ msgstr "時尚模式"
 
 #: ../resources/dock/js/global_menu.coffee:25
 msgid "_Efficient mode"
-msgstr "高效模式"
+msgstr "高效率模式"
 
 #: ../resources/dock/js/global_menu.coffee:26
 msgid "_Classic mode"
-msgstr "經典模式"
+msgstr "傳統模式"
 
 #: ../resources/dock/js/deepin_item.coffee:247
 msgid "_View as analog"
-msgstr "顯示傳統時鍾(_V)"
+msgstr "顯示類比時鍾(_V)"
 
 #: ../resources/dock/js/deepin_item.coffee:248
 #: ../resources/dock/js/deepin_item.coffee:300
@@ -616,11 +611,11 @@ msgstr "關閉(_C)"
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
-msgstr "您已經成功卸載 \"%1\""
+msgstr "您已經成功解除安裝 \"%1\""
 
 #: ../resources/common/js/uninstaller.coffee:33
 msgid "\"%1\" failed to be uninstalled"
-msgstr "\"%1\"卸載失敗"
+msgstr "\"%1\" 解除安裝失敗"
 
 #: ../app/desktop/desktop.c:292
 msgid "New file"
@@ -632,7 +627,7 @@ msgstr "新增資料夾"
 
 #: ../app/greeter/mutils.c:84
 msgid "%a, %b %d, %Y"
-msgstr "%Y年%b月%d日 %a"
+msgstr "%Y 年 %b 月 %d 日 %a"
 
 #: ../app/greeter/lock.c:125 ../app/greeter/greeter.c:192
 msgid "Wrong Password"
@@ -640,20 +635,20 @@ msgstr "密碼錯誤"
 
 #: ../app/dock/dock.c:322
 msgid "Dock failed to start, because Compiz is not enabled."
-msgstr "由於 Compiz 程序未啓用，任務欄啓動失敗"
+msgstr "由於 Compiz 沒有啟動，Dock 啟動失敗"
 
 #: ../lib/dentry/entry.c:746
 #, c-format
 msgid ""
 "Cannot rename the item to \"%s\". This may be caused by lack of permissions."
-msgstr "無法重新命名項目到「%s」，可能是因爲缺乏權限。"
+msgstr "無法重新命名項目 \"%s\"，可能是因爲您缺乏權限。"
 
 #: ../lib/dentry/entry.c:752
 #, c-format
 msgid ""
 "There is already a file with name \"%s\" in this folder. Please consider a "
 "different name."
-msgstr "此資料夾下已經有一個名爲「%s」的檔案，請考慮其他的名稱。"
+msgstr "此資料夾下已經有一個名爲 \"%s\" 的檔案，請考慮其他的名稱。"
 
 #: ../lib/dentry/entry.c:758
 msgid "The item could not be renamed"
@@ -665,7 +660,7 @@ msgstr "複製"
 
 #: ../lib/dentry/entry.c:1415
 msgid "App Group"
-msgstr "應用程式啟動群組"
+msgstr "應用程式群組"
 
 #: ../lib/dentry/fileops.c:566
 msgid "Move"
@@ -685,7 +680,7 @@ msgstr "您確定要永久刪除檔案嗎？"
 
 #: ../lib/dentry/fileops_delete.c:33
 msgid "If you delete the files, they will be permanently lost."
-msgstr "若你刪除這些文件，它們將永久消失。"
+msgstr "若您刪除這些文件，它們將永久消失。"
 
 #: ../lib/dentry/fileops_delete.c:36
 msgid "Delete"
@@ -722,66 +717,66 @@ msgstr "取代"
 #: ../lib/dentry/fileops_error_dialog.c:218
 #, c-format
 msgid "Do you want to merge with folder \"%s\"?"
-msgstr "你想要合併資料夾「%s」 嗎？"
+msgstr "你想要合併資料夾 \"%s\"  嗎？"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
 msgid ""
-"The merging operation will be asked to confirm before replacing any files in "
-"the folder conflicted."
-msgstr "合併操作將會在取代衝突檔案時請求確認。"
+"The merging operation will be asked to confirm before replacing any files in"
+" the folder conflicted."
+msgstr "合併操作將會在取代衝突檔案時請求。"
 
 #: ../lib/dentry/fileops_error_dialog.c:222
 #, c-format
 msgid "An older folder with the same name already exists in \"%s\"."
-msgstr "在「%s」中有相同名稱的一個較舊資料夾已存在。"
+msgstr "在 \"%s\" 中有較舊的相同名稱資料夾存在。"
 
 #: ../lib/dentry/fileops_error_dialog.c:226
 #, c-format
 msgid "A newer folder with the same name already exists in \"%s\"."
-msgstr "在「%s」中有相同名稱的一個較新資料夾已存在。"
+msgstr "在 \"%s\" 中有較新的相同名稱資料夾存在。"
 
 #: ../lib/dentry/fileops_error_dialog.c:230
 #, c-format
 msgid "Another folder with the same name already exists in \"%s\"."
-msgstr "在「%s」中有相同名稱的一個資料夾已存在。"
+msgstr "在 \"%s\" 中有相同名稱的資料夾存在。"
 
 #: ../lib/dentry/fileops_error_dialog.c:236
 msgid "All files in the folder will be removed by replacing."
-msgstr "替換操作將移除資料夾中的所有檔案"
+msgstr "替換操作將移除資料夾中的所有檔案。"
 
 #: ../lib/dentry/fileops_error_dialog.c:237
 #, c-format
 msgid "Do you want to replace folder \"%s\"?"
-msgstr "你想要取代資料夾 「%s」 嗎？"
+msgstr "你想要取代資料夾  \"%s\" 嗎？"
 
 #: ../lib/dentry/fileops_error_dialog.c:239
 #, c-format
 msgid "A folder with the same name already exists in \"%s\"."
-msgstr "在「%s」中已存在相同檔案名的資料夾。"
+msgstr "在 \"%s\" 中有相同名稱的資料夾存在。"
 
 #: ../lib/dentry/fileops_error_dialog.c:245
 #, c-format
 msgid "Do you want to replace file \"%s\"?"
-msgstr "你想要取代檔案 「%s」嗎？"
+msgstr "你想要取代檔案 \"%s\" 嗎？"
 
 #: ../lib/dentry/fileops_error_dialog.c:246
 msgid "The content will be overwritten by replacing."
-msgstr ""
+msgstr "替換操作將覆蓋它的內容。"
 
 #: ../lib/dentry/fileops_error_dialog.c:248
 #, c-format
 msgid "An older file with the same name already exists in \"%s\"."
-msgstr "在「%s」中已存在較舊的相同名稱的檔案。"
+msgstr "在 \"%s\" 中有較舊的相同名稱資料夾存在。"
 
 #: ../lib/dentry/fileops_error_dialog.c:252
 #, c-format
 msgid "A newer file with the same name already exists in \"%s\"."
-msgstr "在「%s」中已存在更新的相同檔案名的檔案。"
+msgstr "在 \"%s\" 中有較新的相同名稱資料夾存在。"
 
 #: ../lib/dentry/fileops_error_dialog.c:256
 #, c-format
 msgid "Another file with the same name already exists in \"%s\"."
-msgstr "在「%s」中已存在相同檔案名的檔案。"
+msgstr "在 \"%s\" 中有相同名稱的資料夾存在。"
 
 #: ../lib/dentry/fileops_error_dialog.c:328
 msgid "Original file"
@@ -814,33 +809,33 @@ msgstr "合併"
 #: ../lib/dentry/fileops_error_reporting.c:191
 #, c-format
 msgid "Error while %s files"
-msgstr "當%s檔案時出錯"
+msgstr "當 %s 檔案時出錯"
 
 #: ../lib/dentry/fileops_trash.c:58
 msgid "Empty Trash"
-msgstr "清理回收筒"
+msgstr "清理回收桶"
 
 #: ../lib/dentry/fileops_trash.c:67
 msgid "Empty all items from Trash?"
-msgstr "清理回收筒中的全部項目嗎？"
+msgstr "清理回收桶中的全部項目嗎？"
 
 #: ../lib/dentry/fileops_trash.c:68
 msgid "All items in the Trash will be permanently deleted."
-msgstr "回收筒中的全部項目將被永久刪除。"
+msgstr "回收桶中的全部項目將被永久刪除。"
 
 #: ../lib/dentry/fileops_trash.c:71
 msgid "Empty _Trash"
-msgstr "清理回收筒(_T)"
+msgstr "清理回收桶(_T)"
 
 #: ../lib/dentry/mime_actions.c:198
 #, c-format
 msgid "Do you want to run \"%s\", or display its contents?"
-msgstr "您想要執行“%s”，還是顯示其內容？"
+msgstr "您想要執行 “%s”，還是顯示其內容？"
 
 #: ../lib/dentry/mime_actions.c:199
 #, c-format
 msgid "\"%s\" is an executable text file."
-msgstr "「%s」是一個可執行的文字檔案。"
+msgstr "\"%s\" 是一個可執行的文字檔案。"
 
 #: ../lib/dentry/mime_actions.c:210
 msgid "Run in _Terminal"
@@ -901,33 +896,3 @@ msgstr "公用程式"
 #: ../lib/category.c:56
 msgid "others"
 msgstr "其他"
-
-#~ msgid "click login button to log in"
-#~ msgstr "點擊登錄按鈕來登錄"
-
-#~ msgid "Expand"
-#~ msgstr "展開"
-
-#~ msgid "Only the first Screen"
-#~ msgstr "僅在第一屏顯示"
-
-#~ msgid "Only the second Screen"
-#~ msgstr "僅在第二屏顯示"
-
-#~ msgid "_Dock setting"
-#~ msgstr "任務欄設定(_T)"
-
-#~ msgid "_Clean up"
-#~ msgstr "清理(_C)"
-
-#~ msgid "Thanks for your patience to learn.You get the novice package"
-#~ msgstr "謝謝您的耐心學習，您獲得了新手禮包"
-
-#~ msgid "tips：Please receive in Deepin account"
-#~ msgstr "提示：請到深度賬號接收"
-
-#~ msgid "Get"
-#~ msgstr "取得"
-
-#~ msgid "New users directly jump to the registration page"
-#~ msgstr "新用戶直接跳到註冊頁面"

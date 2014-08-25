@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # artor <arto@rusanen.me>, 2014
 msgid ""
@@ -9,14 +9,13 @@ msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-08-22 11:12+0800\n"
-"PO-Revision-Date: 2014-07-03 05:10+0000\n"
-"Last-Translator: cxbii <chenxiangbang@linuxdeepin.com>\n"
-"Language-Team: Finnish (http://www.transifex.com/projects/p/deepin-desktop-"
-"environment/language/fi/)\n"
-"Language: fi\n"
+"PO-Revision-Date: 2014-08-22 04:43+0000\n"
+"Last-Translator: szd_liufei <liufei@linuxdeepin.com>\n"
+"Language-Team: Finnish (http://www.transifex.com/projects/p/deepin-desktop-environment/language/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fi\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../resources/desktop/js/invalidlink.coffee:34
@@ -93,7 +92,7 @@ msgstr "Tiedostoa ei voi avata."
 
 #: ../resources/desktop/js/specialitem.coffee:34
 msgid "Computer"
-msgstr ""
+msgstr "Tietokone"
 
 #: ../resources/desktop/js/specialitem.coffee:87
 #: ../resources/dock/js/main.coffee:47 ../resources/dock/js/main.coffee:124
@@ -101,14 +100,12 @@ msgid "Trash"
 msgstr "Roskakori"
 
 #: ../resources/desktop/js/specialitem.coffee:152
-#, fuzzy
 msgid "_Clean up %1 items"
-msgstr "Tyhjennä"
+msgstr "Poista %1 kohdetta"
 
 #: ../resources/desktop/js/specialitem.coffee:154
-#, fuzzy
 msgid "_Clean up 1 item"
-msgstr "Tyhjennä"
+msgstr "Poista 1 kohde"
 
 #: ../resources/desktop/js/specialitem.coffee:156
 #: ../resources/dock/js/plugins/trash/trash.coffee:29
@@ -188,9 +185,7 @@ msgstr "Paina Ctrl + Alt + F1\n"
 msgid ""
 "\t\t\t\t-----The daemon of accounts has not started!-----\n"
 ")"
-msgstr ""
-"    ----Tilien palvelu ei ole käynnistynyt!-----\n"
-")"
+msgstr "    ----Tilien palvelu ei ole käynnistynyt!-----\n)"
 
 #: ../resources/greeter/js/message.coffee:79
 msgid "$ sudo apt-get install deepin-desktop-Environment\n"
@@ -308,9 +303,8 @@ msgid "Enter your password to %1"
 msgstr "Anna salasanasi kohteelle %1"
 
 #: ../resources/greeter/js/mediacontrol.coffee:167
-#, fuzzy
 msgid "Click button to Play"
-msgstr "paina kirjautumispainiketta kirjaantuaksesi sisään"
+msgstr ""
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
@@ -333,7 +327,7 @@ msgstr "Haluatko varmasti poistaa"
 #: ../resources/launcher/js/item.coffee:354
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
 msgid "All dependencies will be removed"
-msgstr "Kaikki riippuvuudet poistetaan myös"
+msgstr ""
 
 #: ../resources/launcher/js/item.coffee:354
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
@@ -385,9 +379,8 @@ msgid "Send to d_esktop"
 msgstr "Lähetä työpöydälle"
 
 #: ../resources/launcher/js/const.coffee:85
-#, fuzzy
 msgid "Remove from d_esktop"
-msgstr "Poista suosikeista"
+msgstr ""
 
 #: ../resources/launcher/js/const.coffee:88
 #: ../resources/guide/js/launcher.coffee:239
@@ -395,9 +388,8 @@ msgid "Send to do_ck"
 msgstr "Lähetä telakkaan"
 
 #: ../resources/launcher/js/const.coffee:89
-#, fuzzy
 msgid "Remove from do_ck"
-msgstr "Poista suosikeista"
+msgstr ""
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "Control Center"
@@ -424,27 +416,22 @@ msgid "Well, please trigger the lower right corner again"
 msgstr "Käynnistä oikea alakulma uudelleen"
 
 #: ../resources/guide/js/dss.coffee:30
-#, fuzzy
 msgid "tips: Click the setting icon on dock to implement"
-msgstr "vihje: Paina asetukset kuvaketta panelissa"
+msgstr ""
 
 #: ../resources/guide/js/dss.coffee:69
 msgid "Here is the system setting area"
 msgstr "Tämä on järjestelmän asetukset alue"
 
 #: ../resources/guide/js/dss.coffee:70
-#, fuzzy
 msgid ""
 "tips: Hover the setting icon on dock to quickly implement some setting "
 "functions"
 msgstr ""
-"vihje: Siirtämällä hiiren asetukset kuvakkeen päälle voit toteuttaa joitain "
-"asetuksia nopeasti"
 
 #: ../resources/guide/js/end.coffee:25
-#, fuzzy
 msgid "Thanks for your patience while learning. Congratulations."
-msgstr "Kiitos kun jaksoit oppia. Onnittelut!"
+msgstr ""
 
 #: ../resources/guide/js/end.coffee:30
 msgid "End"
@@ -469,28 +456,20 @@ msgid "Well, you have learned how to create a \"application group\""
 msgstr "Nyt olet oppinut kuinka tehdään \"ohjelma ryhmä\""
 
 #: ../resources/guide/js/desktop.coffee:117
-#, fuzzy
 msgid "tips: Right-click on the application group will provide more functions"
 msgstr ""
-"vihje: Oikean puolen painikkeella ohjelma ryhmästä löydät lisää toimintoja"
 
 #: ../resources/guide/js/desktop.coffee:128
-#, fuzzy
 msgid ""
-"Slide the mouse to the four top corners, which can trigger four different "
-"events\n"
+"Slide the mouse to the four top corners, which can trigger four different events\n"
 "Please move to the upper left corner first to show or hide Launcher"
 msgstr ""
-"Siirtämällä hiiren yhteen neljästä eri kulmasta voit käynnistää erilaisia "
-"tapahtumia\n"
-"Siirrä hiiri vasempaan yläkulmaan näyttääksesi tai piillottaaksesi "
-"käynnistimen"
 
 #: ../resources/guide/js/desktop.coffee:129
-#, fuzzy
 msgid ""
-"tips: Please trigger successively by hints, click on the blank area to return"
-msgstr "vihje: Paina tyhjästä alueesta palataksesi takaisin"
+"tips: Please trigger successively by hints, click on the blank area to "
+"return"
+msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:133
 msgid "Show/Hide Launcher"
@@ -512,15 +491,11 @@ msgstr "Oikealle yläkulmalle ei ole asetettu oletustoimintoa"
 msgid ""
 "Right-click on desktop black area to call up the menu, select \"Corner "
 "navigation\" to set the corner used"
-msgstr ""
-"Paina työpöydän tyhjästä tilasta oikean puolen napilla ja valitse \"Kulma "
-"navigointi\" asettaaksesi käytössä olevan kulman"
+msgstr "Paina työpöydän tyhjästä tilasta oikean puolen napilla ja valitse \"Kulma navigointi\" asettaaksesi käytössä olevan kulman"
 
 #: ../resources/guide/js/desktop.coffee:179
-#, fuzzy
 msgid "tips: Click on the interface of corner navigation blank area to return"
 msgstr ""
-"vihje: Paina kulmanavigointi toiminnon tyhjästä tilasta palataksesi takaisin"
 
 #: ../resources/guide/js/start.coffee:28
 msgid "New Launcher"
@@ -544,29 +519,25 @@ msgstr "Aloita"
 
 #: ../resources/guide/js/start.coffee:51
 msgid "I am an experienced user. Exit directly."
-msgstr "Olen vanhempi käyttäjä. Poistu samantein"
+msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:29
-#, fuzzy
 msgid ""
 "\"Application Launcher\" can be started by sliding the mouse to the upper "
 "left corner or clicking on the launcher."
 msgstr ""
-"Siirtämällä hiiren vasempaan yläkulmaan tai painamalla käynnistyskuvaketta "
-"voit tuoda esille ohjelmavalikon"
 
 #: ../resources/guide/js/launcher.coffee:70
-#, fuzzy
 msgid ""
 "What shown in the first screen of \"launcher\" are the applications "
 "collected."
-msgstr "Ensimmäiseltä ohjelmavalikon sivulta löytyy ohjelmaryhmät"
+msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:85
-#, fuzzy
 msgid ""
-"Please click on the \"All Applications\" icon, you will see all applications."
-msgstr "Painamalla \"Kaikki ohjelmat\" kuvaketta näet kaikki ohjelmat"
+"Please click on the \"All Applications\" icon, you will see all "
+"applications."
+msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:95
 msgid ""
@@ -579,42 +550,34 @@ msgid "Skip the step without scroll"
 msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:163
-#, fuzzy
 msgid ""
 "Use the keyboard to search for applications\n"
 "Try the \"deepin\" keyword to see which applications are shown"
 msgstr ""
-"Käytä tekstihakukenttää löytääksesi haluamasi ohjelma.\n"
-"Yritä esimerkiksi \"deepin\" hakusanaa nähdäksemme mitä löytyy"
 
 #: ../resources/guide/js/launcher.coffee:164
-#, fuzzy
 msgid "tips: Please directly enter the word \"deepin\""
-msgstr "vihje: Kirjoita vain hakusana \"deepin\""
+msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:179
 msgid "Use the right mouse button to send two icons to the desktop"
-msgstr ""
-"Käytä oikeanpuoleista painiketta lähettääksesi kaksi kuvaketta työpöydälle"
+msgstr "Käytä oikeanpuoleista painiketta lähettääksesi kaksi kuvaketta työpöydälle"
 
 #: ../resources/guide/js/launcher.coffee:180
 msgid "tips: You can add it to startup items or uninstall it"
 msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:9
-#, fuzzy
 msgid "Keep _showing"
-msgstr "Pidä näkyvänä"
+msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:10
-#, fuzzy
 msgid "Keep _hidden"
-msgstr "Pidä piilotettuna"
+msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:11
-#, fuzzy
 msgid "_Auto hide"
-msgstr "Automaatti piilotus"
+msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:24
 msgid "_Fashion mode"
@@ -667,7 +630,7 @@ msgstr "%a, %b %d, %Y"
 
 #: ../app/greeter/lock.c:125 ../app/greeter/greeter.c:192
 msgid "Wrong Password"
-msgstr "Epäkelpo salasana"
+msgstr ""
 
 #: ../app/dock/dock.c:322
 msgid "Dock failed to start, because Compiz is not enabled."
@@ -677,16 +640,14 @@ msgstr "Telakka ei käynnistynyt koska Compiz ei ole käytössä"
 #, c-format
 msgid ""
 "Cannot rename the item to \"%s\". This may be caused by lack of permissions."
-msgstr ""
-"Ei voida uudelleen nimetä \"%s\". Tämä voi johtua oikeuksien puutteesta."
+msgstr "Ei voida uudelleen nimetä \"%s\". Tämä voi johtua oikeuksien puutteesta."
 
 #: ../lib/dentry/entry.c:752
 #, c-format
 msgid ""
 "There is already a file with name \"%s\" in this folder. Please consider a "
 "different name."
-msgstr ""
-"Tiedostonimi \"%s\" on jo olemassa tässä kansiossa. Valitse toinen nimi."
+msgstr "Tiedostonimi \"%s\" on jo olemassa tässä kansiossa. Valitse toinen nimi."
 
 #: ../lib/dentry/entry.c:758
 msgid "The item could not be renamed"
@@ -759,11 +720,9 @@ msgstr "Haluatko yhdistää kansioon \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
 msgid ""
-"The merging operation will be asked to confirm before replacing any files in "
-"the folder conflicted."
+"The merging operation will be asked to confirm before replacing any files in"
+" the folder conflicted."
 msgstr ""
-"Sinulta tullaan kysymään varmistus kaikille tiedostoille jotka ovat "
-"ristiriidassa kopioitavien tiedostojen kanssa."
 
 #: ../lib/dentry/fileops_error_dialog.c:222
 #, c-format
@@ -781,9 +740,8 @@ msgid "Another folder with the same name already exists in \"%s\"."
 msgstr "\"%s\" kohteessa on jo olemassa toinen kansio samalla nimellä."
 
 #: ../lib/dentry/fileops_error_dialog.c:236
-#, fuzzy
 msgid "All files in the folder will be removed by replacing."
-msgstr "Kaikki tiedostot tullaan poistamaan pysyvästi."
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:237
 #, c-format
@@ -936,35 +894,4 @@ msgstr "työkalut"
 
 #: ../lib/category.c:56
 msgid "others"
-msgstr "muut"
-
-#~ msgid "click login button to log in"
-#~ msgstr "paina kirjautumispainiketta kirjaantuaksesi sisään"
-
-#~ msgid "Expand"
-#~ msgstr "Laajenna"
-
-#~ msgid "Only the first Screen"
-#~ msgstr "Vain ensimmäinen näyttö"
-
-#~ msgid "Only the second Screen"
-#~ msgstr "Vain toinen näyttö"
-
-#, fuzzy
-#~ msgid "_Dock setting"
-#~ msgstr "Ajan asetukset"
-
-#~ msgid "_Clean up"
-#~ msgstr "Tyhjennä"
-
-#~ msgid "Thanks for your patience to learn.You get the novice package"
-#~ msgstr "Kiitos kun jaksoit oppia. Olet ansainnut aloittelijan paketin"
-
-#~ msgid "tips：Please receive in Deepin account"
-#~ msgstr "vihje: Vastaanotto Deepin tilille"
-
-#~ msgid "Get"
-#~ msgstr "Ota"
-
-#~ msgid "New users directly jump to the registration page"
-#~ msgstr "Rekisteröintisivu uusille käyttäjille"
+msgstr ""

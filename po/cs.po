@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # fri, 2014
 # fri, 2014
@@ -10,14 +10,13 @@ msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-08-22 11:12+0800\n"
-"PO-Revision-Date: 2014-07-06 15:34+0000\n"
+"PO-Revision-Date: 2014-08-22 11:31+0000\n"
 "Last-Translator: fri\n"
-"Language-Team: Czech (http://www.transifex.com/projects/p/deepin-desktop-"
-"environment/language/cs/)\n"
-"Language: cs\n"
+"Language-Team: Czech (http://www.transifex.com/projects/p/deepin-desktop-environment/language/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: cs\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
 #: ../resources/desktop/js/invalidlink.coffee:34
@@ -94,7 +93,7 @@ msgstr "Nelze otevřít tento soubor."
 
 #: ../resources/desktop/js/specialitem.coffee:34
 msgid "Computer"
-msgstr ""
+msgstr "Počítač"
 
 #: ../resources/desktop/js/specialitem.coffee:87
 #: ../resources/dock/js/main.coffee:47 ../resources/dock/js/main.coffee:124
@@ -102,19 +101,17 @@ msgid "Trash"
 msgstr "Koš"
 
 #: ../resources/desktop/js/specialitem.coffee:152
-#, fuzzy
 msgid "_Clean up %1 items"
-msgstr "U_klidit"
+msgstr "U_klidit %1 položek"
 
 #: ../resources/desktop/js/specialitem.coffee:154
-#, fuzzy
 msgid "_Clean up 1 item"
-msgstr "U_klidit"
+msgstr "_Uklidit 1 položku"
 
 #: ../resources/desktop/js/specialitem.coffee:156
 #: ../resources/dock/js/plugins/trash/trash.coffee:29
 msgid "_Empty"
-msgstr ""
+msgstr "_Prázdný"
 
 #: ../resources/desktop/js/grid.coffee:71 ../lib/dentry/fileops.c:403
 msgid "Untitled"
@@ -189,9 +186,7 @@ msgstr "Stiskněte Ctrl + Alt + F1\n"
 msgid ""
 "\t\t\t\t-----The daemon of accounts has not started!-----\n"
 ")"
-msgstr ""
-"\t\t\t\t-----Služba pro uživatelské účty nebyla spuštěna!-----\n"
-")"
+msgstr "\t\t\t\t-----Služba pro uživatelské účty nebyla spuštěna!-----\n)"
 
 #: ../resources/greeter/js/message.coffee:79
 msgid "$ sudo apt-get install deepin-desktop-Environment\n"
@@ -203,7 +198,7 @@ msgstr "\t\t\t\t-----Žádná dostupná sezení pracovní plochy!-----\n"
 
 #: ../resources/greeter/js/user.coffee:411
 msgid "Login"
-msgstr ""
+msgstr "Přihlášení"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jan"
@@ -309,17 +304,16 @@ msgid "Enter your password to %1"
 msgstr "Zadejte své heslo k %1"
 
 #: ../resources/greeter/js/mediacontrol.coffee:167
-#, fuzzy
 msgid "Click button to Play"
-msgstr "Klepněte na tlačítko pro přihlášení, abyste se přihlásil"
+msgstr "Klepněte na tlačítko pro přehrávání"
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
-msgstr ""
+msgstr "Zdvojit"
 
 #: ../resources/osd/js/monitor.coffee:39
 msgid "Extend"
-msgstr ""
+msgstr "Roztáhnout"
 
 #: ../resources/launcher/js/item.coffee:283
 #: ../resources/guide/js/launcher.coffee:242
@@ -386,9 +380,8 @@ msgid "Send to d_esktop"
 msgstr "Odeslat na p_lochu"
 
 #: ../resources/launcher/js/const.coffee:85
-#, fuzzy
 msgid "Remove from d_esktop"
-msgstr "Odstranit z _oblíbených"
+msgstr "Odstranit z _plochy"
 
 #: ../resources/launcher/js/const.coffee:88
 #: ../resources/guide/js/launcher.coffee:239
@@ -396,9 +389,8 @@ msgid "Send to do_ck"
 msgstr "Odeslat do _panelu"
 
 #: ../resources/launcher/js/const.coffee:89
-#, fuzzy
 msgid "Remove from do_ck"
-msgstr "Odstranit z _oblíbených"
+msgstr "Odstranit z pa_nelu"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "Control Center"
@@ -425,7 +417,6 @@ msgid "Well, please trigger the lower right corner again"
 msgstr "Dobře. najeďte nyní, prosím, znovu do dolního pravého rohu"
 
 #: ../resources/guide/js/dss.coffee:30
-#, fuzzy
 msgid "tips: Click the setting icon on dock to implement"
 msgstr "Rada: Klepněte pro přesunutí na symbol pro nastavení v panelu"
 
@@ -434,16 +425,12 @@ msgid "Here is the system setting area"
 msgstr "Zde je oblast pro nastavení systému"
 
 #: ../resources/guide/js/dss.coffee:70
-#, fuzzy
 msgid ""
 "tips: Hover the setting icon on dock to quickly implement some setting "
 "functions"
-msgstr ""
-"Rada: Přejeďte nad symbolem pro nastavení v panelu pro rychlé vyvolání "
-"různých nastavení"
+msgstr "Rada: Přejeďte nad symbolem pro nastavení v panelu pro rychlé vyvolání různých nastavení"
 
 #: ../resources/guide/js/end.coffee:25
-#, fuzzy
 msgid "Thanks for your patience while learning. Congratulations."
 msgstr "Děkujeme za trpělivost při učení. Blahopřejeme!"
 
@@ -463,38 +450,27 @@ msgstr "Připravte se na provádění různých úloh..."
 msgid ""
 "Let's drag the other icon on the first icon \n"
 " to generate \"application group\""
-msgstr ""
-"Přetáhněte jiný symbol na první symbol\n"
-"pro vytvoření skupiny programů"
+msgstr "Přetáhněte jiný symbol na první symbol\npro vytvoření skupiny programů"
 
 #: ../resources/guide/js/desktop.coffee:116
 msgid "Well, you have learned how to create a \"application group\""
 msgstr "Dobře, naučil jste se, jak vytvořit skupinu programů"
 
 #: ../resources/guide/js/desktop.coffee:117
-#, fuzzy
 msgid "tips: Right-click on the application group will provide more functions"
 msgstr "Rada: Klepnutí pravým tlačítkem myši na program ukáže více funkcí"
 
 #: ../resources/guide/js/desktop.coffee:128
-#, fuzzy
 msgid ""
-"Slide the mouse to the four top corners, which can trigger four different "
-"events\n"
+"Slide the mouse to the four top corners, which can trigger four different events\n"
 "Please move to the upper left corner first to show or hide Launcher"
-msgstr ""
-"Jeďte s myší do různých rohů vaší obrazovky, což má za následek spuštění "
-"čtyř různých událostí\n"
-"Nejprve, prosím, s myší zajeďte do horního rohu, což má za následek ukázání "
-"nebo skrytí spouštěče programů."
+msgstr "Jeďte s myší do různých rohů vaší obrazovky, což má za následek spuštění čtyř různých událostí\nNejprve, prosím, s myší zajeďte do horního levého rohu, což má za následek ukázání nebo skrytí spouštěče programů."
 
 #: ../resources/guide/js/desktop.coffee:129
-#, fuzzy
 msgid ""
-"tips: Please trigger successively by hints, click on the blank area to return"
-msgstr ""
-"Rada: Spouštějte, prosím, požadované události s pomocí rad, klepněte na "
-"prázdnou plochu pro návrat zpět"
+"tips: Please trigger successively by hints, click on the blank area to "
+"return"
+msgstr "Rada: Spouštějte, prosím, požadované události s pomocí rad, klepněte na prázdnou plochu pro návrat zpět"
 
 #: ../resources/guide/js/desktop.coffee:133
 msgid "Show/Hide Launcher"
@@ -516,16 +492,11 @@ msgstr "Ve výchozím nastavení není pro horní pravý roh stanovena žádná 
 msgid ""
 "Right-click on desktop black area to call up the menu, select \"Corner "
 "navigation\" to set the corner used"
-msgstr ""
-"Klepněte pravým tlačítkem myši na prázdnou oblast pracovní plochy pro "
-"vyvolání nabídky. Vyberte rohovou navigaci pro vyvolání nastavení rohové "
-"navigace"
+msgstr "Klepněte pravým tlačítkem myši na prázdnou oblast pracovní plochy pro vyvolání nabídky. Vyberte rohovou navigaci pro vyvolání nastavení rohové navigace"
 
 #: ../resources/guide/js/desktop.coffee:179
-#, fuzzy
 msgid "tips: Click on the interface of corner navigation blank area to return"
-msgstr ""
-"Rada: Klepněte na prázdnou plochu v oblasti rohové navigace pro návrat zpět"
+msgstr "Rada: Klepněte na prázdnou plochu v oblasti rohové navigace pro návrat zpět"
 
 #: ../resources/guide/js/start.coffee:28
 msgid "New Launcher"
@@ -541,8 +512,7 @@ msgstr "Nová nastavení systému"
 
 #: ../resources/guide/js/start.coffee:29
 msgid "The following will guide you to learn how to use some new functions"
-msgstr ""
-"V následujícím budete seznámeni se zacházením s několika novými funkcemi"
+msgstr "V následujícím budete seznámeni se zacházením s několika novými funkcemi"
 
 #: ../resources/guide/js/start.coffee:44
 msgid "Start"
@@ -550,95 +520,77 @@ msgstr "Spustit"
 
 #: ../resources/guide/js/start.coffee:51
 msgid "I am an experienced user. Exit directly."
-msgstr "Jsem při tom už o něco déle. Ihned ukončit"
+msgstr "Jsem při tom jako zkušený uživatel už o něco déle. Ihned ukončit."
 
 #: ../resources/guide/js/launcher.coffee:29
-#, fuzzy
 msgid ""
 "\"Application Launcher\" can be started by sliding the mouse to the upper "
 "left corner or clicking on the launcher."
-msgstr ""
-"Jeďte myší do horního levého rohu obrazovky, nebo klepněte na symbol "
-"spouštěče programů, čímž tak zvaný spouštěč programů vyvoláte."
+msgstr "Spouštěč programů lze spustit zajetím myší do horního levého rohu obrazovky, nebo klepnutím na symbol spouštěče programů, čímž tak zvaný spouštěč programů vyvoláte."
 
 #: ../resources/guide/js/launcher.coffee:70
-#, fuzzy
 msgid ""
 "What shown in the first screen of \"launcher\" are the applications "
 "collected."
-msgstr "Na první obrazovce spouštěče programů vidíme sbírku programů"
+msgstr "Na první obrazovce spouštěče programů vidíme sbírku programů."
 
 #: ../resources/guide/js/launcher.coffee:85
-#, fuzzy
 msgid ""
-"Please click on the \"All Applications\" icon, you will see all applications."
-msgstr ""
-"Klepněte, prosím, na symbol Všechny programy pro ukázání celé sbírky programů"
+"Please click on the \"All Applications\" icon, you will see all "
+"applications."
+msgstr "Klepněte, prosím, na symbol Všechny programy pro ukázání celé sbírky programů."
 
 #: ../resources/guide/js/launcher.coffee:95
 msgid ""
 "All programs can be located by scrolling the mouse up and down.\n"
 "You can also click on the left classification navigation to locate"
-msgstr ""
-"Všechny programy lze najít otáčením kolečkem myši nahoru a dolů.\n"
-"Také můžete klepnout na levé rozčlenění v navigaci, abyste se tam dostal"
+msgstr "Všechny programy lze najít otáčením kolečkem myši nahoru a dolů.\nTaké můžete klepnout na levé rozčlenění v navigaci, abyste se tam dostal"
 
 #: ../resources/guide/js/launcher.coffee:133
 msgid "Skip the step without scroll"
 msgstr "Přeskočit tento krok bez otáčení kolečkem myši"
 
 #: ../resources/guide/js/launcher.coffee:163
-#, fuzzy
 msgid ""
 "Use the keyboard to search for applications\n"
 "Try the \"deepin\" keyword to see which applications are shown"
-msgstr ""
-"Použijte klávesnici k hledání požadovaných programů\n"
-"My zkoušíme klíčové slovo \"deepin\", abychom viděli, které programy jsou "
-"nám ukázány"
+msgstr "Použijte klávesnici k hledání požadovaných programů.\nZkuste klíčové slovo \"deepin\", abyste viděli, které programy jsou ukázány"
 
 #: ../resources/guide/js/launcher.coffee:164
-#, fuzzy
 msgid "tips: Please directly enter the word \"deepin\""
 msgstr "Rada: Zadejte, prosím, přímo slovo \"deepin\""
 
 #: ../resources/guide/js/launcher.coffee:179
 msgid "Use the right mouse button to send two icons to the desktop"
-msgstr ""
-"Použijte klepnutí pravým tlačítkem myši pro pro poslání dvou ikon na "
-"pracovní plochu"
+msgstr "Použijte klepnutí pravým tlačítkem myši pro pro poslání dvou ikon na pracovní plochu"
 
 #: ../resources/guide/js/launcher.coffee:180
-#, fuzzy
 msgid "tips: You can add it to startup items or uninstall it"
 msgstr "Rada: Můžete to přidat do spouštěných položek nebo odinstalovat"
 
 #: ../resources/dock/js/global_menu.coffee:9
-#, fuzzy
 msgid "Keep _showing"
 msgstr "_Ukazovat vždy"
 
 #: ../resources/dock/js/global_menu.coffee:10
-#, fuzzy
 msgid "Keep _hidden"
 msgstr "_Skrývat vždy"
 
 #: ../resources/dock/js/global_menu.coffee:11
-#, fuzzy
 msgid "_Auto hide"
 msgstr "Skrývat _automaticky"
 
 #: ../resources/dock/js/global_menu.coffee:24
 msgid "_Fashion mode"
-msgstr ""
+msgstr "_Návykový režim"
 
 #: ../resources/dock/js/global_menu.coffee:25
 msgid "_Efficient mode"
-msgstr ""
+msgstr "Úč_elný režim"
 
 #: ../resources/dock/js/global_menu.coffee:26
 msgid "_Classic mode"
-msgstr ""
+msgstr "_Klasický režim"
 
 #: ../resources/dock/js/deepin_item.coffee:247
 msgid "_View as analog"
@@ -659,11 +611,11 @@ msgstr "_Zavřít"
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
-msgstr ""
+msgstr "Odinstalace \"%1\" byla úspěšná."
 
 #: ../resources/common/js/uninstaller.coffee:33
 msgid "\"%1\" failed to be uninstalled"
-msgstr ""
+msgstr "\"%1\" se nepodařilo odinstalovat"
 
 #: ../app/desktop/desktop.c:292
 msgid "New file"
@@ -679,7 +631,7 @@ msgstr "%a, %b %d, %Y"
 
 #: ../app/greeter/lock.c:125 ../app/greeter/greeter.c:192
 msgid "Wrong Password"
-msgstr "Neplatné heslo"
+msgstr "Špatné heslo"
 
 #: ../app/dock/dock.c:322
 msgid "Dock failed to start, because Compiz is not enabled."
@@ -689,17 +641,14 @@ msgstr "Panel se nepodařilo spustit, protože Compiz není povolen."
 #, c-format
 msgid ""
 "Cannot rename the item to \"%s\". This may be caused by lack of permissions."
-msgstr ""
-"Nepodařilo se přejmenovat položku na \"%s\". To může být způsobeno "
-"nedostatkem oprávnění."
+msgstr "Nepodařilo se přejmenovat položku na \"%s\". To může být způsobeno nedostatkem oprávnění."
 
 #: ../lib/dentry/entry.c:752
 #, c-format
 msgid ""
 "There is already a file with name \"%s\" in this folder. Please consider a "
 "different name."
-msgstr ""
-"V této složce je již soubor s názvem \"%s\". Zvažte, prosím, jiný název."
+msgstr "V této složce je již soubor s názvem \"%s\". Zvažte, prosím, jiný název."
 
 #: ../lib/dentry/entry.c:758
 msgid "The item could not be renamed"
@@ -772,11 +721,9 @@ msgstr "Chcete činnost spojit se složkou \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
 msgid ""
-"The merging operation will be asked to confirm before replacing any files in "
-"the folder conflicted."
-msgstr ""
-"Budete dotázán před nahrazením jakéhokoli souboru, který je ve střetu se "
-"soubory, jež jsou kopírovány."
+"The merging operation will be asked to confirm before replacing any files in"
+" the folder conflicted."
+msgstr "Při slučování budete požádáni o potvrzení, předtím než budou nahrazeny jakékoli soubory ve složce, které se střetávají se soubory, jež jsou kopírovány."
 
 #: ../lib/dentry/fileops_error_dialog.c:222
 #, c-format
@@ -794,9 +741,8 @@ msgid "Another folder with the same name already exists in \"%s\"."
 msgstr "Jiná složka se stejným názvem již existuje v \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:236
-#, fuzzy
 msgid "All files in the folder will be removed by replacing."
-msgstr "Všechny položky v koši budou trvale smazány"
+msgstr "Všechny soubory ve složce budou odstraněny jejich nahrazením."
 
 #: ../lib/dentry/fileops_error_dialog.c:237
 #, c-format
@@ -815,7 +761,7 @@ msgstr "Chcete nahradit soubor \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:246
 msgid "The content will be overwritten by replacing."
-msgstr ""
+msgstr "Obsah bude přepsán nahrazením."
 
 #: ../lib/dentry/fileops_error_dialog.c:248
 #, c-format
@@ -950,34 +896,3 @@ msgstr "Příslušenství"
 #: ../lib/category.c:56
 msgid "others"
 msgstr "Jiné"
-
-#~ msgid "click login button to log in"
-#~ msgstr "Klepněte na tlačítko pro přihlášení, abyste se přihlásil"
-
-#~ msgid "Expand"
-#~ msgstr "Zvětšit"
-
-#~ msgid "Only the first Screen"
-#~ msgstr "Jen první obrazovka"
-
-#~ msgid "Only the second Screen"
-#~ msgstr "Jen druhá obrazovka"
-
-#, fuzzy
-#~ msgid "_Dock setting"
-#~ msgstr "Nastavení č_asu"
-
-#~ msgid "_Clean up"
-#~ msgstr "U_klidit"
-
-#~ msgid "Thanks for your patience to learn.You get the novice package"
-#~ msgstr "Děkujeme za trpělivost při učení. Dostanete začátečnický balíček"
-
-#~ msgid "tips：Please receive in Deepin account"
-#~ msgstr "Rada: Bylo by smysluplné brát v úvahu uživatelský účet Deepin"
-
-#~ msgid "Get"
-#~ msgstr "Získat"
-
-#~ msgid "New users directly jump to the registration page"
-#~ msgstr "Noví uživatelé skočí přímo na stránku pro registraci"

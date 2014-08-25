@@ -1,23 +1,23 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Jesse Wayde Brandao <www.jwb@gmail.com>, 2014
+# Luis Jorge Simões das Neves <luisjneves@gmail.com>, 2014
 # Jesse Wayde Brandao <www.jwb@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-08-22 11:12+0800\n"
-"PO-Revision-Date: 2014-07-03 05:01+0000\n"
-"Last-Translator: cxbii <chenxiangbang@linuxdeepin.com>\n"
-"Language-Team: Portuguese (Portugal) (http://www.transifex.com/projects/p/"
-"deepin-desktop-environment/language/pt_PT/)\n"
-"Language: pt_PT\n"
+"PO-Revision-Date: 2014-08-22 04:43+0000\n"
+"Last-Translator: szd_liufei <liufei@linuxdeepin.com>\n"
+"Language-Team: Portuguese (Portugal) (http://www.transifex.com/projects/p/deepin-desktop-environment/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../resources/desktop/js/invalidlink.coffee:34
@@ -94,7 +94,7 @@ msgstr "Não é possível abrir este ficheiro."
 
 #: ../resources/desktop/js/specialitem.coffee:34
 msgid "Computer"
-msgstr ""
+msgstr "Computador"
 
 #: ../resources/desktop/js/specialitem.coffee:87
 #: ../resources/dock/js/main.coffee:47 ../resources/dock/js/main.coffee:124
@@ -102,14 +102,12 @@ msgid "Trash"
 msgstr "Lixo"
 
 #: ../resources/desktop/js/specialitem.coffee:152
-#, fuzzy
 msgid "_Clean up %1 items"
-msgstr "_Limpar"
+msgstr "_Limpar %1 itens"
 
 #: ../resources/desktop/js/specialitem.coffee:154
-#, fuzzy
 msgid "_Clean up 1 item"
-msgstr "_Limpar"
+msgstr "_Limpar 1 item"
 
 #: ../resources/desktop/js/specialitem.coffee:156
 #: ../resources/dock/js/plugins/trash/trash.coffee:29
@@ -189,9 +187,7 @@ msgstr "Prima Ctrl + Alt + F1\n"
 msgid ""
 "\t\t\t\t-----The daemon of accounts has not started!-----\n"
 ")"
-msgstr ""
-"⇥⇥⇥⇥-----O daemon de contas não iniciou!-----\n"
-" )"
+msgstr "⇥⇥⇥⇥-----O daemon de contas não iniciou!-----\n )"
 
 #: ../resources/greeter/js/message.coffee:79
 msgid "$ sudo apt-get install deepin-desktop-Environment\n"
@@ -199,8 +195,7 @@ msgstr "$ sudo apt-get install deepin-desktop-Environment\n"
 
 #: ../resources/greeter/js/message.coffee:68
 msgid "\t\t\t\t-----No available desktop sessions!-----\n"
-msgstr ""
-"⇥⇥⇥⇥-----Não existem sessões de ambiente de trabalho disponíveis!-----\n"
+msgstr "⇥⇥⇥⇥-----Não existem sessões de ambiente de trabalho disponíveis!-----\n"
 
 #: ../resources/greeter/js/user.coffee:411
 msgid "Login"
@@ -310,9 +305,8 @@ msgid "Enter your password to %1"
 msgstr "Introduza a sua palavra-passe %1"
 
 #: ../resources/greeter/js/mediacontrol.coffee:167
-#, fuzzy
 msgid "Click button to Play"
-msgstr "clique o botão iniciar sessão para inciar a sessão"
+msgstr ""
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
@@ -335,7 +329,7 @@ msgstr "Tem a certeza que deseja remover"
 #: ../resources/launcher/js/item.coffee:354
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
 msgid "All dependencies will be removed"
-msgstr "Todas as dependências serão removidas"
+msgstr ""
 
 #: ../resources/launcher/js/item.coffee:354
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
@@ -387,9 +381,8 @@ msgid "Send to d_esktop"
 msgstr "Enviar para Ambiente de _Trabalho"
 
 #: ../resources/launcher/js/const.coffee:85
-#, fuzzy
 msgid "Remove from d_esktop"
-msgstr "Remover dos _favoritos"
+msgstr "Removido do ambiente de trabalho"
 
 #: ../resources/launcher/js/const.coffee:88
 #: ../resources/guide/js/launcher.coffee:239
@@ -397,9 +390,8 @@ msgid "Send to do_ck"
 msgstr "Enviar para o do_ck"
 
 #: ../resources/launcher/js/const.coffee:89
-#, fuzzy
 msgid "Remove from do_ck"
-msgstr "Remover dos _favoritos"
+msgstr "Remover da barra de favoritos"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "Control Center"
@@ -426,27 +418,22 @@ msgid "Well, please trigger the lower right corner again"
 msgstr "Bem, por favor volte a ativar o canto inferior direito"
 
 #: ../resources/guide/js/dss.coffee:30
-#, fuzzy
 msgid "tips: Click the setting icon on dock to implement"
-msgstr "dicas: Clique o ícone de definição no dock para implementar"
+msgstr ""
 
 #: ../resources/guide/js/dss.coffee:69
 msgid "Here is the system setting area"
 msgstr "Aqui é a àrea de definição de sistema"
 
 #: ../resources/guide/js/dss.coffee:70
-#, fuzzy
 msgid ""
 "tips: Hover the setting icon on dock to quickly implement some setting "
 "functions"
 msgstr ""
-"dicas: Paire com o cursor sobre o ícone de definição no dock para "
-"rapidamente implementar alguma função de definição"
 
 #: ../resources/guide/js/end.coffee:25
-#, fuzzy
 msgid "Thanks for your patience while learning. Congratulations."
-msgstr "Obrigado por aprender com paciência. Parabéns!"
+msgstr "Obrigado pela sua paciência enquanto aprende. Parabéns."
 
 #: ../resources/guide/js/end.coffee:30
 msgid "End"
@@ -464,38 +451,27 @@ msgstr "Preparar para operação ..."
 msgid ""
 "Let's drag the other icon on the first icon \n"
 " to generate \"application group\""
-msgstr ""
+msgstr "Vamos arrastar o outro ícone para cima do primeiro ícone\npara gerar uma \"Aplicação de Grupo\""
 
 #: ../resources/guide/js/desktop.coffee:116
 msgid "Well, you have learned how to create a \"application group\""
 msgstr "Bem, aprendeu como criar um \"grupo de aplicações\""
 
 #: ../resources/guide/js/desktop.coffee:117
-#, fuzzy
 msgid "tips: Right-click on the application group will provide more functions"
 msgstr ""
-"dicas: Clique no botão direito do rato sobre o grupo de aplicações para mais "
-"funções"
 
 #: ../resources/guide/js/desktop.coffee:128
-#, fuzzy
 msgid ""
-"Slide the mouse to the four top corners, which can trigger four different "
-"events\n"
+"Slide the mouse to the four top corners, which can trigger four different events\n"
 "Please move to the upper left corner first to show or hide Launcher"
 msgstr ""
-"Navegue com o rato para os quatro cantos, que permitem ativar quatro eventos "
-"diferentes\n"
-"Por favor navegue para o canto superior esquerdo primeiro para mostrar ou "
-"ocultar o Iniciador de Aplicações"
 
 #: ../resources/guide/js/desktop.coffee:129
-#, fuzzy
 msgid ""
-"tips: Please trigger successively by hints, click on the blank area to return"
+"tips: Please trigger successively by hints, click on the blank area to "
+"return"
 msgstr ""
-"dicas: Por favor ative sucessivamente por via das sugestões, clique na área "
-"de retorno"
 
 #: ../resources/guide/js/desktop.coffee:133
 msgid "Show/Hide Launcher"
@@ -517,16 +493,11 @@ msgstr "Não existem funções definidas no canto superior direito"
 msgid ""
 "Right-click on desktop black area to call up the menu, select \"Corner "
 "navigation\" to set the corner used"
-msgstr ""
-"Clique no botão direito do rato sobre uma zona vazia do ambiente de trabalho "
-"para invocar o menu, selecione \"Navegação de cantos\" para definir o canto "
-"usado"
+msgstr "Clique no botão direito do rato sobre uma zona vazia do ambiente de trabalho para invocar o menu, selecione \"Navegação de cantos\" para definir o canto usado"
 
 #: ../resources/guide/js/desktop.coffee:179
-#, fuzzy
 msgid "tips: Click on the interface of corner navigation blank area to return"
 msgstr ""
-"dicas: Clique na zona vazia da interface da navegação de cantos para voltar"
 
 #: ../resources/guide/js/start.coffee:28
 msgid "New Launcher"
@@ -542,8 +513,7 @@ msgstr "Novas Definições de Sistema"
 
 #: ../resources/guide/js/start.coffee:29
 msgid "The following will guide you to learn how to use some new functions"
-msgstr ""
-"O seguinte guia irá ensinar-lhe como utilizar algumas das funções novas"
+msgstr "O seguinte guia irá ensinar-lhe como utilizar algumas das funções novas"
 
 #: ../resources/guide/js/start.coffee:44
 msgid "Start"
@@ -551,81 +521,65 @@ msgstr "Iniciar"
 
 #: ../resources/guide/js/start.coffee:51
 msgid "I am an experienced user. Exit directly."
-msgstr "Sou mais velho, sair diretamente"
+msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:29
-#, fuzzy
 msgid ""
 "\"Application Launcher\" can be started by sliding the mouse to the upper "
 "left corner or clicking on the launcher."
 msgstr ""
-"Navegando com o rato para o canto superior esquerdo ou clicando no ícone do "
-"iniciador de aplicações permitem iniciar o \"Iniciador de Aplicações\""
 
 #: ../resources/guide/js/launcher.coffee:70
-#, fuzzy
 msgid ""
 "What shown in the first screen of \"launcher\" are the applications "
 "collected."
 msgstr ""
-"No primeiro ecrã do \"iniciador de aplicações\" estão as aplicações de "
-"coleção"
 
 #: ../resources/guide/js/launcher.coffee:85
-#, fuzzy
 msgid ""
-"Please click on the \"All Applications\" icon, you will see all applications."
+"Please click on the \"All Applications\" icon, you will see all "
+"applications."
 msgstr ""
-"Por favor clique no ícone \"Todas as Aplicações\", verá todas as aplicações"
 
 #: ../resources/guide/js/launcher.coffee:95
 msgid ""
 "All programs can be located by scrolling the mouse up and down.\n"
 "You can also click on the left classification navigation to locate"
-msgstr ""
+msgstr "Todos os programas podem ser localizados com um deslizar do rato para cima e para baixo.\nVocê  também pode clicar na barra de classificação à esquerda para localizar"
 
 #: ../resources/guide/js/launcher.coffee:133
 msgid "Skip the step without scroll"
-msgstr ""
+msgstr "Ignore a etapa sem deslizar"
 
 #: ../resources/guide/js/launcher.coffee:163
-#, fuzzy
 msgid ""
 "Use the keyboard to search for applications\n"
 "Try the \"deepin\" keyword to see which applications are shown"
-msgstr ""
-"Utilize a pesquisa por teclado para encontrar as aplicações que deseja\n"
-"Tentemos a palavra chave \"deepin\" para ver que aplicações são apresentadas"
+msgstr "Use o teclado para procurar aplicações\nExperimente a palavra chave \"deepin\" para ver quais as aplicações apresentadas."
 
 #: ../resources/guide/js/launcher.coffee:164
-#, fuzzy
 msgid "tips: Please directly enter the word \"deepin\""
-msgstr "dicas: Por favor introduza diretamente a palavra \"deepin\""
+msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:179
 msgid "Use the right mouse button to send two icons to the desktop"
-msgstr ""
-"Utilize o botão direito do rato para enviar dois ícones para o ambiente de "
-"trabalho"
+msgstr "Utilize o botão direito do rato para enviar dois ícones para o ambiente de trabalho"
 
 #: ../resources/guide/js/launcher.coffee:180
 msgid "tips: You can add it to startup items or uninstall it"
 msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:9
-#, fuzzy
 msgid "Keep _showing"
-msgstr "continue a _mostrar"
+msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:10
-#, fuzzy
 msgid "Keep _hidden"
-msgstr "continue a _ocultar"
+msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:11
-#, fuzzy
 msgid "_Auto hide"
-msgstr "ocultar _automaticamente"
+msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:24
 msgid "_Fashion mode"
@@ -658,11 +612,11 @@ msgstr "_Fechar"
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
-msgstr ""
+msgstr "Você já desinstalou \"%1\" com sucesso"
 
 #: ../resources/common/js/uninstaller.coffee:33
 msgid "\"%1\" failed to be uninstalled"
-msgstr ""
+msgstr "\"%1\" falhou na desinstalação"
 
 #: ../app/desktop/desktop.c:292
 msgid "New file"
@@ -678,7 +632,7 @@ msgstr "%a, %d %b. %Y"
 
 #: ../app/greeter/lock.c:125 ../app/greeter/greeter.c:192
 msgid "Wrong Password"
-msgstr "Palavra-passe Inválida"
+msgstr ""
 
 #: ../app/dock/dock.c:322
 msgid "Dock failed to start, because Compiz is not enabled."
@@ -688,18 +642,14 @@ msgstr "Dock não iniciou, porque Compiz não está ativo."
 #, c-format
 msgid ""
 "Cannot rename the item to \"%s\". This may be caused by lack of permissions."
-msgstr ""
-"Não é possível mudar o nome do item para \"%s\". Isto pode ser devido a "
-"falta de permissões."
+msgstr "Não é possível mudar o nome do item para \"%s\". Isto pode ser devido a falta de permissões."
 
 #: ../lib/dentry/entry.c:752
 #, c-format
 msgid ""
 "There is already a file with name \"%s\" in this folder. Please consider a "
 "different name."
-msgstr ""
-"Já existe um ficheiro com o nome \"%s\" nesta pasta. Por favor considere "
-"utilizar um nome diferente."
+msgstr "Já existe um ficheiro com o nome \"%s\" nesta pasta. Por favor considere utilizar um nome diferente."
 
 #: ../lib/dentry/entry.c:758
 msgid "The item could not be renamed"
@@ -772,11 +722,9 @@ msgstr "Deseja intercalar com a pasta \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
 msgid ""
-"The merging operation will be asked to confirm before replacing any files in "
-"the folder conflicted."
+"The merging operation will be asked to confirm before replacing any files in"
+" the folder conflicted."
 msgstr ""
-"Ser-lhe-á pedido confirmação antes de substituir quaisquer ficheiros em "
-"conflito durante o processo de copiar ficheiros para a pasta."
 
 #: ../lib/dentry/fileops_error_dialog.c:222
 #, c-format
@@ -794,9 +742,8 @@ msgid "Another folder with the same name already exists in \"%s\"."
 msgstr "Já existe outra pasta com o mesmo nome em \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:236
-#, fuzzy
 msgid "All files in the folder will be removed by replacing."
-msgstr "Todos os itens no Lixo serão permanentemente eliminados."
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:237
 #, c-format
@@ -949,35 +896,4 @@ msgstr "Acessórios"
 
 #: ../lib/category.c:56
 msgid "others"
-msgstr "Outros"
-
-#~ msgid "click login button to log in"
-#~ msgstr "clique o botão iniciar sessão para inciar a sessão"
-
-#~ msgid "Expand"
-#~ msgstr "Expandir"
-
-#~ msgid "Only the first Screen"
-#~ msgstr "Apenas o primeiro Ecrã"
-
-#~ msgid "Only the second Screen"
-#~ msgstr "Apenas o segunda Ecrã"
-
-#, fuzzy
-#~ msgid "_Dock setting"
-#~ msgstr "Definições de Data & Hora"
-
-#~ msgid "_Clean up"
-#~ msgstr "_Limpar"
-
-#~ msgid "Thanks for your patience to learn.You get the novice package"
-#~ msgstr "Obrigado por aprender com paciência. Recebe o pacote de novato"
-
-#~ msgid "tips：Please receive in Deepin account"
-#~ msgstr "dicas: Por favor receba na conta Deepin"
-
-#~ msgid "Get"
-#~ msgstr "Obter"
-
-#~ msgid "New users directly jump to the registration page"
-#~ msgstr "Novos utilizadores saltam diretamente para a página de registo."
+msgstr ""

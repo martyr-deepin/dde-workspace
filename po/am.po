@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # samson <sambelet@yahoo.com>, 2014
 msgid ""
@@ -9,14 +9,13 @@ msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-08-22 11:12+0800\n"
-"PO-Revision-Date: 2014-07-03 05:01+0000\n"
-"Last-Translator: samson <sambelet@yahoo.com>\n"
-"Language-Team: Amharic (http://www.transifex.com/projects/p/deepin-desktop-"
-"environment/language/am/)\n"
-"Language: am\n"
+"PO-Revision-Date: 2014-08-22 04:43+0000\n"
+"Last-Translator: szd_liufei <liufei@linuxdeepin.com>\n"
+"Language-Team: Amharic (http://www.transifex.com/projects/p/deepin-desktop-environment/language/am/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: am\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: ../resources/desktop/js/invalidlink.coffee:34
@@ -93,7 +92,7 @@ msgstr "ይህን ፋይል መክፈት አልተቻለም"
 
 #: ../resources/desktop/js/specialitem.coffee:34
 msgid "Computer"
-msgstr ""
+msgstr "ኮምፒዩተር"
 
 #: ../resources/desktop/js/specialitem.coffee:87
 #: ../resources/dock/js/main.coffee:47 ../resources/dock/js/main.coffee:124
@@ -101,14 +100,12 @@ msgid "Trash"
 msgstr "ቆሻሻ"
 
 #: ../resources/desktop/js/specialitem.coffee:152
-#, fuzzy
 msgid "_Clean up %1 items"
-msgstr "_ማጽጃ"
+msgstr "_ማጽጃ %1 እቃዎችን"
 
 #: ../resources/desktop/js/specialitem.coffee:154
-#, fuzzy
 msgid "_Clean up 1 item"
-msgstr "_ማጽጃ"
+msgstr "_ማጽጃ 1 እቃ"
 
 #: ../resources/desktop/js/specialitem.coffee:156
 #: ../resources/dock/js/plugins/trash/trash.coffee:29
@@ -188,9 +185,7 @@ msgstr "ይጫኑ Ctrl + Alt + F1\n"
 msgid ""
 "\t\t\t\t-----The daemon of accounts has not started!-----\n"
 ")"
-msgstr ""
-"\t\t\t\t-----The daemon of accounts has not started!-----\n"
-")"
+msgstr "\t\t\t\t-----The daemon of accounts has not started!-----\n)"
 
 #: ../resources/greeter/js/message.coffee:79
 msgid "$ sudo apt-get install deepin-desktop-Environment\n"
@@ -308,9 +303,8 @@ msgid "Enter your password to %1"
 msgstr "የ መግቢያ ቃል ያስገቡ ለ %1"
 
 #: ../resources/greeter/js/mediacontrol.coffee:167
-#, fuzzy
 msgid "Click button to Play"
-msgstr "ለመግባት የመግቢያውን ቁልፍ ይጫኑ"
+msgstr ""
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
@@ -333,7 +327,7 @@ msgstr "በእርግጥ ማስወገድ ይፈልጋሉ?"
 #: ../resources/launcher/js/item.coffee:354
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
 msgid "All dependencies will be removed"
-msgstr "ሁሉም ጥገኞች አብረው ይወገዳሉ"
+msgstr ""
 
 #: ../resources/launcher/js/item.coffee:354
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
@@ -385,9 +379,8 @@ msgid "Send to d_esktop"
 msgstr "ወደ ዴ_ስክቶፕ መላኪያ"
 
 #: ../resources/launcher/js/const.coffee:85
-#, fuzzy
 msgid "Remove from d_esktop"
-msgstr "ከ _ምወዳቸው ውስጥ ማስወገጃ"
+msgstr "ከ ዴ _ስክቶፕ ላይ ማስወገጃ"
 
 #: ../resources/launcher/js/const.coffee:88
 #: ../resources/guide/js/launcher.coffee:239
@@ -395,9 +388,8 @@ msgid "Send to do_ck"
 msgstr "ወደ ዶ_ክ መላኪያ"
 
 #: ../resources/launcher/js/const.coffee:89
-#, fuzzy
 msgid "Remove from do_ck"
-msgstr "ከ _ምወዳቸው ውስጥ ማስወገጃ"
+msgstr ""
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "Control Center"
@@ -424,25 +416,22 @@ msgid "Well, please trigger the lower right corner again"
 msgstr "እባክዎን መጠቆሚያውን እታች በ ቀኝ ጥግ በኩል በመውሰድ ያስነሱ"
 
 #: ../resources/guide/js/dss.coffee:30
-#, fuzzy
 msgid "tips: Click the setting icon on dock to implement"
-msgstr "ጠቃሚ ምክር：ይጫኑ የማሰናጅ ምልክት በ ዶክ ላይ ለመፈጸም"
+msgstr ""
 
 #: ../resources/guide/js/dss.coffee:69
 msgid "Here is the system setting area"
 msgstr "ይህ የስርአቱ ማሰናጃ ቦታ ነው"
 
 #: ../resources/guide/js/dss.coffee:70
-#, fuzzy
 msgid ""
 "tips: Hover the setting icon on dock to quickly implement some setting "
 "functions"
-msgstr "ጠቃሚ ምክር：ይጫኑ የማሰናጅ ምልክት በ ዶክ ላይ ለመፈጸም"
+msgstr ""
 
 #: ../resources/guide/js/end.coffee:25
-#, fuzzy
 msgid "Thanks for your patience while learning. Congratulations."
-msgstr "እንኳን ደስ ያሎት ለመማር ላሳዩት ትእግስት እናመስግናለን"
+msgstr ""
 
 #: ../resources/guide/js/end.coffee:30
 msgid "End"
@@ -460,9 +449,7 @@ msgstr "ለመፈጸም በዝግጅት ላይ ..."
 msgid ""
 "Let's drag the other icon on the first icon \n"
 " to generate \"application group\""
-msgstr ""
-"ወደ መጀመሪያው ምልክት ላይ ሌላ ምልክት ይጎትቱ \n"
-"የ \"መተግበሪያዎች ቡድን\" ለማመንጨት"
+msgstr "ወደ መጀመሪያው ምልክት ላይ ሌላ ምልክት ይጎትቱ \nየ \"መተግበሪያዎች ቡድን\" ለማመንጨት"
 
 #: ../resources/guide/js/desktop.coffee:116
 msgid "Well, you have learned how to create a \"application group\""
@@ -474,14 +461,14 @@ msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:128
 msgid ""
-"Slide the mouse to the four top corners, which can trigger four different "
-"events\n"
+"Slide the mouse to the four top corners, which can trigger four different events\n"
 "Please move to the upper left corner first to show or hide Launcher"
 msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:129
 msgid ""
-"tips: Please trigger successively by hints, click on the blank area to return"
+"tips: Please trigger successively by hints, click on the blank area to "
+"return"
 msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:133
@@ -532,7 +519,7 @@ msgstr "ማስጀመሪያ"
 
 #: ../resources/guide/js/start.coffee:51
 msgid "I am an experienced user. Exit directly."
-msgstr "በቀጥታ መውጫ"
+msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:29
 msgid ""
@@ -541,17 +528,16 @@ msgid ""
 msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:70
-#, fuzzy
 msgid ""
 "What shown in the first screen of \"launcher\" are the applications "
 "collected."
-msgstr "በመጀመሪያው መመልከቻ \" ማስነሻ\" ላይ የሚታዩት የመተግበሪያ ስብስቦች ናቸው"
+msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:85
-#, fuzzy
 msgid ""
-"Please click on the \"All Applications\" icon, you will see all applications."
-msgstr "እባክዎን ይጫኑ በ \"ሁሉም መተግበሪያዎች\" ምልክት ላይ መተግበሪያዎችን በሙሉ ለማየት"
+"Please click on the \"All Applications\" icon, you will see all "
+"applications."
+msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:95
 msgid ""
@@ -578,9 +564,8 @@ msgid "Use the right mouse button to send two icons to the desktop"
 msgstr "ሁለት ምልክቶች ወደ ዴስክቶፕ ለመላክ የ አይጡን ቀኝ ቁልፍ ይጠቀሙ"
 
 #: ../resources/guide/js/launcher.coffee:180
-#, fuzzy
 msgid "tips: You can add it to startup items or uninstall it"
-msgstr "ጥቃሚ ምክር:ወደ ማስጀመሪያ ወይንም ወደ ማጥፊያ መጨመር ይችላሉ"
+msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:9
 msgid "Keep _showing"
@@ -591,9 +576,8 @@ msgid "Keep _hidden"
 msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:11
-#, fuzzy
 msgid "_Auto hide"
-msgstr "_በራሱ መደበቂያ"
+msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:24
 msgid "_Fashion mode"
@@ -626,11 +610,11 @@ msgstr "_መዝጊያ"
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
-msgstr ""
+msgstr "ማጥፋቱ \"%1\" በሚገባ ተሳክቷል"
 
 #: ../resources/common/js/uninstaller.coffee:33
 msgid "\"%1\" failed to be uninstalled"
-msgstr ""
+msgstr "\"%1\" ለማጥፋት አልተቻለም"
 
 #: ../app/desktop/desktop.c:292
 msgid "New file"
@@ -646,11 +630,11 @@ msgstr "%a, %b %d, %Y"
 
 #: ../app/greeter/lock.c:125 ../app/greeter/greeter.c:192
 msgid "Wrong Password"
-msgstr "ዋጋ የሌለው የመግቢያ ቃል"
+msgstr ""
 
 #: ../app/dock/dock.c:322
 msgid "Dock failed to start, because Compiz is not enabled."
-msgstr ""
+msgstr "ዶክን ማስጀመር አልተቻለም ምክንያቱም ኮምፒዝ ተሰናክሏል"
 
 #: ../lib/dentry/entry.c:746
 #, c-format
@@ -736,8 +720,8 @@ msgstr "ፎልደሩን ማዋሀድ ይፈልጋሉ \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
 msgid ""
-"The merging operation will be asked to confirm before replacing any files in "
-"the folder conflicted."
+"The merging operation will be asked to confirm before replacing any files in"
+" the folder conflicted."
 msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:222
@@ -756,9 +740,8 @@ msgid "Another folder with the same name already exists in \"%s\"."
 msgstr "ሌላ ፎልደር በዚህ ስም ቀደም ሲል ነበር በ \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:236
-#, fuzzy
 msgid "All files in the folder will be removed by replacing."
-msgstr "በ ቆሻሻው ውስጥ ያሉትን በሙሉ በቋሚነት ይጠፋሉ"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:237
 #, c-format
@@ -851,7 +834,7 @@ msgstr "ማስኬድ ነው የሚፈልጉት \"%s\", ወይንስ ይዞታዎ
 #: ../lib/dentry/mime_actions.c:199
 #, c-format
 msgid "\"%s\" is an executable text file."
-msgstr ""
+msgstr "\"%s\" is an executable text file."
 
 #: ../lib/dentry/mime_actions.c:210
 msgid "Run in _Terminal"
@@ -911,35 +894,4 @@ msgstr "የተለያዩ"
 
 #: ../lib/category.c:56
 msgid "others"
-msgstr "ሌላ"
-
-#~ msgid "click login button to log in"
-#~ msgstr "ለመግባት የመግቢያውን ቁልፍ ይጫኑ"
-
-#~ msgid "Expand"
-#~ msgstr "ማስፊያ"
-
-#~ msgid "Only the first Screen"
-#~ msgstr "የመጀመሪያውን መመልከቻ ብቻ"
-
-#~ msgid "Only the second Screen"
-#~ msgstr "የሁለተኛውን መመልከቻ ብቻ"
-
-#, fuzzy
-#~ msgid "_Dock setting"
-#~ msgstr "_ሰአት ማሰናጃ"
-
-#~ msgid "_Clean up"
-#~ msgstr "_ማጽጃ"
-
-#~ msgid "Thanks for your patience to learn.You get the novice package"
-#~ msgstr " ለመማር ላሳዩት ትእግስት እናመስግናለን አሁን የኖቪስን ጥቅል አግኝተዋል"
-
-#~ msgid "tips：Please receive in Deepin account"
-#~ msgstr "ጠቃሚ ምክር：እባክዎን አባል ይሁኑ"
-
-#~ msgid "Get"
-#~ msgstr "Get"
-
-#~ msgid "New users directly jump to the registration page"
-#~ msgstr "አዲስ ተጠቃሚዎች በቀጥታ ወደ መመዝገቢያው ገጽ መዝለል ይችላሉ"
+msgstr ""

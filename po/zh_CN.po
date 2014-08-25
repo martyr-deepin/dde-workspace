@@ -1,21 +1,21 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
+# Translators:
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.1\n"
+"Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-08-22 11:12+0800\n"
-"PO-Revision-Date: 2014-06-09 17:59+0800\n"
-"Last-Translator: Deepin Translation Team <support@linuxdeepin.com>\n"
-"Language-Team: Deepin Translation Team <support@linuxdeepin.com>\n"
-"Language: zh_CN\n"
+"PO-Revision-Date: 2014-08-22 04:50+0000\n"
+"Last-Translator: szd_liufei <liufei@linuxdeepin.com>\n"
+"Language-Team: Chinese (China) (http://www.transifex.com/projects/p/deepin-desktop-environment/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.6.5\n"
+"Language: zh_CN\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../resources/desktop/js/invalidlink.coffee:34
 #: ../resources/desktop/js/desktopentry.coffee:108
@@ -184,9 +184,7 @@ msgstr "按Ctrl + Alt + F1\n"
 msgid ""
 "\t\t\t\t-----The daemon of accounts has not started!-----\n"
 ")"
-msgstr ""
-"\t\t\t\t-----账户服务未启动!-----\n"
-")"
+msgstr "\t\t\t\t-----账户服务未启动!-----\n)"
 
 #: ../resources/greeter/js/message.coffee:79
 msgid "$ sudo apt-get install deepin-desktop-Environment\n"
@@ -450,9 +448,7 @@ msgstr "正在为运行做一些准备..."
 msgid ""
 "Let's drag the other icon on the first icon \n"
 " to generate \"application group\""
-msgstr ""
-"让我们拖动另外一个图标到第一个图标上\n"
-"来生成“应用程序组”"
+msgstr "让我们拖动另外一个图标到第一个图标上\n来生成“应用程序组”"
 
 #: ../resources/guide/js/desktop.coffee:116
 msgid "Well, you have learned how to create a \"application group\""
@@ -464,16 +460,14 @@ msgstr "提示：右键单击应用程序组将提供更多功能"
 
 #: ../resources/guide/js/desktop.coffee:128
 msgid ""
-"Slide the mouse to the four top corners, which can trigger four different "
-"events\n"
+"Slide the mouse to the four top corners, which can trigger four different events\n"
 "Please move to the upper left corner first to show or hide Launcher"
-msgstr ""
-"鼠标滑动到四个顶角，可触发四个不同的事件\n"
-"请移动到左上角以显示/隐藏启动器"
+msgstr "鼠标滑动到四个顶角，可触发四个不同的事件\n请移动到左上角以显示/隐藏启动器"
 
 #: ../resources/guide/js/desktop.coffee:129
 msgid ""
-"tips: Please trigger successively by hints, click on the blank area to return"
+"tips: Please trigger successively by hints, click on the blank area to "
+"return"
 msgstr "提示：请按提示依次触发，点击空白区域可返回"
 
 #: ../resources/guide/js/desktop.coffee:133
@@ -540,16 +534,15 @@ msgstr "在“启动器”第一屏显示的是收藏的应用"
 
 #: ../resources/guide/js/launcher.coffee:85
 msgid ""
-"Please click on the \"All Applications\" icon, you will see all applications."
+"Please click on the \"All Applications\" icon, you will see all "
+"applications."
 msgstr " 请点击“所有应用”图标，您将看到所有应用"
 
 #: ../resources/guide/js/launcher.coffee:95
 msgid ""
 "All programs can be located by scrolling the mouse up and down.\n"
 "You can also click on the left classification navigation to locate"
-msgstr ""
-"请滚动鼠标来定位程序\n"
-"您也可以点击左侧分类导航来定位"
+msgstr "请滚动鼠标来定位程序\n您也可以点击左侧分类导航来定位"
 
 #: ../resources/guide/js/launcher.coffee:133
 msgid "Skip the step without scroll"
@@ -559,9 +552,7 @@ msgstr "若无滚动功能,请跳过此步骤"
 msgid ""
 "Use the keyboard to search for applications\n"
 "Try the \"deepin\" keyword to see which applications are shown"
-msgstr ""
-"使用键盘搜索来查找您想要的应用\n"
-"我们来试试“deepin”这个关键字吧，看会显示哪些应用"
+msgstr "使用键盘搜索来查找您想要的应用\n我们来试试“deepin”这个关键字吧，看会显示哪些应用"
 
 #: ../resources/guide/js/launcher.coffee:164
 msgid "tips: Please directly enter the word \"deepin\""
@@ -728,8 +719,8 @@ msgstr "您确定要与文件夹“%s”合并吗？"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
 msgid ""
-"The merging operation will be asked to confirm before replacing any files in "
-"the folder conflicted."
+"The merging operation will be asked to confirm before replacing any files in"
+" the folder conflicted."
 msgstr "合并操作将会在替换冲突文件时请求确认。"
 
 #: ../lib/dentry/fileops_error_dialog.c:222
@@ -903,33 +894,3 @@ msgstr "实用工具"
 #: ../lib/category.c:56
 msgid "others"
 msgstr "其他"
-
-#~ msgid "click login button to log in"
-#~ msgstr "点击登录按钮来登录"
-
-#~ msgid "Expand"
-#~ msgstr "扩展"
-
-#~ msgid "Only the first Screen"
-#~ msgstr "仅在第一屏上显示"
-
-#~ msgid "Only the second Screen"
-#~ msgstr "仅在第二屏上显示"
-
-#~ msgid "_Dock setting"
-#~ msgstr "任务栏设置(_T)"
-
-#~ msgid "_Clean up"
-#~ msgstr "清空(_C)"
-
-#~ msgid "Thanks for your patience to learn.You get the novice package"
-#~ msgstr "感谢您的耐心学习！您获得了新手礼包"
-
-#~ msgid "tips：Please receive in Deepin account"
-#~ msgstr "提示：请在深度账号内领取"
-
-#~ msgid "Get"
-#~ msgstr "领取"
-
-#~ msgid "New users directly jump to the registration page"
-#~ msgstr "新用户直接跳到注册页面"

@@ -1,21 +1,21 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
+# Yuval Bar-On <hyuvii@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-08-22 11:12+0800\n"
-"PO-Revision-Date: 2014-07-02 12:04+0000\n"
-"Last-Translator: cxbii <chenxiangbang@linuxdeepin.com>\n"
-"Language-Team: Hebrew (http://www.transifex.com/projects/p/deepin-desktop-"
-"environment/language/he/)\n"
-"Language: he\n"
+"PO-Revision-Date: 2014-08-22 04:43+0000\n"
+"Last-Translator: szd_liufei <liufei@linuxdeepin.com>\n"
+"Language-Team: Hebrew (http://www.transifex.com/projects/p/deepin-desktop-environment/language/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: he\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../resources/desktop/js/invalidlink.coffee:34
@@ -23,13 +23,13 @@ msgstr ""
 #: ../resources/desktop/js/richdir.coffee:139
 #: ../resources/desktop/js/richdir.coffee:571
 msgid "_Delete"
-msgstr "_מחיקה"
+msgstr "_מחק"
 
 #: ../resources/desktop/js/application.coffee:179
 #: ../resources/desktop/js/richdir.coffee:335
 #: ../resources/desktop/js/richdir.coffee:586
 msgid "The link is invalid. Do you want to delete it?"
-msgstr ""
+msgstr "הלינק אינו תקין. האם ברצונך למחוק אותו?"
 
 #: ../resources/desktop/js/application.coffee:179
 #: ../resources/desktop/js/desktopentry.coffee:165
@@ -47,52 +47,52 @@ msgstr "אזהרה"
 #: ../resources/launcher/js/item.coffee:276
 #: ../resources/guide/js/launcher.coffee:235
 msgid "_Open"
-msgstr "_פתיחה"
+msgstr "_פתח"
 
 #: ../resources/desktop/js/desktopentry.coffee:104
 #: ../resources/desktop/js/richdir.coffee:568
 msgid "Cu_t"
-msgstr "_גזירה"
+msgstr "גזור"
 
 #: ../resources/desktop/js/desktopentry.coffee:105
 #: ../resources/desktop/js/richdir.coffee:569
 msgid "_Copy"
-msgstr "_העתקה"
+msgstr "_העתק"
 
 #: ../resources/desktop/js/desktopentry.coffee:107
 #: ../resources/desktop/js/richdir.coffee:135
 msgid "_Rename"
-msgstr "_שינוי שם"
+msgstr "_שנה שם"
 
 #: ../resources/desktop/js/desktopentry.coffee:110
 #: ../resources/desktop/js/specialitem.coffee:53
 #: ../resources/desktop/js/richdir.coffee:573
 msgid "_Properties"
-msgstr "מאפיינים"
+msgstr "_מאפיינים"
 
 #: ../resources/desktop/js/desktopentry.coffee:116
 #: ../resources/desktop/js/desktopentry.coffee:123
 msgid "Co_mpress"
-msgstr "_דחיסה"
+msgstr "דחיסה"
 
 #: ../resources/desktop/js/desktopentry.coffee:119
 #: ../resources/desktop/js/desktopentry.coffee:124
 msgid "_Extract"
-msgstr "_כיווץ"
+msgstr "_חלץ"
 
 #: ../resources/desktop/js/desktopentry.coffee:120
 #: ../resources/desktop/js/desktopentry.coffee:125
 msgid "Extract _Here"
-msgstr "_כיווץ לכאן"
+msgstr "חלץ לכאן"
 
 #: ../resources/desktop/js/desktopentry.coffee:165
 #: ../resources/dock/js/plugins/trash/trash.coffee:76
 msgid "Can not open this file."
-msgstr "אין אפשרות לפתוח הקובץ"
+msgstr "אין אפשרות לפתוח קובץ זה"
 
 #: ../resources/desktop/js/specialitem.coffee:34
 msgid "Computer"
-msgstr ""
+msgstr "מחשב"
 
 #: ../resources/desktop/js/specialitem.coffee:87
 #: ../resources/dock/js/main.coffee:47 ../resources/dock/js/main.coffee:124
@@ -100,14 +100,12 @@ msgid "Trash"
 msgstr "אשפה"
 
 #: ../resources/desktop/js/specialitem.coffee:152
-#, fuzzy
 msgid "_Clean up %1 items"
-msgstr "_ניקוי"
+msgstr "_ניקוי 1% מהפריטים"
 
 #: ../resources/desktop/js/specialitem.coffee:154
-#, fuzzy
 msgid "_Clean up 1 item"
-msgstr "_ניקוי"
+msgstr "_ניקוי פריט 1"
 
 #: ../resources/desktop/js/specialitem.coffee:156
 #: ../resources/dock/js/plugins/trash/trash.coffee:29
@@ -128,7 +126,7 @@ msgstr "מועד שינוי אחרון"
 
 #: ../resources/desktop/js/grid.coffee:1028
 msgid "_Folder"
-msgstr "_ספריה"
+msgstr "_תיקייה"
 
 #: ../resources/desktop/js/grid.coffee:1029
 msgid "_Text document"
@@ -137,7 +135,7 @@ msgstr "_מסמך טקסט"
 #: ../resources/desktop/js/grid.coffee:1045
 #: ../resources/guide/js/desktop.coffee:196
 msgid "_Sort by"
-msgstr "_מיון לפי"
+msgstr "_מיין לפי"
 
 #: ../resources/desktop/js/grid.coffee:1046
 #: ../resources/guide/js/desktop.coffee:197
@@ -152,7 +150,7 @@ msgstr "פתיחה במסוף"
 #: ../resources/desktop/js/grid.coffee:1048
 #: ../resources/guide/js/desktop.coffee:199
 msgid "_Paste"
-msgstr "_הדבקה"
+msgstr "_הדבק"
 
 #: ../resources/desktop/js/grid.coffee:1050
 #: ../resources/guide/js/desktop.coffee:201
@@ -162,40 +160,40 @@ msgstr "_הגדרות תצוגה"
 #: ../resources/desktop/js/grid.coffee:1051
 #: ../resources/guide/js/desktop.coffee:202
 msgid "_Corner navigation"
-msgstr ""
+msgstr "_ניווט פינות"
 
 #: ../resources/desktop/js/grid.coffee:1052
 #: ../resources/guide/js/desktop.coffee:203
 msgid "Pe_rsonalize"
-msgstr "_התאמה אישית"
+msgstr "התאמה אישית"
 
 #: ../resources/desktop/js/richdir.coffee:137
 msgid "_Ungroup"
-msgstr "_ללא הקבצה"
+msgstr "_בטל קיבוץ"
 
 #: ../resources/greeter/js/message.coffee:105
 #: ../resources/greeter/js/message.coffee:82
 msgid "$ sudo reboot\n"
-msgstr ""
+msgstr "$ sudo reboot\n"
 
 #: ../resources/greeter/js/message.coffee:99
 #: ../resources/greeter/js/message.coffee:73
 msgid "Press Ctrl + Alt + F1\n"
-msgstr ""
+msgstr "לחץ Ctrl+Alt+F1\n"
 
 #: ../resources/greeter/js/message.coffee:95
 msgid ""
 "\t\t\t\t-----The daemon of accounts has not started!-----\n"
 ")"
-msgstr ""
+msgstr "\t\t\t\t-----The daemon of accounts has not started!-----\n)"
 
 #: ../resources/greeter/js/message.coffee:79
 msgid "$ sudo apt-get install deepin-desktop-Environment\n"
-msgstr ""
+msgstr "$ sudo apt-get install deepin-desktop-Environment\n"
 
 #: ../resources/greeter/js/message.coffee:68
 msgid "\t\t\t\t-----No available desktop sessions!-----\n"
-msgstr ""
+msgstr "\t\t\t\t-----No available desktop sessions!-----\n"
 
 #: ../resources/greeter/js/user.coffee:411
 msgid "Login"
@@ -286,7 +284,7 @@ msgstr "שבת"
 
 #: ../resources/greeter/js/usermenu.coffee:57
 msgid "Guest"
-msgstr ""
+msgstr "אורח"
 
 #: ../resources/greeter/js/powermenu.coffee:26
 msgid "Shut down"
@@ -302,7 +300,7 @@ msgstr "השהיה"
 
 #: ../resources/greeter/js/powermenu.coffee:90
 msgid "Enter your password to %1"
-msgstr ""
+msgstr "הכנס את הסיסמא שלך ל-%1"
 
 #: ../resources/greeter/js/mediacontrol.coffee:167
 msgid "Click button to Play"
@@ -319,12 +317,12 @@ msgstr ""
 #: ../resources/launcher/js/item.coffee:283
 #: ../resources/guide/js/launcher.coffee:242
 msgid "_Uninstall"
-msgstr ""
+msgstr "_הסר"
 
 #: ../resources/launcher/js/item.coffee:354
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
 msgid "Are you sure to remove"
-msgstr ""
+msgstr "האם אתה בטוח שברצונך למחוק"
 
 #: ../resources/launcher/js/item.coffee:354
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
@@ -334,16 +332,16 @@ msgstr ""
 #: ../resources/launcher/js/item.coffee:354
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
 msgid "no"
-msgstr ""
+msgstr "לא"
 
 #: ../resources/launcher/js/item.coffee:354
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
 msgid "yes"
-msgstr ""
+msgstr "כן"
 
 #: ../resources/launcher/js/const.coffee:64
 msgid "_Hide the icon"
-msgstr ""
+msgstr "_הסתר את הסמל"
 
 #: ../resources/launcher/js/const.coffee:65
 msgid "_Display hidden icons"
@@ -351,11 +349,11 @@ msgstr "_הצגת סמלים נסתרים"
 
 #: ../resources/launcher/js/const.coffee:68
 msgid "_Hide this icon"
-msgstr "_הסתרת סמל זה"
+msgstr "_הסתר סמל זה"
 
 #: ../resources/launcher/js/const.coffee:69
 msgid "_Display this icon"
-msgstr "_הצגת סמל זה"
+msgstr "_הצג סמל זה"
 
 #: ../resources/launcher/js/const.coffee:72
 #: ../resources/guide/js/launcher.coffee:241
@@ -364,60 +362,58 @@ msgstr "_הוספה להפעלה אוטומטית"
 
 #: ../resources/launcher/js/const.coffee:73
 msgid "_Remove from autostart"
-msgstr "_הסרה מהפעלה אוטומטית"
+msgstr "_הסר מהפעלה אוטומטית"
 
 #: ../resources/launcher/js/const.coffee:80
 msgid "Add to _favorites"
-msgstr ""
+msgstr "הוסף למועדפים"
 
 #: ../resources/launcher/js/const.coffee:81
 #: ../resources/guide/js/launcher.coffee:237
 msgid "Remove from _favorites"
-msgstr ""
+msgstr "הסר מהמועדפים"
 
 #: ../resources/launcher/js/const.coffee:84
 #: ../resources/guide/js/launcher.coffee:238
 msgid "Send to d_esktop"
-msgstr "שליחה ל_שולחן העבודה"
+msgstr "שליחה לשולחן העבודה"
 
 #: ../resources/launcher/js/const.coffee:85
-#, fuzzy
 msgid "Remove from d_esktop"
-msgstr "_הסרה מהפעלה אוטומטית"
+msgstr "הסר משולחן העבודה"
 
 #: ../resources/launcher/js/const.coffee:88
 #: ../resources/guide/js/launcher.coffee:239
 msgid "Send to do_ck"
-msgstr ""
+msgstr "שלח לסרגל היישומים"
 
 #: ../resources/launcher/js/const.coffee:89
-#, fuzzy
 msgid "Remove from do_ck"
-msgstr "_הסרה מהפעלה אוטומטית"
+msgstr "הסר מסרגל היישומים"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "Control Center"
-msgstr ""
+msgstr "מרכז בקרה"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "All Windows"
-msgstr ""
+msgstr "כל החלונות"
 
 #: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:122
 msgid "Launcher"
-msgstr "-משגר"
+msgstr "משגר"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "Desktop"
-msgstr ""
+msgstr "שולחן העבודה"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "None"
-msgstr ""
+msgstr "ריק"
 
 #: ../resources/guide/js/dss.coffee:29
 msgid "Well, please trigger the lower right corner again"
-msgstr ""
+msgstr "אנא הפעל את הפינה הימנית התחתונה שוב"
 
 #: ../resources/guide/js/dss.coffee:30
 msgid "tips: Click the setting icon on dock to implement"
@@ -425,7 +421,7 @@ msgstr ""
 
 #: ../resources/guide/js/dss.coffee:69
 msgid "Here is the system setting area"
-msgstr ""
+msgstr "כאן נמצא איזור הגדרות המערכת"
 
 #: ../resources/guide/js/dss.coffee:70
 msgid ""
@@ -435,29 +431,29 @@ msgstr ""
 
 #: ../resources/guide/js/end.coffee:25
 msgid "Thanks for your patience while learning. Congratulations."
-msgstr ""
+msgstr "תודה על סבלונתך בזמן הלימוד. מזל טוב!"
 
 #: ../resources/guide/js/end.coffee:30
 msgid "End"
-msgstr ""
+msgstr "סוף"
 
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
-msgstr ""
+msgstr "ברוכים הבאים למערכת ההפעלה Deepin"
 
 #: ../resources/guide/js/welcome.coffee:38
 msgid "Prepare for operation ..."
-msgstr ""
+msgstr "התכונן לפעולה..."
 
 #: ../resources/guide/js/desktop.coffee:27
 msgid ""
 "Let's drag the other icon on the first icon \n"
 " to generate \"application group\""
-msgstr ""
+msgstr "הבה נגרור את האייקון החדש אל האייקון הראשון \nעל מנת לייצר \"קבוצת יישומים\""
 
 #: ../resources/guide/js/desktop.coffee:116
 msgid "Well, you have learned how to create a \"application group\""
-msgstr ""
+msgstr "למדת כיצד ליצור \"קבוצת יישומים\""
 
 #: ../resources/guide/js/desktop.coffee:117
 msgid "tips: Right-click on the application group will provide more functions"
@@ -465,37 +461,37 @@ msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:128
 msgid ""
-"Slide the mouse to the four top corners, which can trigger four different "
-"events\n"
+"Slide the mouse to the four top corners, which can trigger four different events\n"
 "Please move to the upper left corner first to show or hide Launcher"
 msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:129
 msgid ""
-"tips: Please trigger successively by hints, click on the blank area to return"
+"tips: Please trigger successively by hints, click on the blank area to "
+"return"
 msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:133
 msgid "Show/Hide Launcher"
-msgstr ""
+msgstr "הצג/הסתר את המשגר"
 
 #: ../resources/guide/js/desktop.coffee:134
 msgid "Show/Hide Desktop"
-msgstr "_הצגת/הסתרת שולחן העבודה"
+msgstr "הצג/הסתר את שולחן העבודה"
 
 #: ../resources/guide/js/desktop.coffee:135
 msgid "Show/Hide Control Center"
-msgstr ""
+msgstr "הצג/הסתר את מרכז הבקרה"
 
 #: ../resources/guide/js/desktop.coffee:136
 msgid "No default functions setted in right up corner"
-msgstr ""
+msgstr "אין פונקציה מוגדרת עבור פינה ימנית עליונה"
 
 #: ../resources/guide/js/desktop.coffee:178
 msgid ""
 "Right-click on desktop black area to call up the menu, select \"Corner "
 "navigation\" to set the corner used"
-msgstr ""
+msgstr "לחץ על הלחצן הימני בשולחן העבודה על מנת להביא את התפריט ובחר ב\"ניווט פינות\" על מנת לבחור את הפינה בשימוש"
 
 #: ../resources/guide/js/desktop.coffee:179
 msgid "tips: Click on the interface of corner navigation blank area to return"
@@ -503,23 +499,23 @@ msgstr ""
 
 #: ../resources/guide/js/start.coffee:28
 msgid "New Launcher"
-msgstr ""
+msgstr "משגר חדש"
 
 #: ../resources/guide/js/start.coffee:28
 msgid "New Desktop"
-msgstr ""
+msgstr "שולחן עבודה חדש"
 
 #: ../resources/guide/js/start.coffee:28
 msgid "New System Settings"
-msgstr ""
+msgstr " מערכת הגדרות חדשה"
 
 #: ../resources/guide/js/start.coffee:29
 msgid "The following will guide you to learn how to use some new functions"
-msgstr ""
+msgstr "המדריך הבא ילמד אותך כיצד להשתמש בחלק מהפונקציות החדשות"
 
 #: ../resources/guide/js/start.coffee:44
 msgid "Start"
-msgstr ""
+msgstr "התחל"
 
 #: ../resources/guide/js/start.coffee:51
 msgid "I am an experienced user. Exit directly."
@@ -539,24 +535,25 @@ msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:85
 msgid ""
-"Please click on the \"All Applications\" icon, you will see all applications."
+"Please click on the \"All Applications\" icon, you will see all "
+"applications."
 msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:95
 msgid ""
 "All programs can be located by scrolling the mouse up and down.\n"
 "You can also click on the left classification navigation to locate"
-msgstr ""
+msgstr "ניתן למצוא את כל התוכנות על ידי גלילת העכבר מעלה מטה.\nכמו כן, ניתן ללחוץ על הסמלים בצד שמאל על מנת לנווט למקום הרצוי"
 
 #: ../resources/guide/js/launcher.coffee:133
 msgid "Skip the step without scroll"
-msgstr ""
+msgstr "דגל על החלק הזה ללא גלילה"
 
 #: ../resources/guide/js/launcher.coffee:163
 msgid ""
 "Use the keyboard to search for applications\n"
 "Try the \"deepin\" keyword to see which applications are shown"
-msgstr ""
+msgstr "השתמש במקלדת על מנת לחפש יישומים\nנסה את המילה \"deepin\" וראה אילו יישומים מופיעים"
 
 #: ../resources/guide/js/launcher.coffee:164
 msgid "tips: Please directly enter the word \"deepin\""
@@ -564,7 +561,7 @@ msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:179
 msgid "Use the right mouse button to send two icons to the desktop"
-msgstr ""
+msgstr "השתמש בלחצן העכבר הימני על מנת לשלוח שני אייקונים לשולחן העבודה"
 
 #: ../resources/guide/js/launcher.coffee:180
 msgid "tips: You can add it to startup items or uninstall it"
@@ -596,16 +593,16 @@ msgstr ""
 
 #: ../resources/dock/js/deepin_item.coffee:247
 msgid "_View as analog"
-msgstr "_הצגה כאנלוגי"
+msgstr "_הצג כאנלוגי"
 
 #: ../resources/dock/js/deepin_item.coffee:248
 #: ../resources/dock/js/deepin_item.coffee:300
 msgid "_Time settings"
-msgstr "_הגדרת זמן"
+msgstr "_הגדרות זמן"
 
 #: ../resources/dock/js/deepin_item.coffee:299
 msgid "_View as digit"
-msgstr "_הצגה כדיגיטלי"
+msgstr "_הצג כדיגיטלי"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:33
 msgid "_Close"
@@ -613,11 +610,11 @@ msgstr "_סגירה"
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
-msgstr ""
+msgstr "הסרת את \"%1\" בהצלחה"
 
 #: ../resources/common/js/uninstaller.coffee:33
 msgid "\"%1\" failed to be uninstalled"
-msgstr ""
+msgstr "ההסרה של \"%1\" נכשלה"
 
 #: ../app/desktop/desktop.c:292
 msgid "New file"
@@ -625,68 +622,68 @@ msgstr "קובץ חדש"
 
 #: ../app/desktop/desktop.c:303
 msgid "New directory"
-msgstr "ספריה חדשה"
+msgstr "תיקייה חדשה"
 
 #: ../app/greeter/mutils.c:84
 msgid "%a, %b %d, %Y"
-msgstr ""
+msgstr "%a, %b %d, %Y"
 
 #: ../app/greeter/lock.c:125 ../app/greeter/greeter.c:192
 msgid "Wrong Password"
-msgstr "סיסמא לא חוקית"
+msgstr ""
 
 #: ../app/dock/dock.c:322
 msgid "Dock failed to start, because Compiz is not enabled."
-msgstr ""
+msgstr "סרגל האפליקציות לא הופעל, בגלל שהתוסף של Compiz אינו מופעל"
 
 #: ../lib/dentry/entry.c:746
 #, c-format
 msgid ""
 "Cannot rename the item to \"%s\". This may be caused by lack of permissions."
-msgstr ""
+msgstr "לא ניתן לשנות את השם ל-\"%s\". ייתכן ובעייה זו נגרמת כתוצאה מהרשאות לא מתאימות"
 
 #: ../lib/dentry/entry.c:752
 #, c-format
 msgid ""
 "There is already a file with name \"%s\" in this folder. Please consider a "
 "different name."
-msgstr ""
+msgstr "כבר קיים קובץ בשם \"%s\" בתיקייה זו. אנא שקול לבחור שם אחר"
 
 #: ../lib/dentry/entry.c:758
 msgid "The item could not be renamed"
-msgstr ""
+msgstr "שם הפריט אינו ניתן לשינוי"
 
 #: ../lib/dentry/entry.c:833 ../lib/dentry/fileops.c:805
 msgid "copy"
-msgstr "העתקה"
+msgstr "העתק"
 
 #: ../lib/dentry/entry.c:1415
 msgid "App Group"
-msgstr "קבוצת ישומים"
+msgstr "קבוצת יישומים"
 
 #: ../lib/dentry/fileops.c:566
 msgid "Move"
-msgstr ""
+msgstr "העבר"
 
 #: ../lib/dentry/fileops.c:772
 msgid "Copy"
-msgstr "העתקה"
+msgstr "העתק"
 
 #: ../lib/dentry/fileops_delete.c:29
 msgid "Delete Files"
-msgstr ""
+msgstr "מחק קבצים"
 
 #: ../lib/dentry/fileops_delete.c:32
 msgid "Are you sure you want to permanently delete the files?"
-msgstr "האם החלטת למחוק קובץ זה לצמיתות?"
+msgstr "האם אתה בטוח שברצונך למחוק קובץ זה לצמיתות?"
 
 #: ../lib/dentry/fileops_delete.c:33
 msgid "If you delete the files, they will be permanently lost."
-msgstr ""
+msgstr "אם תמחק את הקבצים, הם ייאבדו לצמיתות"
 
 #: ../lib/dentry/fileops_delete.c:36
 msgid "Delete"
-msgstr "מחיקה"
+msgstr "מחק"
 
 #: ../lib/dentry/fileops_error_dialog.c:63
 msgid "File conflict"
@@ -694,7 +691,7 @@ msgstr "קובץ בהתנגשות"
 
 #: ../lib/dentry/fileops_error_dialog.c:106
 msgid "_Select a new name for the destination"
-msgstr "_בחירת שם חדש עבור היעד"
+msgstr "_בחר שם חדש עבור היעד"
 
 #: ../lib/dentry/fileops_error_dialog.c:117
 msgid "Reset"
@@ -706,61 +703,60 @@ msgstr "החלת הפעולה הזו לכל הקבצים"
 
 #: ../lib/dentry/fileops_error_dialog.c:133
 msgid "_Skip"
-msgstr "_דילוג"
+msgstr "_דלג"
 
 #: ../lib/dentry/fileops_error_dialog.c:136
 msgid "Re_name"
-msgstr "ש_ינוי שם"
+msgstr "שינוי שם"
 
 #: ../lib/dentry/fileops_error_dialog.c:141
 msgid "Replace"
-msgstr "החלפה"
+msgstr "החלף"
 
 #: ../lib/dentry/fileops_error_dialog.c:218
 #, c-format
 msgid "Do you want to merge with folder \"%s\"?"
-msgstr ""
+msgstr "האם ברצונך לאחד עם התיקייה \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
 msgid ""
-"The merging operation will be asked to confirm before replacing any files in "
-"the folder conflicted."
+"The merging operation will be asked to confirm before replacing any files in"
+" the folder conflicted."
 msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:222
 #, c-format
 msgid "An older folder with the same name already exists in \"%s\"."
-msgstr "ספריה ישנה בעלת שם זהה קיימת ב \"%s\"."
+msgstr "תיקייה ישנה בעלת שם זהה קיימת ב \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:226
 #, c-format
 msgid "A newer folder with the same name already exists in \"%s\"."
-msgstr "ספריה חדשה בעלת שם זהה קיימת ב  \"%s\"."
+msgstr "תיקייה חדשה יותר בעלת שם זהה קיימת ב  \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:230
 #, c-format
 msgid "Another folder with the same name already exists in \"%s\"."
-msgstr "ספריה אחרת בעלת שם זהה קיימת ב  \"%s\"."
+msgstr "תיקייה אחרת בעלת שם זהה קיימת ב  \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:236
-#, fuzzy
 msgid "All files in the folder will be removed by replacing."
-msgstr "כל הקבצים באשפה ימחקו לצמיתות"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:237
 #, c-format
 msgid "Do you want to replace folder \"%s\"?"
-msgstr ""
+msgstr "האם ברצונך להחליף את התיקייה \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:239
 #, c-format
 msgid "A folder with the same name already exists in \"%s\"."
-msgstr "ספריה בעלת שם זהה כבר קיימת ב \"%s\""
+msgstr "תיקייה בעלת שם זהה כבר קיימת ב \"%s\""
 
 #: ../lib/dentry/fileops_error_dialog.c:245
 #, c-format
 msgid "Do you want to replace file \"%s\"?"
-msgstr ""
+msgstr "האם ברצונך להחליף את הקובץ \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:246
 msgid "The content will be overwritten by replacing."
@@ -769,7 +765,7 @@ msgstr ""
 #: ../lib/dentry/fileops_error_dialog.c:248
 #, c-format
 msgid "An older file with the same name already exists in \"%s\"."
-msgstr "ספריה בעלת שם זהה כבר קיימת ב \"%s\""
+msgstr "קובץ ישן בעל שם זהה כבר קיים ב \"%s\""
 
 #: ../lib/dentry/fileops_error_dialog.c:252
 #, c-format
@@ -802,7 +798,7 @@ msgstr "שונה לאחרונה:"
 
 #: ../lib/dentry/fileops_error_dialog.c:356
 msgid "Replace with"
-msgstr "החלפה עם"
+msgstr "החלף עם"
 
 #: ../lib/dentry/fileops_error_dialog.c:382
 msgid "Merge"
@@ -828,12 +824,12 @@ msgstr "כל הקבצים באשפה ימחקו לצמיתות"
 
 #: ../lib/dentry/fileops_trash.c:71
 msgid "Empty _Trash"
-msgstr "פינוי_אשפה"
+msgstr "פינוי _אשפה"
 
 #: ../lib/dentry/mime_actions.c:198
 #, c-format
 msgid "Do you want to run \"%s\", or display its contents?"
-msgstr "האם ברצונך להפעיל את \"%s\", או להציג את התוכן שלה?"
+msgstr "האם ברצונך להפעיל את \"%s\", או להציג את התוכן שלו?"
 
 #: ../lib/dentry/mime_actions.c:199
 #, c-format
@@ -842,15 +838,15 @@ msgstr "\"%s\" הוא קובץ טקסט בר הפעלה."
 
 #: ../lib/dentry/mime_actions.c:210
 msgid "Run in _Terminal"
-msgstr "הרצה ב_מסוף"
+msgstr "הרצה במסוף"
 
 #: ../lib/dentry/mime_actions.c:211
 msgid "_Display"
-msgstr "_הצגה"
+msgstr "_הצג"
 
 #: ../lib/dentry/mime_actions.c:213
 msgid "_Run"
-msgstr "_הרצה"
+msgstr "_הרץ"
 
 #: ../lib/category.c:45
 msgid "all"
@@ -858,7 +854,7 @@ msgstr "הכל"
 
 #: ../lib/category.c:46
 msgid "internet"
-msgstr ""
+msgstr "רשת"
 
 #: ../lib/category.c:47
 msgid "multimedia"
@@ -874,7 +870,7 @@ msgstr "גרפיקה"
 
 #: ../lib/category.c:50
 msgid "productivity"
-msgstr "יצירה"
+msgstr "פרודקטיביות"
 
 #: ../lib/category.c:51
 msgid "industry"
@@ -898,11 +894,4 @@ msgstr "עזרים"
 
 #: ../lib/category.c:56
 msgid "others"
-msgstr "אחר"
-
-#, fuzzy
-#~ msgid "_Dock setting"
-#~ msgstr "_הגדרת זמן"
-
-#~ msgid "_Clean up"
-#~ msgstr "_ניקוי"
+msgstr ""

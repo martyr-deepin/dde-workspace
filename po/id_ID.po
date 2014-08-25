@@ -1,23 +1,23 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Aril Apria Susanto <awriel@gmail.com>, 2014
-# arvernester <dedy.yugo.purwanto@gmail.com>, 2014
+# Yugo Purwanto <dedy.yugo.purwanto@gmail.com>, 2014
+# etc session, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-08-22 11:12+0800\n"
-"PO-Revision-Date: 2014-07-05 22:30+0000\n"
-"Last-Translator: arvernester <dedy.yugo.purwanto@gmail.com>\n"
-"Language-Team: Indonesian (Indonesia) (http://www.transifex.com/projects/p/"
-"deepin-desktop-environment/language/id_ID/)\n"
-"Language: id_ID\n"
+"PO-Revision-Date: 2014-08-22 04:43+0000\n"
+"Last-Translator: szd_liufei <liufei@linuxdeepin.com>\n"
+"Language-Team: Indonesian (Indonesia) (http://www.transifex.com/projects/p/deepin-desktop-environment/language/id_ID/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: id_ID\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../resources/desktop/js/invalidlink.coffee:34
@@ -94,7 +94,7 @@ msgstr "Tidak bisa membuka berkas ini."
 
 #: ../resources/desktop/js/specialitem.coffee:34
 msgid "Computer"
-msgstr ""
+msgstr "Komputer"
 
 #: ../resources/desktop/js/specialitem.coffee:87
 #: ../resources/dock/js/main.coffee:47 ../resources/dock/js/main.coffee:124
@@ -102,14 +102,12 @@ msgid "Trash"
 msgstr "Tong sampah"
 
 #: ../resources/desktop/js/specialitem.coffee:152
-#, fuzzy
 msgid "_Clean up %1 items"
-msgstr "_Bersihkan"
+msgstr "_Clean up %1 item"
 
 #: ../resources/desktop/js/specialitem.coffee:154
-#, fuzzy
 msgid "_Clean up 1 item"
-msgstr "_Bersihkan"
+msgstr "_Clean up 1 item"
 
 #: ../resources/desktop/js/specialitem.coffee:156
 #: ../resources/dock/js/plugins/trash/trash.coffee:29
@@ -189,7 +187,7 @@ msgstr "Tekan Ctrl + Alt + F1\n"
 msgid ""
 "\t\t\t\t-----The daemon of accounts has not started!-----\n"
 ")"
-msgstr ""
+msgstr "-----Akun daemon tidak dapat berjalan!-----)"
 
 #: ../resources/greeter/js/message.coffee:79
 msgid "$ sudo apt-get install deepin-desktop-Environment\n"
@@ -197,7 +195,7 @@ msgstr "$ sudo apt-get install deepin-desktop-Environment\n"
 
 #: ../resources/greeter/js/message.coffee:68
 msgid "\t\t\t\t-----No available desktop sessions!-----\n"
-msgstr ""
+msgstr "-----Tidak ada sesi desktop yang tersedia!-----\n"
 
 #: ../resources/greeter/js/user.coffee:411
 msgid "Login"
@@ -307,9 +305,8 @@ msgid "Enter your password to %1"
 msgstr "Masukkan kata kunci pada %1"
 
 #: ../resources/greeter/js/mediacontrol.coffee:167
-#, fuzzy
 msgid "Click button to Play"
-msgstr "klik tombol login untuk masuk"
+msgstr ""
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
@@ -332,7 +329,7 @@ msgstr "Apakah Anda yakin untuk menghapus"
 #: ../resources/launcher/js/item.coffee:354
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
 msgid "All dependencies will be removed"
-msgstr "Semua ketergantungan akan dihapus"
+msgstr ""
 
 #: ../resources/launcher/js/item.coffee:354
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
@@ -384,9 +381,8 @@ msgid "Send to d_esktop"
 msgstr "Kirim ke d_esktop"
 
 #: ../resources/launcher/js/const.coffee:85
-#, fuzzy
 msgid "Remove from d_esktop"
-msgstr "Hapus dari _favorit"
+msgstr ""
 
 #: ../resources/launcher/js/const.coffee:88
 #: ../resources/guide/js/launcher.coffee:239
@@ -394,9 +390,8 @@ msgid "Send to do_ck"
 msgstr "Kirim ke do_ck"
 
 #: ../resources/launcher/js/const.coffee:89
-#, fuzzy
 msgid "Remove from do_ck"
-msgstr "Hapus dari _favorit"
+msgstr ""
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "Control Center"
@@ -423,25 +418,22 @@ msgid "Well, please trigger the lower right corner again"
 msgstr "Oow, silakan arahkan ke pojok kanan bawah lagi"
 
 #: ../resources/guide/js/dss.coffee:30
-#, fuzzy
 msgid "tips: Click the setting icon on dock to implement"
-msgstr "tips: Klik ikon setting pada dok untuk menjalankannya"
+msgstr ""
 
 #: ../resources/guide/js/dss.coffee:69
 msgid "Here is the system setting area"
 msgstr "Area Pengaturan Sistem"
 
 #: ../resources/guide/js/dss.coffee:70
-#, fuzzy
 msgid ""
 "tips: Hover the setting icon on dock to quickly implement some setting "
 "functions"
-msgstr "tips: Klik ikon setting pada dok untuk menjalankannya"
+msgstr ""
 
 #: ../resources/guide/js/end.coffee:25
-#, fuzzy
 msgid "Thanks for your patience while learning. Congratulations."
-msgstr "Terimakasih atas kesabaran Anda untuk belajar. Selamat!"
+msgstr ""
 
 #: ../resources/guide/js/end.coffee:30
 msgid "End"
@@ -459,28 +451,26 @@ msgstr "Persiapan untuk operasi ..."
 msgid ""
 "Let's drag the other icon on the first icon \n"
 " to generate \"application group\""
-msgstr ""
+msgstr "Silakan seret ikon lainnya pada ikon pertama untuk membuat grup aplikasi"
 
 #: ../resources/guide/js/desktop.coffee:116
 msgid "Well, you have learned how to create a \"application group\""
-msgstr ""
-"Baiklah, Anda sudah mempelajari bagaimana membuat sebuah \"grup aplikasi\""
+msgstr "Baiklah, Anda sudah mempelajari bagaimana membuat sebuah \"grup aplikasi\""
 
 #: ../resources/guide/js/desktop.coffee:117
-#, fuzzy
 msgid "tips: Right-click on the application group will provide more functions"
-msgstr "tips: Klik kanan pada group aplikasi akan memberikan fungsi lainnya"
+msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:128
 msgid ""
-"Slide the mouse to the four top corners, which can trigger four different "
-"events\n"
+"Slide the mouse to the four top corners, which can trigger four different events\n"
 "Please move to the upper left corner first to show or hide Launcher"
 msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:129
 msgid ""
-"tips: Please trigger successively by hints, click on the blank area to return"
+"tips: Please trigger successively by hints, click on the blank area to "
+"return"
 msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:133
@@ -503,7 +493,7 @@ msgstr "Tidak ada fungsi bawaan yang diset pada pojok kanan atas"
 msgid ""
 "Right-click on desktop black area to call up the menu, select \"Corner "
 "navigation\" to set the corner used"
-msgstr ""
+msgstr "Klik kanan pada area hitam desktop untuk memanggil menu, pilih \"Pojok navigasi\" untuk mengatur sudut yang digunakan"
 
 #: ../resources/guide/js/desktop.coffee:179
 msgid "tips: Click on the interface of corner navigation blank area to return"
@@ -523,8 +513,7 @@ msgstr "Pengaturan Sistem Baru"
 
 #: ../resources/guide/js/start.coffee:29
 msgid "The following will guide you to learn how to use some new functions"
-msgstr ""
-"Panduan berikut akan memandu Anda belajar menggunakan beberapa fungsi baru"
+msgstr "Panduan berikut akan memandu Anda belajar menggunakan beberapa fungsi baru"
 
 #: ../resources/guide/js/start.coffee:44
 msgid "Start"
@@ -547,56 +536,46 @@ msgid ""
 msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:85
-#, fuzzy
 msgid ""
-"Please click on the \"All Applications\" icon, you will see all applications."
+"Please click on the \"All Applications\" icon, you will see all "
+"applications."
 msgstr ""
-"Silakan klik pada ikon \"Semua Aplikasi\", Anda akan melihat semua aplikasi"
 
 #: ../resources/guide/js/launcher.coffee:95
 msgid ""
 "All programs can be located by scrolling the mouse up and down.\n"
 "You can also click on the left classification navigation to locate"
-msgstr ""
+msgstr "Semua program dapat ditemukan dengan menggulir mouse ke atas dan ke bawah.\nAnda juga dapat mengklik pada navigasi klasifikasi kiri untuk menemukannya"
 
 #: ../resources/guide/js/launcher.coffee:133
 msgid "Skip the step without scroll"
 msgstr "Lewati langkah tanpa menggulung"
 
 #: ../resources/guide/js/launcher.coffee:163
-#, fuzzy
 msgid ""
 "Use the keyboard to search for applications\n"
 "Try the \"deepin\" keyword to see which applications are shown"
 msgstr ""
-"Gunakan pencarian dengan papan ketik untuk mencari aplikasi yang Anda "
-"inginkan\n"
-"Kita coba gunakan kata kunci \"deepin\" untk melihat aplikasi mana saja yang "
-"akan tampil"
 
 #: ../resources/guide/js/launcher.coffee:164
-#, fuzzy
 msgid "tips: Please directly enter the word \"deepin\""
-msgstr "tips : Silakan ketikkan kata \"deepin\""
+msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:179
 msgid "Use the right mouse button to send two icons to the desktop"
 msgstr "Gunakan tombol klik kanan untuk mengirim dua icon ke desktop"
 
 #: ../resources/guide/js/launcher.coffee:180
-#, fuzzy
 msgid "tips: You can add it to startup items or uninstall it"
-msgstr "tips:Anda dapat menambah ke startup atau uninstall"
+msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:9
-#, fuzzy
 msgid "Keep _showing"
-msgstr "tetap _tampilkan"
+msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:10
-#, fuzzy
 msgid "Keep _hidden"
-msgstr "tetap _sembunyikan"
+msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:11
 msgid "_Auto hide"
@@ -653,7 +632,7 @@ msgstr "%a, %b %d, %Y"
 
 #: ../app/greeter/lock.c:125 ../app/greeter/greeter.c:192
 msgid "Wrong Password"
-msgstr "Kata Sandi Salah"
+msgstr ""
 
 #: ../app/dock/dock.c:322
 msgid "Dock failed to start, because Compiz is not enabled."
@@ -663,18 +642,18 @@ msgstr "Dock tidak terbuka, karena Compis tidak diaktifkan."
 #, c-format
 msgid ""
 "Cannot rename the item to \"%s\". This may be caused by lack of permissions."
-msgstr ""
+msgstr "Tidak dapat mengubah nama item ke \"%s\". Hal ini mungkin disebabkan masalah perizinan."
 
 #: ../lib/dentry/entry.c:752
 #, c-format
 msgid ""
 "There is already a file with name \"%s\" in this folder. Please consider a "
 "different name."
-msgstr ""
+msgstr "Sudah ada file dengan nama \"%s\" di folder ini. Silakan mempertimbangkan nama yang berbeda."
 
 #: ../lib/dentry/entry.c:758
 msgid "The item could not be renamed"
-msgstr ""
+msgstr "Nama Item tidak dapat diubah"
 
 #: ../lib/dentry/entry.c:833 ../lib/dentry/fileops.c:805
 msgid "copy"
@@ -743,8 +722,8 @@ msgstr "Apakah Anda ingin menggabungkan dengan folder \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
 msgid ""
-"The merging operation will be asked to confirm before replacing any files in "
-"the folder conflicted."
+"The merging operation will be asked to confirm before replacing any files in"
+" the folder conflicted."
 msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:222
@@ -763,9 +742,8 @@ msgid "Another folder with the same name already exists in \"%s\"."
 msgstr "Folder lain dengan nama yang sama sudah tersedia di \"%s\""
 
 #: ../lib/dentry/fileops_error_dialog.c:236
-#, fuzzy
 msgid "All files in the folder will be removed by replacing."
-msgstr "Semua item di tempat sampah akan dihapus permanen"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:237
 #, c-format
@@ -918,34 +896,4 @@ msgstr "utiliti"
 
 #: ../lib/category.c:56
 msgid "others"
-msgstr "lainnya"
-
-#~ msgid "click login button to log in"
-#~ msgstr "klik tombol login untuk masuk"
-
-#~ msgid "Expand"
-#~ msgstr "Perluas"
-
-#~ msgid "Only the first Screen"
-#~ msgstr "Hanya Layar pertama"
-
-#~ msgid "Only the second Screen"
-#~ msgstr "Hanya Layar kedua"
-
-#, fuzzy
-#~ msgid "_Dock setting"
-#~ msgstr "_Pengaturan waktu"
-
-#~ msgid "_Clean up"
-#~ msgstr "_Bersihkan"
-
-#~ msgid "Thanks for your patience to learn.You get the novice package"
-#~ msgstr ""
-#~ "Terimakasih atas kesabaran Anda untuk belajar. Anda mendapatkan paket "
-#~ "pemula"
-
-#~ msgid "Get"
-#~ msgstr "Get"
-
-#~ msgid "New users directly jump to the registration page"
-#~ msgstr "Pengguna baru diarahkan ke halaman registrasi"
+msgstr ""

@@ -1,26 +1,25 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
-# Fox909 <ffox909@mail.ru>, 2014
+# Анатолий Валерианович <ffox909@mail.ru>, 2014
 # jvjey <justVolodya@gmail.com>, 2014
 # Serge Kukharski, 2014
+# Анатолий Валерианович <ffox909@mail.ru>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-08-22 11:12+0800\n"
-"PO-Revision-Date: 2014-07-03 17:01+0000\n"
-"Last-Translator: Fox909 <ffox909@mail.ru>\n"
-"Language-Team: Russian (http://www.transifex.com/projects/p/deepin-desktop-"
-"environment/language/ru/)\n"
-"Language: ru\n"
+"PO-Revision-Date: 2014-08-22 04:43+0000\n"
+"Last-Translator: szd_liufei <liufei@linuxdeepin.com>\n"
+"Language-Team: Russian (http://www.transifex.com/projects/p/deepin-desktop-environment/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Language: ru\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: ../resources/desktop/js/invalidlink.coffee:34
 #: ../resources/desktop/js/desktopentry.coffee:108
@@ -96,7 +95,7 @@ msgstr "Невозможно открыть этот файл!"
 
 #: ../resources/desktop/js/specialitem.coffee:34
 msgid "Computer"
-msgstr ""
+msgstr "Компьютер"
 
 #: ../resources/desktop/js/specialitem.coffee:87
 #: ../resources/dock/js/main.coffee:47 ../resources/dock/js/main.coffee:124
@@ -104,14 +103,12 @@ msgid "Trash"
 msgstr "Корзина"
 
 #: ../resources/desktop/js/specialitem.coffee:152
-#, fuzzy
 msgid "_Clean up %1 items"
-msgstr "Очистить"
+msgstr "Очистить %1 объектов"
 
 #: ../resources/desktop/js/specialitem.coffee:154
-#, fuzzy
 msgid "_Clean up 1 item"
-msgstr "Очистить"
+msgstr "Очистить 1 объект"
 
 #: ../resources/desktop/js/specialitem.coffee:156
 #: ../resources/dock/js/plugins/trash/trash.coffee:29
@@ -191,9 +188,7 @@ msgstr "Нажмите Ctrl + Alt + F1\n"
 msgid ""
 "\t\t\t\t-----The daemon of accounts has not started!-----\n"
 ")"
-msgstr ""
-"\t\t\t\t-----Процесс аккаунтов не запущен!-----\n"
-")"
+msgstr "\t\t\t\t-----Процесс аккаунтов не запущен!-----\n)"
 
 #: ../resources/greeter/js/message.coffee:79
 msgid "$ sudo apt-get install deepin-desktop-Environment\n"
@@ -311,9 +306,8 @@ msgid "Enter your password to %1"
 msgstr "Введите свой пароль для %1"
 
 #: ../resources/greeter/js/mediacontrol.coffee:167
-#, fuzzy
 msgid "Click button to Play"
-msgstr "нажать кнопку входа для авторизации"
+msgstr ""
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
@@ -336,7 +330,7 @@ msgstr "Вы уверены, что хотите удалить"
 #: ../resources/launcher/js/item.coffee:354
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
 msgid "All dependencies will be removed"
-msgstr "Все зависимости будут удалены"
+msgstr ""
 
 #: ../resources/launcher/js/item.coffee:354
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
@@ -388,9 +382,8 @@ msgid "Send to d_esktop"
 msgstr "Отправить на рабочий стол"
 
 #: ../resources/launcher/js/const.coffee:85
-#, fuzzy
 msgid "Remove from d_esktop"
-msgstr "Удалить из Избранного"
+msgstr "Удалить с рабочего _стола"
 
 #: ../resources/launcher/js/const.coffee:88
 #: ../resources/guide/js/launcher.coffee:239
@@ -398,9 +391,8 @@ msgid "Send to do_ck"
 msgstr "Отправить на панель"
 
 #: ../resources/launcher/js/const.coffee:89
-#, fuzzy
 msgid "Remove from do_ck"
-msgstr "Удалить из Избранного"
+msgstr "Удалить из _дока"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "Control Center"
@@ -427,27 +419,22 @@ msgid "Well, please trigger the lower right corner again"
 msgstr "Пожалуйста, наведите на правый нижний угол ещё раз"
 
 #: ../resources/guide/js/dss.coffee:30
-#, fuzzy
 msgid "tips: Click the setting icon on dock to implement"
-msgstr "Совет: нажмите на значок настроек на панели для выполнения"
+msgstr ""
 
 #: ../resources/guide/js/dss.coffee:69
 msgid "Here is the system setting area"
 msgstr "Здесь область настройки системы"
 
 #: ../resources/guide/js/dss.coffee:70
-#, fuzzy
 msgid ""
 "tips: Hover the setting icon on dock to quickly implement some setting "
 "functions"
 msgstr ""
-"советы: Наведите курсор на значок настроек панели для настройки некоторых "
-"функций"
 
 #: ../resources/guide/js/end.coffee:25
-#, fuzzy
 msgid "Thanks for your patience while learning. Congratulations."
-msgstr "Спасибо за Ваше терпение в обучении. Поздравляем!"
+msgstr "Благодарим за терпение во время обучения. Поздравляем."
 
 #: ../resources/guide/js/end.coffee:30
 msgid "End"
@@ -465,38 +452,27 @@ msgstr "Подготовка к операции…"
 msgid ""
 "Let's drag the other icon on the first icon \n"
 " to generate \"application group\""
-msgstr ""
-"Давайте перетащим другой значёк на первй\n"
-"для создания \"группы приложений\""
+msgstr "Давайте перетащим другой значёк на первй\nдля создания \"группы приложений\""
 
 #: ../resources/guide/js/desktop.coffee:116
 msgid "Well, you have learned how to create a \"application group\""
 msgstr "И так, вы научились создавать \"группу приложений\""
 
 #: ../resources/guide/js/desktop.coffee:117
-#, fuzzy
 msgid "tips: Right-click on the application group will provide more functions"
 msgstr ""
-"Совет: клик правой кнопкой мыши на группе приложений предоставит больше "
-"функций"
 
 #: ../resources/guide/js/desktop.coffee:128
-#, fuzzy
 msgid ""
-"Slide the mouse to the four top corners, which can trigger four different "
-"events\n"
+"Slide the mouse to the four top corners, which can trigger four different events\n"
 "Please move to the upper left corner first to show or hide Launcher"
 msgstr ""
-"Сдвиньте мышь в четыре угла, которые могут вызывать различные события\n"
-"Сдвиньтесь в левый верхний угол, чтобы показать или скрыть Запуск"
 
 #: ../resources/guide/js/desktop.coffee:129
-#, fuzzy
 msgid ""
-"tips: Please trigger successively by hints, click on the blank area to return"
+"tips: Please trigger successively by hints, click on the blank area to "
+"return"
 msgstr ""
-"советы: Инициируйте последовательно подсказки, щелкните по пустой области, "
-"чтобы вернуться"
 
 #: ../resources/guide/js/desktop.coffee:133
 msgid "Show/Hide Launcher"
@@ -518,15 +494,11 @@ msgstr "Функция по умолчанию не выставлена для 
 msgid ""
 "Right-click on desktop black area to call up the menu, select \"Corner "
 "navigation\" to set the corner used"
-msgstr ""
-"Кликните правой кнопкой мыши на свободном пространстве Рабочего стола, "
-"выберите «Угловая навигация» для выбора действий при наведении на угол экрана"
+msgstr "Кликните правой кнопкой мыши на свободном пространстве Рабочего стола, выберите «Угловая навигация» для выбора действий при наведении на угол экрана"
 
 #: ../resources/guide/js/desktop.coffee:179
-#, fuzzy
 msgid "tips: Click on the interface of corner navigation blank area to return"
 msgstr ""
-"Совет: нажмите на пустое место интерфейса угловой навигации для возврата"
 
 #: ../resources/guide/js/start.coffee:28
 msgid "New Launcher"
@@ -550,83 +522,65 @@ msgstr "Начать"
 
 #: ../resources/guide/js/start.coffee:51
 msgid "I am an experienced user. Exit directly."
-msgstr "Я старше, выйти напрямую"
+msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:29
-#, fuzzy
 msgid ""
 "\"Application Launcher\" can be started by sliding the mouse to the upper "
 "left corner or clicking on the launcher."
 msgstr ""
-"Сдвинув мышь в верхний левый угол или нажав на иконку запуска можно открыть "
-"\"Запуск приложений\""
 
 #: ../resources/guide/js/launcher.coffee:70
-#, fuzzy
 msgid ""
 "What shown in the first screen of \"launcher\" are the applications "
 "collected."
 msgstr ""
-"Показываемые на первом экране \"Запуск\" являются избранными приложениями"
 
 #: ../resources/guide/js/launcher.coffee:85
-#, fuzzy
 msgid ""
-"Please click on the \"All Applications\" icon, you will see all applications."
+"Please click on the \"All Applications\" icon, you will see all "
+"applications."
 msgstr ""
-"Пожалуйста, нажмите на значок «Все программы» и вы увидите все приложения"
 
 #: ../resources/guide/js/launcher.coffee:95
 msgid ""
 "All programs can be located by scrolling the mouse up and down.\n"
 "You can also click on the left classification navigation to locate"
-msgstr ""
-"Все программы могут быть выбраны прокруткой мыши вверх и вниз.\n"
-"Вы также можете нажать слева на классификации навигации, для поиска."
+msgstr "Все программы могут быть выбраны прокруткой мыши вверх и вниз.\nВы также можете нажать слева на классификации навигации, для поиска."
 
 #: ../resources/guide/js/launcher.coffee:133
 msgid "Skip the step without scroll"
 msgstr "Пропустить шаг без прокрутки"
 
 #: ../resources/guide/js/launcher.coffee:163
-#, fuzzy
 msgid ""
 "Use the keyboard to search for applications\n"
 "Try the \"deepin\" keyword to see which applications are shown"
-msgstr ""
-"Используйте набор с клавиатуры для поиска приложения\n"
-"Например, попробуйте слово «deepin» и посмотрите, что покажет"
+msgstr "Используйте клавиатуру для поиска приложений\nПопробуйте ключевое слово \"Deepin\", чтобы увидеть, какие приложения будут показаны"
 
 #: ../resources/guide/js/launcher.coffee:164
-#, fuzzy
 msgid "tips: Please directly enter the word \"deepin\""
-msgstr "Совет: введите слово «deepin»"
+msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:179
 msgid "Use the right mouse button to send two icons to the desktop"
-msgstr ""
-"Используйте клик правой кнопкой мыши, чтобы поместить ярлык приложения на "
-"Рабочий стол"
+msgstr "Используйте клик правой кнопкой мыши, чтобы поместить ярлык приложения на Рабочий стол"
 
 #: ../resources/guide/js/launcher.coffee:180
-#, fuzzy
 msgid "tips: You can add it to startup items or uninstall it"
-msgstr "советы: Вы можете добавить его в автозагрузку или удалить"
+msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:9
-#, fuzzy
 msgid "Keep _showing"
-msgstr "Показывать всегда"
+msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:10
-#, fuzzy
 msgid "Keep _hidden"
-msgstr "Скрыть"
+msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:11
-#, fuzzy
 msgid "_Auto hide"
-msgstr "Автоскрытие"
+msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:24
 msgid "_Fashion mode"
@@ -659,11 +613,11 @@ msgstr "_Закрыть"
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
-msgstr ""
+msgstr "Ваше удаление \"%1\" успешно"
 
 #: ../resources/common/js/uninstaller.coffee:33
 msgid "\"%1\" failed to be uninstalled"
-msgstr ""
+msgstr "\"%1\" удалён не удачно"
 
 #: ../app/desktop/desktop.c:292
 msgid "New file"
@@ -679,7 +633,7 @@ msgstr "%a, %b %d, %Y"
 
 #: ../app/greeter/lock.c:125 ../app/greeter/greeter.c:192
 msgid "Wrong Password"
-msgstr "Неверный пароль"
+msgstr ""
 
 #: ../app/dock/dock.c:322
 msgid "Dock failed to start, because Compiz is not enabled."
@@ -689,18 +643,14 @@ msgstr "Ошибка запуска панели: отключён плагин 
 #, c-format
 msgid ""
 "Cannot rename the item to \"%s\". This may be caused by lack of permissions."
-msgstr ""
-"Невозможно переименовать объект в «%s»! Это может быть вызвано отсутствием "
-"прав доступа."
+msgstr "Невозможно переименовать объект в «%s»! Это может быть вызвано отсутствием прав доступа."
 
 #: ../lib/dentry/entry.c:752
 #, c-format
 msgid ""
 "There is already a file with name \"%s\" in this folder. Please consider a "
 "different name."
-msgstr ""
-"Файл с именем «%s» уже существует в этой папке. Пожалуйста, выберите другое "
-"имя!"
+msgstr "Файл с именем «%s» уже существует в этой папке. Пожалуйста, выберите другое имя!"
 
 #: ../lib/dentry/entry.c:758
 msgid "The item could not be renamed"
@@ -773,11 +723,9 @@ msgstr "Вы действительно желаете совместить па
 
 #: ../lib/dentry/fileops_error_dialog.c:220
 msgid ""
-"The merging operation will be asked to confirm before replacing any files in "
-"the folder conflicted."
+"The merging operation will be asked to confirm before replacing any files in"
+" the folder conflicted."
 msgstr ""
-"Объединение будет запрашивать подтверждение перед перезаписью любых файлов в "
-"конечной папке."
 
 #: ../lib/dentry/fileops_error_dialog.c:222
 #, c-format
@@ -795,9 +743,8 @@ msgid "Another folder with the same name already exists in \"%s\"."
 msgstr "Другая папка с таким именем уже существует в «%s»!"
 
 #: ../lib/dentry/fileops_error_dialog.c:236
-#, fuzzy
 msgid "All files in the folder will be removed by replacing."
-msgstr "Содержимое корзины будет полностью удалено."
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:237
 #, c-format
@@ -950,35 +897,4 @@ msgstr "утилиты"
 
 #: ../lib/category.c:56
 msgid "others"
-msgstr "другое"
-
-#~ msgid "click login button to log in"
-#~ msgstr "нажать кнопку входа для авторизации"
-
-#~ msgid "Expand"
-#~ msgstr "Расширить"
-
-#~ msgid "Only the first Screen"
-#~ msgstr "Только первый экран"
-
-#~ msgid "Only the second Screen"
-#~ msgstr "Только второй экран"
-
-#, fuzzy
-#~ msgid "_Dock setting"
-#~ msgstr "Настройка времени"
-
-#~ msgid "_Clean up"
-#~ msgstr "Очистить"
-
-#~ msgid "Thanks for your patience to learn.You get the novice package"
-#~ msgstr "Спасибо за Ваше терпение в обучении. Вы получили пакет новичка"
-
-#~ msgid "tips：Please receive in Deepin account"
-#~ msgstr "совет: Получите в Deepin аккаунт"
-
-#~ msgid "Get"
-#~ msgstr "Получить"
-
-#~ msgid "New users directly jump to the registration page"
-#~ msgstr "Новые пользователи попадут на страницу регистрации"
+msgstr ""
