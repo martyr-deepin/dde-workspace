@@ -152,6 +152,7 @@
   margin-right: 8px;
 }
 .windowTitle {
+  cursor: default;
   max-width: 112px;
   min-width: 0;
   width: 100%;

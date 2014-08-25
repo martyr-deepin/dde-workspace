@@ -125,10 +125,14 @@ PRIVATE GdkFilterReturn _monitor_guard_window(GdkXEvent* xevent,
 
 void update_dock_guard_window_position(double width)
 {
-    GdkWindow* win = get_dock_guard_window();
     if (width == 0)
         width = dock.width;
     GD.dock_panel_width = width;
+    GdkWindow* win = get_dock_guard_window();
+    if (win == NULL) {
+        g_warning("[%s] get dock guard window failed.", __func__);
+        return;
+    }
     gdk_window_move_resize(win,
                            dock.x + (dock.width - width) / 2,
                            dock.y + dock.height - GUARD_WINDOW_HEIGHT,
@@ -145,6 +149,10 @@ void dock_update_guard_window_width(double width)
 void init_dock_guard_window()
 {
     GdkWindow* win = get_dock_guard_window();
+    if (win == NULL) {
+        g_warning("[%s] get dock guard window failed.", __func__);
+        return;
+    }
     gdk_window_add_filter(win, _monitor_guard_window, NULL);
     update_dock_guard_window_position(dock.width);
 }
