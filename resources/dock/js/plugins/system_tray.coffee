@@ -236,7 +236,7 @@ class SystemTray extends SystemItem
 
     minShow:=>
         if hideStatusManager and hideStatusManager.state != HideState.Shown
-            console.log("[showAllIcons] #{HideStateMap[hideStatusManager.state]}")
+            console.log("[minShow] #{HideStateMap[hideStatusManager.state]}")
             return
         @isShowing = true
         @img.style.display = 'none'

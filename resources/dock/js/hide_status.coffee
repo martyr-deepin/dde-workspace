@@ -43,6 +43,12 @@ class HideStatusManager
                     else
                         @changeToHide()
 
+                when HideState.Shown
+                    if @state == HideState.Shown
+                        break
+                    @state = state
+                    @updateTrayIcons()
+
             @state = state
             console.log("StateChanged: #{HideStateMap[state]}")
         )
@@ -74,26 +80,27 @@ class HideStatusManager
     changeToHide:()->
         console.log("changeToHide: change to hide")
         @changeState(HideState.Hidding, "", "")
-        clearTimeout(@updateSystemTrayTiemr || null)
+        clearTimeout(@updateSystemTrayTimer || null)
         systemTray?.hideAllIcons()
         $tooltip?.hide()
+
+    updateTrayIcons: =>
+        if not systemTray
+            return
+        if systemTray.isUnfolded
+            # console.log("system tray is unfolded")
+            systemTray.updateTrayIcon()
+            systemTray.showAllIcons()
+        else if systemTray.isShowing
+            # console.log("system tray is showing")
+            systemTray.minShow()
+        DCore.Dock.set_is_hovered(false)
 
     changeToShow:()->
         console.log("changeToShow: change to show")
         @changeState(HideState.Showing, "translateY(0)", "translateY(0)")
-        clearTimeout(@updateSystemTrayTiemr || null)
-        @updateSystemTrayTiemr = setTimeout(->
-            if not systemTray
-                return
-            if systemTray.isUnfolded
-                # console.log("system tray is unfolded")
-                systemTray.updateTrayIcon()
-                systemTray.showAllIcons()
-            else if systemTray.isShowing
-                # console.log("system tray is showing")
-                systemTray.minShow()
-            DCore.Dock.set_is_hovered(false)
-        , SHOW_HIDE_ANIMATION_TIME)
+        clearTimeout(@updateSystemTrayTimer || null)
+        @updateSystemTrayTimer = setTimeout(@updateTrayIcons, SHOW_HIDE_ANIMATION_TIME)
 
     changeDockRegion: =>
         console.log("changeDockRegion, #{HideStateMap[@state]}")
