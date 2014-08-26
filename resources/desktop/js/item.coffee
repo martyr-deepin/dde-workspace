@@ -24,8 +24,6 @@
 Flag_setTimeout = null
 t_set = 3000 # warning: must > 2s (THUMBNAIL_CREATION_DELAY  3s  - file save time 1s )
 
-im_below_input_pixel = 100
-
 cleanup_filename = (str) ->
     new_str = str.replace(/\n|\//g, "")
     if new_str == "." or new_str == ".."
@@ -372,18 +370,13 @@ class Item extends Widget
             e.stopPropagation()
 
     item_rename : =>
-        echo "item_name 1"
         # first make the contextmenu not showed when is in_renaming
         # menu = []
         # @item_name.parentElement.contextMenu = build_menu(menu)
 
-        input_x = _ITEM_WIDTH_ * @_position.x
-        input_y = _ITEM_HEIGHT_ * @_position.y + im_below_input_pixel
-        DCore.Desktop.set_position_input(input_x,input_y)
         if @delay_rename_tid != -1 then
         if @selected == false then return
         if @in_rename == false
-            echo "item_name 2"
             move_widget_to_rename_div(@)
             @display_full_name()
             @display_not_selected()
@@ -424,8 +417,7 @@ class Item extends Widget
 
     on_item_rename_keydown : (evt) =>
         evt.stopPropagation()
-        echo "on_item_rename_keydown"
-        echo "#{@item_name.innerText}"
+        echo "on_item_rename_keydown:#{@item_name.innerText}"
         switch evt.keyCode
             when 35 # 'End' key, cant't handled in keypress; set caret to the end of whole name
                 evt.preventDefault()
@@ -475,6 +467,10 @@ class Item extends Widget
 
     on_item_rename_input : (evt) =>
         evt.stopPropagation()
+        input_x = _GRID_WIDTH_INIT_ * @_position.x
+        input_y = _GRID_HEIGHT_INIT_ * @_position.y + _GRID_HEIGHT_INIT_ * @_position.height / 2 + @item_name.clientHeight
+        console.log @item_name.clientHeight
+        DCore.Desktop.set_position_input(input_x,input_y)
         return
 
 
