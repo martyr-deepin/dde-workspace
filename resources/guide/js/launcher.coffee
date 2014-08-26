@@ -173,6 +173,8 @@ class LauncherSearch extends Page
         ,20)
 
 class LauncherMenu extends Page
+    APP_NAME_1 = "deepin-movie"
+    APP_NAME_2 = "deepin-music-player"
     constructor:(@id)->
         super
         @launcher = new Launcher()
@@ -184,51 +186,22 @@ class LauncherMenu extends Page
         @src_app_create_menu()
 
     src_app_create_menu: ->
-        @app_list = []
-        @app1 = null
-        @app2 = null
-        @src1_app = null
-        @src2_app = null
-        @app1 = @app_x_y(1)
-        @app2 = @app_x_y(2)
-        @launcher_daemon = new LauncherDaemon()
-        @app_list = @launcher_daemon?.search("deepin")
-        echo @app_list
-        try
-            if @app_list.length < 2
-                @src_app_catch()
-            else
-                if @app_list[0] is null or @app_list[0] is undefined or @app_list[1] is null or @app_list[1] is undefined
-                    @src_app_catch()
-                else
-                    @src1_app = "#{@app_list[0]}.desktop"
-                    @src2_app = "#{@app_list[1]}.desktop"
-        catch e
-            echo "launcher dbus search error:#{e}"
-            @src_app_catch()
-
-        @menu_create(@app1.x,@app1.y,=>
-            @src1 = "/usr/share/applications/#{@src1_app}"
-            DCore.Guide.copy_file_to_desktop(@src1)
-            @menu_create(@app2.x,@app2.y,=>
-                @src2 = "/usr/share/applications/#{@src2_app}"
-                DCore.Guide.copy_file_to_desktop(@src2)
+        app_list = []
+        launcher_daemon = new LauncherDaemon()
+        app_list = launcher_daemon?.search("deepin")
+        app1_index = i + 1 for app,i in app_list when app is APP_NAME_1
+        app2_index = i + 1 for app,i in app_list when app is APP_NAME_2
+        app1_pos = launcher_daemon.app_x_y(app1_index)
+        app2_pos = launcher_daemon.app_x_y(app2_index)
+        @menu_create(app1_pos.x,app1_pos.y,=>
+            src1 = "/usr/share/applications/#{APP_NAME_1}.desktop"
+            DCore.Guide.copy_file_to_desktop(src1)
+            @menu_create(app2_pos.x,app2_pos.y,=>
+                src2 = "/usr/share/applications/#{APP_NAME_2}.desktop"
+                DCore.Guide.copy_file_to_desktop(src2)
                 @switch_page()
             )
         )
-
-    src_app_catch: ->
-        if document.body.lang is "zh"
-            @src1_app = "deepin-game-center.desktop"
-            @src2_app = "deepin-movie.desktop"
-        else
-            @src1_app = "deepin-software-center.desktop"
-            @src2_app = "deepin-movie.desktop"
-
-    app_x_y: (n) ->
-        x = COLLECT_LEFT + (EACH_APP_WIDTH + EACH_APP_MARGIN_LEFT) * (n - 1) + EACH_APP_WIDTH * 0.75
-        y = COLLECT_TOP + EACH_APP_HEIGHT / 2
-        return {x:x,y:y}
 
     menu_create: (x,y,cb) ->
         @menu =[
