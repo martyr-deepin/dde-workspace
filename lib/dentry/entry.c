@@ -1447,7 +1447,7 @@ out:
     g_ptr_array_unref(candidate_categories);
     g_hash_table_unref(categories_count);
 
-    g_debug("_get_group_name_from_category_field:%s",group_name);
+    g_debug("[%s] return:%s",__func__,group_name);
     return group_name;
 }
 
@@ -1476,9 +1476,8 @@ char* _lookup(char const* basename)
                     &category_name);
 
     g_string_free(sql, TRUE);
+    g_debug("[%s]:==%s==;return==%s==",__func__,desktop_name,category_name);
     g_free(desktop_name);
-    
-    g_debug("_lookup:==%s==;return==%s==",desktop_name,category_name);
     return category_name;
 }
 
@@ -1491,11 +1490,11 @@ char* _get_category(GDesktopAppInfo* app)
     g_free(basename);
 
     if (category == NULL || category[0] == '\0'){
-        g_debug("_get_category NULL");
+        g_debug("[%s] return NULL",__func__);
         return NULL;
     }
 
-    g_debug("_get_category:%s",category);
+    g_debug("[%s] return:%s",__func__,category);
     return category;
 }
 
@@ -1524,13 +1523,13 @@ char* _get_group_name_from_software_center(ArrayContainer const fs)
     }
 
     g_free(another_category);
-    g_debug("_get_group_name_from_software_center:%s",category);
+    g_debug("[%s]:%s",__func__,category);
     return category;
 
 errorout:
     g_free(category);
     g_free(another_category);
-    g_debug("_get_group_name_from_software_center is NULL");
+    g_debug("[%s] return NULL",__func__);
     return NULL;
 }
 
@@ -1541,6 +1540,8 @@ char* dentry_get_rich_dir_group_name(ArrayContainer const fs)
 
     if (group_name == NULL)
         group_name = _get_group_name_from_category_field(fs);
+    //TODO:check group_name with po.
+    //the po must contain all the possible categories.
 
     return group_name;
 }

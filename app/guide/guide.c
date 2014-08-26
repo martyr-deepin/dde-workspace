@@ -35,7 +35,7 @@ GtkWidget* get_container()
 {
     static GtkWidget* container = NULL;
     if (container == NULL) {
-	container = create_web_container (FALSE, TRUE);
+        container = create_web_container (FALSE, TRUE);
     }
     return container;
 }
@@ -54,7 +54,7 @@ int main (int argc, char **argv)
         g_warning("another instance of application dde-guide is running...\n");
         return 0;
     } else {
-	singleton("com.deepin.dde.guide");
+        singleton("com.deepin.dde.guide");
     }
 
     init_i18n ();
@@ -79,4 +79,3 @@ int main (int argc, char **argv)
 
     return 0;
 }
-

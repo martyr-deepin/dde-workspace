@@ -256,7 +256,7 @@ void osd_set_background(double opacity){
 int main (int argc, char **argv)
 {
     g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
-    
+
     signal (SIGTERM, sigterm_cb);
     if (is_application_running(ID_NAME)) {
         g_warning("another instance of application dde-osd is running...\n");

@@ -39,7 +39,6 @@
 
 #include "jsextension.h"
 #include "dwebview.h"
-#include "session_register.h"
 #include "display_info.h"
 
 #include "background.h"
@@ -86,7 +85,6 @@ void notify_primary_size()
 JS_EXPORT_API
 void zone_emit_webview_ok()
 {
-    dde_session_register();
     notify_primary_size();
 }
 
