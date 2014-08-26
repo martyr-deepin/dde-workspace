@@ -84,6 +84,8 @@ createItem = (d)->
         console.log("SystemItem #{d.Id}, #{icon}, #{title}")
         item = new SystemItem(d.Id, icon, title)
 
+    updateMaxClientListWidth()
+
     if activeWindow and activeWindow.active_window and activeWindow.itemId == null
         activeWindow.itemId = item.id
         if item.isApp() and item.isActive()
@@ -103,6 +105,8 @@ deleteItem = (id)->
         i.destroy()
     # else
         # console.log("#{id} not eixst")
+
+    updateMaxClientListWidth()
 
     if DCore.Dock.is_hovered()
         console.warn("delete item, is hovered")

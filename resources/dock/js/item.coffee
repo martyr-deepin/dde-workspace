@@ -418,7 +418,6 @@ class AppItem extends Item
                 when ITEM_DATA_FIELD.title
                     @set_tooltip(value)
         )
-        updateMaxClientListWidth()
 
     hide_open_indicator:->
         @element.classList.remove("active_hover")
@@ -488,9 +487,13 @@ class AppItem extends Item
 
     swap_to_activator:->
         console.log("swap_to_activator")
+        @element.style.display = 'none'
         @hide_open_indicator()
         Preview_close_now()
         @init_activator()
+        setTimeout(=>
+            @element.style.display = ''
+        , 10)
 
     update_client: (id, title)->
         @client_infos[id] =

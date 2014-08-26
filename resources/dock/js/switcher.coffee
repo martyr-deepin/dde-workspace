@@ -18,7 +18,6 @@ switchToEfficientMode = ->
     $("#trayarea").appendChild($("#system"))
     update_dock() if panel
     systemTray?.showAllIcons()
-    updateMaxClientListWidth()
     for own k, v of $DBus
         item = Widget.look_up(k)
         if item and item.isApp?()
@@ -33,7 +32,6 @@ switchToClassicMode = ->
     $("#trayarea").appendChild($("#system"))
     update_dock() if panel
     systemTray?.showAllIcons()
-    updateMaxClientListWidth()
     for own k, v of $DBus
         item = Widget.look_up(k)
         if item and item.isApp?()
@@ -46,7 +44,6 @@ switchToFashionMode = ->
     changeThemeCss("fashion")
     $("#container").insertBefore($("#system"), $("#post_fixed"))
     update_dock() if panel
-    updateMaxClientListWidth()
     if systemTray
         systemTray.hideAllIcons()
         systemTray.hideButton()
@@ -69,6 +66,9 @@ update_dock=->
     update_dock_region(Panel.getPanelMiddleWidth())
 
     panel.redraw()
+    setTimeout(->
+        updateMaxClientListWidth()
+    , 100)
     setTimeout(->
         systemTray?.updateTrayIcon()
     , 1000)
