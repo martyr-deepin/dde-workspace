@@ -83,6 +83,8 @@ class Launcher
     constructor: ->
         @dbus_error = false
         try
+            #TODO:here should get_dbus util the dbus connect succed!
+            #It often console error:launcher dbus .service files not found
             @dbus = DCore.DBus.session(LAUNCHER)
         catch e
             @dbus_error = true
@@ -131,11 +133,14 @@ class LauncherDaemon
         return {x:x,y:y,rows:rows,cols:cols}
 
 class Dock
+    DOCK_SETTING =
+        name:"com.deepin.daemon.Dock"
+        path:"/dde/dock/DockSetting"
+        interface:"dde.dock.DockSetting"
     DOCK_REGION =
         name:"com.deepin.daemon.Dock"
         path:"/dde/dock/DockRegion"
         interface:"dde.dock.DockRegion"
-
     constructor: ->
         try
             @dock_region_dbus = DCore.DBus.session_object(
@@ -143,33 +148,48 @@ class Dock
                 DOCK_REGION.path,
                 DOCK_REGION.interface
             )
+            @dock_setting_dbus = DCore.DBus.session_object(
+                DOCK_SETTING.name,
+                DOCK_SETTING.path,
+                DOCK_SETTING.interface
+            )
         catch e
             echo "#{DOCK_REGION}: dbus error:#{e}"
 
+    get_dock_region: ->
+        region = @dock_region_dbus?.GetDockRegion_sync()
+        pos =
+            x0:region[0]
+            y0:region[1]
+            w:region[2]
+            h:region[3]
+        pos
+
     get_icon_pos: (icon_index) ->
-        @dock_region = @dock_region_dbus?.GetDockRegion_sync()
-        @x0 = @dock_region[0]
-        @y0 = @dock_region[1]
-        @x1 = @dock_region[2]
-        @y1 = @dock_region[3]
         pos =
             x0:0
             y0:0
-            x1:0
-            y1:0
-        pos.x0 = @x0 + DOCK_PADDING + EACH_ICON * (icon_index - 1)
-        pos.y0 = @y0# - 8
-        pos.x1 = pos.x0 + ICON_SIZE
-        pos.y1 = pos.y0 + ICON_SIZE
+            w:0
+            h:0
+        region = @get_dock_region()
+        pos.x0 = region.x0 + DOCK_PADDING[_dm][3] + ITEM_SIZE[_dm].w * (icon_index - 1)
+        pos.y0 = region.y0 - DOCK_PADDING[_dm][0]
+        pos.w = ITEM_SIZE[_dm].w
+        pos.h = ITEM_SIZE[_dm].h
+        #console.log "[get_icon_pos]:icon_index:#{icon_index}===x0:#{pos.x0},yo:#{pos.y0},x1:#{pos.w},y1:#{pos.h}"
         return pos
 
     get_launchericon_pos: ->
-        pos = @get_icon_pos(1)
-        return pos
+        return @get_icon_pos(DOCK_LAUNCHER_ICON_INDEX[_dm])
 
     get_dssicon_pos: ->
-        pos = @get_icon_pos(8)
-        return pos
+        return @get_icon_pos(DOCK_DSS_ICON_INDEX[_dm])
+
+    hide: ->
+        @dock_setting_dbus.SetHideMode(1)
+
+    show: ->
+        @dock_setting_dbus.SetHideMode(0)
 
 
 class Page extends Widget

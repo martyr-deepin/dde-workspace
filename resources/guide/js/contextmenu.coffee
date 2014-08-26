@@ -32,13 +32,29 @@ class ContextMenu extends Widget
             switch menu.type
                 when MENU.cutline then @li[i].setAttribute("class","cutline")
                 when MENU.option
-                    @li[i].setAttribute("class","")
+                    @cancle_seleted(i)
                     @li[i].innerHTML = menu.text
                 when MENU.selected
-                    @selected_index = i
                     @li[i].style.cursor = "pointer"
-                    @li[i].setAttribute("class","selected")
+                    @li[i].classList.add("selected")
                     @li[i].innerHTML = menu.text
+
+    set_selected: (i,time = 1,cb) ->
+        setTimeout(=>
+            console.debug "@set_selected(#{i})"
+            @selected_index = i
+            for li,j in @li
+                if j == i
+                    li.style.cursor = "pointer"
+                    li.classList.add("selected")
+                else
+                    li.classList.remove("selected")
+            cb?()
+        ,time)
+
+    cancle_seleted: (i) ->
+        if "selected" in @li[i].classList
+            @li[i].classList.remove("selected")
 
     set_pos : (x,y,position_type = "fixed",type = POS_TYPE.leftup) ->
         set_pos(@element,x,y,position_type,type)
@@ -48,4 +64,14 @@ class ContextMenu extends Widget
             cb?()
         )
 
-
+    selected_auto: (start,end,t_move,cb) ->
+        j = 0
+        for i in [start...end]
+            if @li[i].getAttribute("class") == "cutline"
+                continue
+            else
+                j++
+                @set_selected(i,t_move * j)
+        setTimeout(->
+            cb?()
+        ,t_move * j)

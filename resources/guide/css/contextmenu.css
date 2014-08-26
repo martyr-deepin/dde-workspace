@@ -1,15 +1,22 @@
 
-
+.ContextMenu{
+    position:absolute;
+    z-index:1000;
+}
 
 .menubg{ background:#FFF; border:#777 1px solid; border-radius:4px;float:left; box-shadow: rgba(0,0,0,0.7) 0 0 3px;}
 
 .menubg:lang(zh){
-    width:135px;
+    /*width:135px;*/
 }
 
 .menubg ul li{ margin:0; list-style:none; padding:2px 20px; font-family:Arial; font-size:12px; white-space:nowrap;}
 
-.menubg ul li.selected{ background:#333; color:#FFF;}
+.menubg ul li.selected{
+    background: #333 url(../img/left_ptr.png) no-repeat 90% center;
+    box-shadow:rgba(70,217,249,0.7) 0 0 24px;
+    color:#FFF;
+}
 
 .menubg ul{margin:0; padding:0;}
 

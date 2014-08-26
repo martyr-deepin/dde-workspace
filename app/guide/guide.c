@@ -12,6 +12,12 @@
 #include "session_register.h"
 #include "display_info.h"
 
+#define DOCK_SCHEMA_ID "com.deepin.dde.dock"
+#define DISPLAY_MODE_KEY "display-mode"
+#define FASHION_MODE 0
+#define EFFICIENT_MODE 1
+#define CLASSIC_MODE 2
+
 void notify_primary_size()
 {
     struct DisplayInfo info;
@@ -31,6 +37,15 @@ void guide_emit_webview_ok()
     notify_primary_size();
 }
 
+JS_EXPORT_API
+gboolean guide_is_debug()
+{
+#ifdef NDEBUG
+    return FALSE;
+#endif
+    return TRUE;
+}
+
 GtkWidget* get_container()
 {
     static GtkWidget* container = NULL;
@@ -48,6 +63,16 @@ void monitors_changed_cb()
     update_screen_info(&rect_screen);
     widget_move_by_rect(get_container(),rect_screen);
     notify_primary_size();
+}
+
+JS_EXPORT_API
+double guide_get_dock_displaymode()
+{
+    GSettings* settings = g_settings_new (DOCK_SCHEMA_ID);
+    int  display_mode = g_settings_get_enum (settings, DISPLAY_MODE_KEY);
+    g_debug ("[%s]: %d",__func__ ,display_mode);
+    g_object_unref(settings);
+    return display_mode;
 }
 
 int main (int argc, char **argv)
@@ -72,10 +97,12 @@ int main (int argc, char **argv)
     gtk_init (&argc, &argv);
     g_log_set_default_handler((GLogFunc)log_to_file, "dde-guide");
 
-    struct DisplayInfo rect_screen;
-    update_screen_info(&rect_screen);
-    widget_move_by_rect(get_container(),rect_screen);
-    listen_monitors_changed_signal(G_CALLBACK(monitors_changed_cb),NULL);
+    if (!guide_is_debug()){
+        struct DisplayInfo rect_screen;
+        update_screen_info(&rect_screen);
+        widget_move_by_rect(get_container(),rect_screen);
+        listen_monitors_changed_signal(G_CALLBACK(monitors_changed_cb),NULL);
+    }
 
     GtkWidget *webview = d_webview_new_with_uri (GET_HTML_PATH("guide"));
     gtk_container_add (GTK_CONTAINER(get_container()), GTK_WIDGET (webview));
@@ -85,7 +112,8 @@ int main (int argc, char **argv)
     gtk_widget_realize (webview);
 
     GdkWindow* gdkwindow = gtk_widget_get_window (get_container());
-    gdk_window_set_override_redirect (gdkwindow, TRUE);
+    if (!guide_is_debug())
+        gdk_window_set_override_redirect (gdkwindow, TRUE);
 
     gtk_widget_show_all (get_container());
 

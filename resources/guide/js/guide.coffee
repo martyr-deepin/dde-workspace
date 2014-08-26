@@ -5,7 +5,22 @@ class Guide extends Widget
         @pages = []
         echo "new Guide"
         document.body.appendChild(@element)
+        @exit_button_create() if DEBUG
 
+    exit_button_create: ->
+        exit_button = create_element("botton","",document.body)
+        exit_button.innerText = "Exit"
+        exit_button.style.position = "absolute"
+        exit_button.style.zIndex = 1000
+        exit_button.style.top = 10
+        exit_button.style.color = "rgb(255,255,255)"
+        exit_button.style.right = 150
+        exit_button.style.fontSize = 16
+        exit_button.addEventListener("click",(e) =>
+            e.stopPropagation()
+            enableZoneDetect(true)
+            DCore.Guide.quit()
+        )
     set_size: (info) =>
         @element.style.position = "fixed"
         @element.style.left = info.x
@@ -24,7 +39,7 @@ class Guide extends Widget
             @current_page_id = page.id
             @pages.push(page)
         catch error
-            echo error
+            echo "[add_page]:error:#{error}"
 
     remove_page: (cls) ->
         try
@@ -32,8 +47,7 @@ class Guide extends Widget
             @pages.splice(i_target,1)
             @element.removeChild(cls.element)
         catch error
-            echo "#{error}"
-
+            echo "[remove_page]:error:#{error}"
 
     switch_page: (old_page, new_page_cls_name) ->
         echo "switch page from ---#{old_page.id}--- to ----#{new_page_cls_name}----"
@@ -41,9 +55,11 @@ class Guide extends Widget
         @create_page(new_page_cls_name)
 
     create_page: (cls_name)->
-        echo "create_page"
-        DCore.Guide.disable_keyboard()
-        DCore.Guide.disable_right_click()
+        if !DEBUG
+            DCore.Guide.disable_keyboard()
+            DCore.Guide.disable_right_click()
+        else
+            DCore.Guide.disable_guide_region()
         enableZoneDetect(false)
         new Dss().hide() if cls_name isnt "DssArea"
         echo "create_page #{cls_name}"
@@ -76,23 +92,17 @@ class Guide extends Widget
                 #DCore.Guide.enable_guide_region()
 
                 page = new Start(cls_name)
+            when "DockMenu"
+                page = new DockMenu(cls_name)
+
             when "LauncherLaunch"
                 page = new LauncherLaunch(cls_name)
-
-            when "LauncherCollect"
-                page = new LauncherCollect(cls_name)
-
-            when "LauncherAllApps"
-                page = new LauncherAllApps(cls_name)
-
-            when "LauncherScroll"
-                page = new LauncherScroll(cls_name)
 
             when "LauncherSearch"
                 page = new LauncherSearch(cls_name)
 
-            when "LauncherRightclick"
-                page = new LauncherRightclick(cls_name)
+            when "LauncherIconDrag"
+                page = new LauncherIconDrag(cls_name)
 
             when "LauncherMenu"
                 page = new LauncherMenu(cls_name)
@@ -103,21 +113,30 @@ class Guide extends Widget
             when "DesktopRichDirCreated"
                 page = new DesktopRichDirCreated(cls_name)
 
-            when "DesktopCorner"
-                page = new DesktopCorner(cls_name)
+            when "DesktopCornerInfo"
+                page = new DesktopCornerInfo(cls_name)
 
-            when "DesktopZone"
-                page = new DesktopZone(cls_name)
+            when "DesktopCornerLeftUp"
+                page = new DesktopCornerLeftUp(cls_name)
+
+            when "DesktopCornerLeftDown"
+                page = new DesktopCornerLeftDown(cls_name)
 
             when "DssLaunch"
                 page = new DssLaunch(cls_name)
 
-            when "DssArea"
-                page = new DssArea(cls_name)
+            when "DssShutdown"
+                page = new DssShutdown(cls_name)
+
+            when "DesktopCornerRightUp"
+                page = new DesktopCornerRightUp(cls_name)
+
+            when "DesktopZoneSetting"
+                page = new DesktopZoneSetting(cls_name)
 
             when "End"
                 page = new End(cls_name)
+
             else
                 echo "cls_name is #{cls_name}"
         @add_page(page)
-

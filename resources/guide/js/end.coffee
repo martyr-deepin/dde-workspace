@@ -22,14 +22,13 @@ class End extends Page
     constructor:(@id)->
         super
         DCore.Guide.enable_guide_region()
-        @message = _("Thanks for your patience while learning. Congratulations.")
+        @message = _("Thank you for your patience to learn! More surprises are waiting for you to explore")
         @show_message(@message)
         #@msg_tips.style.top = "-10%"
         @element.style.webkitBoxOrient = "vertical"
         @choose_div = create_element("div","choose_div",@element)
-        @end = new ButtonNext("end",_("End"),@choose_div)
+        @end = new ButtonNext("end",_("Start my trip with Deepin"),@choose_div)
         @end.create_button(=>
-            echo "open the deepin accounts web url"
             enableZoneDetect(true)
             DCore.Guide.quit()
         )

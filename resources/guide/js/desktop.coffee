@@ -36,6 +36,7 @@ class DesktopRichDir extends Page
         @pointer_hand.style.display = "-webkit-box"
         @pointer_hand.style.position = "absolute"
         _ITEM_HEIGHT_ = 84 + 4 * 2
+        #TODO:the top must set by the displaymode of dock
         @pointer_hand.style.left = 18
         @pointer_hand.style.top = 13
         @pointer_up = create_img("pointer_up","#{@img_src}/pointer_up.png",@pointer_hand)
@@ -118,102 +119,118 @@ class DesktopRichDirCreated extends Page
         @show_message(@message)
         @show_tips(@tips)
         setTimeout(=>
-            guide?.switch_page(@,"DesktopCorner")
+            guide?.switch_page(@,"DesktopCornerInfo")
         ,t_switch_page)
 
-class DesktopCorner extends Page
-    switch_page_timeout = null
+class DesktopCornerInfo extends Page
     constructor:(@id)->
         super
-        @message = _("Slide the mouse to the four top corners, which can trigger four different events\nPlease move to the upper left corner first to show or hide Launcher")
-        @tips = _("tips: Please trigger successively by hints, click on the blank area to return")
+        @message = _("Slide the mouse to the four top corners, which can trigger four different events")
         @show_message(@message)
-        @show_tips(@tips)
-        @message_corner =
-            leftup:_("Show/Hide Launcher")
-            leftdown:_("Show/Hide Desktop")
-            rightdown:_("Show/Hide Control Center")
-            rightup:_("No default functions setted in right up corner")
-        @pos = ["leftup","leftdown","rightdown","rightup"]
-        @corner = []
 
-        @dss = new Dss()
-        @launcher = new Launcher()
         @pointer_create()
 
     pointer_create : ->
+        @corner = []
+        pos = ["leftup","leftdown","rightdown","rightup"]
         if @corner.length != 0 then return
-        length = @pos.length
-        enableZoneDetect(true)
-        for p,i in @pos
+        for p,i in pos
             @corner[i] = new Pointer(p,@element)
-            that = @
-            @corner[i].create_pointer(AREA_TYPE.corner,POS_TYPE[p],->
-                this.display("none")
-                index = i for p,i in that.pos when this.id is p
-                echo "#{index}/#{length - 1} #{this.id} mouseenter"
-                clearTimeout(switch_page_timeout)
-                switch_page_timeout = setTimeout(=>
-                    if this.id is "leftup" then that.launcher.hide()
-                    else if this.id is "rightdown" then that.dss?.hide()
-                    if index < length - 1
-                        this.display("none")
-                        that.show_message(that.message_corner[that.corner[index + 1].id])
-                        that.show_tips(" ")
-                        that.corner[index + 1].show_animation()
-                    else
-                        guide?.switch_page(that,"DesktopZone")
-                ,t_mid_switch_page)
-            ,"mouseover")
-            #@corner[i].element.addEventListener("mouseout",=>
-            #    enableZoneDetect(false)
-            #)
+            @corner[i].create_pointer(AREA_TYPE.corner,POS_TYPE[p],null)
+            @corner[i].pointer_img.style.opacity = 0
             @corner[i].set_area_pos(0,0,"fixed",POS_TYPE[p])
-        @corner[0].show_animation()
+            @corner[i].show_animation()
+        setTimeout(=>
+            guide?.switch_page(@,"DesktopCornerLeftUp")
+        ,t_mid_switch_page)
 
-class DesktopZone extends Page
+class DesktopCornerLeftUp extends Page
+    constructor:(@id)->
+        super
+        @message = _("We already know that launcher can be shown/ hidden by sliding the mouse to the upper left corner")
+        @show_message(@message)
+
+        enableZoneDetect(true)
+        @pointer_create()
+
+    pointer_create : ->
+        p = "leftup"
+        @corner = new Pointer(p,@element)
+        @corner.create_pointer(AREA_TYPE.corner,POS_TYPE[p],null)
+        @corner.pointer_img.style.opacity = 0
+        @corner.set_area_pos(0,0,"fixed",POS_TYPE[p])
+        @corner.show_animation()
+        setTimeout(=>
+            launcher = new Launcher()
+            launcher.hide()
+            guide?.switch_page(@,"DesktopCornerLeftDown")
+        ,t_mid_switch_page)
+
+class DesktopCornerLeftDown extends Page
+    constructor:(@id)->
+        super
+        @message =_("Slide the mouse to the lower left corner, which can show or hide the workspace")
+        @show_message(@message)
+
+        DCore.Guide.spawn_command_sync("/usr/bin/xdg-open computer:///",false)
+        @pointer_create()
+
+    pointer_create : ->
+        p = "leftdown"
+        @corner = new Pointer(p,@element)
+        mouseovered = false
+        @corner.create_pointer(AREA_TYPE.corner,POS_TYPE[p],=>
+            DCore.Guide.spawn_command_sync("/usr/lib/deepin-daemon/desktop-toggle",false)
+            if !mouseovered
+                setTimeout(=>
+                    DCore.Guide.spawn_command_sync("pkill nautilus",false)
+                    guide?.switch_page(@,"DssLaunch")
+                ,t_mid_switch_page)
+            mouseovered = true
+        ,"mouseover")
+        @corner.set_area_pos(0,0,"fixed",POS_TYPE[p])
+        @corner.show_animation()
+
+class DesktopCornerRightUp extends Page
+    constructor:(@id)->
+        super
+        @message = _("No functions are set in default on the upper right corner\nRight-click on desktop black area to call up the menu, select \"Corner navigation\" to set the corner used")
+        @tips = _("tips: Click on the corner navigation blank area to return")
+        @show_message(@message)
+        @show_tips(@tips)
+
+        dss = new Dss()
+        dss.hide()
+        @pointer_create()
+
+    pointer_create : ->
+        p = "rightup"
+        @corner = new Pointer(p,@element)
+        @corner.create_pointer(AREA_TYPE.corner,POS_TYPE[p],null)
+        @corner.pointer_img.style.opacity = 0
+        @corner.set_area_pos(0,0,"fixed",POS_TYPE[p])
+        @corner.show_animation()
+        setTimeout(=>
+            guide?.switch_page(@,"DesktopZoneSetting")
+        ,t_switch_page)
+
+class DesktopZoneSetting extends Page
     restack_interval = null
     constructor:(@id)->
         super
-        @message = _("Right-click on desktop black area to call up the menu, select \"Corner navigation\" to set the corner used")
-        @tips = _("tips: Click on the interface of corner navigation blank area to return")
-        @show_message(@message)
-        @show_tips(@tips)
         @pos = ["leftup","leftdown","rightdown","rightup"]
         @corner = []
-        #simulate_rightclick(@,=>
-        #    DCore.Guide.enable_keyboard()
-        #    @zone_check()
-        #)
-        @menu_create(primary_info.width * 0.5, primary_info.height * 0.2,=>
-            DCore.Guide.enable_keyboard()
-            DCore.Guide.spawn_command_sync("/usr/lib/deepin-daemon/dde-zone -d",false)
-            @zone_check()
-        )
-
-    menu_create: (x,y,cb) ->
-        @menu =[
-            {type:MENU.option,text:_("_Sort by")},
-            {type:MENU.option,text:_("_New")},
-            {type:MENU.option,text:_("Open in _terminal")},
-            {type:MENU.option,text:_("_Paste")},
-            {type:MENU.cutline,text:""},
-            {type:MENU.option,text:_("_Display settings")},
-            {type:MENU.selected,text:_("_Corner navigation")},
-            {type:MENU.option,text:_("Pe_rsonalize")}
-        ]
-        @contextmenu = new ContextMenu("desktop_contextmenu",@element)
-        @contextmenu.menu_create(@menu)
-        @contextmenu.set_pos(x,y)
-        @contextmenu.selected_click(=>
-            @element.removeChild(@contextmenu.element)
-            cb?()
-        )
+        @show_message(" ")
+        @show_tips(" ")
+        DCore.Guide.enable_keyboard()
+        DCore.Guide.spawn_command_sync("/usr/lib/deepin-daemon/dde-zone -d",false)
+        @zone_check()
 
     zone_check: ->
         echo "zone_check"
         interval_is_zone = setInterval(=>
             if(DCore.Guide.is_zone_launched())
+                t = @mouse_moveon_option()
                 clearInterval(interval_is_zone)
                 clearInterval(restack_interval)
                 interval = 0
@@ -225,37 +242,29 @@ class DesktopZone extends Page
                         DCore.Guide.enable_guide_region()
                         setTimeout(=>
                             @switch_page()
-                        ,1000)
+                        ,t + 1000)
                 ,200)
-                #@pointer_create()
         ,200)
 
-    pointer_create: ->
-        if @corner.length != 0 then return
-        length = @pos.length
-        for p,i in @pos
-            @corner[i] = new Pointer(p,@element)
-            that = @
-            @corner[i].create_pointer(AREA_TYPE.corner,POS_TYPE[p],->
-                echo "mouseover"
-                this.display("none")
-                DCore.Guide.disable_guide_region()
-                index = i for p,i in that.pos when this.id is p
-                echo "#{index}/#{length - 1} #{this.id} mouseenter"
-                clearTimeout(switch_page_timeout)
-                switch_page_timeout = setTimeout(=>
-                    if index < length - 1
-                        DCore.Guide.enable_guide_region()
-                        that.corner[index + 1].show_animation()
-                    else that.switch_page()
-                ,t_mid_switch_page)
-            ,"mouseover")
-            @corner[i].set_area_pos(0,0,"fixed",POS_TYPE[p])
-        DCore.Guide.enable_guide_region()
-        @corner[0].show_animation()
+    mouse_moveon_option: ->
+        OPT_WIDTH = 160
+        OPT_HEIGHT = 30
+        t_mousemove = 1000
+        x0 = document.body.clientWidth - OPT_WIDTH / 2
+        y0 = 40
+        move_mouse(x0,y0,false)
+        t = null
+        #TODO:
+        #here should make the zone setting menu always show
+        for i in [1...6]
+            t = t_mousemove * i
+            setTimeout(->
+                y0 += OPT_HEIGHT
+                move_mouse(x0,y0,false)
+            ,t)
+        t
 
     switch_page: =>
         DCore.Guide.spawn_command_sync("killall dde-zone",true)
         clearInterval(restack_interval)
-        guide?.switch_page(@,"DssLaunch")
-
+        guide?.switch_page(@,"End")

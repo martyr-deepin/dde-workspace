@@ -1,0 +1,20 @@
+.dock_mac{ position:absolute; bottom:0px; left:50%; margin-left:-392px;}
+.dock_mac .left, .dock_mac .right{ width:60px; height:73px; float:left;}
+.dock_mac .left{ background:url(../img/dock/dock_left-01.png);}
+.dock_mac .right{ background:url(../img/dock/dock_right-01.png)}
+.dock_mac .center{ float:left; background:url(../img/dock/dock_middle-01-01-01.png); background-size:cover;height:73px;}
+.dock_mac .center img{-webkit-box-reflect:below 0 -webkit-linear-gradient(transparent,transparent 5%,rgba(255,255,255,.07));}
+
+.dock_win7{ position:absolute; bottom:0px;left:0; height:48px; background:rgba(0,0,0,.6); width:100%; overflow:hidden;}
+.dock_win7 .right{ float:right;}
+.dock_win7 .right img{width:16px; height:16px; margin:16px 6px;float:right;}
+.dock_win7 .left{ float:left;height:48px;}
+.dock_win7 .left img{width:32px; height:32px; margin:8px 12px;}
+.dock_win7 .time{ color:#fff; font-size:14px; line-height:16px; margin:16px 30px 16px 12px; float:right; height:16px;}
+
+.dock_xp{ position:absolute; bottom:0px;left:0; height:36px; background:rgba(0,0,0,.6); width:100%; overflow:hidden;}
+.dock_xp .right{ float:right;}
+.dock_xp .right img{width:16px; height:16px; margin:12px 6px;float:right;}
+.dock_xp .left{ float:left;height:36px; margin-left:4px;}
+.dock_xp .left img{width:24px; height:24px; margin:6px 4px;}
+.dock_xp .time{ color:#fff; font-size:14px; line-height:16px; margin:12px 30px 12px 12px; float:right; height:16px;}

@@ -283,3 +283,23 @@ void guide_copy_file_to_desktop(const char* src)
     guide_spawn_command_sync(cmd,true);
 }
 
+JS_EXPORT_API
+void guide_cursor_hide()
+{
+    GdkCursor* cursor;
+    GdkWindow* window = gtk_widget_get_window(get_container());
+    cursor = gdk_cursor_new(GDK_BLANK_CURSOR);
+    gdk_window_set_cursor (window, cursor);
+    g_object_unref(cursor);
+}
+
+JS_EXPORT_API
+void guide_cursor_show()
+{
+    GdkCursor* cursor;
+    GdkWindow* window = gtk_widget_get_window(get_container());
+    cursor = gdk_cursor_new(GDK_LEFT_PTR);
+    gdk_window_set_cursor (window, cursor);
+    g_object_unref(cursor);
+}
+

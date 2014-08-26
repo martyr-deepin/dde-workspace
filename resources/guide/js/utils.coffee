@@ -1,74 +1,13 @@
-DEBUG = false
-ESC_KEYSYM_TO_CODE = 0xff08
+DEBUG = DCore.Guide.is_debug()
 
-primary_info =
-    x:0
-    y:0
-    width:1366
-    height:768
+move_mouse = (x,y,relative = false) ->
+    cmd = null
+    if relative
+        cmd = "/usr/bin/xdotool mousemove_relative #{x} #{y}"
+    else
+        cmd = "/usr/bin/xdotool mousemove #{x} #{y}"
+    DCore.Guide.spawn_command_sync(cmd,false)
 
-#launcher
-COLLECT_LEFT = 130
-EACH_APP_HEIGHT = 120
-EACH_APP_WIDTH = 120
-EACH_APP_MARGIN_LEFT = 40
-EACH_APP_MARGIN_TOP = 60
-
-COLLECT_APP_NUMBERS = 10
-COLLECT_TOP = 84
-
-CATE_TOP_DELTA = 5
-CATE_LEFT = 27
-CATE_NUMBERS = 7
-CATE_EACH_HEIGHT = 62
-CATE_EACH_WIDTH = 62
-CATE_WIDTH = CATE_EACH_WIDTH
-CATE_HEIGHT = CATE_EACH_HEIGHT * CATE_NUMBERS
-
-COLLECT_WIDTH = primary_info.width - COLLECT_LEFT * 2
-COLLECT_APP_ROWS = Math.floor((COLLECT_APP_NUMBERS * EACH_APP_WIDTH + (COLLECT_APP_NUMBERS - 1) * EACH_APP_MARGIN_LEFT) / COLLECT_WIDTH)
-COLLECT_HEIGHT = COLLECT_APP_ROWS * EACH_APP_HEIGHT + (COLLECT_APP_ROWS - 1) * EACH_APP_MARGIN_TOP
-APP_NUM_MAX_IN_ONE_ROW = Math.floor((COLLECT_WIDTH + EACH_APP_MARGIN_LEFT) / (EACH_APP_WIDTH + EACH_APP_MARGIN_LEFT))
-
-#dock
-DOCK_PADDING = 24
-ICON_MARGIN_H = 7
-ICON_MARGIN_V_TOP = 3
-ICON_MARGIN_V_BOTTOM = 10
-ICON_SIZE = 48
-POINTER_AREA_SIZE = 64
-
-EACH_ICON = ICON_MARGIN_H + ICON_SIZE
-
-CLICK_TYPE =
-    leftclick:1
-    copy:2
-    rightclick:3
-    scrollup:4
-    scrolldown:5
-
-
-pages_id = [
-    "Welcome",
-    "Start",
-    "LauncherLaunch",
-    "LauncherCollect",
-    "LauncherAllApps",
-    "LauncherScroll"
-]
-
-t_switch_page = 4000
-t_mid_switch_page = 2000
-t_min_switch_page = 500
-t_check_if_done = 10000
-
-POS_TYPE =
-    leftup:"leftup"
-    leftdown:"leftdown"
-    rightup:"rightup"
-    rightdown:"rightdown"
-    down:"down"
-    up:"up"
 
 set_pos = (el,x,y,position_type = "absolute",type = POS_TYPE.leftup)->
     el.style.position = "absolute"
@@ -165,17 +104,6 @@ body_hide = ->
 
 body_show = ->
     document.body.style.opacity = 1
-
-each_item_update_times = 3
-desktop_file_numbers = 2
-
-
-if DCore
-    document.addEventListener('click',(e)->
-            e.preventDefault()
-            if e.target.tagName is "A"
-                DCore.Guide.OpenUrl(e.target.href)
-    ,false)
 
 
 set_center = (el,w,h,x_scale = 1,y_scale = 0.8) ->

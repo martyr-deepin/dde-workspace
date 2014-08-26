@@ -26,7 +26,7 @@ class DssLaunch extends Page
         enableZoneDetect(true)
         @dss = new Dss()
 
-        @message = _("Well, please trigger the lower right corner again")
+        @message = _("Slide the mouse to the lower right corner, which can show or hide the Control Center")
         @tips = _("tips: Click the setting icon on dock to implement")
         @show_message(@message)
         @show_tips(@tips)
@@ -36,16 +36,15 @@ class DssLaunch extends Page
         @circle.create_pointer(AREA_TYPE.circle,POS_TYPE.rightdown,=>
             clearInterval(get_dssicon_pos_interval)
             @dss?.show()
-            guide?.switch_page(@,"DssArea")
+            guide?.switch_page(@,"DssShutdown")
         )
-        @circle.enable_area_icon("#{@img_src}/preferences-system.png",48,48)
+        @circle.enable_area_icon("#{@img_src}/preferences-system.png",ICON_SIZE[_dm].w,ICON_SIZE[_dm].h)
         @corner = new Pointer("corner_rightdown",@element)
         @corner.create_pointer(AREA_TYPE.corner,POS_TYPE.rightdown,=>
-            echo "mouseover"
             clearInterval(get_dssicon_pos_interval)
             clearTimeout(switch_timeout)
             switch_timeout = setTimeout(=>
-                guide?.switch_page(@,"DssArea")
+                guide?.switch_page(@,"DssShutdown")
             ,t_min_switch_page)
         ,"mouseover")
         @corner.set_area_pos(0,0,"fixed",POS_TYPE.rightdown)
@@ -53,20 +52,20 @@ class DssLaunch extends Page
         get_dssicon_pos_interval = setInterval(=>
             @pos = @dock.get_dssicon_pos()
             @circle_x = @pos.x0 - @circle.pointer_width
-            @circle_y = @pos.y0 - @circle.pointer_height - ICON_MARGIN_V_BOTTOM / 2
+            @circle_y = @pos.y0 - @circle.pointer_height
             @circle.set_area_pos(@circle_x,@circle_y,"fixed",POS_TYPE.leftup)
         ,100)
         @circle.show_animation()
 
 
-class DssArea extends Page
+class DssShutdown extends Page
     constructor:(@id)->
         super
         DCore.Guide.disable_guide_region()
         restack_time_out = setTimeout(->
             DCore.Guide.restack()
         ,200)
-        @message = _("Here is the system setting area")
+        @message = _("Click the power button to shut down, reboot or do other operations")
         @tips = _("tips: Hover the setting icon on dock to quickly implement some setting functions")
         @show_message(@message)
         @show_tips(@tips)
@@ -74,13 +73,14 @@ class DssArea extends Page
         @dock = new Dock()
         @dss = new Dss()
         @dss.show()
-        @rect = new Rect("dss_area",@element)
-        @rect.create_rect(360,520)
-        @rect.set_pos(0,150,"fixed",POS_TYPE.rightup)
+        @rect = new Rect("dss_shutdown",@element)
+        @rect.create_rect(60,60)
+        @rect.set_pos(150,30,"fixed",POS_TYPE.rightdown)
+        #TODO:update the animation
         @rect.show_animation(=>
             setTimeout(=>
                 @dss?.hide()
                 clearTimeout(restack_time_out)
-                guide?.switch_page(@,"End")
+                guide?.switch_page(@,"DesktopCornerRightUp")
             ,t_mid_switch_page)
         )

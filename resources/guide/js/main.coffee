@@ -2,7 +2,10 @@ guide = null
 
 main = ->
     guide = new Guide()
-    guide?.create_page("Welcome")
+    if DEBUG
+        guide?.create_page("DesktopCornerLeftDown")
+    else
+        guide?.create_page("Welcome")
 
 DCore.signal_connect('primary_size_changed', (alloc)->
     echo "primary_size_changed:#{alloc.x},#{alloc.y},#{alloc.width},#{alloc.height}"

@@ -43,12 +43,12 @@ class Start extends Page
         @guide_choose.appendChild(@menu.element)
         @start = new ButtonNext("start",_("Start"),@guide_choose)
         @start.create_button(=>
-            guide?.switch_page(@,"LauncherLaunch")
+            guide?.switch_page(@,"DockMenu")
         ,true)
         @start.element.style.marginTop = "2em"
 
         @older = create_element("div","older",@element)
-        @older.innerText = _("I am an experienced user. Exit directly.")
+        @older.innerText = _("Skip the guide, experience immediately")
         @older.addEventListener("click",(e) =>
             e.stopPropagation()
             enableZoneDetect(true)

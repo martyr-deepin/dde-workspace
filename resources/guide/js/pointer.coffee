@@ -47,7 +47,8 @@ class Pointer extends Widget
         else
             @area_div.style.backgroundImage = "url(#{@img_src}/#{@area_type}_#{@pos_type}.png)"
 
-        @area_width = @area_height = @pointer_width = @pointer_height = POINTER_AREA_SIZE
+        @area_width = @pointer_width = ITEM_SIZE[_dm].w
+        @area_height = @pointer_height = ITEM_SIZE[_dm].h
         @height = @area_height + @pointer_height
         @width = @area_width + @pointer_width
         @pointer_img.style.width = @pointer_width
@@ -66,11 +67,10 @@ class Pointer extends Widget
             @cb?(e)
         )
 
-    enable_area_icon: (@area_icon_path,w = ICON_SIZE,h = ICON_SIZE) ->
-        #return
+    enable_area_icon: (@area_icon_path,w = ICON_SIZE[_dm].w,h = ICON_SIZE[_dm].h) ->
         @area_icon = create_img("area_icon",@area_icon_path,@area_div) if not @area_icon?
-        if w > POINTER_AREA_SIZE then w = POINTER_AREA_SIZE
-        if h > POINTER_AREA_SIZE then h = POINTER_AREA_SIZE
+        if w > POINTER_AREA_SIZE[_dm] then w = POINTER_AREA_SIZE[_dm]
+        if h > POINTER_AREA_SIZE[_dm] then h = POINTER_AREA_SIZE[_dm]
         @area_icon?.style.width = w
         @area_icon?.style.height = h
 
