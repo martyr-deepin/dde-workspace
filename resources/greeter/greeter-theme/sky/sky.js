@@ -44,8 +44,9 @@ function init(){
     //设置间隔调用update函数,间隔次数为每秒30次
     setInterval(update,1000/UpdateTimes);
 }
- 
+
 function update() {
+    console.log("update");
     mouseY += 50;
     if(mouseY > 768) mouseY = 768;
     //调用移动粒子的函数
@@ -92,7 +93,6 @@ function particleRender( context ) {
     context.fill();
 }
 
-     
 //移动粒子的函数
 function updateParticles(){
     //遍历每个粒子
@@ -106,12 +106,11 @@ function updateParticles(){
         }
     }
 }
- 
+
 //鼠标移动时调用
 function onMouseMove(event){
     mouseX = event.clientX;
     mouseY = event.clientY;
 }
 
-document.body.onload = init();
-
+setTimeout(init,1000);
