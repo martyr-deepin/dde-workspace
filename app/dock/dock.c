@@ -57,15 +57,6 @@ JS_EXPORT_API void dock_change_workarea_height(double height);
 PRIVATE
 void _update_dock_size(gint16 x, gint16 y, guint16 w, guint16 h);
 gboolean update_dock_size();
-static
-void primary_changed_handler(GDBusConnection* conn G_GNUC_UNUSED,
-                             const gchar* sender_name G_GNUC_UNUSED,
-                             const gchar* object_path G_GNUC_UNUSED,
-                             const gchar* interface_name G_GNUC_UNUSED,
-                             const gchar* signal_name G_GNUC_UNUSED,
-                             GVariant* parameters G_GNUC_UNUSED,
-                             gpointer data G_GNUC_UNUSED
-                             );
 GdkWindow* get_dock_guard_window();
 
 gboolean mouse_pointer_leave(int x, int y)
@@ -155,9 +146,12 @@ Window get_dock_window()
     return GDK_WINDOW_XID(DOCK_GDK_WINDOW());
 }
 
-void size_workaround(GtkWidget* container, GdkRectangle* allocation)
+void container_size_workaround(GtkWidget* container, GdkRectangle* allocation)
 {
-    // update_display_info(&dock);
+    static GRWLock lock;
+    g_rw_lock_writer_lock(&lock);
+    update_display_info(&dock);
+    g_rw_lock_writer_unlock(&lock);
     if (gtk_widget_get_realized(container) && (dock.width != allocation->width || dock.height != allocation->height)) {
         GdkWindow* w = gtk_widget_get_window(container);
         GdkGeometry geo = {0};
@@ -170,12 +164,37 @@ void size_workaround(GtkWidget* container, GdkRectangle* allocation)
         gdk_flush();
         gdk_window_set_events(w, gdk_window_get_events(w));
 
-        g_warning("size workaround run fix (%d,%d) to (%d,%d)\n",
+        g_warning("[%s] size workaround run fix (%d,%d) to (%d,%d)\n",
+                  __func__,
                   allocation->width, allocation->height,
                   dock.width, dock.height);
     }
 }
 
+void webview_size_workaround(GtkWidget* container, GdkRectangle* allocation)
+{
+    static GRWLock lock;
+    g_rw_lock_writer_lock(&lock);
+    update_display_info(&dock);
+    g_rw_lock_writer_unlock(&lock);
+    if (gtk_widget_get_realized(container) && (dock.width != allocation->width || dock.height != allocation->height)) {
+        GdkWindow* w = gtk_widget_get_window(container);
+        GdkGeometry geo = {0};
+        geo.min_width = 0;
+        geo.min_height = 0;
+
+        gdk_window_set_geometry_hints(w, &geo, GDK_HINT_MIN_SIZE);
+        XSelectInput(gdk_x11_get_default_xdisplay(), GDK_WINDOW_XID(w), NoEventMask);
+        gdk_window_move_resize(w, 0, 0, dock.width, dock.height);
+        gdk_flush();
+        gdk_window_set_events(w, gdk_window_get_events(w));
+
+        g_warning("[%s] size workaround run fix (%d,%d) to (%d,%d)\n",
+                  __func__,
+                  allocation->width, allocation->height,
+                  dock.width, dock.height);
+    }
+}
 gboolean is_compiz_plugin_valid()
 {
     gboolean is_compiz_running = false;
@@ -334,9 +353,15 @@ void dock_emit_webview_ok()
     }
 
     g_warning("[%s]", __func__);
+
+    GRWLock lock;
+    g_rw_lock_init(&lock);  // non-static GRWLock must init and clear.
+    g_rw_lock_writer_lock(&lock);
     update_display_info(&dock);
+    g_rw_lock_writer_unlock(&lock);
+    g_rw_lock_clear(&lock);
+
     _update_dock_size(dock.x, dock.y, dock.width, dock.height);
-    listen_primary_changed_signal(primary_changed_handler, &dock, NULL);
     gtk_widget_show_all(container);
 
     GD.is_webview_loaded = TRUE;
@@ -471,8 +496,13 @@ void primary_changed_handler(GDBusConnection* conn G_GNUC_UNUSED,
                              gpointer data G_GNUC_UNUSED
                              )
 {
+    static GRWLock lock;
     struct DisplayInfo* rect = (struct DisplayInfo*)data;
+
+    g_rw_lock_writer_lock(&lock);
     g_variant_get(parameters, "((nnqq))", &rect->x, &rect->y, &rect->width, &rect->height);
+    g_rw_lock_writer_unlock(&lock);
+
     _update_dock_size(rect->x, rect->y, rect->width, rect->height);
     js_post_signal("resolution-changed");
 }
@@ -535,11 +565,14 @@ int main(int argc, char* argv[])
     g_signal_connect(container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
     g_signal_connect(container, "enter-notify-event", G_CALLBACK(enter_notify), NULL);
     g_signal_connect(container, "leave-notify-event", G_CALLBACK(leave_notify), NULL);
-    g_signal_connect(container, "size-allocate", G_CALLBACK(size_workaround), NULL);
+    g_signal_connect(container, "size-allocate", G_CALLBACK(container_size_workaround), NULL);
+    g_signal_connect(webview, "size-allocate", G_CALLBACK(webview_size_workaround), NULL);
 
-    gtk_widget_set_size_request(webview, gdk_screen_width(), gdk_screen_height());
+    gtk_widget_set_size_request(container, 1, 1);
+    gtk_widget_set_size_request(webview, 1, 1);
 
     set_wmspec_dock_hint(DOCK_GDK_WINDOW());
+    listen_primary_changed_signal(primary_changed_handler, &dock, NULL);
 
 // #ifndef NDEBUG
 //     monitor_resource_file("dock", webview);

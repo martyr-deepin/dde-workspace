@@ -30,6 +30,8 @@ show_launcher = null
 show_desktop = null
 
 initDock = ->
+    panel.panel.style.webkitTransform = 'translateY(100%)'
+    _CW.style.webkitTransform = "translateY(110%)"
     entryManager = get_dbus('session', EntryManager, "Entries")
     entries = entryManager.Entries
 
@@ -172,10 +174,13 @@ initDock = ->
     , 1000)
     if not activeWindow
         activeWindow= new ActiveWindow(clientManager.CurrentActiveWindow_sync())
+    setTimeout(->
+        updateMaxClientListWidth()
+    , 2000)
 
 
 time = new Time("time", "js/plugins/time/img/time.png", "")
 initDock()
-setTimeout(->
-    updateMaxClientListWidth()
-, 2000)
+# setTimeout(->
+#     updateMaxClientListWidth()
+# , 2000)

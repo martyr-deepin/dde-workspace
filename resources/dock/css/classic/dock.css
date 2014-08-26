@@ -38,7 +38,7 @@ body {
 #containerWrap{
   position:fixed;
   bottom:1px;
-  -webkit-transform: translateY(110%);
+  /* -webkit-transform: translateY(110%); */
   display: -webkit-box;
   -webkit-box-pack:center;
   /* the top black line cannot be overlap, the bottom border should be shown. */
@@ -58,7 +58,7 @@ body {
   /* border: solid 2px black; */
   position: fixed;
   bottom: 0px;
-  -webkit-transform: translateY(100%);
+  /* -webkit-transform: translateY(100%); */
 }
 
 #post_fixed {

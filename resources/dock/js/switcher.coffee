@@ -1,13 +1,7 @@
 changeThemeCss = (theme)->
-    css = document.getElementsByTagName("link")[1]
-    if not css?
-        css = create_element(
-            tag:"link",
-            rel:"stylesheet",
-            document.getElementsByTagName("head")[0]
-        )
-    css.setAttribute("href", "css/#{theme}/dock.css")
     _b.style.display = 'none'
+    css = $("#theme")
+    css.setAttribute("href", "css/#{theme}/dock.css")
     setTimeout(->
         _b.style.display = ''
     , 10)
@@ -25,6 +19,7 @@ switchToEfficientMode = ->
             item.openIndicator.src = EFFICIENT_ACTIVE_IMG
             item.hoverIndicator.src = EFFICIENT_ACTIVE_HOVER_IMG
             item.imgContainer.draggable = false
+    DCore.Dock.fix_switch()
 
 
 switchToClassicMode = ->
@@ -39,6 +34,7 @@ switchToClassicMode = ->
             item.openIndicator.src = CLASSIC_ACTIVE_IMG
             item.hoverIndicator.src = CLASSIC_ACTIVE_HOVER_IMG
             item.imgContainer.draggable = false
+    DCore.Dock.fix_switch()
 
 switchToFashionMode = ->
     changeThemeCss("fashion")
@@ -55,17 +51,20 @@ switchToFashionMode = ->
             item.openIndicator.src = OPEN_INDICATOR
             item.hoverIndicator.src = OPEN_INDICATOR
             item.imgContainer.draggable = true
+    DCore.Dock.fix_switch()
 
 update_dock=->
     console.log("[update_dock] panel #{Panel.getPanelMiddleWidth()}")
 
     panel.set_height(PANEL_HEIGHT)
-    panel.set_width(Panel.getPanelMiddleWidth())
-    if debugRegion
-        console.log("[update_dock] update_dock_region")
-    update_dock_region(Panel.getPanelMiddleWidth())
+    setTimeout(->
+        panel.set_width(Panel.getPanelMiddleWidth())
+        if debugRegion
+            console.log("[update_dock] update_dock_region")
+        update_dock_region(Panel.getPanelMiddleWidth())
 
-    panel.redraw()
+        panel.redraw()
+    , 50)
     setTimeout(->
         updateMaxClientListWidth()
     , 100)

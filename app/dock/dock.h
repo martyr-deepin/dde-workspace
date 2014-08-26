@@ -32,8 +32,10 @@
 
 #define DOCK_ID_NAME "dock.app.deepin"
 
-void update_position_info();
 extern struct DisplayInfo dock;
+GdkWindow* DOCK_GDK_WINDOW();
+GdkWindow* GET_CONTAINER_WINDOW();
+GdkWindow* WEBVIEW_GDK_WINDOW();
 
 #endif /* end of include guard: DOCK_H */
 
