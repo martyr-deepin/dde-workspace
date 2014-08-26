@@ -257,7 +257,6 @@ _get_clipboard_callback	(GtkClipboard*		clipboard G_GNUC_UNUSED,
 	for (i = 0; i < clipboard_info.num; i++)
 	{
 	    uris[i] = g_file_get_uri (clipboard_info.file_list[i]);
-	    i++;
 	}
 	uris[i] = NULL;
 
