@@ -16,7 +16,7 @@ Build-Depends: debhelper (>= 8.0.0),
  libglib2.0-dev,
  libgstreamer-plugins-base0.10-dev,
  libgtk-3-dev,
- libicu48,
+ libicu-dev,
  liblightdm-gobject-1-dev | lightdm-gobject-dev,
  libnotify-dev,
  libsqlite3-dev,
@@ -51,7 +51,6 @@ Depends: ${shlibs:Depends},
  ${misc:Depends},
  deepin-menu (>= 1.1+20140730105532),
  systemd-shim,
- libicu48,
 Description: deepin desktop envrionment for Linuxdeepin new desktop environment.
  Linuxdeepin 12.12 testing deskotp environment.
  .
