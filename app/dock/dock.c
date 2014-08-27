@@ -566,7 +566,7 @@ int main(int argc, char* argv[])
     g_signal_connect(container, "enter-notify-event", G_CALLBACK(enter_notify), NULL);
     g_signal_connect(container, "leave-notify-event", G_CALLBACK(leave_notify), NULL);
     g_signal_connect(container, "size-allocate", G_CALLBACK(container_size_workaround), NULL);
-    g_signal_connect(webview, "size-allocate", G_CALLBACK(webview_size_workaround), NULL);
+    // g_signal_connect(webview, "size-allocate", G_CALLBACK(webview_size_workaround), NULL);
 
     gtk_widget_set_size_request(container, 1, 1);
     gtk_widget_set_size_request(webview, 1, 1);
