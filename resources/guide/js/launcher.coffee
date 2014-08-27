@@ -189,14 +189,18 @@ class LauncherMenu extends Page
         app_list = []
         launcher_daemon = new LauncherDaemon()
         app_list = launcher_daemon?.search("deepin")
-        app1_index = i + 1 for app,i in app_list when app is APP_NAME_1
-        app2_index = i + 1 for app,i in app_list when app is APP_NAME_2
+        app1_index = i for app,i in app_list when app is APP_NAME_1
+        app2_index = i for app,i in app_list when app is APP_NAME_2
         app1_pos = launcher_daemon.app_x_y(app1_index)
         app2_pos = launcher_daemon.app_x_y(app2_index)
-        @menu_create(app1_pos.x,app1_pos.y,=>
+        app1_offsetX = EACH_APP_WIDTH * 0.75
+        app1_offsetY = EACH_APP_HEIGHT * 0.5
+        app2_offsetX = EACH_APP_WIDTH * 0.75
+        app2_offsetY = EACH_APP_HEIGHT * 0.5
+        @menu_create(app1_pos.x + app1_offsetX,app1_pos.y + app1_offsetY,=>
             src1 = "/usr/share/applications/#{APP_NAME_1}.desktop"
             DCore.Guide.copy_file_to_desktop(src1)
-            @menu_create(app2_pos.x,app2_pos.y,=>
+            @menu_create(app2_pos.x + app2_offsetX,app2_pos.y + app2_offsetY,=>
                 src2 = "/usr/share/applications/#{APP_NAME_2}.desktop"
                 DCore.Guide.copy_file_to_desktop(src2)
                 @switch_page()

@@ -122,12 +122,12 @@ class LauncherDaemon
     search: (str) ->
         return @dbus?.Search_sync(str)
 
-    app_x_y: (n) ->
-        rows = Math.ceil(n / APP_NUM_MAX_IN_ONE_ROW)
-        cols = Math.ceil(n % APP_NUM_MAX_IN_ONE_ROW)
-        echo "app_x_y:max:#{APP_NUM_MAX_IN_ONE_ROW};index:#{n};rows:#{rows};cols:#{cols}"
-        x = COLLECT_LEFT + (EACH_APP_WIDTH + EACH_APP_MARGIN_LEFT) * (cols - 1) + EACH_APP_WIDTH * 0.75
-        y = COLLECT_TOP + (EACH_APP_WIDTH + EACH_APP_MARGIN_TOP) * (rows - 1) + EACH_APP_HEIGHT * 0.5
+    app_x_y: (index) ->
+        rows = Math.floor(index / APP_NUM_MAX_IN_ONE_ROW)
+        cols = index % APP_NUM_MAX_IN_ONE_ROW
+        x = COLLECT_LEFT + (EACH_APP_WIDTH + EACH_APP_MARGIN_LEFT) * cols
+        y = COLLECT_TOP + (EACH_APP_WIDTH + EACH_APP_MARGIN_TOP) * rows
+        echo "app_x_y:max:#{APP_NUM_MAX_IN_ONE_ROW};index:#{index};rows:#{rows};cols:#{cols};x:#{x},y:#{y}"
         return {x:x,y:y,rows:rows,cols:cols}
 
 class Dock
