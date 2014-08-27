@@ -79,7 +79,7 @@ class HideStatusManager
 
     changeToHide:()->
         console.log("changeToHide: change to hide")
-        @changeState(HideState.Hidding, "", "")
+        @changeState(HideState.Hidding, "translateY(110%)", "translateY(100%)")
         clearTimeout(@updateSystemTrayTimer || null)
         systemTray?.hideAllIcons()
         $tooltip?.hide()
