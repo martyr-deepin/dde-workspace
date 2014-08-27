@@ -112,7 +112,7 @@ class HideStatusManager
         # return
         regionHeight = DOCK_HEIGHT
         console.log("panel webkitTransform: ##{$("#panel").style.webkitTransform}#")
-        if $("#panel").style.webkitTransform == ""
+        if $("#panel").style.webkitTransform == "translateY(100%)"
             console.log("[HideStateManager.changeDockRegion] hide dock region")
             regionHeight = 0
 
