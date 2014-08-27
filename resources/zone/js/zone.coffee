@@ -41,7 +41,7 @@ class Zone extends Widget
 
     setZoneLauncher: ->
         getZoneDBus()
-        setZoneDBusSettings("left-up","/usr/bin/launcher")
+        setZoneDBusSettings("left-up","/usr/bin/dde-launcher")
 
     option_build:->
         echo "option_build"
