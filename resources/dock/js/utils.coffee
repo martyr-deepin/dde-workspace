@@ -186,6 +186,7 @@ getNextSiblingFromPoint = (x, y, sentinel, step=6)->
 
 
 handleMenuUnregister = ->
+    # console.warn("handleMenuUnregister")
     _isRightclicked = false
     hideStatusManager?.updateState()
 

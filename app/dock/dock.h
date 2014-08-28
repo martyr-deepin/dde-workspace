@@ -36,6 +36,7 @@ extern struct DisplayInfo dock;
 GdkWindow* DOCK_GDK_WINDOW();
 GdkWindow* GET_CONTAINER_WINDOW();
 GdkWindow* WEBVIEW_GDK_WINDOW();
+void update_workarea();
 
 #endif /* end of include guard: DOCK_H */
 

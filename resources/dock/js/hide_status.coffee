@@ -7,6 +7,10 @@ HideState =
 
 HideStateMap = ["Showing", "Shown", "Hidding", "Hidden"]
 
+Trigger =
+    Show: 0
+    Hide: 1
+
 
 class HideStatusManager
     constructor: (mode)->
@@ -20,19 +24,21 @@ class HideStatusManager
             console.log(e)
             @dbus = null
 
-        @dbus?.connect("StateChanged", (state)=>
+        @dbus?.connect("ChangeState", (trigger)=>
+            # console.warn("[ChangeState] hover: #{DCore.Dock.is_hovered()}")
+            # console.warn("[ChangeState] menu: #{_isRightclicked}")
             if DCore.Dock.is_hovered() || _isRightclicked
                 console.log("dock is hovered of contextmenu is shown")
                 return
 
-            switch state
-                when HideState.Showing
+            switch trigger
+                when Trigger.Show
                     clearTimeout(changeToHideTimer)
                     if debugRegion
                         console.warn("[HideStateManager.changeDockRegion] update_dock_region")
                     update_dock_region()
                     @changeToShow()
-                when HideState.Hidding
+                when Trigger.Hide
                     if _dropped
                         clearTimeout(changeToHideTimer)
                         changeToHideTimer = setTimeout(=>
@@ -42,22 +48,15 @@ class HideStatusManager
                         , 1000)
                     else
                         @changeToHide()
-
-                when HideState.Shown
-                    if @state == HideState.Shown
-                        break
-                    @state = state
-                    @updateTrayIcons()
-
-            @state = state
-            console.log("StateChanged: #{HideStateMap[state]}")
         )
 
     setState: (state)->
-        # console.log("set state to #{HideStateMap[state]}")
+        console.warn("set state to #{HideStateMap[state]}")
+        @state = state
         @dbus?.SetState(state)
 
     updateState:()->
+        # console.log("hide manager update state")
         @dbus?.UpdateState()
 
     changeMode:(mode)->
@@ -68,6 +67,7 @@ class HideStatusManager
         if DCore.Dock.is_hovered()
             console.log("changeState dock is hovered")
             return
+        @setState(state)
         _CW.style.webkitTransform = cw
         $("#panel").style.webkitTransform = panel
         switch settings.displayMode()
@@ -103,13 +103,12 @@ class HideStatusManager
         @updateSystemTrayTimer = setTimeout(@updateTrayIcons, SHOW_HIDE_ANIMATION_TIME)
 
     changeDockRegion: =>
-        console.log("changeDockRegion, #{HideStateMap[@state]}")
+        console.warn("changeDockRegion, #{HideStateMap[@state]}")
         if @state == HideState.Showing
             @setState(HideState.Shown)
         else if @state == HideState.Hidding
             @setState(HideState.Hidden)
 
-        # return
         regionHeight = DOCK_HEIGHT
         console.log("panel webkitTransform: ##{$("#panel").style.webkitTransform}#")
         if $("#panel").style.webkitTransform == "translateY(100%)"

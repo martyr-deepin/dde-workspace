@@ -403,6 +403,7 @@ void _change_workarea_height(int height)
     }
 }
 
+
 gboolean workaround_change_workarea_height(int height)
 {
     int workarea_height = gdk_screen_height() - dock.height - dock.y + height;
@@ -421,6 +422,17 @@ gboolean workaround_change_workarea_height(int height)
     }
     return FALSE;
 }
+
+
+void update_workarea()
+{
+    if (GD.config.hide_mode == NO_HIDE_MODE ) {
+        workaround_change_workarea_height(GD.dock_height);
+    } else {
+        workaround_change_workarea_height(0);
+    }
+}
+
 
 JS_EXPORT_API
 void dock_change_workarea_height(double height)
