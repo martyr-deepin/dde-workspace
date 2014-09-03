@@ -491,9 +491,8 @@ class AppItem extends Item
         @hide_open_indicator()
         Preview_close_now()
         @init_activator()
-        setTimeout(=>
-            @element.style.display = ''
-        , 10)
+        @element.offsetWidth # force web to calculate, otherwise it won't work.
+        @element.style.display = ''
 
     update_client: (id, title)->
         @client_infos[id] =

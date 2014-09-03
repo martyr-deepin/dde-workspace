@@ -2,9 +2,8 @@ changeThemeCss = (theme)->
     _b.style.display = 'none'
     css = $("#theme")
     css.setAttribute("href", "css/#{theme}/dock.css")
-    setTimeout(->
-        _b.style.display = ''
-    , 10)
+    _b.offsetWidth
+    _b.style.display = ''
 
 
 switchToEfficientMode = ->
