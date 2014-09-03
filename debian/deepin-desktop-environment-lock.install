@@ -1,5 +1,0 @@
-usr/bin/dlock
-usr/bin/lockservice
-usr/bin/switchtogreeter
-usr/share/dbus-1/system-services/com.deepin.dde.lock.service
-etc/dbus-1/system.d/*

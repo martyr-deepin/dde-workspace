@@ -1,4 +1,0 @@
-usr/bin/desktop
-usr/share/applications/deepin-desktop.desktop
-usr/share/dde/resources/desktop/*
-#debian/30-deepin-inotify-limit.conf etc/sysctl.d/

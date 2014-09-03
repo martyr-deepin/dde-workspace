@@ -1,6 +1,0 @@
-usr/share/dde/resources/common/*
-usr/share/dde/data/*
-usr/share/glib-2.0/schemas/*
-usr/share/locale/*
-debian/30-deepin-inotify-limit.conf etc/sysctl.d/
-debian/default-terminal usr/bin/
