@@ -49,6 +49,7 @@ class Setting
         ITEM_WIDTH = ALL_ITEM_WIDTH[mode]
         ICON_WIDTH = ALL_ICON_WIDTH[mode]
         ICON_HEIGHT = ALL_ICON_HEIGHT[mode]
+        ITEM_MENU_OFFSET = ALL_ITEM_MENU_OFFSET[mode]
 
     hideMode:->
         mode = @dbus.GetHideMode_sync()

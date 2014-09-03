@@ -736,7 +736,7 @@ class AppItem extends Item
 
         menu =
             x: xy.x + clientHalfWidth + screenOffset.x
-            y: xy.y + screenOffset.y
+            y: xy.y + screenOffset.y - ITEM_MENU_OFFSET
             isDockMenu: true
             cornerDirection: DEEPIN_MENU_CORNER_DIRECTION.DOWN
             menuJsonContent: menuContent
