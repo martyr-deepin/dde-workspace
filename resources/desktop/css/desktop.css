@@ -54,14 +54,13 @@ body {
     font-size:12px;
     color:white;
     text-shadow:1px 0 1px #000, 0 1px 1px #000, -1px 0 1px #000, 0 -1px 1px #000;
-    
+
     display:-webkit-box;
     -webkit-box-orient:vertical;
     -webkit-box-align:center;
     -webkit-transition:background-color 0.15s ease-out;
-    
+
     -webkit-line-clamp:2;
-    overflow:hidden;
 }
 
 .DesktopEntry .item_icon {
@@ -102,10 +101,9 @@ body {
 }
 .DesktopEntry .item_name {
     width:100%;
-    border-radius:2px;
     outline:none;
     padding: 0 1px; /*fix the truncation when the word's length is to long*/
-    
+
     -webkit-line-clamp:2;
     overflow:hidden;
     word-wrap:break-word;
@@ -208,7 +206,7 @@ body {
     display:-webkit-box;
     -webkit-box-orient:vertical;
     pointer-events:none;
-    
+
     -webkit-line-clamp:2;
     overflow:hidden;
     word-wrap:break-word;
