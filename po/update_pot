@@ -4,10 +4,10 @@ import glob
 import os
 import re
 
-
 coffee_files = []
 c_files = []
 except_dirs = ["dbus_test", "memory_test", "dominant_color"]
+app = "dde-workspace"
 
 def get_lang():
     pos = glob.glob("./*.po")
@@ -19,6 +19,7 @@ def get_lang():
 
 def get_files():
     global coffee_files, c_files
+
     for d in os.listdir("../resources"):
         if d != "common" and d not in except_dirs:
             coffee_dir = "../resources/%s/js/" % d
@@ -26,37 +27,32 @@ def get_files():
                 for filename in filenames:
                     if filename.endswith(".coffee"):
                         coffee_files.append(os.path.join(dirpath, filename))
-
+    #TODO:Here add your app coffee files in special dir
     coffee_files.append(os.path.join("../resources/common/js/uninstaller.coffee"))
+
     for d in os.listdir("../app"):
         if d not in except_dirs:
             c_files += glob.glob("../app/%s/*.c" % d);
             c_files += glob.glob("../app/%s/*.h" % d);
 
+    #TODO:Here add your app c files in special dir
     c_files += [
             "../lib/dentry/*.c",
             "../lib/dentry/*.h",
             "../lib/category.c",
             ]
 
-
-def scan():
+def scan_pot():
     global coffee_files, c_files
-    os.system("rm dde.pot")
-    os.system("touch dde.pot")
-    for l in get_lang():
-        os.system("touch %s.po" % l)
+    os.system("rm %s.pot" % app)
+    os.system("touch %s.pot" % app)
 
-        cmd= "xgettext --from-code=utf-8 -L python -j -o dde.pot " + " ".join(coffee_files)
-        os.system(cmd)
+    cmd= "xgettext --from-code=utf-8 -L python -j -o %s.pot " % app + " ".join(coffee_files)
+    os.system(cmd)
 
-        cmd = "xgettext --from-code=utf-8 -k_ -j -o dde.pot " + " ".join(c_files)
-        os.system(cmd)
-
-        os.system("msgmerge %s.po dde.pot > new_%s.po" % (l, l))
-
-        os.system("mv new_%s.po %s.po" % (l, l))
+    cmd = "xgettext --from-code=utf-8 -k_ -j -o %s.pot " % app + " ".join(c_files)
+    os.system(cmd)
 
 if __name__ == '__main__':
     get_files()
-    scan()
+    scan_pot()

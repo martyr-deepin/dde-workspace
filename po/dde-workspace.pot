@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-22 11:12+0800\n"
+"POT-Creation-Date: 2014-09-04 16:40+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -44,7 +44,7 @@ msgstr ""
 #: ../resources/desktop/js/richdir.coffee:133
 #: ../resources/desktop/js/richdir.coffee:566
 #: ../resources/launcher/js/item.coffee:276
-#: ../resources/guide/js/launcher.coffee:235
+#: ../resources/guide/js/launcher.coffee:212
 msgid "_Open"
 msgstr ""
 
@@ -94,7 +94,7 @@ msgid "Computer"
 msgstr ""
 
 #: ../resources/desktop/js/specialitem.coffee:87
-#: ../resources/dock/js/main.coffee:47 ../resources/dock/js/main.coffee:124
+#: ../resources/dock/js/main.coffee:49 ../resources/dock/js/main.coffee:126
 msgid "Trash"
 msgstr ""
 
@@ -314,7 +314,7 @@ msgid "Extend"
 msgstr ""
 
 #: ../resources/launcher/js/item.coffee:283
-#: ../resources/guide/js/launcher.coffee:242
+#: ../resources/guide/js/launcher.coffee:219
 msgid "_Uninstall"
 msgstr ""
 
@@ -355,7 +355,7 @@ msgid "_Display this icon"
 msgstr ""
 
 #: ../resources/launcher/js/const.coffee:72
-#: ../resources/guide/js/launcher.coffee:241
+#: ../resources/guide/js/launcher.coffee:218
 msgid "_Add to autostart"
 msgstr ""
 
@@ -368,12 +368,12 @@ msgid "Add to _favorites"
 msgstr ""
 
 #: ../resources/launcher/js/const.coffee:81
-#: ../resources/guide/js/launcher.coffee:237
+#: ../resources/guide/js/launcher.coffee:214
 msgid "Remove from _favorites"
 msgstr ""
 
 #: ../resources/launcher/js/const.coffee:84
-#: ../resources/guide/js/launcher.coffee:238
+#: ../resources/guide/js/launcher.coffee:215
 msgid "Send to d_esktop"
 msgstr ""
 
@@ -382,7 +382,7 @@ msgid "Remove from d_esktop"
 msgstr ""
 
 #: ../resources/launcher/js/const.coffee:88
-#: ../resources/guide/js/launcher.coffee:239
+#: ../resources/guide/js/launcher.coffee:216
 msgid "Send to do_ck"
 msgstr ""
 
@@ -398,7 +398,7 @@ msgstr ""
 msgid "All Windows"
 msgstr ""
 
-#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:122
+#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:124
 msgid "Launcher"
 msgstr ""
 
@@ -557,11 +557,11 @@ msgstr ""
 msgid "tips: Please directly enter the word \"deepin\""
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:179
+#: ../resources/guide/js/launcher.coffee:181
 msgid "Use the right mouse button to send two icons to the desktop"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:180
+#: ../resources/guide/js/launcher.coffee:182
 msgid "tips: You can add it to startup items or uninstall it"
 msgstr ""
 
@@ -614,11 +614,11 @@ msgstr ""
 msgid "\"%1\" failed to be uninstalled"
 msgstr ""
 
-#: ../app/desktop/desktop.c:292
+#: ../app/desktop/desktop.c:298
 msgid "New file"
 msgstr ""
 
-#: ../app/desktop/desktop.c:303
+#: ../app/desktop/desktop.c:309
 msgid "New directory"
 msgstr ""
 
@@ -630,7 +630,7 @@ msgstr ""
 msgid "Wrong Password"
 msgstr ""
 
-#: ../app/dock/dock.c:322
+#: ../app/dock/dock.c:341
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr ""
 
