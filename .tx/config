@@ -5,6 +5,7 @@ mode = developer
 
 [deepin-desktop-environment.Deepin-Desktop-Enviroment--20140619]
 file_filter = po/<lang>.po
+source_file = po/dde-workspace.pot
 source_lang = en
 type = PO
 
