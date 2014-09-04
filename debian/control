@@ -2,29 +2,23 @@ Source: deepin-desktop-environment
 Section: utils
 Priority: extra
 Maintainer: Li Longyu (Ai Kotoba) <leaeasy@gmail.com>
-Build-Depends: debhelper (>= 8.0.0),
+Build-Depends: debhelper (>= 9),
  cmake,
  coffeescript,
- go-dlib,
- golang-gettext-go,
+ golang-dlib-dev,
+ golang-gettext-go-dev,
  golang-go,
- libdbus-glib-1-dev,
  libdeepin-webkit-3.0-0,
- libdeepin-webkit-3.0-0,
- libgail-3-dev,
  libgdk-pixbuf2.0-dev,
  libglib2.0-dev,
- libgstreamer-plugins-base0.10-dev,
  libgtk-3-dev,
- libicu-dev,
  liblightdm-gobject-1-dev | liblightdm-gobject-dev,
- libnotify-dev,
  libsqlite3-dev,
  libwebkitgtk-3.0-dev,
  libxtst-dev,
  pkg-config,
  python,
-Standards-Version: 3.9.2
+Standards-Version: 3.9.5
 Homepage: http://www.linuxdeepin.com
 
 Package: deepin-desktop-environment

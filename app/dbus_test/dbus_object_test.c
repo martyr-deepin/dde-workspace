@@ -1,4 +1,3 @@
-#include <dbus/dbus-glib.h>
 #include "dbus_object_info.h"
 #include <stdio.h>
 
@@ -15,7 +14,7 @@ int main()
     }
     struct DBusObjectInfo info[NUM];
     for (int i=0; i<NUM; i++) {
-        struct DBusObjectInfo* info =  build_object_info(con, 
+        struct DBusObjectInfo* info =  build_object_info(con,
                 "org.gnome.Shell",
                 "/org/gnome/Shell",
                 "org.gnome.Shell");
