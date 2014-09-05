@@ -18,5 +18,12 @@ func main() {
 			Arg("username:char*")),
 	)
 
+	DBusInstall(
+		"setup_screenlock_dbus_service",
+		SessionDBUS("com.deepin.dde.screenlock.Frontend"),
+		Method("Hello", Callback("lock_hello")),
+		Signal("Ready"),
+	)
+
 	OUTPUT_END()
 }

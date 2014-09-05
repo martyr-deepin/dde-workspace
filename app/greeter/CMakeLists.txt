@@ -88,6 +88,10 @@ install(
     FILES ${PROJECT_SOURCE_DIR}/app/greeter/com.deepin.dde.lock.conf
     DESTINATION /etc/dbus-1/system.d/
     )
+install(
+    FILES ${PROJECT_SOURCE_DIR}/app/greeter/com.deepin.dde.screenlock.Frontend.service
+    DESTINATION /usr/share/dbus-1/services/
+    )
 
 install(
     FILES ${CMAKE_CURRENT_SOURCE_DIR}/lightdm.pkla

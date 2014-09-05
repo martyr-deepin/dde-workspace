@@ -109,3 +109,4 @@ if not is_livecd
 body_keydown_listener((e)->
     mediacontrol?.keydown_listener(e) if div_media_control?
 )
+DCore.Lock.emit_webview_ok()

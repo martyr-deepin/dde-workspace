@@ -46,6 +46,7 @@
 #include "X_misc.h"
 #include "gs-grab.h"
 #include "lock_util.h"
+#include "DBUS_greeter.h"
 #include "theme.h"
 
 #define LOCK_HTML_PATH "file://"RESOURCE_DIR"/greeter/lock.html"
@@ -69,6 +70,48 @@ char* lock_get_theme()
     return get_theme_config();
 }
 
+
+static gboolean is_ready = FALSE;
+
+void send_ready()
+{
+    GError* err = NULL;
+    GDBusConnection* conn = g_bus_get_sync(G_BUS_TYPE_SESSION, NULL, &err);
+
+    if (err != NULL) {
+        g_warning("get session bus failed:%s", err->message);
+        g_clear_error(&err);
+        return;
+    }
+
+    g_dbus_connection_emit_signal(conn,
+            NULL,
+            "/com/deepin/dde/screenlock/Frontend",
+            "com.deepin.dde.screenlock.Frontend",
+            "Ready",
+            NULL,
+            &err);
+    g_object_unref(conn);
+
+    if (err != NULL) {
+        g_warning("send_readyfailed: %s", err->message);
+        g_clear_error(&err);
+    }
+}
+
+void lock_hello()
+{
+    if (is_ready) {
+        send_ready();
+    }
+}
+
+void lock_emit_webview_ok()
+{
+    is_ready = TRUE;
+    send_ready();
+}
+
 JS_EXPORT_API
 gboolean lock_try_unlock (const gchar *username,const gchar *password)
 {
@@ -79,13 +122,13 @@ gboolean lock_try_unlock (const gchar *username,const gchar *password)
     GError *error = NULL;
 
     lock_proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SYSTEM,
-                                                G_DBUS_PROXY_FLAGS_NONE,
-                                                NULL,
-                                                "com.deepin.dde.lock",
-                                                "/com/deepin/dde/lock",
-                                                "com.deepin.dde.lock",
-                                                NULL,
-                                                &error);
+            G_DBUS_PROXY_FLAGS_NONE,
+            NULL,
+            "com.deepin.dde.lock",
+            "/com/deepin/dde/lock",
+            "com.deepin.dde.lock",
+            NULL,
+            &error);
 
     if (error != NULL) {
         g_warning ("connect com.deepin.dde.lock failed");
@@ -94,16 +137,16 @@ gboolean lock_try_unlock (const gchar *username,const gchar *password)
     error = NULL;
 
     /*if (username == NULL) {*/
-        /*username = lock_get_username ();*/
+    /*username = lock_get_username ();*/
     /*}*/
 
     lock_succeed  = g_dbus_proxy_call_sync (lock_proxy,
-                    "UnlockCheck",
-                    g_variant_new ("(ss)", username, password),
-                    G_DBUS_CALL_FLAGS_NONE,
-                    -1,
-                    NULL,
-                    &error);
+            "UnlockCheck",
+            g_variant_new ("(ss)", username, password),
+            G_DBUS_CALL_FLAGS_NONE,
+            -1,
+            NULL,
+            &error);
 
     //g_assert (lock_succeed != NULL);
     if (error != NULL) {
@@ -189,7 +232,7 @@ int main (int argc, char **argv)
 #endif
     gtk_widget_realize (container);
     gtk_widget_realize (webview);
-    
+
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
     gdk_window_move_resize(gdkwindow, 0, 0, gdk_screen_width(), gdk_screen_height());
 
@@ -199,6 +242,7 @@ int main (int argc, char **argv)
 #endif
 
     gtk_widget_show_all (container);
+    setup_screenlock_dbus_service();
 
     /*turn_numlock_on ();*/
     gtk_main ();
