@@ -22,9 +22,9 @@ set_target_properties(${NAME}
 
 if (TEST)
   target_link_libraries(${NAME} dcom dentry dbus ${DWEBVIEW_LIBRARIES}
-    dlauncher_test notify)
+    dlauncher_test)
 else()
-  target_link_libraries(${NAME} dcom dentry dbus ${DWEBVIEW_LIBRARIES} notify)
+  target_link_libraries(${NAME} dcom dentry dbus ${DWEBVIEW_LIBRARIES})
 endif()
 
 install(
