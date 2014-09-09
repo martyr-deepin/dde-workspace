@@ -136,7 +136,7 @@ var temp_provider = template.Must(template.New("dbus_xml").Funcs(template.FuncMa
 		return get_variant
 	},
 	"func_decl": func(method MethodStruct) string {
-		return fmt.Sprintf("%s %s(%s);", method.Ret.CName, method.CB.Name, method.joinArgs())
+		return fmt.Sprintf("%s %s(%s) __attribute__((weak));", method.Ret.CName, method.CB.Name, method.joinArgs())
 	},
 	"is_string": func(ctypename string) bool {
 		return strings.HasSuffix(ctypename, "char*")
@@ -160,7 +160,7 @@ static void _bus_method_call (GDBusConnection * connection,
         (void)params;
         GVariant * retval = NULL;
         if (0) { {{range .Methods}}{{if not .IsSignal}}
-        } else if (g_strcmp0(method, "{{.Name}}") == 0) {
+        } else if (&{{.CB.Name}} != 0 && g_strcmp0(method, "{{.Name}}") == 0) {
     {{range $index, $arg := .Args}}
         {{$arg.CName}} arg{{$index}};
     {{end}}
