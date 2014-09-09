@@ -25,13 +25,6 @@ create_item_grid()
 connect_default_signals()
 DCore.Desktop.emit_webview_ok()
 
-load_speical_desktop_items()
-load_desktop_all_items()
-load_plugins()
-
-place_desktop_items()
-place_all_widgets()
-
 DCore.Desktop.test()
 
 #echo "s_width:" + s_width + ",s_height:" + s_height + ",s_offset_x:" + s_offset_x + ",s_offset_y:" + s_offset_y

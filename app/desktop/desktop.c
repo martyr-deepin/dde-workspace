@@ -66,6 +66,7 @@
 
 #define SHOW_COMPUTER_ICON "show-computer-icon"
 #define SHOW_TRASH_ICON "show-trash-icon"
+#define ENABLED_PLUGINS "enabled-plugins"
 
 #define APP_DEFAULT_ICON "application-default-icon"
 
@@ -382,6 +383,7 @@ PRIVATE void dock_display_mode_changed(GSettings* settings)
 {
     int  display_mode = g_settings_get_enum (settings, DISPLAY_MODE_KEY);
     g_debug ("[%s]: %d",__func__ ,display_mode);
+    update_workarea_size ();
     switch(display_mode)
     {
         case FASHION_MODE:
@@ -399,7 +401,6 @@ PRIVATE void dock_display_mode_changed(GSettings* settings)
         default:
             break;
     }
-    update_workarea_size ();
 }
 
 PRIVATE void dock_config_changed(GSettings* settings, char* key, gpointer usr_data G_GNUC_UNUSED)
@@ -415,10 +416,13 @@ PRIVATE void dock_config_changed(GSettings* settings, char* key, gpointer usr_da
 
 
 PRIVATE void desktop_config_changed(GSettings* settings G_GNUC_UNUSED,
-                                    char* key G_GNUC_UNUSED,
+                                    char* key,
                                     gpointer usr_data G_GNUC_UNUSED)
 {
-    js_post_signal ("desktop_config_changed");
+    g_debug ("desktop config changed key:%s",key);
+    JSObjectRef info = json_create();
+    json_append_string(info, "key", key);
+    js_post_message ("desktop_config_changed",info);
 }
 
 extern GHashTable* enabled_plugins;
@@ -447,7 +451,7 @@ PRIVATE void desktop_plugins_changed(GSettings* settings, char* key G_GNUC_UNUSE
     extern void _init_state(gpointer key, gpointer value, gpointer user_data);
 
     g_hash_table_foreach(plugins_state, _init_state, plugins_state);
-    get_enabled_plugins(settings, "enabled-plugins");
+    get_enabled_plugins(settings, ENABLED_PLUGINS);
 
     JSObjectRef json = json_create();
     char* current_gsettings_schema_id = get_schema_id(settings);

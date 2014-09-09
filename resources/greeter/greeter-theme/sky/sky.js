@@ -46,7 +46,6 @@ function init(){
 }
 
 function update() {
-    console.log("update");
     mouseY += 50;
     if(mouseY > 768) mouseY = 768;
     //调用移动粒子的函数
@@ -57,7 +56,6 @@ function update() {
 
 //定义粒子生成的方法
 function makeParticles(){
-    console.log("makeParticles");
     var particle,material;
     //粒子从Z轴产生区间在-1000到1000
     for(var zpos=-1000;zpos<1000;zpos+=20){

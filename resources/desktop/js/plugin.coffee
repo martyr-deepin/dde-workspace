@@ -202,6 +202,7 @@ class DesktopPlugin extends Plugin
     constructor: (@path, @name)->
         @item = new DesktopPluginItem(@name)
         super('desktop', @path, @name, @item.container)
+        console.log "new DesktopPlugin #{@name}"
         @item.set_plugin(@id)
         pos = @item.get_pos()
         pos.height = @info.height

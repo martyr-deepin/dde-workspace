@@ -39,6 +39,7 @@ class DDEPluginManager
         DDEPluginManager._plugins[name] = obj
 
     @plugin_changed_handler: (info) ->
+        console.log "signal==plugin_changed_handler:#{info.app_name}"
         id_prefix = info.app_name + ":"
         all_plugins = DCore.get_plugins(info.app_name)
         delete info.app_name

@@ -30,8 +30,8 @@ connect_default_signals = ->
     DCore.signal_connect("cut_completed", do_cut_completed)
     DCore.signal_connect("lost_focus", do_desktop_lost_focus)
     DCore.signal_connect("get_focus", do_desktop_get_focus)
-    DCore.signal_connect("desktop_config_changed", do_desktop_config_changed)
     DCore.signal_connect("workarea_changed", do_workarea_changed)
+    DCore.signal_connect("desktop_config_changed", do_desktop_config_changed)
 
 
 do_item_delete = (data) ->
@@ -43,7 +43,7 @@ do_item_delete = (data) ->
 
 
 do_item_update = (data) ->
-    echo "do_item_update"
+    console.debug "do_item_update"
     id = DCore.DEntry.get_id(data.entry)
     if (w = Widget.look_up(id))?
         w.set_entry(data.entry)
@@ -113,14 +113,20 @@ do_desktop_get_focus = ->
         last_widget_has_focus == false
     return
 
-do_desktop_config_changed = ->
-    load_speical_desktop_items()
-    place_desktop_items()
-    return
-
 do_workarea_changed = (allo) ->
     console.log "do_workarea_changed:#{allo.x},#{allo.y},#{allo.width},#{allo.height}"
     update_gird_position(allo.x + 4, allo.y + 4, allo.width - 8, allo.height - 8)
     init_occupy_table()
+
+    load_desktop_all_items()
+    load_plugins()
+
+    place_desktop_items()
+    place_all_widgets()
+    return
+
+do_desktop_config_changed = (cfg) ->
+    console.log "do_desktop_config_changed:#{cfg.key}"
+    load_speical_desktop_items()
     place_desktop_items()
     return

@@ -1286,7 +1286,6 @@ class Mouse_Select_Area_box
 
 
     mousemove_event : (evt) =>
-        echo "mousemove_event: #{times++}"
         evt.stopPropagation()
         evt.preventDefault()
         sl = Math.min(Math.max(Math.min(@start_point.clientX, evt.clientX), s_offset_x), s_offset_x + s_width)
@@ -1324,7 +1323,6 @@ class Mouse_Select_Area_box
 
 
     mouseup_event : (evt) =>
-        echo "mouseup_event"
         evt.stopPropagation()
         evt.preventDefault()
         for i in @total_item

@@ -88,7 +88,6 @@ class TrashVDir extends DesktopEntry
 
 
     set_icon : (src = null) =>
-        echo "set_icon"
         if src == null
             if DCore.DEntry.get_trash_count() > 0
                 icon = DCore.get_theme_icon(_ICON_ID_TRASH_BIN_FULL_, D_ICON_SIZE_NORMAL)
@@ -147,7 +146,6 @@ class TrashVDir extends DesktopEntry
         menus.push([1, _("_Open")])
         menus.push([])
         count = DCore.DEntry.get_trash_count()
-        echo count
         if count > 1
             menus.push([3, _("_Clean up %1 items").args(count)])
         else if count == 1
