@@ -41,9 +41,11 @@ class Item extends Widget
         @isFavor = false
         @status = SOFTWARE_STATE.IDLE
 
-        @load_image()
-        @itemName = create_element("div", "item_name", @hoverBox)
-        @itemName.innerText = @name
+        im = DCore.get_theme_icon(INVALID_IMG, ITEM_IMG_SIZE)
+        @img = create_img("item_img", im, @hoverBox)
+        @load_image(@img)
+        itemName = create_element("div", "item_name", @hoverBox)
+        itemName.innerText = @name
         @hoverBoxOutter.draggable = true
         # @try_set_title(@element, @name, 80)
         # @element.setAttribute("title", @name)
@@ -92,8 +94,7 @@ class Item extends Widget
         im = inner.firstElementChild
         # img may not be loaded.
         if im.classList.length == 1
-            im.onload = (e)=>
-                @setImageSize(im)
+            @load_image(im)
 
         @elements[pid] = el
         if pid == 'favor'
@@ -135,7 +136,11 @@ class Item extends Widget
         # update it.
         if @name != info?.name
             @name = info.name
-            @itemName.innerText = @name
+            @updateProperty((k, el)=>
+                innerBox = el.firstElementChild.firstElementChild
+                itemName = @getItemNameDOM(el)
+                itemName.innerText = @name
+            )
 
         if @path != info?.path
             @path = info.path
@@ -145,14 +150,28 @@ class Item extends Widget
 
         if @icon != info?.icon
             @icon = info.icon
-            im = @get_img()
-            @img.src = im
+            @updateProperty((k, el)=>
+                im = @getImgDOM(el)
+                @load_image(im)
+            )
 
         if @isAutostart != info?.isAutostart
             @toggle_autostart()
 
         if @status != info?.status
             @status = info.status
+
+    getInnerBoxDOM:(el)->
+        #  outter hover box  inner hover box
+        el.firstElementChild.firstElementChild
+
+    getImgDOM:(el)->
+        @getInnerBoxDOM(el).children[0]
+
+    getItemNameDOM:(el)->
+        # cannot use lastElementChild here, the lastElementChild may be the
+        # autostart flag.
+        @getInnerBoxDOM(el).children[1]
 
     setImageSize: (img)=>
         if img.width == img.height
@@ -166,12 +185,18 @@ class Item extends Widget
         else
             img.classList.add('vbar_img')
 
-    load_image: ->
+    load_image: (img)->
         im = @get_img()
-        @img = create_img("item_img", im, @hoverBox)
         # @img.draggable = true
-        @img.onload = (e) =>
-            @setImageSize(@img)
+        img.onload = (e) =>
+            @setImageSize(img)
+        img.onerror = =>
+            console.warn("load img(#{img.src}) error")
+            im = DCore.get_theme_icon(INVALID_IMG, ITEM_IMG_SIZE)
+            if img.src != im
+                img.src = im
+                console.warn("using #{img.src} instead")
+        img.src = im
 
     on_click: (e)->
         target = e?.target
@@ -399,17 +424,18 @@ class Item extends Widget
         Item.autostart_flag ?= "file://#{DCore.get_theme_icon(AUTOSTART_ICON.NAME,
             AUTOSTART_ICON.SIZE)}"
 
-        @updateProperty((k, v)->
-            innerBox = v.firstElementChild.firstElementChild
+        @updateProperty((k, v)=>
+            innerBox = @getInnerBoxDOM(v)
             last = innerBox.lastElementChild
+            @getItemNameDOM(v)
             if last.tagName != 'IMG'
                 create_img("autostart_flag", Item.autostart_flag, innerBox)
             last.style.visibility = 'visible'
         )
 
     hideAutostartFlag:->
-        @updateProperty((k, v)->
-            innerBox = v.firstElementChild.firstElementChild
+        @updateProperty((k, v)=>
+            innerBox = @getInnerBoxDOM(v)
             last = innerBox.lastElementChild
             if last.tagName == 'IMG'
                 last.style.visibility = 'hidden'
