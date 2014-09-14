@@ -368,12 +368,13 @@ class Item extends Widget
             e.preventDefault()
         else
             e.stopPropagation()
+            # first make the contextmenu not showed when is in_renaming
+            #e.preventDefault()
+            #TODO:new Menu of deepin when in_rename instead of webkit menu
+            # menu = []
+            # @item_name.parentElement.contextMenu = build_menu(menu)
 
     item_rename : =>
-        # first make the contextmenu not showed when is in_renaming
-        # menu = []
-        # @item_name.parentElement.contextMenu = build_menu(menu)
-
         if @delay_rename_tid != -1 then
         if @selected == false then return
         if @in_rename == false

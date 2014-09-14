@@ -82,7 +82,7 @@ build_menu = (info) ->
     len = info.length
     if len < 2
         return null
-    count = 10000
+    submenu_count = 10000
     menu = new Menu(info[0])
     for i in [1...len]
         v = info[i]
@@ -94,10 +94,16 @@ build_menu = (info) ->
                 item.setActive(v[2])
             menu.append(item)
         else  # submenu
-            echo "submenu"
+            echo "submenu id:#{submenu_count},and text:#{v[0]}"
+            item = new MenuItem(submenu_count, v[0])
+            if v[2]?
+               item.setActive(v[2])
+            #Warning:
+            #submenu should contain DEEPIN_MENU_TYPE.NORMAL in info[0]
             submenu = build_menu(v[1])
-            menu.append(new MenuItem(count, v[1]).setSubMenu(build_menu(v[1])))
-            count += 1
+            item.setSubMenu(submenu)
+            menu.append(item)
+            submenu_count += 1
 
     return menu
 

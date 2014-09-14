@@ -128,6 +128,7 @@ class DesktopEntry extends Item
 
     unregisterMenu_connect: ->
         @element.addEventListener("contextmenu", (e) =>
+            console.debug "contextmenu for unregisterHook"
             menu = @buildmenu()
             menu.unshift(DEEPIN_MENU_TYPE.NORMAL)
             build_menu(menu)

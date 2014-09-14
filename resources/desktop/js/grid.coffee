@@ -68,10 +68,10 @@ ingore_keyup_counts = 0
 # store the pos the user pop the context menu
 rightclick_pos = {clientX : 0, clientY : 0}
 
-name_add_before = _("Untitled") + " "
 #templates
-TEMPLATES_FILE_ID_FIRST = 22
-templates = []
+NAME_ADD_BEFORE = _("Untitled") + " "
+TEMPLATES_FILE_ID_FIRST = 5000
+templates_info = []
 
 
 #direction
@@ -1008,52 +1008,49 @@ gird_left_mousedown = (evt) ->
         if last_widget.length > 0 then Widget.look_up(last_widget)?.item_blur()
     return
 
-
 grid_right_click = (evt) ->
-    evt.preventDefault()
     evt.stopPropagation()
+    evt.preventDefault()
     rightclick_pos.clientX = evt.clientX
     rightclick_pos.clientY = evt.clientY
     if evt.ctrlKey == false and evt.shiftKey == false
         cancel_all_selected_stats()
 
-    submenu_sort = new Menu(
+    submenu_new = [
         DEEPIN_MENU_TYPE.NORMAL,
-        new MenuItem(11, _("_Name")),
-        new MenuItem(12, _("Last modified _time"))
-    )
-
-    submenu_new = new Menu(
-        DEEPIN_MENU_TYPE.NORMAL,
-        new MenuItem(20, _("_Folder")),
-        new MenuItem(21, _("_Text document"))
-    )
+        [20, _("_Folder")],
+        [21,_("_Text document")]
+    ]
     templates_all = DCore.DEntry.get_templates_files()
     templates = DCore.DEntry.get_templates_filter(templates_all)
-    echo "templates_all.length:#{templates_all.length}"
     if templates_all.length > 0
-        submenu_new.addSeparator()
+        submenu_new.push([])
         for i in [0...templates.length] by 1
-            templates_name = DCore.DEntry.get_name(templates[i])
-            echo "#{i}:" + templates_name
-            templates_id = i + TEMPLATES_FILE_ID_FIRST
-            submenu_new.append(new MenuItem(templates_id, templates_name))
+            name = DCore.DEntry.get_name(templates[i])
+            id = i + TEMPLATES_FILE_ID_FIRST
+            templates_info.push({index:i,id:id,filter:templates[i],name:name})
+            submenu_new.push([id,name])
 
-    # warning: the templates id can > 30 ,so ,the menu 3 couldnot has child menu id 31\32\33
-    menu = new Menu(
+    submenu_sort = [
         DEEPIN_MENU_TYPE.NORMAL,
-        new MenuItem(1, _("_Sort by"), submenu_sort),
-        new MenuItem(2, _("_New"), submenu_new),
-        new MenuItem(3, _("Open in _terminal")),
-        new MenuItem(4, _("_Paste")).setActive(DCore.DEntry.can_paste()),
-        new MenuSeparator(),
-        new MenuItem(5, _("_Display settings")),
-        new MenuItem(6, _("_Corner navigation")),
-        new MenuItem(7, _("Pe_rsonalize"))
-    )
-    menu.addListener(grid_do_itemselected).showMenu(evt.screenX, evt.screenY)
-    return
+        [11, _("_Name")],
+        [12, _("Last modified _time")]
+    ]
 
+    menus = [DEEPIN_MENU_TYPE.NORMAL]
+    menus.push([_("_Sort by"), submenu_sort])
+    menus.push([_("_New"),submenu_new])
+    menus.push([3, _("Open in _terminal")])
+    menus.push([4, _("_Paste"), DCore.DEntry.can_paste()])
+    menus.push([])
+    menus.push([5, _("_Display settings")])
+    menus.push([6, _("_Corner navigation")])
+    menus.push([7, _("Pe_rsonalize")])
+
+    build_menu(menus)
+            ?.addListener(grid_do_itemselected)
+            .showMenu(evt.screenX, evt.screenY)
+    return
 
 grid_do_itemselected = (id) ->
     id = parseInt(id)
@@ -1061,38 +1058,36 @@ grid_do_itemselected = (id) ->
     switch id
         when 11 then menu_sort_desktop_item_by_name()
         when 12 then menu_sort_desktop_item_by_mtime()
-        when 20 then menu_create_new_folder(name_add_before)
-        when 21 then menu_create_new_file(name_add_before)
+        when 20 then menu_create_new_folder(NAME_ADD_BEFORE)
+        when 21 then menu_create_new_file(NAME_ADD_BEFORE)
         when 3 then DCore.Desktop.run_terminal()
         when 4 then paste_from_clipboard()
         when 5 then dss_ShowModule(DSS_MODULE.DISPLAY)
         when 6 then DCore.Desktop.run_deepin_settings("zone")
         when 7 then dss_ShowModule(DSS_MODULE.PERSON)
         else
-            # warning: the templates.length + TEMPLATES_FILE_ID_FIRST must < 30 .
-            # if it > 30 ,and when menu 3 has child menu id 31\31\33,and this will be the same id with the templates id
-            if id >= TEMPLATES_FILE_ID_FIRST && id <= templates.length + TEMPLATES_FILE_ID_FIRST
-                menu_create_templates(id)
+            id_start = templates_info[0].id
+            id_end = templates_info[templates_info.length - 1].id
+            if id in [id_start...id_end + 1]
+                filter = info.filter for info in templates_info when id == info.id
+                menu_create_templates(filter)
             else
                 echo "not implemented function #{id}"
     return
 
 
-menu_create_new_folder = (name_add_before) ->
-    entry = DCore.Desktop.new_directory(name_add_before)
+menu_create_new_folder = (NAME_ADD_BEFORE) ->
+    entry = DCore.Desktop.new_directory(NAME_ADD_BEFORE)
     create_entry_to_new_item(entry)
 
 
-menu_create_new_file = (name_add_before) ->
-    entry = DCore.Desktop.new_file(name_add_before)
+menu_create_new_file = (NAME_ADD_BEFORE) ->
+    entry = DCore.Desktop.new_file(NAME_ADD_BEFORE)
     create_entry_to_new_item(entry)
 
-menu_create_templates = (id) ->
-    i = id - TEMPLATES_FILE_ID_FIRST
-    if 0 <= i < templates.length
-        entry = DCore.DEntry.create_templates(templates[i],name_add_before)
-        create_entry_to_new_item(entry)
-        echo "create_templates finish!"
+menu_create_templates = (filter) ->
+    entry = DCore.DEntry.create_templates(filter,NAME_ADD_BEFORE)
+    create_entry_to_new_item(entry)
     return
 
 
@@ -1344,51 +1339,54 @@ item_rename_div.setAttribute("class", "pop_rename")
 item_rename_div.style.display = "none"
 document.body.appendChild(item_rename_div)
 item_rename_div.addEventListener("mousedown", (evt) ->
-        evt.stopPropagation()
-        return
+    evt.stopPropagation()
+    return
 )
 item_rename_div.addEventListener("mouseup", (evt) ->
-        evt.stopPropagation()
-        return
+    evt.stopPropagation()
+    return
 )
 item_rename_div.addEventListener("click", (evt) ->
-        evt.stopPropagation()
-        if @id.length?
-            if (w = Widget.look_up(@id))?
-                w.item_complete_rename(true)
-        return
+    evt.stopPropagation()
+    if @id.length?
+        if (w = Widget.look_up(@id))?
+            w.item_complete_rename(true)
+    return
 )
 item_rename_div.addEventListener("contextmenu", (evt) ->
-        evt.stopPropagation()
-        if @id.length?
-            if (w = Widget.look_up(@id))?
-                w.item_complete_rename(true)
-        return
+    #fixed showing the webkit menu (contains reload option)
+    evt.preventDefault()
+    #Warning:hide stopPropagation to show grid contextmenu directly
+    #evt.stopPropagation()
+    if @id.length?
+        if (w = Widget.look_up(@id))?
+            w.item_complete_rename(true)
+    return
 )
 
 item_rename_div.parentElement.addEventListener("keydown", (evt) ->
-        if not rename_div_process_events then return
-        evt.stopPropagation()
-        if @id.length?
-            if (w = Widget.look_up(@id))?
-                w.on_item_rename_keydown(evt)
-        return
+    if not rename_div_process_events then return
+    evt.stopPropagation()
+    if @id.length?
+        if (w = Widget.look_up(@id))?
+            w.on_item_rename_keydown(evt)
+    return
 )
 item_rename_div.parentElement.addEventListener("keypress", (evt) ->
-        if  not rename_div_process_events then return
-        evt.stopPropagation()
-        if @id.length?
-            if (w = Widget.look_up(@id))?
-                w.on_item_rename_keypress(evt)
-        return
+    if  not rename_div_process_events then return
+    evt.stopPropagation()
+    if @id.length?
+        if (w = Widget.look_up(@id))?
+            w.on_item_rename_keypress(evt)
+    return
 )
 item_rename_div.parentElement.addEventListener("keyup", (evt) ->
-        if  not rename_div_process_events then return
-        evt.stopPropagation()
-        if @id.length?
-            if (w = Widget.look_up(@id))?
-                w.on_item_rename_keyup(evt)
-        return
+    if  not rename_div_process_events then return
+    evt.stopPropagation()
+    if @id.length?
+        if (w = Widget.look_up(@id))?
+            w.on_item_rename_keyup(evt)
+    return
 )
 
 

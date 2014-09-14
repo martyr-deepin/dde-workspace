@@ -159,7 +159,6 @@ class Menu
             else
                 throw "Invalid DEEPIN_MENU_TYPE: #{@type}"
         @dbus = null
-        @_init_dbus()
 
     apply: (fn, items)->
         switch @menu.constructor.name
@@ -182,17 +181,6 @@ class Menu
         @menu.cornerDirection = cornerDirection
         @
 
-    addListener: (@callback)->
-        try
-            @dbus?.connect("ItemInvoked", @callback)
-            @
-        catch e
-            echo "listenItemSelected: #{e}"
-
-    unregisterHook: (fn)->
-        @dbus?.connect("MenuUnregistered", fn)
-        @
-
     _init_dbus: ->
         try
             manager = getMenuManager()
@@ -201,7 +189,7 @@ class Menu
             return
 
         @menu_dbus_path = manager.RegisterMenu_sync()
-        # echo "menu path is: #{@menu_dbus_path}"
+        console.debug "menu path is: #{@menu_dbus_path}"
         try
             @dbus = get_dbus(
                 "session",
@@ -214,7 +202,23 @@ class Menu
             @dbus = null
             console.log("get deepin dbus menu failed: #{e}")
 
+    addListener: (@callback)->
+        #warning:here to _init_dbus instead of in constructor
+        #To avoid too many @dbus of subMenu which will be destroyed by Deepin_Menu
+        @_init_dbus() if not @dbus?
+        try
+            @dbus?.connect("ItemInvoked", @callback)
+            @
+        catch e
+            echo "listenItemSelected: #{e}"
+
+    unregisterHook: (fn)->
+        @_init_dbus() if not @dbus?
+        @dbus?.connect("MenuUnregistered", fn)
+        @
+
     showMenu: (x, y, ori=null)->
+        @_init_dbus() if not @dbus?
         @menu.x = x
         @menu.y = y
         if ori != null
