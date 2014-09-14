@@ -79,4 +79,3 @@ osd.SwitchLayout = (keydown)->
         keyboard.setCurrentLayout(keyboardList.current)
         osdHide()
     ,TIME_HIDE)
-

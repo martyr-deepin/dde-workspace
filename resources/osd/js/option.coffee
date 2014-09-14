@@ -25,7 +25,6 @@ class Option extends Widget
         _b.appendChild(@element)
         document.body.style.width = 160
         document.body.style.height = 160
-        osdShow()
 
     hide:->
         @element.style.Option = "none"
@@ -35,6 +34,7 @@ class Option extends Widget
         clearTimeout(timeout_osdHide)
         @timepress = setTimeout(=>
             echo "Option #{@id} show"
+            osdShow()
             @element.style.display = "block"
             set_bg(@,@id,@preImgName)
             @preImgName = @id

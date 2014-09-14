@@ -55,11 +55,15 @@ class Monitor extends Display
 
     switchDisplayMode:(mode)->
         echo "SwitchMode(#{mode.value},#{mode.name}) fullname:#{mode.fullname}"
-        #if not @DBusDisplay?
-        #    @DBusDisplay = DCore.DBus.session(DISPLAY)
-        #@DBusDisplay.SwitchMode(mode.value,mode.name)
-        cmd = "dbus-send --dest=com.deepin.daemon.Display --type=method_call /com/deepin/daemon/Display com.deepin.daemon.Display.SwitchMode int16:#{mode.value} string:\"#{mode.name}\""
-        DCore.Osd.spawn_command(cmd)
+        if not @DBusDisplay?
+           @DBusDisplay = DCore.DBus.session(DISPLAY)
+        @DBusDisplay.SwitchMode(mode.value,mode.name)
+        #TODO:
+        #Warning:if the var type or numbers of dbus method changed,
+        #dbus-send method will cause all dbus failed!!
+        #and the user only can shutdown in force!!
+        #cmd = "dbus-send --dest=com.deepin.daemon.Display --type=method_call /com/deepin/daemon/Display com.deepin.daemon.Display.SwitchMode int16:#{mode.value} string:\"#{mode.name}\""
+        #DCore.Osd.spawn_command(cmd)
 
 MonitorListChoose = null
 cls = null
@@ -76,6 +80,7 @@ osd.SwitchMonitors = (keydown)->
         osdHide()
         return
 
+    osdShow()
     if not MonitorListChoose?
         cls.createDisplayMonitorsList()
         MonitorListChoose = new ImgListChoose("MonitorListChoose")
@@ -83,15 +88,15 @@ osd.SwitchMonitors = (keydown)->
         MonitorListChoose.ListAllBuild(cls.MonitorListChoose,cls.getCurrentMode())
         clearTimeout(timeout_osdHide)
         timeout_osdHide = setTimeout(osdHide,5000)
-    DCore.signal_connect("key-release-super",->
-        clearTimeout(timeout_osdHide)
-        if cls
-            cls.switchDisplayMode(cls.setMode)
-        osdHide()
-    )
-    DCore.signal_connect("key-release-p",->
-        clearTimeout(timeout_osdHide)
-        if cls and MonitorListChoose
-            cls.setMode = MonitorListChoose.chooseOption()
-    )
 
+        DCore.signal_connect("key-release-super",->
+            clearTimeout(timeout_osdHide)
+            if cls
+                cls.switchDisplayMode(cls.setMode)
+            osdHide()
+        )
+        DCore.signal_connect("key-release-p",->
+            clearTimeout(timeout_osdHide)
+            if cls and MonitorListChoose
+                cls.setMode = MonitorListChoose.chooseOption()
+        )

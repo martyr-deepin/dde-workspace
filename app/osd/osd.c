@@ -315,15 +315,13 @@ int main (int argc, char **argv)
     if(option.is_SwitchMonitors){
         gdk_window_set_events(gdkwindow,GDK_KEY_RELEASE_MASK);
     }
-    osd_set_background(0.5);
     gdk_window_set_keep_above (gdkwindow, TRUE);
     gdk_window_set_override_redirect(gdkwindow, TRUE);
     osd_set_focus(FALSE);
 
     only_show_in_primary(container);
-    gtk_widget_show_all (container);
 
+    gtk_widget_hide(container);
     gtk_main ();
     return 0;
 }
-
