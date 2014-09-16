@@ -28,6 +28,12 @@ class Item extends Widget
             dataUrl = bright_image(@img, -40)
             @imgDark.src = dataUrl
 
+        switch settings.displayMode()
+            when DisplayMode.Fashion
+                @imgWrap.draggable = true
+            when DisplayMode.Efficient, DisplayMode.Classic
+                @imgWrap.draggable = false
+
         @imgWrap.style.pointerEvents = "auto"
         @imgWrap.addEventListener("mouseover", @on_mouseover)
         @imgWrap.addEventListener("mouseover", @on_mousemove)
