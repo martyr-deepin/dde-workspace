@@ -23,6 +23,7 @@ class Trash extends PostfixedItem
     on_mouseover:(e)=>
         super
         @set_tooltip(@title)
+        @tooltip.show()
 
     on_rightclick: (e)=>
         super

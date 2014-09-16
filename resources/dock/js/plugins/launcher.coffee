@@ -13,6 +13,7 @@ class LauncherItem extends PrefixedItem
     on_mouseover:(e)=>
         super
         @set_tooltip(@title)
+        @tooltip.show()
 
     on_mouseup: (e)=>
         super

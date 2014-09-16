@@ -17,7 +17,7 @@ switchToEfficientMode = ->
             # console.log("#{item.id} switch to classic mode")
             item.openIndicator.src = EFFICIENT_ACTIVE_IMG
             item.hoverIndicator.src = EFFICIENT_ACTIVE_HOVER_IMG
-            item.imgContainer.draggable = false
+            item.imgWrap.draggable = false
     DCore.Dock.fix_switch()
 
 
@@ -32,7 +32,7 @@ switchToClassicMode = ->
             # console.log("#{item.id} switch to classic mode")
             item.openIndicator.src = CLASSIC_ACTIVE_IMG
             item.hoverIndicator.src = CLASSIC_ACTIVE_HOVER_IMG
-            item.imgContainer.draggable = false
+            item.imgWrap.draggable = false
     DCore.Dock.fix_switch()
 
 switchToFashionMode = ->
@@ -49,7 +49,7 @@ switchToFashionMode = ->
             # console.log("#{item.id} switch to fashion mode")
             item.openIndicator.src = OPEN_INDICATOR
             item.hoverIndicator.src = OPEN_INDICATOR
-            item.imgContainer.draggable = true
+            item.imgWrap.draggable = true
     DCore.Dock.fix_switch()
 
 update_dock=->

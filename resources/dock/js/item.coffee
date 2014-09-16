@@ -14,6 +14,7 @@ class Item extends Widget
         super()
         @imgWrap = create_element(tag:'div', class:"imgWrap", @element)
         @imgContainer = create_element(tag:'div', class:"imgContainer", @imgWrap)
+        @imgContainer.style.pointerEvents = 'none'
         @img = create_img(src:icon || NOT_FOUND_ICON, class:"AppItemImg", @imgContainer)
         @imgHover = create_img(src:"", class:"AppItemImg", @imgContainer)
         @imgHover.style.display = 'none'
@@ -79,7 +80,7 @@ class Item extends Widget
 
         if @tooltip == null
             # @tooltip = new ToolTip(@element, text)
-            @tooltip = new ArrowToolTip(@element, text)
+            @tooltip = new ArrowToolTip(@imgWrap, text)
             @tooltip.set_delay_time(200)  # set delay time to the same as scale time
             return
         @tooltip.set_text(text)
@@ -592,6 +593,7 @@ class AppItem extends Item
         console.warn("#{@isNormal()} || #{@isNormalApplet()}")
         if @isNormal() || @isNormalApplet()
             @set_tooltip(@core.title() || "Unknown")
+            @tooltip.show()
             console.log("app item is normal")
             clearTimeout(hide_id)
             closePreviewWindowTimer = setTimeout(->
