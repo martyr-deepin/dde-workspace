@@ -19,6 +19,7 @@ gboolean update_display_info(struct DisplayInfo* info)
         GVariant* res = g_dbus_proxy_get_cached_property(proxy, "PrimaryRect");
         g_variant_get(res, "(nnqq)", &info->x, &info->y, &info->width, &info->height);
         g_debug("%dx%d(%d,%d)", info->width, info->height, info->x, info->y);
+        g_variant_unref(res);
         g_object_unref(proxy);
         return TRUE;
     } else {
@@ -49,6 +50,9 @@ gboolean update_screen_info(struct DisplayInfo* info)
         GVariant* width = g_dbus_proxy_get_cached_property(proxy, "ScreenWidth");
         guint16 screenHeight = g_variant_get_uint16(height);
         guint16 screenWidth = g_variant_get_uint16(width);
+        g_variant_unref(height);
+        g_variant_unref(width);
+
         info->x = 0;
         info->y = 0;
         info->width = screenWidth;
@@ -143,3 +147,4 @@ void only_show_in_primary_with_bg_in_others(GtkWidget* container,GtkWidget* webv
     //4.you must set the width and height of main Widget by primaryInfo
     //demo:app/guide/guide.c ; resources/guide/js/main.coffee
 }
+
