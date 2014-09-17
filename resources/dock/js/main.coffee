@@ -139,7 +139,8 @@ initDock = ->
             hideStatusManager.updateState()
             if debugRegion
                 console.warn("[initDock] update_dock_region")
-            update_dock_region($("#container").clientWidth)
+            update_dock_region($("#container").clientWidth, 0)
+            systemTray?.hideAllIcons()
         , 1000)
         return
 

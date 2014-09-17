@@ -22,8 +22,10 @@
  **/
 #include "dock_config.h"
 #include "region.h"
+#include "dock.h"
 #include "dwebview.h"
 #include "dock_hide.h"
+#include "DBUS_dock.h"
 
 
 cairo_region_t* _region = NULL;
@@ -103,9 +105,69 @@ JS_EXPORT_API
 void dock_require_all_region()
 {
     g_debug("[%s]", __func__);
-    cancel_update_state_request();
     dock_set_is_hovered(TRUE);
     do_window_shape_combine_region(NULL);
+    dbus_mousearea_register_fullscreen();
+}
+
+
+void registerRegions(cairo_rectangle_int_t* regions, gsize n)
+{
+    GError* err = NULL;
+    GDBusConnection* conn = g_bus_get_sync(G_BUS_TYPE_SESSION, NULL, &err);
+    if (err != NULL) {
+        goto out;
+    }
+
+    GDBusProxy* dbus = g_dbus_proxy_new_sync(conn,
+                                             G_DBUS_PROXY_FLAGS_NONE,
+                                             NULL,
+                                             "com.deepin.daemon.Dock",
+                                             "/dde/dock/XMouseAreaProxyer",
+                                             "dde.dock.XMouseAreaProxyer",
+                                             NULL,
+                                             &err
+                                            );
+    if (err != NULL ) {
+        goto out;
+    }
+
+    GVariantBuilder builder;
+    g_variant_builder_init(&builder, G_VARIANT_TYPE_ARRAY);
+
+    for (gsize i = 0; i < n; ++i) {
+        cairo_rectangle_int_t region = regions[i];
+        gint32 x = dock.x + region.x;
+        gint32 y = dock.y + region.y;
+        g_debug("[%s:%d] register %ld (%d, %d) -> (%d, %d): %d %d",
+                  __func__, __LINE__, i, x, y, x + region.width, y + region.height,
+                  region.width, region.height);
+        g_variant_builder_add(&builder, "(iiii)", x, y, x + region.width, y + region.height);
+    }
+
+    GVariant* params = g_variant_builder_end(&builder);
+
+    g_variant_builder_init(&builder, G_VARIANT_TYPE_TUPLE);
+
+    g_variant_builder_add_value(&builder, params);
+    g_variant_builder_add(&builder, "i", 1);
+
+    params = g_variant_builder_end(&builder);
+
+    g_variant_unref(g_dbus_proxy_call_sync(dbus,
+                                           "RegisterAreas",
+                                           params,
+                                           G_DBUS_CALL_FLAGS_NONE,
+                                           -1,
+                                           NULL,
+                                           &err
+                                          ));
+
+out:
+    if (err != NULL) {
+        g_warning("[%s] %s", __func__, err->message);
+        g_clear_error(&err);
+    }
 }
 
 
@@ -125,6 +187,7 @@ void dock_force_set_region(double x, double y, double items_width, double panel_
             _base_rect.x, _base_rect.y, _base_rect.width, _base_rect.height);
     cairo_region_destroy(_region);
 
+    g_debug("[%s:%s:%d] require dock region height: %d", __FILE__, __func__, __LINE__, (int)height);
     if ((int)height == 0) {
         g_debug("[%s] set region to {0,0,%d,1}", __func__, (int)panel_width);
 
@@ -134,6 +197,8 @@ void dock_force_set_region(double x, double y, double items_width, double panel_
             (int)panel_width,
             1
         };
+
+        registerRegions(&tmp, 1);
 
         _region = cairo_region_create_rectangle(&tmp);
     } else {
@@ -159,6 +224,7 @@ void dock_force_set_region(double x, double y, double items_width, double panel_
         case CLASSIC_MODE:
             g_debug("[%s] efficient/classic mode", __func__);
             dock_board_rect.x = 0;
+            item_region.width = dock_board_rect.width;
             break;
         }
         dock_board_rect.y = item_region.y + GD.dock_height - GD.dock_panel_height;
@@ -171,6 +237,13 @@ void dock_force_set_region(double x, double y, double items_width, double panel_
                 dock_board_rect.y,
                 dock_board_rect.width,
                 dock_board_rect.height);
+
+        if (GD.config.display_mode == FASHION_MODE) {
+            cairo_rectangle_int_t regions[2] = {dock_board_rect, item_region};
+            registerRegions(regions, 2);
+        } else {
+            registerRegions(&dock_board_rect, 1);
+        }
 
         _region = cairo_region_create_rectangle(&dock_board_rect);
         cairo_region_union_rectangle(_region, &item_region);

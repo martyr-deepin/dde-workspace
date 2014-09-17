@@ -44,15 +44,14 @@
 
 static GtkWidget* container = NULL;
 static GtkWidget* webview = NULL;
-Window active_client_id = 0;
 
 struct DisplayInfo dock;
 GdkWindow* DOCK_GDK_WINDOW() { return gtk_widget_get_window(container); }
 GdkWindow* GET_CONTAINER_WINDOW() { return DOCK_GDK_WINDOW(); }
 GdkWindow* WEBVIEW_GDK_WINDOW() {return gtk_widget_get_window(webview);}
 
-gboolean dock_has_maximize_client();
-JS_EXPORT_API void dock_change_workarea_height(double height);
+JS_EXPORT_API
+void dock_change_workarea_height(double height);
 
 PRIVATE
 void _update_dock_size(gint16 x, gint16 y, guint16 w, guint16 h);
@@ -74,19 +73,6 @@ gboolean mouse_pointer_leave(int x, int y)
     return is_contain;
 }
 
-gboolean get_leave_enter_guard()
-{
-    static int _leave_enter_guard_id = -1;
-    if (_leave_enter_guard_id == -1) {
-        _leave_enter_guard_id = g_timeout_add(10, (GSourceFunc)get_leave_enter_guard, NULL);
-        return TRUE;
-    } else {
-        g_source_remove(_leave_enter_guard_id);
-        _leave_enter_guard_id = -1;
-        return FALSE;
-    }
-}
-
 
 JS_EXPORT_API
 double dock_get_active_window()
@@ -99,52 +85,12 @@ double dock_get_active_window()
 }
 
 
-void update_hide_state();
-
-
-gboolean leave_notify(GtkWidget* w G_GNUC_UNUSED,
-                      GdkEventCrossing* e G_GNUC_UNUSED,
-                      gpointer u G_GNUC_UNUSED)
-{
-    if (!get_leave_enter_guard())
-        return FALSE;
-
-    if ((e->mode == GDK_CROSSING_NORMAL || e->mode == GDK_CROSSING_TOUCH_END)
-        && e->detail == GDK_NOTIFY_NONLINEAR_VIRTUAL &&
-        !mouse_pointer_leave(e->x, e->y)) {
-        g_debug("[%s] leave dock", __func__);
-        update_hide_state();
-        if (GD.is_webview_loaded) {
-            g_debug("[%s] leave-notify", __func__);
-            js_post_signal("leave-notify");
-        }
-    }
-    return FALSE;
-}
-gboolean enter_notify(GtkWidget* w G_GNUC_UNUSED,
-                      GdkEventCrossing* e G_GNUC_UNUSED,
-                      gpointer u G_GNUC_UNUSED)
-{
-    if (!get_leave_enter_guard())
-        return FALSE;
-
-    if ((e->mode == GDK_CROSSING_NORMAL || e->mode == GDK_CROSSING_TOUCH_BEGIN)
-        && e->detail == GDK_NOTIFY_NONLINEAR_VIRTUAL) {
-        if (is_mouse_in_dock()) {
-            g_debug("enter dock");
-            update_hide_state();
-            dbus_dock_daemon_cancel_toggle_show();
-        }
-    }
-
-    return FALSE;
-}
-
 Window get_dock_window()
 {
     g_assert(container != NULL);
     return GDK_WINDOW_XID(DOCK_GDK_WINDOW());
 }
+
 
 void container_size_workaround(GtkWidget* container, GdkRectangle* allocation)
 {
@@ -171,6 +117,7 @@ void container_size_workaround(GtkWidget* container, GdkRectangle* allocation)
     }
 }
 
+
 void webview_size_workaround(GtkWidget* container, GdkRectangle* allocation)
 {
     static GRWLock lock;
@@ -195,6 +142,8 @@ void webview_size_workaround(GtkWidget* container, GdkRectangle* allocation)
                   dock.width, dock.height);
     }
 }
+
+
 gboolean is_compiz_plugin_valid()
 {
     gboolean is_compiz_running = false;
@@ -349,7 +298,6 @@ void dock_emit_webview_ok()
 
         inited = TRUE;
         init_config();
-        init_dock_guard_window();
     }
 
     g_warning("[%s]", __func__);
@@ -575,8 +523,8 @@ int main(int argc, char* argv[])
 
 
     g_signal_connect(container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
-    g_signal_connect(container, "enter-notify-event", G_CALLBACK(enter_notify), NULL);
-    g_signal_connect(container, "leave-notify-event", G_CALLBACK(leave_notify), NULL);
+    // g_signal_connect(container, "enter-notify-event", G_CALLBACK(enter_notify), NULL);
+    // g_signal_connect(container, "leave-notify-event", G_CALLBACK(leave_notify), NULL);
     g_signal_connect(container, "size-allocate", G_CALLBACK(container_size_workaround), NULL);
     // g_signal_connect(webview, "size-allocate", G_CALLBACK(webview_size_workaround), NULL);
 

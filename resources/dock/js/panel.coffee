@@ -115,8 +115,8 @@ class Panel
                     PANEL_MARGIN,
                     PANEL_HEIGHT
                 )
-        DCore.Dock.update_guard_window_width(@panel.width)
         @dockProperty.SetPanelWidth(@panel.width)
+        DCore.Dock.update_panel_width(@panel.width)
 
     _set_width: (w)->
         @panel.width = Math.min(w + PANEL_MARGIN * 2, screen.width)

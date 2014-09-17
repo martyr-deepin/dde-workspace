@@ -28,9 +28,19 @@ calc_app_item_size = ->
     if panel
         panel.set_width(Panel.getPanelMiddleWidth())
 
+# update_dock_region = do ->
+#     updateRegionTimer = null
+#     (w, h)->
+#         clearTimeout(updateRegionTimer)
+#         updateRegionTimer = setTimeout(->
+#             do_update_dock_region(w,h)
+#         , 0)
+
+# do_update_dock_region = do->
 update_dock_region = do->
     lastWidth = null
     (w, h)->
+        console.warn("do_update_dock_region")
         settings?.updateSize(settings.displayMode())
         h = DOCK_HEIGHT unless h?
         if w

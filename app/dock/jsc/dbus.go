@@ -42,5 +42,17 @@ func main() {
 			Callback("CancelToggleShow"),
 		),
 	)
+	DBusCall(
+		SessionDBUS(
+			"com.deepin.daemon.Dock",
+			"/dde/dock/XMouseAreaProxyer",
+			"dde.dock.XMouseAreaProxyer",
+		),
+		FLAGS_NONE,
+		Method(
+			"dbus_mousearea_register_fullscreen",
+			Callback("RegisterFullScreen"),
+		),
+	)
 	OUTPUT_END()
 }
