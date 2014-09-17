@@ -17,4 +17,5 @@ void background_info_change_alpha(BackgroundInfo* info, double alpha);
 BackgroundInfo* create_background_info(GtkWidget* container, GtkWidget* child);
 void background_info_clear(BackgroundInfo* info);
 
+void setup_background(GtkWidget* container, GtkWidget* webview,const char* xatom_name);
 #endif

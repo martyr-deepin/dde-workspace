@@ -17,20 +17,33 @@
 #
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
-_b = document.body
 
-_b.addEventListener("contextmenu",(e)=>
-    e.preventDefault()
-    e.stopPropagation()
+main = ->
+    _b = document.body
+    _b.addEventListener("contextmenu",(e)=>
+        e.preventDefault()
+        e.stopPropagation()
+    )
+
+    setInterval(=>
+        DCore.Lowpower.restack()
+    ,50)
+
+    lp_full = create_element("div","lp_full",_b)
+    lowpower = create_element("div","lowpower",lp_full)
+    lowpower.style.width = "157px"
+    lowpower.style.height = "97px"
+    lowpower.style.backgroundImage = "url(img/lowpower.png)"
+    lowpower.style.display = "block"
+
+DCore.signal_connect('primary_size_changed', (alloc)->
+    echo "primary_size_changed:#{alloc.x},#{alloc.y},#{alloc.width},#{alloc.height}"
+    document.body.style.position = "absolute"
+    document.body.style.left = alloc.x
+    document.body.style.top = alloc.y
+    document.body.style.height = alloc.height
+    document.body.style.width = alloc.width
+    main()
 )
 
-setInterval(=>
-    DCore.Lowpower.restack()
-,50)
-
-lp_full = create_element("div","lp_full",_b)
-lowpower = create_element("div","lowpower",lp_full)
-lowpower.style.width = "157px"
-lowpower.style.height = "97px"
-lowpower.style.backgroundImage = "url(img/lowpower.png)"
-lowpower.style.display = "block"
+DCore.Lowpower.emit_webview_ok()

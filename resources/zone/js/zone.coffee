@@ -27,13 +27,6 @@ class Zone extends Widget
         @setZoneLauncher()
         enableZoneDetect(false)
 
-    set_size: (info) =>
-        @element.style.position = "fixed"
-        @element.style.left = info.x
-        @element.style.top = info.y
-        @element.style.height = info.height
-        @element.style.width = info.width
-
     setZoneConfigAll: ->
         getZoneConfig()
         #for value,key in cfgKeyVal
@@ -52,4 +45,3 @@ class Zone extends Widget
             for tmp in option_text
                 @opt[i].insert(tmp)
             @opt[i].option_build()
-

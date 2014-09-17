@@ -80,7 +80,8 @@ PRIVATE GtkWidget* container = NULL;
 PRIVATE GtkWidget* webview = NULL;
 PRIVATE GtkIMContext* im_context = NULL;
 
-struct DisplayInfo primaryInfo;
+PRIVATE struct DisplayInfo rect_primary;
+
 PRIVATE int dock_height = 0;
 
 extern void install_monitor();
@@ -358,18 +359,18 @@ int get_workarea_height(int primary_height)
 
 PRIVATE gboolean update_workarea_size()
 {
-    update_display_info(&primaryInfo);
-    if (primaryInfo.width == 0 || primaryInfo.height == 0) {
+    update_primary_info(&rect_primary);
+    if (rect_primary.width == 0 || rect_primary.height == 0) {
         g_timeout_add(200, (GSourceFunc)update_workarea_size, NULL);
         return G_SOURCE_REMOVE;
     }
-    int height = get_workarea_height(primaryInfo.height);
+    int height = get_workarea_height(rect_primary.height);
     JSObjectRef workarea_info = json_create();
     json_append_number(workarea_info, "x", 0);
     json_append_number(workarea_info, "y", 0);
-    json_append_number(workarea_info, "width", primaryInfo.width);
+    json_append_number(workarea_info, "width", rect_primary.width);
     json_append_number(workarea_info, "height", height);
-    g_debug("[%s]:workarea_changed signal:%d*%d(%d,%d)",__func__,primaryInfo.width,height,primaryInfo.x,primaryInfo.y);
+    g_debug("[%s]:workarea_changed signal:%d*%d(%d,%d)",__func__,rect_primary.width,height,rect_primary.x,rect_primary.y);
     js_post_message("workarea_changed", workarea_info);
     return G_SOURCE_REMOVE;
 }
@@ -585,49 +586,11 @@ void desktop_force_get_input_focus()
 }
 
 PRIVATE
-void move_to_primary_unrealized(GtkWidget* container)
+void monitors_changed_cb()
 {
-    GdkGeometry geo = {0};
-    geo.min_height = 0;
-    geo.min_width = 0;
-    update_display_info(&primaryInfo);
-    g_debug("[%s] primaryInfo: %dx%d(%d, %d)", __func__, primaryInfo.width, primaryInfo.height, primaryInfo.x, primaryInfo.y);
-    gtk_window_set_geometry_hints(GTK_WINDOW(container), NULL, &geo, GDK_HINT_MIN_SIZE);
-    gtk_widget_set_size_request(container, primaryInfo.width, primaryInfo.height);
-    gtk_window_move(GTK_WINDOW(container), primaryInfo.x, primaryInfo.y);
-}
-
-
-PRIVATE
-void move_to_primary_realized(GtkWidget* container)
-{
-    GdkGeometry geo = {0};
-    geo.min_height = 0;
-    geo.min_width = 0;
-    update_display_info(&primaryInfo);
-    g_debug("[%s] primaryInfo: %dx%d(%d, %d)", __func__, primaryInfo.width, primaryInfo.height, primaryInfo.x, primaryInfo.y);
-    if (gtk_widget_get_realized(container)) {
-        GdkWindow* gdk = gtk_widget_get_window(container);
-        gdk_window_set_geometry_hints(gdk, &geo, GDK_HINT_MIN_SIZE);
-        gdk_window_move_resize(gdk, primaryInfo.x, primaryInfo.y,primaryInfo.width,primaryInfo.height );
-        gdk_window_flush(gdk);
-    }
+    update_primary_info(&rect_primary);
+    widget_move_by_rect(container,rect_primary);
     update_workarea_size();
-}
-
-
-
-PRIVATE
-void primary_changed_handler(GDBusConnection* conn G_GNUC_UNUSED,
-                             const gchar* sender_name G_GNUC_UNUSED,
-                             const gchar* object_path G_GNUC_UNUSED,
-                             const gchar* interface_name G_GNUC_UNUSED,
-                             const gchar* signal_name G_GNUC_UNUSED,
-                             GVariant* parameters G_GNUC_UNUSED,
-                             gpointer data G_GNUC_UNUSED
-                             )
-{
-    move_to_primary_realized(container);
 }
 
 int main(int argc, char* argv[])
@@ -653,8 +616,10 @@ int main(int argc, char* argv[])
     set_default_theme("Deepin");
     set_desktop_env_name("Deepin");
 
+    update_primary_info(&rect_primary);
+
     container = create_web_container(FALSE, FALSE);
-    move_to_primary_unrealized(container);
+    widget_move_by_rect(container,rect_primary);
     g_signal_connect(container, "delete-event", G_CALLBACK(prevent_exit), NULL);
 
     webview = d_webview_new_with_uri(GET_HTML_PATH("desktop"));
@@ -668,9 +633,9 @@ int main(int argc, char* argv[])
     g_signal_connect (webview, "draw", G_CALLBACK(erase_background), NULL);
     g_signal_connect (webview, "button-press-event", G_CALLBACK(force_get_input_focus), NULL);
 
-    listen_primary_changed_signal(primary_changed_handler, &primaryInfo, NULL);
+    listen_primary_changed_signal(monitors_changed_cb, &rect_primary, NULL);
     GdkScreen* screen = gtk_window_get_screen(GTK_WINDOW(container));
-    g_signal_connect(screen, "size-changed", G_CALLBACK(move_to_primary_realized), container);
+    g_signal_connect(screen, "size-changed", G_CALLBACK(monitors_changed_cb), NULL);
 
     set_wmspec_desktop_hint(gtk_widget_get_window(container));
 

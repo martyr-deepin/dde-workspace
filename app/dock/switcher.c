@@ -7,7 +7,7 @@ gboolean do_fix()
 {
     static GRWLock lock;
     g_rw_lock_writer_lock(&lock);
-    update_display_info(&dock);
+    update_primary_info(&dock);
     g_rw_lock_writer_unlock(&lock);
 
     static int count = 0;

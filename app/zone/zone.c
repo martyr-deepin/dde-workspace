@@ -64,6 +64,7 @@ PRIVATE GtkWidget* container = NULL;
 PRIVATE
 GSettings* zone_gsettings = NULL;
 
+
 #ifdef NDEBUG
 PRIVATE
 gint t_id;
@@ -72,13 +73,13 @@ gint t_id;
 
 void notify_primary_size()
 {
-    struct DisplayInfo info;
-    update_display_info(&info);
+    struct DisplayInfo rect_primary;
+    update_primary_info(&rect_primary);
     JSObjectRef size_info = json_create();
-    json_append_number(size_info, "x", info.x);
-    json_append_number(size_info, "y", info.y);
-    json_append_number(size_info, "width", info.width);
-    json_append_number(size_info, "height", info.height);
+    json_append_number(size_info, "x", rect_primary.x);
+    json_append_number(size_info, "y", rect_primary.y);
+    json_append_number(size_info, "width", rect_primary.width);
+    json_append_number(size_info, "height", rect_primary.height);
     js_post_message("primary_size_changed", size_info);
 }
 
@@ -131,10 +132,20 @@ gboolean gs_grab_move ()
 static void
 show_cb ()
 {
-    t_id = g_timeout_add(6000,(GSourceFunc)gs_grab_move,NULL);
+    t_id = g_timeout_add(500,(GSourceFunc)gs_grab_move,NULL);
 }
 
 #endif
+
+PRIVATE
+void monitors_changed_cb()
+{
+    g_debug("[%s] signal========",__func__);
+    struct DisplayInfo rect_screen;
+    update_screen_info(&rect_screen);
+    widget_move_by_rect(container,rect_screen);
+    notify_primary_size();
+}
 
 
 PRIVATE
@@ -158,10 +169,7 @@ void check_version()
 
 int main (int argc, char **argv)
 {
-    if (argc == 2 && 0 == g_strcmp0(argv[1], "-d")){
-        g_message("dde-zone -d");
-        g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
-    }
+    g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
 
     if (is_application_running(ZONE_ID_NAME)) {
         g_warning("another instance of application dzone is running...\n");
@@ -179,14 +187,18 @@ int main (int argc, char **argv)
     g_log_set_default_handler((GLogFunc)log_to_file, "dde-zone");
 
     container = create_web_container (FALSE, TRUE);
+    struct DisplayInfo rect_screen;
+    update_screen_info(&rect_screen);
+    widget_move_by_rect(container,rect_screen);
+    listen_monitors_changed_signal(G_CALLBACK(monitors_changed_cb),NULL);
 
     GtkWidget *webview = d_webview_new_with_uri (HTML_PATH);
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
+    g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
 
 #ifdef NDEBUG
     grab = gs_grab_new ();
     g_message("Zone Not DEBUG");
-    g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
     if (!(argc == 2 && 0 == g_strcmp0(argv[1], "-d")))
         g_signal_connect (container, "show", G_CALLBACK (show_cb), NULL);
     g_signal_connect (webview, "focus-out-event", G_CALLBACK( focus_out_cb), NULL);
@@ -194,7 +206,6 @@ int main (int argc, char **argv)
     gtk_widget_realize (container);
     gtk_widget_realize (webview);
 
-    only_show_in_primary_with_bg_in_others(container,webview);
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
     gdk_window_set_override_redirect (gdkwindow, TRUE);
 
@@ -209,4 +220,3 @@ int main (int argc, char **argv)
 
     return 0;
 }
-

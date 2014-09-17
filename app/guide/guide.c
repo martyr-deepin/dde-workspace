@@ -15,7 +15,7 @@
 void notify_primary_size()
 {
     struct DisplayInfo info;
-    update_display_info(&info);
+    update_primary_info(&info);
     JSObjectRef size_info = json_create();
     json_append_number(size_info, "x", info.x);
     json_append_number(size_info, "y", info.y);
@@ -40,6 +40,16 @@ GtkWidget* get_container()
     return container;
 }
 
+PRIVATE
+void monitors_changed_cb()
+{
+    g_debug("[%s] signal========",__func__);
+    struct DisplayInfo rect_screen;
+    update_screen_info(&rect_screen);
+    widget_move_by_rect(get_container(),rect_screen);
+    notify_primary_size();
+}
+
 int main (int argc, char **argv)
 {
     if (argc == 2 && 0 == g_strcmp0(argv[1], "-d"))
@@ -62,6 +72,11 @@ int main (int argc, char **argv)
     gtk_init (&argc, &argv);
     g_log_set_default_handler((GLogFunc)log_to_file, "dde-guide");
 
+    struct DisplayInfo rect_screen;
+    update_screen_info(&rect_screen);
+    widget_move_by_rect(get_container(),rect_screen);
+    listen_monitors_changed_signal(G_CALLBACK(monitors_changed_cb),NULL);
+
     GtkWidget *webview = d_webview_new_with_uri (GET_HTML_PATH("guide"));
     gtk_container_add (GTK_CONTAINER(get_container()), GTK_WIDGET (webview));
     g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
@@ -69,7 +84,6 @@ int main (int argc, char **argv)
     gtk_widget_realize (get_container());
     gtk_widget_realize (webview);
 
-    only_show_in_primary_with_bg_in_others(get_container(),webview);
     GdkWindow* gdkwindow = gtk_widget_get_window (get_container());
     gdk_window_set_override_redirect (gdkwindow, TRUE);
 

@@ -36,11 +36,12 @@
 #include "X_misc.h"
 #include "gs-grab.h"
 #include "jsextension.h"
-#include "dwebview.h"
 #include "i18n.h"
 #include "utils.h"
-#include "background.h"
 
+#include "dwebview.h"
+#include "display_info.h"
+#include "background.h"
 
 
 #define ID_NAME "desktop.app.lowpower"
@@ -59,6 +60,33 @@ PRIVATE GtkWidget* container = NULL;
 static GSGrab* grab = NULL;
 #endif
 
+void notify_primary_size()
+{
+    struct DisplayInfo rect_primary;
+    update_primary_info(&rect_primary);
+    JSObjectRef size_info = json_create();
+    json_append_number(size_info, "x", rect_primary.x);
+    json_append_number(size_info, "y", rect_primary.y);
+    json_append_number(size_info, "width", rect_primary.width);
+    json_append_number(size_info, "height", rect_primary.height);
+    js_post_message("primary_size_changed", size_info);
+}
+
+JS_EXPORT_API
+void lowpower_emit_webview_ok()
+{
+    notify_primary_size();
+}
+
+PRIVATE
+void monitors_changed_cb()
+{
+    g_debug("[%s] signal========",__func__);
+    struct DisplayInfo rect_screen;
+    update_screen_info(&rect_screen);
+    widget_move_by_rect(container,rect_screen);
+    notify_primary_size();
+}
 
 JS_EXPORT_API
 void lowpower_quit()
@@ -113,6 +141,9 @@ void check_version()
         g_free(version);
 }
 
+
+
+
 int main (int argc, char **argv)
 {
     if (argc == 2 && 0 == g_strcmp0(argv[1], "-d"))
@@ -131,6 +162,10 @@ int main (int argc, char **argv)
     g_log_set_default_handler((GLogFunc)log_to_file, "dde-lowpower");
 
     container = create_web_container (FALSE, TRUE);
+    struct DisplayInfo rect_screen;
+    update_screen_info(&rect_screen);
+    widget_move_by_rect(container,rect_screen);
+    listen_monitors_changed_signal(G_CALLBACK(monitors_changed_cb),NULL);
 
     GtkWidget *webview = d_webview_new_with_uri (CHOICE_HTML_PATH);
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
@@ -153,8 +188,8 @@ int main (int argc, char **argv)
 
 #ifdef NDEBUG
     gdk_window_set_keep_above (gdkwindow, TRUE);
-    gdk_window_set_override_redirect (gdkwindow, TRUE);
 #endif
+    gdk_window_set_override_redirect (gdkwindow, TRUE);
 
     gtk_widget_show_all (container);
 
@@ -162,4 +197,3 @@ int main (int argc, char **argv)
 
     return 0;
 }
-

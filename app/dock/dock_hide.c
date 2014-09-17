@@ -42,7 +42,7 @@ guint update_hide_state_timer = 0;
 
 GdkWindow* get_dock_guard_window()
 {
-    // update_display_info(&dock);
+    // update_primary_info(&dock);
     static GdkWindow* guard_window = NULL;
     if (guard_window == NULL) {
         GdkWindowAttr attributes;

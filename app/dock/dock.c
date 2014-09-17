@@ -150,7 +150,7 @@ void container_size_workaround(GtkWidget* container, GdkRectangle* allocation)
 {
     static GRWLock lock;
     g_rw_lock_writer_lock(&lock);
-    update_display_info(&dock);
+    update_primary_info(&dock);
     g_rw_lock_writer_unlock(&lock);
     if (gtk_widget_get_realized(container) && (dock.width != allocation->width || dock.height != allocation->height)) {
         GdkWindow* w = gtk_widget_get_window(container);
@@ -175,7 +175,7 @@ void webview_size_workaround(GtkWidget* container, GdkRectangle* allocation)
 {
     static GRWLock lock;
     g_rw_lock_writer_lock(&lock);
-    update_display_info(&dock);
+    update_primary_info(&dock);
     g_rw_lock_writer_unlock(&lock);
     if (gtk_widget_get_realized(container) && (dock.width != allocation->width || dock.height != allocation->height)) {
         GdkWindow* w = gtk_widget_get_window(container);
@@ -357,7 +357,7 @@ void dock_emit_webview_ok()
     GRWLock lock;
     g_rw_lock_init(&lock);  // non-static GRWLock must init and clear.
     g_rw_lock_writer_lock(&lock);
-    update_display_info(&dock);
+    update_primary_info(&dock);
     g_rw_lock_writer_unlock(&lock);
     g_rw_lock_clear(&lock);
 
@@ -384,7 +384,7 @@ void _change_workarea_height(int height)
     }
     saved_height = height;
 
-    // update_display_info(&dock);
+    // update_primary_info(&dock);
     int workarea_width = (dock.width - GD.dock_panel_width) / 2;
     if (GD.config.hide_mode == NO_HIDE_MODE ) {
         g_message("NO_HIDE_MODE, set workarea height to %d", height);

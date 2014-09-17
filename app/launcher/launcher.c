@@ -40,7 +40,7 @@
 #include "X_misc.h"
 #include "i18n.h"
 #include "category.h"
-#include "bg.h"
+#include "background.h"
 #include "test.h"
 #include "DBUS_launcher.h"
 #include "session_register.h"
@@ -253,7 +253,7 @@ void launcher_exit_gui()
 JS_EXPORT_API
 void launcher_notify_workarea_size()
 {
-    // update_display_info(&launcher);
+    // update_primary_info(&launcher);
     JSObjectRef workarea_info = json_create();
     json_append_number(workarea_info, "x", launcher.x);
     json_append_number(workarea_info, "y", launcher.y);
@@ -499,7 +499,7 @@ int main(int argc, char* argv[])
 
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
 
-    update_display_info(&launcher);
+    update_primary_info(&launcher);
     g_signal_connect(container, "realize", G_CALLBACK(_on_realize), NULL);
     g_signal_connect (container, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect(container, "map", G_CALLBACK(move_launcher), NULL);
@@ -513,7 +513,7 @@ int main(int argc, char* argv[])
     g_signal_connect(container, "size-allocate", G_CALLBACK(size_allocate_handler), NULL);
     g_signal_connect(webview, "size-allocate", G_CALLBACK(size_allocate_handler), NULL);
 
-    setup_background(container, webview);
+    setup_background(container, webview, "_DDE_BACKGROUND_PIXMAP_BLURRED");
 
     GdkWindow* gdkwindow = gtk_widget_get_window(container);
 

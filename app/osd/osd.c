@@ -296,7 +296,6 @@ int main (int argc, char **argv)
     g_log_set_default_handler((GLogFunc)log_to_file, "dde-osd");
 
     container = create_web_container (FALSE, TRUE);
-
     gtk_window_set_position (GTK_WINDOW (container), GTK_WIN_POS_CENTER_ALWAYS);
 
     GtkWidget *webview = d_webview_new_with_uri (CHOICE_HTML_PATH);
@@ -318,8 +317,6 @@ int main (int argc, char **argv)
     gdk_window_set_keep_above (gdkwindow, TRUE);
     gdk_window_set_override_redirect(gdkwindow, TRUE);
     osd_set_focus(FALSE);
-
-    only_show_in_primary(container);
 
     gtk_widget_hide(container);
     gtk_main ();
