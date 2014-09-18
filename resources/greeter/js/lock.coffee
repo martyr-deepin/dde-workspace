@@ -58,13 +58,7 @@ _b = document.body
 
 div_users = create_element("div","div_users",_b)
 div_users.setAttribute("id","div_users")
-left = (screen.width  - 250) / 2
-top = (screen.height  - 180) / 2 * 0.8
-div_users.style.left = left
-div_users.style.top = top
 div_keyboard = create_element("div","div_keyboard",_b)
-div_keyboard.style.left = left + 10
-div_keyboard.style.top = top + 180 + 10
 
 user = new User("lock_users",div_users)
 user.new_userinfo_for_lock()
@@ -105,8 +99,40 @@ if not is_livecd
     s.button_switch()
     $("#div_switchuser").appendChild(s.element)
 
+set_element_pos = ->
+    left = (screen.width  - 250) / 2
+    top = (screen.height  - 180) / 2 * 0.8
+    div_users?.style.left = left
+    div_users?.style.top = top
+    div_keyboard?.style.left = left + 10
+    div_keyboard?.style.top = top + 180 + 10
+
+    div_time?.style.bottom = "4em"
+    div_time?.style.left = "3em"
+
+    div_switchuser?.style.bottom = "3.5em"
+    div_switchuser?.style.right = "10em"
+
+    div_power?.style.bottom = "3.5em"
+    div_power?.style.right = "3em"
+
+    div_media_control?.style.bottom = "3.5em"
+    div_media_control?.style.right = "19em"
+
+    menuchoose = jQuery(".MenuChoose")
+    for menu in menuchoose
+        w = Widget.look_up(menu.id)
+        w.setPos()
+
+set_element_pos()
 
 body_keydown_listener((e)->
     mediacontrol?.keydown_listener(e) if div_media_control?
 )
 DCore.Lock.emit_webview_ok()
+
+DCore.signal_connect("leave-notify", (area) ->
+    document.body.style.width = area.width
+    document.body.style.height = area.height
+    set_element_pos()
+)

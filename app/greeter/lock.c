@@ -42,6 +42,8 @@
 #include "utils.h"
 #include "mutils.h"
 #include "background.h"
+#include "display_info.h"
+#include "mouse.h"
 
 #include "X_misc.h"
 #include "gs-grab.h"
@@ -52,11 +54,15 @@
 #define LOCK_HTML_PATH "file://"RESOURCE_DIR"/greeter/lock.html"
 
 
-#ifdef NDEBUG
 static GSGrab* grab = NULL;
-#endif
-static GtkWidget* container = NULL;
 const gchar *username = NULL;
+
+PRIVATE GtkWidget* bg_window = NULL;
+static GtkWidget* container = NULL;
+PRIVATE struct DisplayInfo rect_screen;
+PRIVATE struct DisplayInfo rect_workarea;
+
+static gboolean is_ready = FALSE;
 
 JS_EXPORT_API
 void lock_quit()
@@ -69,9 +75,6 @@ char* lock_get_theme()
 {
     return get_theme_config();
 }
-
-
-static gboolean is_ready = FALSE;
 
 void send_ready()
 {
@@ -187,13 +190,13 @@ focus_out_cb (GtkWidget* w G_GNUC_UNUSED, GdkEvent*e G_GNUC_UNUSED, gpointer use
     gdk_window_focus (gtk_widget_get_window (container), 0);
 }
 
+#endif
+
 static void
 show_cb (GtkWindow* container, gpointer data G_GNUC_UNUSED)
 {
     gs_grab_move_to_window (grab,gtk_widget_get_window (container),gtk_window_get_screen (container),FALSE);
 }
-
-#endif
 
 int main (int argc, char **argv)
 {
@@ -218,28 +221,33 @@ int main (int argc, char **argv)
 
     lock_report_pid ();
 
+    update_workarea_rect_by_mouse(&rect_workarea);
+    update_screen_info(&rect_screen);
+
+    bg_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+    draw_background_by_theme(bg_window,rect_screen);
+
     container = create_web_container (FALSE, TRUE);
+    widget_move_by_rect(container,rect_workarea);
+
     GtkWidget* webview = d_webview_new_with_uri (LOCK_HTML_PATH);
     gtk_container_add (GTK_CONTAINER (container), GTK_WIDGET (webview));
-    set_theme_background(container,webview);
+    g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
+    listen_leave_notify_signal(container, NULL);
 
-#ifdef NDEBUG
     grab = gs_grab_new ();
-    g_message(" Lock Not DEBUG");
-    gtk_window_set_keep_above (GTK_WINDOW (container), TRUE);
     g_signal_connect (container, "show", G_CALLBACK (show_cb), NULL);
+#ifdef NDEBUG
+    g_message(" Lock Not DEBUG");
     g_signal_connect (webview, "focus-out-event", G_CALLBACK(focus_out_cb), NULL);
 #endif
     gtk_widget_realize (container);
     gtk_widget_realize (webview);
 
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
-    gdk_window_move_resize(gdkwindow, 0, 0, gdk_screen_width(), gdk_screen_height());
-
-#ifdef NDEBUG
     gdk_window_set_keep_above (gdkwindow, TRUE);
+    gdk_window_set_accept_focus(gdkwindow,TRUE);
     gdk_window_set_override_redirect (gdkwindow, TRUE);
-#endif
 
     gtk_widget_show_all (container);
     setup_screenlock_dbus_service();

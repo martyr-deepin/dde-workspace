@@ -9,14 +9,14 @@ pkg_check_modules(LIGHTDM REQUIRED liblightdm-gobject-1)
 include_directories(${DWEBVIEW_INCLUDE_DIRS} ${LIGHTDM_INCLUDE_DIRS}
     )
 
-add_executable(${NAME} greeter.c user.c session.c keyboard.c theme.c mutils.c greeter_util.c ${JSC_GEN}
+add_executable(${NAME} greeter.c user.c theme.c mouse.c session.c keyboard.c mutils.c greeter_util.c ${JSC_GEN}
     ${DBUS_GEN}
     )
 add_dependencies(${NAME} ${NAME}_js)
 target_link_libraries(${NAME} dcom dbus ${DWEBVIEW_LIBRARIES} ${LIGHTDM_LIBRARIES}
     )
 
-add_executable(lock lock.c user.c theme.c lock_util.c mutils.c ${JSC_LOCK_GEN}
+add_executable(lock lock.c user.c theme.c mouse.c lock_util.c mutils.c ${JSC_LOCK_GEN}
     ${DBUS_GEN}
     )
 add_dependencies(lock ${NAME}_js)

@@ -42,7 +42,13 @@ function init(){
     //添加鼠标移动监听
     document.body.addEventListener('mousemove',onMouseMove,false);
     //设置间隔调用update函数,间隔次数为每秒30次
+    setInterval(update_size,1000);
     setInterval(update,1000/UpdateTimes);
+}
+
+function update_size() {
+    //设置渲染器的大小
+    renderer.setSize( window.innerWidth, window.innerHeight );
 }
 
 function update() {

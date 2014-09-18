@@ -1,7 +1,7 @@
 body{
     cursor:default;
     overflow:hidden;
-    
+
     background-origin:padding-box;
     background-clip:border-box;
     background-position:center;
@@ -10,13 +10,10 @@ body{
     background-attachment:fixed;
 
     font-size:62.5%;
-    
 }
 
-.Lock{
-}
 .div_users{
-    position:fixed;
+    position:absolute;
     z-index:10;
     display:-webkit-box;
     -webkit-box-pack:center;
@@ -24,31 +21,31 @@ body{
 }
 
 .div_keyboard{
-    position:fixed;
+    position:absolute;
     z-index:10;
-    
+
     display:-webkit-box;
     -webkit-box-pack:center;
     -webkit-box-align:center;
 }
 
 .div_time {
-    position:fixed;
+    position:absolute;
     z-index:10;
     bottom:4em;
     left:3em;
-    
+
     display:-webkit-box;
     -webkit-box-pack:center;
     -webkit-box-align:center;
 }
 
 .div_switchuser {
-    position:fixed;
+    position:absolute;
     z-index:10;
     bottom:3.5em;
     right:10em;
-    
+
     display:-webkit-box;
     -webkit-box-pack:center;
     -webkit-box-align:center;
@@ -56,25 +53,22 @@ body{
 
 
 .div_power {
-    position:fixed;
+    position:absolute;
     z-index:10;
     bottom:3.5em;
     right:3em;
-    
+
     display:-webkit-box;
     -webkit-box-pack:center;
     -webkit-box-align:center;
 }
 
-
-
-
 .div_media_control{
-    position:fixed;
+    position:absolute;
     z-index:10;
     bottom:3.5em;
     right:19em;
-    
+
     display:-webkit-box;
     -webkit-box-pack:center;
     -webkit-box-align:center;

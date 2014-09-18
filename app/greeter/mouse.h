@@ -20,16 +20,12 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 
-#ifndef THEME_H
-#define THEME_H
-#include "display_info.h"
+#ifndef MOUSE_H
+#define MOUSE_H
 
-const char* get_theme_path();
-char* get_theme_config();
-char* get_current_bg_path();
-void set_theme_background(GtkWidget* container,GtkWidget* child);
-void draw_background_by_theme(GtkWidget* widget,struct DisplayInfo info);
-void init_theme();
+gboolean update_workarea_rect_by_mouse(struct DisplayInfo* area);
+
+void listen_leave_notify_signal(GtkWidget* widget, gpointer data);
 
 #endif /* end of THEME_H */
 
