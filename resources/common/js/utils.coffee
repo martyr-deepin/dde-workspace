@@ -17,6 +17,9 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+RegExp.escape = (text)->
+    text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
+
 Storage::setObject = (key, value) ->
     @setItem(key, JSON.stringify(value))
 

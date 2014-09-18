@@ -66,7 +66,7 @@ createItem = (core, autostartList)->
     id = core[2]
     icon = core[3]
 
-    basename = get_path_name(path) + ".desktop"
+    basename = RegExp.escape(get_path_name(path) + ".desktop")
     item = new Item(id, name, path, icon)
     applications[id] = item
     autostart = autostartList.filter((el)-> el.match("#{basename}$"))
