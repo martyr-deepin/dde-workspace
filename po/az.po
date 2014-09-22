@@ -3,25 +3,25 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# electricface <songwentai@linuxdeepin.com>, 2014
-# freddy4212 <freddy4212@gmail.com>, 2014
+# Nicat Məmmədov <n1c4t97@gmail.com>, 2014
+# Nicat Məmmədov <n1c4t97@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-09-04 22:15+0800\n"
 "PO-Revision-Date: 2014-09-04 08:22+0000\n"
-"Last-Translator: freddy4212 <freddy4212@gmail.com>\n"
-"Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/deepin-desktop-environment/language/zh_TW/)\n"
+"Last-Translator: Nicat Məmmədov <n1c4t97@gmail.com>\n"
+"Language-Team: Azerbaijani (http://www.transifex.com/projects/p/deepin-desktop-environment/language/az/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: zh_TW\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: az\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../resources/greeter/js/mediacontrol.coffee:167
 msgid "Click button to Play"
-msgstr "單擊按鈕播放"
+msgstr "Oynatmaq üçün düyməyə basın"
 
 #: ../resources/greeter/js/message.coffee:105
 #: ../resources/greeter/js/message.coffee:82
@@ -31,13 +31,13 @@ msgstr "$ sudo reboot\n"
 #: ../resources/greeter/js/message.coffee:99
 #: ../resources/greeter/js/message.coffee:73
 msgid "Press Ctrl + Alt + F1\n"
-msgstr "按下 Ctrl + Alt + F1\n"
+msgstr "Ctrl + Alt + F1 düymələrini basın\n"
 
 #: ../resources/greeter/js/message.coffee:95
 msgid ""
 "\t\t\t\t-----The daemon of accounts has not started!-----\n"
 ")"
-msgstr "\t\t\t\t-----帳號服務尚未啟動！-----\n)"
+msgstr "\t\t\t\t-----Hesabların arxa plan proqramı başladılmayıb!-----\n)"
 
 #: ../resources/greeter/js/message.coffee:79
 msgid "$ sudo apt-get install deepin-desktop-Environment\n"
@@ -45,174 +45,174 @@ msgstr "$ sudo apt-get install deepin-desktop-Environment\n"
 
 #: ../resources/greeter/js/message.coffee:68
 msgid "\t\t\t\t-----No available desktop sessions!-----\n"
-msgstr "\t\t\t\t-----沒有可使用的桌面環境！-----\n"
+msgstr "\t\t\t\t-----Mövcud iş masası seansı yoxdu!-----\n"
 
 #: ../resources/greeter/js/user.coffee:411
 msgid "Login"
-msgstr "登入"
+msgstr "Daxil ol"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jan"
-msgstr "1月"
+msgstr "Yan"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Feb"
-msgstr "2月"
+msgstr "Fev"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Mar"
-msgstr "3月"
+msgstr "Mar"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Apr"
-msgstr "4月"
+msgstr "Apr"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "May"
-msgstr "5月"
+msgstr "May"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jun"
-msgstr "6月"
+msgstr "İyn"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jul"
-msgstr "7月"
+msgstr "İyl"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Aug"
-msgstr "8月"
+msgstr "Avq"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Sep"
-msgstr "9月"
+msgstr "Sen"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Oct"
-msgstr "10月"
+msgstr "Okt"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Nov"
-msgstr "11月"
+msgstr "Noy"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Dec"
-msgstr "12月"
+msgstr "Dek"
 
 #: ../resources/greeter/js/time.coffee:44
 #: ../resources/dock/js/plugins/time/time.coffee:2
 msgid "Sun"
-msgstr "星期日"
+msgstr "Baz"
 
 #: ../resources/greeter/js/time.coffee:44
 #: ../resources/dock/js/plugins/time/time.coffee:2
 msgid "Mon"
-msgstr "星期一"
+msgstr "Ber"
 
 #: ../resources/greeter/js/time.coffee:44
 #: ../resources/dock/js/plugins/time/time.coffee:2
 msgid "Tue"
-msgstr "星期二"
+msgstr "Çax"
 
 #: ../resources/greeter/js/time.coffee:44
 #: ../resources/dock/js/plugins/time/time.coffee:2
 msgid "Wed"
-msgstr "星期三"
+msgstr "Çər"
 
 #: ../resources/greeter/js/time.coffee:44
 #: ../resources/dock/js/plugins/time/time.coffee:2
 msgid "Thu"
-msgstr "星期四"
+msgstr "Cax"
 
 #: ../resources/greeter/js/time.coffee:44
 #: ../resources/dock/js/plugins/time/time.coffee:2
 msgid "Fri"
-msgstr "星期五"
+msgstr "Cüm"
 
 #: ../resources/greeter/js/time.coffee:44
 #: ../resources/dock/js/plugins/time/time.coffee:2
 msgid "Sat"
-msgstr "星期六"
+msgstr "Şnb"
 
 #: ../resources/greeter/js/usermenu.coffee:57
 msgid "Guest"
-msgstr "來賓"
+msgstr "Qonaq"
 
 #: ../resources/greeter/js/powermenu.coffee:26
 msgid "Shut down"
-msgstr "關機"
+msgstr "Sistemi söndür"
 
 #: ../resources/greeter/js/powermenu.coffee:27
 msgid "Restart"
-msgstr "重新啟動"
+msgstr "Yenidən başlat"
 
 #: ../resources/greeter/js/powermenu.coffee:28
 msgid "Suspend"
-msgstr "待命"
+msgstr "Gözlət"
 
 #: ../resources/greeter/js/powermenu.coffee:90
 msgid "Enter your password to %1"
-msgstr "請輸入你的密碼以完成 %1"
+msgstr "Şifrənizi %1 -a daxil edin"
 
 #: ../resources/dock/js/deepin_item.coffee:247
 msgid "_View as analog"
-msgstr "顯示類比時鍾(_V)"
+msgstr "Analoq kimi _göstər"
 
 #: ../resources/dock/js/deepin_item.coffee:248
 #: ../resources/dock/js/deepin_item.coffee:300
 msgid "_Time settings"
-msgstr "時間設定(_T)"
+msgstr "_Vaxt tənzimləmələri"
 
 #: ../resources/dock/js/deepin_item.coffee:299
 msgid "_View as digit"
-msgstr "顯示數字時鍾"
+msgstr "Rəqəmsal olaraq _göstər"
 
 #: ../resources/dock/js/main.coffee:49 ../resources/dock/js/main.coffee:126
 #: ../resources/desktop/js/specialitem.coffee:87
 msgid "Trash"
-msgstr "回收桶"
+msgstr "Zibil Qutusu"
 
 #: ../resources/dock/js/main.coffee:124 ../resources/zone/js/utils.coffee:10
 msgid "Launcher"
-msgstr "啟動器"
+msgstr "Başladıcı"
 
 #: ../resources/dock/js/global_menu.coffee:9
 msgid "Keep _showing"
-msgstr "一直顯示(_S)"
+msgstr "_Görünən saxlayın"
 
 #: ../resources/dock/js/global_menu.coffee:10
 msgid "Keep _hidden"
-msgstr "一直隱藏(_H)"
+msgstr "_Gizli saxlayın"
 
 #: ../resources/dock/js/global_menu.coffee:11
 msgid "_Auto hide"
-msgstr "自動隱藏(_A)"
+msgstr "_Avtomatik gizlət"
 
 #: ../resources/dock/js/global_menu.coffee:24
 msgid "_Fashion mode"
-msgstr "時尚模式"
+msgstr "_Moda rejimi"
 
 #: ../resources/dock/js/global_menu.coffee:25
 msgid "_Efficient mode"
-msgstr "高效率模式"
+msgstr "_Səmərəli rejim"
 
 #: ../resources/dock/js/global_menu.coffee:26
 msgid "_Classic mode"
-msgstr "傳統模式"
+msgstr "_Klassik rejim"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:29
 #: ../resources/desktop/js/specialitem.coffee:156
 msgid "_Empty"
-msgstr "清空回收桶(_E)"
+msgstr "_Boş"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:33
 msgid "_Close"
-msgstr "關閉(_C)"
+msgstr "_Bağla"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:76
 #: ../resources/desktop/js/desktopentry.coffee:165
 msgid "Can not open this file."
-msgstr "無法開啟此檔案。"
+msgstr "Bu fayl açıla bilmir."
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:76
 #: ../resources/desktop/js/application.coffee:179
@@ -220,95 +220,95 @@ msgstr "無法開啟此檔案。"
 #: ../resources/desktop/js/richdir.coffee:586
 #: ../resources/desktop/js/desktopentry.coffee:165
 msgid "Warning"
-msgstr "警告"
+msgstr "Xəbərdarlıq"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
 #: ../resources/launcher/js/item.coffee:354
 msgid "Are you sure to remove"
-msgstr "你確定要刪除"
+msgstr "Silmək istədiyinizdən əminsiniz?"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
 #: ../resources/launcher/js/item.coffee:354
 msgid "All dependencies will be removed"
-msgstr "所有依賴的套件都將被刪除"
+msgstr "Bütün asılılıqlar silinəcək"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
 #: ../resources/launcher/js/item.coffee:354
 msgid "no"
-msgstr "否"
+msgstr "yox"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
 #: ../resources/launcher/js/item.coffee:354
 msgid "yes"
-msgstr "是"
+msgstr "hə"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "Control Center"
-msgstr "控制中心"
+msgstr "İdarə Paneli"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "All Windows"
-msgstr "所有視窗"
+msgstr "Bütün Pəncərələr"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "Desktop"
-msgstr "桌面"
+msgstr "İş masası"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "None"
-msgstr "沒有"
+msgstr "Heç biri"
 
 #: ../resources/launcher/js/const.coffee:64
 msgid "_Hide the icon"
-msgstr "隱藏此圖試(_H)"
+msgstr "Piktoqramı _gizlət"
 
 #: ../resources/launcher/js/const.coffee:65
 msgid "_Display hidden icons"
-msgstr "顯示已隱藏的圖示(_D)"
+msgstr "Gizli piktoqramları _göstər"
 
 #: ../resources/launcher/js/const.coffee:68
 msgid "_Hide this icon"
-msgstr "隱藏該圖示(_H)"
+msgstr "Bu piktoqramı _gizlət"
 
 #: ../resources/launcher/js/const.coffee:69
 msgid "_Display this icon"
-msgstr "顯示該圖示(_D)"
+msgstr "Bu piktoqramı _göstər"
 
 #: ../resources/launcher/js/const.coffee:72
 #: ../resources/guide/js/launcher.coffee:218
 msgid "_Add to autostart"
-msgstr "加入到開機啟動項目(_A)"
+msgstr "Avtomatik başlatmaya _əlavə et"
 
 #: ../resources/launcher/js/const.coffee:73
 msgid "_Remove from autostart"
-msgstr "從開機啟動項目中移除(_R)"
+msgstr "Avtomatik başlatmadan _çıxart"
 
 #: ../resources/launcher/js/const.coffee:80
 msgid "Add to _favorites"
-msgstr "添加到最愛(_F)"
+msgstr "_Seçilmişlərə əlavə et"
 
 #: ../resources/launcher/js/const.coffee:81
 #: ../resources/guide/js/launcher.coffee:214
 msgid "Remove from _favorites"
-msgstr "從最愛中移除(_F)"
+msgstr "_Seçilmişlərdən çıxart"
 
 #: ../resources/launcher/js/const.coffee:84
 #: ../resources/guide/js/launcher.coffee:215
 msgid "Send to d_esktop"
-msgstr "傳送到桌面(_E)"
+msgstr "İ_ş masasına göndər"
 
 #: ../resources/launcher/js/const.coffee:85
 msgid "Remove from d_esktop"
-msgstr "從桌面移除(_F)"
+msgstr "İ_ş masasından çıxart"
 
 #: ../resources/launcher/js/const.coffee:88
 #: ../resources/guide/js/launcher.coffee:216
 msgid "Send to do_ck"
-msgstr "釘選到 Dock(_C)"
+msgstr "Do_ka göndər"
 
 #: ../resources/launcher/js/const.coffee:89
 msgid "Remove from do_ck"
-msgstr "從 Dock 移除(_C)"
+msgstr "Do_kdan çıxart"
 
 #: ../resources/launcher/js/item.coffee:276
 #: ../resources/guide/js/launcher.coffee:212
@@ -318,581 +318,581 @@ msgstr "從 Dock 移除(_C)"
 #: ../resources/desktop/js/specialitem.coffee:147
 #: ../resources/desktop/js/desktopentry.coffee:102
 msgid "_Open"
-msgstr "開啟(_O)"
+msgstr "_Aç"
 
 #: ../resources/launcher/js/item.coffee:283
 #: ../resources/guide/js/launcher.coffee:219
 msgid "_Uninstall"
-msgstr "解除安裝(_U)"
+msgstr "_Sil"
 
 #: ../resources/guide/js/dss.coffee:29
 msgid "Well, please trigger the lower right corner again"
-msgstr "很好，請再次觸發右下角的熱區"
+msgstr "Yaxşı, xahiş edirik sağ alt küncdə tətikləyin"
 
 #: ../resources/guide/js/dss.coffee:30
 msgid "tips: Click the setting icon on dock to implement"
-msgstr "提示：點擊 Dock 上的設定圖示"
+msgstr "ipucu: Doku yerinə yetirmək üçün tənzimləmə piktoqramına klikləyin"
 
 #: ../resources/guide/js/dss.coffee:69
 msgid "Here is the system setting area"
-msgstr "這裡是控制中心"
+msgstr "Bura sistem tənzimləmələri sahəsidir"
 
 #: ../resources/guide/js/dss.coffee:70
 msgid ""
 "tips: Hover the setting icon on dock to quickly implement some setting "
 "functions"
-msgstr "提示：將鼠標指標移動到 Dodk 圖示上將可進行一些方便的功能設定"
+msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:27
 msgid ""
 "Let's drag the other icon on the first icon \n"
 " to generate \"application group\""
-msgstr "讓我們拖動另一個圖示到第一個圖示上\n來組成 \"應用程式群組\""
+msgstr "Digər piktoqramı birinci piktoqramın üzərin buraxaraq \n \"tətbiqetmə qrupu\" yaradın"
 
 #: ../resources/guide/js/desktop.coffee:116
 msgid "Well, you have learned how to create a \"application group\""
-msgstr "很好，您已經學會了如何建立一個 \" 應用程式群組\""
+msgstr "Əla, siz necə \"tətbiqetmə qrupu\" yaradıldığını öyrəndiniz"
 
 #: ../resources/guide/js/desktop.coffee:117
 msgid "tips: Right-click on the application group will provide more functions"
-msgstr "提示：在應用程式群組上單擊右鍵將看到更多功能"
+msgstr "ipucu: Tətbiqetmə qrupunun üzərinə siçanın sağ düyməsi ilə klikləsəz daha çox funksiya göstəriləcək"
 
 #: ../resources/guide/js/desktop.coffee:128
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different events\n"
 "Please move to the upper left corner first to show or hide Launcher"
-msgstr "將滑鼠指標移動至四個角落,可以觸發四種不同的事件\n移動至左上角可以顯示/隱藏啟動器"
+msgstr "Siçanı ekranın dörd küçcündən birinə sürüşdürsəniz, dörd hadisədən biri hərəkətə gələcək\nBaşladıcını göstərmək və ya gizlətmək üçün siçanı sol üst küncə sürüşdürün"
 
 #: ../resources/guide/js/desktop.coffee:129
 msgid ""
 "tips: Please trigger successively by hints, click on the blank area to "
 "return"
-msgstr "提示：請跟隨指示依次觸發，點擊空白區域即可返回"
+msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:133
 msgid "Show/Hide Launcher"
-msgstr "顯示/隱藏啟動器"
+msgstr "Başladıcını Göstər/Gizlət"
 
 #: ../resources/guide/js/desktop.coffee:134
 msgid "Show/Hide Desktop"
-msgstr "顯示/隱藏桌面"
+msgstr "İş Masasını Göstər/Gizlət"
 
 #: ../resources/guide/js/desktop.coffee:135
 msgid "Show/Hide Control Center"
-msgstr "顯示/隱藏控制中心"
+msgstr "İdarə Mərkəzini Göstər/Gizlət"
 
 #: ../resources/guide/js/desktop.coffee:136
 msgid "No default functions setted in right up corner"
-msgstr "右上角預設沒有功能"
+msgstr "Sağ üst küncdə quraşdırılmış funksiya yoxdu"
 
 #: ../resources/guide/js/desktop.coffee:178
 msgid ""
 "Right-click on desktop black area to call up the menu, select \"Corner "
 "navigation\" to set the corner used"
-msgstr "在桌面空餘位置單擊右鍵打開選單，選擇 \"熱區設定\" 來設定熱區功能"
+msgstr "Menyunu açmaq qara ərazidə üçün siçanın sağ düyməsin klikləyin. \"Künc naviqasiyası\"-nı seçərək künc istifadə olunar"
 
 #: ../resources/guide/js/desktop.coffee:179
 msgid "tips: Click on the interface of corner navigation blank area to return"
-msgstr "提示：點區熱點設定的空白區域即可返回"
+msgstr "ipucu: Qayıtmaq üçün boş ərazidə künc naviqasiyasının interfeysinə klikləyin"
 
 #: ../resources/guide/js/desktop.coffee:196
 #: ../resources/desktop/js/grid.coffee:1045
 msgid "_Sort by"
-msgstr "排序方式(_S)"
+msgstr "_Sırala"
 
 #: ../resources/guide/js/desktop.coffee:197
 #: ../resources/desktop/js/grid.coffee:1046
 msgid "_New"
-msgstr "新增(_N)"
+msgstr "_Yeni"
 
 #: ../resources/guide/js/desktop.coffee:198
 #: ../resources/desktop/js/grid.coffee:1047
 msgid "Open in _terminal"
-msgstr "在終端機中打開(_T)"
+msgstr "_Terminalda aç"
 
 #: ../resources/guide/js/desktop.coffee:199
 #: ../resources/desktop/js/grid.coffee:1048
 msgid "_Paste"
-msgstr "貼上(_P)"
+msgstr "_Əlavə et"
 
 #: ../resources/guide/js/desktop.coffee:201
 #: ../resources/desktop/js/grid.coffee:1050
 msgid "_Display settings"
-msgstr "顯示設定(_D)"
+msgstr "Tənzimləmələri _göstər"
 
 #: ../resources/guide/js/desktop.coffee:202
 #: ../resources/desktop/js/grid.coffee:1051
 msgid "_Corner navigation"
-msgstr "熱區設定(_C)"
+msgstr "_Künc naviqasiyası"
 
 #: ../resources/guide/js/desktop.coffee:203
 #: ../resources/desktop/js/grid.coffee:1052
 msgid "Pe_rsonalize"
-msgstr "個人化(_R)"
+msgstr "Şə_xsiləşdir"
 
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
-msgstr "歡迎使用 Deepin 作業系統"
+msgstr "Deepin Əməliyyat Sisteminə xoş gəldiniz"
 
 #: ../resources/guide/js/welcome.coffee:38
 msgid "Prepare for operation ..."
-msgstr "正在準備..."
+msgstr "Əməliyyat üçün hazırlanma..."
 
 #: ../resources/guide/js/end.coffee:25
 msgid "Thanks for your patience while learning. Congratulations."
-msgstr "謝謝您的耐心學習，恭喜您！"
+msgstr "Öyrəndiyiniz vaxt ərzindəki səbriniz üçün təşəkkür edirik. Təbriklər."
 
 #: ../resources/guide/js/end.coffee:30
 msgid "End"
-msgstr "結束"
+msgstr "Son"
 
 #: ../resources/guide/js/start.coffee:28
 msgid "New Launcher"
-msgstr "新啟動器"
+msgstr "Yeni Başladıcı"
 
 #: ../resources/guide/js/start.coffee:28
 msgid "New Desktop"
-msgstr "新桌面"
+msgstr "Yeni İş Masası"
 
 #: ../resources/guide/js/start.coffee:28
 msgid "New System Settings"
-msgstr "新控制中心"
+msgstr "Yeni Sitem Tənzimləmələri"
 
 #: ../resources/guide/js/start.coffee:29
 msgid "The following will guide you to learn how to use some new functions"
-msgstr "之後將教您學習如何使用這些新功能"
+msgstr "Bələdçini izləyərək bəzi yeni funksiyaların necə işlədiləcəyini öyrənə bilərsiniz"
 
 #: ../resources/guide/js/start.coffee:44
 msgid "Start"
-msgstr "開始"
+msgstr "Başla"
 
 #: ../resources/guide/js/start.coffee:51
 msgid "I am an experienced user. Exit directly."
-msgstr "我是老用戶，直接退出"
+msgstr "Mən təcrübəli istifadəçiyəm. Birbaşa çıx."
 
 #: ../resources/guide/js/launcher.coffee:29
 msgid ""
 "\"Application Launcher\" can be started by sliding the mouse to the upper "
 "left corner or clicking on the launcher."
-msgstr "將滑鼠只標移動至左上角或者點擊啟動器圖示都可以打開\"應用程式啟動器\""
+msgstr "Siçanı sol üst küncə sürüşdürərək və ya başladıcı piktoqramına klikləyərək \"Tətbiqetmə başladıcısı\"-nı işə sala bilərsiniz."
 
 #: ../resources/guide/js/launcher.coffee:70
 msgid ""
 "What shown in the first screen of \"launcher\" are the applications "
 "collected."
-msgstr "啟動器一開始展示的是您最愛的應用程式"
+msgstr "\"Başladıcının\"-nın ilk ekranında kolleksiyadan hansı tətbiqetmələrin göstəriləcəyi seçilir."
 
 #: ../resources/guide/js/launcher.coffee:85
 msgid ""
 "Please click on the \"All Applications\" icon, you will see all "
 "applications."
-msgstr "請點擊 “所有程式” 圖示，你將看到所有應用程式"
+msgstr "Xahiş edirik \"Bütün Tətbiqetmələr\" piktoqramına klikləyin. Siz bütün tətbiqetmələri görəcəksiniz."
 
 #: ../resources/guide/js/launcher.coffee:95
 msgid ""
 "All programs can be located by scrolling the mouse up and down.\n"
 "You can also click on the left classification navigation to locate"
-msgstr "滾動鼠標滾輪可以瀏覽所有程式\n您也可以點擊左側的分類圖標來定位"
+msgstr "Bütün proqramları siçanı yuxarı, aşağı hərəkət etdirərək yerləşdirə bilərsiniz.\nSiz həmçinin sol sinifləndirmə naviqasiyasına klikləyərək də yerləşdirə bilərsiniz"
 
 #: ../resources/guide/js/launcher.coffee:133
 msgid "Skip the step without scroll"
-msgstr "鼠標沒有滾輪，跳此步驟"
+msgstr "Sürüşdürmədən bu addımı keç"
 
 #: ../resources/guide/js/launcher.coffee:163
 msgid ""
 "Use the keyboard to search for applications\n"
 "Try the \"deepin\" keyword to see which applications are shown"
-msgstr "使用鍵盤搜尋來尋找您想要的應用程式\n我們來試試 \"deepin\" 這個關鍵字吧，看會顯示那些應用程式"
+msgstr "Tətbiqetmələri axtarmaq üçün klaviaturadan istifadə edin\n\"deepin\" açar sözünü daxil edərək hansı tətbiqetmələrin göründüyünə baxın"
 
 #: ../resources/guide/js/launcher.coffee:164
 msgid "tips: Please directly enter the word \"deepin\""
-msgstr "提示：請直接輸入單字 \"deepin\""
+msgstr "ipucu: Xahiş edirik birbaşa \"deepin\" sözünü daxil edin"
 
 #: ../resources/guide/js/launcher.coffee:181
 msgid "Use the right mouse button to send two icons to the desktop"
-msgstr "單擊滑鼠右鍵打開選單，發送兩個圖示到桌面"
+msgstr "Siçanın sağ düyməsindən istifadə edərək iş masasına iki piktoqram göndərin"
 
 #: ../resources/guide/js/launcher.coffee:182
 msgid "tips: You can add it to startup items or uninstall it"
-msgstr "提示：您可以將它加入開機啟動項目或解除安裝它"
+msgstr "ipucu: Sİz bunu başlanğıc elementlərinə əlavə edə və ya silə bilərsiniz"
 
 #: ../resources/desktop/js/grid.coffee:71 ../lib/dentry/fileops.c:403
 msgid "Untitled"
-msgstr "無標題"
+msgstr "Başlıqsız"
 
 #: ../resources/desktop/js/grid.coffee:1022
 msgid "_Name"
-msgstr "名稱(_N)"
+msgstr "_Ad"
 
 #: ../resources/desktop/js/grid.coffee:1023
 msgid "Last modified _time"
-msgstr "最後修改時間(_T)"
+msgstr "Sonuncu dəfə redaktə olunduğu _vaxt"
 
 #: ../resources/desktop/js/grid.coffee:1028
 msgid "_Folder"
-msgstr "資料夾(_F)"
+msgstr "_Qovluq"
 
 #: ../resources/desktop/js/grid.coffee:1029
 msgid "_Text document"
-msgstr "文字文件(_T)"
+msgstr "_Mətn sənədi"
 
 #: ../resources/desktop/js/application.coffee:179
 #: ../resources/desktop/js/richdir.coffee:335
 #: ../resources/desktop/js/richdir.coffee:586
 msgid "The link is invalid. Do you want to delete it?"
-msgstr "此鏈接無效，是否需要刪除它？"
+msgstr "Link etibarsızdır. Bunu silmək istəyirsiniz?"
 
 #: ../resources/desktop/js/richdir.coffee:135
 #: ../resources/desktop/js/desktopentry.coffee:107
 msgid "_Rename"
-msgstr "重新命名(_R)"
+msgstr "_Yenidən adlandır"
 
 #: ../resources/desktop/js/richdir.coffee:137
 msgid "_Ungroup"
-msgstr "取消群組(_U)"
+msgstr "_Qrupdan çıxart"
 
 #: ../resources/desktop/js/richdir.coffee:139
 #: ../resources/desktop/js/richdir.coffee:571
 #: ../resources/desktop/js/invalidlink.coffee:34
 #: ../resources/desktop/js/desktopentry.coffee:108
 msgid "_Delete"
-msgstr "刪除(_D)"
+msgstr "_Sil"
 
 #: ../resources/desktop/js/richdir.coffee:568
 #: ../resources/desktop/js/desktopentry.coffee:104
 msgid "Cu_t"
-msgstr "剪下(_T)"
+msgstr "Kə_s"
 
 #: ../resources/desktop/js/richdir.coffee:569
 #: ../resources/desktop/js/desktopentry.coffee:105
 msgid "_Copy"
-msgstr "複製(_C)"
+msgstr "_Kopyala"
 
 #: ../resources/desktop/js/richdir.coffee:573
 #: ../resources/desktop/js/specialitem.coffee:53
 #: ../resources/desktop/js/desktopentry.coffee:110
 msgid "_Properties"
-msgstr "屬性(_P)"
+msgstr "_Xüsusiyyətlər"
 
 #: ../resources/desktop/js/specialitem.coffee:34
 msgid "Computer"
-msgstr "電腦"
+msgstr "Kompüter"
 
 #: ../resources/desktop/js/specialitem.coffee:152
 msgid "_Clean up %1 items"
-msgstr "清理 %1 項(_C)"
+msgstr "%1 elementi _sil"
 
 #: ../resources/desktop/js/specialitem.coffee:154
 msgid "_Clean up 1 item"
-msgstr "清理 1 項(_C)"
+msgstr "1 elementi _sil"
 
 #: ../resources/desktop/js/desktopentry.coffee:116
 #: ../resources/desktop/js/desktopentry.coffee:123
 msgid "Co_mpress"
-msgstr "壓縮檔案(_M)"
+msgstr "Ar_xivlə"
 
 #: ../resources/desktop/js/desktopentry.coffee:119
 #: ../resources/desktop/js/desktopentry.coffee:124
 msgid "_Extract"
-msgstr "解壓縮檔案(_E)"
+msgstr "_Ekstrakt"
 
 #: ../resources/desktop/js/desktopentry.coffee:120
 #: ../resources/desktop/js/desktopentry.coffee:125
 msgid "Extract _Here"
-msgstr "在此解壓縮(_H)"
+msgstr "_Bura Ekstrakt Elə"
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
-msgstr "同步"
+msgstr "Dublikat"
 
 #: ../resources/osd/js/monitor.coffee:39
 msgid "Extend"
-msgstr "延伸"
+msgstr "Uzat"
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
-msgstr "您已經成功解除安裝 \"%1\""
+msgstr "Siz \"%1\"-i uğurla sildiniz"
 
 #: ../resources/common/js/uninstaller.coffee:33
 msgid "\"%1\" failed to be uninstalled"
-msgstr "\"%1\" 解除安裝失敗"
+msgstr "\"%1\" silinə bilmədi"
 
 #: ../app/greeter/lock.c:125 ../app/greeter/greeter.c:192
 msgid "Wrong Password"
-msgstr "密碼錯誤"
+msgstr "Yanlış Şifrə"
 
 #: ../app/greeter/mutils.c:84
 msgid "%a, %b %d, %Y"
-msgstr "%Y 年 %b 月 %d 日 %a"
+msgstr "%a, %b %d, %Y"
 
 #: ../app/dock/dock.c:341
 msgid "Dock failed to start, because Compiz is not enabled."
-msgstr "由於 Compiz 沒有啟動，Dock 啟動失敗"
+msgstr "Dokun başladılması uğursuz oldu, çünki Compiz aktiv deyil."
 
 #: ../app/desktop/desktop.c:298
 msgid "New file"
-msgstr "新增檔案"
+msgstr "Yeni fayl"
 
 #: ../app/desktop/desktop.c:309
 msgid "New directory"
-msgstr "新增資料夾"
+msgstr "Yeni kataloq"
 
 #: ../lib/dentry/entry.c:746
 #, c-format
 msgid ""
 "Cannot rename the item to \"%s\". This may be caused by lack of permissions."
-msgstr "無法重新命名項目 \"%s\"，可能是因爲您缺乏權限。"
+msgstr "\"%s\" yenidən adlandırıla bilməz. Ola bilsin ki, bu icazənin olmaması ilə əlaqəlidir."
 
 #: ../lib/dentry/entry.c:752
 #, c-format
 msgid ""
 "There is already a file with name \"%s\" in this folder. Please consider a "
 "different name."
-msgstr "此資料夾下已經有一個名爲 \"%s\" 的檔案，請考慮其他的名稱。"
+msgstr "Qovluğun içində artıq \"%s\" adı mövcuddur. Xahiş edirik başqa bir ad seçəsiniz."
 
 #: ../lib/dentry/entry.c:758
 msgid "The item could not be renamed"
-msgstr "此項目不能被重新命名"
+msgstr "Element yenidən adlandırıla bilmir"
 
 #: ../lib/dentry/entry.c:833 ../lib/dentry/fileops.c:805
 msgid "copy"
-msgstr "複製"
+msgstr "kopyala"
 
 #: ../lib/dentry/entry.c:1415
 msgid "App Group"
-msgstr "應用程式群組"
+msgstr "Tətbiqetmə Qrupu"
 
 #: ../lib/dentry/fileops.c:566
 msgid "Move"
-msgstr "移動"
+msgstr "Daşı"
 
 #: ../lib/dentry/fileops.c:772
 msgid "Copy"
-msgstr "複製"
+msgstr "Kopyala"
 
 #: ../lib/dentry/fileops_delete.c:29
 msgid "Delete Files"
-msgstr "刪除檔案"
+msgstr "Faylları Sil"
 
 #: ../lib/dentry/fileops_delete.c:32
 msgid "Are you sure you want to permanently delete the files?"
-msgstr "您確定要永久刪除檔案嗎？"
+msgstr "Bu faylları həmişəlik silmək istədiyinizdən əminsiniz?"
 
 #: ../lib/dentry/fileops_delete.c:33
 msgid "If you delete the files, they will be permanently lost."
-msgstr "若您刪除這些文件，它們將永久消失。"
+msgstr "Əgər faylları silsəniz, siz onları bir dəfəlik itirəcəksiniz."
 
 #: ../lib/dentry/fileops_delete.c:36
 msgid "Delete"
-msgstr "刪除"
+msgstr "Sil"
 
 #: ../lib/dentry/fileops_error_dialog.c:63
 msgid "File conflict"
-msgstr "檔案衝突"
+msgstr "Fayl toqquşması"
 
 #: ../lib/dentry/fileops_error_dialog.c:106
 msgid "_Select a new name for the destination"
-msgstr "為目標選擇新的名稱(_S)"
+msgstr "Təyinat üçün yeni ad _seçin"
 
 #: ../lib/dentry/fileops_error_dialog.c:117
 msgid "Reset"
-msgstr "重設"
+msgstr "Sıfırla"
 
 #: ../lib/dentry/fileops_error_dialog.c:126
 msgid "Apply this action to all files"
-msgstr "將該動作套用到全部檔案"
+msgstr "Bu əməliyyatı bütün fayllarda tətbiq et"
 
 #: ../lib/dentry/fileops_error_dialog.c:133
 msgid "_Skip"
-msgstr "略過(_S)"
+msgstr "_Keç"
 
 #: ../lib/dentry/fileops_error_dialog.c:136
 msgid "Re_name"
-msgstr "重新命名(_N)"
+msgstr "Yenidən _adlandır"
 
 #: ../lib/dentry/fileops_error_dialog.c:141
 msgid "Replace"
-msgstr "取代"
+msgstr "Əvəz et"
 
 #: ../lib/dentry/fileops_error_dialog.c:218
 #, c-format
 msgid "Do you want to merge with folder \"%s\"?"
-msgstr "你想要合併資料夾 \"%s\"  嗎？"
+msgstr "\"%s\" qovluğu ilə birləşdirmək istəyirsiniz?"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
 msgid ""
 "The merging operation will be asked to confirm before replacing any files in"
 " the folder conflicted."
-msgstr "合併操作將會在取代衝突檔案時請求。"
+msgstr "Birləşdirmə əməliyyatında qovluqdakı toqquşan faylları əvəz etmədən öncə nə ediləcəyini soruş."
 
 #: ../lib/dentry/fileops_error_dialog.c:222
 #, c-format
 msgid "An older folder with the same name already exists in \"%s\"."
-msgstr "在 \"%s\" 中有較舊的相同名稱資料夾存在。"
+msgstr "\"%s\" ilə eyni adı daşıyan başqa bir qovluq artıq mövcuddur."
 
 #: ../lib/dentry/fileops_error_dialog.c:226
 #, c-format
 msgid "A newer folder with the same name already exists in \"%s\"."
-msgstr "在 \"%s\" 中有較新的相同名稱資料夾存在。"
+msgstr "\"%s\" adında yeni qovluq artıq mövcuddur."
 
 #: ../lib/dentry/fileops_error_dialog.c:230
 #, c-format
 msgid "Another folder with the same name already exists in \"%s\"."
-msgstr "在 \"%s\" 中有相同名稱的資料夾存在。"
+msgstr "\"%s\" adında başqa bir qovluq artıq mövcuddur."
 
 #: ../lib/dentry/fileops_error_dialog.c:236
 msgid "All files in the folder will be removed by replacing."
-msgstr "替換操作將移除資料夾中的所有檔案。"
+msgstr "Əvəz edilmə zamanı qovluqdakı bütün fayllar silinəcək."
 
 #: ../lib/dentry/fileops_error_dialog.c:237
 #, c-format
 msgid "Do you want to replace folder \"%s\"?"
-msgstr "你想要取代資料夾  \"%s\" 嗎？"
+msgstr "\"%s\" qovluğunu əvəz etmək istəyirsiniz?"
 
 #: ../lib/dentry/fileops_error_dialog.c:239
 #, c-format
 msgid "A folder with the same name already exists in \"%s\"."
-msgstr "在 \"%s\" 中有相同名稱的資料夾存在。"
+msgstr "\"%s\" adında başqa bir qovluq artıq mövcuddur."
 
 #: ../lib/dentry/fileops_error_dialog.c:245
 #, c-format
 msgid "Do you want to replace file \"%s\"?"
-msgstr "你想要取代檔案 \"%s\" 嗎？"
+msgstr "\"%s\" faylını əvəz etmək istəyirsiniz?"
 
 #: ../lib/dentry/fileops_error_dialog.c:246
 msgid "The content will be overwritten by replacing."
-msgstr "替換操作將覆蓋它的內容。"
+msgstr "Bu məzmun əvəz edilmə zamanı üzərinə yazılacaq."
 
 #: ../lib/dentry/fileops_error_dialog.c:248
 #, c-format
 msgid "An older file with the same name already exists in \"%s\"."
-msgstr "在 \"%s\" 中有較舊的相同名稱資料夾存在。"
+msgstr "\"%s\" adında köhnə bir fayl artıq mövcuddur."
 
 #: ../lib/dentry/fileops_error_dialog.c:252
 #, c-format
 msgid "A newer file with the same name already exists in \"%s\"."
-msgstr "在 \"%s\" 中有較新的相同名稱資料夾存在。"
+msgstr "\"%s\" adında yeni bir fayl artıq mövcuddur."
 
 #: ../lib/dentry/fileops_error_dialog.c:256
 #, c-format
 msgid "Another file with the same name already exists in \"%s\"."
-msgstr "在 \"%s\" 中有相同名稱的資料夾存在。"
+msgstr "\"%s\" adında başqa bir fayl artıq mövcuddur."
 
 #: ../lib/dentry/fileops_error_dialog.c:328
 msgid "Original file"
-msgstr "原始檔案"
+msgstr "Orijinal fayl"
 
 #: ../lib/dentry/fileops_error_dialog.c:329
 #: ../lib/dentry/fileops_error_dialog.c:357
 msgid "Size:"
-msgstr "大小："
+msgstr "Ölçü:"
 
 #: ../lib/dentry/fileops_error_dialog.c:333
 #: ../lib/dentry/fileops_error_dialog.c:361
 msgid "Type:"
-msgstr "類型："
+msgstr "Növ:"
 
 #: ../lib/dentry/fileops_error_dialog.c:337
 #: ../lib/dentry/fileops_error_dialog.c:365
 msgid "Last modified:"
-msgstr "修改日期："
+msgstr "Son redaktə olunma:"
 
 #: ../lib/dentry/fileops_error_dialog.c:356
 msgid "Replace with"
-msgstr "取代為"
+msgstr "İlə əvəz et"
 
 #: ../lib/dentry/fileops_error_dialog.c:382
 msgid "Merge"
-msgstr "合併"
+msgstr "Birləşdir"
 
 #: ../lib/dentry/fileops_error_reporting.c:106
 #: ../lib/dentry/fileops_error_reporting.c:191
 #, c-format
 msgid "Error while %s files"
-msgstr "當 %s 檔案時出錯"
+msgstr "%s fayllarıyla işləyərkən bir xəta meydana gəldi."
 
 #: ../lib/dentry/fileops_trash.c:58
 msgid "Empty Trash"
-msgstr "清理回收桶"
+msgstr "Zibil Qutusunu Boşalt"
 
 #: ../lib/dentry/fileops_trash.c:67
 msgid "Empty all items from Trash?"
-msgstr "清理回收桶中的全部項目嗎？"
+msgstr "Zibil qutusundakı bütün elementlər silinsin?"
 
 #: ../lib/dentry/fileops_trash.c:68
 msgid "All items in the Trash will be permanently deleted."
-msgstr "回收桶中的全部項目將被永久刪除。"
+msgstr "Zibil qutusundakı bütün fayllar bir dəfəlik silinəcək."
 
 #: ../lib/dentry/fileops_trash.c:71
 msgid "Empty _Trash"
-msgstr "清理回收桶(_T)"
+msgstr "_Zibil qutusunu boşalt"
 
 #: ../lib/dentry/mime_actions.c:198
 #, c-format
 msgid "Do you want to run \"%s\", or display its contents?"
-msgstr "您想要執行 “%s”，還是顯示其內容？"
+msgstr "\"%s\"-i icra etmək istəyirsiniz yoxsa məzmuna baxmaq istəyirsiniz?"
 
 #: ../lib/dentry/mime_actions.c:199
 #, c-format
 msgid "\"%s\" is an executable text file."
-msgstr "\"%s\" 是一個可執行的文字檔案。"
+msgstr "\"%s\" icra oluna bilən bir mətn faylıdır."
 
 #: ../lib/dentry/mime_actions.c:210
 msgid "Run in _Terminal"
-msgstr "在終端機中執行(_T)"
+msgstr "_Terminalda icra et"
 
 #: ../lib/dentry/mime_actions.c:211
 msgid "_Display"
-msgstr "顯示(_D)"
+msgstr "_Göstər"
 
 #: ../lib/dentry/mime_actions.c:213
 msgid "_Run"
-msgstr "執行(_R)"
+msgstr "_İcra et"
 
 #: ../lib/category.c:45
 msgid "all"
-msgstr "全部"
+msgstr "hamısı"
 
 #: ../lib/category.c:46
 msgid "internet"
-msgstr "網路服務"
+msgstr "internet"
 
 #: ../lib/category.c:47
 msgid "multimedia"
-msgstr "影音播放"
+msgstr "multimedia"
 
 #: ../lib/category.c:48
 msgid "games"
-msgstr "遊戲娛樂"
+msgstr "oyunlar"
 
 #: ../lib/category.c:49
 msgid "graphics"
-msgstr "美工繪圖"
+msgstr "qrafikalar"
 
 #: ../lib/category.c:50
 msgid "productivity"
-msgstr "辦公軟體"
+msgstr "məhsuldarlıq"
 
 #: ../lib/category.c:51
 msgid "industry"
-msgstr "行業軟體"
+msgstr "sənaye"
 
 #: ../lib/category.c:52
 msgid "education"
-msgstr "科學教育"
+msgstr "təhsil"
 
 #: ../lib/category.c:53
 msgid "development"
-msgstr "程式開發"
+msgstr "inkişaf"
 
 #: ../lib/category.c:54
 msgid "system"
-msgstr "系統管理"
+msgstr "sistem"
 
 #: ../lib/category.c:55
 msgid "utilities"
-msgstr "公用程式"
+msgstr "köməkçi tətbiqetmələr"
 
 #: ../lib/category.c:56
 msgid "others"
-msgstr "其他"
+msgstr "digərləri"
