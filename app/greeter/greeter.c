@@ -294,8 +294,9 @@ int main (int argc, char **argv)
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba (gdkwindow, &rgba);
     gdk_window_set_skip_taskbar_hint (gdkwindow, TRUE);
-    gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
-
+    GdkCursor* cursor = gdk_cursor_new (GDK_LEFT_PTR);
+    gdk_window_set_cursor (gdk_get_default_root_window (), cursor);
+    g_object_unref(cursor);
     gtk_widget_show_all (container);
 
  //   monitor_resource_file("greeter", webview);
