@@ -15,12 +15,9 @@ class Setting
             DCore.Dock.quit()
 
         @dbus.connect("HideModeChanged", (mode)=>
-            console.log("mode changed to #{mode}")
             hideStatusManager.updateState()
         )
         @dbus.connect("DisplayModeChanged", (mode)=>
-            console.log("DisplayModeChanged is emited")
-
             @updateSize(mode)
 
             # TODO:
@@ -42,7 +39,6 @@ class Setting
         if typeof DisplayMode[mode] == undefined
             console.warn("#{mode} is not defined")
             return
-        console.log("updateSize: #{mode} #{DisplayName[mode]}")
         DOCK_HEIGHT = ALL_DOCK_HEIGHT[mode]
         PANEL_HEIGHT = ALL_PANEL_HEIGHT[mode]
         ITEM_HEIGHT = ALL_ITEM_HEIGHT[mode]
@@ -57,7 +53,6 @@ class Setting
             return HideMode.KeepShowing
         mode
     setHideMode:(id)->
-        console.log("setHideMode: #{id}")
         @dbus.SetHideMode(id)
 
     displayMode:->

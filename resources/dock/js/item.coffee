@@ -57,7 +57,6 @@ class Item extends Widget
         e = document.getElementsByName(@id)
         if e.length != 0
             e = e[0]
-            console.log("find insert indicator")
             e.parentNode.insertBefore(@element, e)
             e.parentNode.removeChild(e)
             sortDockedItem()
@@ -113,9 +112,7 @@ class Item extends Widget
         this["img#{type}"].style.display = ''
 
     on_mousemove: (e)=>
-        console.log("mouse move event")
         if e
-            console.log("record mouse position")
             $mousePosition.x = e.x
             $mousePosition.y = e.y
 
@@ -127,12 +124,8 @@ class Item extends Widget
         @on_mousemove(e)
 
         if _isRightclicked || settings.hideMode() != HideMode.KeepShowing and hideStatusManager.state != HideState.Shown
-            console.warn("_isRightclicked: #{_isRightclicked}")
-            console.warn("hide mode is keep-showing: #{settings.hideMode() == HideMode.KeepShowing}")
-            console.warn("hide state is not Shown: #{hideStatusManager.state != HideState.Shown}")
             $tooltip?.hide()
             return
-        console.log("mouseover, require_all_region")
         DCore.Dock.require_all_region()
         @displayIcon('hover')
 
@@ -172,7 +165,6 @@ class Item extends Widget
 
     on_dragend:(e)=>
         e.preventDefault()
-        console.log(@id + ' dragend')
         clearTimeout(@removeTimer || null)
         if debugRegion
             console.warn("[Item.on_dragend] update_dock_region")
@@ -180,16 +172,13 @@ class Item extends Widget
         _lastHover?.reset()
         @element.style.position = ''
         @element.style.webkitTransform = ''
-        console.log(_dragTargetManager)
         _dragTarget = _dragTargetManager.getHandle(@id)
         if not _dragTarget
             console.log("get handle failed")
             return
-        console.log("#{@id} dragend back? #{_dragTarget.dragToBack}")
         _dragTarget.reset()
         _dragTarget.removeImg()
         if _dragTarget.dragToBack
-            console.log("drag to back")
             _dragTarget.back(e.x, e.y)
         @removeTimer = setTimeout(=>
             _dragTargetManager.remove(@id)
@@ -221,7 +210,6 @@ class Item extends Widget
             @element.style.webkitTransform = "translateY(-#{ITEM_HEIGHT}px)"
             @element.style.display = 'none'
         , 10)
-        console.log("dragstart")
         e.stopPropagation()
         Preview_close_now()
         DCore.Dock.require_all_region()
@@ -231,7 +219,6 @@ class Item extends Widget
             @destroy_tooltip()
         dt = e.dataTransfer
         dt.setData(DEEPIN_ITEM_ID, @id)
-        console.log("DEEPIN_ITEM_ID: #{@id}")
 
         # flag for doing swap between items
         dt.setData("text/plain", "swap")
@@ -266,13 +253,11 @@ class Item extends Widget
 
         _isItemExpanded = true
         setTimeout(->
-            console.log("update tray icon")
             systemTray.updateTrayIcon()
         , 100)
 
     reset:->
         setTimeout(->
-            console.log("update tray icon")
             systemTray.updateTrayIcon()
         , 100)
         _isItemExpanded = false
@@ -287,7 +272,6 @@ class Item extends Widget
             t.style.marginLeft = ''
 
     on_dragenter: (e)=>
-        console.log("dragenter image #{@id}")
         e.preventDefault()
         e.stopPropagation()
         return if @is_fixed_pos
@@ -305,7 +289,6 @@ class Item extends Widget
             # , 1000)
 
     on_dragleave: (e)=>
-        console.log("dragleave")
         clearTimeout(activeWindowTimer)
         if debugRegion
             console.warn("[Item.on_dragleave] update_dock_region")
@@ -327,16 +310,12 @@ class Item extends Widget
         updatePanel()
         dt = e.dataTransfer
         _lastHover?.reset()
-        console.log("do drop, #{@id}")
-        console.log("deepin item id: #{dt.getData(DEEPIN_ITEM_ID)}")
         tmp_list = []
         for file in dt.files
-            console.log(file)
             path = decodeURI(file.path)
             tmp_list.push(path)
         if tmp_list.length > 0
             fileList = tmp_list.join()
-            console.log("drop to open: #{fileList}")
             @core?.onDrop(fileList)
         if debugRegion
             console.warn("[Item.on_drop] update_dock_region")
@@ -354,7 +333,6 @@ class AppItem extends Item
 
         @lastStatus = @core.status()
         @clientgroupInited = @isActive()
-        console.log("#{@id} init status: #{@lastStatus}")
         @indicatorWrap = create_element(tag:'div', class:"indicatorWrap", @element)
         @openingIndicator = create_img(src:OPENING_INDICATOR, class:"indicator OpeningIndicator", @indicatorWrap)
         @openingIndicator.addEventListener("webkitAnimationEnd", @on_animationend)
@@ -375,19 +353,14 @@ class AppItem extends Item
 
         @hide_open_indicator()
         if @isNormal() || @isNormalApplet()
-            console.log("is normal")
             @init_activator()
         else
-            console.log("is runtime")
             @init_clientgroup()
 
         if @isRuntimeApplet()
-            console.log("runtime applet: #{@id}")
             @hide_open_indicator()
 
         @core?.connect("DataChanged", (name, value)=>
-            console.log("#{@id}: #{name} is changed to #{value}")
-
             switch name
                 when ITEM_DATA_FIELD.xids
                     if not @clientgroupInited
@@ -411,14 +384,12 @@ class AppItem extends Item
                 when ITEM_DATA_FIELD.status
                     if @lastStatus == value
                         return
-                    console.log("old status: #{@lastStatus}, new status #{value}")
                     @lastStatus = value
                     if @isNormal()
                         console.log("is normal")
                         @swap_to_activator()
                     else if @isActive()
                         if @openingIndicator.style.webkitAnimationName == ''
-                            console.log("#{@id} is slow or opened somewhere else.")
                             @swap_to_clientgroup()
                 when ITEM_DATA_FIELD.icon
                     if value.substring(0, 7) == "file://" || value.substring(0, 10) == "data:image"
@@ -434,10 +405,8 @@ class AppItem extends Item
         @element.classList.remove("active_hover")
         @element.classList.remove("active")
         @element.classList.remove("ClientGroup_hover")
-        console.log("#{@id} hide_open_indicator")
 
     show_open_indicator:->
-        console.log("#{@id} show_open_indicator")
         @hide_open_indicator()
         if activeWindow and activeWindow.itemId and activeWindow.itemId == @id
             @element.classList.add("active")
@@ -450,7 +419,6 @@ class AppItem extends Item
             @element.classList.add("ClientGroup_hover")
 
     init_clientgroup:->
-        # console.log("init_clientgroup #{@core.id()}")
         @n_clients = []
         @client_infos = {}
         @leader = null
@@ -458,15 +426,12 @@ class AppItem extends Item
         if not @core or not (xids = JSON.parse(@core.xids()))
             return
 
-        # console.log "#{@id}: #{@core.type()}, #{@core.xids()}"
         for xidInfo in xids
             @n_clients.push(xidInfo.Xid)
             @update_client(xidInfo.Xid, xidInfo.Title)
-            # console.log "ClientGroup:: Key: #{xidInfo.Xid}, Valvue:#{xidInfo.Title}"
 
         if @isApplet()
             for xid in xids
-                console.log("map #{xid.Xid}")
                 $EW_MAP[xid.Xid] = @
             @embedWindows = new EmbedWindow(xids)
         else
@@ -479,7 +444,6 @@ class AppItem extends Item
         @clientgroupInited = true
 
     init_activator:->
-        # console.log("init_activator #{@core.id()}")
         @hide_open_indicator()
         title = @core.title() || "Unknown"
         @set_tooltip(title)
@@ -488,7 +452,6 @@ class AppItem extends Item
         @element.classList.add("Activator")
 
     swap_to_clientgroup:->
-        console.log('swap to clientgroup')
         @openingIndicator.style.display = 'none'
         @openingIndicator.style.webkitAnimationName = ''
         if not @isApplet()
@@ -497,7 +460,6 @@ class AppItem extends Item
         @init_clientgroup()
 
     swap_to_activator:->
-        console.log("swap_to_activator")
         @element.style.display = 'none'
         @hide_open_indicator()
         Preview_close_now()
@@ -562,7 +524,6 @@ class AppItem extends Item
         ,300)
 
     rotate:(time=1000)->
-        console.log("rotate")
         apply_animation(@imgWrap, "rotateOut", time)
 
     isNormal:->
@@ -590,11 +551,9 @@ class AppItem extends Item
             @destroy_tooltip()
             # $tooltip?.hide()
             return
-        console.warn("#{@isNormal()} || #{@isNormalApplet()}")
         if @isNormal() || @isNormalApplet()
             @set_tooltip(@core.title() || "Unknown")
             @tooltip.show()
-            console.log("app item is normal")
             clearTimeout(hide_id)
             closePreviewWindowTimer = setTimeout(->
                 Preview_close_now(Preview_container._current_group)
@@ -613,22 +572,13 @@ class AppItem extends Item
             _clear_item_timeout()
 
             _lastCliengGroup = @
-            # console.log("mouseover: "+xy.y + ","+xy.x, +"clientWidth"+w)
-            console.log("ClientGroup mouseover")
-            # DCore.Dock.require_all_region()
-            # console.log(@core.type())
             if @core && @isApp()
-                console.log("#{@id} App show preview")
                 if @n_clients.length != 0
-                    console.log("length is not 0")
                     Preview_show(@)
             else if @embedWindows
                 @core?.showQuickWindow()
-                console.log("Applet show preview")
                 try
                     size = @embedWindows.window_size(@embedWindows.xids[0])
-                    console.log size
-                    console.log("size: #{size.width}x#{size.height}")
                 catch e
                     console.log(e)
                 Preview_show(@, size, (c)=>
@@ -636,12 +586,10 @@ class AppItem extends Item
 
                     clearTimeout(@showEmWindowTimer || null)
                     if Preview_container.border.classList.contains("moveAnimation")
-                        console.log("show window after animation")
                         @showEmWindowTimer = setTimeout(=>
                             @embedWindows.show()
                         , 400)
                     else
-                        console.log("show window immiditely")
                         @embedWindows.show()
                 )
 
@@ -651,38 +599,31 @@ class AppItem extends Item
         w = @element.clientWidth || 0
         extraSize = PREVIEW_SHADOW_BLUR + PREVIEW_WINDOW_BORDER_WIDTH + PREVIEW_CONTAINER_BORDER_WIDTH
         extraHeight = PREVIEW_TRIANGLE.height + extraSize + size.height
-        # console.log("Preview_show callback: #{c}")
         x = xy.x + w/2 - size.width/2
         if x + size.width > screen.width
             x -= x + size.width - screen.width + extraSize
         y = xy.y - extraHeight
-        # console.log("Move Window to #{x}, #{y}")
         ew.move(ew.xids[0], x, y)
 
     on_mouseout:(e)=>
         super
-        console.log("#{@id} mouseout")
         clearTimeout(@showEmWindowTimer)
         if @isNormal()
             if Preview_container.is_showing
-                console.log("normal mouseout, preview window is showing")
                 __clear_timeout()
                 clearTimeout(closePreviewWindowTimer)
                 clearTimeout(tooltip_hide_id)
                 DCore.Dock.require_all_region()
                 normal_mouseout_id = setTimeout(->
-                    console.log("showing, update dock region")
                     if debugRegion
                         console.warn("[AppItem.on_mouseout] update_dock_region")
                     update_dock_region()
                 , 1000)
             else
-                console.log("normal mouseout, preview window is NOT showing")
                 if debugRegion
                     console.warn("[AppItem.on_mouseout] update_dock_region")
                 update_dock_region()
                 normal_mouseout_id = setTimeout(->
-                    console.warn("update dock hide state")
                     hideStatusManager.updateState()
                 , 500)
         else
@@ -691,25 +632,21 @@ class AppItem extends Item
             __clear_timeout()
             _clear_item_timeout()
             if not Preview_container.is_showing
-                console.log "Preview_container is not showing"
                 # calc_app_item_size()
                 hide_id = setTimeout(=>
                     if debugRegion
                         console.warn("[AppItem.on_mouseout] update_dock_region")
                     update_dock_region()
-                    console.warn("update dock hide state")
                     hideStatusManager.updateState()
                     # @embedWindows?.hide()
                 , 300)
             else
-                console.log "item mouseout, Preview_container is showing"
                 DCore.Dock.require_all_region()
                 hide_id = setTimeout(=>
                     if debugRegion
                         console.warn("[AppItem.on_mouseout] update_dock_region")
                     update_dock_region()
                     Preview_close_now(@)
-                    console.warn("update dock hide state")
                     hideStatusManager.updateState()
                 , 1000)
 
@@ -721,7 +658,6 @@ class AppItem extends Item
         setTimeout(->
             Preview_close_now()
         , 300)
-        # console.log("rightclick")
         xy = get_page_xy(@element)
 
         clientHalfWidth = @element.clientWidth / 2
@@ -742,8 +678,6 @@ class AppItem extends Item
             menuJsonContent: menuContent
 
         menuJson = JSON.stringify(menu)
-
-        # console.log(menuJson)
 
         try
             manager = get_dbus(
@@ -782,7 +716,6 @@ class AppItem extends Item
 
     on_itemselected: (d)->
         (id)->
-            # console.log("select id: #{id}")
             d?.HandleMenuItem(id)
 
     startSuccess:=>
@@ -790,7 +723,6 @@ class AppItem extends Item
             @openNotify()
 
     startError:=>
-        console.log("activate failed")
         dockedAppManager.Undock(@id)
 
     on_mouseup:(e)=>
@@ -798,7 +730,6 @@ class AppItem extends Item
         if e.button != 0
             return
 
-        console.log("on_click")
         @core.activate?(0, 0, @startSuccess, @startError)
 
     openNotify:->
@@ -806,7 +737,6 @@ class AppItem extends Item
         @openingIndicator.style.webkitAnimationName = 'Breath'
 
     on_animationend: (e)=>
-        console.log("open notify animation is end")
         @openingIndicator.style.webkitAnimationName = ''
         @openingIndicator.style.display = 'none'
         if @lastStatus == "active"
@@ -823,5 +753,4 @@ class AppItem extends Item
 
     on_drop: (e) =>
         super
-        console.log("drop")
         clearTimeout(pop_id) if e.dataTransfer.getData('text/plain') != "swap"

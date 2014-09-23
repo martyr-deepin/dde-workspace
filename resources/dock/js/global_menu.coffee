@@ -17,7 +17,6 @@ class GlobalMenu
         catch e
             console.warn e
             delete @plugins["deepinAppletManager"]
-        # console.log(settings.hideMode())
         items[settings.hideMode()].setChecked(true)
         @menu = new Menu(DEEPIN_MENU_TYPE.NORMAL)
         displayModes = [
@@ -40,7 +39,6 @@ class GlobalMenu
 
         _isRightclicked = true
         # @menu.addSeparator().append(new MenuItem("dockSetting", _("_Dock setting")))
-        # console.log("showmenu:#{@menu.menu.menuJsonContent}")
         @menu.addListener(@on_itemselected).showMenu(x, y)
         @menu.unregisterHook(handleMenuUnregister)
 
@@ -48,7 +46,6 @@ class GlobalMenu
         info = id.split(":")
         groupName = info[0]
         realId = info[2] || null
-        console.log("globalMenu: groupName: #{groupName}, realId: #{realId}")
         switch groupName
             when "dockHideMode"
                 settings.setHideMode(HideModeNameMap[realId])

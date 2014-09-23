@@ -12,14 +12,12 @@ catch e
     DCore.Dock.quit()
 
 dockedAppManager?.connect("Docked", (id)->
-    console.log("Docked #{id}")
     items = []
     appList = $("#app_list")
     for i in [0...appList.children.length]
         child = appList.children[i]
         name = child.getAttribute('name')
         if name
-            console.log(name)
             items.push(name)
         else
             items.push(child.id)
@@ -28,14 +26,11 @@ dockedAppManager?.connect("Docked", (id)->
         # append to the last.
         # dock-apps-builder will listen Docked signal, and emit Added signal if
         # necessary.
-        console.log("Send to Dock")
         items.push(id)
 
-    console.log("docked items: #{items}")
     dockedAppManager.Sort(items)
 )
 dockedAppManager?.connect("Undocked", (id)->
-    console.log("Undocked #{id}")
     item = Widget.look_up(id)
     if item and !item.isActive()
         item.destroy()
@@ -61,5 +56,4 @@ sortDockedItem = ->
     for i in [0...ch.length]
         child = ch[i]
         items.push(child.id)
-    console.log(items)
     dockedAppManager?.Sort(items)

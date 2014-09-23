@@ -15,7 +15,6 @@ calc_app_item_size = ->
     client_width = $("#containerWrap").clientWidth
     w = clamp(client_width / item_num, 34, ITEM_WIDTH * MAX_SCALE)
     ICON_SCALE = clamp(w / ITEM_WIDTH, 0, MAX_SCALE)
-    # console.log "new ICON_SCALE: #{ICON_SCALE}"
 
     for i in apps
         # Widget.look_up(i.id)?.update_scale()
@@ -38,8 +37,6 @@ update_dock_region = do->
             lastWidth = w
         else if lastWidth
             w = lastWidth
-        # console.log("width: #{w}")
-        console.log("[update_dock_region] last Width: #{lastWidth}, item width: #{w}, height: #{h}")
         apps = $s(".AppItem")
         if apps.length > 0
             if w
@@ -52,7 +49,6 @@ update_dock_region = do->
                     left_offset = 0
                 when DisplayMode.Fashion
                     left_offset = (screen.width - app_len) / 2
-            # console.warn("[update_dock_region] last Width: #{lastWidth}, item width: #{w}, height: #{h}, left_offset: #{left_offset}")
             DCore.Dock.force_set_region(left_offset, 0, w, panel_width, h)
         else
             console.warn("[update_dock_region] $s('.AppItem').length == 0")

@@ -25,8 +25,6 @@ class HideStatusManager
             @dbus = null
 
         @dbus?.connect("ChangeState", (trigger)=>
-            # console.warn("[ChangeState] hover: #{DCore.Dock.is_hovered()}")
-            # console.warn("[ChangeState] menu: #{_isRightclicked}")
             if DCore.Dock.is_hovered() || _isRightclicked
                 console.log("dock is hovered of contextmenu is shown")
                 return
@@ -59,21 +57,17 @@ class HideStatusManager
         )
 
     setState: (state)->
-        console.log("set state to #{HideStateMap[state]}")
         @state = state
         @dbus?.SetState(state)
 
     updateState:()->
-        # console.log("hide manager update state")
         @dbus?.UpdateState()
 
     changeMode:(mode)->
-        console.log("changeMode is invoked")
         @updateState()
 
     changeState: (state, cw, panel)->
         if DCore.Dock.is_hovered()
-            console.log("[changeState] dock is hovered")
             return
 
         @setState(state)
@@ -88,7 +82,6 @@ class HideStatusManager
                 $("#trayarea").style.webkitTransform = cw
 
     changeToHide:()->
-        console.log("changeToHide: change to hide")
         @changeState(HideState.Hidding, "translateY(110%)", "translateY(100%)")
         clearTimeout(@updateSystemTrayTimer || null)
         systemTray?.hideAllIcons()
@@ -98,34 +91,27 @@ class HideStatusManager
         if not systemTray
             return
         if systemTray.isUnfolded
-            # console.log("system tray is unfolded")
             systemTray.updateTrayIcon()
             systemTray.showAllIcons()
         else if systemTray.isShowing
-            # console.log("system tray is showing")
             systemTray.minShow()
         DCore.Dock.set_is_hovered(false)
 
     changeToShow:()->
-        console.log("changeToShow: change to show")
         @changeState(HideState.Showing, "translateY(0)", "translateY(0)")
         clearTimeout(@updateSystemTrayTimer || null)
         @updateSystemTrayTimer = setTimeout(@updateTrayIcons, SHOW_HIDE_ANIMATION_TIME)
 
     changeDockRegion: =>
-        console.warn("changeDockRegion, #{HideStateMap[@state]}")
         if @state == HideState.Showing
             @setState(HideState.Shown)
         else if @state == HideState.Hidding
             @setState(HideState.Hidden)
 
         regionHeight = DOCK_HEIGHT
-        console.log("panel webkitTransform: ##{$("#panel").style.webkitTransform}#")
         if $("#panel").style.webkitTransform == "translateY(100%)"
-            console.log("[HideStateManager.changeDockRegion] hide dock region")
             regionHeight = 0
 
-        console.log("[HideStateManager.changeDockRegion] set workarea height to #{regionHeight}")
         if debugRegion
             console.warn("[HideStateManager.changeDockRegion] update_dock_region: #{regionHeight}")
         DCore.Dock.change_workarea_height(regionHeight)

@@ -55,7 +55,6 @@ class PWContainer extends Widget
         clearTimeout(@hide_border_id)
 
     show: ->
-        console.log("show border")
         @cancelHide()
         PWContainer._need_move_animation = true
         @is_showing = true
@@ -75,7 +74,6 @@ class PWContainer extends Widget
         , 60)
 
     _update_once: (cb)=>
-        # console.log("_update_once")
         for k, v of @_current_pws
             @_current_pws[k] = true
 
@@ -84,7 +82,6 @@ class PWContainer extends Widget
             if not pw
                 id = @_current_group.id
                 infos = @_current_group.client_infos
-                # console.log("create PreviewWindow, #{id}##{infos[w_id].id}")
                 if infos[w_id]
                     pw = new PreviewWindow("pw"+w_id, w_id, infos[w_id].title, cb)
 
@@ -166,10 +163,8 @@ class PWContainer extends Widget
         halfWidth = leftX + contentWidth / 2
         triOffset = 0
         if triX < halfWidth
-            console.log("drawPanel: left overflow")
             triOffset = triX - halfWidth
         else if halfWidth + triX > screen.width
-            console.log("drawPanel: right overflow")
             triOffset = (halfWidth + triX) - screen.width
 
         ctx.lineTo(halfWidth + triOffset + PREVIEW_TRIANGLE.width / 2,
@@ -196,37 +191,27 @@ class PWContainer extends Widget
         ctx.restore()
 
     _calc_size: (allocation)=>
-        console.log("_calc_size:")
-
         return if @_current_group == null
 
-        console.log("_calc_size: @_current_group != null")
-
         if PWContainer._need_move_animation
-            # console.log 'need move animation'
             @border.classList.add('moveAnimation')
             @border.style.display = "block"
         else
             @border.classList.remove('moveAnimation')
             @border.style.display = "none"
 
-        console.log("_calc_size: allocation: #{allocation}")
-
         @pw_width = 0
         @pw_height = 0
         @scale = -1
         if allocation
-            # console.log 'use pw-width'
             @pw_width = allocation.width
             @pw_height = allocation.height || 0
             n = 1
         else
-            # console.log 'calculate'
             n = @_current_group.n_clients.length
             @pw_width = clamp(screen.width / n, 0, PREVIEW_WINDOW_WIDTH)
 
             new_scale = @pw_width / PREVIEW_WINDOW_WIDTH
-            # console.log "@pw_width: #{@pw_width}, new_scale: #{new_scale}"
             @scale = new_scale
 
         if allocation
@@ -242,7 +227,6 @@ class PWContainer extends Widget
         else
             @bg.height = PREVIEW_CONTAINER_HEIGHT * @scale + extraHeight
 
-        console.log("_calc_size: canvas width: #{@bg.width}, height: #{@bg.height}")
         # the container must not contain the shadow and the border
         @border.style.width = @bg.width - (PREVIEW_SHADOW_BLUR + PREVIEW_CONTAINER_BORDER_WIDTH) * 2
         @border.style.height = @bg.height
@@ -255,15 +239,12 @@ class PWContainer extends Widget
         halfWidth = window_width * n / 2
         offset = x - halfWidth
         if halfWidth > x
-            console.log("_calc_size: left overflow")
             offset = PREVIEW_SHADOW_BLUR
         else if halfWidth + x > screen.width
-            console.log("_calc_size: right overflow")
             offset -= (halfWidth + x - screen.width) + PREVIEW_SHADOW_BLUR
         else
             offset = clamp(offset, 5, screen.width - @pw_width)
 
-        console.log("_calc_size: get offset: #{offset}")
         @border.style.webkitTransform = "translateX(#{offset}px)"
 
         bottom = PREVIEW_BOTTOM[settings.displayMode()]
@@ -282,7 +263,6 @@ class PWContainer extends Widget
 
     close: ->
         @is_showing = false
-        console.log("PWContainer::close")
         clearInterval(@_update_id)
         @_current_group = null
         # Object.keys(@_current_pws).forEach((w_id)->
@@ -293,18 +273,14 @@ class PWContainer extends Widget
         update_dock_region()
 
     show_group: (group, allocation, cb)->
-        console.log("show_group:")
         clearTimeout(PWContainer._cancel_move_animation_id)
         PWContainer._cancel_move_animation_id = -1
         return if @_current_group == group and Preview_container.is_showing
-        console.log("show_group: different current_group")
         @hide()
         @_current_group = group
-        # console.log(allocation)
         @_update(allocation, cb)
 
     on_mouseover: (e)=>
-        # console.log("preview container mouseover")
         __clear_timeout()
         clearTimeout(tooltip_hide_id)
         clearTimeout(hide_id)
@@ -312,7 +288,6 @@ class PWContainer extends Widget
         DCore.Dock.require_all_region()
 
     on_mouseout: =>
-        # console.log("preview container mouseout")
         Preview_close(Preview_container._current_group)
 
 
@@ -336,8 +311,6 @@ __clear_timeout = ->
 Preview_show = (group, allocation, cb) ->
     __clear_timeout()
     __SHOW_PREVIEW_ID = setTimeout(->
-        # console.log(allocation)
-        # console.log("Preview_show: show group")
         Preview_container.show_group(group, allocation, cb)
     , 300)
 
@@ -349,17 +322,14 @@ Preview_close_now = (client)->
     for own xid, value of $EW_MAP
         $EW.hide(xid)
     return if Preview_container.is_showing == false
-    console.log("Preview_close_now")
     Preview_container.hide()
     _previewCloseTimer = setTimeout(->
         Preview_container.close()
         PWContainer._need_move_animation = false
         if $tooltip
             if !$tooltip.isShown()
-                console.log("[Preview_close_now.close_timer] tooltip is not shown, not hovered")
                 DCore.Dock.set_is_hovered(false)
         else
-            console.log("[Preview_close_now.close_timer] no tooltip, not hovered")
             DCore.Dock.set_is_hovered(false)
         if debugRegion
             console.warn("[Preview_close_now.close_timer] update_dock_region")
@@ -373,10 +343,8 @@ Preview_close_now = (client)->
     , 500)
 Preview_close = ->
     __clear_timeout()
-    console.log("outof real Preview_close")
     if Preview_container.is_showing
         __CLOSE_PREVIEW_ID = setTimeout(->
-            console.log("Preview_close")
             Preview_close_now(Preview_container._current_group)
         , 500)
 
@@ -446,15 +414,12 @@ class PreviewWindow extends Widget
 
     destroy: ->
         super
-        # console.log("PreviewWindow destroy")
         Preview_container.remove(@)
         if Preview_container.is_showing
             Preview_container._calc_size()
 
     update_size: ->
-        # console.log("PreviewWindow::update_size: #{Preview_container.scale}")
         if Preview_container.scale == -1
-            console.log("scale == -1")
             @element.style.margin = "15px"
             @element.style.width = Preview_container.pw_width + PREVIEW_WINDOW_BORDER_WIDTH * 2
             @element.style.height = Preview_container.pw_height + PREVIEW_WINDOW_BORDER_WIDTH * 2
@@ -463,11 +428,9 @@ class PreviewWindow extends Widget
         else
             @scale = Preview_container.scale || 1
             @element.style.margin = "#{15*@scale}px"
-            # console.log("PWWindow scale: #{@scale}")
             @element.style.width = PREVIEW_WINDOW_WIDTH * @scale
             @element.style.height = PREVIEW_WINDOW_HEIGHT * @scale
             @canvas_width = PREVIEW_CANVAS_WIDTH * @scale
-            # console.log("canvas width: #{@canvas_width}")
             @canvas_height = PREVIEW_CANVAS_HEIGHT * @scale
         if not @applet
             @canvas.setAttribute("width", @canvas_width)
@@ -475,7 +438,6 @@ class PreviewWindow extends Widget
             @canvas_container.style.width = @canvas_width
             @canvas_container.style.height = @canvas_height
         if @applet
-            console.log("set margin to #{PREVIEW_CORNER_RADIUS}")
             @element.style.margin = "#{PREVIEW_CORNER_RADIUS}px"
             @innerBorder.style.width = @canvas_width
             @innerBorder.style.height = @canvas_height
@@ -497,7 +459,6 @@ class PreviewWindow extends Widget
         clientManager?.ActiveWindow(@w_id)
 
     do_mouseover: (e)=>
-        # console.log("preview window mouseover")
         __clear_timeout()
         Preview_container.cancelHide()
         Preview_container.is_showing = true
@@ -507,7 +468,6 @@ class PreviewWindow extends Widget
             Preview_active_window_changed(@w_id)
 
     update_content: =>
-        # console.log("is_showing: #{Preview_container.is_showing}")
         if not Preview_container.is_showing
             return
 
@@ -519,7 +479,6 @@ class PreviewWindow extends Widget
 
         infos = Preview_container._current_group.client_infos
         if @w_id != 0 and infos[@w_id]
-            # console.log("draw_window_preview: #{@canvas_width}, #{@canvas_height}")
             DCore.Dock.draw_window_preview(@canvas, @w_id, @canvas_width, @canvas_height)
             title = infos[@w_id].title
             if title != @title_str

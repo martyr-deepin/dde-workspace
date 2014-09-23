@@ -14,7 +14,6 @@ _moveHoverInfo = ->
     el = document.elementFromPoint($mousePosition.x, $mousePosition.y)
 
     if el
-        console.log("#{el.tagName}##{el.id||""}")
         if el.tagName != "IMG"
             itemEl = null
      else
@@ -35,7 +34,6 @@ _moveHoverInfo = ->
         systemTray?.updateTrayIcon()
         return
 
-    console.log("[_moveHoverInfo] element id: #{itemEl.id}")
     item = Widget.look_up(itemEl.id)
 
     if not item
@@ -46,10 +44,8 @@ _moveHoverInfo = ->
         systemTray?.updateTrayIcon()
         return
 
-    console.log("[_moveHoverInfo] item id: #{item.id}, #{item.isRuntimeApplet()}")
     if item.isNormal() or item.isNormalApplet()
         Preview_close_now()
-        console.log("this item should show tooltip")
         item.tooltip?.on_mouseover()
         # $tooltip?.show()
     else
@@ -73,15 +69,12 @@ createItem = (d)->
     if d.Type == ITEM_TYPE.app
         container = app_list.element
 
-        console.log("AppItem #{d.Id}")
         item = new AppItem(d.Id, icon, title, container)
     else if d.Id == TIME_ID
-        console.log("AppletDateTime")
         time.core = new EntryProxy(d)
         time.init_clientgroup()
         time.core.showQuickWindow()
     else
-        console.log("SystemItem #{d.Id}, #{icon}, #{title}")
         item = new SystemItem(d.Id, icon, title)
 
     updateMaxClientListWidth()
@@ -97,14 +90,10 @@ createItem = (d)->
 
 
 deleteItem = (id)->
-    # console.log("delete item #{id}")
     delete $DBus[id]
-    # id = path.substr(path.lastIndexOf('/') + 1)
     i = Widget.look_up(id)
     if i
         i.destroy()
-    # else
-        # console.log("#{id} not eixst")
 
     updateMaxClientListWidth()
 
@@ -162,20 +151,14 @@ getSiblingFromPoint = (x, y, sentinel, step, stepHandler)->
     while 1
         x = stepHandler(x, step)
         el = document.elementFromPoint(x, y)
-        console.log("#{x}, #{y}")
-        console.log(el)
         if not el
-            console.log("failed")
             return null if not el
         if el.classList?.contains("AppItemImg")
             id = el.parentNode.parentNode.parentNode.id
-            console.log(id)
             if id == sentinel
-                console.log("get self")
                 return null
             return el
         else if el.tagName == "BODY"
-            console.log("FOUND BODY")
             return null
 
 getPreviousSiblingFromPoint = (x, y, sentinel, step=6)->
@@ -186,7 +169,6 @@ getNextSiblingFromPoint = (x, y, sentinel, step=6)->
 
 
 handleMenuUnregister = ->
-    # console.warn("handleMenuUnregister")
     _isRightclicked = false
     hideStatusManager?.updateState()
 
@@ -217,9 +199,6 @@ updateMaxClientListWidth = ->
         trayWidth = 0
         if systemTray and systemTray.items
             trayWidth = (TRAY_ICON_WIDTH + TRAY_ICON_MARGIN * 2) * systemTray.items.length
-            console.warn(TRAY_ICON_WIDTH + TRAY_ICON_MARGIN * 2)
-            console.warn(systemTray.items.length)
-        console.warn("trayWidth: #{trayWidth}, applet:#{$("#trayarea").clientWidth}")
         width = screen.width - $("#trayarea").clientWidth - 32 - trayWidth
         $("#app_list").style.width = width - $("#pre_fixed").clientWidth
     else

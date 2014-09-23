@@ -44,7 +44,6 @@ class AppList
         # FIXME: why drop event is triggered twice???
         e.stopPropagation()
         e.preventDefault()
-        console.log("do drop on app_list")
         _lastHover?.reset()
         dt = e.dataTransfer
         DCore.Dock.set_is_hovered(false)
@@ -52,7 +51,6 @@ class AppList
             console.warn("[AppList.on_drop] update_dock_region")
         update_dock_region()
         if dnd_is_desktop(e)
-            # console.log("is desktop")
             path = dt.getData("text/uri-list").substring("file://".length).trim()
             id = get_path_name(path).replace("_", "-").toLowerCase()
             if not Widget.look_up(id)
@@ -61,7 +59,6 @@ class AppList
                     t = create_element(tag:'div', class: 'AppItem', name:id)
                 else
                     t = t[0]
-                console.log("insert_anchor_item: #{@insert_anchor_item}")
                 if @insert_anchor_item
                     @element.insertBefore(t, @insert_anchor_item)
                 else
@@ -69,17 +66,14 @@ class AppList
 
                 dockedAppManager?.Dock(id, "", "", "")
         else if dnd_is_deepin_item(e)# and @insert_indicator.parentNode == @element
-            console.log("deepin item")
             id = dt.getData(DEEPIN_ITEM_ID)
             _dragTarget = _dragTargetManager.getHandle(id)
             _dragTarget?.dragToBack = false
             item = Widget.look_up(id)
             item?.element.style.display = ''
             if @insert_anchor_item
-                console.log("insertBefore: #{@insert_anchor_item.id}")
                 @element.insertBefore(item.element, @insert_anchor_item)
             else
-                console.log("appendChild")
                 @element.appendChild(item.element)
             sortDockedItem()
 
@@ -89,13 +83,11 @@ class AppList
         update_dock_region()
 
     on_dragover: (e) =>
-        # console.log("start applist dragover")
         e.preventDefault()
         e.stopPropagation()
 
     on_dragleave: (e)=>
         clearTimeout(showIndicatorTimer)
-        console.log("app_list dragleave")
         if debugRegion
             console.warn("[AppList.on_dragleave] update_dock_region")
         update_dock_region()
@@ -103,13 +95,11 @@ class AppList
         e.preventDefault()
 
     on_dragenter: (e)=>
-        console.log("applist dragenter")
         e.stopPropagation()
         e.preventDefault()
         DCore.Dock.require_all_region()
         # if dnd_is_deepin_item(e) or dnd_is_desktop(e)
         #     dataUrl = e.dataTransfer.getData("ItemIcon")
-        #     console.log(dataUrl)
         #     @setInsertIndicator(dataUrl)
 
     swap_item: (src, dest)->

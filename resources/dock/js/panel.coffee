@@ -42,7 +42,6 @@ class Panel
             when DisplayMode.Fashion
                 margin = (screen.width - @panel.width) / 2
                 itemMargin = (screen.width - $("#container").clientWidth) / 2
-                # console.log("clickPointer: (#{x}, #{y}),\nx: [#{margin}, #{itemMargin}), (#{screen.width - itemMargin}, #{screen.width - margin}]\ny:#{screen.height - DOCK_HEIGHT + ITEM_HEIGHT}")
                 return y > screen.height - DOCK_HEIGHT + ICON_HEIGHT || (x >= margin && x < itemMargin || x > screen.width - itemMargin && x <= screen.width - margin)
 
     on_click: (e)=>
@@ -65,7 +64,6 @@ class Panel
         e.preventDefault()
         e.stopPropagation()
         if @inEffectivePanelWorkarea(e.clientX, e.clientY)
-            # console.warn("menu click posiition: #{e.screenX}, #{e.screenY}")
             @globalMenu.showMenu(e.screenX, e.screenY)
             Preview_close_now()
             $tooltip?.hide()
@@ -76,7 +74,6 @@ class Panel
         img
 
     redraw: =>
-        # console.log("panel redraw")
         @draw()
 
     draw: =>
@@ -145,14 +142,16 @@ class Panel
 
     updateWithAnimation:=>
         @cancelAnimation()
-        console.warn("[Panel.updateWithAnimation] update_dock_region")
+        if debugRegion
+            console.warn("[Panel.updateWithAnimation] update_dock_region")
         update_dock_region($("#container").clientWidth)
         panel.set_width(Panel.getPanelMiddleWidth())
         @calcTimer = webkitRequestAnimationFrame(@updateWithAnimation)
 
     cancelAnimation:=>
         webkitCancelAnimationFrame(@calcTimer || null)
-        console.warn("[Panel.cancelAnimation] update_dock_region")
+        if debugRegion
+            console.warn("[Panel.cancelAnimation] update_dock_region")
         update_dock_region($("#container").clientWidth)
 
     # TODO: remove it.

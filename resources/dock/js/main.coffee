@@ -38,19 +38,16 @@ initDock = ->
     trash = null
 
     for path in entries
-        console.log(path)
         try
             d = DCore.DBus.session_object("com.deepin.daemon.Dock", path, "dde.dock.EntryProxyer")
         catch e
             console.log(e)
             continue
-        console.log("init add: #{d.Id}")
         if d.Id == TRASH_ID
             trash = new Trash(TRASH_ID, Trash.get_icon(DCore.DEntry.get_trash_count()), _("Trash"))
             trash.core = d
             trash.is_opened = true
             xids = JSON.parse(d.Data[ITEM_DATA_FIELD.xids])
-            console.log(xids[0])
             trash.w_id = xids[0].Xid
             trash.show_indicator()
         else if !Widget.look_up(d.Id)
@@ -66,18 +63,15 @@ initDock = ->
     )
 
     entryManager.connect("Added", (path)->
-        console.log("entry manager Added signal is emited: #{path}")
         try
             d = DCore.DBus.session_object("com.deepin.daemon.Dock", path, "dde.dock.EntryProxyer")
         catch e
             console.log(e)
             return
-        console.log("try to Add #{d.Id}")
         if d.Id == TRASH_ID
             trash.is_opened = true
             trash.core = d
             xids = JSON.parse(d.Data[ITEM_DATA_FIELD.xids])
-            console.log(xids[0])
             trash.w_id = xids[0].Xid
             trash.show_indicator()
             return
@@ -85,9 +79,7 @@ initDock = ->
         if Widget.look_up(d.Id)
             return
 
-        console.log("Added #{path}")
         createItem(d)
-        # console.log("added done")
         calc_app_item_size()
         if systemTray?.isShowing
             systemTray.updateTrayIcon()
@@ -104,7 +96,6 @@ initDock = ->
     )
 
     entryManager.connect("Removed", (id)->
-        console.log("entry manager Removed signal is emited: #{id}")
         if id == TRASH_ID
             t = Widget.look_up(id)
             t.core = null
@@ -141,7 +132,6 @@ initDock = ->
     , 100)
 
     if settings.hideMode() == HideMode.KeepHidden
-        console.log("hide mode is KeepHidden")
         setTimeout(->
             IN_INIT = false
             READY_FOR_TRAY_ICONS = true
