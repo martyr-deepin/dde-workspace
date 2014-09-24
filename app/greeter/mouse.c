@@ -48,10 +48,10 @@ gboolean is_in_rect(int x, int y, struct DisplayInfo info)
     int x1 = info.x + info.width;
     int y1 = info.y + info.height;
     if(is_in_range(x,x0,x1) && is_in_range(y,y0,y1)){
-        g_debug("[%s]:: (%d,%d) is in (%d,%d,%d,%d)",__func__, x, y, x0, y0, x1, y1);
+        g_message("[%s]:: (%d,%d) is in (%d,%d,%d,%d)",__func__, x, y, x0, y0, x1, y1);
         return TRUE;
     }else{
-        g_debug("[%s]:: (%d,%d) is not in (%d,%d,%d,%d)",__func__, x, y, x0, y0, x1, y1);
+        g_message("[%s]:: (%d,%d) is not in (%d,%d,%d,%d)",__func__, x, y, x0, y0, x1, y1);
         return FALSE;
     }
 }
@@ -71,7 +71,7 @@ gboolean update_workarea_rect_by_mouse(struct DisplayInfo* area)
     area->width = info.width;
     area->height = info.height;
     area->index = info.index;
-    g_debug("[%s]:: index:[%d]:: %d*%d (%d,%d)",__func__, area->index,area->width,area->height,area->x,area->y);
+    g_message("[%s]:: index:[%d]:: %d*%d (%d,%d)",__func__, area->index,area->width,area->height,area->x,area->y);
     return TRUE;
 }
 
@@ -79,7 +79,7 @@ gboolean leave_notify(GtkWidget* widget,
                       GdkEventCrossing* e G_GNUC_UNUSED,
                       gpointer data G_GNUC_UNUSED)
 {
-    g_debug("======[%s]=======",__func__);
+    g_message("======[%s]=======",__func__);
     struct DisplayInfo info;
     update_workarea_rect_by_mouse(&info);
     widget_move_by_rect(widget,info);

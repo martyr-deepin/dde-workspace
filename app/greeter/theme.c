@@ -64,14 +64,14 @@ void set_theme_background(GtkWidget* container,GtkWidget* child)
     background_info_set_background_by_file(bg_info, bg_path);
 }
 
-void draw_background_by_theme(GtkWidget* widget,struct DisplayInfo info)
+void draw_background_by_theme(GtkWidget* widget, GtkWidget* child, struct DisplayInfo info)
 {
     g_message("[%s], :%dx%d(%d,%d)",__func__, info.width, info.height, info.x, info.y);
 
     gtk_widget_set_size_request(widget, info.width, info.height);
     gtk_window_move(GTK_WINDOW(widget), info.x, info.y);
 
-    set_theme_background(widget,NULL);
+    set_theme_background(widget,child);
     gtk_widget_realize (widget);
     GdkWindow* gdkwindow = gtk_widget_get_window (widget);
     gdk_window_set_accept_focus(gdkwindow,FALSE);

@@ -8,7 +8,7 @@ body{
     background-size:cover;
     background-repeat:no-repeat;
     background-attachment:fixed;
-    
+
     font-size:62.5%;
 }
 
@@ -18,7 +18,7 @@ body{
 .div_users{
     position:fixed;
     z-index:10;
-    
+
     display:-webkit-box;
     -webkit-box-pack:center;
     -webkit-box-align:center;
@@ -27,7 +27,7 @@ body{
 .div_keyboard{
     position:fixed;
     z-index:10;
-    
+
     display:-webkit-box;
     -webkit-box-pack:center;
     -webkit-box-align:center;
@@ -38,7 +38,7 @@ body{
     z-index:10;
     bottom:3.5em;
     left:3em;
-    
+
     display:-webkit-box;
     -webkit-box-pack:center;
     -webkit-box-align:center;
@@ -49,7 +49,7 @@ body{
     z-index:10;
     bottom:3.0em;
     right:19em;
-    
+
     display:-webkit-box;
     -webkit-box-pack:center;
     -webkit-box-align:center;
@@ -61,7 +61,7 @@ body{
     z-index:10;
     bottom:3.0em;
     right:11em;
-    
+
     display:-webkit-box;
     -webkit-box-pack:center;
     -webkit-box-align:center;
@@ -75,10 +75,8 @@ body{
     z-index:10;
     bottom:3.0em;
     right:3em;
-    
+
     display:-webkit-box;
     -webkit-box-pack:center;
     -webkit-box-align:center;
 }
-
-

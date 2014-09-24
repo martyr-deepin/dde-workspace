@@ -430,7 +430,7 @@ gboolean is_livecd ()
     return result;
 }
 
-void spawn_command_sync (const char* command,gboolean sync)
+gboolean spawn_command_sync (const char* command,gboolean sync)
 {
     GError *error = NULL;
     const gchar *cmd = g_strdup_printf ("%s",command);
@@ -445,6 +445,8 @@ void spawn_command_sync (const char* command,gboolean sync)
         g_warning ("%s failed:%s\n",cmd, error->message);
         g_error_free (error);
         error = NULL;
+        return FALSE;
     }
+    return TRUE;
 }
 

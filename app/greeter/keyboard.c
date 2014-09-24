@@ -161,7 +161,7 @@ JSObjectRef greeter_get_user_config_list(const gchar* username)
     GKeyFile* key_file = g_key_file_new();
     gboolean load = g_key_file_load_from_file (key_file,USER_INI_PATH , G_KEY_FILE_NONE, NULL);
     g_message("greeter_get_user_config_list key_file %s load:%d",USER_INI_PATH,load);
-    
+
     gchar* current_layout = g_key_file_get_string(key_file,username,"KeyboardLayout",NULL);
     gchar* greeter_theme = g_key_file_get_string(key_file,username,"GreeterTheme",NULL);
 
@@ -169,7 +169,7 @@ JSObjectRef greeter_get_user_config_list(const gchar* username)
     json_append_string(json,"username",username);
     json_append_string(json,"currentlayout",current_layout);
     json_append_string(json,"greetertheme",greeter_theme);
-        
+
     g_free(current_layout);
     g_free(greeter_theme);
     return json;
@@ -181,7 +181,7 @@ JSObjectRef greeter_get_user_layouts(const gchar* username)
     GKeyFile* key_file = g_key_file_new();
     gboolean load = g_key_file_load_from_file (key_file,USER_INI_PATH , G_KEY_FILE_NONE, NULL);
     g_message("greeter_get_user_layouts key_file %s load:%d",USER_INI_PATH,load);
-    
+
     gchar** layouts = g_key_file_get_string_list(key_file,username,"KeyboardLayoutList",NULL,NULL);
     JSObjectRef obj = export_layouts_des(layouts);
     g_strfreev(layouts);
@@ -235,5 +235,3 @@ JSObjectRef greeter_lightdm_get_layouts ()
     }
     return array;
 }
-
-

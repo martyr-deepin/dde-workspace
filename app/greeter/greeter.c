@@ -39,7 +39,8 @@
 #include "i18n.h"
 #include "utils.h"
 #include "mutils.h"
-#include "background.h"
+#include "display_info.h"
+#include "mouse.h"
 
 #include "user.h"
 #include "session.h"
@@ -50,11 +51,15 @@
 
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/greeter.html"
 
-static GtkWidget* container = NULL;
-static GtkWidget* webview = NULL;
 LightDMGreeter *greeter;
 GKeyFile *greeter_keyfile;
 gchar* greeter_file;
+
+PRIVATE GtkWidget* bg_window = NULL;
+static GtkWidget* container = NULL;
+
+PRIVATE struct DisplayInfo rect_screen;
+PRIVATE struct DisplayInfo rect_workarea;
 
 struct AuthHandler {
     gchar *username;
@@ -243,17 +248,103 @@ gboolean greeter_start_session (const gchar *username, const gchar *password, co
     return ret;
 }
 
-int main (int argc, char **argv)
+static gboolean
+monitors_extend()
 {
-    g_message("-------------greeter main--------------");
-    if (argc == 2 && 0 == g_strcmp0(argv[1], "-d"))
-        g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
+    g_message("====%s====start",__func__);
+    GdkScreen* screen = gdk_screen_get_default();
+    if (screen == NULL) return FALSE;
+    gint len = gdk_screen_get_n_monitors(screen);
+    g_message("[%s]:len:%d",__func__,len);
+    if (len < 2) return TRUE;
 
+    gchar* xrandr_primary = NULL;
+    gchar* xrandr_extend = "";
+    for (int i = 0; i < len; i++){
+        gchar* name = gdk_screen_get_monitor_plug_name(screen,i);
+        g_message("[%s]:name[%d]:%s",__func__, i, name);
+        if (i == 0){
+            xrandr_primary = g_strdup_printf(" %s --auto",name);
+        }else{
+            gchar* extend = g_strdup_printf(" --right-of %s",name);
+            gchar* xrandr_extend_tmp = g_strdup(xrandr_extend);
+            xrandr_extend = NULL;
+            xrandr_extend = g_strconcat(xrandr_extend_tmp,extend,NULL);
+            g_free(extend);
+            g_free(xrandr_extend_tmp);
+        }
+        g_free(name);
+    }
+    gchar* cmd = g_strconcat("/usr/bin/xrandr --output", xrandr_primary, xrandr_extend, NULL);
+    g_free(xrandr_primary);
+    g_free(xrandr_extend);
 
-    init_i18n ();
-    init_theme();
-    gtk_init (&argc, &argv);
+    gboolean result = spawn_command_sync(cmd,FALSE);
+    g_message("[%s]:cmd:%s,succeed:%d",__func__,cmd,result);
+    g_free(cmd);
+    return result;
+}
 
+static gboolean
+monitors_set_cb ()
+{
+    gint len = update_monitors_num();
+    g_message("====%s====monitors len:%d",__func__,len);
+    if (len > 1){
+        update_screen_info(&rect_screen);
+        bg_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+        draw_background_by_theme(bg_window,NULL,rect_screen);
+    }
+
+    container = create_web_container (FALSE, TRUE);
+    update_workarea_rect_by_mouse(&rect_workarea);
+    widget_move_by_rect(container,rect_workarea);
+    gtk_window_set_decorated (GTK_WINDOW (container), FALSE);
+    listen_leave_notify_signal(container, NULL);
+
+    GtkWidget* webview = d_webview_new_with_uri (GREETER_HTML_PATH);
+    gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
+    g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
+
+    set_theme_background(container,webview);
+
+    gtk_widget_realize (webview);
+    gtk_widget_realize (container);
+
+    GdkWindow* gdkwindow = gtk_widget_get_window (container);
+    GdkRGBA rgba = { 0, 0, 0, 0.0 };
+    gdk_window_set_background_rgba (gdkwindow, &rgba);
+    gdk_window_set_skip_taskbar_hint (gdkwindow, TRUE);
+    gdk_window_set_keep_above (gdkwindow, TRUE);
+    gdk_window_set_accept_focus(gdkwindow,TRUE);
+    GdkCursor* cursor = gdk_cursor_new (GDK_LEFT_PTR);
+    gdk_window_set_cursor (gdk_get_default_root_window (), cursor);
+    g_object_unref(cursor);
+
+    gtk_widget_show_all (container);
+
+    /*turn_numlock_on ();*/
+
+    return FALSE;
+}
+
+static gboolean
+init_monitors ()
+{
+    g_message("====%s====start",__func__);
+    gboolean xrandr = monitors_extend();
+    g_message("====%s====succeed:%d",__func__, xrandr);
+    if (xrandr){
+        g_timeout_add(500,(GSourceFunc)monitors_set_cb,NULL);
+        return FALSE;
+    }else
+        return TRUE;
+}
+
+static void
+init_lightdm ()
+{
+    g_message("====%s====",__func__);
     greeter = lightdm_greeter_new ();
     g_assert (greeter);
 
@@ -263,7 +354,7 @@ int main (int argc, char **argv)
     //g_signal_connect(greeter, "autologin-timer-expired", G_CALLBACK(autologin_timer_expired_cb), NULL);
 
     if(!lightdm_greeter_connect_sync (greeter, NULL)){
-        g_warning ("connect greeter failed\n");
+        g_message ("connect greeter failed\n");
         exit (EXIT_FAILURE);
     }
 
@@ -278,29 +369,21 @@ int main (int argc, char **argv)
 
     greeter_keyfile = g_key_file_new ();
     g_key_file_load_from_file (greeter_keyfile, greeter_file, G_KEY_FILE_NONE, NULL);
+}
 
-    container = create_web_container (FALSE, TRUE);
-    gtk_window_set_decorated (GTK_WINDOW (container), FALSE);
+int main (int argc, char **argv)
+{
+    g_message("-------------greeter main--------------");
+    g_setenv("G_MESSAGES_DEBUG", "all", TRUE);
 
-    webview = d_webview_new_with_uri (GREETER_HTML_PATH);
-    gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
+    init_i18n ();
+    init_theme();
+    gtk_init (&argc, &argv);
 
-    set_theme_background(container,webview);
+    init_lightdm();
 
-    gtk_widget_realize (webview);
-    gtk_widget_realize (container);
+    g_timeout_add(50,(GSourceFunc)init_monitors,NULL);
 
-    GdkWindow* gdkwindow = gtk_widget_get_window (container);
-    GdkRGBA rgba = { 0, 0, 0, 0.0 };
-    gdk_window_set_background_rgba (gdkwindow, &rgba);
-    gdk_window_set_skip_taskbar_hint (gdkwindow, TRUE);
-    GdkCursor* cursor = gdk_cursor_new (GDK_LEFT_PTR);
-    gdk_window_set_cursor (gdk_get_default_root_window (), cursor);
-    g_object_unref(cursor);
-    gtk_widget_show_all (container);
-
- //   monitor_resource_file("greeter", webview);
-    /*turn_numlock_on ();*/
     gtk_main ();
     return 0;
 }

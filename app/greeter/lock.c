@@ -225,7 +225,7 @@ int main (int argc, char **argv)
     update_screen_info(&rect_screen);
 
     bg_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    draw_background_by_theme(bg_window,rect_screen);
+    draw_background_by_theme(bg_window,NULL,rect_screen);
 
     container = create_web_container (FALSE, TRUE);
     widget_move_by_rect(container,rect_workarea);
