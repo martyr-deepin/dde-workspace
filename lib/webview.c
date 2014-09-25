@@ -205,9 +205,11 @@ GtkWidget* d_webview_new()
             /*"enable-default-context-menu", FALSE,*/
             "enable-developer-extras", TRUE,
             /*"html5-local-storage-database-path", cfg_path,*/
+            "enable-dom-paste", TRUE,
             "enable-plugins", FALSE,
             "javascript-can-access-clipboard", TRUE,
             NULL);
+    webkit_web_view_set_settings (WEBKIT_WEB_VIEW(webview), setting);
 
     char* cfg_path = g_build_filename(g_get_user_config_dir(), "deepin-desktop", NULL);
     webkit_set_web_database_directory_path(cfg_path);
@@ -252,4 +254,3 @@ void monitor_resource_file(const char* app, GtkWidget* webview)
     g_signal_connect(m_js, "changed", G_CALLBACK(reload_webview), webview);
     g_signal_connect(m_css, "changed", G_CALLBACK(reload_webview), webview);
 }
-

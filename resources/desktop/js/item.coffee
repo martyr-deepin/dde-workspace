@@ -95,8 +95,8 @@ class Item extends Widget
         @item_name = document.createElement("div")
         @item_name.className = "item_name"
         el.appendChild(@item_name)
+        @rename_menu = null
         @item_update()
-
 
     destroy : ->
         if (@_position.x > -1) and (@_position.y > -1) then clear_occupy(@id, @_position)
@@ -363,16 +363,64 @@ class Item extends Widget
     item_exec : =>
         DCore.DEntry.launch(@_entry, [])
 
-    contextmenu_event_handler: (e)=>
+    is_rename_text_select: ->
+        select = window.getSelection().toString()
+        len = select.length
+        return (0 != len)
+
+    can_paste_text: ->
+        DCore.Desktop.can_paste_text()
+
+    select_all_name_text: ->
+        ws = window.getSelection()
+        ws.removeAllRanges()
+        range = document.createRange()
+        range.setStart(@item_name.childNodes[0], 0)
+        range.setEnd(@item_name.childNodes[0], @item_name.childNodes[0].length)
+        ws.addRange(range)
+        @item_name.focus()
+
+    contextmenu_event_handler: (e) =>
+        console.log "contextmenu_event_handler"
         if not @in_rename
             e.preventDefault()
         else
             e.stopPropagation()
-            # first make the contextmenu not showed when is in_renaming
-            #e.preventDefault()
-            #TODO:new Menu of deepin when in_rename instead of webkit menu
-            # menu = []
-            # @item_name.parentElement.contextMenu = build_menu(menu)
+            e.preventDefault()
+
+            @rename_menu?.destroy()
+            @rename_menu = null
+            menus = [
+                DEEPIN_MENU_TYPE.NORMAL,
+                [1,_("_Cut"),@is_rename_text_select()],
+                [2,_("_Paste"),@can_paste_text()],
+                [3,_("_Copy"),@is_rename_text_select()],
+                [4,_("_Delete"),@is_rename_text_select()],
+                [],
+                [5,_("_Select All")]
+            ]
+            @rename_menu = build_menu(menus)
+            @rename_menu?.addListener(@rename_do_itemselected)
+            @rename_menu?.showMenu(e.screenX, e.screenY)
+            @rename_menu?.unregisterHook(=>
+                DCore.Desktop.force_get_input_focus()
+                @item_name.focus()
+            )
+
+    rename_do_itemselected: (id) =>
+        id = parseInt(id)
+        console.debug "rename_do_itemselected:#{id}"
+        @item_name.focus()
+        switch id
+            when 1 then document.execCommand("cut")
+            when 2 then document.execCommand("paste")
+            when 3 then document.execCommand("copy")
+            when 4 then document.execCommand("delete")
+            when 5 then @select_all_name_text()
+            else
+                echo "not implemented function #{id}"
+        @rename_menu?.destroy()
+        @rename_menu = null
 
     item_rename : =>
         if @delay_rename_tid != -1 then
@@ -397,14 +445,7 @@ class Item extends Widget
             @item_name.addEventListener("input", @on_item_rename_input)
 
             @item_name.focus()
-
-            ws = window.getSelection()
-            ws.removeAllRanges()
-            range = document.createRange()
-            range.setStart(@item_name.childNodes[0], 0)
-            range.setEnd(@item_name.childNodes[0], @item_name.childNodes[0].length)
-            ws.addRange(range)
-
+            @select_all_name_text()
             @in_rename = true
         return
 

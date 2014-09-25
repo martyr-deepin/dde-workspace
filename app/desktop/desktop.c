@@ -593,6 +593,13 @@ void monitors_changed_cb()
     update_workarea_size();
 }
 
+
+JS_EXPORT_API
+gboolean desktop_can_paste_text()
+{
+    return webkit_web_view_can_paste_clipboard(WEBKIT_WEB_VIEW(webview));
+}
+
 int main(int argc, char* argv[])
 {
     if (argc == 2 && 0 == g_strcmp0(argv[1], "-d")){
