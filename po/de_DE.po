@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-09-04 22:15+0800\n"
-"PO-Revision-Date: 2014-09-13 20:46+0000\n"
+"PO-Revision-Date: 2014-09-26 12:51+0000\n"
 "Last-Translator: webcrush <chris.plescher@yahoo.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/projects/p/deepin-desktop-environment/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -195,7 +195,7 @@ msgstr "_Automatisch verstecken"
 
 #: ../resources/dock/js/global_menu.coffee:24
 msgid "_Fashion mode"
-msgstr ""
+msgstr "_Fashion mode"
 
 #: ../resources/dock/js/global_menu.coffee:25
 msgid "_Efficient mode"
@@ -346,7 +346,7 @@ msgstr "Hier ist der Bereich zu den Systemeinstellungen"
 msgid ""
 "tips: Hover the setting icon on dock to quickly implement some setting "
 "functions"
-msgstr ""
+msgstr "Tipps: Bewegen Sie das Symbol Einstellung am Dock, um schnell einige Funktionen  zu implementieren"
 
 #: ../resources/guide/js/desktop.coffee:27
 msgid ""
@@ -372,7 +372,7 @@ msgstr ""
 msgid ""
 "tips: Please trigger successively by hints, click on the blank area to "
 "return"
-msgstr ""
+msgstr "Tipps: Bitte nacheinander die Hinweise auslösen, klicken Sie auf den leeren Bereich um zurückkehren"
 
 #: ../resources/guide/js/desktop.coffee:133
 msgid "Show/Hide Launcher"
@@ -398,7 +398,7 @@ msgstr "Führen Sie einen Rechtsklick auf eine leere Fläche auf Ihrem Desktop a
 
 #: ../resources/guide/js/desktop.coffee:179
 msgid "tips: Click on the interface of corner navigation blank area to return"
-msgstr ""
+msgstr "Tipps: Klicken Sie auf den leeren Eckbereich der Navigation um zurückkehren"
 
 #: ../resources/guide/js/desktop.coffee:196
 #: ../resources/desktop/js/grid.coffee:1045
@@ -519,7 +519,7 @@ msgstr "Benutzen Sie die Rechtsklick Taste Ihrer Maus um zwei Symbole an den Des
 
 #: ../resources/guide/js/launcher.coffee:182
 msgid "tips: You can add it to startup items or uninstall it"
-msgstr ""
+msgstr "Tipps: Sie können Autostart-Objekte hinzufügen oder deinstallieren"
 
 #: ../resources/desktop/js/grid.coffee:71 ../lib/dentry/fileops.c:403
 msgid "Untitled"

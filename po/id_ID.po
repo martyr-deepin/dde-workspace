@@ -6,13 +6,14 @@
 # Aril Apria Susanto <awriel@gmail.com>, 2014
 # Yugo Purwanto <dedy.yugo.purwanto@gmail.com>, 2014
 # etc session, 2014
+# Yugo Purwanto <dedy.yugo.purwanto@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-09-04 22:15+0800\n"
-"PO-Revision-Date: 2014-09-04 08:22+0000\n"
-"Last-Translator: szd_liufei <liufei@linuxdeepin.com>\n"
+"PO-Revision-Date: 2014-09-24 08:12+0000\n"
+"Last-Translator: Yugo Purwanto <dedy.yugo.purwanto@gmail.com>\n"
 "Language-Team: Indonesian (Indonesia) (http://www.transifex.com/projects/p/deepin-desktop-environment/language/id_ID/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,7 +23,7 @@ msgstr ""
 
 #: ../resources/greeter/js/mediacontrol.coffee:167
 msgid "Click button to Play"
-msgstr ""
+msgstr "Klik tombol untuk Memainkan"
 
 #: ../resources/greeter/js/message.coffee:105
 #: ../resources/greeter/js/message.coffee:82
@@ -231,7 +232,7 @@ msgstr "Apakah Anda yakin untuk menghapus"
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
 #: ../resources/launcher/js/item.coffee:354
 msgid "All dependencies will be removed"
-msgstr ""
+msgstr "Semua ketergantungan akan dihapus"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
 #: ../resources/launcher/js/item.coffee:354
@@ -300,7 +301,7 @@ msgstr "Kirim ke d_esktop"
 
 #: ../resources/launcher/js/const.coffee:85
 msgid "Remove from d_esktop"
-msgstr ""
+msgstr "Hapus dari d_esktop"
 
 #: ../resources/launcher/js/const.coffee:88
 #: ../resources/guide/js/launcher.coffee:216
@@ -309,7 +310,7 @@ msgstr "Kirim ke do_ck"
 
 #: ../resources/launcher/js/const.coffee:89
 msgid "Remove from do_ck"
-msgstr ""
+msgstr "Hapus dari do_ck"
 
 #: ../resources/launcher/js/item.coffee:276
 #: ../resources/guide/js/launcher.coffee:212
@@ -332,7 +333,7 @@ msgstr "Oow, silakan arahkan ke pojok kanan bawah lagi"
 
 #: ../resources/guide/js/dss.coffee:30
 msgid "tips: Click the setting icon on dock to implement"
-msgstr ""
+msgstr "tips: Klik pada icon pengaturan pada dock untuk mengimplementasikan"
 
 #: ../resources/guide/js/dss.coffee:69
 msgid "Here is the system setting area"
@@ -356,7 +357,7 @@ msgstr "Baiklah, Anda sudah mempelajari bagaimana membuat sebuah \"grup aplikasi
 
 #: ../resources/guide/js/desktop.coffee:117
 msgid "tips: Right-click on the application group will provide more functions"
-msgstr ""
+msgstr "tips: Klik kanan pada grup aplikasi akan menyediakan fungsi lainnya"
 
 #: ../resources/guide/js/desktop.coffee:128
 msgid ""
@@ -604,7 +605,7 @@ msgstr "Ekstrak_Di Sini"
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
-msgstr ""
+msgstr "Duplikat"
 
 #: ../resources/osd/js/monitor.coffee:39
 msgid "Extend"
@@ -620,7 +621,7 @@ msgstr ""
 
 #: ../app/greeter/lock.c:125 ../app/greeter/greeter.c:192
 msgid "Wrong Password"
-msgstr ""
+msgstr "Katasandi Salah"
 
 #: ../app/greeter/mutils.c:84
 msgid "%a, %b %d, %Y"
@@ -743,7 +744,7 @@ msgstr "Folder lain dengan nama yang sama sudah tersedia di \"%s\""
 
 #: ../lib/dentry/fileops_error_dialog.c:236
 msgid "All files in the folder will be removed by replacing."
-msgstr ""
+msgstr "Semua berkas pada folder akan dihapus dengan cara ditimpa."
 
 #: ../lib/dentry/fileops_error_dialog.c:237
 #, c-format
@@ -762,7 +763,7 @@ msgstr "Apakah Anda ingin menimpa berkas \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:246
 msgid "The content will be overwritten by replacing."
-msgstr ""
+msgstr "Semua konten akan ditimpa dengan cara ditimpa."
 
 #: ../lib/dentry/fileops_error_dialog.c:248
 #, c-format
@@ -896,4 +897,4 @@ msgstr "utiliti"
 
 #: ../lib/category.c:56
 msgid "others"
-msgstr ""
+msgstr "lainnya"

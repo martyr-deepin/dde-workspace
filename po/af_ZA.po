@@ -3,24 +3,24 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Maxximo88 <real.massimo@hotmail.it>, 2014
+# Jacques Strydom <jacquesafro@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-09-04 22:15+0800\n"
-"PO-Revision-Date: 2014-09-24 08:12+0000\n"
-"Last-Translator: Maxximo88 <real.massimo@hotmail.it>\n"
-"Language-Team: Italian (http://www.transifex.com/projects/p/deepin-desktop-environment/language/it/)\n"
+"PO-Revision-Date: 2014-09-24 10:06+0000\n"
+"Last-Translator: Jacques Strydom <jacquesafro@gmail.com>\n"
+"Language-Team: Afrikaans (South Africa) (http://www.transifex.com/projects/p/deepin-desktop-environment/language/af_ZA/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: it\n"
+"Language: af_ZA\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../resources/greeter/js/mediacontrol.coffee:167
 msgid "Click button to Play"
-msgstr "Clicca per avviare"
+msgstr "Druk op die knoppie om te speel"
 
 #: ../resources/greeter/js/message.coffee:105
 #: ../resources/greeter/js/message.coffee:82
@@ -30,13 +30,13 @@ msgstr "$ sudo reboot\n"
 #: ../resources/greeter/js/message.coffee:99
 #: ../resources/greeter/js/message.coffee:73
 msgid "Press Ctrl + Alt + F1\n"
-msgstr "Premi Ctrl + Alt + F1\n"
+msgstr "Druk Ctrl + Alt + F1\n"
 
 #: ../resources/greeter/js/message.coffee:95
 msgid ""
 "\t\t\t\t-----The daemon of accounts has not started!-----\n"
 ")"
-msgstr "\t\t\t\t-----Il daemon of accounts non è partito!-----\n)"
+msgstr "\t\t\t\t-----Die agtergrondproses van rekeninge is nog nie begin nie!-----\n)"
 
 #: ../resources/greeter/js/message.coffee:79
 msgid "$ sudo apt-get install deepin-desktop-Environment\n"
@@ -44,15 +44,15 @@ msgstr "$ sudo apt-get install deepin-desktop-Environment\n"
 
 #: ../resources/greeter/js/message.coffee:68
 msgid "\t\t\t\t-----No available desktop sessions!-----\n"
-msgstr "\t\t\t\t-----Non disponibile in questa sessione Desktop!-----\n"
+msgstr "\t\t\t\t-----Geen beskikbaar lessenaar sessies!-----\n"
 
 #: ../resources/greeter/js/user.coffee:411
 msgid "Login"
-msgstr "Login"
+msgstr "Teken in"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jan"
-msgstr "Gen"
+msgstr "Jan"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Feb"
@@ -68,27 +68,27 @@ msgstr "Apr"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "May"
-msgstr "Mag"
+msgstr "Mei"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jun"
-msgstr "Giu"
+msgstr "Jun"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jul"
-msgstr "Lug"
+msgstr "Jul"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Aug"
-msgstr "Ago"
+msgstr "Aug"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Sep"
-msgstr "Set"
+msgstr "Sep"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Oct"
-msgstr "Ott"
+msgstr "Okt"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Nov"
@@ -96,122 +96,122 @@ msgstr "Nov"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Dec"
-msgstr "Dic"
+msgstr "Des"
 
 #: ../resources/greeter/js/time.coffee:44
 #: ../resources/dock/js/plugins/time/time.coffee:2
 msgid "Sun"
-msgstr "Dom"
+msgstr "Son"
 
 #: ../resources/greeter/js/time.coffee:44
 #: ../resources/dock/js/plugins/time/time.coffee:2
 msgid "Mon"
-msgstr "Lun"
+msgstr "Maa"
 
 #: ../resources/greeter/js/time.coffee:44
 #: ../resources/dock/js/plugins/time/time.coffee:2
 msgid "Tue"
-msgstr "Mar"
+msgstr "Din"
 
 #: ../resources/greeter/js/time.coffee:44
 #: ../resources/dock/js/plugins/time/time.coffee:2
 msgid "Wed"
-msgstr "Mer"
+msgstr "Woe"
 
 #: ../resources/greeter/js/time.coffee:44
 #: ../resources/dock/js/plugins/time/time.coffee:2
 msgid "Thu"
-msgstr "Gio"
+msgstr "Don"
 
 #: ../resources/greeter/js/time.coffee:44
 #: ../resources/dock/js/plugins/time/time.coffee:2
 msgid "Fri"
-msgstr "Ven"
+msgstr "Fry"
 
 #: ../resources/greeter/js/time.coffee:44
 #: ../resources/dock/js/plugins/time/time.coffee:2
 msgid "Sat"
-msgstr "Sab"
+msgstr "Sat"
 
 #: ../resources/greeter/js/usermenu.coffee:57
 msgid "Guest"
-msgstr "Guest"
+msgstr "Gas"
 
 #: ../resources/greeter/js/powermenu.coffee:26
 msgid "Shut down"
-msgstr "Arresta"
+msgstr "Skakel af"
 
 #: ../resources/greeter/js/powermenu.coffee:27
 msgid "Restart"
-msgstr "Riavvia"
+msgstr "Herlaai"
 
 #: ../resources/greeter/js/powermenu.coffee:28
 msgid "Suspend"
-msgstr "Sospendi"
+msgstr "Opskort"
 
 #: ../resources/greeter/js/powermenu.coffee:90
 msgid "Enter your password to %1"
-msgstr "Immetti la password in %1"
+msgstr "Gee jou wagwoord te om %1"
 
 #: ../resources/dock/js/deepin_item.coffee:247
 msgid "_View as analog"
-msgstr "_Mostra analogico"
+msgstr "_Wys as analoog"
 
 #: ../resources/dock/js/deepin_item.coffee:248
 #: ../resources/dock/js/deepin_item.coffee:300
 msgid "_Time settings"
-msgstr "_Impostazioni orario"
+msgstr "_Tyd verstellings"
 
 #: ../resources/dock/js/deepin_item.coffee:299
 msgid "_View as digit"
-msgstr "_Mostra digitale"
+msgstr "_Wys as digitaal"
 
 #: ../resources/dock/js/main.coffee:49 ../resources/dock/js/main.coffee:126
 #: ../resources/desktop/js/specialitem.coffee:87
 msgid "Trash"
-msgstr "Cestino"
+msgstr "Asblik"
 
 #: ../resources/dock/js/main.coffee:124 ../resources/zone/js/utils.coffee:10
 msgid "Launcher"
-msgstr "Launcher"
+msgstr "Lanseerder"
 
 #: ../resources/dock/js/global_menu.coffee:9
 msgid "Keep _showing"
-msgstr "_Mostra"
+msgstr "Hou _vertoon"
 
 #: ../resources/dock/js/global_menu.coffee:10
 msgid "Keep _hidden"
-msgstr "_Nascondi"
+msgstr "Hou _weggesteek"
 
 #: ../resources/dock/js/global_menu.coffee:11
 msgid "_Auto hide"
-msgstr "_Nascondi automaticamente"
+msgstr "_Outo wegsteek"
 
 #: ../resources/dock/js/global_menu.coffee:24
 msgid "_Fashion mode"
-msgstr "Modalità _Fashion"
+msgstr "_Mode modus"
 
 #: ../resources/dock/js/global_menu.coffee:25
 msgid "_Efficient mode"
-msgstr "Modalità _Efficiente"
+msgstr "_Doeltreffendheid modus"
 
 #: ../resources/dock/js/global_menu.coffee:26
 msgid "_Classic mode"
-msgstr "Modalità _Classica"
+msgstr "_Klassiek modus"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:29
 #: ../resources/desktop/js/specialitem.coffee:156
 msgid "_Empty"
-msgstr "_Vuoto"
+msgstr "_Leeg"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:33
 msgid "_Close"
-msgstr "_Chiudi"
+msgstr "_Sluit"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:76
 #: ../resources/desktop/js/desktopentry.coffee:165
 msgid "Can not open this file."
-msgstr "Non è possibile aprire il file."
+msgstr "Kan nie die lêer oop maak nie."
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:76
 #: ../resources/desktop/js/application.coffee:179
@@ -219,95 +219,95 @@ msgstr "Non è possibile aprire il file."
 #: ../resources/desktop/js/richdir.coffee:586
 #: ../resources/desktop/js/desktopentry.coffee:165
 msgid "Warning"
-msgstr "Attenzione"
+msgstr "Waarskuwing"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
 #: ../resources/launcher/js/item.coffee:354
 msgid "Are you sure to remove"
-msgstr "Sicuro di voler rimuovere"
+msgstr "Is jy seker te verwyder"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
 #: ../resources/launcher/js/item.coffee:354
 msgid "All dependencies will be removed"
-msgstr "Tutte le dipendenze saranno rimosse"
+msgstr "Alle afhanklikhede sal verwyder word"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
 #: ../resources/launcher/js/item.coffee:354
 msgid "no"
-msgstr "No"
+msgstr "nee"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:113
 #: ../resources/launcher/js/item.coffee:354
 msgid "yes"
-msgstr "Si"
+msgstr "ja"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "Control Center"
-msgstr "Control Center"
+msgstr "Beheersentrum"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "All Windows"
-msgstr "Tutte le finestre"
+msgstr "Alle Vensters"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "Desktop"
-msgstr "Desktop"
+msgstr "Lessenaarblad"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "None"
-msgstr "No"
+msgstr "Geen"
 
 #: ../resources/launcher/js/const.coffee:64
 msgid "_Hide the icon"
-msgstr "_Nascondi l'icona"
+msgstr "_Steek die ikoon weg"
 
 #: ../resources/launcher/js/const.coffee:65
 msgid "_Display hidden icons"
-msgstr "_Mostra icone nascoste"
+msgstr "_Wys verborge ikone"
 
 #: ../resources/launcher/js/const.coffee:68
 msgid "_Hide this icon"
-msgstr "_Nascondi questa icona"
+msgstr "_Versteek die ikoon"
 
 #: ../resources/launcher/js/const.coffee:69
 msgid "_Display this icon"
-msgstr "_Mostra questa icona"
+msgstr "_Vertoon die ikoon"
 
 #: ../resources/launcher/js/const.coffee:72
 #: ../resources/guide/js/launcher.coffee:218
 msgid "_Add to autostart"
-msgstr "_Aggiungi all'autostart"
+msgstr "_Voeg by outobegin"
 
 #: ../resources/launcher/js/const.coffee:73
 msgid "_Remove from autostart"
-msgstr "_Rimuovi dall'autostart"
+msgstr "_Verwyder van outobegin"
 
 #: ../resources/launcher/js/const.coffee:80
 msgid "Add to _favorites"
-msgstr "Aggiungi ai _preferiti"
+msgstr "Voeg by _gunstelinge"
 
 #: ../resources/launcher/js/const.coffee:81
 #: ../resources/guide/js/launcher.coffee:214
 msgid "Remove from _favorites"
-msgstr "Rimuovi dai _preferiti"
+msgstr "Verwyder van _gunstelinge"
 
 #: ../resources/launcher/js/const.coffee:84
 #: ../resources/guide/js/launcher.coffee:215
 msgid "Send to d_esktop"
-msgstr "Manda sul d_esktop"
+msgstr "Stuur na t_afelblad"
 
 #: ../resources/launcher/js/const.coffee:85
 msgid "Remove from d_esktop"
-msgstr "Rimuovi dal d_esktop"
+msgstr "Verwyder van t_afelblad"
 
 #: ../resources/launcher/js/const.coffee:88
 #: ../resources/guide/js/launcher.coffee:216
 msgid "Send to do_ck"
-msgstr "Invia alla do_ck"
+msgstr "Stuur na do_k"
 
 #: ../resources/launcher/js/const.coffee:89
 msgid "Remove from do_ck"
-msgstr "Rimuovi dalla do_ck"
+msgstr "Verwyder na do_k"
 
 #: ../resources/launcher/js/item.coffee:276
 #: ../resources/guide/js/launcher.coffee:212
@@ -317,308 +317,308 @@ msgstr "Rimuovi dalla do_ck"
 #: ../resources/desktop/js/specialitem.coffee:147
 #: ../resources/desktop/js/desktopentry.coffee:102
 msgid "_Open"
-msgstr "_Apri"
+msgstr "_Maak oop"
 
 #: ../resources/launcher/js/item.coffee:283
 #: ../resources/guide/js/launcher.coffee:219
 msgid "_Uninstall"
-msgstr "_Disinstalla"
+msgstr "_Verwyder"
 
 #: ../resources/guide/js/dss.coffee:29
 msgid "Well, please trigger the lower right corner again"
-msgstr "Bene, tocca l'angolo in basso a destra nuovamente"
+msgstr "Wel, aktiveer asseblief die onderste regterhoek weer"
 
 #: ../resources/guide/js/dss.coffee:30
 msgid "tips: Click the setting icon on dock to implement"
-msgstr "Trucco: clicca l'icona Impostazioni sulla Dock per implementarlo"
+msgstr "wenke: Druk die omgewing ikoon op dok om te implementeer"
 
 #: ../resources/guide/js/dss.coffee:69
 msgid "Here is the system setting area"
-msgstr "Qui c'è l'area impostazioni di sistema"
+msgstr "Hier is die stelsel instelling area"
 
 #: ../resources/guide/js/dss.coffee:70
 msgid ""
 "tips: Hover the setting icon on dock to quickly implement some setting "
 "functions"
-msgstr "Trucco: Prova l'icona Impostazioni sulla Dock per implementare subito qualche cambiamento"
+msgstr "wenke: Beweeg oor die toepassing ikoon op die dok om 'n paar instelling funksies vinnag te implementeer"
 
 #: ../resources/guide/js/desktop.coffee:27
 msgid ""
 "Let's drag the other icon on the first icon \n"
 " to generate \"application group\""
-msgstr "Trascina le varie icone su una singola\nper creare un \"gruppo di applicazioni\""
+msgstr "Kom ons sleep die ander ikoon op die eerste ikoon\nom 'n \"toepassing groep\" te genereer"
 
 #: ../resources/guide/js/desktop.coffee:116
 msgid "Well, you have learned how to create a \"application group\""
-msgstr "Bene, hai imparato come creare un \"gruppo di applicazioni\""
+msgstr "Wel, jy het geleer hoe om 'n \"toepassing groep\" te skep"
 
 #: ../resources/guide/js/desktop.coffee:117
 msgid "tips: Right-click on the application group will provide more functions"
-msgstr "Trucco: click destro sul gruppo di applicazioni per avere maggiori opzioni di modifica"
+msgstr "wenke: Regs-kliek op die toepassing groep om meer funksies te verkry"
 
 #: ../resources/guide/js/desktop.coffee:128
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different events\n"
 "Please move to the upper left corner first to show or hide Launcher"
-msgstr "Muovere il mouse sugli angoli ti permetterà di avere quattro azioni differenti\nProva a muovere il mouse sull'angolo in alto a sinistra per mostrare o nascondere il Launcher"
+msgstr "Skuif die muis na die vier top hoeke, wat vier verskillende gebeure kan veroorsaak\nBeweeg asseblief na die boonste linkerhoek eerste om die Lanseerder te wys of te verberg"
 
 #: ../resources/guide/js/desktop.coffee:129
 msgid ""
 "tips: Please trigger successively by hints, click on the blank area to "
 "return"
-msgstr "Trucco: Clicca sull'area vuota per tornare alla schermata precedente"
+msgstr "wenke: Aktiveer asseblief agtereenvolgens deur wenke, kliek op die leë ruimte om terug te keer"
 
 #: ../resources/guide/js/desktop.coffee:133
 msgid "Show/Hide Launcher"
-msgstr "Mostra/Nascondi Launcher"
+msgstr "Wys/Verberg Lanseerder"
 
 #: ../resources/guide/js/desktop.coffee:134
 msgid "Show/Hide Desktop"
-msgstr "Mostra/Nascondi Desktop"
+msgstr "Wys/Verberg Tafelblad"
 
 #: ../resources/guide/js/desktop.coffee:135
 msgid "Show/Hide Control Center"
-msgstr "Mostra/Nascondi Control Center"
+msgstr "Wys/Verberg Beheer Sentrum"
 
 #: ../resources/guide/js/desktop.coffee:136
 msgid "No default functions setted in right up corner"
-msgstr "Nessuna funzione di default impostata sull'angolo destro superiore"
+msgstr "Geen standaard funksies gestel in regs boonste hoek"
 
 #: ../resources/guide/js/desktop.coffee:178
 msgid ""
 "Right-click on desktop black area to call up the menu, select \"Corner "
 "navigation\" to set the corner used"
-msgstr "Premi il tasto destro su un'area vuota del desktop per richiamare il menu, selezionare \"Angolo di navigazione\" per impostare l'angolo usato"
+msgstr "Regs-kliek op die tafelblad swart gebied om die kieslys te roep, kies \"Hoek navigasie\" om die hoek in gebruik te stel"
 
 #: ../resources/guide/js/desktop.coffee:179
 msgid "tips: Click on the interface of corner navigation blank area to return"
-msgstr "Trucco: Clicca sull'area vuota dell'interfaccia d'angolo per tornare"
+msgstr "wenke: Kliek op die koppelvlak van die hoek navigasie leë ruimte om terug te keer"
 
 #: ../resources/guide/js/desktop.coffee:196
 #: ../resources/desktop/js/grid.coffee:1045
 msgid "_Sort by"
-msgstr "_Ordina per"
+msgstr "_Sorteer deur"
 
 #: ../resources/guide/js/desktop.coffee:197
 #: ../resources/desktop/js/grid.coffee:1046
 msgid "_New"
-msgstr "_Nuovo"
+msgstr "_Nuwe"
 
 #: ../resources/guide/js/desktop.coffee:198
 #: ../resources/desktop/js/grid.coffee:1047
 msgid "Open in _terminal"
-msgstr "Apri nel _terminale"
+msgstr "Maak oop in terminaal"
 
 #: ../resources/guide/js/desktop.coffee:199
 #: ../resources/desktop/js/grid.coffee:1048
 msgid "_Paste"
-msgstr "_Incolla"
+msgstr "_Plak"
 
 #: ../resources/guide/js/desktop.coffee:201
 #: ../resources/desktop/js/grid.coffee:1050
 msgid "_Display settings"
-msgstr "Impostazioni _Display"
+msgstr "_Vertoon verstellings"
 
 #: ../resources/guide/js/desktop.coffee:202
 #: ../resources/desktop/js/grid.coffee:1051
 msgid "_Corner navigation"
-msgstr "_Angoli di navigazione"
+msgstr "_Hoek navigasie"
 
 #: ../resources/guide/js/desktop.coffee:203
 #: ../resources/desktop/js/grid.coffee:1052
 msgid "Pe_rsonalize"
-msgstr "Pe_rsonalizza"
+msgstr "Verpe_rsoonlik"
 
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
-msgstr "Benvenuto in Deepin Linux"
+msgstr "Welkom by die Deepin Bedryfstelsel"
 
 #: ../resources/guide/js/welcome.coffee:38
 msgid "Prepare for operation ..."
-msgstr "Preparazione in corso..."
+msgstr "Voorberei vir bewerking ..."
 
 #: ../resources/guide/js/end.coffee:25
 msgid "Thanks for your patience while learning. Congratulations."
-msgstr "Grazie per la tua pazienza, congratulazioni!"
+msgstr "Dankie vir jou geduld terwyl jy leer. Baie geluk."
 
 #: ../resources/guide/js/end.coffee:30
 msgid "End"
-msgstr "Fine"
+msgstr "Einde"
 
 #: ../resources/guide/js/start.coffee:28
 msgid "New Launcher"
-msgstr "Nuovo launcher"
+msgstr "Nuwe Lanseerder"
 
 #: ../resources/guide/js/start.coffee:28
 msgid "New Desktop"
-msgstr "Nuovo desktop"
+msgstr "Nuwe Tafelblad"
 
 #: ../resources/guide/js/start.coffee:28
 msgid "New System Settings"
-msgstr "Nuove impostazioni di sistema"
+msgstr "Nuwe Stelse Verstelling"
 
 #: ../resources/guide/js/start.coffee:29
 msgid "The following will guide you to learn how to use some new functions"
-msgstr "Con questa guida imparerai ad usare le nuove funzioni introdotte"
+msgstr "Die volgende sal jou lei om te leer hoe om 'n paar nuwe funksies te gebruik"
 
 #: ../resources/guide/js/start.coffee:44
 msgid "Start"
-msgstr "Inizia"
+msgstr "Begin"
 
 #: ../resources/guide/js/start.coffee:51
 msgid "I am an experienced user. Exit directly."
-msgstr "Ne so già di brutto, esci direttamente dal tutorial introduttivo..."
+msgstr "Ek is 'n ervare gebruiker. Verlaat direk."
 
 #: ../resources/guide/js/launcher.coffee:29
 msgid ""
 "\"Application Launcher\" can be started by sliding the mouse to the upper "
 "left corner or clicking on the launcher."
-msgstr "Il Launcher può esser avviato semplicemente passando il mouse sull'angolo in alto a sinistra o cliccando sull'icona presente sulla Dock."
+msgstr "\"Toepassing lanseerder\" kan begin word deur die muis in te skuif na die boonste linker hoek of kliek op die lanseerder."
 
 #: ../resources/guide/js/launcher.coffee:70
 msgid ""
 "What shown in the first screen of \"launcher\" are the applications "
 "collected."
-msgstr "Nella prima finestra del launcher sono mostrate le applicazioni preferite."
+msgstr "Wat in die eerste skerm van die \"lanseerder\" vertoon is, is die versamelde toepassings."
 
 #: ../resources/guide/js/launcher.coffee:85
 msgid ""
 "Please click on the \"All Applications\" icon, you will see all "
 "applications."
-msgstr "Premi su \"Tutte le App\" per mostrare tutte le applicazioni installate."
+msgstr "Kliek asseblief op die \"All Toepassings\" ikoon, jy sal alle toepassings sien."
 
 #: ../resources/guide/js/launcher.coffee:95
 msgid ""
 "All programs can be located by scrolling the mouse up and down.\n"
 "You can also click on the left classification navigation to locate"
-msgstr "Tutti i programmi possono esser visionati con un semplice scroll del mouse.\nPuoi anche cliccare sul pannello di navigazione per categoria a sinistra."
+msgstr "Alle programme kan opgespoor word deur met die muis op of af te blaai.\nJy kan ook op die linker klassifikasie navigasie kliek om op te spoor"
 
 #: ../resources/guide/js/launcher.coffee:133
 msgid "Skip the step without scroll"
-msgstr "Salta il passaggio senza scroll"
+msgstr "Slaan die stap oor sonder blaai"
 
 #: ../resources/guide/js/launcher.coffee:163
 msgid ""
 "Use the keyboard to search for applications\n"
 "Try the \"deepin\" keyword to see which applications are shown"
-msgstr "Usa la tastiera per cercare le applicazioni\nProva a digitare \"deepin\" per vedere quali applicazioni verranno mostrate."
+msgstr "Gebruik die sleutelbord om te soek vir programme\nProbeer die \"deepin\" sleutelwoord om te sien watter programme word vertoon"
 
 #: ../resources/guide/js/launcher.coffee:164
 msgid "tips: Please directly enter the word \"deepin\""
-msgstr "Trucco: prova a digitare la parola \"deepin\"."
+msgstr "wenke: Sleutel asseblief direk die woord \"deepin\" in"
 
 #: ../resources/guide/js/launcher.coffee:181
 msgid "Use the right mouse button to send two icons to the desktop"
-msgstr "Usa il tasto destro per inviare due icone sul Desktop, iniziando da quella evidenziata"
+msgstr "Gebruik die regter muis knoppie om twee ikone te stuur na die tafelblad"
 
 #: ../resources/guide/js/launcher.coffee:182
 msgid "tips: You can add it to startup items or uninstall it"
-msgstr "Trucco: puoi aggiungerlo allo startup o disinstallarlo"
+msgstr "wenke: Jy kan dit voeg by die opstart item of dit verwyder"
 
 #: ../resources/desktop/js/grid.coffee:71 ../lib/dentry/fileops.c:403
 msgid "Untitled"
-msgstr "Senza titolo"
+msgstr "Ongetiteld"
 
 #: ../resources/desktop/js/grid.coffee:1022
 msgid "_Name"
-msgstr "_Nome"
+msgstr "_Naam"
 
 #: ../resources/desktop/js/grid.coffee:1023
 msgid "Last modified _time"
-msgstr "Ultime modifiche _Età"
+msgstr "Laas veranderde _tyd"
 
 #: ../resources/desktop/js/grid.coffee:1028
 msgid "_Folder"
-msgstr "_Cartella"
+msgstr "_Lêer"
 
 #: ../resources/desktop/js/grid.coffee:1029
 msgid "_Text document"
-msgstr "_Documento di testo"
+msgstr "_Teks dokument"
 
 #: ../resources/desktop/js/application.coffee:179
 #: ../resources/desktop/js/richdir.coffee:335
 #: ../resources/desktop/js/richdir.coffee:586
 msgid "The link is invalid. Do you want to delete it?"
-msgstr "Questo link è invalido. Vuoi eliminarlo?"
+msgstr "Die skakel is ongeldig. Wil jy dit te verwyder?"
 
 #: ../resources/desktop/js/richdir.coffee:135
 #: ../resources/desktop/js/desktopentry.coffee:107
 msgid "_Rename"
-msgstr "_Rinomina"
+msgstr "_Herbenoem"
 
 #: ../resources/desktop/js/richdir.coffee:137
 msgid "_Ungroup"
-msgstr "_Libera"
+msgstr "_Ongroepeer"
 
 #: ../resources/desktop/js/richdir.coffee:139
 #: ../resources/desktop/js/richdir.coffee:571
 #: ../resources/desktop/js/invalidlink.coffee:34
 #: ../resources/desktop/js/desktopentry.coffee:108
 msgid "_Delete"
-msgstr "_Elimina"
+msgstr "_Verwyder"
 
 #: ../resources/desktop/js/richdir.coffee:568
 #: ../resources/desktop/js/desktopentry.coffee:104
 msgid "Cu_t"
-msgstr "Tagli_a"
+msgstr "Kni_p"
 
 #: ../resources/desktop/js/richdir.coffee:569
 #: ../resources/desktop/js/desktopentry.coffee:105
 msgid "_Copy"
-msgstr "_Copia"
+msgstr "_Kopieer"
 
 #: ../resources/desktop/js/richdir.coffee:573
 #: ../resources/desktop/js/specialitem.coffee:53
 #: ../resources/desktop/js/desktopentry.coffee:110
 msgid "_Properties"
-msgstr "_Proprietà"
+msgstr "_Eienskappe"
 
 #: ../resources/desktop/js/specialitem.coffee:34
 msgid "Computer"
-msgstr "Computer"
+msgstr "Rekenaar"
 
 #: ../resources/desktop/js/specialitem.coffee:152
 msgid "_Clean up %1 items"
-msgstr "_Pulisci fino %1 oggetti"
+msgstr "_Maak skoon %1 van die items"
 
 #: ../resources/desktop/js/specialitem.coffee:154
 msgid "_Clean up 1 item"
-msgstr "_Pulisci 1 oggetto"
+msgstr "_Maak skoon 1 item"
 
 #: ../resources/desktop/js/desktopentry.coffee:116
 #: ../resources/desktop/js/desktopentry.coffee:123
 msgid "Co_mpress"
-msgstr "Co_mprimi"
+msgstr "Ko_mpakteer"
 
 #: ../resources/desktop/js/desktopentry.coffee:119
 #: ../resources/desktop/js/desktopentry.coffee:124
 msgid "_Extract"
-msgstr "_Estrai"
+msgstr "_Onttrek"
 
 #: ../resources/desktop/js/desktopentry.coffee:120
 #: ../resources/desktop/js/desktopentry.coffee:125
 msgid "Extract _Here"
-msgstr "Estrai _Qui"
+msgstr "Onttrek _Hier"
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
-msgstr "Duplica"
+msgstr "Dupliseer"
 
 #: ../resources/osd/js/monitor.coffee:39
 msgid "Extend"
-msgstr "Estendi"
+msgstr "Verleng"
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
-msgstr "Disinstallazione di \"%1\" completata."
+msgstr "Jy het \"%1\" suksesvol verwyder"
 
 #: ../resources/common/js/uninstaller.coffee:33
 msgid "\"%1\" failed to be uninstalled"
-msgstr "\"%1\" non è stato disinstallato."
+msgstr "Verwyder van \"%1\" het misluk"
 
 #: ../app/greeter/lock.c:125 ../app/greeter/greeter.c:192
 msgid "Wrong Password"
-msgstr "Password errata"
+msgstr "Verkeerde Wagwoord"
 
 #: ../app/greeter/mutils.c:84
 msgid "%a, %b %d, %Y"
@@ -626,231 +626,231 @@ msgstr "%a, %b %d, %Y"
 
 #: ../app/dock/dock.c:341
 msgid "Dock failed to start, because Compiz is not enabled."
-msgstr "La Dock non è partita, questo perché Compiz non è attivo."
+msgstr "Dok het versuim om te begin, want Compiz is nie aangeskakel."
 
 #: ../app/desktop/desktop.c:298
 msgid "New file"
-msgstr "Nuovo file"
+msgstr "Nuwe lêer"
 
 #: ../app/desktop/desktop.c:309
 msgid "New directory"
-msgstr "Nuova cartella"
+msgstr "Nuwe gids"
 
 #: ../lib/dentry/entry.c:746
 #, c-format
 msgid ""
 "Cannot rename the item to \"%s\". This may be caused by lack of permissions."
-msgstr "Non puoi rinominare l'oggetto in \"%s\". Questo potrebbe causare problemi di permessi."
+msgstr "Kan nie die naam van die item verander na \"%s\". Dit kan veroorsaak word deur 'n gebrek aan regte."
 
 #: ../lib/dentry/entry.c:752
 #, c-format
 msgid ""
 "There is already a file with name \"%s\" in this folder. Please consider a "
 "different name."
-msgstr "C'è già un file chiamato \"%s\" in questa cartella. Digita un nome differente."
+msgstr "Daar is reeds 'n lêer met die naam \"%s\" in hierdie gids. Oorweeg dit asseblief om 'n ander naam te gebruik."
 
 #: ../lib/dentry/entry.c:758
 msgid "The item could not be renamed"
-msgstr "Questo oggetto non può esser rinominato."
+msgstr "Die item kan nie hernoem word nie"
 
 #: ../lib/dentry/entry.c:833 ../lib/dentry/fileops.c:805
 msgid "copy"
-msgstr "copia"
+msgstr "kopieer"
 
 #: ../lib/dentry/entry.c:1415
 msgid "App Group"
-msgstr "Aggiungi al Gruppo"
+msgstr "Toepassing Groep"
 
 #: ../lib/dentry/fileops.c:566
 msgid "Move"
-msgstr "Muovi"
+msgstr "Skuif"
 
 #: ../lib/dentry/fileops.c:772
 msgid "Copy"
-msgstr "Copia"
+msgstr "Kopieer"
 
 #: ../lib/dentry/fileops_delete.c:29
 msgid "Delete Files"
-msgstr "Cancella files"
+msgstr "Verwyder Lêers"
 
 #: ../lib/dentry/fileops_delete.c:32
 msgid "Are you sure you want to permanently delete the files?"
-msgstr "Sei sicuro di voler eliminare i file definitivamente?"
+msgstr "Is jy seker jy wil die lêers permanent uitvee?"
 
 #: ../lib/dentry/fileops_delete.c:33
 msgid "If you delete the files, they will be permanently lost."
-msgstr "Se li cancelli li perderai definitivamente."
+msgstr "As jy die lêers verwyder, sal hulle permanent verlore wees."
 
 #: ../lib/dentry/fileops_delete.c:36
 msgid "Delete"
-msgstr "Elimina"
+msgstr "Verwyder"
 
 #: ../lib/dentry/fileops_error_dialog.c:63
 msgid "File conflict"
-msgstr "Conflitto nel file"
+msgstr "Lêer konflik"
 
 #: ../lib/dentry/fileops_error_dialog.c:106
 msgid "_Select a new name for the destination"
-msgstr "_Seleziona un nuovo nome per la destinazione"
+msgstr "_Kies 'n nuwe naam vir die bestemming"
 
 #: ../lib/dentry/fileops_error_dialog.c:117
 msgid "Reset"
-msgstr "Resetta"
+msgstr "Terugstel"
 
 #: ../lib/dentry/fileops_error_dialog.c:126
 msgid "Apply this action to all files"
-msgstr "Applica questa azione a tutti i file"
+msgstr "Pas hierdie aksie toe vir alle lêers"
 
 #: ../lib/dentry/fileops_error_dialog.c:133
 msgid "_Skip"
-msgstr "_Salta"
+msgstr "_Oorslaan"
 
 #: ../lib/dentry/fileops_error_dialog.c:136
 msgid "Re_name"
-msgstr "Ri_nomina"
+msgstr "Her_noem"
 
 #: ../lib/dentry/fileops_error_dialog.c:141
 msgid "Replace"
-msgstr "Sostituisci"
+msgstr "Vervang"
 
 #: ../lib/dentry/fileops_error_dialog.c:218
 #, c-format
 msgid "Do you want to merge with folder \"%s\"?"
-msgstr "Vuoi unire questa cartella a \"%s\"?"
+msgstr "Wil jy die gids saam smelt met die gids \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
 msgid ""
 "The merging operation will be asked to confirm before replacing any files in"
 " the folder conflicted."
-msgstr "L'operazione di unione chiede conferma prima di sostituire qualsiasi files da una cartella in conflitto."
+msgstr "Die samesmelting werking sal gevra word om te bevestig voordat die vervanging van enige lêers in die gids plaasvind."
 
 #: ../lib/dentry/fileops_error_dialog.c:222
 #, c-format
 msgid "An older folder with the same name already exists in \"%s\"."
-msgstr "Una versione vecchia con lo stesso nome esiste in \"%s\"."
+msgstr "'N ouer gids met dieselfde naam bestaan ​​reeds in \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:226
 #, c-format
 msgid "A newer folder with the same name already exists in \"%s\"."
-msgstr "Una nuova versione con lo stesso nome esiste in\"%s\"."
+msgstr "'N nuwer gids met dieselfde naam bestaan ​​reeds in \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:230
 #, c-format
 msgid "Another folder with the same name already exists in \"%s\"."
-msgstr "Una cartella con lo stesso nome è presente in \"%s\"."
+msgstr "Nog 'n gids met dieselfde naam bestaan ​​reeds in \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:236
 msgid "All files in the folder will be removed by replacing."
-msgstr "Tutti i files nella cartella saranno sostituiti."
+msgstr "Alle lêers in die gids sal verwyder word deur vervanging."
 
 #: ../lib/dentry/fileops_error_dialog.c:237
 #, c-format
 msgid "Do you want to replace folder \"%s\"?"
-msgstr "Vuoi sostituire la cartella \"%s\"?"
+msgstr "Wil jy die gids \"%s\" vervang?"
 
 #: ../lib/dentry/fileops_error_dialog.c:239
 #, c-format
 msgid "A folder with the same name already exists in \"%s\"."
-msgstr "Una cartella con lo stesso nome è presente in \"%s\"."
+msgstr "'N gids met dieselfde naam bestaan ​​reeds in \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:245
 #, c-format
 msgid "Do you want to replace file \"%s\"?"
-msgstr "Vuoi sostituire il file \"%s\"?"
+msgstr "Wil jy die lêer \"%s\" vervang?"
 
 #: ../lib/dentry/fileops_error_dialog.c:246
 msgid "The content will be overwritten by replacing."
-msgstr "Il contenuto sarà sostituito."
+msgstr "Die inhoud sal oorsryf word deur vervanging."
 
 #: ../lib/dentry/fileops_error_dialog.c:248
 #, c-format
 msgid "An older file with the same name already exists in \"%s\"."
-msgstr "Una cartella con lo stesso nome esiste in \"%s\"."
+msgstr "'N ouer lêer met dieselfde naam bestaan ​​reeds in \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:252
 #, c-format
 msgid "A newer file with the same name already exists in \"%s\"."
-msgstr "Un nuovo file con lo stesso nome è presente in \"%s\"."
+msgstr "'N nuwer lêer met dieselfde naam bestaan ​​reeds in \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:256
 #, c-format
 msgid "Another file with the same name already exists in \"%s\"."
-msgstr "Un altro file con lo stesso nome è presente in \"%s\"."
+msgstr "Nog 'n lêer met dieselfde naam bestaan ​​reeds in \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:328
 msgid "Original file"
-msgstr "File originale"
+msgstr "Oorspronklike lêer"
 
 #: ../lib/dentry/fileops_error_dialog.c:329
 #: ../lib/dentry/fileops_error_dialog.c:357
 msgid "Size:"
-msgstr "Dimensioni:"
+msgstr "Groote:"
 
 #: ../lib/dentry/fileops_error_dialog.c:333
 #: ../lib/dentry/fileops_error_dialog.c:361
 msgid "Type:"
-msgstr "Tipo:"
+msgstr "Tipe:"
 
 #: ../lib/dentry/fileops_error_dialog.c:337
 #: ../lib/dentry/fileops_error_dialog.c:365
 msgid "Last modified:"
-msgstr "Ultima modifica:"
+msgstr "Laaste wysiging:"
 
 #: ../lib/dentry/fileops_error_dialog.c:356
 msgid "Replace with"
-msgstr "Sostituire con"
+msgstr "Vervang met"
 
 #: ../lib/dentry/fileops_error_dialog.c:382
 msgid "Merge"
-msgstr "Unire"
+msgstr "Saamsmelt"
 
 #: ../lib/dentry/fileops_error_reporting.c:106
 #: ../lib/dentry/fileops_error_reporting.c:191
 #, c-format
 msgid "Error while %s files"
-msgstr "Errore file %s"
+msgstr "Fout tydens %s lêer"
 
 #: ../lib/dentry/fileops_trash.c:58
 msgid "Empty Trash"
-msgstr "Cestino vuoto"
+msgstr "Maak Asblik Leeg"
 
 #: ../lib/dentry/fileops_trash.c:67
 msgid "Empty all items from Trash?"
-msgstr "Svuotare il cestino?"
+msgstr "Verwyder alle items van Asblik?"
 
 #: ../lib/dentry/fileops_trash.c:68
 msgid "All items in the Trash will be permanently deleted."
-msgstr "Tutti i file del cestino saranno rimossi in modo permanente."
+msgstr "Alle items in die Asblik sal permanent verwyder word."
 
 #: ../lib/dentry/fileops_trash.c:71
 msgid "Empty _Trash"
-msgstr "Cestino_Vuoto"
+msgstr "Verwyder _Gemors"
 
 #: ../lib/dentry/mime_actions.c:198
 #, c-format
 msgid "Do you want to run \"%s\", or display its contents?"
-msgstr "Vuoi eseguire \"%s\", oppure visualizzare il suo contenuto?"
+msgstr "Wil jy \"%s\" uitvoer, of die inhoud wys?"
 
 #: ../lib/dentry/mime_actions.c:199
 #, c-format
 msgid "\"%s\" is an executable text file."
-msgstr "\"%s\" è un file di testo eseguibile."
+msgstr "\"%s\" is 'n uitvoerbare tekslêer."
 
 #: ../lib/dentry/mime_actions.c:210
 msgid "Run in _Terminal"
-msgstr "Esegui nel _Terminale"
+msgstr "Voer uit in _Terminaal"
 
 #: ../lib/dentry/mime_actions.c:211
 msgid "_Display"
-msgstr "_Display"
+msgstr "_Vertoon"
 
 #: ../lib/dentry/mime_actions.c:213
 msgid "_Run"
-msgstr "_Avvia"
+msgstr "_Voer uit"
 
 #: ../lib/category.c:45
 msgid "all"
-msgstr "tutti"
+msgstr "alle"
 
 #: ../lib/category.c:46
 msgid "internet"
@@ -862,36 +862,36 @@ msgstr "multimedia"
 
 #: ../lib/category.c:48
 msgid "games"
-msgstr "giochi"
+msgstr "speletjies"
 
 #: ../lib/category.c:49
 msgid "graphics"
-msgstr "grafica"
+msgstr "grafika"
 
 #: ../lib/category.c:50
 msgid "productivity"
-msgstr "produttività"
+msgstr "produktiwiteit"
 
 #: ../lib/category.c:51
 msgid "industry"
-msgstr "industria"
+msgstr "industrie"
 
 #: ../lib/category.c:52
 msgid "education"
-msgstr "educazione"
+msgstr "onderwys"
 
 #: ../lib/category.c:53
 msgid "development"
-msgstr "sviluppo"
+msgstr "ontwikkeling"
 
 #: ../lib/category.c:54
 msgid "system"
-msgstr "sistema"
+msgstr "stelsel"
 
 #: ../lib/category.c:55
 msgid "utilities"
-msgstr "utilità"
+msgstr "nuts"
 
 #: ../lib/category.c:56
 msgid "others"
-msgstr "altri"
+msgstr "ander"
