@@ -190,6 +190,11 @@ JSValueRef signal_connect(JSContextRef ctx,
         goto errout;
     }
 
+    if (JSValueIsUndefined(ctx, arguments[1])) {
+        js_fill_exception(ctx, exception, "the parmars two is undefined, an function is expected!");
+        goto errout;
+    }
+
     JSObjectRef callback = JSValueToObject(ctx, arguments[1], NULL);
     if (!JSObjectIsFunction(ctx, callback)) {
         js_fill_exception(ctx, exception, "the params two must be an function!");
@@ -219,6 +224,11 @@ JSValueRef signal_disconnect(JSContextRef ctx,
                             const JSValueRef arguments[],
                             JSValueRef *exception)
 {
+    if (__sig_callback_hash == NULL) {
+        js_fill_exception(ctx, exception, "No signal is connected!");
+        return NULL;
+    }
+
     struct DBusObjectInfo* info = JSObjectGetPrivate(this);
 
     if (argumentCount != 2) {
@@ -229,23 +239,28 @@ JSValueRef signal_disconnect(JSContextRef ctx,
     char* sig_name = jsvalue_to_cstr(ctx, arguments[0]);
     char* key = g_strdup_printf("%s:%s:%s@%s", info->path, info->iface, sig_name, g_dbus_connection_get_unique_name(info->connection));
     g_debug("remove signal callback: %s", key);
-    g_free(sig_name);
-    GHashTable *cbs = g_hash_table_lookup(__sig_callback_hash, key);
     g_free(key);
+
+    GHashTable *cbs = g_hash_table_lookup(__sig_callback_hash, key);
 
     if (cbs == NULL) {
         g_debug("no callback");
-        js_fill_exception(ctx, exception, "This signal hasn't connected!");
-        return NULL;
+        goto errout;
     }
     SIGNAL_CALLBACK_ID cb_id = (SIGNAL_CALLBACK_ID)GPOINTER_TO_INT(arguments[1]);
     g_debug("%u", cb_id);
     if (!g_hash_table_remove(cbs, GINT_TO_POINTER(cb_id))) {
-        js_fill_exception(ctx, exception, "This signal hasn't connected!");
-        return NULL;
+        goto errout;
     }
 
+    g_free(sig_name);
     return JSValueMakeNull(ctx);
+
+errout:
+    js_fill_exception(ctx, exception, "This signal \"%s\" hasn't connected!", sig_name);
+    g_free(sig_name);
+
+    return NULL;
 }
 static
 JSValueRef signal_emit(JSContextRef ctx,
