@@ -21,6 +21,18 @@
 
 class Panel
     constructor: (@id)->
+        try
+            @dockProperty = get_dbus(
+                "session",
+                name:"com.deepin.daemon.Dock",
+                path:"/dde/dock/Property",
+                interface:"dde.dock.Property",
+                "SetPanelWidth",
+            )
+        catch e
+            console.error(e)
+            DCore.Dock.quit()
+
         @panel = $("##{@id}")
         @panel.width = ITEM_WIDTH * 3
         @panel.height = PANEL_HEIGHT
@@ -104,6 +116,7 @@ class Panel
                     PANEL_HEIGHT
                 )
         DCore.Dock.update_guard_window_width(@panel.width)
+        @dockProperty.SetPanelWidth(@panel.width)
 
     _set_width: (w)->
         @panel.width = Math.min(w + PANEL_MARGIN * 2, screen.width)

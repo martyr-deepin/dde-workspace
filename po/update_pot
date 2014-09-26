@@ -4,31 +4,26 @@ import glob
 import os
 import re
 
-coffee_files = []
-c_files = []
 except_dirs = ["dbus_test", "memory_test", "dominant_color"]
 app = "dde-workspace"
 
-def get_lang():
-    pos = glob.glob("./*.po")
-    for po in pos:
-        rec = re.compile("./([a-zA-Z_]+)\.po")
-        result = rec.match(po)
-        yield result.group(1)
-
 
 def get_files():
-    global coffee_files, c_files
+    coffee_files = []
+    c_files = []
 
     for d in os.listdir("../resources"):
-        if d != "common" and d not in except_dirs:
-            coffee_dir = "../resources/%s/js/" % d
-            for dirpath, dirnames, filenames in os.walk(coffee_dir):
-                for filename in filenames:
-                    if filename.endswith(".coffee"):
-                        coffee_files.append(os.path.join(dirpath, filename))
+        if  d == "common" or d in except_dirs:
+            continue
+
+        coffee_dir = "../resources/%s/js/" % d
+        for dirpath, dirnames, filenames in os.walk(coffee_dir):
+            for filename in filenames:
+                if filename.endswith(".coffee"):
+                    coffee_files.append(os.path.join(dirpath, filename))
+
     #TODO:Here add your app coffee files in special dir
-    coffee_files.append(os.path.join("../resources/common/js/uninstaller.coffee"))
+    coffee_files.append("../resources/common/js/uninstaller.coffee")
 
     for d in os.listdir("../app"):
         if d not in except_dirs:
@@ -36,14 +31,18 @@ def get_files():
             c_files += glob.glob("../app/%s/*.h" % d);
 
     #TODO:Here add your app c files in special dir
-    c_files += [
+    for lib in [
             "../lib/dentry/*.c",
             "../lib/dentry/*.h",
             "../lib/category.c",
-            ]
+            ]:
+        c_files.extend(glob.glob(lib))
 
-def scan_pot():
-    global coffee_files, c_files
+    c_files.sort()
+    coffee_files.sort()
+    return coffee_files, c_files
+
+def scan_pot(coffee_files, c_files):
     os.system("rm %s.pot" % app)
     os.system("touch %s.pot" % app)
 
@@ -54,5 +53,4 @@ def scan_pot():
     os.system(cmd)
 
 if __name__ == '__main__':
-    get_files()
-    scan_pot()
+    scan_pot(*get_files())

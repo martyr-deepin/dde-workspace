@@ -5,11 +5,13 @@ HideMode =
     KeepShowing: 0
     KeepHidden: 1
     AutoHide: 2
+    SmartHide: 3
 
 HideModeNameMap =
     "keep-showing": 0
     "keep-hidden": 1
     "auto-hide": 2
+    "smart-hide": 3
 
 DisplayMode =
     Fashion: 0

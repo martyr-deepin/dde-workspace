@@ -45,6 +45,7 @@ Depends: ${shlibs:Depends},
  ${misc:Depends},
  deepin-menu (>= 1.1+20140730105532),
  libdeepin-webkit-3.0-0,
+ dde-daemon (>= 0.0.1+20140915),
  systemd-shim,
 Description: deepin desktop envrionment for Linuxdeepin new desktop environment.
  Linuxdeepin 12.12 testing deskotp environment.

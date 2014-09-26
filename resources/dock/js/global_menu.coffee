@@ -9,6 +9,7 @@ class GlobalMenu
             new RadioBoxMenuItem('dockHideMode:radio:keep-showing', _("Keep _showing")),
             new RadioBoxMenuItem('dockHideMode:radio:keep-hidden', _("Keep _hidden"))
             new RadioBoxMenuItem('dockHideMode:radio:auto-hide', _("_Auto hide")),
+            new RadioBoxMenuItem('dockHideMode:radio:smart-hide', _("_Smart hide")),
         ]
         try
             dbus = DCore.DBus.session("dde.dock.entry.AppletManager")

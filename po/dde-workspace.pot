@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-26 18:27+0800\n"
+"POT-Creation-Date: 2014-09-30 10:08+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,219 +17,66 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../resources/greeter/js/message.coffee:105
-#: ../resources/greeter/js/message.coffee:82
-msgid "$ sudo reboot\n"
+#: ../resources/common/js/uninstaller.coffee:32
+msgid "You have uninstalled \"%1\" successfully"
 msgstr ""
 
-#: ../resources/greeter/js/message.coffee:99
-#: ../resources/greeter/js/message.coffee:73
-msgid "Press Ctrl + Alt + F1\n"
+#: ../resources/common/js/uninstaller.coffee:33
+msgid "\"%1\" failed to be uninstalled"
 msgstr ""
 
-#: ../resources/greeter/js/message.coffee:95
-msgid ""
-"\t\t\t\t-----The daemon of accounts has not started!-----\n"
-")"
+#: ../resources/desktop/js/application.coffee:179
+#: ../resources/desktop/js/richdir.coffee:335
+#: ../resources/desktop/js/richdir.coffee:586
+msgid "The link is invalid. Do you want to delete it?"
 msgstr ""
 
-#: ../resources/greeter/js/message.coffee:79
-msgid "$ sudo apt-get install deepin-desktop-Environment\n"
+#: ../resources/desktop/js/application.coffee:179
+#: ../resources/desktop/js/desktopentry.coffee:166
+#: ../resources/desktop/js/richdir.coffee:335
+#: ../resources/desktop/js/richdir.coffee:586
+#: ../resources/dock/js/plugins/trash/trash.coffee:81
+msgid "Warning"
 msgstr ""
 
-#: ../resources/greeter/js/message.coffee:68
-msgid "\t\t\t\t-----No available desktop sessions!-----\n"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Jan"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Feb"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Mar"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Apr"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "May"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Jun"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Jul"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Aug"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Sep"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Oct"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Nov"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:43
-msgid "Dec"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Sun"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Mon"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Tue"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Wed"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Thu"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Fri"
-msgstr ""
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Sat"
-msgstr ""
-
-#: ../resources/greeter/js/usermenu.coffee:57
-msgid "Guest"
-msgstr ""
-
-#: ../resources/greeter/js/mediacontrol.coffee:167
-msgid "Click button to Play"
-msgstr ""
-
-#: ../resources/greeter/js/user.coffee:411
-msgid "Login"
-msgstr ""
-
-#: ../resources/greeter/js/powermenu.coffee:26
-msgid "Shut down"
-msgstr ""
-
-#: ../resources/greeter/js/powermenu.coffee:27
-msgid "Restart"
-msgstr ""
-
-#: ../resources/greeter/js/powermenu.coffee:28
-msgid "Suspend"
-msgstr ""
-
-#: ../resources/greeter/js/powermenu.coffee:90
-msgid "Enter your password to %1"
-msgstr ""
-
+#: ../resources/desktop/js/desktopentry.coffee:102
 #: ../resources/desktop/js/richdir.coffee:133
 #: ../resources/desktop/js/richdir.coffee:566
 #: ../resources/desktop/js/specialitem.coffee:51
 #: ../resources/desktop/js/specialitem.coffee:146
-#: ../resources/desktop/js/desktopentry.coffee:102
 #: ../resources/guide/js/launcher.coffee:212
 #: ../resources/launcher/js/item.coffee:301
 msgid "_Open"
 msgstr ""
 
-#: ../resources/desktop/js/richdir.coffee:135
-#: ../resources/desktop/js/desktopentry.coffee:107
-msgid "_Rename"
-msgstr ""
-
-#: ../resources/desktop/js/richdir.coffee:137
-msgid "_Ungroup"
-msgstr ""
-
-#: ../resources/desktop/js/richdir.coffee:139
-#: ../resources/desktop/js/richdir.coffee:571
-#: ../resources/desktop/js/desktopentry.coffee:108
-#: ../resources/desktop/js/invalidlink.coffee:34
-#: ../resources/desktop/js/item.coffee:398
-msgid "_Delete"
-msgstr ""
-
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
-#: ../resources/desktop/js/application.coffee:179
-msgid "The link is invalid. Do you want to delete it?"
-msgstr ""
-
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
-#: ../resources/desktop/js/desktopentry.coffee:166
-#: ../resources/desktop/js/application.coffee:179
-#: ../resources/dock/js/plugins/trash/trash.coffee:81
-msgid "Warning"
-msgstr ""
-
-#: ../resources/desktop/js/richdir.coffee:568
 #: ../resources/desktop/js/desktopentry.coffee:104
+#: ../resources/desktop/js/richdir.coffee:568
 msgid "Cu_t"
 msgstr ""
 
-#: ../resources/desktop/js/richdir.coffee:569
 #: ../resources/desktop/js/desktopentry.coffee:105
 #: ../resources/desktop/js/item.coffee:397
+#: ../resources/desktop/js/richdir.coffee:569
 msgid "_Copy"
 msgstr ""
 
+#: ../resources/desktop/js/desktopentry.coffee:107
+#: ../resources/desktop/js/richdir.coffee:135
+msgid "_Rename"
+msgstr ""
+
+#: ../resources/desktop/js/desktopentry.coffee:108
+#: ../resources/desktop/js/invalidlink.coffee:34
+#: ../resources/desktop/js/item.coffee:398
+#: ../resources/desktop/js/richdir.coffee:139
+#: ../resources/desktop/js/richdir.coffee:571
+msgid "_Delete"
+msgstr ""
+
+#: ../resources/desktop/js/desktopentry.coffee:110
 #: ../resources/desktop/js/richdir.coffee:573
 #: ../resources/desktop/js/specialitem.coffee:53
-#: ../resources/desktop/js/desktopentry.coffee:110
 msgid "_Properties"
-msgstr ""
-
-#: ../resources/desktop/js/specialitem.coffee:34
-msgid "Computer"
-msgstr ""
-
-#: ../resources/desktop/js/specialitem.coffee:87
-#: ../resources/dock/js/main.coffee:49 ../resources/dock/js/main.coffee:126
-msgid "Trash"
-msgstr ""
-
-#: ../resources/desktop/js/specialitem.coffee:150
-msgid "_Clean up %1 items"
-msgstr ""
-
-#: ../resources/desktop/js/specialitem.coffee:152
-msgid "_Clean up 1 item"
-msgstr ""
-
-#: ../resources/desktop/js/specialitem.coffee:154
-#: ../resources/dock/js/plugins/trash/trash.coffee:34
-msgid "_Empty"
 msgstr ""
 
 #: ../resources/desktop/js/desktopentry.coffee:116
@@ -316,24 +163,304 @@ msgstr ""
 msgid "_Select All"
 msgstr ""
 
-#: ../resources/zone/js/utils.coffee:10
-msgid "Control Center"
+#: ../resources/desktop/js/richdir.coffee:137
+msgid "_Ungroup"
 msgstr ""
 
-#: ../resources/zone/js/utils.coffee:10
-msgid "All Windows"
+#: ../resources/desktop/js/specialitem.coffee:34
+msgid "Computer"
 msgstr ""
 
-#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:124
+#: ../resources/desktop/js/specialitem.coffee:87
+#: ../resources/dock/js/main.coffee:47 ../resources/dock/js/main.coffee:117
+msgid "Trash"
+msgstr ""
+
+#: ../resources/desktop/js/specialitem.coffee:150
+msgid "_Clean up %1 items"
+msgstr ""
+
+#: ../resources/desktop/js/specialitem.coffee:152
+msgid "_Clean up 1 item"
+msgstr ""
+
+#: ../resources/desktop/js/specialitem.coffee:154
+#: ../resources/dock/js/plugins/trash/trash.coffee:34
+msgid "_Empty"
+msgstr ""
+
+#: ../resources/dock/js/deepin_item.coffee:248
+msgid "_View as analog"
+msgstr ""
+
+#: ../resources/dock/js/deepin_item.coffee:249
+#: ../resources/dock/js/deepin_item.coffee:301
+msgid "_Time settings"
+msgstr ""
+
+#: ../resources/dock/js/deepin_item.coffee:300
+msgid "_View as digit"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:9
+msgid "Keep _showing"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:10
+msgid "Keep _hidden"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:11
+msgid "_Auto hide"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:12
+msgid "_Smart hide"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:24
+msgid "_Fashion mode"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:25
+msgid "_Efficient mode"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:26
+msgid "_Classic mode"
+msgstr ""
+
+#: ../resources/dock/js/main.coffee:115 ../resources/zone/js/utils.coffee:10
 msgid "Launcher"
 msgstr ""
 
-#: ../resources/zone/js/utils.coffee:10
-msgid "Desktop"
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Sun"
 msgstr ""
 
-#: ../resources/zone/js/utils.coffee:10
-msgid "None"
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Mon"
+msgstr ""
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Tue"
+msgstr ""
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Wed"
+msgstr ""
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Thu"
+msgstr ""
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Fri"
+msgstr ""
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Sat"
+msgstr ""
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:38
+msgid "_Close"
+msgstr ""
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:118
+#: ../resources/launcher/js/item.coffee:379
+msgid "Are you sure to remove"
+msgstr ""
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:118
+#: ../resources/launcher/js/item.coffee:379
+msgid "All dependencies will be removed"
+msgstr ""
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:118
+#: ../resources/launcher/js/item.coffee:379
+msgid "no"
+msgstr ""
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:118
+#: ../resources/launcher/js/item.coffee:379
+msgid "yes"
+msgstr ""
+
+#: ../resources/greeter/js/mediacontrol.coffee:167
+msgid "Click button to Play"
+msgstr ""
+
+#: ../resources/greeter/js/message.coffee:105
+#: ../resources/greeter/js/message.coffee:82
+msgid "$ sudo reboot\n"
+msgstr ""
+
+#: ../resources/greeter/js/message.coffee:99
+#: ../resources/greeter/js/message.coffee:73
+msgid "Press Ctrl + Alt + F1\n"
+msgstr ""
+
+#: ../resources/greeter/js/message.coffee:95
+msgid ""
+"\t\t\t\t-----The daemon of accounts has not started!-----\n"
+")"
+msgstr ""
+
+#: ../resources/greeter/js/message.coffee:79
+msgid "$ sudo apt-get install deepin-desktop-Environment\n"
+msgstr ""
+
+#: ../resources/greeter/js/message.coffee:68
+msgid "\t\t\t\t-----No available desktop sessions!-----\n"
+msgstr ""
+
+#: ../resources/greeter/js/powermenu.coffee:26
+msgid "Shut down"
+msgstr ""
+
+#: ../resources/greeter/js/powermenu.coffee:27
+msgid "Restart"
+msgstr ""
+
+#: ../resources/greeter/js/powermenu.coffee:28
+msgid "Suspend"
+msgstr ""
+
+#: ../resources/greeter/js/powermenu.coffee:90
+msgid "Enter your password to %1"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Jan"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Feb"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Mar"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Apr"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "May"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Jun"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Jul"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Aug"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Sep"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Oct"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Nov"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Dec"
+msgstr ""
+
+#: ../resources/greeter/js/user.coffee:411
+msgid "Login"
+msgstr ""
+
+#: ../resources/greeter/js/usermenu.coffee:57
+msgid "Guest"
+msgstr ""
+
+#: ../resources/guide/js/desktop.coffee:27
+msgid ""
+"Let's drag the other icon on the first icon \n"
+" to generate \"application group\""
+msgstr ""
+
+#: ../resources/guide/js/desktop.coffee:116
+msgid "Well, you have learned how to create a \"application group\""
+msgstr ""
+
+#: ../resources/guide/js/desktop.coffee:117
+msgid "tips: Right-click on the application group will provide more functions"
+msgstr ""
+
+#: ../resources/guide/js/desktop.coffee:128
+msgid ""
+"Slide the mouse to the four top corners, which can trigger four different "
+"events\n"
+"Please move to the upper left corner first to show or hide Launcher"
+msgstr ""
+
+#: ../resources/guide/js/desktop.coffee:129
+msgid ""
+"tips: Please trigger successively by hints, click on the blank area to return"
+msgstr ""
+
+#: ../resources/guide/js/desktop.coffee:133
+msgid "Show/Hide Launcher"
+msgstr ""
+
+#: ../resources/guide/js/desktop.coffee:134
+msgid "Show/Hide Desktop"
+msgstr ""
+
+#: ../resources/guide/js/desktop.coffee:135
+msgid "Show/Hide Control Center"
+msgstr ""
+
+#: ../resources/guide/js/desktop.coffee:136
+msgid "No default functions setted in right up corner"
+msgstr ""
+
+#: ../resources/guide/js/desktop.coffee:178
+msgid ""
+"Right-click on desktop black area to call up the menu, select \"Corner "
+"navigation\" to set the corner used"
+msgstr ""
+
+#: ../resources/guide/js/desktop.coffee:179
+msgid "tips: Click on the interface of corner navigation blank area to return"
+msgstr ""
+
+#: ../resources/guide/js/dss.coffee:29
+msgid "Well, please trigger the lower right corner again"
+msgstr ""
+
+#: ../resources/guide/js/dss.coffee:30
+msgid "tips: Click the setting icon on dock to implement"
+msgstr ""
+
+#: ../resources/guide/js/dss.coffee:69
+msgid "Here is the system setting area"
+msgstr ""
+
+#: ../resources/guide/js/dss.coffee:70
+msgid ""
+"tips: Hover the setting icon on dock to quickly implement some setting "
+"functions"
 msgstr ""
 
 #: ../resources/guide/js/end.coffee:25
@@ -414,58 +541,6 @@ msgstr ""
 msgid "_Uninstall"
 msgstr ""
 
-#: ../resources/guide/js/desktop.coffee:27
-msgid ""
-"Let's drag the other icon on the first icon \n"
-" to generate \"application group\""
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:116
-msgid "Well, you have learned how to create a \"application group\""
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:117
-msgid "tips: Right-click on the application group will provide more functions"
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:128
-msgid ""
-"Slide the mouse to the four top corners, which can trigger four different "
-"events\n"
-"Please move to the upper left corner first to show or hide Launcher"
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:129
-msgid ""
-"tips: Please trigger successively by hints, click on the blank area to return"
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:133
-msgid "Show/Hide Launcher"
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:134
-msgid "Show/Hide Desktop"
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:135
-msgid "Show/Hide Control Center"
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:136
-msgid "No default functions setted in right up corner"
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:178
-msgid ""
-"Right-click on desktop black area to call up the menu, select \"Corner "
-"navigation\" to set the corner used"
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:179
-msgid "tips: Click on the interface of corner navigation blank area to return"
-msgstr ""
-
 #: ../resources/guide/js/start.coffee:28
 msgid "New Launcher"
 msgstr ""
@@ -496,93 +571,6 @@ msgstr ""
 
 #: ../resources/guide/js/welcome.coffee:38
 msgid "Prepare for operation ..."
-msgstr ""
-
-#: ../resources/guide/js/dss.coffee:29
-msgid "Well, please trigger the lower right corner again"
-msgstr ""
-
-#: ../resources/guide/js/dss.coffee:30
-msgid "tips: Click the setting icon on dock to implement"
-msgstr ""
-
-#: ../resources/guide/js/dss.coffee:69
-msgid "Here is the system setting area"
-msgstr ""
-
-#: ../resources/guide/js/dss.coffee:70
-msgid ""
-"tips: Hover the setting icon on dock to quickly implement some setting "
-"functions"
-msgstr ""
-
-#: ../resources/osd/js/monitor.coffee:38
-msgid "Duplicate"
-msgstr ""
-
-#: ../resources/osd/js/monitor.coffee:39
-msgid "Extend"
-msgstr ""
-
-#: ../resources/dock/js/deepin_item.coffee:247
-msgid "_View as analog"
-msgstr ""
-
-#: ../resources/dock/js/deepin_item.coffee:248
-#: ../resources/dock/js/deepin_item.coffee:300
-msgid "_Time settings"
-msgstr ""
-
-#: ../resources/dock/js/deepin_item.coffee:299
-msgid "_View as digit"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:9
-msgid "Keep _showing"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:10
-msgid "Keep _hidden"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:11
-msgid "_Auto hide"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:24
-msgid "_Fashion mode"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:25
-msgid "_Efficient mode"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:26
-msgid "_Classic mode"
-msgstr ""
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:38
-msgid "_Close"
-msgstr ""
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:118
-#: ../resources/launcher/js/item.coffee:379
-msgid "Are you sure to remove"
-msgstr ""
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:118
-#: ../resources/launcher/js/item.coffee:379
-msgid "All dependencies will be removed"
-msgstr ""
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:118
-#: ../resources/launcher/js/item.coffee:379
-msgid "no"
-msgstr ""
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:118
-#: ../resources/launcher/js/item.coffee:379
-msgid "yes"
 msgstr ""
 
 #: ../resources/launcher/js/const.coffee:64
@@ -617,20 +605,28 @@ msgstr ""
 msgid "Remove from do_ck"
 msgstr ""
 
-#: ../resources/common/js/uninstaller.coffee:32
-msgid "You have uninstalled \"%1\" successfully"
+#: ../resources/osd/js/monitor.coffee:38
+msgid "Duplicate"
 msgstr ""
 
-#: ../resources/common/js/uninstaller.coffee:33
-msgid "\"%1\" failed to be uninstalled"
+#: ../resources/osd/js/monitor.coffee:39
+msgid "Extend"
 msgstr ""
 
-#: ../app/greeter/mutils.c:84
-msgid "%a, %b %d, %Y"
+#: ../resources/zone/js/utils.coffee:10
+msgid "Control Center"
 msgstr ""
 
-#: ../app/greeter/lock.c:171 ../app/greeter/greeter.c:192
-msgid "Wrong Password"
+#: ../resources/zone/js/utils.coffee:10
+msgid "All Windows"
+msgstr ""
+
+#: ../resources/zone/js/utils.coffee:10
+msgid "Desktop"
+msgstr ""
+
+#: ../resources/zone/js/utils.coffee:10
+msgid "None"
 msgstr ""
 
 #: ../app/desktop/desktop.c:300
@@ -643,6 +639,62 @@ msgstr ""
 
 #: ../app/dock/dock.c:341
 msgid "Dock failed to start, because Compiz is not enabled."
+msgstr ""
+
+#: ../app/greeter/greeter.c:197 ../app/greeter/lock.c:171
+msgid "Wrong Password"
+msgstr ""
+
+#: ../app/greeter/mutils.c:84
+msgid "%a, %b %d, %Y"
+msgstr ""
+
+#: ../lib/category.c:45
+msgid "all"
+msgstr ""
+
+#: ../lib/category.c:46
+msgid "internet"
+msgstr ""
+
+#: ../lib/category.c:47
+msgid "multimedia"
+msgstr ""
+
+#: ../lib/category.c:48
+msgid "games"
+msgstr ""
+
+#: ../lib/category.c:49
+msgid "graphics"
+msgstr ""
+
+#: ../lib/category.c:50
+msgid "productivity"
+msgstr ""
+
+#: ../lib/category.c:51
+msgid "industry"
+msgstr ""
+
+#: ../lib/category.c:52
+msgid "education"
+msgstr ""
+
+#: ../lib/category.c:53
+msgid "development"
+msgstr ""
+
+#: ../lib/category.c:54
+msgid "system"
+msgstr ""
+
+#: ../lib/category.c:55
+msgid "utilities"
+msgstr ""
+
+#: ../lib/category.c:56
+msgid "others"
 msgstr ""
 
 #: ../lib/dentry/entry.c:746
@@ -855,52 +907,4 @@ msgstr ""
 
 #: ../lib/dentry/mime_actions.c:213
 msgid "_Run"
-msgstr ""
-
-#: ../lib/category.c:45
-msgid "all"
-msgstr ""
-
-#: ../lib/category.c:46
-msgid "internet"
-msgstr ""
-
-#: ../lib/category.c:47
-msgid "multimedia"
-msgstr ""
-
-#: ../lib/category.c:48
-msgid "games"
-msgstr ""
-
-#: ../lib/category.c:49
-msgid "graphics"
-msgstr ""
-
-#: ../lib/category.c:50
-msgid "productivity"
-msgstr ""
-
-#: ../lib/category.c:51
-msgid "industry"
-msgstr ""
-
-#: ../lib/category.c:52
-msgid "education"
-msgstr ""
-
-#: ../lib/category.c:53
-msgid "development"
-msgstr ""
-
-#: ../lib/category.c:54
-msgid "system"
-msgstr ""
-
-#: ../lib/category.c:55
-msgid "utilities"
-msgstr ""
-
-#: ../lib/category.c:56
-msgid "others"
 msgstr ""
