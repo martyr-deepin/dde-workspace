@@ -163,7 +163,7 @@ initDock = ->
         , SHOW_HIDE_ANIMATION_TIME)
     , 1000)
     if not activeWindow
-        activeWindow= new ActiveWindow(clientManager.CurrentActiveWindow_sync())
+        activeWindow = new ActiveWindow(clientManager.CurrentActiveWindow_sync())
     setTimeout(->
         updateMaxClientListWidth()
     , 2000)
