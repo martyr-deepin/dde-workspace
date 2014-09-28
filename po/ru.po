@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-04 22:15+0800\n"
-"PO-Revision-Date: 2014-09-24 08:12+0000\n"
+"POT-Creation-Date: 2014-09-30 10:08+0800\n"
+"PO-Revision-Date: 2014-09-30 06:50+0000\n"
 "Last-Translator: Анатолий Валерианович <ffox909@mail.ru>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/deepin-desktop-environment/language/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -20,6 +20,282 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ru\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: ../resources/common/js/uninstaller.coffee:32
+msgid "You have uninstalled \"%1\" successfully"
+msgstr "Ваше удаление \"%1\" успешно"
+
+#: ../resources/common/js/uninstaller.coffee:33
+msgid "\"%1\" failed to be uninstalled"
+msgstr "\"%1\" удалён не удачно"
+
+#: ../resources/desktop/js/application.coffee:179
+#: ../resources/desktop/js/richdir.coffee:335
+#: ../resources/desktop/js/richdir.coffee:586
+msgid "The link is invalid. Do you want to delete it?"
+msgstr "Неверная ссылка! Желаете её удалить?"
+
+#: ../resources/desktop/js/application.coffee:179
+#: ../resources/desktop/js/desktopentry.coffee:166
+#: ../resources/desktop/js/richdir.coffee:335
+#: ../resources/desktop/js/richdir.coffee:586
+#: ../resources/dock/js/plugins/trash/trash.coffee:81
+msgid "Warning"
+msgstr "Предупреждение"
+
+#: ../resources/desktop/js/desktopentry.coffee:102
+#: ../resources/desktop/js/richdir.coffee:133
+#: ../resources/desktop/js/richdir.coffee:566
+#: ../resources/desktop/js/specialitem.coffee:51
+#: ../resources/desktop/js/specialitem.coffee:146
+#: ../resources/guide/js/launcher.coffee:212
+#: ../resources/launcher/js/item.coffee:301
+msgid "_Open"
+msgstr "Открыть"
+
+#: ../resources/desktop/js/desktopentry.coffee:104
+#: ../resources/desktop/js/richdir.coffee:568
+msgid "Cu_t"
+msgstr "Вырезать"
+
+#: ../resources/desktop/js/desktopentry.coffee:105
+#: ../resources/desktop/js/item.coffee:397
+#: ../resources/desktop/js/richdir.coffee:569
+msgid "_Copy"
+msgstr "Копировать"
+
+#: ../resources/desktop/js/desktopentry.coffee:107
+#: ../resources/desktop/js/richdir.coffee:135
+msgid "_Rename"
+msgstr "Переименовать"
+
+#: ../resources/desktop/js/desktopentry.coffee:108
+#: ../resources/desktop/js/invalidlink.coffee:34
+#: ../resources/desktop/js/item.coffee:398
+#: ../resources/desktop/js/richdir.coffee:139
+#: ../resources/desktop/js/richdir.coffee:571
+msgid "_Delete"
+msgstr "_Удалить"
+
+#: ../resources/desktop/js/desktopentry.coffee:110
+#: ../resources/desktop/js/richdir.coffee:573
+#: ../resources/desktop/js/specialitem.coffee:53
+msgid "_Properties"
+msgstr "Свойства"
+
+#: ../resources/desktop/js/desktopentry.coffee:116
+#: ../resources/desktop/js/desktopentry.coffee:123
+msgid "Co_mpress"
+msgstr "Сжать"
+
+#: ../resources/desktop/js/desktopentry.coffee:119
+#: ../resources/desktop/js/desktopentry.coffee:124
+msgid "_Extract"
+msgstr "Распаковать"
+
+#: ../resources/desktop/js/desktopentry.coffee:120
+#: ../resources/desktop/js/desktopentry.coffee:125
+msgid "Extract _Here"
+msgstr "Распаковать сюда"
+
+#: ../resources/desktop/js/desktopentry.coffee:166
+#: ../resources/dock/js/plugins/trash/trash.coffee:81
+msgid "Can not open this file."
+msgstr "Невозможно открыть этот файл!"
+
+#: ../resources/desktop/js/grid.coffee:72 ../lib/dentry/fileops.c:403
+msgid "Untitled"
+msgstr "Безымянный"
+
+#: ../resources/desktop/js/grid.coffee:1021
+msgid "_Folder"
+msgstr "Папка"
+
+#: ../resources/desktop/js/grid.coffee:1022
+msgid "_Text document"
+msgstr "Текстовый документ"
+
+#: ../resources/desktop/js/grid.coffee:1036
+msgid "_Name"
+msgstr "Имя"
+
+#: ../resources/desktop/js/grid.coffee:1037
+msgid "Last modified _time"
+msgstr "Время последнего изменения"
+
+#: ../resources/desktop/js/grid.coffee:1041
+#: ../resources/guide/js/desktop.coffee:196
+msgid "_Sort by"
+msgstr "Сортировать по"
+
+#: ../resources/desktop/js/grid.coffee:1042
+#: ../resources/guide/js/desktop.coffee:197
+msgid "_New"
+msgstr "Новый"
+
+#: ../resources/desktop/js/grid.coffee:1043
+#: ../resources/guide/js/desktop.coffee:198
+msgid "Open in _terminal"
+msgstr "Открыть в  терминале"
+
+#: ../resources/desktop/js/grid.coffee:1044
+#: ../resources/desktop/js/item.coffee:396
+#: ../resources/guide/js/desktop.coffee:199
+msgid "_Paste"
+msgstr "Вставить"
+
+#: ../resources/desktop/js/grid.coffee:1046
+#: ../resources/guide/js/desktop.coffee:201
+msgid "_Display settings"
+msgstr "Настройки дисплея"
+
+#: ../resources/desktop/js/grid.coffee:1047
+#: ../resources/guide/js/desktop.coffee:202
+msgid "_Corner navigation"
+msgstr "Угловая навигация"
+
+#: ../resources/desktop/js/grid.coffee:1048
+#: ../resources/guide/js/desktop.coffee:203
+msgid "Pe_rsonalize"
+msgstr "Персонализация"
+
+#: ../resources/desktop/js/item.coffee:395
+msgid "_Cut"
+msgstr "_Вырезать"
+
+#: ../resources/desktop/js/item.coffee:400
+msgid "_Select All"
+msgstr "_Выбрать всё"
+
+#: ../resources/desktop/js/richdir.coffee:137
+msgid "_Ungroup"
+msgstr "Разгруппировать"
+
+#: ../resources/desktop/js/specialitem.coffee:34
+msgid "Computer"
+msgstr "Компьютер"
+
+#: ../resources/desktop/js/specialitem.coffee:87
+#: ../resources/dock/js/main.coffee:47 ../resources/dock/js/main.coffee:117
+msgid "Trash"
+msgstr "Корзина"
+
+#: ../resources/desktop/js/specialitem.coffee:150
+msgid "_Clean up %1 items"
+msgstr "_Очистить %1 объектов"
+
+#: ../resources/desktop/js/specialitem.coffee:152
+msgid "_Clean up 1 item"
+msgstr "_Очистить 1 объект"
+
+#: ../resources/desktop/js/specialitem.coffee:154
+#: ../resources/dock/js/plugins/trash/trash.coffee:34
+msgid "_Empty"
+msgstr "_Пустой"
+
+#: ../resources/dock/js/deepin_item.coffee:248
+msgid "_View as analog"
+msgstr "_ Аналоговые"
+
+#: ../resources/dock/js/deepin_item.coffee:249
+#: ../resources/dock/js/deepin_item.coffee:301
+msgid "_Time settings"
+msgstr "Настройка времени"
+
+#: ../resources/dock/js/deepin_item.coffee:300
+msgid "_View as digit"
+msgstr "_Цифровые"
+
+#: ../resources/dock/js/global_menu.coffee:9
+msgid "Keep _showing"
+msgstr "Держать_видимым"
+
+#: ../resources/dock/js/global_menu.coffee:10
+msgid "Keep _hidden"
+msgstr "Держать_скрытым"
+
+#: ../resources/dock/js/global_menu.coffee:11
+msgid "_Auto hide"
+msgstr "_Автоскрытие"
+
+#: ../resources/dock/js/global_menu.coffee:12
+msgid "_Smart hide"
+msgstr "_Умное скрытие"
+
+#: ../resources/dock/js/global_menu.coffee:24
+msgid "_Fashion mode"
+msgstr "_Модный режим"
+
+#: ../resources/dock/js/global_menu.coffee:25
+msgid "_Efficient mode"
+msgstr "_Режим с эффектами"
+
+#: ../resources/dock/js/global_menu.coffee:26
+msgid "_Classic mode"
+msgstr "_Классический режим"
+
+#: ../resources/dock/js/main.coffee:115 ../resources/zone/js/utils.coffee:10
+msgid "Launcher"
+msgstr "Лаунчер"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Sun"
+msgstr "Вс"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Mon"
+msgstr "Пн"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Tue"
+msgstr "Вт"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Wed"
+msgstr "Ср"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Thu"
+msgstr "Чт"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Fri"
+msgstr "Пт"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Sat"
+msgstr "Сб"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:38
+msgid "_Close"
+msgstr "_Закрыть"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:118
+#: ../resources/launcher/js/item.coffee:379
+msgid "Are you sure to remove"
+msgstr "Вы уверены, что хотите удалить"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:118
+#: ../resources/launcher/js/item.coffee:379
+msgid "All dependencies will be removed"
+msgstr "Все зависимости будут удалены"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:118
+#: ../resources/launcher/js/item.coffee:379
+msgid "no"
+msgstr "нет"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:118
+#: ../resources/launcher/js/item.coffee:379
+msgid "yes"
+msgstr "да"
 
 #: ../resources/greeter/js/mediacontrol.coffee:167
 msgid "Click button to Play"
@@ -49,9 +325,21 @@ msgstr "$ sudo apt install deepin-desktop-Environment\n"
 msgid "\t\t\t\t-----No available desktop sessions!-----\n"
 msgstr "\t\t\t\t-----Нет доступных сессий Рабочего стола!-----\n"
 
-#: ../resources/greeter/js/user.coffee:411
-msgid "Login"
-msgstr "Вход"
+#: ../resources/greeter/js/powermenu.coffee:26
+msgid "Shut down"
+msgstr "Выключение"
+
+#: ../resources/greeter/js/powermenu.coffee:27
+msgid "Restart"
+msgstr "Перезагрузка"
+
+#: ../resources/greeter/js/powermenu.coffee:28
+msgid "Suspend"
+msgstr "Приостановка"
+
+#: ../resources/greeter/js/powermenu.coffee:90
+msgid "Enter your password to %1"
+msgstr "Введите свой пароль для %1"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jan"
@@ -101,249 +389,13 @@ msgstr "Ноя"
 msgid "Dec"
 msgstr "Дек"
 
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Sun"
-msgstr "Вс"
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Mon"
-msgstr "Пн"
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Tue"
-msgstr "Вт"
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Wed"
-msgstr "Ср"
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Thu"
-msgstr "Чт"
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Fri"
-msgstr "Пт"
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Sat"
-msgstr "Сб"
+#: ../resources/greeter/js/user.coffee:411
+msgid "Login"
+msgstr "Вход"
 
 #: ../resources/greeter/js/usermenu.coffee:57
 msgid "Guest"
 msgstr "Гость"
-
-#: ../resources/greeter/js/powermenu.coffee:26
-msgid "Shut down"
-msgstr "Выключение"
-
-#: ../resources/greeter/js/powermenu.coffee:27
-msgid "Restart"
-msgstr "Перезагрузка"
-
-#: ../resources/greeter/js/powermenu.coffee:28
-msgid "Suspend"
-msgstr "Приостановка"
-
-#: ../resources/greeter/js/powermenu.coffee:90
-msgid "Enter your password to %1"
-msgstr "Введите свой пароль для %1"
-
-#: ../resources/dock/js/deepin_item.coffee:247
-msgid "_View as analog"
-msgstr "_ Аналоговые"
-
-#: ../resources/dock/js/deepin_item.coffee:248
-#: ../resources/dock/js/deepin_item.coffee:300
-msgid "_Time settings"
-msgstr "Настройка времени"
-
-#: ../resources/dock/js/deepin_item.coffee:299
-msgid "_View as digit"
-msgstr "_Цифровые"
-
-#: ../resources/dock/js/main.coffee:49 ../resources/dock/js/main.coffee:126
-#: ../resources/desktop/js/specialitem.coffee:87
-msgid "Trash"
-msgstr "Корзина"
-
-#: ../resources/dock/js/main.coffee:124 ../resources/zone/js/utils.coffee:10
-msgid "Launcher"
-msgstr "Лаунчер"
-
-#: ../resources/dock/js/global_menu.coffee:9
-msgid "Keep _showing"
-msgstr "Держать_видимым"
-
-#: ../resources/dock/js/global_menu.coffee:10
-msgid "Keep _hidden"
-msgstr "Держать_скрытым"
-
-#: ../resources/dock/js/global_menu.coffee:11
-msgid "_Auto hide"
-msgstr "_Автоскрытие"
-
-#: ../resources/dock/js/global_menu.coffee:24
-msgid "_Fashion mode"
-msgstr "_Модный режим"
-
-#: ../resources/dock/js/global_menu.coffee:25
-msgid "_Efficient mode"
-msgstr "_Режим с эффектами"
-
-#: ../resources/dock/js/global_menu.coffee:26
-msgid "_Classic mode"
-msgstr "_Классический режим"
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:29
-#: ../resources/desktop/js/specialitem.coffee:156
-msgid "_Empty"
-msgstr "_Пустой"
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:33
-msgid "_Close"
-msgstr "_Закрыть"
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:76
-#: ../resources/desktop/js/desktopentry.coffee:165
-msgid "Can not open this file."
-msgstr "Невозможно открыть этот файл!"
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:76
-#: ../resources/desktop/js/application.coffee:179
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
-#: ../resources/desktop/js/desktopentry.coffee:165
-msgid "Warning"
-msgstr "Предупреждение"
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:113
-#: ../resources/launcher/js/item.coffee:354
-msgid "Are you sure to remove"
-msgstr "Вы уверены, что хотите удалить"
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:113
-#: ../resources/launcher/js/item.coffee:354
-msgid "All dependencies will be removed"
-msgstr "Все зависимости будут удалены"
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:113
-#: ../resources/launcher/js/item.coffee:354
-msgid "no"
-msgstr "нет"
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:113
-#: ../resources/launcher/js/item.coffee:354
-msgid "yes"
-msgstr "да"
-
-#: ../resources/zone/js/utils.coffee:10
-msgid "Control Center"
-msgstr "Центр управления"
-
-#: ../resources/zone/js/utils.coffee:10
-msgid "All Windows"
-msgstr "Все окна"
-
-#: ../resources/zone/js/utils.coffee:10
-msgid "Desktop"
-msgstr "Рабочий стол"
-
-#: ../resources/zone/js/utils.coffee:10
-msgid "None"
-msgstr "Ничего"
-
-#: ../resources/launcher/js/const.coffee:64
-msgid "_Hide the icon"
-msgstr "Скрыть иконку"
-
-#: ../resources/launcher/js/const.coffee:65
-msgid "_Display hidden icons"
-msgstr "Показать скрытые значки"
-
-#: ../resources/launcher/js/const.coffee:68
-msgid "_Hide this icon"
-msgstr "Не отображать значок"
-
-#: ../resources/launcher/js/const.coffee:69
-msgid "_Display this icon"
-msgstr "Отобразить значок"
-
-#: ../resources/launcher/js/const.coffee:72
-#: ../resources/guide/js/launcher.coffee:218
-msgid "_Add to autostart"
-msgstr "Добавить в автозагрузку"
-
-#: ../resources/launcher/js/const.coffee:73
-msgid "_Remove from autostart"
-msgstr "Убрать из автозагрузки"
-
-#: ../resources/launcher/js/const.coffee:80
-msgid "Add to _favorites"
-msgstr "Добавить в Избранное"
-
-#: ../resources/launcher/js/const.coffee:81
-#: ../resources/guide/js/launcher.coffee:214
-msgid "Remove from _favorites"
-msgstr "Удалить из Избранного"
-
-#: ../resources/launcher/js/const.coffee:84
-#: ../resources/guide/js/launcher.coffee:215
-msgid "Send to d_esktop"
-msgstr "Отправить на рабочий стол"
-
-#: ../resources/launcher/js/const.coffee:85
-msgid "Remove from d_esktop"
-msgstr "Удалить с рабочего _стола"
-
-#: ../resources/launcher/js/const.coffee:88
-#: ../resources/guide/js/launcher.coffee:216
-msgid "Send to do_ck"
-msgstr "Отправить на панель"
-
-#: ../resources/launcher/js/const.coffee:89
-msgid "Remove from do_ck"
-msgstr "Удалить из _дока"
-
-#: ../resources/launcher/js/item.coffee:276
-#: ../resources/guide/js/launcher.coffee:212
-#: ../resources/desktop/js/richdir.coffee:133
-#: ../resources/desktop/js/richdir.coffee:566
-#: ../resources/desktop/js/specialitem.coffee:51
-#: ../resources/desktop/js/specialitem.coffee:147
-#: ../resources/desktop/js/desktopentry.coffee:102
-msgid "_Open"
-msgstr "Открыть"
-
-#: ../resources/launcher/js/item.coffee:283
-#: ../resources/guide/js/launcher.coffee:219
-msgid "_Uninstall"
-msgstr "Удалить"
-
-#: ../resources/guide/js/dss.coffee:29
-msgid "Well, please trigger the lower right corner again"
-msgstr "Пожалуйста, наведите на правый нижний угол ещё раз"
-
-#: ../resources/guide/js/dss.coffee:30
-msgid "tips: Click the setting icon on dock to implement"
-msgstr "советы: Нажмите на иконку настроек в доке для подсудимых для применения"
-
-#: ../resources/guide/js/dss.coffee:69
-msgid "Here is the system setting area"
-msgstr "Здесь область настройки системы"
-
-#: ../resources/guide/js/dss.coffee:70
-msgid ""
-"tips: Hover the setting icon on dock to quickly implement some setting "
-"functions"
-msgstr "советы: Наведите курсор на значок настройки дока, чтобы быстро реализовать некоторые функции"
 
 #: ../resources/guide/js/desktop.coffee:27
 msgid ""
@@ -397,48 +449,23 @@ msgstr "Кликните правой кнопкой мыши на свобод�
 msgid "tips: Click on the interface of corner navigation blank area to return"
 msgstr "советы: нажмите на углу интерфейса области навигации, чтобы вернуться"
 
-#: ../resources/guide/js/desktop.coffee:196
-#: ../resources/desktop/js/grid.coffee:1045
-msgid "_Sort by"
-msgstr "Сортировать по"
+#: ../resources/guide/js/dss.coffee:29
+msgid "Well, please trigger the lower right corner again"
+msgstr "Пожалуйста, наведите на правый нижний угол ещё раз"
 
-#: ../resources/guide/js/desktop.coffee:197
-#: ../resources/desktop/js/grid.coffee:1046
-msgid "_New"
-msgstr "Новый"
+#: ../resources/guide/js/dss.coffee:30
+msgid "tips: Click the setting icon on dock to implement"
+msgstr "советы: Нажмите на иконку настроек в доке для подсудимых для применения"
 
-#: ../resources/guide/js/desktop.coffee:198
-#: ../resources/desktop/js/grid.coffee:1047
-msgid "Open in _terminal"
-msgstr "Открыть в  терминале"
+#: ../resources/guide/js/dss.coffee:69
+msgid "Here is the system setting area"
+msgstr "Здесь область настройки системы"
 
-#: ../resources/guide/js/desktop.coffee:199
-#: ../resources/desktop/js/grid.coffee:1048
-msgid "_Paste"
-msgstr "Вставить"
-
-#: ../resources/guide/js/desktop.coffee:201
-#: ../resources/desktop/js/grid.coffee:1050
-msgid "_Display settings"
-msgstr "Настройки дисплея"
-
-#: ../resources/guide/js/desktop.coffee:202
-#: ../resources/desktop/js/grid.coffee:1051
-msgid "_Corner navigation"
-msgstr "Угловая навигация"
-
-#: ../resources/guide/js/desktop.coffee:203
-#: ../resources/desktop/js/grid.coffee:1052
-msgid "Pe_rsonalize"
-msgstr "Персонализация"
-
-#: ../resources/guide/js/welcome.coffee:35
-msgid "Welcome to use Deepin Operating System"
-msgstr "Добро пожаловать в Операционную систему Deepin"
-
-#: ../resources/guide/js/welcome.coffee:38
-msgid "Prepare for operation ..."
-msgstr "Подготовка к операции…"
+#: ../resources/guide/js/dss.coffee:70
+msgid ""
+"tips: Hover the setting icon on dock to quickly implement some setting "
+"functions"
+msgstr "советы: Наведите курсор на значок настройки дока, чтобы быстро реализовать некоторые функции"
 
 #: ../resources/guide/js/end.coffee:25
 msgid "Thanks for your patience while learning. Congratulations."
@@ -447,30 +474,6 @@ msgstr "Благодарим за терпение во время обучен�
 #: ../resources/guide/js/end.coffee:30
 msgid "End"
 msgstr "Конец"
-
-#: ../resources/guide/js/start.coffee:28
-msgid "New Launcher"
-msgstr "Новый Лаунчер"
-
-#: ../resources/guide/js/start.coffee:28
-msgid "New Desktop"
-msgstr "Новый Рабочий стол"
-
-#: ../resources/guide/js/start.coffee:28
-msgid "New System Settings"
-msgstr "Новые Системные настройки"
-
-#: ../resources/guide/js/start.coffee:29
-msgid "The following will guide you to learn how to use some new functions"
-msgstr "Далее Вас будут направлять, чтобы научить использовать новые функции"
-
-#: ../resources/guide/js/start.coffee:44
-msgid "Start"
-msgstr "Начать"
-
-#: ../resources/guide/js/start.coffee:51
-msgid "I am an experienced user. Exit directly."
-msgstr "Я опытный пользователь. Выход непосредственно."
 
 #: ../resources/guide/js/launcher.coffee:29
 msgid ""
@@ -518,90 +521,94 @@ msgstr "Используйте клик правой кнопкой мыши, ч
 msgid "tips: You can add it to startup items or uninstall it"
 msgstr "советы: Вы можете добавить его в автозагрузку и удалить"
 
-#: ../resources/desktop/js/grid.coffee:71 ../lib/dentry/fileops.c:403
-msgid "Untitled"
-msgstr "Безымянный"
+#: ../resources/guide/js/launcher.coffee:214
+#: ../resources/launcher/js/const.coffee:81
+msgid "Remove from _favorites"
+msgstr "Удалить из Избранного"
 
-#: ../resources/desktop/js/grid.coffee:1022
-msgid "_Name"
-msgstr "Имя"
+#: ../resources/guide/js/launcher.coffee:215
+#: ../resources/launcher/js/const.coffee:84
+msgid "Send to d_esktop"
+msgstr "Отправить на рабочий стол"
 
-#: ../resources/desktop/js/grid.coffee:1023
-msgid "Last modified _time"
-msgstr "Время последнего изменения"
+#: ../resources/guide/js/launcher.coffee:216
+#: ../resources/launcher/js/const.coffee:88
+msgid "Send to do_ck"
+msgstr "Отправить на панель"
 
-#: ../resources/desktop/js/grid.coffee:1028
-msgid "_Folder"
-msgstr "Папка"
+#: ../resources/guide/js/launcher.coffee:218
+#: ../resources/launcher/js/const.coffee:72
+msgid "_Add to autostart"
+msgstr "Добавить в автозагрузку"
 
-#: ../resources/desktop/js/grid.coffee:1029
-msgid "_Text document"
-msgstr "Текстовый документ"
+#: ../resources/guide/js/launcher.coffee:219
+#: ../resources/launcher/js/item.coffee:308
+msgid "_Uninstall"
+msgstr "Удалить"
 
-#: ../resources/desktop/js/application.coffee:179
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
-msgid "The link is invalid. Do you want to delete it?"
-msgstr "Неверная ссылка! Желаете её удалить?"
+#: ../resources/guide/js/start.coffee:28
+msgid "New Launcher"
+msgstr "Новый Лаунчер"
 
-#: ../resources/desktop/js/richdir.coffee:135
-#: ../resources/desktop/js/desktopentry.coffee:107
-msgid "_Rename"
-msgstr "Переименовать"
+#: ../resources/guide/js/start.coffee:28
+msgid "New Desktop"
+msgstr "Новый Рабочий стол"
 
-#: ../resources/desktop/js/richdir.coffee:137
-msgid "_Ungroup"
-msgstr "Разгруппировать"
+#: ../resources/guide/js/start.coffee:28
+msgid "New System Settings"
+msgstr "Новые Системные настройки"
 
-#: ../resources/desktop/js/richdir.coffee:139
-#: ../resources/desktop/js/richdir.coffee:571
-#: ../resources/desktop/js/invalidlink.coffee:34
-#: ../resources/desktop/js/desktopentry.coffee:108
-msgid "_Delete"
-msgstr "_Удалить"
+#: ../resources/guide/js/start.coffee:29
+msgid "The following will guide you to learn how to use some new functions"
+msgstr "Далее Вас будут направлять, чтобы научить использовать новые функции"
 
-#: ../resources/desktop/js/richdir.coffee:568
-#: ../resources/desktop/js/desktopentry.coffee:104
-msgid "Cu_t"
-msgstr "Вырезать"
+#: ../resources/guide/js/start.coffee:44
+msgid "Start"
+msgstr "Начать"
 
-#: ../resources/desktop/js/richdir.coffee:569
-#: ../resources/desktop/js/desktopentry.coffee:105
-msgid "_Copy"
-msgstr "Копировать"
+#: ../resources/guide/js/start.coffee:51
+msgid "I am an experienced user. Exit directly."
+msgstr "Я опытный пользователь. Выход непосредственно."
 
-#: ../resources/desktop/js/richdir.coffee:573
-#: ../resources/desktop/js/specialitem.coffee:53
-#: ../resources/desktop/js/desktopentry.coffee:110
-msgid "_Properties"
-msgstr "Свойства"
+#: ../resources/guide/js/welcome.coffee:35
+msgid "Welcome to use Deepin Operating System"
+msgstr "Добро пожаловать в Операционную систему Deepin"
 
-#: ../resources/desktop/js/specialitem.coffee:34
-msgid "Computer"
-msgstr "Компьютер"
+#: ../resources/guide/js/welcome.coffee:38
+msgid "Prepare for operation ..."
+msgstr "Подготовка к операции…"
 
-#: ../resources/desktop/js/specialitem.coffee:152
-msgid "_Clean up %1 items"
-msgstr "_Очистить %1 объектов"
+#: ../resources/launcher/js/const.coffee:64
+msgid "_Hide the icon"
+msgstr "Скрыть иконку"
 
-#: ../resources/desktop/js/specialitem.coffee:154
-msgid "_Clean up 1 item"
-msgstr "_Очистить 1 объект"
+#: ../resources/launcher/js/const.coffee:65
+msgid "_Display hidden icons"
+msgstr "Показать скрытые значки"
 
-#: ../resources/desktop/js/desktopentry.coffee:116
-#: ../resources/desktop/js/desktopentry.coffee:123
-msgid "Co_mpress"
-msgstr "Сжать"
+#: ../resources/launcher/js/const.coffee:68
+msgid "_Hide this icon"
+msgstr "Не отображать значок"
 
-#: ../resources/desktop/js/desktopentry.coffee:119
-#: ../resources/desktop/js/desktopentry.coffee:124
-msgid "_Extract"
-msgstr "Распаковать"
+#: ../resources/launcher/js/const.coffee:69
+msgid "_Display this icon"
+msgstr "Отобразить значок"
 
-#: ../resources/desktop/js/desktopentry.coffee:120
-#: ../resources/desktop/js/desktopentry.coffee:125
-msgid "Extract _Here"
-msgstr "Распаковать сюда"
+#: ../resources/launcher/js/const.coffee:73
+msgid "_Remove from autostart"
+msgstr "Убрать из автозагрузки"
+
+#: ../resources/launcher/js/const.coffee:80
+msgid "Add to _favorites"
+msgstr "Добавить в Избранное"
+
+#: ../resources/launcher/js/const.coffee:85
+msgid "Remove from d_esktop"
+msgstr "Удалить с рабочего _стола"
+
+#: ../resources/launcher/js/const.coffee:89
+msgid "Remove from do_ck"
+msgstr "Удалить из _дока"
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
@@ -611,15 +618,35 @@ msgstr "Дубликат"
 msgid "Extend"
 msgstr "Продлить"
 
-#: ../resources/common/js/uninstaller.coffee:32
-msgid "You have uninstalled \"%1\" successfully"
-msgstr "Ваше удаление \"%1\" успешно"
+#: ../resources/zone/js/utils.coffee:10
+msgid "Control Center"
+msgstr "Центр управления"
 
-#: ../resources/common/js/uninstaller.coffee:33
-msgid "\"%1\" failed to be uninstalled"
-msgstr "\"%1\" удалён не удачно"
+#: ../resources/zone/js/utils.coffee:10
+msgid "All Windows"
+msgstr "Все окна"
 
-#: ../app/greeter/lock.c:125 ../app/greeter/greeter.c:192
+#: ../resources/zone/js/utils.coffee:10
+msgid "Desktop"
+msgstr "Рабочий стол"
+
+#: ../resources/zone/js/utils.coffee:10
+msgid "None"
+msgstr "Ничего"
+
+#: ../app/desktop/desktop.c:300
+msgid "New file"
+msgstr "Новый файл"
+
+#: ../app/desktop/desktop.c:311
+msgid "New directory"
+msgstr "Новая папка"
+
+#: ../app/dock/dock.c:341
+msgid "Dock failed to start, because Compiz is not enabled."
+msgstr "Ошибка запуска панели: отключён плагин Compiz"
+
+#: ../app/greeter/greeter.c:197 ../app/greeter/lock.c:171
 msgid "Wrong Password"
 msgstr "Неверный пароль"
 
@@ -627,17 +654,53 @@ msgstr "Неверный пароль"
 msgid "%a, %b %d, %Y"
 msgstr "%a, %b %d, %Y"
 
-#: ../app/dock/dock.c:341
-msgid "Dock failed to start, because Compiz is not enabled."
-msgstr "Ошибка запуска панели: отключён плагин Compiz"
+#: ../lib/category.c:45
+msgid "all"
+msgstr "все"
 
-#: ../app/desktop/desktop.c:298
-msgid "New file"
-msgstr "Новый файл"
+#: ../lib/category.c:46
+msgid "internet"
+msgstr "интернет"
 
-#: ../app/desktop/desktop.c:309
-msgid "New directory"
-msgstr "Новая папка"
+#: ../lib/category.c:47
+msgid "multimedia"
+msgstr "мультимедиа"
+
+#: ../lib/category.c:48
+msgid "games"
+msgstr "игры"
+
+#: ../lib/category.c:49
+msgid "graphics"
+msgstr "графика"
+
+#: ../lib/category.c:50
+msgid "productivity"
+msgstr "производительность"
+
+#: ../lib/category.c:51
+msgid "industry"
+msgstr "индустрия"
+
+#: ../lib/category.c:52
+msgid "education"
+msgstr "образование"
+
+#: ../lib/category.c:53
+msgid "development"
+msgstr "разработка"
+
+#: ../lib/category.c:54
+msgid "system"
+msgstr "система"
+
+#: ../lib/category.c:55
+msgid "utilities"
+msgstr "утилиты"
+
+#: ../lib/category.c:56
+msgid "others"
+msgstr "другие"
 
 #: ../lib/dentry/entry.c:746
 #, c-format
@@ -850,51 +913,3 @@ msgstr "Дисплей"
 #: ../lib/dentry/mime_actions.c:213
 msgid "_Run"
 msgstr "Запуск"
-
-#: ../lib/category.c:45
-msgid "all"
-msgstr "все"
-
-#: ../lib/category.c:46
-msgid "internet"
-msgstr "интернет"
-
-#: ../lib/category.c:47
-msgid "multimedia"
-msgstr "мультимедиа"
-
-#: ../lib/category.c:48
-msgid "games"
-msgstr "игры"
-
-#: ../lib/category.c:49
-msgid "graphics"
-msgstr "графика"
-
-#: ../lib/category.c:50
-msgid "productivity"
-msgstr "производительность"
-
-#: ../lib/category.c:51
-msgid "industry"
-msgstr "индустрия"
-
-#: ../lib/category.c:52
-msgid "education"
-msgstr "образование"
-
-#: ../lib/category.c:53
-msgid "development"
-msgstr "разработка"
-
-#: ../lib/category.c:54
-msgid "system"
-msgstr "система"
-
-#: ../lib/category.c:55
-msgid "utilities"
-msgstr "утилиты"
-
-#: ../lib/category.c:56
-msgid "others"
-msgstr "другие"

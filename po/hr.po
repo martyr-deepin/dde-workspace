@@ -8,15 +8,291 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-04 22:15+0800\n"
-"PO-Revision-Date: 2014-09-24 08:12+0000\n"
-"Last-Translator: gogo <trebelnik2@gmail.com>\n"
+"POT-Creation-Date: 2014-09-30 10:08+0800\n"
+"PO-Revision-Date: 2014-09-30 06:17+0000\n"
+"Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
 "Language-Team: Croatian (http://www.transifex.com/projects/p/deepin-desktop-environment/language/hr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: hr\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+
+#: ../resources/common/js/uninstaller.coffee:32
+msgid "You have uninstalled \"%1\" successfully"
+msgstr "\"%1\" ste uspješno deinstalirali"
+
+#: ../resources/common/js/uninstaller.coffee:33
+msgid "\"%1\" failed to be uninstalled"
+msgstr "\"%1\" je neuspješno deinstaliran"
+
+#: ../resources/desktop/js/application.coffee:179
+#: ../resources/desktop/js/richdir.coffee:335
+#: ../resources/desktop/js/richdir.coffee:586
+msgid "The link is invalid. Do you want to delete it?"
+msgstr "Poveznica je neispravna. Želite li ju obrisati?"
+
+#: ../resources/desktop/js/application.coffee:179
+#: ../resources/desktop/js/desktopentry.coffee:166
+#: ../resources/desktop/js/richdir.coffee:335
+#: ../resources/desktop/js/richdir.coffee:586
+#: ../resources/dock/js/plugins/trash/trash.coffee:81
+msgid "Warning"
+msgstr "Upozorenje"
+
+#: ../resources/desktop/js/desktopentry.coffee:102
+#: ../resources/desktop/js/richdir.coffee:133
+#: ../resources/desktop/js/richdir.coffee:566
+#: ../resources/desktop/js/specialitem.coffee:51
+#: ../resources/desktop/js/specialitem.coffee:146
+#: ../resources/guide/js/launcher.coffee:212
+#: ../resources/launcher/js/item.coffee:301
+msgid "_Open"
+msgstr "_Otvori"
+
+#: ../resources/desktop/js/desktopentry.coffee:104
+#: ../resources/desktop/js/richdir.coffee:568
+msgid "Cu_t"
+msgstr "Iz_reži"
+
+#: ../resources/desktop/js/desktopentry.coffee:105
+#: ../resources/desktop/js/item.coffee:397
+#: ../resources/desktop/js/richdir.coffee:569
+msgid "_Copy"
+msgstr "_Kopiraj"
+
+#: ../resources/desktop/js/desktopentry.coffee:107
+#: ../resources/desktop/js/richdir.coffee:135
+msgid "_Rename"
+msgstr "_Preimenuj"
+
+#: ../resources/desktop/js/desktopentry.coffee:108
+#: ../resources/desktop/js/invalidlink.coffee:34
+#: ../resources/desktop/js/item.coffee:398
+#: ../resources/desktop/js/richdir.coffee:139
+#: ../resources/desktop/js/richdir.coffee:571
+msgid "_Delete"
+msgstr "_Obriši"
+
+#: ../resources/desktop/js/desktopentry.coffee:110
+#: ../resources/desktop/js/richdir.coffee:573
+#: ../resources/desktop/js/specialitem.coffee:53
+msgid "_Properties"
+msgstr "_Svojstva"
+
+#: ../resources/desktop/js/desktopentry.coffee:116
+#: ../resources/desktop/js/desktopentry.coffee:123
+msgid "Co_mpress"
+msgstr "Za_pakiraj"
+
+#: ../resources/desktop/js/desktopentry.coffee:119
+#: ../resources/desktop/js/desktopentry.coffee:124
+msgid "_Extract"
+msgstr "_Raspakiraj"
+
+#: ../resources/desktop/js/desktopentry.coffee:120
+#: ../resources/desktop/js/desktopentry.coffee:125
+msgid "Extract _Here"
+msgstr "Raspakiraj _ovdje"
+
+#: ../resources/desktop/js/desktopentry.coffee:166
+#: ../resources/dock/js/plugins/trash/trash.coffee:81
+msgid "Can not open this file."
+msgstr "Nemoguće otvaranje ove datoteke."
+
+#: ../resources/desktop/js/grid.coffee:72 ../lib/dentry/fileops.c:403
+msgid "Untitled"
+msgstr "Bezimeno"
+
+#: ../resources/desktop/js/grid.coffee:1021
+msgid "_Folder"
+msgstr "_Mapa"
+
+#: ../resources/desktop/js/grid.coffee:1022
+msgid "_Text document"
+msgstr "_Tekstovna datoteka"
+
+#: ../resources/desktop/js/grid.coffee:1036
+msgid "_Name"
+msgstr "_Nazivu"
+
+#: ../resources/desktop/js/grid.coffee:1037
+msgid "Last modified _time"
+msgstr "Vremenu posljednje _promjene"
+
+#: ../resources/desktop/js/grid.coffee:1041
+#: ../resources/guide/js/desktop.coffee:196
+msgid "_Sort by"
+msgstr "_Poredaj prema"
+
+#: ../resources/desktop/js/grid.coffee:1042
+#: ../resources/guide/js/desktop.coffee:197
+msgid "_New"
+msgstr "_Nova"
+
+#: ../resources/desktop/js/grid.coffee:1043
+#: ../resources/guide/js/desktop.coffee:198
+msgid "Open in _terminal"
+msgstr "Otvori u _terminalu"
+
+#: ../resources/desktop/js/grid.coffee:1044
+#: ../resources/desktop/js/item.coffee:396
+#: ../resources/guide/js/desktop.coffee:199
+msgid "_Paste"
+msgstr "_Zalijepi"
+
+#: ../resources/desktop/js/grid.coffee:1046
+#: ../resources/guide/js/desktop.coffee:201
+msgid "_Display settings"
+msgstr "_Postavke zaslona"
+
+#: ../resources/desktop/js/grid.coffee:1047
+#: ../resources/guide/js/desktop.coffee:202
+msgid "_Corner navigation"
+msgstr "_Upravljanje kutevima"
+
+#: ../resources/desktop/js/grid.coffee:1048
+#: ../resources/guide/js/desktop.coffee:203
+msgid "Pe_rsonalize"
+msgstr "Iz_gled"
+
+#: ../resources/desktop/js/item.coffee:395
+msgid "_Cut"
+msgstr ""
+
+#: ../resources/desktop/js/item.coffee:400
+msgid "_Select All"
+msgstr ""
+
+#: ../resources/desktop/js/richdir.coffee:137
+msgid "_Ungroup"
+msgstr ""
+
+#: ../resources/desktop/js/specialitem.coffee:34
+msgid "Computer"
+msgstr "Računalo"
+
+#: ../resources/desktop/js/specialitem.coffee:87
+#: ../resources/dock/js/main.coffee:47 ../resources/dock/js/main.coffee:117
+msgid "Trash"
+msgstr "Smeće"
+
+#: ../resources/desktop/js/specialitem.coffee:150
+msgid "_Clean up %1 items"
+msgstr "_Brisanje %1 stavaka"
+
+#: ../resources/desktop/js/specialitem.coffee:152
+msgid "_Clean up 1 item"
+msgstr "_Brisanje 1 stavke"
+
+#: ../resources/desktop/js/specialitem.coffee:154
+#: ../resources/dock/js/plugins/trash/trash.coffee:34
+msgid "_Empty"
+msgstr "_Isprazni"
+
+#: ../resources/dock/js/deepin_item.coffee:248
+msgid "_View as analog"
+msgstr "_Prikaži kao analogan"
+
+#: ../resources/dock/js/deepin_item.coffee:249
+#: ../resources/dock/js/deepin_item.coffee:301
+msgid "_Time settings"
+msgstr "_Postavke vremena"
+
+#: ../resources/dock/js/deepin_item.coffee:300
+msgid "_View as digit"
+msgstr "_Prikaži kao digitalan"
+
+#: ../resources/dock/js/global_menu.coffee:9
+msgid "Keep _showing"
+msgstr "_Prikaži"
+
+#: ../resources/dock/js/global_menu.coffee:10
+msgid "Keep _hidden"
+msgstr "_Sakrij"
+
+#: ../resources/dock/js/global_menu.coffee:11
+msgid "_Auto hide"
+msgstr "_Automatski sakrij"
+
+#: ../resources/dock/js/global_menu.coffee:12
+msgid "_Smart hide"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:24
+msgid "_Fashion mode"
+msgstr "_Moderan način"
+
+#: ../resources/dock/js/global_menu.coffee:25
+msgid "_Efficient mode"
+msgstr "_Učinkovit način"
+
+#: ../resources/dock/js/global_menu.coffee:26
+msgid "_Classic mode"
+msgstr "_Klasičan način"
+
+#: ../resources/dock/js/main.coffee:115 ../resources/zone/js/utils.coffee:10
+msgid "Launcher"
+msgstr "Pokretač"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Sun"
+msgstr "Ned"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Mon"
+msgstr "Pon"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Tue"
+msgstr "Uto"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Wed"
+msgstr "Sri"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Thu"
+msgstr "Čet"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Fri"
+msgstr "Pet"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Sat"
+msgstr "Sub"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:38
+msgid "_Close"
+msgstr "_Zatvori"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:118
+#: ../resources/launcher/js/item.coffee:379
+msgid "Are you sure to remove"
+msgstr "Sigurno želite ukloniti"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:118
+#: ../resources/launcher/js/item.coffee:379
+msgid "All dependencies will be removed"
+msgstr "Sve međuovisnosti će biti uklonjene"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:118
+#: ../resources/launcher/js/item.coffee:379
+msgid "no"
+msgstr "ne"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:118
+#: ../resources/launcher/js/item.coffee:379
+msgid "yes"
+msgstr "da"
 
 #: ../resources/greeter/js/mediacontrol.coffee:167
 msgid "Click button to Play"
@@ -46,9 +322,21 @@ msgstr "$ sudo apt-get install deepin-desktop-Environment\n"
 msgid "\t\t\t\t-----No available desktop sessions!-----\n"
 msgstr "\t\t\t\t-----Nema dostupnih sesija radne površine!-----\n"
 
-#: ../resources/greeter/js/user.coffee:411
-msgid "Login"
-msgstr "Prijava"
+#: ../resources/greeter/js/powermenu.coffee:26
+msgid "Shut down"
+msgstr "Isključivanje"
+
+#: ../resources/greeter/js/powermenu.coffee:27
+msgid "Restart"
+msgstr "Ponovno pokretanje"
+
+#: ../resources/greeter/js/powermenu.coffee:28
+msgid "Suspend"
+msgstr "Suspenzija"
+
+#: ../resources/greeter/js/powermenu.coffee:90
+msgid "Enter your password to %1"
+msgstr "Upišite svoju lozinku u %1"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jan"
@@ -98,249 +386,13 @@ msgstr "Stu"
 msgid "Dec"
 msgstr "Pro"
 
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Sun"
-msgstr "Ned"
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Mon"
-msgstr "Pon"
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Tue"
-msgstr "Uto"
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Wed"
-msgstr "Sri"
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Thu"
-msgstr "Čet"
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Fri"
-msgstr "Pet"
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Sat"
-msgstr "Sub"
+#: ../resources/greeter/js/user.coffee:411
+msgid "Login"
+msgstr "Prijava"
 
 #: ../resources/greeter/js/usermenu.coffee:57
 msgid "Guest"
 msgstr "Gost"
-
-#: ../resources/greeter/js/powermenu.coffee:26
-msgid "Shut down"
-msgstr "Isključivanje"
-
-#: ../resources/greeter/js/powermenu.coffee:27
-msgid "Restart"
-msgstr "Ponovno pokretanje"
-
-#: ../resources/greeter/js/powermenu.coffee:28
-msgid "Suspend"
-msgstr "Suspenzija"
-
-#: ../resources/greeter/js/powermenu.coffee:90
-msgid "Enter your password to %1"
-msgstr "Upišite svoju lozinku u %1"
-
-#: ../resources/dock/js/deepin_item.coffee:247
-msgid "_View as analog"
-msgstr "_Prikaži kao analogan"
-
-#: ../resources/dock/js/deepin_item.coffee:248
-#: ../resources/dock/js/deepin_item.coffee:300
-msgid "_Time settings"
-msgstr "_Postavke vremena"
-
-#: ../resources/dock/js/deepin_item.coffee:299
-msgid "_View as digit"
-msgstr "_Prikaži kao digitalan"
-
-#: ../resources/dock/js/main.coffee:49 ../resources/dock/js/main.coffee:126
-#: ../resources/desktop/js/specialitem.coffee:87
-msgid "Trash"
-msgstr "Smeće"
-
-#: ../resources/dock/js/main.coffee:124 ../resources/zone/js/utils.coffee:10
-msgid "Launcher"
-msgstr "Pokretač"
-
-#: ../resources/dock/js/global_menu.coffee:9
-msgid "Keep _showing"
-msgstr "_Prikaži"
-
-#: ../resources/dock/js/global_menu.coffee:10
-msgid "Keep _hidden"
-msgstr "_Sakrij"
-
-#: ../resources/dock/js/global_menu.coffee:11
-msgid "_Auto hide"
-msgstr "_Automatski sakrij"
-
-#: ../resources/dock/js/global_menu.coffee:24
-msgid "_Fashion mode"
-msgstr "_Moderan način"
-
-#: ../resources/dock/js/global_menu.coffee:25
-msgid "_Efficient mode"
-msgstr "_Učinkovit način"
-
-#: ../resources/dock/js/global_menu.coffee:26
-msgid "_Classic mode"
-msgstr "_Klasičan način"
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:29
-#: ../resources/desktop/js/specialitem.coffee:156
-msgid "_Empty"
-msgstr "_Isprazni"
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:33
-msgid "_Close"
-msgstr "_Zatvori"
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:76
-#: ../resources/desktop/js/desktopentry.coffee:165
-msgid "Can not open this file."
-msgstr "Nemoguće otvaranje ove datoteke."
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:76
-#: ../resources/desktop/js/application.coffee:179
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
-#: ../resources/desktop/js/desktopentry.coffee:165
-msgid "Warning"
-msgstr "Upozorenje"
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:113
-#: ../resources/launcher/js/item.coffee:354
-msgid "Are you sure to remove"
-msgstr "Sigurno želite ukloniti"
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:113
-#: ../resources/launcher/js/item.coffee:354
-msgid "All dependencies will be removed"
-msgstr "Sve međuovisnosti će biti uklonjene"
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:113
-#: ../resources/launcher/js/item.coffee:354
-msgid "no"
-msgstr "ne"
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:113
-#: ../resources/launcher/js/item.coffee:354
-msgid "yes"
-msgstr "da"
-
-#: ../resources/zone/js/utils.coffee:10
-msgid "Control Center"
-msgstr "Središte upravljanja"
-
-#: ../resources/zone/js/utils.coffee:10
-msgid "All Windows"
-msgstr "Svi prozori"
-
-#: ../resources/zone/js/utils.coffee:10
-msgid "Desktop"
-msgstr "Radna površina"
-
-#: ../resources/zone/js/utils.coffee:10
-msgid "None"
-msgstr "Nepoznato"
-
-#: ../resources/launcher/js/const.coffee:64
-msgid "_Hide the icon"
-msgstr "_Sakrij ikonu"
-
-#: ../resources/launcher/js/const.coffee:65
-msgid "_Display hidden icons"
-msgstr "_Prikaži skrivene ikone"
-
-#: ../resources/launcher/js/const.coffee:68
-msgid "_Hide this icon"
-msgstr "_Sakrij ovu ikonu"
-
-#: ../resources/launcher/js/const.coffee:69
-msgid "_Display this icon"
-msgstr "_Prikaži ovu ikonu"
-
-#: ../resources/launcher/js/const.coffee:72
-#: ../resources/guide/js/launcher.coffee:218
-msgid "_Add to autostart"
-msgstr "_Dodaj u atomatsko pokretanje"
-
-#: ../resources/launcher/js/const.coffee:73
-msgid "_Remove from autostart"
-msgstr "_Ukloni iz atomatskog pokretanja"
-
-#: ../resources/launcher/js/const.coffee:80
-msgid "Add to _favorites"
-msgstr "Dodaj u _omiljene"
-
-#: ../resources/launcher/js/const.coffee:81
-#: ../resources/guide/js/launcher.coffee:214
-msgid "Remove from _favorites"
-msgstr "Ukloni iz _omiljenih"
-
-#: ../resources/launcher/js/const.coffee:84
-#: ../resources/guide/js/launcher.coffee:215
-msgid "Send to d_esktop"
-msgstr "Pošalji na r_adnu površinu"
-
-#: ../resources/launcher/js/const.coffee:85
-msgid "Remove from d_esktop"
-msgstr "Ukloni s r_adne površine"
-
-#: ../resources/launcher/js/const.coffee:88
-#: ../resources/guide/js/launcher.coffee:216
-msgid "Send to do_ck"
-msgstr "Pošalji u do_k"
-
-#: ../resources/launcher/js/const.coffee:89
-msgid "Remove from do_ck"
-msgstr "Ukloni s do_ka"
-
-#: ../resources/launcher/js/item.coffee:276
-#: ../resources/guide/js/launcher.coffee:212
-#: ../resources/desktop/js/richdir.coffee:133
-#: ../resources/desktop/js/richdir.coffee:566
-#: ../resources/desktop/js/specialitem.coffee:51
-#: ../resources/desktop/js/specialitem.coffee:147
-#: ../resources/desktop/js/desktopentry.coffee:102
-msgid "_Open"
-msgstr "_Otvori"
-
-#: ../resources/launcher/js/item.coffee:283
-#: ../resources/guide/js/launcher.coffee:219
-msgid "_Uninstall"
-msgstr "_Deinstaliraj"
-
-#: ../resources/guide/js/dss.coffee:29
-msgid "Well, please trigger the lower right corner again"
-msgstr "U redu, dotaknite ponovno donji desni kut"
-
-#: ../resources/guide/js/dss.coffee:30
-msgid "tips: Click the setting icon on dock to implement"
-msgstr "savjet: kliknite na ikonu postavki u doku za pokretanje"
-
-#: ../resources/guide/js/dss.coffee:69
-msgid "Here is the system setting area"
-msgstr "Ovo je područje postavki sustava"
-
-#: ../resources/guide/js/dss.coffee:70
-msgid ""
-"tips: Hover the setting icon on dock to quickly implement some setting "
-"functions"
-msgstr "savjet: lebdite iznad ikone postavki u doku za brzi prikaz nekih dodatnih funkcija postavki"
 
 #: ../resources/guide/js/desktop.coffee:27
 msgid ""
@@ -394,48 +446,23 @@ msgstr "Desno kliknite negdje na područje radne površine za otvaranje izbonika
 msgid "tips: Click on the interface of corner navigation blank area to return"
 msgstr "savjet: kliknite negdje na područje sučelja Upravljanja kutevima za popravak"
 
-#: ../resources/guide/js/desktop.coffee:196
-#: ../resources/desktop/js/grid.coffee:1045
-msgid "_Sort by"
-msgstr "_Poredaj prema"
+#: ../resources/guide/js/dss.coffee:29
+msgid "Well, please trigger the lower right corner again"
+msgstr "U redu, dotaknite ponovno donji desni kut"
 
-#: ../resources/guide/js/desktop.coffee:197
-#: ../resources/desktop/js/grid.coffee:1046
-msgid "_New"
-msgstr "_Nova"
+#: ../resources/guide/js/dss.coffee:30
+msgid "tips: Click the setting icon on dock to implement"
+msgstr "savjet: kliknite na ikonu postavki u doku za pokretanje"
 
-#: ../resources/guide/js/desktop.coffee:198
-#: ../resources/desktop/js/grid.coffee:1047
-msgid "Open in _terminal"
-msgstr "Otvori u _terminalu"
+#: ../resources/guide/js/dss.coffee:69
+msgid "Here is the system setting area"
+msgstr "Ovo je područje postavki sustava"
 
-#: ../resources/guide/js/desktop.coffee:199
-#: ../resources/desktop/js/grid.coffee:1048
-msgid "_Paste"
-msgstr "_Zalijepi"
-
-#: ../resources/guide/js/desktop.coffee:201
-#: ../resources/desktop/js/grid.coffee:1050
-msgid "_Display settings"
-msgstr "_Postavke zaslona"
-
-#: ../resources/guide/js/desktop.coffee:202
-#: ../resources/desktop/js/grid.coffee:1051
-msgid "_Corner navigation"
-msgstr "_Upravljanje kutevima"
-
-#: ../resources/guide/js/desktop.coffee:203
-#: ../resources/desktop/js/grid.coffee:1052
-msgid "Pe_rsonalize"
-msgstr "Iz_gled"
-
-#: ../resources/guide/js/welcome.coffee:35
-msgid "Welcome to use Deepin Operating System"
-msgstr "Dobrodošli u Deepin operativni sustav"
-
-#: ../resources/guide/js/welcome.coffee:38
-msgid "Prepare for operation ..."
-msgstr "Pripremi za radnju..."
+#: ../resources/guide/js/dss.coffee:70
+msgid ""
+"tips: Hover the setting icon on dock to quickly implement some setting "
+"functions"
+msgstr "savjet: lebdite iznad ikone postavki u doku za brzi prikaz nekih dodatnih funkcija postavki"
 
 #: ../resources/guide/js/end.coffee:25
 msgid "Thanks for your patience while learning. Congratulations."
@@ -444,30 +471,6 @@ msgstr "Hvala Vam na strpljenju prilikom učenja. Čestitamo."
 #: ../resources/guide/js/end.coffee:30
 msgid "End"
 msgstr "Završetak"
-
-#: ../resources/guide/js/start.coffee:28
-msgid "New Launcher"
-msgstr "Novi pokretač"
-
-#: ../resources/guide/js/start.coffee:28
-msgid "New Desktop"
-msgstr "Nova radna površina"
-
-#: ../resources/guide/js/start.coffee:28
-msgid "New System Settings"
-msgstr "Nove postavke sustava"
-
-#: ../resources/guide/js/start.coffee:29
-msgid "The following will guide you to learn how to use some new functions"
-msgstr "Slijedeći vodič će vas naučiti kako koristiti neke nove funkcije"
-
-#: ../resources/guide/js/start.coffee:44
-msgid "Start"
-msgstr "Pokreni"
-
-#: ../resources/guide/js/start.coffee:51
-msgid "I am an experienced user. Exit directly."
-msgstr "Ja sam napredan korisnik, odmah izađi."
 
 #: ../resources/guide/js/launcher.coffee:29
 msgid ""
@@ -515,90 +518,94 @@ msgstr "Koristite desnu tipku miša za slanje dvije ikone na radnu površinu."
 msgid "tips: You can add it to startup items or uninstall it"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:71 ../lib/dentry/fileops.c:403
-msgid "Untitled"
-msgstr "Bezimeno"
+#: ../resources/guide/js/launcher.coffee:214
+#: ../resources/launcher/js/const.coffee:81
+msgid "Remove from _favorites"
+msgstr "Ukloni iz _omiljenih"
 
-#: ../resources/desktop/js/grid.coffee:1022
-msgid "_Name"
-msgstr "_Nazivu"
+#: ../resources/guide/js/launcher.coffee:215
+#: ../resources/launcher/js/const.coffee:84
+msgid "Send to d_esktop"
+msgstr "Pošalji na r_adnu površinu"
 
-#: ../resources/desktop/js/grid.coffee:1023
-msgid "Last modified _time"
-msgstr "Vremenu posljednje _promjene"
+#: ../resources/guide/js/launcher.coffee:216
+#: ../resources/launcher/js/const.coffee:88
+msgid "Send to do_ck"
+msgstr "Pošalji u do_k"
 
-#: ../resources/desktop/js/grid.coffee:1028
-msgid "_Folder"
-msgstr "_Mapa"
+#: ../resources/guide/js/launcher.coffee:218
+#: ../resources/launcher/js/const.coffee:72
+msgid "_Add to autostart"
+msgstr "_Dodaj u atomatsko pokretanje"
 
-#: ../resources/desktop/js/grid.coffee:1029
-msgid "_Text document"
-msgstr "_Tekstovna datoteka"
+#: ../resources/guide/js/launcher.coffee:219
+#: ../resources/launcher/js/item.coffee:308
+msgid "_Uninstall"
+msgstr "_Deinstaliraj"
 
-#: ../resources/desktop/js/application.coffee:179
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
-msgid "The link is invalid. Do you want to delete it?"
-msgstr "Poveznica je neispravna. Želite li ju obrisati?"
+#: ../resources/guide/js/start.coffee:28
+msgid "New Launcher"
+msgstr "Novi pokretač"
 
-#: ../resources/desktop/js/richdir.coffee:135
-#: ../resources/desktop/js/desktopentry.coffee:107
-msgid "_Rename"
-msgstr "_Preimenuj"
+#: ../resources/guide/js/start.coffee:28
+msgid "New Desktop"
+msgstr "Nova radna površina"
 
-#: ../resources/desktop/js/richdir.coffee:137
-msgid "_Ungroup"
-msgstr ""
+#: ../resources/guide/js/start.coffee:28
+msgid "New System Settings"
+msgstr "Nove postavke sustava"
 
-#: ../resources/desktop/js/richdir.coffee:139
-#: ../resources/desktop/js/richdir.coffee:571
-#: ../resources/desktop/js/invalidlink.coffee:34
-#: ../resources/desktop/js/desktopentry.coffee:108
-msgid "_Delete"
-msgstr "_Obriši"
+#: ../resources/guide/js/start.coffee:29
+msgid "The following will guide you to learn how to use some new functions"
+msgstr "Slijedeći vodič će vas naučiti kako koristiti neke nove funkcije"
 
-#: ../resources/desktop/js/richdir.coffee:568
-#: ../resources/desktop/js/desktopentry.coffee:104
-msgid "Cu_t"
-msgstr "Iz_reži"
+#: ../resources/guide/js/start.coffee:44
+msgid "Start"
+msgstr "Pokreni"
 
-#: ../resources/desktop/js/richdir.coffee:569
-#: ../resources/desktop/js/desktopentry.coffee:105
-msgid "_Copy"
-msgstr "_Kopiraj"
+#: ../resources/guide/js/start.coffee:51
+msgid "I am an experienced user. Exit directly."
+msgstr "Ja sam napredan korisnik, odmah izađi."
 
-#: ../resources/desktop/js/richdir.coffee:573
-#: ../resources/desktop/js/specialitem.coffee:53
-#: ../resources/desktop/js/desktopentry.coffee:110
-msgid "_Properties"
-msgstr "_Svojstva"
+#: ../resources/guide/js/welcome.coffee:35
+msgid "Welcome to use Deepin Operating System"
+msgstr "Dobrodošli u Deepin operativni sustav"
 
-#: ../resources/desktop/js/specialitem.coffee:34
-msgid "Computer"
-msgstr "Računalo"
+#: ../resources/guide/js/welcome.coffee:38
+msgid "Prepare for operation ..."
+msgstr "Pripremi za radnju..."
 
-#: ../resources/desktop/js/specialitem.coffee:152
-msgid "_Clean up %1 items"
-msgstr "_Brisanje %1 stavaka"
+#: ../resources/launcher/js/const.coffee:64
+msgid "_Hide the icon"
+msgstr "_Sakrij ikonu"
 
-#: ../resources/desktop/js/specialitem.coffee:154
-msgid "_Clean up 1 item"
-msgstr "_Brisanje 1 stavke"
+#: ../resources/launcher/js/const.coffee:65
+msgid "_Display hidden icons"
+msgstr "_Prikaži skrivene ikone"
 
-#: ../resources/desktop/js/desktopentry.coffee:116
-#: ../resources/desktop/js/desktopentry.coffee:123
-msgid "Co_mpress"
-msgstr "Za_pakiraj"
+#: ../resources/launcher/js/const.coffee:68
+msgid "_Hide this icon"
+msgstr "_Sakrij ovu ikonu"
 
-#: ../resources/desktop/js/desktopentry.coffee:119
-#: ../resources/desktop/js/desktopentry.coffee:124
-msgid "_Extract"
-msgstr "_Raspakiraj"
+#: ../resources/launcher/js/const.coffee:69
+msgid "_Display this icon"
+msgstr "_Prikaži ovu ikonu"
 
-#: ../resources/desktop/js/desktopentry.coffee:120
-#: ../resources/desktop/js/desktopentry.coffee:125
-msgid "Extract _Here"
-msgstr "Raspakiraj _ovdje"
+#: ../resources/launcher/js/const.coffee:73
+msgid "_Remove from autostart"
+msgstr "_Ukloni iz atomatskog pokretanja"
+
+#: ../resources/launcher/js/const.coffee:80
+msgid "Add to _favorites"
+msgstr "Dodaj u _omiljene"
+
+#: ../resources/launcher/js/const.coffee:85
+msgid "Remove from d_esktop"
+msgstr "Ukloni s r_adne površine"
+
+#: ../resources/launcher/js/const.coffee:89
+msgid "Remove from do_ck"
+msgstr "Ukloni s do_ka"
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
@@ -608,15 +615,35 @@ msgstr "Udvostruči"
 msgid "Extend"
 msgstr "Proširi"
 
-#: ../resources/common/js/uninstaller.coffee:32
-msgid "You have uninstalled \"%1\" successfully"
-msgstr "\"%1\" ste uspješno deinstalirali"
+#: ../resources/zone/js/utils.coffee:10
+msgid "Control Center"
+msgstr "Središte upravljanja"
 
-#: ../resources/common/js/uninstaller.coffee:33
-msgid "\"%1\" failed to be uninstalled"
-msgstr "\"%1\" je neuspješno deinstaliran"
+#: ../resources/zone/js/utils.coffee:10
+msgid "All Windows"
+msgstr "Svi prozori"
 
-#: ../app/greeter/lock.c:125 ../app/greeter/greeter.c:192
+#: ../resources/zone/js/utils.coffee:10
+msgid "Desktop"
+msgstr "Radna površina"
+
+#: ../resources/zone/js/utils.coffee:10
+msgid "None"
+msgstr "Nepoznato"
+
+#: ../app/desktop/desktop.c:300
+msgid "New file"
+msgstr "Nova datoteka"
+
+#: ../app/desktop/desktop.c:311
+msgid "New directory"
+msgstr "Nova mapa"
+
+#: ../app/dock/dock.c:341
+msgid "Dock failed to start, because Compiz is not enabled."
+msgstr "Dock se ne može pokrenuti, zato jer Compiz nije omogućen."
+
+#: ../app/greeter/greeter.c:197 ../app/greeter/lock.c:171
 msgid "Wrong Password"
 msgstr "Pogrešna lozinka"
 
@@ -624,17 +651,53 @@ msgstr "Pogrešna lozinka"
 msgid "%a, %b %d, %Y"
 msgstr ""
 
-#: ../app/dock/dock.c:341
-msgid "Dock failed to start, because Compiz is not enabled."
-msgstr "Dock se ne može pokrenuti, zato jer Compiz nije omogućen."
+#: ../lib/category.c:45
+msgid "all"
+msgstr "sve"
 
-#: ../app/desktop/desktop.c:298
-msgid "New file"
-msgstr "Nova datoteka"
+#: ../lib/category.c:46
+msgid "internet"
+msgstr "internet"
 
-#: ../app/desktop/desktop.c:309
-msgid "New directory"
-msgstr "Nova mapa"
+#: ../lib/category.c:47
+msgid "multimedia"
+msgstr "multimedija"
+
+#: ../lib/category.c:48
+msgid "games"
+msgstr "Igre"
+
+#: ../lib/category.c:49
+msgid "graphics"
+msgstr "grafika"
+
+#: ../lib/category.c:50
+msgid "productivity"
+msgstr "produktivnost"
+
+#: ../lib/category.c:51
+msgid "industry"
+msgstr "industrija"
+
+#: ../lib/category.c:52
+msgid "education"
+msgstr "obrazovanje"
+
+#: ../lib/category.c:53
+msgid "development"
+msgstr "razvoj"
+
+#: ../lib/category.c:54
+msgid "system"
+msgstr "sustav"
+
+#: ../lib/category.c:55
+msgid "utilities"
+msgstr "alati"
+
+#: ../lib/category.c:56
+msgid "others"
+msgstr "ostalo"
 
 #: ../lib/dentry/entry.c:746
 #, c-format
@@ -847,51 +910,3 @@ msgstr "_Prikaži"
 #: ../lib/dentry/mime_actions.c:213
 msgid "_Run"
 msgstr "_Pokreni"
-
-#: ../lib/category.c:45
-msgid "all"
-msgstr "sve"
-
-#: ../lib/category.c:46
-msgid "internet"
-msgstr "internet"
-
-#: ../lib/category.c:47
-msgid "multimedia"
-msgstr "multimedija"
-
-#: ../lib/category.c:48
-msgid "games"
-msgstr "Igre"
-
-#: ../lib/category.c:49
-msgid "graphics"
-msgstr "grafika"
-
-#: ../lib/category.c:50
-msgid "productivity"
-msgstr "produktivnost"
-
-#: ../lib/category.c:51
-msgid "industry"
-msgstr "industrija"
-
-#: ../lib/category.c:52
-msgid "education"
-msgstr "obrazovanje"
-
-#: ../lib/category.c:53
-msgid "development"
-msgstr "razvoj"
-
-#: ../lib/category.c:54
-msgid "system"
-msgstr "sustav"
-
-#: ../lib/category.c:55
-msgid "utilities"
-msgstr "alati"
-
-#: ../lib/category.c:56
-msgid "others"
-msgstr "ostalo"
