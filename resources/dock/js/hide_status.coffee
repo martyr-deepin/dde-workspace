@@ -77,9 +77,6 @@ class HideStatusManager
 
         _CW.style.webkitTransform = cw
         $("#panel").style.webkitTransform = panel
-        switch settings.displayMode()
-            when DisplayMode.Efficient, DisplayMode.Classic
-                $("#trayarea").style.webkitTransform = cw
 
     changeToHide:()->
         @changeState(HideState.Hidding, "translateY(110%)", "translateY(100%)")

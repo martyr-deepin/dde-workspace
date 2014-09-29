@@ -123,6 +123,7 @@ class SystemItem extends AppItem
         parentNode = $("#system")
         parentNode.appendChild(@element)
         @imgContainer.draggable = false
+        @element.draggable = false
         for id in @position.slice(0).reverse()
             if item = $("##{id}")
                 parentNode.insertBefore(item, parentNode.firstChild)

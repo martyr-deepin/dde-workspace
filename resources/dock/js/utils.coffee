@@ -77,8 +77,6 @@ createItem = (d)->
     else
         item = new SystemItem(d.Id, icon, title)
 
-    updateMaxClientListWidth()
-
     if activeWindow and activeWindow.active_window and activeWindow.itemId == null
         activeWindow.itemId = item.id
         if item.isApp() and item.isActive()
@@ -94,8 +92,6 @@ deleteItem = (id)->
     i = Widget.look_up(id)
     if i
         i.destroy()
-
-    updateMaxClientListWidth()
 
     if DCore.Dock.is_hovered()
         console.warn("delete item, is hovered")
@@ -192,14 +188,3 @@ drawLine = (ctx, x0, y0, x1, y1, opt)->
     ctx.strokeStyle = opt.lineColor if opt.lineColor?
 
     ctx.stroke()
-
-
-updateMaxClientListWidth = ->
-    if settings.displayMode() == DisplayMode.Classic
-        trayWidth = 0
-        if systemTray and systemTray.items
-            trayWidth = (TRAY_ICON_WIDTH + TRAY_ICON_MARGIN * 2) * systemTray.items.length
-        width = screen.width - $("#trayarea").clientWidth - 32 - trayWidth
-        $("#app_list").style.width = width - $("#pre_fixed").clientWidth
-    else
-        $("#app_list").style.width = ''

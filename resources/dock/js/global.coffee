@@ -1,4 +1,4 @@
-console.log=->
+# console.log=->
 
 debugRegion = false
 $DBus = {}

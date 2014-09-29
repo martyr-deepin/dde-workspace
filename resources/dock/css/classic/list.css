@@ -1,6 +1,6 @@
 .AppList {
   -webkit-box-orient: horizontal;
-  /* -webkit-box-flex: 1; */
+  -webkit-box-flex: 1;
   /* border: solid 2px yellow; */
   /* background-color:red; */
 }
@@ -8,12 +8,10 @@
 .AppItem {
   position:relative;
   height: 32px;
-  /* -webkit-box-flex: 1; */
   pointer-events: none;
   text-align:center;
   -webkit-transition-property: margin-left, margin-right;
   -webkit-transition-duration: 150ms;
-  /* -webkit-transition-timing-function: ease-in; */
   border: solid 1px rgba(255,255,255,0);
 }
 
@@ -47,24 +45,20 @@
   -webkit-transform: translateY(-50%);
   text-align: left;
   display: -webkit-box;
-  /* -webkit-box-pack:center; */
 }
 .indicatorWrap{
   position:relative;
   width: 100%;
   height: 32px;
-  /* top: 0; */
   -webkit-transform: translateY(-100%);
   z-index: -1;
   text-align: center;
 }
 
 .ReflectImg {
-  /* -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(.7, transparent), to(rgba(0,0,0,0.15))); */
 }
 
 .AppItemImg {
-  /* position: absolute; */
   border-radius: 5px;
   width: 24px;
   height: 24px;

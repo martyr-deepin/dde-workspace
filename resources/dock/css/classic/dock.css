@@ -43,10 +43,12 @@ body {
   -webkit-box-pack:center;
   /* the top black line cannot be overlap, the bottom border should be shown. */
   height: 34px;
+  width: 100%;
 }
 #container {
   display: -webkit-box;
   -webkit-box-pack: center;
+  width: 100%;
   /* border: solid 2px red; */
 }
 

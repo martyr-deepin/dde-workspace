@@ -149,7 +149,6 @@ initDock = ->
         calc_app_item_size()
         _CW.style.webkitTransform = "translateY(0)"
         panel.panel.style.webkitTransform = "translateY(0)"
-        $("#trayarea").style.webkitTransform = 'translateY(0)' #if settings.displayMode() != DisplayMode.Fashion
         hideStatusManager.updateState()
         if debugRegion
             console.warn("[initDock] update_dock_region")
@@ -164,14 +163,8 @@ initDock = ->
         , SHOW_HIDE_ANIMATION_TIME)
     , 1000)
     if not activeWindow
-        activeWindow = new ActiveWindow(clientManager.CurrentActiveWindow_sync())
-    setTimeout(->
-        updateMaxClientListWidth()
-    , 2000)
+        activeWindow= new ActiveWindow(clientManager.CurrentActiveWindow_sync())
 
 
 time = new Time("time", "js/plugins/time/img/time.png", "")
 initDock()
-# setTimeout(->
-#     updateMaxClientListWidth()
-# , 2000)

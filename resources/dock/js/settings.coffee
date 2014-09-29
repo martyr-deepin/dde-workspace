@@ -27,11 +27,9 @@ class Setting
                     switchToFashionMode()
                 when DisplayMode.Efficient
                     switchToEfficientMode()
-                    $("#trayarea").style.webkitTransform = 'translateY(0)'
                     systemTray?.updateTrayIcon()
                 when DisplayMode.Classic
                     switchToClassicMode()
-                    $("#trayarea").style.webkitTransform = 'translateY(0)'
                     systemTray?.updateTrayIcon()
         )
 
@@ -46,6 +44,7 @@ class Setting
         ICON_WIDTH = ALL_ICON_WIDTH[mode]
         ICON_HEIGHT = ALL_ICON_HEIGHT[mode]
         ITEM_MENU_OFFSET = ALL_ITEM_MENU_OFFSET[mode]
+        ITEM_DEFAULT_WIDTH = ALL_ITEM_DEFAULT_WIDTH[mode]
 
     hideMode:->
         mode = @dbus.GetHideMode_sync()

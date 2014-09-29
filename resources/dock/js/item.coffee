@@ -29,12 +29,6 @@ class Item extends Widget
             dataUrl = bright_image(@img, -40)
             @imgDark.src = dataUrl
 
-        switch settings.displayMode()
-            when DisplayMode.Fashion
-                @imgWrap.draggable = true
-            when DisplayMode.Efficient, DisplayMode.Classic
-                @imgWrap.draggable = false
-
         @imgWrap.style.pointerEvents = "auto"
         @imgWrap.addEventListener("mouseover", @on_mouseover)
         @imgWrap.addEventListener("mouseover", @on_mousemove)
@@ -42,13 +36,10 @@ class Item extends Widget
         @imgWrap.addEventListener("mousedown", @on_mousedown)
         @imgWrap.addEventListener("mouseup", @on_mouseup)
         @imgWrap.addEventListener("contextmenu", @on_rightclick)
-        @imgWrap.addEventListener("dragstart", @on_dragstart)
-        @imgWrap.addEventListener("dragenter", @on_dragenter)
-        @imgWrap.addEventListener("dragover", @on_dragover)
-        @imgWrap.addEventListener("dragleave", @on_dragleave)
-        @imgWrap.addEventListener("drop", @on_drop)
-        @imgWrap.addEventListener("dragend", @on_dragend)
         @imgWrap.addEventListener("mousewheel", @on_mousewheel)
+
+        @draggable = null
+        @update_draggable(@imgWrap)
 
         calc_app_item_size()
         @tooltip = null
@@ -163,6 +154,27 @@ class Item extends Widget
     #     e?.stopPropagation()
     #     Preview_close_now()
 
+    update_draggable: (el)->
+        if @draggable && @draggable.isSameNode(el)
+            return
+        if @draggable != null
+            @draggable.draggable = false
+            @draggable.removeEventListener("dragstart", @on_dragstart)
+            @draggable.removeEventListener("dragenter", @on_dragenter)
+            @draggable.removeEventListener("dragover", @on_dragover)
+            @draggable.removeEventListener("dragleave", @on_dragleave)
+            @draggable.removeEventListener("drop", @on_drop)
+            @draggable.removeEventListener("dragend", @on_dragend)
+
+        @draggable = el
+        @draggable.draggable = true
+        @draggable.addEventListener("dragstart", @on_dragstart)
+        @draggable.addEventListener("dragenter", @on_dragenter)
+        @draggable.addEventListener("dragover", @on_dragover)
+        @draggable.addEventListener("dragleave", @on_dragleave)
+        @draggable.addEventListener("drop", @on_drop)
+        @draggable.addEventListener("dragend", @on_dragend)
+
     on_dragend:(e)=>
         e.preventDefault()
         clearTimeout(@removeTimer || null)
@@ -187,17 +199,19 @@ class Item extends Widget
     on_dragstart: (e)=>
         Preview_close_now()
         _dragTarget = new DragTarget(@)
+        _dragTarget.setSpace(@element.clientWidth)
         clearTimeout(@removeTimer || null)
         clearTimeout(_isDragTimer)
         _dragTargetManager.add(@id, _dragTarget)
         pos = get_page_xy(@element)
         _dragTarget.setOrigin(pos.x, pos.y)
         _lastHover = null
-        app_list.setInsertAnchor(@element.nextSibling)
+        # app_list.setInsertAnchor(@element.nextSibling)
         if el = @element.nextSibling
-            el.style.marginLeft = "#{INSERT_INDICATOR_WIDTH}px"
+            el.style.marginLeft = "#{_dragTarget.getSpace()}px"
         else if el = @element.previousSibling
-            el.style.marginRight = "#{INSERT_INDICATOR_WIDTH}px"
+            el.style.marginRight = "#{_dragTarget.getSpace()}px"
+        console.warn("on_dragstart #{_dragTarget.getSpace()}")
 
         if el
             if not _isDragging
@@ -225,27 +239,45 @@ class Item extends Widget
         dt.effectAllowed = "copyMove"
         dt.dropEffect = 'none'
 
-    move:(x, threshold)=>
+    move:(e, threshold)=>
+        x = e.offsetX
         if _lastHover and _lastHover.id != @id
             _lastHover.reset()
         _lastHover = @
 
         @reset()
+
+        id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
+        _dragTarget = _dragTargetManager.getHandle(id)
+        space = 0
+        if _dragTarget
+            space = _dragTarget.getSpace() || ITEM_DEFAULT_WIDTH
+        else
+            switch settings.displayMode()
+                when DisplayMode.Fashion
+                    space = ITEM_DEFAULT_WIDTH
+                when DisplayMode.Efficient
+                    space = ITEM_DEFAULT_WIDTH
+                when DisplayMode.Classic
+                    space = ITEM_DEFAULT_WIDTH
+
         if x < threshold
             if t = @element.nextSibling
                 t.style.marginLeft = ''
                 t.style.marginRight = ''
-            @element.style.marginLeft = "#{INSERT_INDICATOR_WIDTH}px"
-            @element.style.marginRight = ''
-            app_list.setInsertAnchor(@element)
+            if @element.style.marginLeft != "#{space}px"
+                @element.style.marginLeft = "#{space}px"
+                @element.style.marginRight = ''
+                # app_list.setInsertAnchor(@element)
         else
             if t = @element.nextSibling
-                t.style.marginLeft = "#{INSERT_INDICATOR_WIDTH}px"
-                t.style.marginRight = ''
-            else
+                if t.style.marginLeft != "#{space}px"
+                    t.style.marginLeft = "#{space}px"
+                    t.style.marginRight = ''
+            else if @element.style.marginRight != "#{space}px"
                 @element.style.marginLeft = ''
-                @element.style.marginRight = "#{INSERT_INDICATOR_WIDTH}px"
-            app_list.setInsertAnchor(t)
+                @element.style.marginRight = "#{space}px"
+            # app_list.setInsertAnchor(t)
 
         if not _isDragging
             updatePanel()
@@ -253,12 +285,12 @@ class Item extends Widget
 
         _isItemExpanded = true
         setTimeout(->
-            systemTray.updateTrayIcon()
+            systemTray?.updateTrayIcon()
         , 100)
 
     reset:->
         setTimeout(->
-            systemTray.updateTrayIcon()
+            systemTray?.updateTrayIcon()
         , 100)
         _isItemExpanded = false
         _isDragTimer = setTimeout(->
@@ -277,8 +309,8 @@ class Item extends Widget
         return if @is_fixed_pos
         # DCore.Dock.require_all_region()
         if dnd_is_deepin_item(e) or dnd_is_desktop(e)
-            @move(e.offsetX, @element.clientWidth / 2)
-        else
+            @move(e, @element.clientWidth / 2)
+        # else
             # TODO
             # activeWindowTimer = setTimeout(=>
             #     if @n_clients.length == 1
@@ -301,7 +333,7 @@ class Item extends Widget
         e.preventDefault()
         return if @is_fixed_pos
         if dnd_is_deepin_item(e) or dnd_is_desktop(e)
-            @move(e.offsetX, @element.clientWidth / 2)
+            @move(e, @element.clientWidth / 2)
 
     on_drop: (e) =>
         _dropped = true
@@ -423,6 +455,11 @@ class AppItem extends Item
         @client_infos = {}
         @leader = null
 
+        if settings.displayMode() != DisplayMode.Fashion
+            @update_draggable(@element)
+        else
+            @update_draggable(@imgWrap)
+
         if not @core or not (xids = JSON.parse(@core.xids()))
             return
 
@@ -444,6 +481,8 @@ class AppItem extends Item
         @clientgroupInited = true
 
     init_activator:->
+        @update_draggable(@imgWrap)
+
         @hide_open_indicator()
         title = @core.title() || UNKNOWN_TITLE
         @set_tooltip(title)
@@ -506,7 +545,6 @@ class AppItem extends Item
             if debugRegion
                 console.warn("[AppItem.destroy] update_dock_region")
             update_dock_region($("#container").clientWidth)
-            updateMaxClientListWidth()
         else
             if Preview_container._current_group && @id == Preview_container._current_group.id
                 Preview_close_now(@)

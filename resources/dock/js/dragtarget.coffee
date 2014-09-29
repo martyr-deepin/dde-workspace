@@ -12,6 +12,13 @@ class DragTarget
         @img.addEventListener('webkitTransitionEnd', (e)=>
             @removeImg()
         )
+        @space = 0
+
+    setSpace: (space)->
+        @space = space
+
+    getSpace:->
+        @space
 
     removeImg: =>
         try

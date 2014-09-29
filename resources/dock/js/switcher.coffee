@@ -8,7 +8,6 @@ changeThemeCss = (theme)->
 
 switchToEfficientMode = ->
     changeThemeCss("efficient")
-    $("#trayarea").appendChild($("#system"))
     update_dock() if panel
     systemTray?.showAllIcons()
     for own k, v of $DBus
@@ -17,13 +16,11 @@ switchToEfficientMode = ->
             # console.log("#{item.id} switch to classic mode")
             item.openIndicator.src = EFFICIENT_ACTIVE_IMG
             item.hoverIndicator.src = EFFICIENT_ACTIVE_HOVER_IMG
-            item.imgWrap.draggable = false
     DCore.Dock.fix_switch()
 
 
 switchToClassicMode = ->
     changeThemeCss("classic")
-    $("#trayarea").appendChild($("#system"))
     update_dock() if panel
     systemTray?.showAllIcons()
     for own k, v of $DBus
@@ -32,12 +29,10 @@ switchToClassicMode = ->
             # console.log("#{item.id} switch to classic mode")
             item.openIndicator.src = CLASSIC_ACTIVE_IMG
             item.hoverIndicator.src = CLASSIC_ACTIVE_HOVER_IMG
-            item.imgWrap.draggable = false
     DCore.Dock.fix_switch()
 
 switchToFashionMode = ->
     changeThemeCss("fashion")
-    $("#container").insertBefore($("#system"), $("#post_fixed"))
     update_dock() if panel
     if systemTray
         systemTray.hideAllIcons()
@@ -49,7 +44,6 @@ switchToFashionMode = ->
             # console.log("#{item.id} switch to fashion mode")
             item.openIndicator.src = OPEN_INDICATOR
             item.hoverIndicator.src = OPEN_INDICATOR
-            item.imgWrap.draggable = true
     DCore.Dock.fix_switch()
 
 update_dock=->
@@ -64,9 +58,6 @@ update_dock=->
 
         panel.redraw()
     , 50)
-    setTimeout(->
-        updateMaxClientListWidth()
-    , 100)
     setTimeout(->
         systemTray?.updateTrayIcon()
     , 1000)

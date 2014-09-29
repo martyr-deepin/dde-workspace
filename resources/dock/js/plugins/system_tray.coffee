@@ -55,10 +55,8 @@ class SystemTray extends SystemItem
                 setTimeout(=>
                     @updateTrayIcon()
                     calc_app_item_size()
-                    updateMaxClientListWidth()
                 , SHOW_HIDE_ANIMATION_TIME)
             else
-                updateMaxClientListWidth()
                 $EW.undraw(xid)
                 # $EW.hide(xid)
         )
@@ -97,7 +95,6 @@ class SystemTray extends SystemItem
                 @hideButton()
                 if @isUnfolded
                     @fold()
-                updateMaxClientListWidth()
                 return
 
             # TODO:
@@ -107,15 +104,6 @@ class SystemTray extends SystemItem
                     @hideButton()
                     if @isUnfolded
                         @fold()
-
-            updateMaxClientListWidth()
-                # @isShowing = true
-                # @img.style.display = 'none'
-                # @panel.style.display = ''
-                # @imgContainer.style.webkitTransform = 'translateY(0)'
-                # @imgContainer.style.webkitTransition = ''
-                # if @items.length > 4
-                #     @showButton()
 
             @updateTrayIcon()
             setTimeout(=>
@@ -152,8 +140,9 @@ class SystemTray extends SystemItem
 
     updateTrayIconForClassic:=>
         # console.warn("updateTrayIconForClassic")
-        trayarea = $("#trayarea")
-        y = (DOCK_HEIGHT - TRAY_ICON_HEIGHT) / 2 + trayarea.offsetTop - 1
+        trayarea = $("#system")
+        trayarea.style.marginLeft = @items.length * (TRAY_ICON_MARGIN * 2 + TRAY_ICON_WIDTH)
+        y = (DOCK_HEIGHT - TRAY_ICON_HEIGHT) / 2 + $("#panel").offsetTop
         for item, i in @items
             x = trayarea.offsetLeft + TRAY_ICON_MARGIN - (i + 1) * (TRAY_ICON_WIDTH + TRAY_ICON_MARGIN * 2)
             # console.warn("move #{item} to #{x}x#{y}")
@@ -162,8 +151,10 @@ class SystemTray extends SystemItem
 
     updateTrayIconForEfficient:=>
         # console.warn("updateTrayIconForEfficient")
-        trayarea = $("#trayarea")
-        y = (44 - TRAY_ICON_HEIGHT) / 2 + trayarea.offsetTop
+        # TODO: change margin-left
+        trayarea = $("#system")
+        trayarea.style.marginLeft = @items.length * (TRAY_ICON_MARGIN * 2 + TRAY_ICON_WIDTH)
+        y = (DOCK_HEIGHT - TRAY_ICON_HEIGHT) / 2 + $("#panel").offsetTop
         for item, i in @items
             x = trayarea.offsetLeft + TRAY_ICON_MARGIN - (i + 1) * (TRAY_ICON_WIDTH + TRAY_ICON_MARGIN * 2)
             # console.warn("move #{item} to #{x}x#{y}")
@@ -171,6 +162,8 @@ class SystemTray extends SystemItem
             # @showAllIcons()
 
     updateTrayIconForFashion:=>
+        if $("#system").style.marginLeft != ''
+            $("#system").style.marginLeft = ''
         #console.log("update the order: #{@items}")
         @upperItemNumber = Math.max(Math.ceil(@items.length / 2), 2)
         if @items.length > 4 && @items.length % 2 == 0

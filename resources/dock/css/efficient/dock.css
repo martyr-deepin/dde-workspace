@@ -33,9 +33,6 @@ body {
 }
 
 .fixed_center {
-  /* left: 0px; */
-  /* right: 0px; */
-  /* margin: auto; */
 }
 
 #containerWrap{
@@ -43,21 +40,19 @@ body {
   bottom:1px;
   /* -webkit-transform: translateY(110%); */
   display: -webkit-box;
-  -webkit-box-pack:center;
   /* the top black line cannot be overlap, the bottom border should be shown. */
   min-height: 46px;
   max-height: 46px;
+  width: 100%;
 }
 #container {
   display: -webkit-box;
-  -webkit-box-pack: center;
-  /* width:100%; */
+  width:100%;
   /* border: solid 2px red; */
 }
 
 .item_container {
   display: -webkit-box;
-  -webkit-box-pack: center;
 }
 
 #panel {

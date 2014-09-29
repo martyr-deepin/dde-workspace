@@ -1,5 +1,6 @@
 #system {
   height: 34px;
+  margin-right: 40px;
 }
 #trayarea{
   -webkit-transition: -webkit-transform 400ms;

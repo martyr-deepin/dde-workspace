@@ -98,9 +98,35 @@ class AppList
         e.stopPropagation()
         e.preventDefault()
         DCore.Dock.require_all_region()
-        # if dnd_is_deepin_item(e) or dnd_is_desktop(e)
-        #     dataUrl = e.dataTransfer.getData("ItemIcon")
-        #     @setInsertIndicator(dataUrl)
+        if dnd_is_deepin_item(e) or dnd_is_desktop(e)
+            # dataUrl = e.dataTransfer.getData("ItemIcon")
+            # @setInsertIndicator(dataUrl)
+            x = e.x
+            y = screen.height - DOCK_HEIGHT/2
+            console.warn("#{x}, #{y}, #{(el = document.elementFromPoint(x, y))}")
+            HALF_ICON_WIDTH = ICON_WIDTH / 2
+            while x > HALF_ICON_WIDTH && (el = document.elementFromPoint(x, y))?
+                console.log("element from point")
+                console.warn(el)
+                if el.classList.contains("imgWrap")
+                    el = el.parentNode
+                    container = el.parentNode
+                    console.warn("find img target")
+                    console.warn(el)
+                    console.warn(container)
+                    if container.isSameNode(@element)
+                        @insert_anchor_item = el.nextSibling
+                        break
+                    else if container.isSameNode($("#pre_fixed"))
+                        @insert_anchor_item = @element.firstElementChild
+                        break
+                else
+                    @insert_anchor_item = null
+
+                x -= HALF_ICON_WIDTH
+
+            console.warn("update insert_anchor_item for enter app_list")
+            console.warn(@insert_anchor_item)
 
     swap_item: (src, dest)->
         swap_element(src.element, dest.element)

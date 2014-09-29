@@ -35,6 +35,12 @@ ALL_ITEM_WIDTH[DisplayMode.Efficient] = 48.0
 ALL_ITEM_WIDTH[DisplayMode.Classic] = 160.0 # max
 ITEM_WIDTH = 54.0
 
+ALL_ITEM_DEFAULT_WIDTH = {}
+ALL_ITEM_DEFAULT_WIDTH[DisplayMode.Fashion] = 54.0
+ALL_ITEM_DEFAULT_WIDTH[DisplayMode.Efficient] = 64
+ALL_ITEM_DEFAULT_WIDTH[DisplayMode.Classic] = 36.0
+ITEM_DEFAULT_WIDTH = 54
+
 ALL_ICON_WIDTH = {}
 ALL_ICON_WIDTH[DisplayMode.Fashion] = 48.0
 ALL_ICON_WIDTH[DisplayMode.Efficient] = 32.0
@@ -70,9 +76,6 @@ BOARD_IMG_PATH = "img/board.png"
 BOARD_IMG_MARGIN_BOTTOM = 6.0
 
 INDICATER_WIDTH = ITEM_WIDTH
-
-THREE_MARGIN_STEP = 3.0
-TWO_MARGIN_STEP = 2.0
 
 ALL_ITEM_MENU_OFFSET = {}
 ALL_ITEM_MENU_OFFSET[DisplayMode.Fashion] = 0
