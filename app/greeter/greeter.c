@@ -285,6 +285,24 @@ monitors_extend()
     return result;
 }
 
+void move_pointer_to_center(struct DisplayInfo info)
+{
+    GdkWindow* window = gtk_widget_get_window(container);
+    GdkDisplay* display = gdk_window_get_display(window);
+    GdkScreen* screen = gdk_display_get_default_screen (display);
+    GdkDeviceManager* manager = gdk_display_get_device_manager(display);
+    GList* devices = gdk_device_manager_list_devices(manager, GDK_DEVICE_TYPE_MASTER);
+    GdkDevice* device = NULL;
+    for (GList* dev = devices; dev != NULL; dev = dev->next) {
+        device = GDK_DEVICE(dev->data);
+        if (gdk_device_get_source(device) != GDK_SOURCE_MOUSE) {
+            continue;
+        }
+        gdk_device_warp (device, screen, info.x + info.width/2, info.y + info.height/2);
+    }
+    g_list_free(devices);
+}
+
 static gboolean
 monitors_set_cb ()
 {
@@ -307,9 +325,10 @@ monitors_set_cb ()
     g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
 
     set_theme_background(container,webview);
-
     gtk_widget_realize (webview);
     gtk_widget_realize (container);
+
+    if (len > 1) move_pointer_to_center(rect_workarea);
 
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
