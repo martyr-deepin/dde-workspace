@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-30 10:08+0800\n"
-"PO-Revision-Date: 2014-09-30 06:17+0000\n"
+"POT-Creation-Date: 2014-10-13 09:57+0800\n"
+"PO-Revision-Date: 2014-10-13 06:47+0000\n"
 "Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/projects/p/deepin-desktop-environment/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -196,6 +196,10 @@ msgstr "_1 Objekt leeren"
 msgid "_Empty"
 msgstr "_Leer"
 
+#: ../resources/dock/js/config.coffee:181
+msgid "Unknown"
+msgstr "Unbekannt"
+
 #: ../resources/dock/js/deepin_item.coffee:248
 msgid "_View as analog"
 msgstr "Analog _anzeigen"
@@ -340,7 +344,13 @@ msgstr "Neustarten"
 msgid "Suspend"
 msgstr "Bereitschaft"
 
-#: ../resources/greeter/js/powermenu.coffee:90
+#: ../resources/greeter/js/powermenu.coffee:74
+msgid ""
+"The user %1 has logged in, shutdown or restart may cause loss to the account"
+" running data."
+msgstr ""
+
+#: ../resources/greeter/js/powermenu.coffee:118
 msgid "Enter your password to %1"
 msgstr "Geben Sie Ihr Passwort ein zum %1"
 
@@ -392,9 +402,13 @@ msgstr "Nov"
 msgid "Dec"
 msgstr "Dez"
 
-#: ../resources/greeter/js/user.coffee:411
+#: ../resources/greeter/js/user.coffee:413
 msgid "Login"
 msgstr "Anmelden"
+
+#: ../resources/greeter/js/user.coffee:415
+msgid "Unlock"
+msgstr "Entsperren"
 
 #: ../resources/greeter/js/usermenu.coffee:57
 msgid "Guest"
@@ -645,11 +659,11 @@ msgstr "Neue Datei"
 msgid "New directory"
 msgstr "Neuer Ordner"
 
-#: ../app/dock/dock.c:341
+#: ../app/dock/dock.c:290
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr "Starten des Docks fehlgeschlagen, da Compiz nicht aktiviert ist."
 
-#: ../app/greeter/greeter.c:197 ../app/greeter/lock.c:171
+#: ../app/greeter/greeter.c:198 ../app/greeter/lock.c:173
 msgid "Wrong Password"
 msgstr "Falsches Passwort"
 

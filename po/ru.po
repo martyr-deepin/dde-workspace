@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-30 10:08+0800\n"
-"PO-Revision-Date: 2014-09-30 06:50+0000\n"
-"Last-Translator: Анатолий Валерианович <ffox909@mail.ru>\n"
+"POT-Creation-Date: 2014-10-13 09:57+0800\n"
+"PO-Revision-Date: 2014-10-13 06:47+0000\n"
+"Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/deepin-desktop-environment/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -193,6 +193,10 @@ msgstr "_Очистить 1 объект"
 msgid "_Empty"
 msgstr "_Пустой"
 
+#: ../resources/dock/js/config.coffee:181
+msgid "Unknown"
+msgstr "Неизвестный"
+
 #: ../resources/dock/js/deepin_item.coffee:248
 msgid "_View as analog"
 msgstr "_ Аналоговые"
@@ -337,7 +341,13 @@ msgstr "Перезагрузка"
 msgid "Suspend"
 msgstr "Приостановка"
 
-#: ../resources/greeter/js/powermenu.coffee:90
+#: ../resources/greeter/js/powermenu.coffee:74
+msgid ""
+"The user %1 has logged in, shutdown or restart may cause loss to the account"
+" running data."
+msgstr ""
+
+#: ../resources/greeter/js/powermenu.coffee:118
 msgid "Enter your password to %1"
 msgstr "Введите свой пароль для %1"
 
@@ -389,9 +399,13 @@ msgstr "Ноя"
 msgid "Dec"
 msgstr "Дек"
 
-#: ../resources/greeter/js/user.coffee:411
+#: ../resources/greeter/js/user.coffee:413
 msgid "Login"
 msgstr "Вход"
+
+#: ../resources/greeter/js/user.coffee:415
+msgid "Unlock"
+msgstr "Разблокировать"
 
 #: ../resources/greeter/js/usermenu.coffee:57
 msgid "Guest"
@@ -642,11 +656,11 @@ msgstr "Новый файл"
 msgid "New directory"
 msgstr "Новая папка"
 
-#: ../app/dock/dock.c:341
+#: ../app/dock/dock.c:290
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr "Ошибка запуска панели: отключён плагин Compiz"
 
-#: ../app/greeter/greeter.c:197 ../app/greeter/lock.c:171
+#: ../app/greeter/greeter.c:198 ../app/greeter/lock.c:173
 msgid "Wrong Password"
 msgstr "Неверный пароль"
 

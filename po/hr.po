@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-30 10:08+0800\n"
-"PO-Revision-Date: 2014-09-30 06:17+0000\n"
+"POT-Creation-Date: 2014-10-13 09:57+0800\n"
+"PO-Revision-Date: 2014-10-13 06:47+0000\n"
 "Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
 "Language-Team: Croatian (http://www.transifex.com/projects/p/deepin-desktop-environment/language/hr/)\n"
 "MIME-Version: 1.0\n"
@@ -190,6 +190,10 @@ msgstr "_Brisanje 1 stavke"
 msgid "_Empty"
 msgstr "_Isprazni"
 
+#: ../resources/dock/js/config.coffee:181
+msgid "Unknown"
+msgstr ""
+
 #: ../resources/dock/js/deepin_item.coffee:248
 msgid "_View as analog"
 msgstr "_Prikaži kao analogan"
@@ -334,7 +338,13 @@ msgstr "Ponovno pokretanje"
 msgid "Suspend"
 msgstr "Suspenzija"
 
-#: ../resources/greeter/js/powermenu.coffee:90
+#: ../resources/greeter/js/powermenu.coffee:74
+msgid ""
+"The user %1 has logged in, shutdown or restart may cause loss to the account"
+" running data."
+msgstr ""
+
+#: ../resources/greeter/js/powermenu.coffee:118
 msgid "Enter your password to %1"
 msgstr "Upišite svoju lozinku u %1"
 
@@ -386,9 +396,13 @@ msgstr "Stu"
 msgid "Dec"
 msgstr "Pro"
 
-#: ../resources/greeter/js/user.coffee:411
+#: ../resources/greeter/js/user.coffee:413
 msgid "Login"
 msgstr "Prijava"
+
+#: ../resources/greeter/js/user.coffee:415
+msgid "Unlock"
+msgstr ""
 
 #: ../resources/greeter/js/usermenu.coffee:57
 msgid "Guest"
@@ -639,11 +653,11 @@ msgstr "Nova datoteka"
 msgid "New directory"
 msgstr "Nova mapa"
 
-#: ../app/dock/dock.c:341
+#: ../app/dock/dock.c:290
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr "Dock se ne može pokrenuti, zato jer Compiz nije omogućen."
 
-#: ../app/greeter/greeter.c:197 ../app/greeter/lock.c:171
+#: ../app/greeter/greeter.c:198 ../app/greeter/lock.c:173
 msgid "Wrong Password"
 msgstr "Pogrešna lozinka"
 

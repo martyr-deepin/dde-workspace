@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-30 10:08+0800\n"
-"PO-Revision-Date: 2014-09-30 06:17+0000\n"
+"POT-Creation-Date: 2014-10-13 09:57+0800\n"
+"PO-Revision-Date: 2014-10-13 06:47+0000\n"
 "Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
 "Language-Team: Indonesian (Indonesia) (http://www.transifex.com/projects/p/deepin-desktop-environment/language/id_ID/)\n"
 "MIME-Version: 1.0\n"
@@ -193,6 +193,10 @@ msgstr "_Clean up 1 item"
 msgid "_Empty"
 msgstr ""
 
+#: ../resources/dock/js/config.coffee:181
+msgid "Unknown"
+msgstr "Tidak diketahui"
+
 #: ../resources/dock/js/deepin_item.coffee:248
 msgid "_View as analog"
 msgstr "_Lihat sebagai analog"
@@ -337,7 +341,13 @@ msgstr "Nyalakan ulang"
 msgid "Suspend"
 msgstr "Suspensi"
 
-#: ../resources/greeter/js/powermenu.coffee:90
+#: ../resources/greeter/js/powermenu.coffee:74
+msgid ""
+"The user %1 has logged in, shutdown or restart may cause loss to the account"
+" running data."
+msgstr ""
+
+#: ../resources/greeter/js/powermenu.coffee:118
 msgid "Enter your password to %1"
 msgstr "Masukkan kata kunci pada %1"
 
@@ -389,8 +399,12 @@ msgstr "Nov"
 msgid "Dec"
 msgstr "Des"
 
-#: ../resources/greeter/js/user.coffee:411
+#: ../resources/greeter/js/user.coffee:413
 msgid "Login"
+msgstr ""
+
+#: ../resources/greeter/js/user.coffee:415
+msgid "Unlock"
 msgstr ""
 
 #: ../resources/greeter/js/usermenu.coffee:57
@@ -642,11 +656,11 @@ msgstr "Berkas baru"
 msgid "New directory"
 msgstr "Direktori baru"
 
-#: ../app/dock/dock.c:341
+#: ../app/dock/dock.c:290
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr "Dock tidak terbuka, karena Compis tidak diaktifkan."
 
-#: ../app/greeter/greeter.c:197 ../app/greeter/lock.c:171
+#: ../app/greeter/greeter.c:198 ../app/greeter/lock.c:173
 msgid "Wrong Password"
 msgstr "Katasandi Salah"
 

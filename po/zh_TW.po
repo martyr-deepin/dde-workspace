@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-30 10:08+0800\n"
-"PO-Revision-Date: 2014-09-30 06:17+0000\n"
+"POT-Creation-Date: 2014-10-13 09:57+0800\n"
+"PO-Revision-Date: 2014-10-13 06:47+0000\n"
 "Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/deepin-desktop-environment/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -191,6 +191,10 @@ msgstr "清理 1 項(_C)"
 msgid "_Empty"
 msgstr "清空回收桶(_E)"
 
+#: ../resources/dock/js/config.coffee:181
+msgid "Unknown"
+msgstr "未知的"
+
 #: ../resources/dock/js/deepin_item.coffee:248
 msgid "_View as analog"
 msgstr "顯示類比時鍾(_V)"
@@ -335,7 +339,13 @@ msgstr "重新啟動"
 msgid "Suspend"
 msgstr "待命"
 
-#: ../resources/greeter/js/powermenu.coffee:90
+#: ../resources/greeter/js/powermenu.coffee:74
+msgid ""
+"The user %1 has logged in, shutdown or restart may cause loss to the account"
+" running data."
+msgstr ""
+
+#: ../resources/greeter/js/powermenu.coffee:118
 msgid "Enter your password to %1"
 msgstr "請輸入你的密碼以完成 %1"
 
@@ -387,9 +397,13 @@ msgstr "11月"
 msgid "Dec"
 msgstr "12月"
 
-#: ../resources/greeter/js/user.coffee:411
+#: ../resources/greeter/js/user.coffee:413
 msgid "Login"
 msgstr "登入"
+
+#: ../resources/greeter/js/user.coffee:415
+msgid "Unlock"
+msgstr ""
 
 #: ../resources/greeter/js/usermenu.coffee:57
 msgid "Guest"
@@ -640,11 +654,11 @@ msgstr "新增檔案"
 msgid "New directory"
 msgstr "新增資料夾"
 
-#: ../app/dock/dock.c:341
+#: ../app/dock/dock.c:290
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr "由於 Compiz 沒有啟動，Dock 啟動失敗"
 
-#: ../app/greeter/greeter.c:197 ../app/greeter/lock.c:171
+#: ../app/greeter/greeter.c:198 ../app/greeter/lock.c:173
 msgid "Wrong Password"
 msgstr "密碼錯誤"
 

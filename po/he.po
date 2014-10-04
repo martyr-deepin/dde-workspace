@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-30 10:08+0800\n"
-"PO-Revision-Date: 2014-09-30 06:17+0000\n"
+"POT-Creation-Date: 2014-10-13 09:57+0800\n"
+"PO-Revision-Date: 2014-10-13 06:47+0000\n"
 "Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/projects/p/deepin-desktop-environment/language/he/)\n"
 "MIME-Version: 1.0\n"
@@ -190,6 +190,10 @@ msgstr "_ניקוי פריט 1"
 msgid "_Empty"
 msgstr ""
 
+#: ../resources/dock/js/config.coffee:181
+msgid "Unknown"
+msgstr "לא ידוע"
+
 #: ../resources/dock/js/deepin_item.coffee:248
 msgid "_View as analog"
 msgstr "_הצג כאנלוגי"
@@ -334,7 +338,13 @@ msgstr "הפעלה מחדש"
 msgid "Suspend"
 msgstr "השהיה"
 
-#: ../resources/greeter/js/powermenu.coffee:90
+#: ../resources/greeter/js/powermenu.coffee:74
+msgid ""
+"The user %1 has logged in, shutdown or restart may cause loss to the account"
+" running data."
+msgstr ""
+
+#: ../resources/greeter/js/powermenu.coffee:118
 msgid "Enter your password to %1"
 msgstr "הכנס את הסיסמא שלך ל-%1"
 
@@ -386,8 +396,12 @@ msgstr "נובמבר"
 msgid "Dec"
 msgstr "דצמבר"
 
-#: ../resources/greeter/js/user.coffee:411
+#: ../resources/greeter/js/user.coffee:413
 msgid "Login"
+msgstr ""
+
+#: ../resources/greeter/js/user.coffee:415
+msgid "Unlock"
 msgstr ""
 
 #: ../resources/greeter/js/usermenu.coffee:57
@@ -639,11 +653,11 @@ msgstr "קובץ חדש"
 msgid "New directory"
 msgstr "תיקייה חדשה"
 
-#: ../app/dock/dock.c:341
+#: ../app/dock/dock.c:290
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr "סרגל האפליקציות לא הופעל, בגלל שהתוסף של Compiz אינו מופעל"
 
-#: ../app/greeter/greeter.c:197 ../app/greeter/lock.c:171
+#: ../app/greeter/greeter.c:198 ../app/greeter/lock.c:173
 msgid "Wrong Password"
 msgstr ""
 

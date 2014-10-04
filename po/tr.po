@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-30 10:08+0800\n"
-"PO-Revision-Date: 2014-09-30 06:17+0000\n"
+"POT-Creation-Date: 2014-10-13 09:57+0800\n"
+"PO-Revision-Date: 2014-10-13 06:47+0000\n"
 "Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/deepin-desktop-environment/language/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -191,6 +191,10 @@ msgstr "1 Öğeyi _Sil"
 msgid "_Empty"
 msgstr "_Boş"
 
+#: ../resources/dock/js/config.coffee:181
+msgid "Unknown"
+msgstr "Bilinmeyen"
+
 #: ../resources/dock/js/deepin_item.coffee:248
 msgid "_View as analog"
 msgstr "_Analog olarak göster"
@@ -335,7 +339,13 @@ msgstr "Tekrar başlat"
 msgid "Suspend"
 msgstr "Askıya al"
 
-#: ../resources/greeter/js/powermenu.coffee:90
+#: ../resources/greeter/js/powermenu.coffee:74
+msgid ""
+"The user %1 has logged in, shutdown or restart may cause loss to the account"
+" running data."
+msgstr ""
+
+#: ../resources/greeter/js/powermenu.coffee:118
 msgid "Enter your password to %1"
 msgstr "%1 e şifrenizi girin"
 
@@ -387,9 +397,13 @@ msgstr "Kas"
 msgid "Dec"
 msgstr "Ara"
 
-#: ../resources/greeter/js/user.coffee:411
+#: ../resources/greeter/js/user.coffee:413
 msgid "Login"
 msgstr "Giriş"
+
+#: ../resources/greeter/js/user.coffee:415
+msgid "Unlock"
+msgstr ""
 
 #: ../resources/greeter/js/usermenu.coffee:57
 msgid "Guest"
@@ -640,11 +654,11 @@ msgstr "Yeni dosya"
 msgid "New directory"
 msgstr "Yeni dizin"
 
-#: ../app/dock/dock.c:341
+#: ../app/dock/dock.c:290
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr "Dock bar başlatılamadı, çünkü Compiz aktif değil."
 
-#: ../app/greeter/greeter.c:197 ../app/greeter/lock.c:171
+#: ../app/greeter/greeter.c:198 ../app/greeter/lock.c:173
 msgid "Wrong Password"
 msgstr "Yanlış Şifre"
 

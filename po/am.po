@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-30 10:08+0800\n"
-"PO-Revision-Date: 2014-09-30 06:17+0000\n"
+"POT-Creation-Date: 2014-10-13 09:57+0800\n"
+"PO-Revision-Date: 2014-10-13 06:47+0000\n"
 "Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
 "Language-Team: Amharic (http://www.transifex.com/projects/p/deepin-desktop-environment/language/am/)\n"
 "MIME-Version: 1.0\n"
@@ -158,11 +158,11 @@ msgstr "የግ_ልዎ ማድረጊያ"
 
 #: ../resources/desktop/js/item.coffee:395
 msgid "_Cut"
-msgstr ""
+msgstr "_መቁረጫ"
 
 #: ../resources/desktop/js/item.coffee:400
 msgid "_Select All"
-msgstr ""
+msgstr "_ሁሉንም መምረጫ"
 
 #: ../resources/desktop/js/richdir.coffee:137
 msgid "_Ungroup"
@@ -188,7 +188,11 @@ msgstr "_ማጽጃ 1 እቃ"
 #: ../resources/desktop/js/specialitem.coffee:154
 #: ../resources/dock/js/plugins/trash/trash.coffee:34
 msgid "_Empty"
-msgstr ""
+msgstr "_ባዶ"
+
+#: ../resources/dock/js/config.coffee:181
+msgid "Unknown"
+msgstr "ያልታወቀ"
 
 #: ../resources/dock/js/deepin_item.coffee:248
 msgid "_View as analog"
@@ -205,19 +209,19 @@ msgstr "እንደ ዲጂት _መመልከቻ"
 
 #: ../resources/dock/js/global_menu.coffee:9
 msgid "Keep _showing"
-msgstr ""
+msgstr "እንደ ታየ _ማቆያ"
 
 #: ../resources/dock/js/global_menu.coffee:10
 msgid "Keep _hidden"
-msgstr ""
+msgstr "እንደ ተደበቅ _ማቆያ"
 
 #: ../resources/dock/js/global_menu.coffee:11
 msgid "_Auto hide"
-msgstr ""
+msgstr "_በራሱ መደበቂያ"
 
 #: ../resources/dock/js/global_menu.coffee:12
 msgid "_Smart hide"
-msgstr ""
+msgstr "_በራሱ መደበቂያ"
 
 #: ../resources/dock/js/global_menu.coffee:24
 msgid "_Fashion mode"
@@ -229,7 +233,7 @@ msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:26
 msgid "_Classic mode"
-msgstr ""
+msgstr "_ዘመናዊ ዘዴ"
 
 #: ../resources/dock/js/main.coffee:115 ../resources/zone/js/utils.coffee:10
 msgid "Launcher"
@@ -282,7 +286,7 @@ msgstr "በእርግጥ ማስወገድ ይፈልጋሉ?"
 #: ../resources/dock/js/plugins/trash/trash.coffee:118
 #: ../resources/launcher/js/item.coffee:379
 msgid "All dependencies will be removed"
-msgstr ""
+msgstr "ሁሉም ጥገኞች ይወገዳሉ"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:118
 #: ../resources/launcher/js/item.coffee:379
@@ -296,7 +300,7 @@ msgstr "አዎ"
 
 #: ../resources/greeter/js/mediacontrol.coffee:167
 msgid "Click button to Play"
-msgstr ""
+msgstr "ለማጫወት ቁልፍፉን ይጫኑ"
 
 #: ../resources/greeter/js/message.coffee:105
 #: ../resources/greeter/js/message.coffee:82
@@ -334,7 +338,13 @@ msgstr "እንደገና ማስጀመሪያ"
 msgid "Suspend"
 msgstr "ማገጃ"
 
-#: ../resources/greeter/js/powermenu.coffee:90
+#: ../resources/greeter/js/powermenu.coffee:74
+msgid ""
+"The user %1 has logged in, shutdown or restart may cause loss to the account"
+" running data."
+msgstr ""
+
+#: ../resources/greeter/js/powermenu.coffee:118
 msgid "Enter your password to %1"
 msgstr "የ መግቢያ ቃል ያስገቡ ለ %1"
 
@@ -386,9 +396,13 @@ msgstr "ኅዳር"
 msgid "Dec"
 msgstr "ታሕሳ"
 
-#: ../resources/greeter/js/user.coffee:411
+#: ../resources/greeter/js/user.coffee:413
 msgid "Login"
-msgstr ""
+msgstr "መግቢያ"
+
+#: ../resources/greeter/js/user.coffee:415
+msgid "Unlock"
+msgstr "መክፈቻ"
 
 #: ../resources/greeter/js/usermenu.coffee:57
 msgid "Guest"
@@ -605,15 +619,15 @@ msgstr "ከ ዴ _ስክቶፕ ላይ ማስወገጃ"
 
 #: ../resources/launcher/js/const.coffee:89
 msgid "Remove from do_ck"
-msgstr ""
+msgstr "ከ ዶ_ከ ላይ ማስወገጃ"
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
-msgstr ""
+msgstr "ማባዣ"
 
 #: ../resources/osd/js/monitor.coffee:39
 msgid "Extend"
-msgstr ""
+msgstr "ማስፋፊያ"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "Control Center"
@@ -639,13 +653,13 @@ msgstr "አዲስ ፋይል"
 msgid "New directory"
 msgstr "አዲስ ዳይሬክቶሪ"
 
-#: ../app/dock/dock.c:341
+#: ../app/dock/dock.c:290
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr "ዶክን ማስጀመር አልተቻለም ምክንያቱም ኮምፒዝ ተሰናክሏል"
 
-#: ../app/greeter/greeter.c:197 ../app/greeter/lock.c:171
+#: ../app/greeter/greeter.c:198 ../app/greeter/lock.c:173
 msgid "Wrong Password"
-msgstr ""
+msgstr "የተሳሳተ የመግቢያ ቃል"
 
 #: ../app/greeter/mutils.c:84
 msgid "%a, %b %d, %Y"
@@ -697,7 +711,7 @@ msgstr "የተለያዩ"
 
 #: ../lib/category.c:56
 msgid "others"
-msgstr ""
+msgstr "ሌላ"
 
 #: ../lib/dentry/entry.c:746
 #, c-format
