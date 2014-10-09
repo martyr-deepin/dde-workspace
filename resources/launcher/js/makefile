@@ -9,6 +9,7 @@ all: ${com_coffee} \
 	global.coffee \
 	utils.coffee \
 	dbus.coffee \
+	page.coffee \
 	search_result.coffee \
 	search_bar.coffee \
 	category_bar.coffee \
@@ -20,7 +21,6 @@ all: ${com_coffee} \
 	softwaremanager.coffee \
 	delegate.coffee \
 	item.coffee \
-	grid.coffee \
 	event.coffee \
 	signal.coffee \
 	main.coffee

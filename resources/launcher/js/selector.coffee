@@ -21,11 +21,15 @@
 class Selector
     constructor:->
         @box = null
+        @page = null
         @selectedItem = null # Item
 
-    container:(el)->
+    container:(newPage)->
+        el = newPage.getBox()
         if el? && (not @box? || not @box.isSameNode(el))
+            @page?.resetScrollOffset()
             @box = el
+            @page = newPage
             @clean()
             console.log "set container to #{el.id}"
         @box
@@ -46,18 +50,14 @@ class Selector
     update:(el)->
         # selected style must overwrite the hovered style, so style is set.
         if @selectedItem
-            outter = @selectedItem.firstElementChild
-            inner = outter.firstElementChild
-            outter.style.border = ""
-            inner.style.border = ""
-            inner.style.background = ""
+            @selectedItem.classList.remove("selected")
         @selectedItem = el
         if @selectedItem
-            outter = @selectedItem.firstElementChild
-            inner = outter.firstElementChild
-            inner.style.background = "rgba(0, 0, 0, 0.4)"
-            inner.style.border = "2px rgba(255, 255, 255, 0.2) solid"
-            outter.style.border = "1px rgba(0, 0, 0, 0.2) solid"
+            @selectedItem.classList.add("selected")
+            if not switcher.isShowCategory
+                return
+            categoryEl = @selectedItem.parentNode.parentNode
+            categoryBar.focusCategory(categoryEl.dataset.catid)
 
     firstShown:->
         if @box
@@ -65,7 +65,7 @@ class Selector
                 if (i = categoryList.firstCategory())?
                     return i.firstItem()
             else
-                el = @box.firstElementChild
+                el = @page.getFirstItem()
                 if not el
                     return null
                 if el.style.display != 'none'
@@ -90,25 +90,32 @@ class Selector
         cid = parseInt(el.parentNode.parentNode.dataset.catid)
         categoryList.category(cid)
 
-    scroll_to_view: (el)->
-        if not el
-            return
-        p = @box
-        if !@inView(el)
-            rect = el.getBoundingClientRect()
-            prect = p.getBoundingClientRect()
-            if rect.top < prect.top
-                offset = rect.top - prect.top
-                p.scrollTop += offset
-            else if rect.bottom > prect.bottom
-                offset = rect.bottom - prect.bottom
-                p.scrollTop += offset
+    _scroll_to_view: (offset)->
+        target = @page.getScrollbaleItem()
+        oldOffset = target.style.webkitTransform.match(/(-?\d+)/)
+        oldOffset = +(oldOffset?[0]) || 0
+        @page.setScrollOffset(offset + oldOffset)
+        # target.style.webkitTransform = "translateY(#{offset + oldOffset}px)"
 
-    inView:(el)->
+    scroll_to_view: (el)->
+        if not el or @inView(el)
+            return
+
         p = @box
         rect = el.getBoundingClientRect()
+        prect = @box.getBoundingClientRect()
+        if rect.top < prect.top
+            offset = prect.top - rect.top
+            @page.scrollToView(offset)
+        else if rect.bottom > prect.bottom
+            offset = prect.bottom - rect.bottom
+            @page.scrollToView(offset)
+
+    inView:(el)->
+        p = @box.firstElementChild
+        rect = el.getBoundingClientRect()
         prect = p.getBoundingClientRect()
-        rect.top > prect.top && rect.bottom < prect.bottom
+        rect.top >= prect.top && rect.top < prect.bottom && rect.bottom >= prect.bottom
 
     isSameLine: (lhs, rhs)->
         lhs.getBoundingClientRect().top == rhs.getBoundingClientRect().top
@@ -139,7 +146,8 @@ class Selector
     select: (fn)->
         if @selectedItem == null
             selectedItem = @firstShown()
-            # console.log "selector: #{selectedItem}"
+            # console.log "first shown:"
+            # console.log selectedItem
             @update(selectedItem)
             @scroll_to_view(selectedItem)
             return

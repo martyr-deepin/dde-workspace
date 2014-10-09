@@ -18,13 +18,13 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-class FavorPage
+class FavorPage extends Page
     constructor: ->
         # key: id of app
         # value: a list of category id to which key belongs
         @favors = {}
 
-        @element = $("#favor")
+        super("favor")
 
         @updateCache = true
         @favorNumber = 0
@@ -56,7 +56,7 @@ class FavorPage
     save: ->
         apps = []
         # TODO
-        container = @element
+        container = @container
         for i in [0...container.children.length]
             el = container.children[i]
             # console.log "save favor: "
@@ -70,10 +70,10 @@ class FavorPage
         @
 
     doAdd: (id, index, fixed=false)->
-        index = @element.childElementCount if not index?
+        index = @container.childElementCount if not index?
         item = Widget.look_up(id)
         # console.log "add #{item.name} to favor"
-        el = item.add('favor', @element)
+        el = item.add(@id, @container)
         el.dataset.index = index
         el.dataset.fixed = fixed
         # console.log el
@@ -119,11 +119,3 @@ class FavorPage
 
     contains: (id)->
         @favors.hasOwnProperty(id)
-
-    hide:->
-        if @element.style.display != 'none'
-            @element.style.display = 'none'
-
-    show:->
-        if @element.style.display != 'block'
-            @element.style.display = 'block'

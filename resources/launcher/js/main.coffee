@@ -45,6 +45,7 @@ console.log "load switcher done"
 favor = new FavorPage()
 console.log 'load favor done'
 
+searchResult = new SearchResult()
 searchBar = new SearchBar()
 console.log "create search bar done"
 
@@ -61,7 +62,7 @@ bind_events()
 console.log "bind event done"
 
 selector = new Selector()
-selector.container($("#favor"))
+selector.container(favor)
 console.log "create selector done"
 
 DCore.Launcher.webview_ok()

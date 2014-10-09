@@ -102,10 +102,10 @@ class Switcher
 
     switchToCategory:=>
         searchBar.hide().clean()
-        selector.container($("#grid"))
-        $("#grid").style.display = 'block'
-        $("#grid").style.webkitMaskImage = ''
-        favor.hide()
+        selector.container(categoryList)
+        favor.hide().resetScrollOffset().setMask(Page.MaskHint.BottomOnly)
+        categoryList.show()
+        categoryList.getBox().offsetTop
         @isShowCategory = true
         if @isHovered
             @showFavorHover()
@@ -119,29 +119,36 @@ class Switcher
             .updateBlankHeight()
             .updateNameDecoration()
             .showBlank()
-        searchResult?.hide()
+        searchResult?.hide().resetScrollOffset().setMask(Page.MaskHint.BottomOnly)
         @page = "Category"
 
     switchToFavor:=>
         searchBar.hide().clean()
-        selector.container(favor.element)
+        selector.container(favor)
         @isShowCategory = false
         categoryBar.hide()
+        categoryList.hide()
+            .resetScrollOffset()
+            .setMask(Page.MaskHint.BottomOnly)
         favor.show()
-        $("#grid").style.display = 'none'
         if @isHovered
             @showCategoryHover()
         else
             @showCategory()
-        # container.style.marginLeft = "110px"
         Item.updateHorizontalMargin()
         searchResult?.hide()
+            .resetScrollOffset()
+            .setMask(Page.MaskHint.BottomOnly)
         @page = "Favor"
 
     switchToSearch:=>
-        $("#grid").style.display = 'none'
         categoryBar.hide()
         favor.hide()
+            .resetScrollOffset()
+            .setMask(Page.MaskHint.BottomOnly)
+        categoryList.hide()
+            .resetScrollOffset()
+            .setMask(Page.MaskHint.BottomOnly)
         if @isHovered
             @showFavorHover()
         else
@@ -149,14 +156,14 @@ class Switcher
         searchBar.show()
         @page = "Search"
         @isShowCategory = false
-        selector.container($("#searchResult"))
+        selector.container(searchResult)
 
     hide:->
         @switcher.style.visibility = 'hidden'
 
     show:->
         @switcher.style.visibility = 'visible'
-        selector.container(favor.element)
+        selector.container(favor)
 
     normal:->
         if @page == "Category"

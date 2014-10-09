@@ -18,14 +18,18 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-class CategoryList
+class CategoryList extends Page
     constructor:(infos)->
         @categories = {}
-        @container = create_element(tag:"div", class:"categoryListWarp", $("#grid"))
+        super("grid")
+        @box.removeEventListener("scroll", @scrollCallback)
+        @box.addEventListener("mousewheel", @scrollCallback)
+        @container.classList.add("pageWrap")
         @container.addEventListener("webkitTransitionEnd", =>
             @container.style.webkitTransition = ''
         )
 
+        @gridOffset = 0
         frag = document.createDocumentFragment()
         for info in infos
             id = info[0]
@@ -175,6 +179,69 @@ class CategoryList
         @fixOffset(targetId)
         offset = @finalOffset - @currentOffset
         console.log("finalOffset: #{@finalOffset}")
-        gridOffset = -@finalOffset
+        @gridOffset = -@finalOffset
         @container.style.webkitTransition = '-webkit-transform 200ms cubic-bezier(0.28,0.9,0.7,1)'
-        @container.style.webkitTransform = "translateY(#{gridOffset}px)"
+        @container.style.webkitTransform = "translateY(#{@gridOffset}px)"
+
+    getScrollOffset:->
+        target = @getScrollableItem()
+        oldOffset = target.style.webkitTransform.match(/(-?\d+)/)
+        oldOffset = +(oldOffset?[0]) || 0
+
+    scrollToView:(offset)->
+        oldOffset = @getScrollOffset()
+        @setScrollOffset(offset + oldOffset)
+        @setMask(Page.MaskHint.TopBottom)
+        @
+
+    setScrollOffset:(offset)->
+        @getScrollableItem().style.webkitTransform = "translateY(#{offset}px)"
+        @
+
+    resetScrollOffset:->
+        @getScrollableItem().style.webkitTransform = ''
+        @
+
+    scrollCallback:(e)=>
+        scrollable = @getScrollableItem()
+
+        oldOffset = @getScrollOffset()
+        if oldOffset != 0
+            @gridOffset = oldOffset
+
+        @gridOffset += e.wheelDeltaY / 2
+        offset = @box.clientHeight - scrollable.clientHeight
+
+        if @gridOffset < offset
+            @gridOffset = offset
+        else if @gridOffset > 0
+            @gridOffset = 0
+
+        scrollable.style.webkitTransform = "translateY(#{@gridOffset}px)"
+
+        offset = 0
+        l = scrollable.childNodes.length
+        scrollTop = -@gridOffset
+        for i in [0...l]
+            if scrollable.childNodes[i].style.display == 'none'
+                continue
+            candidateId = scrollable.childNodes[i].id
+            if scrollTop - offset < 0
+                # console.log "less #{id} #{$("##{id}").firstChild.firstChild.textContent}"
+                @setMask(Page.MaskHint.TopBottom)
+                categoryBar.focusCategory(cid.substr(Category.PREFIX.length))
+                break
+            else if scrollTop - offset == 0
+                cid = scrollable.childNodes[i].id
+                # console.log "equal #{id} #{$("##{id}").firstChild.firstChild.textContent}"
+                if cid == "c-2"
+                    @setMask(Page.MaskHint.None)
+                else
+                    @setMask(Page.MaskHint.BottomOnly)
+                categoryBar.focusCategory(cid.substr(Category.PREFIX.length))
+                break
+            else
+                cid = candidateId
+                offset += scrollable.childNodes[i].clientHeight + CATEGORY_LIST_ITEM_MARGIN
+
+        return

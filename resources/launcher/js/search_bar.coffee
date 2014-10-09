@@ -38,7 +38,7 @@ class SearchBar
     show: ->
         if @searchBar.style.visibility != 'visible'
             @searchBar.style.visibility = 'visible'
-            selector.container($("#searchResult"))
+            selector.container(searchResult)
         @
 
     value: (t)->
@@ -63,29 +63,7 @@ class SearchBar
         @cancel()
         @searchTimer = setTimeout(=>
             selector.clean()
-            if !SearchResult.inited
-                searchResult = new SearchResult()
             console.log "searchKey is : #{@value()}"
-            searchResult.result = daemon.Search_sync(@value())
-            res = $("#searchResult")
-            for i in [0...res.children.length]
-                if res.children[i].style.display != 'none'
-                    res.children[i].style.display = 'none'
-
-            if searchResult.result.length == 0
-                console.log 'search: get nothing'
-                return
-
-            for i in [searchResult.result.length-1..0]
-                if (item = Widget.look_up("#{searchResult.result[i]}"))? and not uninstalling_apps[item.id]
-                    # console.log "search Item id: #{searchResult.result[i]}"
-                    target = item.elements.search
-                    res.removeChild(target)
-                    res.insertBefore(target, res.firstChild)
-                    item.show()
-
-            if !searchResult.isShow()
-                console.log 'show result'
-                searchResult.show()
-                Item.updateHorizontalMargin()
+            res = daemon.Search_sync(@value())
+            searchResult.update(res)
         , 100)

@@ -74,7 +74,7 @@ update = (status, info, categories)->
         autostartList = startManager.AutostartList_sync()
         item = createItem(info, autostartList)
         item.add('search')
-        $("#searchResult").appendChild(item.elements.search)
+        searchResult.append(item.elements.search)
 
         categoryList.addItem(id, categories)
         categoryList.showNonemptyCategories()

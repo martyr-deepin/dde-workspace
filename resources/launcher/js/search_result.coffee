@@ -18,37 +18,43 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-searchScrollCallback = (e)->
-    if this.scrollTop == 0
-        this.style.webkitMaskImage = "-webkit-linear-gradient(top, rgba(0,0,0,1), rgba(0,0,0,1) 90%, rgba(0,0,0,0.3), rgba(0,0,0,0))"
-    else if this.scrollTop + this.clientHeight == this.scrollHeight
-        this.style.webkitMaskImage = "-webkit-linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,1) 5%)"
-    else
-        this.style.webkitMaskImage = "-webkit-linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,1) 5%, rgba(0,0,0,1) 90%, rgba(0,0,0,0.3), rgba(0,0,0,0))"
-
-searchResult = null
-class SearchResult
+class SearchResult extends Page
     inited: false
     constructor: ->
         console.log 'create search result'
         clearTimeout(searchTimer)
         searchTimer = null
-        @element = $("#searchResult")
-        @element.addEventListener('scroll', searchScrollCallback)
+        super("searchResult")
 
         frag = document.createDocumentFragment()
         for own k, v of applications
             el = v.add('search', frag)
             el.style.display = 'none'
-        @element.appendChild(frag)
+        @container.appendChild(frag)
         SearchResult.inited = true
         console.log 'create search result done'
 
-    hide:->
-        @element.style.display = "none"
+    append: (child)->
+        @container.appendChild(child)
 
-    show:->
-        @element.style.display = 'block'
+    update:(resultList)->
+        for i in [0...@container.children.length]
+            if @container.children[i].style.display != 'none'
+                @container.children[i].style.display = 'none'
 
-    isShow:->
-        @element.style.display == 'block'
+        if resultList.length == 0
+            console.log 'search: get nothing'
+            return
+
+        for i in [resultList.length-1..0]
+            if (item = Widget.look_up("#{resultList[i]}"))? and not uninstalling_apps[item.id]
+                # console.log "search Item id: #{searchResult.result[i]}"
+                target = item.elements.search
+                @container.removeChild(target)
+                @container.insertBefore(target, @container.firstChild)
+                item.show()
+
+        if !@isShow()
+            console.log 'show result'
+            @show()
+            Item.updateHorizontalMargin()
