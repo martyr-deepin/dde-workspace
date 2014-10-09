@@ -36,6 +36,11 @@ class PowerMenu extends Widget
         @powercls = new Power()
         @powercls.power_get_inhibit()
 
+        if accounts? then @accountscls = accounts
+        else @accountscls = new Accounts(APP_NAME)
+        @username = @accountscls?.get_default_username()
+        @userid = @accountscls?.get_user_id(@username)
+
     suspend_cb : =>
         @powercls.power_force_sys("suspend")
 
@@ -50,6 +55,27 @@ class PowerMenu extends Widget
         @power_dict["restart"] = @restart_cb
         @power_dict["suspend"] = @suspend_cb
 
+    get_sessioned_on_power_dict : ->
+        ["shutdown","restart"]
+
+    get_sessioned_on_msg : ->
+        @accountscls?.is_user_sessioned_on(@userid)
+        @users_id_logined_len =  @accountscls?.users_id_logined.length
+        users_id_logined = @accountscls?.users_id_logined
+        if @users_id_logined_len > 1
+            if @userid in users_id_logined
+                for uid,i in users_id_logined
+                    if @userid is uid
+                        users_id_logined.splice(i,1)
+            names = []
+            for id in users_id_logined
+                names.push(@accountscls.get_user_name(id))
+            console.debug "current userid:#{@userid};other logged ids:(#{users_id_logined}) === names:(#{names})"
+            msg = _("The user %1 has logged, shutdown or restart may cause loss to the account running data.").args(names.toString())
+            return msg
+        else
+            return null
+
     menuChoose_click_cb : (id, title) =>
         if is_greeter
             @power_dict[id]()
@@ -57,15 +83,15 @@ class PowerMenu extends Widget
             if id is "suspend"
                 @power_dict["suspend"]()
             else
-                @username = accounts.get_default_username()
-                @userid = accounts.get_user_id(@username)
-                @is_need_pwd = accounts?.is_need_pwd(@userid)
+                @is_need_pwd = @accountscls?.is_need_pwd(@userid)
                 if @is_need_pwd then @confirm_shutdown_show(id)
                 else @power_dict[id]()
 
     new_power_menu:->
         echo "new_power_menu"
         @get_power_dict()
+        sessioned_on_msg = @get_sessioned_on_msg()
+
         @ComboBox = new ComboBox("power", @menuChoose_click_cb)
         for key, title of @power_title
             img_normal = @img_before + "#{key}_normal.png"
@@ -73,6 +99,8 @@ class PowerMenu extends Widget
             img_click = @img_before + "#{key}_press.png"
             can_exe =  @powercls.power_can(key)
             message_text = @powercls.inhibit_msg(key)
+            if sessioned_on_msg? and (key in @get_sessioned_on_power_dict())
+                message_text = sessioned_on_msg
             echo "#{key} #{can_exe} #{message_text}"
             @ComboBox.insert(key, title, img_normal,img_hover,img_click,can_exe,message_text)
         @ComboBox.frame_build()

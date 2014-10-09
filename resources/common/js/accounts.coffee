@@ -32,17 +32,33 @@ class Accounts
     GRAPHIC = "com.deepin.api.Graphic"
     APP = null
 
+    LOGIN1_SEAT =
+        name: "org.freedesktop.login1"
+        path: "/org/freedesktop/login1/seat/seat0"
+        interface: "org.freedesktop.login1.Seat"
+
+    LOGIN1_SESSION =
+        name: LOGIN1_SEAT.name
+        path: "/org/freedesktop/login1/session/c2"
+        interface: "org.freedesktop.login1.Session"
+
     constructor:(@id)->
         APP = @id#APP_NAME for DCore[APP]
         @get_dbus_failed = false
+
+        @Dbus_Account = null
         @users_id = []
         @users_name = []
         @users_id_dbus = []
         @users_name_dbus = []
 
-        @getDBus()
+        @Dbus_login1 = null
+        @users_id_logined = []
+        @session_dbus_logined_id = []
 
-    getDBus:->
+        @getDBus_account()
+
+    getDBus_account:->
         try
             console.log(ACCOUNTS_DAEMON)
             @Dbus_Account = get_dbus("system", ACCOUNTS_DAEMON, "UserList")
@@ -77,25 +93,6 @@ class Accounts
         if not id? then id = "1000"
         return id
 
-    is_user_logined:(uid)->
-        is_logined = false
-        LoginTime = @users_id_dbus[uid].LoginTime
-        echo "LoginTime:#{LoginTime}"
-        if LoginTime is null or LoginTime == 0 or LoginTime is undefined then is_logined = false
-        else is_logined = true
-        return is_logined
-
-    is_user_sessioned_on:(uid)->
-        if APP isnt "Greeter" then return true
-
-        username = @users_id_dbus[uid].UserName
-        try
-            is_sessioned_on = DCore.Greeter.get_user_session_on(username)
-        catch e
-            echo "#{e}"
-            is_sessioned_on = false
-        return is_sessioned_on
-    
     is_need_pwd: (uid) ->
         if uid is guest_id then return false
         else return true
@@ -161,3 +158,24 @@ class Accounts
         icon = @Dbus_Account.RandUserIcon_sync()
         echo icon
         return icon
+
+    getDBus_login1: ->
+        try
+            @Dbus_login1 = get_dbus("system", LOGIN1_SEAT, "Sessions")
+            echo "LOGIN1_SEAT succeed and then connect LOGIN1_SESSION" if @Dbus_login1
+            for session in @Dbus_login1.Sessions
+                LOGIN1_SESSION.path = session[1]
+                session_dbus = get_dbus("system", LOGIN1_SESSION, "User")
+                user = session_dbus.User
+                uid = user[0].toString()
+                name = session_dbus.Name
+                if uid in @users_id and !(uid in @users_id_logined)
+                    echo "User sessioned on:uid:#{uid};name:#{name};(#{user});"
+                    @users_id_logined.push(uid)
+                    @session_dbus_logined_id[uid] = session_dbus
+        catch e
+            echo "Dbus_login1 #{LOGIN1_SEAT} ERROR: #{e}"
+
+    is_user_sessioned_on:(uid)->
+        @getDBus_login1() if not @Dbus_login1?
+        return (uid in @users_id_logined)

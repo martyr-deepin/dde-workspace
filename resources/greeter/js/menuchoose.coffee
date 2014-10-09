@@ -195,6 +195,8 @@ class MenuChoose extends Widget
         )
 
     showMessage:(text)->
+        if text is null or text is undefined
+            return
         @message_div?.style.opacity = 1
         @message_text_div?.textContent = text
 
@@ -265,7 +267,7 @@ class MenuChoose extends Widget
                 that.fade(i)
             )
 
-        @check_disable()
+        @check_disable_message()
 
     set_callback: (@cb)->
 
@@ -276,9 +278,10 @@ class MenuChoose extends Widget
         @cb(@option[i], @option_text[i])
         @hide()
 
-    check_disable: ->
+    check_disable_message: ->
         for bt,i in @opt
             @css_disable(i)
+            @showMessage(@message_text[i])
 
     is_disable: (i) ->
         return (@option[i] in @option_disable)
@@ -289,12 +292,10 @@ class MenuChoose extends Widget
             @opt[i].disable = "true"
             @opt_img[i].style.opacity = "0.3"
             @opt[i].style.cursor = "default"
-            @showMessage(@message_text[i])
         else
             @opt[i].disable = "false"
             @opt_img[i].style.opacity = "1.0"
             @opt[i].style.cursor = "pointer"
-            #@hideMessage()
         return disable
 
     normal_state:(i)->
@@ -308,7 +309,7 @@ class MenuChoose extends Widget
     hover_state:(i)->
         #choose_num = i
         if select_state_confirm then @select_state(i)
-        if @is_disable(i) then @showMessage(@message_text[i])
+        @showMessage(@message_text[i])
         for tmp,j in @opt_img
             if j == i and !@is_disable(i) then tmp.src = @img_url_hover[i]
             else tmp.src = @img_url_normal[j]
@@ -316,7 +317,7 @@ class MenuChoose extends Widget
     select_state:(i)->
         select_state_confirm = true
         choose_num = i
-        if @is_disable(i) then @showMessage(@message_text[i])
+        @showMessage(@message_text[i])
         for tmp,j in @opt
             if j == i and !@is_disable(i)
                 tmp.style.backgroundColor = "rgba(255,255,255,0.1)"

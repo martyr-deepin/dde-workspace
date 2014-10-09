@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-30 10:08+0800\n"
+"POT-Creation-Date: 2014-10-09 17:43+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -333,7 +333,13 @@ msgstr ""
 msgid "Suspend"
 msgstr ""
 
-#: ../resources/greeter/js/powermenu.coffee:90
+#: ../resources/greeter/js/powermenu.coffee:73
+msgid ""
+"The user %1 has logged, shutdown or restart may cause loss to the account "
+"running data."
+msgstr ""
+
+#: ../resources/greeter/js/powermenu.coffee:117
 msgid "Enter your password to %1"
 msgstr ""
 
