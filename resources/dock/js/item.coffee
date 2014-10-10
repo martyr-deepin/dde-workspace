@@ -398,7 +398,7 @@ class AppItem extends Item
                         v = DCore.get_theme_icon(value, 48)
                         @change_icon(v)
                 when ITEM_DATA_FIELD.title
-                    @set_tooltip(value || "Unknown")
+                    @set_tooltip(value || UNKNOWN_TITLE)
         )
 
     hide_open_indicator:->
@@ -439,13 +439,13 @@ class AppItem extends Item
             @element.classList.remove("Activator")
             @element.classList.add("ClientGroup")
 
-        @set_tooltip(@core.title() || "Unknown")
+        @set_tooltip(@core.title() || UNKNOWN_TITLE)
 
         @clientgroupInited = true
 
     init_activator:->
         @hide_open_indicator()
-        title = @core.title() || "Unknown"
+        title = @core.title() || UNKNOWN_TITLE
         @set_tooltip(title)
         @clientgroupInited = false
         @element.classList.remove("ClientGroup")
@@ -552,7 +552,7 @@ class AppItem extends Item
             # $tooltip?.hide()
             return
         if @isNormal() || @isNormalApplet()
-            @set_tooltip(@core.title() || "Unknown")
+            @set_tooltip(@core.title() || UNKNOWN_TITLE)
             @tooltip.show()
             clearTimeout(hide_id)
             closePreviewWindowTimer = setTimeout(->

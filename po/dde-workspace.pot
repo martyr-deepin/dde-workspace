@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-09 17:43+0800\n"
+"POT-Creation-Date: 2014-10-11 09:42+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -189,6 +189,10 @@ msgstr ""
 msgid "_Empty"
 msgstr ""
 
+#: ../resources/dock/js/config.coffee:181
+msgid "Unknown"
+msgstr ""
+
 #: ../resources/dock/js/deepin_item.coffee:248
 msgid "_View as analog"
 msgstr ""
@@ -333,13 +337,13 @@ msgstr ""
 msgid "Suspend"
 msgstr ""
 
-#: ../resources/greeter/js/powermenu.coffee:73
+#: ../resources/greeter/js/powermenu.coffee:74
 msgid ""
 "The user %1 has logged, shutdown or restart may cause loss to the account "
 "running data."
 msgstr ""
 
-#: ../resources/greeter/js/powermenu.coffee:117
+#: ../resources/greeter/js/powermenu.coffee:118
 msgid "Enter your password to %1"
 msgstr ""
 
@@ -643,7 +647,7 @@ msgstr ""
 msgid "New directory"
 msgstr ""
 
-#: ../app/dock/dock.c:341
+#: ../app/dock/dock.c:290
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr ""
 
