@@ -189,7 +189,7 @@ class MenuChoose extends Widget
                 echo "body_click_to_hide"
                 if !@animation_end then return
                 @hide()
-                $(".password").focus()
+                $(".password")?.focus()
             else
                 @frame_click = false
         )

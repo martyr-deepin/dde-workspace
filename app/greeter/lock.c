@@ -118,6 +118,12 @@ void lock_emit_webview_ok()
 JS_EXPORT_API
 gboolean lock_try_unlock (const gchar *username,const gchar *password)
 {
+    if (lock_is_guest()) {
+        js_post_signal("auth-succeed");
+        gtk_main_quit();
+        return TRUE;
+    }
+
     gboolean succeed = FALSE;
 
     GDBusProxy *lock_proxy = NULL;
@@ -138,10 +144,6 @@ gboolean lock_try_unlock (const gchar *username,const gchar *password)
         g_error_free (error);
     }
     error = NULL;
-
-    /*if (username == NULL) {*/
-    /*username = lock_get_username ();*/
-    /*}*/
 
     lock_succeed  = g_dbus_proxy_call_sync (lock_proxy,
             "UnlockCheck",
@@ -211,11 +213,6 @@ int main (int argc, char **argv)
     signal (SIGTERM, sigterm_cb);
 
     if (lock_is_running ()) {
-        return 1;
-    }
-
-    if (lock_is_guest ()) {
-        g_warning("you are the guest!!!");
         return 1;
     }
 

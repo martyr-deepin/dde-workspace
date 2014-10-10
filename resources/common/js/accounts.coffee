@@ -18,8 +18,9 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-guest_id = "999"
+guest_id = "118"
 guest_name = _("Guest")
+guest_icon = "/var/lib/AccountsService/icons/guest.png"
 guest_name_in_lightdm = "guest"
 
 class Accounts

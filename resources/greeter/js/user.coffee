@@ -35,7 +35,8 @@ class User extends Widget
 
     get_default_userid:->
         @_default_username = accounts.get_default_username()
-        if @_default_username is null then @_default_username = accounts.users_name[0]
+        console.log "_default_username:#{@_default_username}"
+        if @_default_username is null or @_default_username == guest_name_in_lightdm then @_default_username = accounts.users_name[0]
         @_default_userid = accounts.get_user_id(@_default_username)
         echo "_default_username:#{@_default_username};uid:#{@_default_userid}"
         return @_default_userid
@@ -52,9 +53,7 @@ class User extends Widget
 
      isSupportGuest:->
         if is_support_guest and accounts.isAllowGuest() is true
-            guest_image = "/var/lib/AccountsService/icons/guest.png"
-            echo "guest_image:#{guest_image}"
-            u = new UserInfo(guest_id, guest_name, guest_image)
+            u = new UserInfo(guest_id, guest_name, guest_icon)
             @userinfo_all.push(u)
             #if DCore.Greeter.is_guest_default() then u.show()
             #else u.hide()
@@ -87,9 +86,12 @@ class User extends Widget
 
     new_userinfo_for_lock:->
         echo "new_userinfo_for_lock"
-        username = accounts.users_id_dbus[@_default_userid].UserName
-        usericon = accounts.users_id_dbus[@_default_userid].IconFile
-        _current_user = new UserInfo(@_default_userid, username, usericon)
+        if DCore.Lock.is_guest()
+            _current_user = new UserInfo(guest_id, guest_name, guest_icon)
+        else
+            username = accounts.users_id_dbus[@_default_userid].UserName
+            usericon = accounts.users_id_dbus[@_default_userid].IconFile
+            _current_user = new UserInfo(@_default_userid, username, usericon)
         _current_user.index = 0
         @element.appendChild(_current_user.element)
         _current_user.show()
@@ -289,7 +291,6 @@ class UserInfo extends Widget
 
     on_verify: (username, password)->
         echo "on_verify:#{username}"
-        echo  "--------#{new Date().getTime()}-----------"
         if username is guest_name then username = guest_name_in_lightdm
         @password = password
         if is_greeter
@@ -408,7 +409,10 @@ class LoginEntry extends Widget
         else
             @loginbutton = create_element("div","loginbutton_unpwd",@element)
             @loginbutton.type = "button"
-            @loginbutton.innerText = _("Login")
+            if @id == "login"
+                @loginbutton.innerText = _("Login")
+            else if @id == "lock"
+                @loginbutton.innerText = _("Unlock")
             @element.style.marginTop = "0.6em"
         @loginbutton.addEventListener("mouseout", =>
             power_flag = false
@@ -533,7 +537,6 @@ DCore.signal_connect("start-animation", ->
 
 DCore.signal_connect("auth-failed", (msg)->
     echo "#{_current_user.username}:[auth-failed]"
-    echo  "--------#{new Date().getTime()}-----------"
     _current_user.is_recognizing = false
     _current_user.auth_failed(msg.error)
 )
@@ -546,7 +549,6 @@ DCore.signal_connect("failed-too-much", (msg)->
 
 DCore.signal_connect("auth-succeed", ->
     echo "auth-succeed!"
-    echo  "--------#{new Date().getTime()}-----------"
     if is_greeter
         echo "greeter exit"
     else

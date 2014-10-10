@@ -174,7 +174,7 @@ LightDMUser* lightdm_user_get_by_username(const gchar *name)
         g_message("greeter get user session:user for %s is NULL\n", name);
         return NULL;
     }
-    
+
     return user;
 }
 

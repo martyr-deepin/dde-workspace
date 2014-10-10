@@ -149,6 +149,7 @@ respond_authentication (LightDMGreeter *greeter, const gchar *text G_GNUC_UNUSED
 static void
 set_last_user (const gchar* username)
 {
+    if (g_strcmp0 (username, "guest") == 0) return;
     gchar *data;
     gsize length;
 
