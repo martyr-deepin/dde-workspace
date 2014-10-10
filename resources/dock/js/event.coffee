@@ -60,3 +60,17 @@ _b.addEventListener("drop", (e)->
         _dragTarget.dragToBack = true
 )
 
+try
+    launcherDaemon = get_dbus("session", LAUNCHER_DAEMON, "GetFavors")
+catch e
+    console.error e
+    DCore.Dock.quit()
+
+launcherDaemon.connect("ItemChanged", (status, info, categories)->
+    if !!status.match(/^deleted$/i)
+        path = info[0]
+        name = info[1]
+        id = info[2]
+        icon = info[3]
+        dockedAppManager?.Undock(id)
+)
