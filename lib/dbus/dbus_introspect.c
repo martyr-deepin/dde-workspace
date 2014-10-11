@@ -239,9 +239,9 @@ JSValueRef signal_disconnect(JSContextRef ctx,
     char* sig_name = jsvalue_to_cstr(ctx, arguments[0]);
     char* key = g_strdup_printf("%s:%s:%s@%s", info->path, info->iface, sig_name, g_dbus_connection_get_unique_name(info->connection));
     g_debug("remove signal callback: %s", key);
-    g_free(key);
 
     GHashTable *cbs = g_hash_table_lookup(__sig_callback_hash, key);
+    g_free(key);
 
     if (cbs == NULL) {
         g_debug("no callback");
