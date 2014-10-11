@@ -75,3 +75,21 @@ createItem = (core, autostartList)->
         item.add_to_autostart()
 
     item
+
+
+inView=(el)->
+    return null if not el
+    containerClientRect = _c.getBoundingClientRect()
+    elementClientRect = el.getBoundingClientRect()
+
+    notAboveTopLine = containerClientRect.top < elementClientRect.bottom
+    notBlowBottomLine = containerClientRect.bottom > elementClientRect.top
+    inBoxView = notAboveTopLine && notBlowBottomLine
+
+    # console.log("box id: #{_c.id}, top: #{containerClientRect.top}, bottom: #{containerClientRect.bottom}")
+    # console.log("element id: #{el.id || el.dataset?.appid}, top: #{elementClientRect.top}, bottom: #{elementClientRect.bottom}")
+    # console.log("not above top line: #{notAboveTopLine}")
+    # console.log("not blow bottom line: #{notBlowBottomLine}")
+    # console.log("inView: #{inBoxView}")
+
+    inBoxView

@@ -56,22 +56,18 @@ class Selector
             @selectedItem.classList.add("selected")
             if not switcher.isShowCategory
                 return
+            else
+                c = categoryList.firstCategoryInView()
+                if c.element.getBoundingClientRect().top != _c.getBoundingClientRect().top
+                    @page.setMask(Page.MaskHint.TopBottom)
+                else
+                    @page.setMask(Page.MaskHint.BottomOnly)
             categoryEl = @selectedItem.parentNode.parentNode
             categoryBar.focusCategory(categoryEl.dataset.catid)
 
     firstShown:->
         if @box
-            if switcher.isShowCategory
-                if (i = categoryList.firstCategory())?
-                    return i.firstItem()
-            else
-                el = @page.getFirstItem()
-                if not el
-                    return null
-                if el.style.display != 'none'
-                    return el
-                else
-                    return @nextShown(el)
+            return @page.getFirstItemInView()
         null
 
     nextShown: (el)->
@@ -98,7 +94,7 @@ class Selector
         # target.style.webkitTransform = "translateY(#{offset + oldOffset}px)"
 
     scroll_to_view: (el)->
-        if not el or @inView(el)
+        if not el or not @needToScroll(el)
             return
 
         p = @box
@@ -111,11 +107,11 @@ class Selector
             offset = prect.bottom - rect.bottom
             @page.scrollToView(offset)
 
-    inView:(el)->
+    needToScroll:(el)->
         p = @box.firstElementChild
         rect = el.getBoundingClientRect()
         prect = p.getBoundingClientRect()
-        rect.top >= prect.top && rect.top < prect.bottom && rect.bottom >= prect.bottom
+        rect.top >= prect.top || rect.top < prect.bottom || rect.bottom >= prect.bottom
 
     isSameLine: (lhs, rhs)->
         lhs.getBoundingClientRect().top == rhs.getBoundingClientRect().top

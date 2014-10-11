@@ -26,6 +26,9 @@ class CategoryList extends Page
         @box.addEventListener("mousewheel", @scrollCallback)
         @container.classList.add("pageWrap")
         @container.addEventListener("webkitTransitionEnd", =>
+            if not inView(selector.selectedItem)
+                selector.update(null)
+            @setMask(Page.MaskHint.BottomOnly)
             @container.style.webkitTransition = ''
         )
 
@@ -121,6 +124,37 @@ class CategoryList extends Page
             return @categories[CATEGORY_ID.OTHER]
         return null
 
+    firstCategoryInView:->
+        c = @firstCategory()
+        if !c
+            console.log("get first category failed")
+            return null
+
+        if inView(c.element)
+            return c
+
+        while !!(c = @nextCategory(c.id))
+            if inView(c.element)
+                return c
+
+        null
+
+    getFirstItemInView:->
+        category = @firstCategoryInView()
+        if !category
+            console.log("no category in view")
+            return null
+
+        el = category.firstItemInView()
+        return el if el
+
+        # two category is enough
+        category = @nextCategory(category.id)
+        if not category
+            return null
+
+        return category.firstItemInView()
+
     lastCategory:->
         if @categories[CATEGORY_ID.OTHER].isShown()
             return @categories[CATEGORY_ID.OTHER]
@@ -191,7 +225,6 @@ class CategoryList extends Page
     scrollToView:(offset)->
         oldOffset = @getScrollOffset()
         @setScrollOffset(offset + oldOffset)
-        @setMask(Page.MaskHint.TopBottom)
         @
 
     setScrollOffset:(offset)->
@@ -203,6 +236,9 @@ class CategoryList extends Page
         @
 
     scrollCallback:(e)=>
+        if not inView(selector.selectedItem)
+            selector.update(null)
+
         scrollable = @getScrollableItem()
 
         oldOffset = @getScrollOffset()
@@ -225,20 +261,20 @@ class CategoryList extends Page
         for i in [0...l]
             if scrollable.childNodes[i].style.display == 'none'
                 continue
-            candidateId = scrollable.childNodes[i].id
+            candidateId = scrollable.childNodes[i].dataset.catid
             if scrollTop - offset < 0
                 # console.log "less #{id} #{$("##{id}").firstChild.firstChild.textContent}"
                 @setMask(Page.MaskHint.TopBottom)
-                categoryBar.focusCategory(cid.substr(Category.PREFIX.length))
+                categoryBar.focusCategory(cid)
                 break
             else if scrollTop - offset == 0
-                cid = scrollable.childNodes[i].id
+                cid = scrollable.childNodes[i].dataset.catid
                 # console.log "equal #{id} #{$("##{id}").firstChild.firstChild.textContent}"
-                if cid == "c-2"
+                if cid == "-2"
                     @setMask(Page.MaskHint.None)
                 else
                     @setMask(Page.MaskHint.BottomOnly)
-                categoryBar.focusCategory(cid.substr(Category.PREFIX.length))
+                categoryBar.focusCategory(cid)
                 break
             else
                 cid = candidateId

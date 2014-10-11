@@ -43,7 +43,7 @@ class Page
     isShow:->
         @box.style.display == 'block'
 
-    setMask:(hint)->
+    doSetMask:(hint)->
         if @hint == hint
             return
         @box.classList.remove(Page.MaskHint.TopOnly)
@@ -54,7 +54,24 @@ class Page
             @box.classList.add(hint)
         @
 
+    setMask:(hint)->
+        @doSetMask(hint)
+
+        if not selector.selectedItem
+            return @
+
+        selectedItemRect = selector.selectedItem.getBoundingClientRect()
+        containerRect = _c.getBoundingClientRect()
+        if selectedItemRect.bottom == containerRect.bottom
+            console.log("selected item on the bottom")
+            @doSetMask(Page.MaskHint.TopOnly)
+
+        @
+
     scrollCallback:(e)=>
+        if not inView(selector.selectedItem)
+            selector.update(null)
+
         if @box.scrollTop == 0
             @setMask(Page.MaskHint.BottomOnly)
         else if @box.scrollTop + @box.clientHeight == @box.scrollHeight
@@ -67,6 +84,17 @@ class Page
 
     getFirstItem: ->
         @box.firstElementChild.firstElementChild
+
+    getFirstItemInView:->
+        el = @getFirstItem()
+        if inView(el)
+            return el
+
+        while (el = el.nextElementSibling)
+            if inView(el)
+                break
+
+        el
 
     getScrollableItem:->
         @box.firstElementChild

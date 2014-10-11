@@ -120,11 +120,26 @@ class Category
         return null if not el
         if el.style.display != 'none'
             return el
-            # return Widget.look_up(el.dataset.appid)
         while (el = el.nextElementSibling)?
             if el.style.display != 'none'
                 return el
-                # return Widget.look_up(el.dataset.appid)
+        null
+
+    firstItemInView:->
+        el = @firstItem()
+        if !el
+            console.log("get first item failed")
+            return el
+
+        appid = el.dataset.appid
+        if inView(el)
+            return el
+
+        while !!(el = el.nextElementSibling)
+            if inView(el)
+                return el
+
+        console.log("no item in view")
         null
 
     lastItem:->

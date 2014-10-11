@@ -1,5 +1,5 @@
 _b = document.body
-c = $("#container")
+_c = $("#container")
 grid = $('#grid')
 uninstaller = null
 searchResult = null
