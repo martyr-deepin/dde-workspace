@@ -327,7 +327,8 @@ class Item extends Widget
         @menu.unregisterHook(->
             forceShowTimer = setTimeout(->
                 console.log("force show menu unregister")
-                DCore.Launcher.force_show(false)
+                if isNotForceShow
+                    DCore.Launcher.force_show(false)
             , 100)
         )
         @menu.addListener(@on_itemselected).showMenu(e.screenX, e.screenY)
@@ -375,7 +376,6 @@ class Item extends Widget
                 dialog.connect("ActionInvoked", @uninstallHandler)
                 clearTimeout(forceShowTimer)
                 DCore.Launcher.force_show(true)
-                # _("The operation may also remove other applications that depends on the item. Are you sure you want to uninstall the item?")
                 dialog.ShowUninstall(@icon, _("Are you sure to remove") + " \"#{@name}\" ", _("All dependencies will be removed"), ["1", _("no"), "2", _("yes")])
                 isNotForceShow = false
             # when 100 then DCore.DEntry.report_bad_icon(@path)  # internal
@@ -403,7 +403,6 @@ class Item extends Widget
                 console.warn("set icon: #{icon} to notify icon")
                 uninstaller = new Uninstaller(@id, "Deepin Launcher", icon, uninstallSignalHandler)
                 uninstall_apps = uninstaller.uninstall_apps
-                uninstalling_apps[@id] = @
                 # make sure the icon is hidden immediately
                 setTimeout(=>
                     uninstaller.uninstall(item:@, purge:true)

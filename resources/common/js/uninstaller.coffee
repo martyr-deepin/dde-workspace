@@ -43,7 +43,7 @@ remove_backup_app_icon = (id, reason)->
     icon = Uninstaller.IdMap[id]
     if not icon
         return
-    console.warn("remove backup icon: #{icon}")
+    console.log("remove backup icon: #{icon}")
     delete Uninstaller.IdMap[id]
 
 
@@ -58,14 +58,18 @@ class Uninstaller
             console.log(e)
             @daemon = null
         @uninstallSignalHandler = (info)=>
-            console.warn(info)
+            console.log(info)
             handler?(@, info)
             if info[0][0] == UNINSTALL_STATUS.SUCCESS || info[0][0] == UNINSTALL_STATUS.FAILED
                 @disconnect()
 
     disconnect: =>
-        console.warn("disconnect UpdateSignal")
-        @daemon?.dis_connect("UpdateSignal", @uninstallSignalHandler)
+        console.log("disconnect UpdateSignal")
+        try
+            @daemon?.dis_connect("UpdateSignal", @uninstallSignalHandler)
+            @daemon?.dis_connect("PackageNameGet", @packageNameHandler)
+        catch e
+            console.error e
 
     uninstallReport: (status, msg)->
         if status == UNINSTALL_STATUS.FAILED
@@ -76,42 +80,46 @@ class Uninstaller
         console.log "uninstall #{message}, #{msg}"
         try
             notification = get_dbus("session", NOTIFICATIONS, "Notify")
-            console.warn("#{@appid} sets icon: #{@icon} to notify icon")
+            console.log("#{@appid} sets icon: #{@icon} to notify icon")
             id = notification.Notify_sync(@appName, @notifyId, @icon, "", msg, [], {}, 0)
             @notifyId += 1
             console.warn("notify id: #{id}")
             Uninstaller.IdMap[id] = @icon
             notification.connect("NotificationClosed", remove_backup_app_icon)
         catch e
-            console.log e
+            console.error e
         if Object.keys(@uninstalling_apps).length == 0
             console.log 'uninstall: disconnect signal'
             # @softwareManager = null
 
+    packageNameHandler:(id, package_name)=>
+        console.log "package_name: ##{package_name}#, #{package_name.length}"
+        item = @uninstalling_apps[id]
+        if !package_name
+            console.error("get packages failed")
+            if item.status
+                item.status = SOFTWARE_STATE.IDLE
+                item.show()
+            delete @uninstalling_apps[item.id]
+            @uninstallReport("", UNINSTALL_MESSAGE.FAILED.args(item.id))
+            console.log("get packages failed")
+            @disconnect()
+            return
+
+        item.package_name = package_name
+        console.log("uninstall")
+        @daemon.Uninstall(package_name, item.purge)
 
     uninstall: (opt) =>
-        console.log "#{opt.item.path}, #{opt.purge}"
+        console.log "uninstall #{opt.item.path}, #{opt.purge}"
         item = opt.item
+        item.purge = opt.purge
         @uninstalling_apps[item.id] = item
 
-        if Object.keys(@uninstalling_apps).length == 1
+        if Object.keys(@uninstalling_apps).length == 1 and @daemon
             console.log 'uninstall: connect signal'
             @daemon?.connect("UpdateSignal", @uninstallSignalHandler)
+            @daemon?.connect("PackageNameGet", @packageNameHandler)
 
-        @daemon?.connect("PackageNameGet", (package_name)=>
-            console.log "package_name: #{package_name}"
-            if package_name.length == 0
-                if item.status
-                    item.status = SOFTWARE_STATE.IDLE
-                    item.show()
-                delete @uninstalling_apps[item.id]
-                @uninstallReport("", UNINSTALL_MESSAGE.FAILED.args(item.id))
-                console.log("get packages failed")
-                @disconnect()
-                return
-
-            opt.item.package_name = package_name
-            # @softwareManager.uninstall_pkg(package_name, opt.purge)
-            @daemon.Uninstall(package_name, opt.purge)
-        )
-        @daemon?.GetPackageName(item.path)
+        console.log("get package name")
+        @daemon?.GetPackageName(item.id, item.path)
