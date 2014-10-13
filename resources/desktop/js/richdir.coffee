@@ -146,10 +146,7 @@ class RichDir extends DesktopEntry
             when 1 then @item_exec()
             when 3 then @item_rename()
             when 5 then @item_ungroup()
-            when 7
-                list = []
-                list.push(@_entry)
-                DCore.DEntry.trash(list)
+            when 7 then delete_selected_items(evt.shiftKey)
             else echo "menu clicked:id=#{env.id} title=#{env.title}"
         return
 

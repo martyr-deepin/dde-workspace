@@ -1188,7 +1188,7 @@ grid_do_keyup_to_shrotcut = (evt) ->
 
     else if evt.keyCode == 46    # Delete
         if evt.ctrlKey == false and evt.altKey == false
-            delete_selected_items(evt.shiftKey == true)
+            delete_selected_items(evt.shiftKey)
             msg_disposed = true
 
     else if evt.keyCode == 113   # F2
