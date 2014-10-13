@@ -60,7 +60,7 @@ drag_context = null
 drag_start = {x : 0, y: 0}
 
 # store the area selection box for grid
-sel = null
+sel_mouse_box = null
 
 # we need to ignore keyup event when rename files
 ingore_keyup_counts = 0
@@ -231,7 +231,6 @@ compare_pos_rect_pixel = (base1, base2, pos) ->
     cross_y0 = Math.max(rect_y0,item_y0)
     cross_y1 = Math.min(rect_y1,item_y1)
     is_in_select_area = cross_x0 < cross_x1 and cross_y0 < cross_y1
-    if is_in_select_area then echo "==========is_in_select_area============"
     return is_in_select_area
 
 
@@ -242,7 +241,6 @@ compare_pos_rect = (base1, base2, pos) ->
     bottom_right = Math.max(base1.y, base2.y)
     echo "#{top_left} <= #{pos.x} <= #{top_right} and #{bottom_left} <= #{pos.y} <= #{bottom_right}"
     is_in_select_area = top_left <= pos.x <= top_right and bottom_left <= pos.y <= bottom_right
-    if is_in_select_area then echo "==========is_in_select_area============"
     return is_in_select_area
 
 
@@ -1237,7 +1235,7 @@ create_item_grid = ->
     div_grid.parentElement.addEventListener("keydown", grid_do_keydown_to_shortcut)
     div_grid.parentElement.addEventListener("keyup", grid_do_keyup_to_shrotcut)
     div_grid.parentElement.addEventListener("keypress", grid_do_keypress_to_shrotcut)
-    sel = new Mouse_Select_Area_box(div_grid.parentElement)
+    sel_mouse_box = new MouseSelectAreaBox(div_grid.parentElement)
 
     drag_canvas = document.createElement("canvas")
     drag_canvas.setAttribute("id","item_drag_canvas")
@@ -1246,7 +1244,7 @@ create_item_grid = ->
     return
 
 
-class Mouse_Select_Area_box
+class MouseSelectAreaBox
     times = 0
     constructor : (parentElement) ->
         @parent_element = parentElement
@@ -1318,8 +1316,12 @@ class Mouse_Select_Area_box
 
 
     mouseup_event : (evt) =>
+        console.log "mouseup_event"
         evt.stopPropagation()
         evt.preventDefault()
+        @delete_mouse_area()
+
+    delete_mouse_area: ->
         for i in @total_item
             if not (w = Widget.look_up(i))? then continue
             w.is_in_select_area = false

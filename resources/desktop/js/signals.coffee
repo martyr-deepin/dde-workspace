@@ -96,6 +96,11 @@ do_cut_completed = (items) ->
 do_desktop_lost_focus = ->
     # destkop has lost focus
     # notify destkop normal items
+
+    #Warning:When in mult-monitors and the mouse move out the monitor which the desktop show in,
+    #the mouseup event cannot be lisented!!
+    sel_mouse_box?.delete_mouse_area()
+
     if last_widget.length > 0 and (w = Widget.look_up(last_widget))?
         if w.has_focus
             last_widget_has_focus = true
