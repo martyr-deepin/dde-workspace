@@ -170,6 +170,10 @@ class Accounts
                 user = session_dbus.User
                 uid = user[0].toString()
                 name = session_dbus.Name
+                #TODO:
+                #login1 dbus has some bug:
+                #1.one user has many session dbus logged in
+                #2.the last-user has not logged in (service lightdm restart),but the user is recogized logged in in login1 dbus
                 if uid in @users_id and !(uid in @users_id_logined)
                     echo "User sessioned on:uid:#{uid};name:#{name};(#{user});"
                     @users_id_logined.push(uid)
@@ -178,5 +182,8 @@ class Accounts
             echo "Dbus_login1 #{LOGIN1_SEAT} ERROR: #{e}"
 
     is_user_sessioned_on:(uid)->
-        @getDBus_login1() if not @Dbus_login1?
-        return (uid in @users_id_logined)
+        if APP == "Greeter"
+            return DCore[APP].get_user_session_on(@get_user_name(uid))
+        else
+            @getDBus_login1() if not @Dbus_login1?
+            return (uid in @users_id_logined)
