@@ -3,8 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# fri, 2014
-# fri, 2014
+# Kiril Kirilov <cybercop_montana@abv.bg>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
@@ -12,26 +11,26 @@ msgstr ""
 "POT-Creation-Date: 2014-10-17 14:42+0800\n"
 "PO-Revision-Date: 2014-10-17 06:59+0000\n"
 "Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
-"Language-Team: Czech (http://www.transifex.com/projects/p/deepin-desktop-environment/language/cs/)\n"
+"Language-Team: Bulgarian (http://www.transifex.com/projects/p/deepin-desktop-environment/language/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: cs\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Language: bg\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
-msgstr "Odinstalace \"%1\" byla úspěšná."
+msgstr "Вие деинсталирахте \"%1\" успешно"
 
 #: ../resources/common/js/uninstaller.coffee:33
 msgid "\"%1\" failed to be uninstalled"
-msgstr "\"%1\" se nepodařilo odinstalovat"
+msgstr "\"%1\" не успя да се деинсталира"
 
 #: ../resources/desktop/js/application.coffee:179
 #: ../resources/desktop/js/richdir.coffee:332
 #: ../resources/desktop/js/richdir.coffee:583
 msgid "The link is invalid. Do you want to delete it?"
-msgstr "Tento odkaz je neplatný. Chcete jej smazat?"
+msgstr "Връзката е невалидна. Желаете ли да я премахнете?"
 
 #: ../resources/desktop/js/application.coffee:179
 #: ../resources/desktop/js/desktopentry.coffee:166
@@ -39,7 +38,7 @@ msgstr "Tento odkaz je neplatný. Chcete jej smazat?"
 #: ../resources/desktop/js/richdir.coffee:583
 #: ../resources/dock/js/plugins/trash/trash.coffee:81
 msgid "Warning"
-msgstr "Varování"
+msgstr "Внимание"
 
 #: ../resources/desktop/js/desktopentry.coffee:102
 #: ../resources/desktop/js/richdir.coffee:133
@@ -49,23 +48,23 @@ msgstr "Varování"
 #: ../resources/guide/js/launcher.coffee:212
 #: ../resources/launcher/js/item.coffee:301
 msgid "_Open"
-msgstr "_Otevřít"
+msgstr "Отваряне"
 
 #: ../resources/desktop/js/desktopentry.coffee:104
 #: ../resources/desktop/js/richdir.coffee:565
 msgid "Cu_t"
-msgstr "Vy_jmout"
+msgstr "Отрязване"
 
 #: ../resources/desktop/js/desktopentry.coffee:105
 #: ../resources/desktop/js/item.coffee:397
 #: ../resources/desktop/js/richdir.coffee:566
 msgid "_Copy"
-msgstr "_Kopírovat"
+msgstr "Копиране"
 
 #: ../resources/desktop/js/desktopentry.coffee:107
 #: ../resources/desktop/js/richdir.coffee:135
 msgid "_Rename"
-msgstr "_Přejmenovat"
+msgstr "Преименуване"
 
 #: ../resources/desktop/js/desktopentry.coffee:108
 #: ../resources/desktop/js/invalidlink.coffee:34
@@ -73,235 +72,235 @@ msgstr "_Přejmenovat"
 #: ../resources/desktop/js/richdir.coffee:139
 #: ../resources/desktop/js/richdir.coffee:568
 msgid "_Delete"
-msgstr "_Smazat"
+msgstr "Изтриване"
 
 #: ../resources/desktop/js/desktopentry.coffee:110
 #: ../resources/desktop/js/richdir.coffee:570
 #: ../resources/desktop/js/specialitem.coffee:53
 msgid "_Properties"
-msgstr "_Vlastnosti"
+msgstr "Свойства"
 
 #: ../resources/desktop/js/desktopentry.coffee:116
 #: ../resources/desktop/js/desktopentry.coffee:123
 msgid "Co_mpress"
-msgstr "Za_balit"
+msgstr "Компресиране"
 
 #: ../resources/desktop/js/desktopentry.coffee:119
 #: ../resources/desktop/js/desktopentry.coffee:124
 msgid "_Extract"
-msgstr "_Rozbalit"
+msgstr "Извличане"
 
 #: ../resources/desktop/js/desktopentry.coffee:120
 #: ../resources/desktop/js/desktopentry.coffee:125
 msgid "Extract _Here"
-msgstr "Rozbalit _zde"
+msgstr "Извличане тук"
 
 #: ../resources/desktop/js/desktopentry.coffee:166
 #: ../resources/dock/js/plugins/trash/trash.coffee:81
 msgid "Can not open this file."
-msgstr "Nelze otevřít tento soubor."
+msgstr "Този файл не може да бъде отворен."
 
 #: ../resources/desktop/js/grid.coffee:72 ../lib/dentry/fileops.c:403
 msgid "Untitled"
-msgstr "Bez názvu"
+msgstr "Неозаглавено"
 
 #: ../resources/desktop/js/grid.coffee:1029
 msgid "_Folder"
-msgstr "_Složka"
+msgstr "Папка"
 
 #: ../resources/desktop/js/grid.coffee:1030
 msgid "_Text document"
-msgstr "_Textový dokument"
+msgstr "Текстов документ"
 
 #: ../resources/desktop/js/grid.coffee:1044
 msgid "_Name"
-msgstr "Náz_ev"
+msgstr "Име"
 
 #: ../resources/desktop/js/grid.coffee:1045
 msgid "Last modified _time"
-msgstr "Naposledy z_měněno"
+msgstr "Време на последна промяна"
 
 #: ../resources/desktop/js/grid.coffee:1049
 #: ../resources/guide/js/desktop.coffee:196
 msgid "_Sort by"
-msgstr "Třídit _dle"
+msgstr "Сортиране по"
 
 #: ../resources/desktop/js/grid.coffee:1050
 #: ../resources/guide/js/desktop.coffee:197
 msgid "_New"
-msgstr "_Nový"
+msgstr "Нов"
 
 #: ../resources/desktop/js/grid.coffee:1051
 #: ../resources/guide/js/desktop.coffee:198
 msgid "Open in _terminal"
-msgstr "Otevřít v _terminálu"
+msgstr "Отваряне в терминал"
 
 #: ../resources/desktop/js/grid.coffee:1052
 #: ../resources/desktop/js/item.coffee:396
 #: ../resources/guide/js/desktop.coffee:199
 msgid "_Paste"
-msgstr "_Vložit"
+msgstr "Поставяне"
 
 #: ../resources/desktop/js/grid.coffee:1054
 #: ../resources/guide/js/desktop.coffee:201
 msgid "_Display settings"
-msgstr "Nastavení _obrazovky"
+msgstr "Покажи настройките"
 
 #: ../resources/desktop/js/grid.coffee:1055
 #: ../resources/guide/js/desktop.coffee:202
 msgid "_Corner navigation"
-msgstr "_Rohová navigace"
+msgstr "Ъглова навигация"
 
 #: ../resources/desktop/js/grid.coffee:1056
 #: ../resources/guide/js/desktop.coffee:203
 msgid "Pe_rsonalize"
-msgstr "Přizpůso_bení"
+msgstr "Персонализиране"
 
 #: ../resources/desktop/js/item.coffee:395
 msgid "_Cut"
-msgstr "_Vyjmout"
+msgstr "Отрязване"
 
 #: ../resources/desktop/js/item.coffee:400
 msgid "_Select All"
-msgstr "V_ybrat vše"
+msgstr "Избор на всички"
 
 #: ../resources/desktop/js/richdir.coffee:137
 msgid "_Ungroup"
-msgstr "_Zrušit seskupení"
+msgstr "Разгрупиране"
 
 #: ../resources/desktop/js/specialitem.coffee:34
 msgid "Computer"
-msgstr "Počítač"
+msgstr "Компютър"
 
 #: ../resources/desktop/js/specialitem.coffee:87
 #: ../resources/dock/js/main.coffee:47 ../resources/dock/js/main.coffee:117
 msgid "Trash"
-msgstr "Koš"
+msgstr "Кошче"
 
 #: ../resources/desktop/js/specialitem.coffee:150
 msgid "_Clean up %1 items"
-msgstr "U_klidit %1 položek"
+msgstr "Изчистване на %1 елемента"
 
 #: ../resources/desktop/js/specialitem.coffee:152
 msgid "_Clean up 1 item"
-msgstr "_Uklidit 1 položku"
+msgstr "Изчистване на %1 елемент"
 
 #: ../resources/desktop/js/specialitem.coffee:154
 #: ../resources/dock/js/plugins/trash/trash.coffee:34
 msgid "_Empty"
-msgstr "_Prázdný"
+msgstr "Празно"
 
 #: ../resources/dock/js/config.coffee:184
 msgid "Unknown"
-msgstr "Neznámý"
+msgstr "Неизвестно"
 
 #: ../resources/dock/js/deepin_item.coffee:249
 msgid "_View as analog"
-msgstr "_Zobrazit jako hodiny s ručičkami"
+msgstr "Показване като аналогов"
 
 #: ../resources/dock/js/deepin_item.coffee:250
 #: ../resources/dock/js/deepin_item.coffee:302
 msgid "_Time settings"
-msgstr "Nastavení č_asu"
+msgstr "Настройки на времето"
 
 #: ../resources/dock/js/deepin_item.coffee:301
 msgid "_View as digit"
-msgstr "_Zobrazit jako číslici"
+msgstr "Покажи като цифров"
 
 #: ../resources/dock/js/global_menu.coffee:9
 msgid "Keep _showing"
-msgstr "_Ukazovat vždy"
+msgstr "Запази видим"
 
 #: ../resources/dock/js/global_menu.coffee:10
 msgid "Keep _hidden"
-msgstr "_Skrývat vždy"
+msgstr "Запази скрит"
 
 #: ../resources/dock/js/global_menu.coffee:11
 msgid "_Auto hide"
-msgstr "Skrývat _automaticky"
+msgstr "Автоматично скриване"
 
 #: ../resources/dock/js/global_menu.coffee:12
 msgid "_Smart hide"
-msgstr "Skrývat _chytře"
+msgstr "Интелигентно скриване"
 
 #: ../resources/dock/js/global_menu.coffee:24
 msgid "_Fashion mode"
-msgstr "_Návykový režim"
+msgstr "Модерен режим"
 
 #: ../resources/dock/js/global_menu.coffee:25
 msgid "_Efficient mode"
-msgstr "Úč_elný režim"
+msgstr "Ефективен режим"
 
 #: ../resources/dock/js/global_menu.coffee:26
 msgid "_Classic mode"
-msgstr "_Klasický režim"
+msgstr "Класически режим"
 
 #: ../resources/dock/js/main.coffee:115 ../resources/zone/js/utils.coffee:10
 msgid "Launcher"
-msgstr "Spouštěč"
+msgstr "Стартер"
 
 #: ../resources/dock/js/plugins/time/time.coffee:2
 #: ../resources/greeter/js/time.coffee:44
 msgid "Sun"
-msgstr "Ne"
+msgstr "Нед"
 
 #: ../resources/dock/js/plugins/time/time.coffee:2
 #: ../resources/greeter/js/time.coffee:44
 msgid "Mon"
-msgstr "Po"
+msgstr "Пон"
 
 #: ../resources/dock/js/plugins/time/time.coffee:2
 #: ../resources/greeter/js/time.coffee:44
 msgid "Tue"
-msgstr "Út"
+msgstr "Вт"
 
 #: ../resources/dock/js/plugins/time/time.coffee:2
 #: ../resources/greeter/js/time.coffee:44
 msgid "Wed"
-msgstr "St"
+msgstr "Ср"
 
 #: ../resources/dock/js/plugins/time/time.coffee:2
 #: ../resources/greeter/js/time.coffee:44
 msgid "Thu"
-msgstr "Čt"
+msgstr "Чт"
 
 #: ../resources/dock/js/plugins/time/time.coffee:2
 #: ../resources/greeter/js/time.coffee:44
 msgid "Fri"
-msgstr "Pá"
+msgstr "Пт"
 
 #: ../resources/dock/js/plugins/time/time.coffee:2
 #: ../resources/greeter/js/time.coffee:44
 msgid "Sat"
-msgstr "So"
+msgstr "Съб"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:38
 msgid "_Close"
-msgstr "_Zavřít"
+msgstr "Затваряне"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:118
 #: ../resources/launcher/js/item.coffee:379
 msgid "Are you sure to remove"
-msgstr "Jste si jistý, že chcete odstranit následující program"
+msgstr "Сигурен ли сте, че искате да премахнете"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:118
 #: ../resources/launcher/js/item.coffee:379
 msgid "All dependencies will be removed"
-msgstr "Všechny závislosti budou odstraněny"
+msgstr "Всички зависимости ще бъдат премахнати"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:118
 #: ../resources/launcher/js/item.coffee:379
 msgid "no"
-msgstr "Ne"
+msgstr "не"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:118
 #: ../resources/launcher/js/item.coffee:379
 msgid "yes"
-msgstr "Ano"
+msgstr "да"
 
 #: ../resources/greeter/js/mediacontrol.coffee:167
 msgid "Click button to Play"
-msgstr "Klepněte na tlačítko pro přehrávání"
+msgstr "Натиснете бутона за Старт"
 
 #: ../resources/greeter/js/message.coffee:105
 #: ../resources/greeter/js/message.coffee:82
@@ -311,13 +310,13 @@ msgstr "$ sudo reboot\n"
 #: ../resources/greeter/js/message.coffee:99
 #: ../resources/greeter/js/message.coffee:73
 msgid "Press Ctrl + Alt + F1\n"
-msgstr "Stiskněte Ctrl + Alt + F1\n"
+msgstr "Натиснете Ctrl + Alt + F1\n"
 
 #: ../resources/greeter/js/message.coffee:95
 msgid ""
 "\t\t\t\t-----The daemon of accounts has not started!-----\n"
 ")"
-msgstr "\t\t\t\t-----Služba pro uživatelské účty nebyla spuštěna!-----\n)"
+msgstr "-----Демонът на акаунтите не е стартиран!----\n)"
 
 #: ../resources/greeter/js/message.coffee:79
 msgid "$ sudo apt-get install deepin-desktop-Environment\n"
@@ -325,19 +324,19 @@ msgstr "$ sudo apt-get install deepin-desktop-Environment\n"
 
 #: ../resources/greeter/js/message.coffee:68
 msgid "\t\t\t\t-----No available desktop sessions!-----\n"
-msgstr "\t\t\t\t-----Žádná dostupná sezení pracovní plochy!-----\n"
+msgstr "-----Няма достъпни десктоп сесии!-----\n"
 
 #: ../resources/greeter/js/powermenu.coffee:26
 msgid "Shut down"
-msgstr "Vypnout"
+msgstr "Изключване"
 
 #: ../resources/greeter/js/powermenu.coffee:27
 msgid "Restart"
-msgstr "Restartovat"
+msgstr "Рестартиране"
 
 #: ../resources/greeter/js/powermenu.coffee:28
 msgid "Suspend"
-msgstr "Uspat"
+msgstr "Приспиване"
 
 #: ../resources/greeter/js/powermenu.coffee:75
 msgid ""
@@ -353,320 +352,320 @@ msgstr ""
 
 #: ../resources/greeter/js/powermenu.coffee:121
 msgid "Enter your password to %1"
-msgstr "Zadejte své heslo k %1"
+msgstr "Въведете Вашата парола в %1"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jan"
-msgstr "Led"
+msgstr "Ян"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Feb"
-msgstr "Úno"
+msgstr "Февр"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Mar"
-msgstr "Bře"
+msgstr "Март"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Apr"
-msgstr "Dub"
+msgstr "Апр"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "May"
-msgstr "Kvě"
+msgstr "Май"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jun"
-msgstr "Čer"
+msgstr "Юни"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jul"
-msgstr "Čec"
+msgstr "Юли"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Aug"
-msgstr "Srp"
+msgstr "Авг"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Sep"
-msgstr "Zář"
+msgstr "Септ"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Oct"
-msgstr "Říj"
+msgstr "Окт"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Nov"
-msgstr "Lis"
+msgstr "Ноемв"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Dec"
-msgstr "Pro"
+msgstr "Дек"
 
 #: ../resources/greeter/js/user.coffee:413
 msgid "Login"
-msgstr "Přihlášení"
+msgstr "Влизане"
 
 #: ../resources/greeter/js/user.coffee:415
 msgid "Unlock"
-msgstr ""
+msgstr "Отключване"
 
 #: ../resources/greeter/js/usermenu.coffee:57
 msgid "Guest"
-msgstr "Host"
+msgstr "Гост"
 
 #: ../resources/guide/js/desktop.coffee:27
 msgid ""
 "Let's drag the other icon on the first icon \n"
 " to generate \"application group\""
-msgstr "Přetáhněte jiný symbol na první symbol\npro vytvoření skupiny programů"
+msgstr "Плъзнете друга икона върху първата икона\nза да генерирате \"група приложения\""
 
 #: ../resources/guide/js/desktop.coffee:116
 msgid "Well, you have learned how to create a \"application group\""
-msgstr "Dobře, naučil jste se, jak vytvořit skupinu programů"
+msgstr "    -----Демонът на акаунта не е стартиран-----"
 
 #: ../resources/guide/js/desktop.coffee:117
 msgid "tips: Right-click on the application group will provide more functions"
-msgstr "Rada: Klepnutí pravým tlačítkem myši na program ukáže více funkcí"
+msgstr "съвети: Кликване с десен бутон върху групата с приложение ще ви осигури повече функции"
 
 #: ../resources/guide/js/desktop.coffee:128
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different events\n"
 "Please move to the upper left corner first to show or hide Launcher"
-msgstr "Jeďte s myší do různých rohů vaší obrazovky, což má za následek spuštění čtyř různých událostí\nNejprve, prosím, s myší zajeďte do horního levého rohu, což má za následek ukázání nebo skrytí spouštěče programů."
+msgstr "Плъзгането на мишката върху четирите ъгъла, може да предизвика четири различни събития\nМоля, посочете първо горния ляв ъгъл за да се покаже или скрие Стартера"
 
 #: ../resources/guide/js/desktop.coffee:129
 msgid ""
 "tips: Please trigger successively by hints, click on the blank area to "
 "return"
-msgstr "Rada: Spouštějte, prosím, požadované události s pomocí rad, klepněte na prázdnou plochu pro návrat zpět"
+msgstr "съвети: Моля, задействайте последователно подсказките или кликнете на празното място за да се върнете"
 
 #: ../resources/guide/js/desktop.coffee:133
 msgid "Show/Hide Launcher"
-msgstr "Ukázat/Skrýt spouštěč programů"
+msgstr "Покажи/Скрий Стартер"
 
 #: ../resources/guide/js/desktop.coffee:134
 msgid "Show/Hide Desktop"
-msgstr "Ukázat/Skrýt plochu"
+msgstr "Покажи/Скрий Работен плот"
 
 #: ../resources/guide/js/desktop.coffee:135
 msgid "Show/Hide Control Center"
-msgstr "Ukázat/Skrýt ovládací středisko"
+msgstr "Покажи/Скрий Контролен център"
 
 #: ../resources/guide/js/desktop.coffee:136
 msgid "No default functions setted in right up corner"
-msgstr "Ve výchozím nastavení není pro horní pravý roh stanovena žádná činnost"
+msgstr "Няма зададени стандартни функции в горният десен ъгъл"
 
 #: ../resources/guide/js/desktop.coffee:178
 msgid ""
 "Right-click on desktop black area to call up the menu, select \"Corner "
 "navigation\" to set the corner used"
-msgstr "Klepněte pravým tlačítkem myši na prázdnou oblast pracovní plochy pro vyvolání nabídky. Vyberte rohovou navigaci pro vyvolání nastavení rohové navigace"
+msgstr "Кликване с десен бутон върху работният плот извежда меню от което може да изберете \"Ъглова навигация\" за да зададете, как да бъдат използвани ъглите"
 
 #: ../resources/guide/js/desktop.coffee:179
 msgid "tips: Click on the interface of corner navigation blank area to return"
-msgstr "Rada: Klepněte na prázdnou plochu v oblasti rohové navigace pro návrat zpět"
+msgstr "съвети ; Кликнете на интерфейса на ъгловата навигация за да се възстанови празното място"
 
 #: ../resources/guide/js/dss.coffee:29
 msgid "Well, please trigger the lower right corner again"
-msgstr "Dobře. najeďte nyní, prosím, znovu do dolního pravého rohu"
+msgstr "Добре, Моля, кликнете отново в долният десен ъгъл"
 
 #: ../resources/guide/js/dss.coffee:30
 msgid "tips: Click the setting icon on dock to implement"
-msgstr "Rada: Klepněte pro přesunutí na symbol pro nastavení v panelu"
+msgstr "съвети: Кликнете на иконата за настройките в дока за да се приложат"
 
 #: ../resources/guide/js/dss.coffee:69
 msgid "Here is the system setting area"
-msgstr "Zde je oblast pro nastavení systému"
+msgstr "Тук е областта на системните настройки"
 
 #: ../resources/guide/js/dss.coffee:70
 msgid ""
 "tips: Hover the setting icon on dock to quickly implement some setting "
 "functions"
-msgstr "Rada: Přejeďte nad symbolem pro nastavení v panelu pro rychlé vyvolání různých nastavení"
+msgstr "съвети: Когато настройвате икона на дока за бързо прилагане на някои функционални настройки"
 
 #: ../resources/guide/js/end.coffee:25
 msgid "Thanks for your patience while learning. Congratulations."
-msgstr "Děkujeme za trpělivost při učení. Blahopřejeme!"
+msgstr "Благодарим за търпението докато се обучавахте. Поздравления."
 
 #: ../resources/guide/js/end.coffee:30
 msgid "End"
-msgstr "Ukončit"
+msgstr "Край"
 
 #: ../resources/guide/js/launcher.coffee:29
 msgid ""
 "\"Application Launcher\" can be started by sliding the mouse to the upper "
 "left corner or clicking on the launcher."
-msgstr "Spouštěč programů lze spustit zajetím myší do horního levého rohu obrazovky, nebo klepnutím na symbol spouštěče programů, čímž tak zvaný spouštěč programů vyvoláte."
+msgstr "\"Стартер на програма\" може да бъда стартиран с плъзгане на мишката в горният ляв ъгъл или кликване върху стартера."
 
 #: ../resources/guide/js/launcher.coffee:70
 msgid ""
 "What shown in the first screen of \"launcher\" are the applications "
 "collected."
-msgstr "Na první obrazovce spouštěče programů vidíme sbírku programů."
+msgstr "Какво е показано в първият екран на \"стартер\" са събраните приложения."
 
 #: ../resources/guide/js/launcher.coffee:85
 msgid ""
 "Please click on the \"All Applications\" icon, you will see all "
 "applications."
-msgstr "Klepněte, prosím, na symbol Všechny programy pro ukázání celé sbírky programů."
+msgstr "Моля, кликнете на иконата \"Всички програми\", ако искате да видите всичките програми."
 
 #: ../resources/guide/js/launcher.coffee:95
 msgid ""
 "All programs can be located by scrolling the mouse up and down.\n"
 "You can also click on the left classification navigation to locate"
-msgstr "Všechny programy lze najít otáčením kolečkem myši nahoru a dolů.\nTaké můžete klepnout na levé rozčlenění v navigaci, abyste se tam dostal"
+msgstr "Всички програми могат да бъдат разположени чрез превъртане на мишката нагоре и надолу.\nВие също може да навигирате до местоположение с ляв бутон на мишката"
 
 #: ../resources/guide/js/launcher.coffee:133
 msgid "Skip the step without scroll"
-msgstr "Přeskočit tento krok bez otáčení kolečkem myši"
+msgstr "Пропуснете стъпката без превъртане"
 
 #: ../resources/guide/js/launcher.coffee:163
 msgid ""
 "Use the keyboard to search for applications\n"
 "Try the \"deepin\" keyword to see which applications are shown"
-msgstr "Použijte klávesnici k hledání požadovaných programů.\nZkuste klíčové slovo \"deepin\", abyste viděli, které programy jsou ukázány"
+msgstr "Използвайте клавиатурата за търсене на програми\nОпитайте думата \"deepin\" за да видите, как се показват програмите"
 
 #: ../resources/guide/js/launcher.coffee:164
 msgid "tips: Please directly enter the word \"deepin\""
-msgstr "Rada: Zadejte, prosím, přímo slovo \"deepin\""
+msgstr "съвети: Моля, въведете директно думата \"deepin\""
 
 #: ../resources/guide/js/launcher.coffee:181
 msgid "Use the right mouse button to send two icons to the desktop"
-msgstr "Použijte klepnutí pravým tlačítkem myši pro pro poslání dvou ikon na pracovní plochu"
+msgstr "Използвайте десен бутон на мишката за да изпратите две икони на десктопа"
 
 #: ../resources/guide/js/launcher.coffee:182
 msgid "tips: You can add it to startup items or uninstall it"
-msgstr "Rada: Můžete to přidat do spouštěných položek nebo odinstalovat"
+msgstr "съвети: Вие може да в стартовите програми или да го деинсталирате"
 
 #: ../resources/guide/js/launcher.coffee:214
 #: ../resources/launcher/js/const.coffee:81
 msgid "Remove from _favorites"
-msgstr "Odstranit z _oblíbených"
+msgstr "Премахване от Любими"
 
 #: ../resources/guide/js/launcher.coffee:215
 #: ../resources/launcher/js/const.coffee:84
 msgid "Send to d_esktop"
-msgstr "Odeslat na p_lochu"
+msgstr "Изпращане до работният плот"
 
 #: ../resources/guide/js/launcher.coffee:216
 #: ../resources/launcher/js/const.coffee:88
 msgid "Send to do_ck"
-msgstr "Odeslat do _panelu"
+msgstr "Изпращане до дока"
 
 #: ../resources/guide/js/launcher.coffee:218
 #: ../resources/launcher/js/const.coffee:72
 msgid "_Add to autostart"
-msgstr "_Přidat do automatického spuštění"
+msgstr "Добавяне в програмите за автоматично стартиране"
 
 #: ../resources/guide/js/launcher.coffee:219
 #: ../resources/launcher/js/item.coffee:308
 msgid "_Uninstall"
-msgstr "_Odinstalovat"
+msgstr "Деинсталиране"
 
 #: ../resources/guide/js/start.coffee:28
 msgid "New Launcher"
-msgstr "Nový spouštěč programů"
+msgstr "Нов стартер"
 
 #: ../resources/guide/js/start.coffee:28
 msgid "New Desktop"
-msgstr "Nová pracovní plocha"
+msgstr "Нов Работен плот"
 
 #: ../resources/guide/js/start.coffee:28
 msgid "New System Settings"
-msgstr "Nová nastavení systému"
+msgstr "Нови Системни настройки"
 
 #: ../resources/guide/js/start.coffee:29
 msgid "The following will guide you to learn how to use some new functions"
-msgstr "V následujícím budete seznámeni se zacházením s několika novými funkcemi"
+msgstr "Ръководството ще ви помогне да научите, как да използвате някои нови функции"
 
 #: ../resources/guide/js/start.coffee:44
 msgid "Start"
-msgstr "Spustit"
+msgstr "Старт"
 
 #: ../resources/guide/js/start.coffee:51
 msgid "I am an experienced user. Exit directly."
-msgstr "Jsem při tom jako zkušený uživatel už o něco déle. Ihned ukončit."
+msgstr "Аз съм опитен потребител. Излез директно."
 
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
-msgstr "Vítejte při používání operačního systému Deepin"
+msgstr "Приветстваме Ви за избора на операционната система Deepin"
 
 #: ../resources/guide/js/welcome.coffee:38
 msgid "Prepare for operation ..."
-msgstr "Připravte se na provádění různých úloh..."
+msgstr "Протича операция..."
 
 #: ../resources/launcher/js/const.coffee:64
 msgid "_Hide the icon"
-msgstr "_Skrýt ikonu"
+msgstr "Скриване на иконата"
 
 #: ../resources/launcher/js/const.coffee:65
 msgid "_Display hidden icons"
-msgstr "_Zobrazit skryté ikony"
+msgstr "Покажи скритите икони"
 
 #: ../resources/launcher/js/const.coffee:68
 msgid "_Hide this icon"
-msgstr "_Skrýt tuto ikonu"
+msgstr "Скрий тази икона"
 
 #: ../resources/launcher/js/const.coffee:69
 msgid "_Display this icon"
-msgstr "_Zobrazit tuto ikonu"
+msgstr "Покажи тази икона"
 
 #: ../resources/launcher/js/const.coffee:73
 msgid "_Remove from autostart"
-msgstr "_Odstranit z automatického spuštění"
+msgstr "Премахване от програмите за автоматично стартиране"
 
 #: ../resources/launcher/js/const.coffee:80
 msgid "Add to _favorites"
-msgstr "Přidat do _oblíbených"
+msgstr "Добавяне към Любими"
 
 #: ../resources/launcher/js/const.coffee:85
 msgid "Remove from d_esktop"
-msgstr "Odstranit z _plochy"
+msgstr "Премахване от работният плот"
 
 #: ../resources/launcher/js/const.coffee:89
 msgid "Remove from do_ck"
-msgstr "Odstranit z pa_nelu"
+msgstr "Премахване от дока"
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
-msgstr "Zdvojit"
+msgstr "Създаване на дубликат"
 
 #: ../resources/osd/js/monitor.coffee:39
 msgid "Extend"
-msgstr "Roztáhnout"
+msgstr "Разпростиране"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "Control Center"
-msgstr "Ovládací středisko"
+msgstr "Контролен център"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "All Windows"
-msgstr "Všechna okna"
+msgstr "Всички прозорци"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "Desktop"
-msgstr "Pracovní plocha"
+msgstr "Работен плот"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "None"
-msgstr "Žádné"
+msgstr "Нищо"
 
 #: ../app/desktop/desktop.c:300
 msgid "New file"
-msgstr "Nový soubor"
+msgstr "Нов файл"
 
 #: ../app/desktop/desktop.c:311
 msgid "New directory"
-msgstr "Nový adresář"
+msgstr "Нова директория"
 
 #: ../app/dock/dock.c:290
 msgid "Dock failed to start, because Compiz is not enabled."
-msgstr "Panel se nepodařilo spustit, protože Compiz není povolen."
+msgstr "Докът не може да стартира, защото Compiz не е включен."
 
 #: ../app/greeter/greeter.c:198 ../app/greeter/lock.c:173
 msgid "Wrong Password"
-msgstr "Špatné heslo"
+msgstr "Грешна парола"
 
 #: ../app/greeter/mutils.c:84
 msgid "%a, %b %d, %Y"
@@ -674,260 +673,260 @@ msgstr "%a, %b %d, %Y"
 
 #: ../lib/category.c:45
 msgid "all"
-msgstr "vše"
+msgstr "всички"
 
 #: ../lib/category.c:46
 msgid "internet"
-msgstr "Internet"
+msgstr "интернет"
 
 #: ../lib/category.c:47
 msgid "multimedia"
-msgstr "Multimédia"
+msgstr "мултимедия"
 
 #: ../lib/category.c:48
 msgid "games"
-msgstr "Hry"
+msgstr "игри"
 
 #: ../lib/category.c:49
 msgid "graphics"
-msgstr "Grafika"
+msgstr "графика"
 
 #: ../lib/category.c:50
 msgid "productivity"
-msgstr "Tvořivost"
+msgstr "продуктивност"
 
 #: ../lib/category.c:51
 msgid "industry"
-msgstr "Průmysl"
+msgstr "индустрия"
 
 #: ../lib/category.c:52
 msgid "education"
-msgstr "Vzdělání"
+msgstr "образование"
 
 #: ../lib/category.c:53
 msgid "development"
-msgstr "Vývoj"
+msgstr "разработка"
 
 #: ../lib/category.c:54
 msgid "system"
-msgstr "Systém"
+msgstr "система"
 
 #: ../lib/category.c:55
 msgid "utilities"
-msgstr "Příslušenství"
+msgstr "инструменти"
 
 #: ../lib/category.c:56
 msgid "others"
-msgstr "Jiné"
+msgstr "други"
 
 #: ../lib/dentry/entry.c:746
 #, c-format
 msgid ""
 "Cannot rename the item to \"%s\". This may be caused by lack of permissions."
-msgstr "Nepodařilo se přejmenovat položku na \"%s\". To může být způsobeno nedostatkem oprávnění."
+msgstr "Не можете да преименувате елемента в \"%s\". Може би нямате необходимите права."
 
 #: ../lib/dentry/entry.c:752
 #, c-format
 msgid ""
 "There is already a file with name \"%s\" in this folder. Please consider a "
 "different name."
-msgstr "V této složce je již soubor s názvem \"%s\". Zvažte, prosím, jiný název."
+msgstr "В тази папка вече има файл с име \"%s\". Моля, задайте друго име."
 
 #: ../lib/dentry/entry.c:758
 msgid "The item could not be renamed"
-msgstr "Položku se nepodařilo přejmenovat"
+msgstr "Елементът не може да бъде преименуван"
 
 #: ../lib/dentry/entry.c:833 ../lib/dentry/fileops.c:805
 msgid "copy"
-msgstr "Kopírovat"
+msgstr "копиране"
 
 #: ../lib/dentry/entry.c:1415
 msgid "App Group"
-msgstr "Přidat skupinu"
+msgstr "App Group"
 
 #: ../lib/dentry/fileops.c:566
 msgid "Move"
-msgstr "Přesunout"
+msgstr "Преместване"
 
 #: ../lib/dentry/fileops.c:772
 msgid "Copy"
-msgstr "Kopírovat"
+msgstr "Копиране"
 
 #: ../lib/dentry/fileops_delete.c:29
 msgid "Delete Files"
-msgstr "Smazat soubory"
+msgstr "Изтриване на Файловете"
 
 #: ../lib/dentry/fileops_delete.c:32
 msgid "Are you sure you want to permanently delete the files?"
-msgstr "Jste si jistý, že chcete trvale smazat tento soubor?"
+msgstr "Сигурен ли сте, че искате да изтриете завинаги файловете?"
 
 #: ../lib/dentry/fileops_delete.c:33
 msgid "If you delete the files, they will be permanently lost."
-msgstr "Pokud tyto soubory smažete, budou trvale ztraceny."
+msgstr "Ако изтриете файловете, те ще бъдат изгубени завинаги."
 
 #: ../lib/dentry/fileops_delete.c:36
 msgid "Delete"
-msgstr "Smazat"
+msgstr "Изтриване"
 
 #: ../lib/dentry/fileops_error_dialog.c:63
 msgid "File conflict"
-msgstr "Střet souborů"
+msgstr "Конфликт във файл"
 
 #: ../lib/dentry/fileops_error_dialog.c:106
 msgid "_Select a new name for the destination"
-msgstr "_Vybrat nový název pro cíl"
+msgstr "Изберете ново име за дестинацията"
 
 #: ../lib/dentry/fileops_error_dialog.c:117
 msgid "Reset"
-msgstr "Resetovat"
+msgstr "Рестартиране"
 
 #: ../lib/dentry/fileops_error_dialog.c:126
 msgid "Apply this action to all files"
-msgstr "Použít tuto činnost na všechny soubory"
+msgstr "Приложи това действие за всички файлове"
 
 #: ../lib/dentry/fileops_error_dialog.c:133
 msgid "_Skip"
-msgstr "_Přeskočit"
+msgstr "Пропускане"
 
 #: ../lib/dentry/fileops_error_dialog.c:136
 msgid "Re_name"
-msgstr "Přej_menovat"
+msgstr "Преименуване"
 
 #: ../lib/dentry/fileops_error_dialog.c:141
 msgid "Replace"
-msgstr "Nahradit"
+msgstr "Замяна"
 
 #: ../lib/dentry/fileops_error_dialog.c:218
 #, c-format
 msgid "Do you want to merge with folder \"%s\"?"
-msgstr "Chcete činnost spojit se složkou \"%s\"?"
+msgstr "Искате ли да се обедини с папка \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
 msgid ""
 "The merging operation will be asked to confirm before replacing any files in"
 " the folder conflicted."
-msgstr "Při slučování budete požádáni o potvrzení, předtím než budou nahrazeny jakékoli soubory ve složce, které se střetávají se soubory, jež jsou kopírovány."
+msgstr "Налага се потвърждение, преди операцията по сливане, някои файлове са в конфликт."
 
 #: ../lib/dentry/fileops_error_dialog.c:222
 #, c-format
 msgid "An older folder with the same name already exists in \"%s\"."
-msgstr "Starší složka se stejným názvem již existuje v \"%s\"."
+msgstr "Стара папка със същото име вече съществува в \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:226
 #, c-format
 msgid "A newer folder with the same name already exists in \"%s\"."
-msgstr "Novější složka se stejným názvem již existuje v \"%s\"."
+msgstr "По- нова папка със същото име вече съществува в \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:230
 #, c-format
 msgid "Another folder with the same name already exists in \"%s\"."
-msgstr "Jiná složka se stejným názvem již existuje v \"%s\"."
+msgstr "Друга папка със същото име вече съществува в \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:236
 msgid "All files in the folder will be removed by replacing."
-msgstr "Všechny soubory ve složce budou odstraněny jejich nahrazením."
+msgstr "Всички файлове в папката ще бъдат премахнати при замяната."
 
 #: ../lib/dentry/fileops_error_dialog.c:237
 #, c-format
 msgid "Do you want to replace folder \"%s\"?"
-msgstr "Chcete nahradit složku \"%s\"?"
+msgstr "Искате ли да замените папка \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:239
 #, c-format
 msgid "A folder with the same name already exists in \"%s\"."
-msgstr "Složka se stejným názvem již existuje v \"%s\"."
+msgstr "Папка със същото име вече съществува в \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:245
 #, c-format
 msgid "Do you want to replace file \"%s\"?"
-msgstr "Chcete nahradit soubor \"%s\"?"
+msgstr "Искате ли да замените файл \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:246
 msgid "The content will be overwritten by replacing."
-msgstr "Obsah bude přepsán nahrazením."
+msgstr "Съдържанието ще бъде презаписано при замяната."
 
 #: ../lib/dentry/fileops_error_dialog.c:248
 #, c-format
 msgid "An older file with the same name already exists in \"%s\"."
-msgstr "Starší soubor se stejným názvem již existuje v \"%s\"."
+msgstr "Стар файл със същото име вече съществува в \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:252
 #, c-format
 msgid "A newer file with the same name already exists in \"%s\"."
-msgstr "Novější soubor se stejným názvem již existuje v \"%s\"."
+msgstr "По- нов файл със същото име вече съществува в \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:256
 #, c-format
 msgid "Another file with the same name already exists in \"%s\"."
-msgstr "Jiný soubor se stejným názvem již existuje v \"%s\"."
+msgstr "Друг файл със същото име вече съществува в \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:328
 msgid "Original file"
-msgstr "Původní soubor"
+msgstr "Оригинален файл"
 
 #: ../lib/dentry/fileops_error_dialog.c:329
 #: ../lib/dentry/fileops_error_dialog.c:357
 msgid "Size:"
-msgstr "Velikost:"
+msgstr "Размер:"
 
 #: ../lib/dentry/fileops_error_dialog.c:333
 #: ../lib/dentry/fileops_error_dialog.c:361
 msgid "Type:"
-msgstr "Typ:"
+msgstr "Тип:"
 
 #: ../lib/dentry/fileops_error_dialog.c:337
 #: ../lib/dentry/fileops_error_dialog.c:365
 msgid "Last modified:"
-msgstr "Naposledy změněno:"
+msgstr "Последна промяна:"
 
 #: ../lib/dentry/fileops_error_dialog.c:356
 msgid "Replace with"
-msgstr "Nahradit"
+msgstr "Замени с"
 
 #: ../lib/dentry/fileops_error_dialog.c:382
 msgid "Merge"
-msgstr "Sloučit"
+msgstr "Обединяване"
 
 #: ../lib/dentry/fileops_error_reporting.c:106
 #: ../lib/dentry/fileops_error_reporting.c:191
 #, c-format
 msgid "Error while %s files"
-msgstr "Chyba při %s souborech"
+msgstr "Грешка в %s файла"
 
 #: ../lib/dentry/fileops_trash.c:58
 msgid "Empty Trash"
-msgstr "Prázdný koš"
+msgstr "Изпразване на Кошчето"
 
 #: ../lib/dentry/fileops_trash.c:67
 msgid "Empty all items from Trash?"
-msgstr "Odstranit všechny položky z koše?"
+msgstr "Изпразване на всички елементи от Кошчето?"
 
 #: ../lib/dentry/fileops_trash.c:68
 msgid "All items in the Trash will be permanently deleted."
-msgstr "Všechny položky v koši budou trvale smazány"
+msgstr "Всички елементи от Кошчето ще бъдат изтрити завинаги."
 
 #: ../lib/dentry/fileops_trash.c:71
 msgid "Empty _Trash"
-msgstr "Prázdný _koš"
+msgstr "Изпразване на Кошчето"
 
 #: ../lib/dentry/mime_actions.c:198
 #, c-format
 msgid "Do you want to run \"%s\", or display its contents?"
-msgstr "Chcete spustit \"%s\", nebo smazat jeho obsah?"
+msgstr "Искате ли да стартирате \"%s\" или да се покаже неговото съдържание?"
 
 #: ../lib/dentry/mime_actions.c:199
 #, c-format
 msgid "\"%s\" is an executable text file."
-msgstr "\"%s\" je spustitelný textový soubor."
+msgstr "\"%s\" е изпълним текстов файл."
 
 #: ../lib/dentry/mime_actions.c:210
 msgid "Run in _Terminal"
-msgstr "Spustit v _terminálu"
+msgstr "Изпълнение в Терминал"
 
 #: ../lib/dentry/mime_actions.c:211
 msgid "_Display"
-msgstr "_Zobrazit"
+msgstr "Покажи"
 
 #: ../lib/dentry/mime_actions.c:213
 msgid "_Run"
-msgstr "_Spustit"
+msgstr "Стартиране"

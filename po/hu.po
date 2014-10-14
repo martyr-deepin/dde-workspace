@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-13 09:57+0800\n"
-"PO-Revision-Date: 2014-10-13 06:47+0000\n"
+"POT-Creation-Date: 2014-10-17 14:42+0800\n"
+"PO-Revision-Date: 2014-10-17 06:59+0000\n"
 "Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
 "Language-Team: Hungarian (http://www.transifex.com/projects/p/deepin-desktop-environment/language/hu/)\n"
 "MIME-Version: 1.0\n"
@@ -30,22 +30,22 @@ msgid "\"%1\" failed to be uninstalled"
 msgstr "\"%1\" eltávolítása sikertelen"
 
 #: ../resources/desktop/js/application.coffee:179
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
+#: ../resources/desktop/js/richdir.coffee:332
+#: ../resources/desktop/js/richdir.coffee:583
 msgid "The link is invalid. Do you want to delete it?"
 msgstr "A link érvénytelen. Szeretné törölni?"
 
 #: ../resources/desktop/js/application.coffee:179
 #: ../resources/desktop/js/desktopentry.coffee:166
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
+#: ../resources/desktop/js/richdir.coffee:332
+#: ../resources/desktop/js/richdir.coffee:583
 #: ../resources/dock/js/plugins/trash/trash.coffee:81
 msgid "Warning"
 msgstr "Figyelmeztetés"
 
 #: ../resources/desktop/js/desktopentry.coffee:102
 #: ../resources/desktop/js/richdir.coffee:133
-#: ../resources/desktop/js/richdir.coffee:566
+#: ../resources/desktop/js/richdir.coffee:563
 #: ../resources/desktop/js/specialitem.coffee:51
 #: ../resources/desktop/js/specialitem.coffee:146
 #: ../resources/guide/js/launcher.coffee:212
@@ -54,13 +54,13 @@ msgid "_Open"
 msgstr "_Nyitva"
 
 #: ../resources/desktop/js/desktopentry.coffee:104
-#: ../resources/desktop/js/richdir.coffee:568
+#: ../resources/desktop/js/richdir.coffee:565
 msgid "Cu_t"
 msgstr "Ki_vágás"
 
 #: ../resources/desktop/js/desktopentry.coffee:105
 #: ../resources/desktop/js/item.coffee:397
-#: ../resources/desktop/js/richdir.coffee:569
+#: ../resources/desktop/js/richdir.coffee:566
 msgid "_Copy"
 msgstr "_Másolás"
 
@@ -73,12 +73,12 @@ msgstr "_Átnevezés"
 #: ../resources/desktop/js/invalidlink.coffee:34
 #: ../resources/desktop/js/item.coffee:398
 #: ../resources/desktop/js/richdir.coffee:139
-#: ../resources/desktop/js/richdir.coffee:571
+#: ../resources/desktop/js/richdir.coffee:568
 msgid "_Delete"
 msgstr "_Törlés"
 
 #: ../resources/desktop/js/desktopentry.coffee:110
-#: ../resources/desktop/js/richdir.coffee:573
+#: ../resources/desktop/js/richdir.coffee:570
 #: ../resources/desktop/js/specialitem.coffee:53
 msgid "_Properties"
 msgstr "_Beállítások"
@@ -107,54 +107,54 @@ msgstr "Nem lehet megnyitni a fájlt."
 msgid "Untitled"
 msgstr "Névtelen"
 
-#: ../resources/desktop/js/grid.coffee:1021
+#: ../resources/desktop/js/grid.coffee:1029
 msgid "_Folder"
 msgstr "_Könyvtár"
 
-#: ../resources/desktop/js/grid.coffee:1022
+#: ../resources/desktop/js/grid.coffee:1030
 msgid "_Text document"
 msgstr "_Szöveges dokumentum"
 
-#: ../resources/desktop/js/grid.coffee:1036
+#: ../resources/desktop/js/grid.coffee:1044
 msgid "_Name"
 msgstr "_Név"
 
-#: ../resources/desktop/js/grid.coffee:1037
+#: ../resources/desktop/js/grid.coffee:1045
 msgid "Last modified _time"
 msgstr "Uolsó_módosítás"
 
-#: ../resources/desktop/js/grid.coffee:1041
+#: ../resources/desktop/js/grid.coffee:1049
 #: ../resources/guide/js/desktop.coffee:196
 msgid "_Sort by"
 msgstr "_Rendezés"
 
-#: ../resources/desktop/js/grid.coffee:1042
+#: ../resources/desktop/js/grid.coffee:1050
 #: ../resources/guide/js/desktop.coffee:197
 msgid "_New"
 msgstr "_Új"
 
-#: ../resources/desktop/js/grid.coffee:1043
+#: ../resources/desktop/js/grid.coffee:1051
 #: ../resources/guide/js/desktop.coffee:198
 msgid "Open in _terminal"
 msgstr "Megnyitás a _terminalban"
 
-#: ../resources/desktop/js/grid.coffee:1044
+#: ../resources/desktop/js/grid.coffee:1052
 #: ../resources/desktop/js/item.coffee:396
 #: ../resources/guide/js/desktop.coffee:199
 msgid "_Paste"
 msgstr "_Beillesztés"
 
-#: ../resources/desktop/js/grid.coffee:1046
+#: ../resources/desktop/js/grid.coffee:1054
 #: ../resources/guide/js/desktop.coffee:201
 msgid "_Display settings"
 msgstr "_Képernyő beállítások"
 
-#: ../resources/desktop/js/grid.coffee:1047
+#: ../resources/desktop/js/grid.coffee:1055
 #: ../resources/guide/js/desktop.coffee:202
 msgid "_Corner navigation"
 msgstr "_Sarok navigáció"
 
-#: ../resources/desktop/js/grid.coffee:1048
+#: ../resources/desktop/js/grid.coffee:1056
 #: ../resources/guide/js/desktop.coffee:203
 msgid "Pe_rsonalize"
 msgstr "személyre szabása"
@@ -193,20 +193,20 @@ msgstr "_1 elem tisztítása"
 msgid "_Empty"
 msgstr "_Üres"
 
-#: ../resources/dock/js/config.coffee:181
+#: ../resources/dock/js/config.coffee:184
 msgid "Unknown"
 msgstr "Ismeretlen"
 
-#: ../resources/dock/js/deepin_item.coffee:248
+#: ../resources/dock/js/deepin_item.coffee:249
 msgid "_View as analog"
 msgstr "Mutassa analógba"
 
-#: ../resources/dock/js/deepin_item.coffee:249
-#: ../resources/dock/js/deepin_item.coffee:301
+#: ../resources/dock/js/deepin_item.coffee:250
+#: ../resources/dock/js/deepin_item.coffee:302
 msgid "_Time settings"
 msgstr "Dátum és idő beállítások"
 
-#: ../resources/dock/js/deepin_item.coffee:300
+#: ../resources/dock/js/deepin_item.coffee:301
 msgid "_View as digit"
 msgstr "Mutassa digitálisan"
 
@@ -341,13 +341,19 @@ msgstr "Újraindítás"
 msgid "Suspend"
 msgstr "Felfüggesztés"
 
-#: ../resources/greeter/js/powermenu.coffee:74
+#: ../resources/greeter/js/powermenu.coffee:75
 msgid ""
-"The user %1 has logged in, shutdown or restart may cause loss to the account"
-" running data."
+"The other users have logged in, shutdown or restart may cause the running "
+"data to be lost."
 msgstr ""
 
-#: ../resources/greeter/js/powermenu.coffee:118
+#: ../resources/greeter/js/powermenu.coffee:77
+msgid ""
+"User %1 has logged in, shutdown or restart may cause the running data to be "
+"lost."
+msgstr ""
+
+#: ../resources/greeter/js/powermenu.coffee:121
 msgid "Enter your password to %1"
 msgstr "Adja meg a jelszavát %1"
 

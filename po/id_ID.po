@@ -5,15 +5,16 @@
 # Translators:
 # Aril Apria Susanto <awriel@gmail.com>, 2014
 # Yugo Purwanto <dedy.yugo.purwanto@gmail.com>, 2014
+# eko ikhyar <ikhyar.com@gmail.com>, 2014
 # etc session, 2014
 # Yugo Purwanto <dedy.yugo.purwanto@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-13 09:57+0800\n"
-"PO-Revision-Date: 2014-10-13 06:47+0000\n"
-"Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
+"POT-Creation-Date: 2014-10-17 14:42+0800\n"
+"PO-Revision-Date: 2014-10-19 10:31+0000\n"
+"Last-Translator: eko ikhyar <ikhyar.com@gmail.com>\n"
 "Language-Team: Indonesian (Indonesia) (http://www.transifex.com/projects/p/deepin-desktop-environment/language/id_ID/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,29 +24,29 @@ msgstr ""
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
-msgstr ""
+msgstr "Anda telah menghapus \"%1\" dengan sukses"
 
 #: ../resources/common/js/uninstaller.coffee:33
 msgid "\"%1\" failed to be uninstalled"
-msgstr ""
+msgstr "\"%1\" gagal dihapus"
 
 #: ../resources/desktop/js/application.coffee:179
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
+#: ../resources/desktop/js/richdir.coffee:332
+#: ../resources/desktop/js/richdir.coffee:583
 msgid "The link is invalid. Do you want to delete it?"
 msgstr "Tautan tidak valid. Apakah Anda ingin menghapusnya?"
 
 #: ../resources/desktop/js/application.coffee:179
 #: ../resources/desktop/js/desktopentry.coffee:166
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
+#: ../resources/desktop/js/richdir.coffee:332
+#: ../resources/desktop/js/richdir.coffee:583
 #: ../resources/dock/js/plugins/trash/trash.coffee:81
 msgid "Warning"
 msgstr "Peringatan"
 
 #: ../resources/desktop/js/desktopentry.coffee:102
 #: ../resources/desktop/js/richdir.coffee:133
-#: ../resources/desktop/js/richdir.coffee:566
+#: ../resources/desktop/js/richdir.coffee:563
 #: ../resources/desktop/js/specialitem.coffee:51
 #: ../resources/desktop/js/specialitem.coffee:146
 #: ../resources/guide/js/launcher.coffee:212
@@ -54,13 +55,13 @@ msgid "_Open"
 msgstr "_Buka"
 
 #: ../resources/desktop/js/desktopentry.coffee:104
-#: ../resources/desktop/js/richdir.coffee:568
+#: ../resources/desktop/js/richdir.coffee:565
 msgid "Cu_t"
 msgstr "Po_tong"
 
 #: ../resources/desktop/js/desktopentry.coffee:105
 #: ../resources/desktop/js/item.coffee:397
-#: ../resources/desktop/js/richdir.coffee:569
+#: ../resources/desktop/js/richdir.coffee:566
 msgid "_Copy"
 msgstr "_Duplikat"
 
@@ -73,12 +74,12 @@ msgstr "_Ubah Nama"
 #: ../resources/desktop/js/invalidlink.coffee:34
 #: ../resources/desktop/js/item.coffee:398
 #: ../resources/desktop/js/richdir.coffee:139
-#: ../resources/desktop/js/richdir.coffee:571
+#: ../resources/desktop/js/richdir.coffee:568
 msgid "_Delete"
 msgstr "_Hapus"
 
 #: ../resources/desktop/js/desktopentry.coffee:110
-#: ../resources/desktop/js/richdir.coffee:573
+#: ../resources/desktop/js/richdir.coffee:570
 #: ../resources/desktop/js/specialitem.coffee:53
 msgid "_Properties"
 msgstr "_Properti"
@@ -107,65 +108,65 @@ msgstr "Tidak bisa membuka berkas ini."
 msgid "Untitled"
 msgstr "Tanpa Judul"
 
-#: ../resources/desktop/js/grid.coffee:1021
+#: ../resources/desktop/js/grid.coffee:1029
 msgid "_Folder"
 msgstr "_Folder"
 
-#: ../resources/desktop/js/grid.coffee:1022
+#: ../resources/desktop/js/grid.coffee:1030
 msgid "_Text document"
 msgstr "_Dokumen teks"
 
-#: ../resources/desktop/js/grid.coffee:1036
+#: ../resources/desktop/js/grid.coffee:1044
 msgid "_Name"
 msgstr "_Nama"
 
-#: ../resources/desktop/js/grid.coffee:1037
+#: ../resources/desktop/js/grid.coffee:1045
 msgid "Last modified _time"
 msgstr "Berdasarkan tanggal _perubahan"
 
-#: ../resources/desktop/js/grid.coffee:1041
+#: ../resources/desktop/js/grid.coffee:1049
 #: ../resources/guide/js/desktop.coffee:196
 msgid "_Sort by"
 msgstr "_Sortir berdasarkan"
 
-#: ../resources/desktop/js/grid.coffee:1042
+#: ../resources/desktop/js/grid.coffee:1050
 #: ../resources/guide/js/desktop.coffee:197
 msgid "_New"
 msgstr "_Baru"
 
-#: ../resources/desktop/js/grid.coffee:1043
+#: ../resources/desktop/js/grid.coffee:1051
 #: ../resources/guide/js/desktop.coffee:198
 msgid "Open in _terminal"
 msgstr "Buka di _terminal"
 
-#: ../resources/desktop/js/grid.coffee:1044
+#: ../resources/desktop/js/grid.coffee:1052
 #: ../resources/desktop/js/item.coffee:396
 #: ../resources/guide/js/desktop.coffee:199
 msgid "_Paste"
 msgstr "_Tempel"
 
-#: ../resources/desktop/js/grid.coffee:1046
+#: ../resources/desktop/js/grid.coffee:1054
 #: ../resources/guide/js/desktop.coffee:201
 msgid "_Display settings"
 msgstr "_Pengaturan Tampilan"
 
-#: ../resources/desktop/js/grid.coffee:1047
+#: ../resources/desktop/js/grid.coffee:1055
 #: ../resources/guide/js/desktop.coffee:202
 msgid "_Corner navigation"
 msgstr "_Navigasi Pojok"
 
-#: ../resources/desktop/js/grid.coffee:1048
+#: ../resources/desktop/js/grid.coffee:1056
 #: ../resources/guide/js/desktop.coffee:203
 msgid "Pe_rsonalize"
 msgstr "Pe_rsonalisasi"
 
 #: ../resources/desktop/js/item.coffee:395
 msgid "_Cut"
-msgstr ""
+msgstr "_Potong"
 
 #: ../resources/desktop/js/item.coffee:400
 msgid "_Select All"
-msgstr ""
+msgstr "_Pilih semua"
 
 #: ../resources/desktop/js/richdir.coffee:137
 msgid "_Ungroup"
@@ -182,61 +183,61 @@ msgstr "Tong sampah"
 
 #: ../resources/desktop/js/specialitem.coffee:150
 msgid "_Clean up %1 items"
-msgstr "_Clean up %1 item"
+msgstr "_Bersihkan %1 item"
 
 #: ../resources/desktop/js/specialitem.coffee:152
 msgid "_Clean up 1 item"
-msgstr "_Clean up 1 item"
+msgstr "_Bersihkan 1 item"
 
 #: ../resources/desktop/js/specialitem.coffee:154
 #: ../resources/dock/js/plugins/trash/trash.coffee:34
 msgid "_Empty"
-msgstr ""
+msgstr "_Kosong"
 
-#: ../resources/dock/js/config.coffee:181
+#: ../resources/dock/js/config.coffee:184
 msgid "Unknown"
 msgstr "Tidak diketahui"
 
-#: ../resources/dock/js/deepin_item.coffee:248
+#: ../resources/dock/js/deepin_item.coffee:249
 msgid "_View as analog"
 msgstr "_Lihat sebagai analog"
 
-#: ../resources/dock/js/deepin_item.coffee:249
-#: ../resources/dock/js/deepin_item.coffee:301
+#: ../resources/dock/js/deepin_item.coffee:250
+#: ../resources/dock/js/deepin_item.coffee:302
 msgid "_Time settings"
 msgstr "_Pengaturan waktu"
 
-#: ../resources/dock/js/deepin_item.coffee:300
+#: ../resources/dock/js/deepin_item.coffee:301
 msgid "_View as digit"
 msgstr "_Lihat sebagai angka"
 
 #: ../resources/dock/js/global_menu.coffee:9
 msgid "Keep _showing"
-msgstr ""
+msgstr "Tetap _tampilkan"
 
 #: ../resources/dock/js/global_menu.coffee:10
 msgid "Keep _hidden"
-msgstr ""
+msgstr "Tetap _tersembunyi"
 
 #: ../resources/dock/js/global_menu.coffee:11
 msgid "_Auto hide"
-msgstr ""
+msgstr "_Otomatis tersembunyi"
 
 #: ../resources/dock/js/global_menu.coffee:12
 msgid "_Smart hide"
-msgstr ""
+msgstr "_Pintar sembunyi"
 
 #: ../resources/dock/js/global_menu.coffee:24
 msgid "_Fashion mode"
-msgstr ""
+msgstr "_Fesyen mode"
 
 #: ../resources/dock/js/global_menu.coffee:25
 msgid "_Efficient mode"
-msgstr ""
+msgstr "_Efisien mode"
 
 #: ../resources/dock/js/global_menu.coffee:26
 msgid "_Classic mode"
-msgstr ""
+msgstr "_Klasik mode"
 
 #: ../resources/dock/js/main.coffee:115 ../resources/zone/js/utils.coffee:10
 msgid "Launcher"
@@ -341,13 +342,19 @@ msgstr "Nyalakan ulang"
 msgid "Suspend"
 msgstr "Suspensi"
 
-#: ../resources/greeter/js/powermenu.coffee:74
+#: ../resources/greeter/js/powermenu.coffee:75
 msgid ""
-"The user %1 has logged in, shutdown or restart may cause loss to the account"
-" running data."
-msgstr ""
+"The other users have logged in, shutdown or restart may cause the running "
+"data to be lost."
+msgstr "Pengguna lain telah masuk, matikan atau nyalakan ulang dapat menyebabkan data yang berjalan akan hilang."
 
-#: ../resources/greeter/js/powermenu.coffee:118
+#: ../resources/greeter/js/powermenu.coffee:77
+msgid ""
+"User %1 has logged in, shutdown or restart may cause the running data to be "
+"lost."
+msgstr "Pengguna %1 telah masuk, matikan atau nyalakan ulang dapat menyebabkan data yang berjalan akan hilang."
+
+#: ../resources/greeter/js/powermenu.coffee:121
 msgid "Enter your password to %1"
 msgstr "Masukkan kata kunci pada %1"
 
@@ -401,11 +408,11 @@ msgstr "Des"
 
 #: ../resources/greeter/js/user.coffee:413
 msgid "Login"
-msgstr ""
+msgstr "Masuk"
 
 #: ../resources/greeter/js/user.coffee:415
 msgid "Unlock"
-msgstr ""
+msgstr "Buka kunci "
 
 #: ../resources/greeter/js/usermenu.coffee:57
 msgid "Guest"
@@ -429,13 +436,13 @@ msgstr "tips: Klik kanan pada grup aplikasi akan menyediakan fungsi lainnya"
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different events\n"
 "Please move to the upper left corner first to show or hide Launcher"
-msgstr ""
+msgstr "Geser mouse ke empat penjuru atas, yang dapat memicu empat peristiwa yang berbeda\nSilakan pindah ke sudut kiri atas pertama yang menampilkan atau menyembunyikan Peluncur"
 
 #: ../resources/guide/js/desktop.coffee:129
 msgid ""
 "tips: Please trigger successively by hints, click on the blank area to "
 "return"
-msgstr ""
+msgstr "tips: Silakan picu berturut-turut oleh petunjuk, klik pada bidang kosong untuk kembali"
 
 #: ../resources/guide/js/desktop.coffee:133
 msgid "Show/Hide Launcher"
@@ -461,7 +468,7 @@ msgstr "Klik kanan pada area hitam desktop untuk memanggil menu, pilih \"Pojok n
 
 #: ../resources/guide/js/desktop.coffee:179
 msgid "tips: Click on the interface of corner navigation blank area to return"
-msgstr ""
+msgstr "tips: Klik pada bidang kosong antarmuka sudut navigasi untuk kembali"
 
 #: ../resources/guide/js/dss.coffee:29
 msgid "Well, please trigger the lower right corner again"
@@ -479,11 +486,11 @@ msgstr "Area Pengaturan Sistem"
 msgid ""
 "tips: Hover the setting icon on dock to quickly implement some setting "
 "functions"
-msgstr ""
+msgstr "tips: Arahkan ikon pengaturan pada dok untuk cepat melaksanakan beberapa fungsi pengaturan"
 
 #: ../resources/guide/js/end.coffee:25
 msgid "Thanks for your patience while learning. Congratulations."
-msgstr ""
+msgstr "Terima kasih atas kesabaran Anda sambil belajar. Selamat."
 
 #: ../resources/guide/js/end.coffee:30
 msgid "End"
@@ -493,19 +500,19 @@ msgstr "Akhir"
 msgid ""
 "\"Application Launcher\" can be started by sliding the mouse to the upper "
 "left corner or clicking on the launcher."
-msgstr ""
+msgstr "\"Peluncur Aplikasi\" dapat dimulai dengan menggeser mouse ke sudut kiri atas atau klik pada peluncur."
 
 #: ../resources/guide/js/launcher.coffee:70
 msgid ""
 "What shown in the first screen of \"launcher\" are the applications "
 "collected."
-msgstr ""
+msgstr "Apa yang ditunjukkan dalam layar pertama \"peluncur\" adalah aplikasi yang dikumpulkan."
 
 #: ../resources/guide/js/launcher.coffee:85
 msgid ""
 "Please click on the \"All Applications\" icon, you will see all "
 "applications."
-msgstr ""
+msgstr "Silahkan klik pada ikon \"Semua Aplikasi\", Anda akan melihat semua aplikasi."
 
 #: ../resources/guide/js/launcher.coffee:95
 msgid ""
@@ -521,11 +528,11 @@ msgstr "Lewati langkah tanpa menggulung"
 msgid ""
 "Use the keyboard to search for applications\n"
 "Try the \"deepin\" keyword to see which applications are shown"
-msgstr ""
+msgstr "Gunakan keyboard untuk mencari aplikasi\nCoba kata kunci \"deepin\" untuk melihat aplikasi yang ditampilkan"
 
 #: ../resources/guide/js/launcher.coffee:164
 msgid "tips: Please directly enter the word \"deepin\""
-msgstr ""
+msgstr "tips: Silakan langsung masukkan kata \"deepin\""
 
 #: ../resources/guide/js/launcher.coffee:181
 msgid "Use the right mouse button to send two icons to the desktop"
@@ -533,7 +540,7 @@ msgstr "Gunakan tombol klik kanan untuk mengirim dua icon ke desktop"
 
 #: ../resources/guide/js/launcher.coffee:182
 msgid "tips: You can add it to startup items or uninstall it"
-msgstr ""
+msgstr "tips: Anda dapat menambahkannya ke startup item atau menghapus penginstalannya"
 
 #: ../resources/guide/js/launcher.coffee:214
 #: ../resources/launcher/js/const.coffee:81
@@ -582,7 +589,7 @@ msgstr "Mulai"
 
 #: ../resources/guide/js/start.coffee:51
 msgid "I am an experienced user. Exit directly."
-msgstr ""
+msgstr "Saya seorang pengguna berpengalaman. Keluar secara langsung."
 
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
@@ -630,7 +637,7 @@ msgstr "Duplikat"
 
 #: ../resources/osd/js/monitor.coffee:39
 msgid "Extend"
-msgstr ""
+msgstr "Membeberkan"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "Control Center"
@@ -802,7 +809,7 @@ msgstr "Apakah Anda ingin menggabungkan dengan folder \"%s\"?"
 msgid ""
 "The merging operation will be asked to confirm before replacing any files in"
 " the folder conflicted."
-msgstr ""
+msgstr "Operasi penggabungan akan di tanyakan untuk mengkonfirmasi sebelum mengganti setiap berkas dalam folder yang bermasalah."
 
 #: ../lib/dentry/fileops_error_dialog.c:222
 #, c-format

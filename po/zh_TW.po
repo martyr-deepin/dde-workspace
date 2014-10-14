@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-13 09:57+0800\n"
-"PO-Revision-Date: 2014-10-13 06:47+0000\n"
+"POT-Creation-Date: 2014-10-17 14:42+0800\n"
+"PO-Revision-Date: 2014-10-17 06:59+0000\n"
 "Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/deepin-desktop-environment/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -28,22 +28,22 @@ msgid "\"%1\" failed to be uninstalled"
 msgstr "\"%1\" 解除安裝失敗"
 
 #: ../resources/desktop/js/application.coffee:179
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
+#: ../resources/desktop/js/richdir.coffee:332
+#: ../resources/desktop/js/richdir.coffee:583
 msgid "The link is invalid. Do you want to delete it?"
 msgstr "此鏈接無效，是否需要刪除它？"
 
 #: ../resources/desktop/js/application.coffee:179
 #: ../resources/desktop/js/desktopentry.coffee:166
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
+#: ../resources/desktop/js/richdir.coffee:332
+#: ../resources/desktop/js/richdir.coffee:583
 #: ../resources/dock/js/plugins/trash/trash.coffee:81
 msgid "Warning"
 msgstr "警告"
 
 #: ../resources/desktop/js/desktopentry.coffee:102
 #: ../resources/desktop/js/richdir.coffee:133
-#: ../resources/desktop/js/richdir.coffee:566
+#: ../resources/desktop/js/richdir.coffee:563
 #: ../resources/desktop/js/specialitem.coffee:51
 #: ../resources/desktop/js/specialitem.coffee:146
 #: ../resources/guide/js/launcher.coffee:212
@@ -52,13 +52,13 @@ msgid "_Open"
 msgstr "開啟(_O)"
 
 #: ../resources/desktop/js/desktopentry.coffee:104
-#: ../resources/desktop/js/richdir.coffee:568
+#: ../resources/desktop/js/richdir.coffee:565
 msgid "Cu_t"
 msgstr "剪下(_T)"
 
 #: ../resources/desktop/js/desktopentry.coffee:105
 #: ../resources/desktop/js/item.coffee:397
-#: ../resources/desktop/js/richdir.coffee:569
+#: ../resources/desktop/js/richdir.coffee:566
 msgid "_Copy"
 msgstr "複製(_C)"
 
@@ -71,12 +71,12 @@ msgstr "重新命名(_R)"
 #: ../resources/desktop/js/invalidlink.coffee:34
 #: ../resources/desktop/js/item.coffee:398
 #: ../resources/desktop/js/richdir.coffee:139
-#: ../resources/desktop/js/richdir.coffee:571
+#: ../resources/desktop/js/richdir.coffee:568
 msgid "_Delete"
 msgstr "刪除(_D)"
 
 #: ../resources/desktop/js/desktopentry.coffee:110
-#: ../resources/desktop/js/richdir.coffee:573
+#: ../resources/desktop/js/richdir.coffee:570
 #: ../resources/desktop/js/specialitem.coffee:53
 msgid "_Properties"
 msgstr "屬性(_P)"
@@ -105,54 +105,54 @@ msgstr "無法開啟此檔案。"
 msgid "Untitled"
 msgstr "無標題"
 
-#: ../resources/desktop/js/grid.coffee:1021
+#: ../resources/desktop/js/grid.coffee:1029
 msgid "_Folder"
 msgstr "資料夾(_F)"
 
-#: ../resources/desktop/js/grid.coffee:1022
+#: ../resources/desktop/js/grid.coffee:1030
 msgid "_Text document"
 msgstr "文字文件(_T)"
 
-#: ../resources/desktop/js/grid.coffee:1036
+#: ../resources/desktop/js/grid.coffee:1044
 msgid "_Name"
 msgstr "名稱(_N)"
 
-#: ../resources/desktop/js/grid.coffee:1037
+#: ../resources/desktop/js/grid.coffee:1045
 msgid "Last modified _time"
 msgstr "最後修改時間(_T)"
 
-#: ../resources/desktop/js/grid.coffee:1041
+#: ../resources/desktop/js/grid.coffee:1049
 #: ../resources/guide/js/desktop.coffee:196
 msgid "_Sort by"
 msgstr "排序方式(_S)"
 
-#: ../resources/desktop/js/grid.coffee:1042
+#: ../resources/desktop/js/grid.coffee:1050
 #: ../resources/guide/js/desktop.coffee:197
 msgid "_New"
 msgstr "新增(_N)"
 
-#: ../resources/desktop/js/grid.coffee:1043
+#: ../resources/desktop/js/grid.coffee:1051
 #: ../resources/guide/js/desktop.coffee:198
 msgid "Open in _terminal"
 msgstr "在終端機中打開(_T)"
 
-#: ../resources/desktop/js/grid.coffee:1044
+#: ../resources/desktop/js/grid.coffee:1052
 #: ../resources/desktop/js/item.coffee:396
 #: ../resources/guide/js/desktop.coffee:199
 msgid "_Paste"
 msgstr "貼上(_P)"
 
-#: ../resources/desktop/js/grid.coffee:1046
+#: ../resources/desktop/js/grid.coffee:1054
 #: ../resources/guide/js/desktop.coffee:201
 msgid "_Display settings"
 msgstr "顯示設定(_D)"
 
-#: ../resources/desktop/js/grid.coffee:1047
+#: ../resources/desktop/js/grid.coffee:1055
 #: ../resources/guide/js/desktop.coffee:202
 msgid "_Corner navigation"
 msgstr "熱區設定(_C)"
 
-#: ../resources/desktop/js/grid.coffee:1048
+#: ../resources/desktop/js/grid.coffee:1056
 #: ../resources/guide/js/desktop.coffee:203
 msgid "Pe_rsonalize"
 msgstr "個人化(_R)"
@@ -191,20 +191,20 @@ msgstr "清理 1 項(_C)"
 msgid "_Empty"
 msgstr "清空回收桶(_E)"
 
-#: ../resources/dock/js/config.coffee:181
+#: ../resources/dock/js/config.coffee:184
 msgid "Unknown"
 msgstr "未知的"
 
-#: ../resources/dock/js/deepin_item.coffee:248
+#: ../resources/dock/js/deepin_item.coffee:249
 msgid "_View as analog"
 msgstr "顯示類比時鍾(_V)"
 
-#: ../resources/dock/js/deepin_item.coffee:249
-#: ../resources/dock/js/deepin_item.coffee:301
+#: ../resources/dock/js/deepin_item.coffee:250
+#: ../resources/dock/js/deepin_item.coffee:302
 msgid "_Time settings"
 msgstr "時間設定(_T)"
 
-#: ../resources/dock/js/deepin_item.coffee:300
+#: ../resources/dock/js/deepin_item.coffee:301
 msgid "_View as digit"
 msgstr "顯示數字時鍾"
 
@@ -339,13 +339,19 @@ msgstr "重新啟動"
 msgid "Suspend"
 msgstr "待命"
 
-#: ../resources/greeter/js/powermenu.coffee:74
+#: ../resources/greeter/js/powermenu.coffee:75
 msgid ""
-"The user %1 has logged in, shutdown or restart may cause loss to the account"
-" running data."
+"The other users have logged in, shutdown or restart may cause the running "
+"data to be lost."
 msgstr ""
 
-#: ../resources/greeter/js/powermenu.coffee:118
+#: ../resources/greeter/js/powermenu.coffee:77
+msgid ""
+"User %1 has logged in, shutdown or restart may cause the running data to be "
+"lost."
+msgstr ""
+
+#: ../resources/greeter/js/powermenu.coffee:121
 msgid "Enter your password to %1"
 msgstr "請輸入你的密碼以完成 %1"
 

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-13 09:57+0800\n"
-"PO-Revision-Date: 2014-10-13 06:47+0000\n"
+"POT-Creation-Date: 2014-10-17 14:42+0800\n"
+"PO-Revision-Date: 2014-10-17 06:59+0000\n"
 "Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/projects/p/deepin-desktop-environment/language/he/)\n"
 "MIME-Version: 1.0\n"
@@ -27,22 +27,22 @@ msgid "\"%1\" failed to be uninstalled"
 msgstr "ההסרה של \"%1\" נכשלה"
 
 #: ../resources/desktop/js/application.coffee:179
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
+#: ../resources/desktop/js/richdir.coffee:332
+#: ../resources/desktop/js/richdir.coffee:583
 msgid "The link is invalid. Do you want to delete it?"
 msgstr "הלינק אינו תקין. האם ברצונך למחוק אותו?"
 
 #: ../resources/desktop/js/application.coffee:179
 #: ../resources/desktop/js/desktopentry.coffee:166
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
+#: ../resources/desktop/js/richdir.coffee:332
+#: ../resources/desktop/js/richdir.coffee:583
 #: ../resources/dock/js/plugins/trash/trash.coffee:81
 msgid "Warning"
 msgstr "אזהרה"
 
 #: ../resources/desktop/js/desktopentry.coffee:102
 #: ../resources/desktop/js/richdir.coffee:133
-#: ../resources/desktop/js/richdir.coffee:566
+#: ../resources/desktop/js/richdir.coffee:563
 #: ../resources/desktop/js/specialitem.coffee:51
 #: ../resources/desktop/js/specialitem.coffee:146
 #: ../resources/guide/js/launcher.coffee:212
@@ -51,13 +51,13 @@ msgid "_Open"
 msgstr "_פתח"
 
 #: ../resources/desktop/js/desktopentry.coffee:104
-#: ../resources/desktop/js/richdir.coffee:568
+#: ../resources/desktop/js/richdir.coffee:565
 msgid "Cu_t"
 msgstr "גזור"
 
 #: ../resources/desktop/js/desktopentry.coffee:105
 #: ../resources/desktop/js/item.coffee:397
-#: ../resources/desktop/js/richdir.coffee:569
+#: ../resources/desktop/js/richdir.coffee:566
 msgid "_Copy"
 msgstr "_העתק"
 
@@ -70,12 +70,12 @@ msgstr "_שנה שם"
 #: ../resources/desktop/js/invalidlink.coffee:34
 #: ../resources/desktop/js/item.coffee:398
 #: ../resources/desktop/js/richdir.coffee:139
-#: ../resources/desktop/js/richdir.coffee:571
+#: ../resources/desktop/js/richdir.coffee:568
 msgid "_Delete"
 msgstr "_מחק"
 
 #: ../resources/desktop/js/desktopentry.coffee:110
-#: ../resources/desktop/js/richdir.coffee:573
+#: ../resources/desktop/js/richdir.coffee:570
 #: ../resources/desktop/js/specialitem.coffee:53
 msgid "_Properties"
 msgstr "_מאפיינים"
@@ -104,54 +104,54 @@ msgstr "אין אפשרות לפתוח קובץ זה"
 msgid "Untitled"
 msgstr "ללא כותרת"
 
-#: ../resources/desktop/js/grid.coffee:1021
+#: ../resources/desktop/js/grid.coffee:1029
 msgid "_Folder"
 msgstr "_תיקייה"
 
-#: ../resources/desktop/js/grid.coffee:1022
+#: ../resources/desktop/js/grid.coffee:1030
 msgid "_Text document"
 msgstr "_מסמך טקסט"
 
-#: ../resources/desktop/js/grid.coffee:1036
+#: ../resources/desktop/js/grid.coffee:1044
 msgid "_Name"
 msgstr "_שם"
 
-#: ../resources/desktop/js/grid.coffee:1037
+#: ../resources/desktop/js/grid.coffee:1045
 msgid "Last modified _time"
 msgstr "מועד שינוי אחרון"
 
-#: ../resources/desktop/js/grid.coffee:1041
+#: ../resources/desktop/js/grid.coffee:1049
 #: ../resources/guide/js/desktop.coffee:196
 msgid "_Sort by"
 msgstr "_מיין לפי"
 
-#: ../resources/desktop/js/grid.coffee:1042
+#: ../resources/desktop/js/grid.coffee:1050
 #: ../resources/guide/js/desktop.coffee:197
 msgid "_New"
 msgstr "_חדש"
 
-#: ../resources/desktop/js/grid.coffee:1043
+#: ../resources/desktop/js/grid.coffee:1051
 #: ../resources/guide/js/desktop.coffee:198
 msgid "Open in _terminal"
 msgstr "פתיחה במסוף"
 
-#: ../resources/desktop/js/grid.coffee:1044
+#: ../resources/desktop/js/grid.coffee:1052
 #: ../resources/desktop/js/item.coffee:396
 #: ../resources/guide/js/desktop.coffee:199
 msgid "_Paste"
 msgstr "_הדבק"
 
-#: ../resources/desktop/js/grid.coffee:1046
+#: ../resources/desktop/js/grid.coffee:1054
 #: ../resources/guide/js/desktop.coffee:201
 msgid "_Display settings"
 msgstr "_הגדרות תצוגה"
 
-#: ../resources/desktop/js/grid.coffee:1047
+#: ../resources/desktop/js/grid.coffee:1055
 #: ../resources/guide/js/desktop.coffee:202
 msgid "_Corner navigation"
 msgstr "_ניווט פינות"
 
-#: ../resources/desktop/js/grid.coffee:1048
+#: ../resources/desktop/js/grid.coffee:1056
 #: ../resources/guide/js/desktop.coffee:203
 msgid "Pe_rsonalize"
 msgstr "התאמה אישית"
@@ -190,20 +190,20 @@ msgstr "_ניקוי פריט 1"
 msgid "_Empty"
 msgstr ""
 
-#: ../resources/dock/js/config.coffee:181
+#: ../resources/dock/js/config.coffee:184
 msgid "Unknown"
 msgstr "לא ידוע"
 
-#: ../resources/dock/js/deepin_item.coffee:248
+#: ../resources/dock/js/deepin_item.coffee:249
 msgid "_View as analog"
 msgstr "_הצג כאנלוגי"
 
-#: ../resources/dock/js/deepin_item.coffee:249
-#: ../resources/dock/js/deepin_item.coffee:301
+#: ../resources/dock/js/deepin_item.coffee:250
+#: ../resources/dock/js/deepin_item.coffee:302
 msgid "_Time settings"
 msgstr "_הגדרות זמן"
 
-#: ../resources/dock/js/deepin_item.coffee:300
+#: ../resources/dock/js/deepin_item.coffee:301
 msgid "_View as digit"
 msgstr "_הצג כדיגיטלי"
 
@@ -338,13 +338,19 @@ msgstr "הפעלה מחדש"
 msgid "Suspend"
 msgstr "השהיה"
 
-#: ../resources/greeter/js/powermenu.coffee:74
+#: ../resources/greeter/js/powermenu.coffee:75
 msgid ""
-"The user %1 has logged in, shutdown or restart may cause loss to the account"
-" running data."
+"The other users have logged in, shutdown or restart may cause the running "
+"data to be lost."
 msgstr ""
 
-#: ../resources/greeter/js/powermenu.coffee:118
+#: ../resources/greeter/js/powermenu.coffee:77
+msgid ""
+"User %1 has logged in, shutdown or restart may cause the running data to be "
+"lost."
+msgstr ""
+
+#: ../resources/greeter/js/powermenu.coffee:121
 msgid "Enter your password to %1"
 msgstr "הכנס את הסיסמא שלך ל-%1"
 

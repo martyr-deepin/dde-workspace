@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Massimo Antonio Carofano <real.massimo@hotmail.it>, 2014
+# Massimo Antonio Carofano <real.massimo@hotmail.it>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-13 09:57+0800\n"
-"PO-Revision-Date: 2014-10-13 06:47+0000\n"
-"Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
+"POT-Creation-Date: 2014-10-17 14:42+0800\n"
+"PO-Revision-Date: 2014-10-19 18:00+0000\n"
+"Last-Translator: Massimo Antonio Carofano <real.massimo@hotmail.it>\n"
 "Language-Team: Italian (http://www.transifex.com/projects/p/deepin-desktop-environment/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,22 +28,22 @@ msgid "\"%1\" failed to be uninstalled"
 msgstr "\"%1\" non è stato disinstallato."
 
 #: ../resources/desktop/js/application.coffee:179
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
+#: ../resources/desktop/js/richdir.coffee:332
+#: ../resources/desktop/js/richdir.coffee:583
 msgid "The link is invalid. Do you want to delete it?"
 msgstr "Questo link è invalido. Vuoi eliminarlo?"
 
 #: ../resources/desktop/js/application.coffee:179
 #: ../resources/desktop/js/desktopentry.coffee:166
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
+#: ../resources/desktop/js/richdir.coffee:332
+#: ../resources/desktop/js/richdir.coffee:583
 #: ../resources/dock/js/plugins/trash/trash.coffee:81
 msgid "Warning"
 msgstr "Attenzione"
 
 #: ../resources/desktop/js/desktopentry.coffee:102
 #: ../resources/desktop/js/richdir.coffee:133
-#: ../resources/desktop/js/richdir.coffee:566
+#: ../resources/desktop/js/richdir.coffee:563
 #: ../resources/desktop/js/specialitem.coffee:51
 #: ../resources/desktop/js/specialitem.coffee:146
 #: ../resources/guide/js/launcher.coffee:212
@@ -51,13 +52,13 @@ msgid "_Open"
 msgstr "_Apri"
 
 #: ../resources/desktop/js/desktopentry.coffee:104
-#: ../resources/desktop/js/richdir.coffee:568
+#: ../resources/desktop/js/richdir.coffee:565
 msgid "Cu_t"
 msgstr "Tagli_a"
 
 #: ../resources/desktop/js/desktopentry.coffee:105
 #: ../resources/desktop/js/item.coffee:397
-#: ../resources/desktop/js/richdir.coffee:569
+#: ../resources/desktop/js/richdir.coffee:566
 msgid "_Copy"
 msgstr "_Copia"
 
@@ -70,12 +71,12 @@ msgstr "_Rinomina"
 #: ../resources/desktop/js/invalidlink.coffee:34
 #: ../resources/desktop/js/item.coffee:398
 #: ../resources/desktop/js/richdir.coffee:139
-#: ../resources/desktop/js/richdir.coffee:571
+#: ../resources/desktop/js/richdir.coffee:568
 msgid "_Delete"
 msgstr "_Elimina"
 
 #: ../resources/desktop/js/desktopentry.coffee:110
-#: ../resources/desktop/js/richdir.coffee:573
+#: ../resources/desktop/js/richdir.coffee:570
 #: ../resources/desktop/js/specialitem.coffee:53
 msgid "_Properties"
 msgstr "_Proprietà"
@@ -104,54 +105,54 @@ msgstr "Non è possibile aprire il file."
 msgid "Untitled"
 msgstr "Senza titolo"
 
-#: ../resources/desktop/js/grid.coffee:1021
+#: ../resources/desktop/js/grid.coffee:1029
 msgid "_Folder"
 msgstr "_Cartella"
 
-#: ../resources/desktop/js/grid.coffee:1022
+#: ../resources/desktop/js/grid.coffee:1030
 msgid "_Text document"
 msgstr "_Documento di testo"
 
-#: ../resources/desktop/js/grid.coffee:1036
+#: ../resources/desktop/js/grid.coffee:1044
 msgid "_Name"
 msgstr "_Nome"
 
-#: ../resources/desktop/js/grid.coffee:1037
+#: ../resources/desktop/js/grid.coffee:1045
 msgid "Last modified _time"
 msgstr "Ultime modifiche _Età"
 
-#: ../resources/desktop/js/grid.coffee:1041
+#: ../resources/desktop/js/grid.coffee:1049
 #: ../resources/guide/js/desktop.coffee:196
 msgid "_Sort by"
 msgstr "_Ordina per"
 
-#: ../resources/desktop/js/grid.coffee:1042
+#: ../resources/desktop/js/grid.coffee:1050
 #: ../resources/guide/js/desktop.coffee:197
 msgid "_New"
 msgstr "_Nuovo"
 
-#: ../resources/desktop/js/grid.coffee:1043
+#: ../resources/desktop/js/grid.coffee:1051
 #: ../resources/guide/js/desktop.coffee:198
 msgid "Open in _terminal"
 msgstr "Apri nel _terminale"
 
-#: ../resources/desktop/js/grid.coffee:1044
+#: ../resources/desktop/js/grid.coffee:1052
 #: ../resources/desktop/js/item.coffee:396
 #: ../resources/guide/js/desktop.coffee:199
 msgid "_Paste"
 msgstr "_Incolla"
 
-#: ../resources/desktop/js/grid.coffee:1046
+#: ../resources/desktop/js/grid.coffee:1054
 #: ../resources/guide/js/desktop.coffee:201
 msgid "_Display settings"
 msgstr "Impostazioni _Display"
 
-#: ../resources/desktop/js/grid.coffee:1047
+#: ../resources/desktop/js/grid.coffee:1055
 #: ../resources/guide/js/desktop.coffee:202
 msgid "_Corner navigation"
 msgstr "_Angoli di navigazione"
 
-#: ../resources/desktop/js/grid.coffee:1048
+#: ../resources/desktop/js/grid.coffee:1056
 #: ../resources/guide/js/desktop.coffee:203
 msgid "Pe_rsonalize"
 msgstr "Pe_rsonalizza"
@@ -166,7 +167,7 @@ msgstr "_Seleziona Tutto"
 
 #: ../resources/desktop/js/richdir.coffee:137
 msgid "_Ungroup"
-msgstr "_Libera"
+msgstr "_Sblocca"
 
 #: ../resources/desktop/js/specialitem.coffee:34
 msgid "Computer"
@@ -179,7 +180,7 @@ msgstr "Cestino"
 
 #: ../resources/desktop/js/specialitem.coffee:150
 msgid "_Clean up %1 items"
-msgstr "_Pulisci fino %1 oggetti"
+msgstr "_Pulisci %1 oggetti"
 
 #: ../resources/desktop/js/specialitem.coffee:152
 msgid "_Clean up 1 item"
@@ -190,20 +191,20 @@ msgstr "_Pulisci 1 oggetto"
 msgid "_Empty"
 msgstr "_Svuota"
 
-#: ../resources/dock/js/config.coffee:181
+#: ../resources/dock/js/config.coffee:184
 msgid "Unknown"
 msgstr "Sconosciuto"
 
-#: ../resources/dock/js/deepin_item.coffee:248
+#: ../resources/dock/js/deepin_item.coffee:249
 msgid "_View as analog"
 msgstr "_Mostra analogico"
 
-#: ../resources/dock/js/deepin_item.coffee:249
-#: ../resources/dock/js/deepin_item.coffee:301
+#: ../resources/dock/js/deepin_item.coffee:250
+#: ../resources/dock/js/deepin_item.coffee:302
 msgid "_Time settings"
 msgstr "_Impostazioni orario"
 
-#: ../resources/dock/js/deepin_item.coffee:300
+#: ../resources/dock/js/deepin_item.coffee:301
 msgid "_View as digit"
 msgstr "_Mostra digitale"
 
@@ -338,13 +339,19 @@ msgstr "Riavvia"
 msgid "Suspend"
 msgstr "Sospendi"
 
-#: ../resources/greeter/js/powermenu.coffee:74
+#: ../resources/greeter/js/powermenu.coffee:75
 msgid ""
-"The user %1 has logged in, shutdown or restart may cause loss to the account"
-" running data."
-msgstr ""
+"The other users have logged in, shutdown or restart may cause the running "
+"data to be lost."
+msgstr "Un altro utente è loggato, spegnendo o riavviando il sistema potresti perdere dei dati."
 
-#: ../resources/greeter/js/powermenu.coffee:118
+#: ../resources/greeter/js/powermenu.coffee:77
+msgid ""
+"User %1 has logged in, shutdown or restart may cause the running data to be "
+"lost."
+msgstr "L'utente %1 è loggato, spegnendo o riavvianto potresti incorrere in una perdita dei dati."
+
+#: ../resources/greeter/js/powermenu.coffee:121
 msgid "Enter your password to %1"
 msgstr "Immetti la password in %1"
 
@@ -432,7 +439,7 @@ msgstr "Muovere il mouse sugli angoli ti permetterà di avere quattro azioni dif
 msgid ""
 "tips: Please trigger successively by hints, click on the blank area to "
 "return"
-msgstr "Trucco: Clicca sull'area vuota per tornare alla schermata precedente"
+msgstr "Trucco: clicca sull'area vuota per tornare alla schermata precedente"
 
 #: ../resources/guide/js/desktop.coffee:133
 msgid "Show/Hide Launcher"
@@ -454,11 +461,11 @@ msgstr "Nessuna funzione di default impostata sull'angolo destro superiore"
 msgid ""
 "Right-click on desktop black area to call up the menu, select \"Corner "
 "navigation\" to set the corner used"
-msgstr "Premi il tasto destro su un'area vuota del desktop per richiamare il menu, selezionare \"Angolo di navigazione\" per impostare l'angolo usato"
+msgstr "Premi il tasto destro su un'area vuota del desktop per richiamare il menu, selezionare \"Angoli di navigazione\" per impostare una scorciatoia"
 
 #: ../resources/guide/js/desktop.coffee:179
 msgid "tips: Click on the interface of corner navigation blank area to return"
-msgstr "Trucco: Clicca sull'area vuota dell'interfaccia d'angolo per tornare"
+msgstr "Trucco: clicca sull'area vuota dell'interfaccia d'angolo per tornare"
 
 #: ../resources/guide/js/dss.coffee:29
 msgid "Well, please trigger the lower right corner again"
@@ -476,7 +483,7 @@ msgstr "Qui c'è l'area impostazioni di sistema"
 msgid ""
 "tips: Hover the setting icon on dock to quickly implement some setting "
 "functions"
-msgstr "Trucco: Prova l'icona Impostazioni sulla Dock per implementare subito qualche cambiamento"
+msgstr "Trucco: prova l'icona Impostazioni sulla Dock per implementare subito qualche cambiamento"
 
 #: ../resources/guide/js/end.coffee:25
 msgid "Thanks for your patience while learning. Congratulations."
@@ -508,7 +515,7 @@ msgstr "Premi su \"Tutte le App\" per mostrare tutte le applicazioni installate.
 msgid ""
 "All programs can be located by scrolling the mouse up and down.\n"
 "You can also click on the left classification navigation to locate"
-msgstr "Tutti i programmi possono esser visionati con un semplice scroll del mouse.\nPuoi anche cliccare sul pannello di navigazione per categoria a sinistra."
+msgstr "Tutti i programmi possono esser visionati con un semplice scroll del mouse.\nPuoi anche cliccare sul pannello di navigazione categoria a sinistra."
 
 #: ../resources/guide/js/launcher.coffee:133
 msgid "Skip the step without scroll"
@@ -579,7 +586,7 @@ msgstr "Inizia"
 
 #: ../resources/guide/js/start.coffee:51
 msgid "I am an experienced user. Exit directly."
-msgstr "Ne so già di brutto, esci direttamente dal tutorial introduttivo..."
+msgstr "Conosco già Deepin, esci direttamente dal tutorial introduttivo..."
 
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
@@ -655,7 +662,7 @@ msgstr "Nuova cartella"
 
 #: ../app/dock/dock.c:290
 msgid "Dock failed to start, because Compiz is not enabled."
-msgstr "La Dock non è partita, questo perché Compiz non è attivo."
+msgstr "La Dock non si è avviata, questo perché Compiz non è attivo."
 
 #: ../app/greeter/greeter.c:198 ../app/greeter/lock.c:173
 msgid "Wrong Password"
