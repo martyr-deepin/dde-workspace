@@ -74,3 +74,20 @@ launcherDaemon.connect("ItemChanged", (status, info, categories)->
         icon = info[3]
         dockedAppManager?.Undock(id)
 )
+
+XMouseAreaDBusInfo =
+    name: "com.deepin.api.XMouseArea"
+    path: "/com/deepin/api/XMouseArea"
+    interface: "com.deepin.api.XMouseArea"
+
+try
+    mousearea = get_dbus("session", XMouseAreaDBusInfo, "RegisterFullScreen")
+    mousearea.connect("CancelAllArea", ->
+        if settings.hideMode() == HideMode.KeepHidden
+            update_dock_region($("#container").clientWidth, 0)
+        else
+            update_dock_region($("#container").clientWidth)
+    )
+catch e
+    console.error("connect XMouseArea dbus failed #{e}")
+    DCore.Dock.quit()
