@@ -15,8 +15,11 @@ class Time extends SystemItem
         timeWrap.addEventListener("mouseout", @on_mouseout)
         timeWrap.addEventListener("click", @on_mouseup)
 
-        @update_time()
-        @update_id = setInterval(@update_time, 1000)
+        @updateTimeHandler = null
+        @displayModeChangedHandler(settings.displayMode())
+        settings.connectDisplayModeChanged("time", @displayModeChangedHandler)
+        @updateTime()
+        @update_id = setInterval(@updateTime, 1000)
         @type = DIGIT_CLOCK['type']
         @indicatorWrap.style.display = 'none'
 
@@ -69,14 +72,19 @@ class Time extends SystemItem
             sysSettings = null
         sysSettings?.ShowModule("date_time") if sysSettings
 
-    update_time: =>
+    displayModeChangedHandler:(mode)=>
         switch settings.displayMode()
             when DisplayMode.Efficient, DisplayMode.Classic
-                @update_time_for_classic_mode()
+                @updateTimeHandler = @updateTimeForClassicMode
             when DisplayMode.Fashion
-                @update_time_for_modern_mode()
+                @updateTimeHandler = @updateTimeForModernMode
 
-    update_time_for_classic_mode: =>
+        @updateTimeHandler()
+
+    updateTime: =>
+        @updateTimeHandler()
+
+    updateTimeForClassicMode: =>
         d = new Date()
         @timeContent.textContent = ""
 
@@ -92,7 +100,7 @@ class Time extends SystemItem
         min = @min()
         @timeContent.textContent += ":#{min}"
 
-    update_time_for_modern_mode:=>
+    updateTimeForModernMode:=>
         hour = @hour(24, true)
         @hourHeightNumber.style.display = 'none'
         @hourHeightNumber = @hourHeight.children[parseInt(hour[0])]

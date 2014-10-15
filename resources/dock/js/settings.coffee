@@ -14,6 +14,8 @@ class Setting
             console.error(e)
             DCore.Dock.quit()
 
+        @displayModeCallback = []
+
         @dbus.connect("HideModeChanged", (mode)=>
             hideStatusManager.updateState()
         )
@@ -31,7 +33,16 @@ class Setting
                 when DisplayMode.Classic
                     switchToClassicMode()
                     systemTray?.updateTrayIcon()
+
+            for own name, fn of @displayModeCallback
+                fn(mode)
         )
+
+    connectDisplayModeChanged: (name, fn)=>
+        @displayModeCallback[name] = fn
+
+    disconnectDisplayModeChanged: (name)=>
+        delete @displayModeCallback[name]
 
     updateSize:(mode)->
         if typeof DisplayMode[mode] == undefined
