@@ -364,6 +364,11 @@ pos_to_pixel = (pos) ->
     height_px = pos.height * grid_item_height
     {x: left , y: top , width : width_px , height : height_px}
 
+pos_for_drop = (pos) ->
+    pos.x = Math.round(pos.x / _PART_) * _PART_
+    pos.y = Math.round(pos.y / _PART_) * _PART_
+    pos
+
 coord_to_pos = (pos_x, pos_y, w, h) ->
     {x : pos_x, y : pos_y, width : w, height : h}
 
@@ -716,6 +721,7 @@ item_dragend_handler = (w, evt) ->
 
 
 find_nearest_free_pos_id = (id,dest_pos,radius = _PART_) ->
+    console.debug "[find_nearest_free_pos_id]: dest_pos:(#{dest_pos.x},#{dest_pos.y})"
     width = dest_pos.width
     height = dest_pos.height
     final_pos = coord_to_pos(dest_pos.x, dest_pos.y, width, height)
@@ -734,7 +740,7 @@ find_nearest_free_pos_id = (id,dest_pos,radius = _PART_) ->
         if j_start < 0 then j_start = 0
         j_end = dest_pos.y + radius
         if j_end > rows then j_end = rows
-        #echo "i: #{i_start}---#{i_end}; j: #{j_start}--#{j_end}"
+        echo "i: #{i_start}---#{i_end}; j: #{j_start}--#{j_end}"
         for i in [i_start .. i_end]
             for j in [j_start .. j_end]
                 final_pos.x = i
@@ -746,7 +752,7 @@ find_nearest_free_pos_id = (id,dest_pos,radius = _PART_) ->
                     distance_list.push(distance)
                     pos_list.push(final_pos.x)
                     pos_list.push(final_pos.y)
-                    #echo "#{k++},#{distance},#{final_pos.x},#{final_pos.y}"
+                    #echo "[#{distance}],#{final_pos.x},#{final_pos.y}"
         distance_list_sorted = distance_list.concat()
         array_sort_min2max(distance_list_sorted)
 
@@ -754,6 +760,7 @@ find_nearest_free_pos_id = (id,dest_pos,radius = _PART_) ->
             if dis is distance_list_sorted[0]
                 minest.push(i)
                 #echo "#{i},#{distance_list_sorted[0]},#{pos_list[i * 2]},#{pos_list[i *2 + 1]}"
+        console.debug "minest.length:#{minest.length}"
         switch minest.length
             when 0 then final_pos = coord_to_pos(dest_pos.x, dest_pos.y, width, height)
             when 1 then final_pos = coord_to_pos(pos_list[minest[0] * 2] , pos_list[minest[0] * 2 + 1],width,height)
@@ -765,6 +772,9 @@ find_nearest_free_pos_id = (id,dest_pos,radius = _PART_) ->
         minest.splice(0,pos_list.length)
     else
         final_pos = coord_to_pos(dest_pos.x, dest_pos.y, width, height)
+    console.log "final_pos:(#{final_pos.x},#{final_pos.y})"
+    final_pos = pos_for_drop(final_pos)
+    console.log "final_pos_for_drop:(#{final_pos.x},#{final_pos.y})"
     final_pos = limit_in_desktop_range(final_pos)
     return final_pos
 
