@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-13 09:57+0800\n"
+"POT-Creation-Date: 2014-10-16 14:13+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,22 +26,22 @@ msgid "\"%1\" failed to be uninstalled"
 msgstr ""
 
 #: ../resources/desktop/js/application.coffee:179
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
+#: ../resources/desktop/js/richdir.coffee:332
+#: ../resources/desktop/js/richdir.coffee:583
 msgid "The link is invalid. Do you want to delete it?"
 msgstr ""
 
 #: ../resources/desktop/js/application.coffee:179
 #: ../resources/desktop/js/desktopentry.coffee:166
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
+#: ../resources/desktop/js/richdir.coffee:332
+#: ../resources/desktop/js/richdir.coffee:583
 #: ../resources/dock/js/plugins/trash/trash.coffee:81
 msgid "Warning"
 msgstr ""
 
 #: ../resources/desktop/js/desktopentry.coffee:102
 #: ../resources/desktop/js/richdir.coffee:133
-#: ../resources/desktop/js/richdir.coffee:566
+#: ../resources/desktop/js/richdir.coffee:563
 #: ../resources/desktop/js/specialitem.coffee:51
 #: ../resources/desktop/js/specialitem.coffee:146
 #: ../resources/guide/js/launcher.coffee:212
@@ -50,13 +50,13 @@ msgid "_Open"
 msgstr ""
 
 #: ../resources/desktop/js/desktopentry.coffee:104
-#: ../resources/desktop/js/richdir.coffee:568
+#: ../resources/desktop/js/richdir.coffee:565
 msgid "Cu_t"
 msgstr ""
 
 #: ../resources/desktop/js/desktopentry.coffee:105
 #: ../resources/desktop/js/item.coffee:397
-#: ../resources/desktop/js/richdir.coffee:569
+#: ../resources/desktop/js/richdir.coffee:566
 msgid "_Copy"
 msgstr ""
 
@@ -69,12 +69,12 @@ msgstr ""
 #: ../resources/desktop/js/invalidlink.coffee:34
 #: ../resources/desktop/js/item.coffee:398
 #: ../resources/desktop/js/richdir.coffee:139
-#: ../resources/desktop/js/richdir.coffee:571
+#: ../resources/desktop/js/richdir.coffee:568
 msgid "_Delete"
 msgstr ""
 
 #: ../resources/desktop/js/desktopentry.coffee:110
-#: ../resources/desktop/js/richdir.coffee:573
+#: ../resources/desktop/js/richdir.coffee:570
 #: ../resources/desktop/js/specialitem.coffee:53
 msgid "_Properties"
 msgstr ""
@@ -103,54 +103,54 @@ msgstr ""
 msgid "Untitled"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1021
+#: ../resources/desktop/js/grid.coffee:1019
 msgid "_Folder"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1022
+#: ../resources/desktop/js/grid.coffee:1020
 msgid "_Text document"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1036
+#: ../resources/desktop/js/grid.coffee:1034
 msgid "_Name"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1037
+#: ../resources/desktop/js/grid.coffee:1035
 msgid "Last modified _time"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1041
+#: ../resources/desktop/js/grid.coffee:1039
 #: ../resources/guide/js/desktop.coffee:196
 msgid "_Sort by"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1042
+#: ../resources/desktop/js/grid.coffee:1040
 #: ../resources/guide/js/desktop.coffee:197
 msgid "_New"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1043
+#: ../resources/desktop/js/grid.coffee:1041
 #: ../resources/guide/js/desktop.coffee:198
 msgid "Open in _terminal"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1044
+#: ../resources/desktop/js/grid.coffee:1042
 #: ../resources/desktop/js/item.coffee:396
 #: ../resources/guide/js/desktop.coffee:199
 msgid "_Paste"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1046
+#: ../resources/desktop/js/grid.coffee:1044
 #: ../resources/guide/js/desktop.coffee:201
 msgid "_Display settings"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1047
+#: ../resources/desktop/js/grid.coffee:1045
 #: ../resources/guide/js/desktop.coffee:202
 msgid "_Corner navigation"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1048
+#: ../resources/desktop/js/grid.coffee:1046
 #: ../resources/guide/js/desktop.coffee:203
 msgid "Pe_rsonalize"
 msgstr ""
@@ -189,20 +189,20 @@ msgstr ""
 msgid "_Empty"
 msgstr ""
 
-#: ../resources/dock/js/config.coffee:181
+#: ../resources/dock/js/config.coffee:184
 msgid "Unknown"
 msgstr ""
 
-#: ../resources/dock/js/deepin_item.coffee:248
+#: ../resources/dock/js/deepin_item.coffee:249
 msgid "_View as analog"
 msgstr ""
 
-#: ../resources/dock/js/deepin_item.coffee:249
-#: ../resources/dock/js/deepin_item.coffee:301
+#: ../resources/dock/js/deepin_item.coffee:250
+#: ../resources/dock/js/deepin_item.coffee:302
 msgid "_Time settings"
 msgstr ""
 
-#: ../resources/dock/js/deepin_item.coffee:300
+#: ../resources/dock/js/deepin_item.coffee:301
 msgid "_View as digit"
 msgstr ""
 
@@ -337,13 +337,19 @@ msgstr ""
 msgid "Suspend"
 msgstr ""
 
-#: ../resources/greeter/js/powermenu.coffee:74
+#: ../resources/greeter/js/powermenu.coffee:75
 msgid ""
-"The user %1 has logged in, shutdown or restart may cause loss to the account "
-"running data."
+"The other users have logged in, shutdown or restart may cause the running "
+"data to be lost."
 msgstr ""
 
-#: ../resources/greeter/js/powermenu.coffee:118
+#: ../resources/greeter/js/powermenu.coffee:77
+msgid ""
+"User 1% has logged in, shutdown or restart may cause the running data to be "
+"lost."
+msgstr ""
+
+#: ../resources/greeter/js/powermenu.coffee:121
 msgid "Enter your password to %1"
 msgstr ""
 
