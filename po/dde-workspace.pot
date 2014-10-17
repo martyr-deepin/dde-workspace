@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-16 14:13+0800\n"
+"POT-Creation-Date: 2014-10-17 14:42+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -103,54 +103,54 @@ msgstr ""
 msgid "Untitled"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1019
+#: ../resources/desktop/js/grid.coffee:1029
 msgid "_Folder"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1020
+#: ../resources/desktop/js/grid.coffee:1030
 msgid "_Text document"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1034
+#: ../resources/desktop/js/grid.coffee:1044
 msgid "_Name"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1035
+#: ../resources/desktop/js/grid.coffee:1045
 msgid "Last modified _time"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1039
+#: ../resources/desktop/js/grid.coffee:1049
 #: ../resources/guide/js/desktop.coffee:196
 msgid "_Sort by"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1040
+#: ../resources/desktop/js/grid.coffee:1050
 #: ../resources/guide/js/desktop.coffee:197
 msgid "_New"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1041
+#: ../resources/desktop/js/grid.coffee:1051
 #: ../resources/guide/js/desktop.coffee:198
 msgid "Open in _terminal"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1042
+#: ../resources/desktop/js/grid.coffee:1052
 #: ../resources/desktop/js/item.coffee:396
 #: ../resources/guide/js/desktop.coffee:199
 msgid "_Paste"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1044
+#: ../resources/desktop/js/grid.coffee:1054
 #: ../resources/guide/js/desktop.coffee:201
 msgid "_Display settings"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1045
+#: ../resources/desktop/js/grid.coffee:1055
 #: ../resources/guide/js/desktop.coffee:202
 msgid "_Corner navigation"
 msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:1046
+#: ../resources/desktop/js/grid.coffee:1056
 #: ../resources/guide/js/desktop.coffee:203
 msgid "Pe_rsonalize"
 msgstr ""
@@ -345,7 +345,7 @@ msgstr ""
 
 #: ../resources/greeter/js/powermenu.coffee:77
 msgid ""
-"User 1% has logged in, shutdown or restart may cause the running data to be "
+"User %1 has logged in, shutdown or restart may cause the running data to be "
 "lost."
 msgstr ""
 
