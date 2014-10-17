@@ -210,6 +210,22 @@ compare_pos_top_left = (base, pos) ->
     else
         1
 
+compare_pos_shift_pixel = (start, end, pos) ->
+    is_in_y = Math.min(start.y,end.y) <= pos.y <= Math.max(start.y,end.y)
+    is_in_extra_start = false
+    is_in_extra_end = false
+    if is_in_y
+        if start.y < end.y
+            is_in_extra_start = ( pos.y == start.y and 0 <= pos.x < start.x - 1)
+            is_in_extra_end = ( pos.y == end.y and end.x + end.width <= pos.x <= s_width)
+        else if start.y > end.y
+            is_in_extra_start = ( pos.y == end.y and 0 <= pos.x < end.x - 1)
+            is_in_extra_end = ( pos.y == start.y and start.x + start.width <= pos.x <= s_width)
+        else if start.y == end.y
+            is_in_extra_start = is_in_extra_end = !(Math.min(start.x,end.x) <= pos.x <= Math.max(start.x,end.x))
+        console.debug "is_in_extra_start:#{is_in_extra_start} ; is_in_extra_end:#{is_in_extra_end}"
+    return is_in_y and !is_in_extra_start and !is_in_extra_end
+
 compare_pos_rect_pixel = (base1, base2, pos) ->
     top_left = Math.min(base1.x, base2.x)
     top_right = Math.max(base1.x, base2.x)
@@ -231,16 +247,6 @@ compare_pos_rect_pixel = (base1, base2, pos) ->
     cross_y0 = Math.max(rect_y0,item_y0)
     cross_y1 = Math.min(rect_y1,item_y1)
     is_in_select_area = cross_x0 < cross_x1 and cross_y0 < cross_y1
-    return is_in_select_area
-
-
-compare_pos_rect = (base1, base2, pos) ->
-    top_left = Math.min(base1.x, base2.x)
-    top_right = Math.max(base1.x, base2.x)
-    bottom_left = Math.min(base1.y, base2.y)
-    bottom_right = Math.max(base1.y, base2.y)
-    echo "#{top_left} <= #{pos.x} <= #{top_right} and #{bottom_left} <= #{pos.y} <= #{bottom_right}"
-    is_in_select_area = top_left <= pos.x <= top_right and bottom_left <= pos.y <= bottom_right
     return is_in_select_area
 
 
@@ -829,11 +835,13 @@ cancel_all_selected_stats = () ->
 
 
 update_selected_stats = (w, evt) ->
+    console.debug "[update_selected_stats]:shiftKey:#{evt.shiftKey}"
     if evt.ctrlKey
         if w.selected == true then cancel_item_selected(w)
         else set_item_selected(w)
 
     else if evt.shiftKey
+        console.debug "[update_selected_stats]:shiftKey ==  true"
         if selected_item.length > 1
             last_one_id = selected_item[selected_item.length - 1]
             selected_item.splice(selected_item.length - 1, 1)
@@ -841,24 +849,18 @@ update_selected_stats = (w, evt) ->
             selected_item.push(last_one_id)
 
         else if selected_item.length == 1
-            end_pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
+            set_item_selected(w)
             start_pos = Widget.look_up(selected_item[0]).get_pos()
-
-            ret = compare_pos_top_left(start_pos, end_pos)
-            if ret < 0
-                for w_id in speical_item.concat(all_item)
-                    if not (val = Widget.look_up(w_id))? then continue
-                    i_pos = Widget.look_up(w_id).get_pos()
-                    if compare_pos_top_left(end_pos, i_pos) >= 0 and compare_pos_top_left(start_pos, i_pos) < 0
-                        set_item_selected(val, true, true)
-            else if ret == 0
-                cancel_item_selected(selected_item[0])
-            else
-                for w_id in speical_item.concat(all_item)
-                    if not (val = Widget.look_up(w_id))? then continue
-                    i_pos = Widget.look_up(w_id).get_pos()
-                    if compare_pos_top_left(start_pos, i_pos) > 0 and compare_pos_top_left(end_pos, i_pos) <= 0
-                        set_item_selected(val, true, true)
+            end_pos = w.get_pos()
+            start_pixel = pos_to_pixel(start_pos)
+            end_pixel = pos_to_pixel(end_pos)
+            for i in speical_item.concat(all_item)
+                if not (w_i = Widget.look_up(i))? then continue
+                item_pos = w_i.get_pos()
+                item_pixel = pos_to_pixel(item_pos)
+                console.debug w_i.get_name()
+                if compare_pos_shift_pixel(end_pixel, start_pixel, item_pixel)
+                    set_item_selected(w_i) if not w_i.selected
 
         else
             set_item_selected(w)
@@ -1101,6 +1103,7 @@ menu_create_templates = (filter) ->
 
 # handle up/down/left/right arrow keys to navigate between items
 grid_do_keydown_to_shortcut = (evt) ->
+    console.debug "[grid_do_keydown_to_shrotcut]:shiftKey:#{evt.shiftKey}"
     if rename_div_process_events then return
     if evt.keyCode >= 37 and evt.keyCode <= 40
         evt.stopPropagation()
@@ -1126,6 +1129,7 @@ grid_do_keydown_to_shortcut = (evt) ->
             last_widget = w_f.get_id()
 
         else if evt.shiftKey == true
+            console.log "[grid_do_keydown_to_shrotcut]:evt.shiftKey == true"
             if selected_item.length > 1
                 start_item = selected_item[0]
                 selected_item.splice(0, 1)
@@ -1133,26 +1137,17 @@ grid_do_keydown_to_shortcut = (evt) ->
                 selected_item.push(start_item)
 
             if selected_item.length == 1
+                set_item_selected(w_f)
                 start_pos = Widget.look_up(selected_item[0]).get_pos()
                 end_pos = w_f.get_pos()
-                if compare_pos_top_left(start_pos, end_pos) < 0
-                    pos_a = start_pos
-                    pos_b = end_pos
-                else
-                    pos_b = start_pos
-                    pos_a = end_pos
+                start_pixel = pos_to_pixel(start_pos)
+                end_pixel = pos_to_pixel(end_pos)
                 for i in speical_item.concat(all_item)
                     if not (w_i = Widget.look_up(i))? then continue
                     item_pos = w_i.get_pos()
-                    #pos_a_pixel = pos_to_pixel(pos_a)
-                    #pos_b_pixel = pos_to_pixel(pos_b)
-                    #item_pos_pixel = pos_to_pixel(item_pos)
-                    #
-                    #start_pos_pixel = pos_b_pixel
-                    #new_pos_pixel = {x:pos_a_pixel.x + pos_a_pixel.width / 4,y:pos_a_pixel.y + pos_a_pixel.height / 4}
-                    #
-                    #if compare_pos_rect_pixel(new_pos_pixel, start_pos_pixel, item_pos_pixel) == true
-                    if compare_pos_rect(pos_a, pos_b, item_pos) == true
+                    item_pixel = pos_to_pixel(item_pos)
+                    console.debug w_i.get_name()
+                    if compare_pos_shift_pixel(end_pixel, start_pixel, item_pixel)
                         set_item_selected(w_i) if not w_i.selected
 
                 if last_widget != w_f.get_id()
@@ -1308,7 +1303,6 @@ class MouseSelectAreaBox
             if not (w = Widget.look_up(i))? then continue
             item_pos = w.get_pos()
             item_pos_pixel = pos_to_pixel(item_pos)
-            #if compare_pos_rect(new_pos, @start_pos, item_pos) == true
             if compare_pos_rect_pixel(new_pos_pixel, @start_pos_pixel, item_pos_pixel) == true
                 if not w.selected and not w.is_in_select_area
                     set_item_selected(w)
