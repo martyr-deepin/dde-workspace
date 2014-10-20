@@ -27,6 +27,7 @@
 GtkWidget* create_web_container(bool normal, bool above G_GNUC_UNUSED)
 {
     GtkWidget* window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_widget_set_app_paintable(window, TRUE);
     gtk_window_resize(GTK_WINDOW(window), 1, 1);
 
     g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
