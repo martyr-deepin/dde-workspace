@@ -302,7 +302,11 @@ class Item extends Widget
     item_focus : =>
         @has_focus = true
         @display_full_name()
-        @display_focus()
+        #TODO:
+        #desktop focus has bug,and it cause the item_focus status wrong
+        #so before it has been fixed, @display_focus() will be jumped!
+        #and the UE is right,which I have tested
+        #@display_focus()
         return
 
 

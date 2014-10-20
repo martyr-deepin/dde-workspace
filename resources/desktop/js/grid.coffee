@@ -223,7 +223,6 @@ compare_pos_shift_pixel = (start, end, pos) ->
             is_in_extra_end = ( pos.y == start.y and start.x + start.width <= pos.x <= s_width)
         else if start.y == end.y
             is_in_extra_start = is_in_extra_end = !(Math.min(start.x,end.x) <= pos.x <= Math.max(start.x,end.x))
-        console.debug "is_in_extra_start:#{is_in_extra_start} ; is_in_extra_end:#{is_in_extra_end}"
     return is_in_y and !is_in_extra_start and !is_in_extra_end
 
 compare_pos_rect_pixel = (base1, base2, pos) ->
@@ -841,15 +840,8 @@ update_selected_stats = (w, evt) ->
         else set_item_selected(w)
 
     else if evt.shiftKey
-        console.debug "[update_selected_stats]:shiftKey ==  true"
-        if selected_item.length > 1
-            last_one_id = selected_item[selected_item.length - 1]
-            selected_item.splice(selected_item.length - 1, 1)
-            cancel_all_selected_stats()
-            selected_item.push(last_one_id)
-
-        else if selected_item.length == 1
-            set_item_selected(w)
+        set_item_selected(w)
+        if selected_item.length >= 1
             start_pos = Widget.look_up(selected_item[0]).get_pos()
             end_pos = w.get_pos()
             start_pixel = pos_to_pixel(start_pos)
@@ -858,12 +850,12 @@ update_selected_stats = (w, evt) ->
                 if not (w_i = Widget.look_up(i))? then continue
                 item_pos = w_i.get_pos()
                 item_pixel = pos_to_pixel(item_pos)
-                console.debug w_i.get_name()
                 if compare_pos_shift_pixel(end_pixel, start_pixel, item_pixel)
+                    console.debug "[update_selected_stats]:#{w_i.get_name()}:true"
                     set_item_selected(w_i) if not w_i.selected
-
-        else
-            set_item_selected(w)
+                else
+                    console.debug "[update_selected_stats]:#{w_i.get_name()}:false"
+                    cancel_item_selected(w_i) if w_i.selected
 
     else
         n = selected_item.indexOf(w.get_id())
@@ -1129,15 +1121,8 @@ grid_do_keydown_to_shortcut = (evt) ->
             last_widget = w_f.get_id()
 
         else if evt.shiftKey == true
-            console.log "[grid_do_keydown_to_shrotcut]:evt.shiftKey == true"
-            if selected_item.length > 1
-                start_item = selected_item[0]
-                selected_item.splice(0, 1)
-                cancel_all_selected_stats()
-                selected_item.push(start_item)
-
-            if selected_item.length == 1
-                set_item_selected(w_f)
+            set_item_selected(w_f)
+            if selected_item.length >= 1
                 start_pos = Widget.look_up(selected_item[0]).get_pos()
                 end_pos = w_f.get_pos()
                 start_pixel = pos_to_pixel(start_pos)
@@ -1146,15 +1131,16 @@ grid_do_keydown_to_shortcut = (evt) ->
                     if not (w_i = Widget.look_up(i))? then continue
                     item_pos = w_i.get_pos()
                     item_pixel = pos_to_pixel(item_pos)
-                    console.debug w_i.get_name()
                     if compare_pos_shift_pixel(end_pixel, start_pixel, item_pixel)
+                        console.debug "[update_selected_stats]:#{w_i.get_name()}:true"
                         set_item_selected(w_i) if not w_i.selected
+                    else
+                        cancel_item_selected(w_i) if w_i.selected
+                        console.debug "[update_selected_stats]:#{w_i.get_name()}:false"
 
                 if last_widget != w_f.get_id()
                     w.item_blur() if last_widget.length > 0 and (w = Widget.look_up(last_widget))?
                     last_widget = w_f.get_id()
-            else
-                w_f.item_selected()
         else
             cancel_all_selected_stats()
             set_item_selected(w_f)
