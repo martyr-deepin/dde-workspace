@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-10-17 14:42+0800\n"
-"PO-Revision-Date: 2014-10-17 07:30+0000\n"
+"PO-Revision-Date: 2014-10-23 13:25+0000\n"
 "Last-Translator: Ivica  Kolić <ikoli@yahoo.com>\n"
 "Language-Team: Croatian (http://www.transifex.com/projects/p/deepin-desktop-environment/language/hr/)\n"
 "MIME-Version: 1.0\n"
@@ -670,7 +670,7 @@ msgstr "Pogrešna lozinka"
 
 #: ../app/greeter/mutils.c:84
 msgid "%a, %b %d, %Y"
-msgstr ""
+msgstr "%a, %b %d, %Y"
 
 #: ../lib/category.c:45
 msgid "all"

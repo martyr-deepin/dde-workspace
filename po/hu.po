@@ -7,13 +7,14 @@
 # ddabrahim <ddabrahim@googlemail.com>, 2014
 # kdavid97 <kdavid97@gmail.hu>, 2014
 # Laszlo Espadas <kw@kardiweb.org>, 2014
+# SlazO <blum1866@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-10-17 14:42+0800\n"
-"PO-Revision-Date: 2014-10-17 06:59+0000\n"
-"Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
+"PO-Revision-Date: 2014-10-20 12:51+0000\n"
+"Last-Translator: SlazO <blum1866@gmail.com>\n"
 "Language-Team: Hungarian (http://www.transifex.com/projects/p/deepin-desktop-environment/language/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,7 +52,7 @@ msgstr "Figyelmeztetés"
 #: ../resources/guide/js/launcher.coffee:212
 #: ../resources/launcher/js/item.coffee:301
 msgid "_Open"
-msgstr "_Nyitva"
+msgstr "_Megnyitás"
 
 #: ../resources/desktop/js/desktopentry.coffee:104
 #: ../resources/desktop/js/richdir.coffee:565
@@ -109,7 +110,7 @@ msgstr "Névtelen"
 
 #: ../resources/desktop/js/grid.coffee:1029
 msgid "_Folder"
-msgstr "_Könyvtár"
+msgstr "_Mappa"
 
 #: ../resources/desktop/js/grid.coffee:1030
 msgid "_Text document"
@@ -121,7 +122,7 @@ msgstr "_Név"
 
 #: ../resources/desktop/js/grid.coffee:1045
 msgid "Last modified _time"
-msgstr "Uolsó_módosítás"
+msgstr "Utolsó módosítás"
 
 #: ../resources/desktop/js/grid.coffee:1049
 #: ../resources/guide/js/desktop.coffee:196
@@ -157,7 +158,7 @@ msgstr "_Sarok navigáció"
 #: ../resources/desktop/js/grid.coffee:1056
 #: ../resources/guide/js/desktop.coffee:203
 msgid "Pe_rsonalize"
-msgstr "személyre szabása"
+msgstr "Személyre szabás"
 
 #: ../resources/desktop/js/item.coffee:395
 msgid "_Cut"
@@ -220,11 +221,11 @@ msgstr "_elrejtés"
 
 #: ../resources/dock/js/global_menu.coffee:11
 msgid "_Auto hide"
-msgstr "_automatikus elrejtés"
+msgstr "_Automatikus elrejtés"
 
 #: ../resources/dock/js/global_menu.coffee:12
 msgid "_Smart hide"
-msgstr "_Automatikus elrejtés"
+msgstr "_Intelligens elrejtés"
 
 #: ../resources/dock/js/global_menu.coffee:24
 msgid "_Fashion mode"
@@ -232,11 +233,11 @@ msgstr "_Fashion mód"
 
 #: ../resources/dock/js/global_menu.coffee:25
 msgid "_Efficient mode"
-msgstr "_hatékony mód"
+msgstr "_Hatékony mód"
 
 #: ../resources/dock/js/global_menu.coffee:26
 msgid "_Classic mode"
-msgstr "_klasszikus mód"
+msgstr "_Klasszikus mód"
 
 #: ../resources/dock/js/main.coffee:115 ../resources/zone/js/utils.coffee:10
 msgid "Launcher"
@@ -345,13 +346,13 @@ msgstr "Felfüggesztés"
 msgid ""
 "The other users have logged in, shutdown or restart may cause the running "
 "data to be lost."
-msgstr ""
+msgstr "A leállítás vagy újraindítás a többi bejelentkezett felhasználó számára adatvesztéssel járhat."
 
 #: ../resources/greeter/js/powermenu.coffee:77
 msgid ""
 "User %1 has logged in, shutdown or restart may cause the running data to be "
 "lost."
-msgstr ""
+msgstr "%1 felhasználó bejelentkezett állapotban van, a leállítás vagy újraindítási művelet számukra adatvesztéssel is járhat."
 
 #: ../resources/greeter/js/powermenu.coffee:121
 msgid "Enter your password to %1"
@@ -411,7 +412,7 @@ msgstr "Bejelentkezés"
 
 #: ../resources/greeter/js/user.coffee:415
 msgid "Unlock"
-msgstr ""
+msgstr "Feloldás"
 
 #: ../resources/greeter/js/usermenu.coffee:57
 msgid "Guest"
@@ -421,11 +422,11 @@ msgstr "Vendég"
 msgid ""
 "Let's drag the other icon on the first icon \n"
 " to generate \"application group\""
-msgstr "Húzd rá a a szimbólumot a másik szimbólumra, arra, hogy létre hozzon egy \"alkalmazás csoportot\""
+msgstr "Húzd rá az egyik ikont a másikra, hogy létrehozz egy \"Alkalmazás csoportot\""
 
 #: ../resources/guide/js/desktop.coffee:116
 msgid "Well, you have learned how to create a \"application group\""
-msgstr "Nos, ön megtanulta hogy miként lehet létrehozni egy \"alkalmazás csoportot\""
+msgstr "Nos, Ön megtanulta hogy miként lehet létrehozni egy \"alkalmazás csoportot\""
 
 #: ../resources/guide/js/desktop.coffee:117
 msgid "tips: Right-click on the application group will provide more functions"
@@ -435,13 +436,13 @@ msgstr "tippek: Jobb klikk az alkalmazás csoporton további beállításokért"
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different events\n"
 "Please move to the upper left corner first to show or hide Launcher"
-msgstr ""
+msgstr "Húzza az egeret a négy felső sarokhoz, melyekkel különböző eseményeket indíthat el. Kérem húzza az egeret a bal felső sarokba, hogy lássa vagy elrejtse az Indítót."
 
 #: ../resources/guide/js/desktop.coffee:129
 msgid ""
 "tips: Please trigger successively by hints, click on the blank area to "
 "return"
-msgstr ""
+msgstr "tippek: Haladjon a tanácsoknak megfelelően, kattintson egy üres területen a visszatéréshez."
 
 #: ../resources/guide/js/desktop.coffee:133
 msgid "Show/Hide Launcher"
@@ -449,7 +450,7 @@ msgstr "Indtó Megjelenítése / Elrejtése"
 
 #: ../resources/guide/js/desktop.coffee:134
 msgid "Show/Hide Desktop"
-msgstr "Asztal megjelenítése/elrejtése"
+msgstr "Asztal megjelenítése / elrejtése"
 
 #: ../resources/guide/js/desktop.coffee:135
 msgid "Show/Hide Control Center"
@@ -457,35 +458,35 @@ msgstr " Vezérlőközpont Megjelenítése / elrejtése"
 
 #: ../resources/guide/js/desktop.coffee:136
 msgid "No default functions setted in right up corner"
-msgstr "Nincs alapértelmezett funkció beállítva a jobb felső csarokban"
+msgstr "Nincs beállítva alapértelmezett funkció a jobb felső sarokban"
 
 #: ../resources/guide/js/desktop.coffee:178
 msgid ""
 "Right-click on desktop black area to call up the menu, select \"Corner "
 "navigation\" to set the corner used"
-msgstr "Egy üres területen az asztalon kattintson jobb egér gombbal. A forró sarkok beállításához."
+msgstr "Kattintson jobb egér gombbal az asztal egy üres részén és válassza a \"Sarok navigációt\", hogy módosítsa az adott sarok funkcióját."
 
 #: ../resources/guide/js/desktop.coffee:179
 msgid "tips: Click on the interface of corner navigation blank area to return"
-msgstr ""
+msgstr "tippek: A visszatéréshez kattintson egy üres részre a sarok navigáció felületén."
 
 #: ../resources/guide/js/dss.coffee:29
 msgid "Well, please trigger the lower right corner again"
-msgstr "Nos, vigye el újra az egeret a jobb alsó sarokba"
+msgstr "Nos, ismét mozgassa az egeret a jobb alsó sarokba"
 
 #: ../resources/guide/js/dss.coffee:30
 msgid "tips: Click the setting icon on dock to implement"
-msgstr ""
+msgstr "tippek: A végrehajtáshoz kattintson a dockon a beállítás ikonra."
 
 #: ../resources/guide/js/dss.coffee:69
 msgid "Here is the system setting area"
-msgstr "Itt a rendszerbeállítások találhatóak"
+msgstr "Ez itt a rendszerbeállítások felülete."
 
 #: ../resources/guide/js/dss.coffee:70
 msgid ""
 "tips: Hover the setting icon on dock to quickly implement some setting "
 "functions"
-msgstr ""
+msgstr "tippek: Húzza a beállítások ikont a dockra, hogy gyorsan végrehajtson néhány beállítást."
 
 #: ../resources/guide/js/end.coffee:25
 msgid "Thanks for your patience while learning. Congratulations."
@@ -499,13 +500,13 @@ msgstr "Vége"
 msgid ""
 "\"Application Launcher\" can be started by sliding the mouse to the upper "
 "left corner or clicking on the launcher."
-msgstr ""
+msgstr "Az \"Alkalmazás Indítót\" elindíthatja ha az egeret a bal felső sarokba húzza vagy ha az Indítóra kattint."
 
 #: ../resources/guide/js/launcher.coffee:70
 msgid ""
 "What shown in the first screen of \"launcher\" are the applications "
 "collected."
-msgstr ""
+msgstr "Az \"Indító\" főoldalán a gyakran használt alkalmazások találhatók."
 
 #: ../resources/guide/js/launcher.coffee:85
 msgid ""
@@ -517,7 +518,7 @@ msgstr "Kérem kattintson a \"Összes alkalmazás\" ikonra, hogy lássa az össz
 msgid ""
 "All programs can be located by scrolling the mouse up and down.\n"
 "You can also click on the left classification navigation to locate"
-msgstr "Az összes alkalmazást megtudod nézni görgetéssel. Vagy használhatod a bal oldali navigációs sávot."
+msgstr "Az összes alkalmazást megtudja nézni görgetéssel. Vagy használhatja a bal oldali navigációs sávot."
 
 #: ../resources/guide/js/launcher.coffee:133
 msgid "Skip the step without scroll"
@@ -535,11 +536,11 @@ msgstr "Tipp:Kérjük, adja meg direkt a \"deepin\" szót."
 
 #: ../resources/guide/js/launcher.coffee:181
 msgid "Use the right mouse button to send two icons to the desktop"
-msgstr "Használja a bal egér gombot arra, hogy az ikonokat az asztalra húzza."
+msgstr "Két ikon asztalra küldéséhez használja a jobb egér gombot"
 
 #: ../resources/guide/js/launcher.coffee:182
 msgid "tips: You can add it to startup items or uninstall it"
-msgstr ""
+msgstr "tippek: Hozzáadhatod az automatikusan elinduló programokhoz vagy el is távolíthatod."
 
 #: ../resources/guide/js/launcher.coffee:214
 #: ../resources/launcher/js/const.coffee:81
@@ -559,7 +560,7 @@ msgstr "Küldés a dokkra"
 #: ../resources/guide/js/launcher.coffee:218
 #: ../resources/launcher/js/const.coffee:72
 msgid "_Add to autostart"
-msgstr "_Hozzáadás az autostart-hoz"
+msgstr "_Hozzáadás az autostarthoz."
 
 #: ../resources/guide/js/launcher.coffee:219
 #: ../resources/launcher/js/item.coffee:308
@@ -568,7 +569,7 @@ msgstr "_Eltávolítás"
 
 #: ../resources/guide/js/start.coffee:28
 msgid "New Launcher"
-msgstr "Új Indítómenü"
+msgstr "Új Indító"
 
 #: ../resources/guide/js/start.coffee:28
 msgid "New Desktop"
@@ -576,7 +577,7 @@ msgstr "Új Asztal"
 
 #: ../resources/guide/js/start.coffee:28
 msgid "New System Settings"
-msgstr "Új rendszerbeállítás"
+msgstr "Új Rendszerbeállítások"
 
 #: ../resources/guide/js/start.coffee:29
 msgid "The following will guide you to learn how to use some new functions"
@@ -588,15 +589,15 @@ msgstr "Start"
 
 #: ../resources/guide/js/start.coffee:51
 msgid "I am an experienced user. Exit directly."
-msgstr "Én egy tapasztalt felhasználó vagyok. Erőltetett kilépés."
+msgstr "Tapasztalt felhasználó vagyok. Azonnali kilépés."
 
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
-msgstr "Köszönjük hogy a Deepin Operációs Rendszert használja"
+msgstr "Örülünk hogy a Deepin Operációs Rendszert használja"
 
 #: ../resources/guide/js/welcome.coffee:38
 msgid "Prepare for operation ..."
-msgstr "Előkészülés a művelethez"
+msgstr "Felkészülés a műveletre ..."
 
 #: ../resources/launcher/js/const.coffee:64
 msgid "_Hide the icon"
@@ -616,7 +617,7 @@ msgstr "_Ikon megjelenítése"
 
 #: ../resources/launcher/js/const.coffee:73
 msgid "_Remove from autostart"
-msgstr "_Eltávolítás az autostart-ból"
+msgstr "_Eltávolítás az autostartból"
 
 #: ../resources/launcher/js/const.coffee:80
 msgid "Add to _favorites"
@@ -632,11 +633,11 @@ msgstr "Eltávolítás a _dokkról"
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
-msgstr "Megduplázni"
+msgstr "Megkettőzés"
 
 #: ../resources/osd/js/monitor.coffee:39
 msgid "Extend"
-msgstr ""
+msgstr "Kiterjeszt"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "Control Center"
@@ -664,7 +665,7 @@ msgstr "Új könyvtár"
 
 #: ../app/dock/dock.c:290
 msgid "Dock failed to start, because Compiz is not enabled."
-msgstr "A dokk indítása sikertelen, mert a compiz nincs elinditva"
+msgstr "A dokk indítása sikertelen, mert a compiz nincs engedélyezve."
 
 #: ../app/greeter/greeter.c:198 ../app/greeter/lock.c:173
 msgid "Wrong Password"
@@ -684,7 +685,7 @@ msgstr "internet"
 
 #: ../lib/category.c:47
 msgid "multimedia"
-msgstr "multimedia"
+msgstr "multimédia"
 
 #: ../lib/category.c:48
 msgid "games"
@@ -726,7 +727,7 @@ msgstr "egyéb"
 #, c-format
 msgid ""
 "Cannot rename the item to \"%s\". This may be caused by lack of permissions."
-msgstr "Az eszközt nem lehet átnevezni \"%s\". Mert nincs hozzá jogosultsága."
+msgstr "Az eszközt nem lehet átnevezni \"%s\". Valószínűleg nincs hozzá jogosultsága."
 
 #: ../lib/dentry/entry.c:752
 #, c-format
@@ -765,7 +766,7 @@ msgstr "Biztos abban,hogy az elemet véglegesen törli?"
 
 #: ../lib/dentry/fileops_delete.c:33
 msgid "If you delete the files, they will be permanently lost."
-msgstr "Ha ezt az elemet törli, akkor véglegesen törölve lesz."
+msgstr "Ha ezeket az elemeket törli, akkor véglegesen törölve lesznek."
 
 #: ../lib/dentry/fileops_delete.c:36
 msgid "Delete"
@@ -797,47 +798,47 @@ msgstr "Átnevezés"
 
 #: ../lib/dentry/fileops_error_dialog.c:141
 msgid "Replace"
-msgstr "Javítás"
+msgstr "Áthelyezés"
 
 #: ../lib/dentry/fileops_error_dialog.c:218
 #, c-format
 msgid "Do you want to merge with folder \"%s\"?"
-msgstr "Szeretné ezt az akciót az összes \"%s\" könyvtárral végrehajtani "
+msgstr "Szeretné összevonni a \"%s\" mappával?"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
 msgid ""
 "The merging operation will be asked to confirm before replacing any files in"
 " the folder conflicted."
-msgstr ""
+msgstr "Az összevonás jóváhagyást kíván mielőtt a mappában lévő bármely fájl módosul."
 
 #: ../lib/dentry/fileops_error_dialog.c:222
 #, c-format
 msgid "An older folder with the same name already exists in \"%s\"."
-msgstr "Egy könyvtár már létezik ezzel a névvel %s\"."
+msgstr "Egy régebbi könyvtár már létezik itt ezzel a névvel %s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:226
 #, c-format
 msgid "A newer folder with the same name already exists in \"%s\"."
-msgstr "Egy új könyvtár ugyan azzal a névvel már létezik \"%s\"."
+msgstr "Egy újabb könyvtár már létezik itt ezzel a névvel \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:230
 #, c-format
 msgid "Another folder with the same name already exists in \"%s\"."
-msgstr "Egy másik könyvtár ezzel a névvel már létezik \"%s\"."
+msgstr "Egy másik könyvtár ezzel a névvel már létezik itt \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:236
 msgid "All files in the folder will be removed by replacing."
-msgstr "Minden fájl a könyvtárban a helyettesítéssel  el lesz távolítva."
+msgstr "Minden fájl felülírásra kerül."
 
 #: ../lib/dentry/fileops_error_dialog.c:237
 #, c-format
 msgid "Do you want to replace folder \"%s\"?"
-msgstr "Szeretné a könyvtárat \"%s\"-sel helyettesíteni?"
+msgstr "Szeretné a \"%s\" könyvtárat helyettesíteni?"
 
 #: ../lib/dentry/fileops_error_dialog.c:239
 #, c-format
 msgid "A folder with the same name already exists in \"%s\"."
-msgstr "Egy könyvtár a(z) \"%s\"  névvel már létezik."
+msgstr "Egy ilyen nevű könyvtár már létezik itt: \"%s\""
 
 #: ../lib/dentry/fileops_error_dialog.c:245
 #, c-format
@@ -846,22 +847,22 @@ msgstr "Lecseréli a(z) \"%s\" fájlt?"
 
 #: ../lib/dentry/fileops_error_dialog.c:246
 msgid "The content will be overwritten by replacing."
-msgstr "A tartalom a helyettesítésével felül lesz írva."
+msgstr "A tartalom felülírásra kerül helyettesítéssel."
 
 #: ../lib/dentry/fileops_error_dialog.c:248
 #, c-format
 msgid "An older file with the same name already exists in \"%s\"."
-msgstr "Egy régebbi könyvtár ugyan azzal a névvel már létezik \"%s\"."
+msgstr "Egy régebbi könyvtár ugyanazzal a névvel már létezik itt: \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:252
 #, c-format
 msgid "A newer file with the same name already exists in \"%s\"."
-msgstr "Egy új fájl ugyan azzal a névvel már létezik \"%s\". "
+msgstr "Egy újabb fájl ugyanazzal a névvel már létezik itt: \"%s\". "
 
 #: ../lib/dentry/fileops_error_dialog.c:256
 #, c-format
 msgid "Another file with the same name already exists in \"%s\"."
-msgstr "Egy másik fájl ugyan azzal a névvel már létezik \"%s\". "
+msgstr "Egy másik fájl ugyan azzal a névvel már létezik itt: \"%s\". "
 
 #: ../lib/dentry/fileops_error_dialog.c:328
 msgid "Original file"
@@ -884,11 +885,11 @@ msgstr "Utolsó módosítás:"
 
 #: ../lib/dentry/fileops_error_dialog.c:356
 msgid "Replace with"
-msgstr "Helyettesítés -val, -vel "
+msgstr "Helyettesítés ezzel..."
 
 #: ../lib/dentry/fileops_error_dialog.c:382
 msgid "Merge"
-msgstr "Egyesítés"
+msgstr "Összevonás"
 
 #: ../lib/dentry/fileops_error_reporting.c:106
 #: ../lib/dentry/fileops_error_reporting.c:191
@@ -920,7 +921,7 @@ msgstr "Futtatni szeretné \"%s\", vagy megnézni a tartalmát?"
 #: ../lib/dentry/mime_actions.c:199
 #, c-format
 msgid "\"%s\" is an executable text file."
-msgstr "\"%s\" agy futtatható szöveg fájl."
+msgstr "\"%s\" egy futtatható szöveg fájl."
 
 #: ../lib/dentry/mime_actions.c:210
 msgid "Run in _Terminal"

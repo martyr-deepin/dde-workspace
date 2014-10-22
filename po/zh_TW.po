@@ -5,13 +5,14 @@
 # Translators:
 # electricface <songwentai@linuxdeepin.com>, 2014
 # freddy4212 <freddy4212@gmail.com>, 2014
+# 游荡的坎德人 <nervcn09@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-10-17 14:42+0800\n"
-"PO-Revision-Date: 2014-10-17 06:59+0000\n"
-"Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
+"PO-Revision-Date: 2014-10-20 08:10+0000\n"
+"Last-Translator: 游荡的坎德人 <nervcn09@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/deepin-desktop-environment/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -598,7 +599,7 @@ msgstr "正在準備..."
 
 #: ../resources/launcher/js/const.coffee:64
 msgid "_Hide the icon"
-msgstr "隱藏此圖試(_H)"
+msgstr "隱藏此圖示(_H)"
 
 #: ../resources/launcher/js/const.coffee:65
 msgid "_Display hidden icons"
