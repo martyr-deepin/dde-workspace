@@ -338,9 +338,16 @@ class LoginEntry extends Widget
             @keyboard_img_create()
         @loginbutton_create()
 
+    check_capslock: ->
+        if DCore[APP_NAME].detect_capslock()
+            @caps.style.display = "block"
+        else
+            @caps.style.display = "none"
+
     password_create: ->
         @password_div = create_element("div", "password_div", @element)
         @password = create_element("input", "password", @password_div)
+        @caps = create_element("div", "CapsWarning", @password_div)
         @password.type = "password"
         @password.setAttribute("autofocus", true) if @username isnt guest_name
         @password_eventlistener()
@@ -397,8 +404,6 @@ class LoginEntry extends Widget
             else
                 echo "#{lay}============ layouts from ini is not!!! in layouts_lightdm"
 
-
-
     loginbutton_create: ->
         if @is_need_pwd
             @loginbutton = create_img("loginbutton", "#{img_src_before}#{@id}_normal.png",@password_div)
@@ -444,14 +449,17 @@ class LoginEntry extends Widget
                 @input_password_again()
         )
         @password?.addEventListener("blur",=>
+            @check_capslock()
             @keyboard?.hide()
         )
         @password?.addEventListener("focus",=>
+            @check_capslock()
             if @username is guest_name then return
             if @password.value is password_error_msg or @password.value is localStorage.getItem("password_value_shutdown")
                 @input_password_again()
         )
         @password?.addEventListener("keyup",(e)=>
+            @check_capslock()
             if @username is guest_name then return
             if e.which == ENTER_KEY
                 @on_active(@username, @password.value) if @check_completeness()

@@ -244,4 +244,13 @@
     background-image:url(../images/keyboard/keyboard_layout_press.png);
 }
 
+.CapsWarning {
+    position:absolute;
+    right:4em;
+    bottom:2.4em;
+    background:url("../images/capslock.png") no-repeat;
+    width:23px;
+    height:23px;
+    display:none;
+}
 
