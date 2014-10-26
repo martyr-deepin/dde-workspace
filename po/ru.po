@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-10-17 14:42+0800\n"
-"PO-Revision-Date: 2014-10-21 13:31+0000\n"
+"PO-Revision-Date: 2014-10-24 19:20+0000\n"
 "Last-Translator: Vasilii Rusu <basil_russu@hotmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/deepin-desktop-environment/language/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -28,7 +28,7 @@ msgstr "Ваше удаление \"%1\" успешно"
 
 #: ../resources/common/js/uninstaller.coffee:33
 msgid "\"%1\" failed to be uninstalled"
-msgstr "\"%1\" удалён не удачно"
+msgstr "\"%1\" не удалось удалить"
 
 #: ../resources/desktop/js/application.coffee:179
 #: ../resources/desktop/js/richdir.coffee:332
@@ -422,7 +422,7 @@ msgstr "Гость"
 msgid ""
 "Let's drag the other icon on the first icon \n"
 " to generate \"application group\""
-msgstr "Давайте перетащим другой значёк на первй\nдля создания \"группы приложений\""
+msgstr "Давайте перетащим один значок на другой\nдля создания \"группы приложений\""
 
 #: ../resources/guide/js/desktop.coffee:116
 msgid "Well, you have learned how to create a \"application group\""
@@ -436,7 +436,7 @@ msgstr "советы: Щелкните правой кнопкой мыши на
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different events\n"
 "Please move to the upper left corner first to show or hide Launcher"
-msgstr "Сдвигать мышь в четыре  угла, которые могут вызывать четыре разные события\nНаведите сначала на верхний левый угол чтобы показать или скрыть меню приложений"
+msgstr "Двигайте мышь в четыре  угла, которые могут вызывать четыре разные события\nНаведите сначала на верхний левый угол чтобы показать или скрыть меню приложений"
 
 #: ../resources/guide/js/desktop.coffee:129
 msgid ""
@@ -476,7 +476,7 @@ msgstr "Пожалуйста, наведите на правый нижний у
 
 #: ../resources/guide/js/dss.coffee:30
 msgid "tips: Click the setting icon on dock to implement"
-msgstr "советы: Нажмите на иконку настроек в доке для подсудимых для применения"
+msgstr "советы: Нажмите на иконку настроек в доке для  для их применения"
 
 #: ../resources/guide/js/dss.coffee:69
 msgid "Here is the system setting area"
@@ -486,7 +486,7 @@ msgstr "Здесь область настройки системы"
 msgid ""
 "tips: Hover the setting icon on dock to quickly implement some setting "
 "functions"
-msgstr "советы: Наведите курсор на значок настройки дока, чтобы быстро реализовать некоторые функции"
+msgstr "советы: Наведите курсор на значок настройки дока, чтобы быстро реализовать некоторые функции настройки"
 
 #: ../resources/guide/js/end.coffee:25
 msgid "Thanks for your patience while learning. Congratulations."

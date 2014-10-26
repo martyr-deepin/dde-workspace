@@ -1,62 +1,64 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
+# cricri8o <cricri8o@yahoo.com>, 2014
+# Vasilii Rusu <basil_russu@hotmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-22 11:12+0800\n"
-"PO-Revision-Date: 2014-07-07 01:00+0000\n"
-"Last-Translator: electricface <songwentai@linuxdeepin.com>\n"
-"Language-Team: Romanian (http://www.transifex.com/projects/p/deepin-desktop-"
-"environment/language/ro/)\n"
-"Language: ro\n"
+"POT-Creation-Date: 2014-10-17 14:42+0800\n"
+"PO-Revision-Date: 2014-10-24 19:31+0000\n"
+"Last-Translator: Vasilii Rusu <basil_russu@hotmail.com>\n"
+"Language-Team: Romanian (http://www.transifex.com/projects/p/deepin-desktop-environment/language/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?"
-"2:1));\n"
+"Language: ro\n"
+"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
 
-#: ../resources/desktop/js/invalidlink.coffee:34
-#: ../resources/desktop/js/desktopentry.coffee:108
-#: ../resources/desktop/js/richdir.coffee:139
-#: ../resources/desktop/js/richdir.coffee:571
-msgid "_Delete"
-msgstr "_Șterge"
+#: ../resources/common/js/uninstaller.coffee:32
+msgid "You have uninstalled \"%1\" successfully"
+msgstr "\"%1\" dezinstalat cu succes"
+
+#: ../resources/common/js/uninstaller.coffee:33
+msgid "\"%1\" failed to be uninstalled"
+msgstr "\"%1\"  dezinstalare eșuată"
 
 #: ../resources/desktop/js/application.coffee:179
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
+#: ../resources/desktop/js/richdir.coffee:332
+#: ../resources/desktop/js/richdir.coffee:583
 msgid "The link is invalid. Do you want to delete it?"
-msgstr ""
+msgstr "Legăturaeste invalidă. Doriți să o ștergeți?"
 
 #: ../resources/desktop/js/application.coffee:179
-#: ../resources/desktop/js/desktopentry.coffee:165
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
-#: ../resources/dock/js/plugins/trash/trash.coffee:76
+#: ../resources/desktop/js/desktopentry.coffee:166
+#: ../resources/desktop/js/richdir.coffee:332
+#: ../resources/desktop/js/richdir.coffee:583
+#: ../resources/dock/js/plugins/trash/trash.coffee:81
 msgid "Warning"
 msgstr "Atenționare"
 
 #: ../resources/desktop/js/desktopentry.coffee:102
-#: ../resources/desktop/js/specialitem.coffee:51
-#: ../resources/desktop/js/specialitem.coffee:147
 #: ../resources/desktop/js/richdir.coffee:133
-#: ../resources/desktop/js/richdir.coffee:566
-#: ../resources/launcher/js/item.coffee:276
-#: ../resources/guide/js/launcher.coffee:235
+#: ../resources/desktop/js/richdir.coffee:563
+#: ../resources/desktop/js/specialitem.coffee:51
+#: ../resources/desktop/js/specialitem.coffee:146
+#: ../resources/guide/js/launcher.coffee:212
+#: ../resources/launcher/js/item.coffee:301
 msgid "_Open"
 msgstr "_Deschide"
 
 #: ../resources/desktop/js/desktopentry.coffee:104
-#: ../resources/desktop/js/richdir.coffee:568
+#: ../resources/desktop/js/richdir.coffee:565
 msgid "Cu_t"
 msgstr "Ta_ie"
 
 #: ../resources/desktop/js/desktopentry.coffee:105
-#: ../resources/desktop/js/richdir.coffee:569
+#: ../resources/desktop/js/item.coffee:397
+#: ../resources/desktop/js/richdir.coffee:566
 msgid "_Copy"
 msgstr "_Copie"
 
@@ -65,9 +67,17 @@ msgstr "_Copie"
 msgid "_Rename"
 msgstr "_Redenumește"
 
+#: ../resources/desktop/js/desktopentry.coffee:108
+#: ../resources/desktop/js/invalidlink.coffee:34
+#: ../resources/desktop/js/item.coffee:398
+#: ../resources/desktop/js/richdir.coffee:139
+#: ../resources/desktop/js/richdir.coffee:568
+msgid "_Delete"
+msgstr "_Șterge"
+
 #: ../resources/desktop/js/desktopentry.coffee:110
+#: ../resources/desktop/js/richdir.coffee:570
 #: ../resources/desktop/js/specialitem.coffee:53
-#: ../resources/desktop/js/richdir.coffee:573
 msgid "_Properties"
 msgstr "_Proprietăți"
 
@@ -86,121 +96,264 @@ msgstr "_Extrage"
 msgid "Extract _Here"
 msgstr "Extrage_Aici"
 
-#: ../resources/desktop/js/desktopentry.coffee:165
-#: ../resources/dock/js/plugins/trash/trash.coffee:76
+#: ../resources/desktop/js/desktopentry.coffee:166
+#: ../resources/dock/js/plugins/trash/trash.coffee:81
 msgid "Can not open this file."
 msgstr "Acest fișier nu poate fi deschis."
 
-#: ../resources/desktop/js/specialitem.coffee:34
-msgid "Computer"
-msgstr ""
-
-#: ../resources/desktop/js/specialitem.coffee:87
-#: ../resources/dock/js/main.coffee:47 ../resources/dock/js/main.coffee:124
-msgid "Trash"
-msgstr "Gunoi"
-
-#: ../resources/desktop/js/specialitem.coffee:152
-#, fuzzy
-msgid "_Clean up %1 items"
-msgstr "_Curăță"
-
-#: ../resources/desktop/js/specialitem.coffee:154
-#, fuzzy
-msgid "_Clean up 1 item"
-msgstr "_Curăță"
-
-#: ../resources/desktop/js/specialitem.coffee:156
-#: ../resources/dock/js/plugins/trash/trash.coffee:29
-msgid "_Empty"
-msgstr ""
-
-#: ../resources/desktop/js/grid.coffee:71 ../lib/dentry/fileops.c:403
+#: ../resources/desktop/js/grid.coffee:72 ../lib/dentry/fileops.c:403
 msgid "Untitled"
 msgstr "Nedenumit"
 
-#: ../resources/desktop/js/grid.coffee:1022
-msgid "_Name"
-msgstr "_Nume"
-
-#: ../resources/desktop/js/grid.coffee:1023
-msgid "Last modified _time"
-msgstr "_Data ultimei modificări"
-
-#: ../resources/desktop/js/grid.coffee:1028
+#: ../resources/desktop/js/grid.coffee:1029
 msgid "_Folder"
 msgstr "_Dosar"
 
-#: ../resources/desktop/js/grid.coffee:1029
+#: ../resources/desktop/js/grid.coffee:1030
 msgid "_Text document"
 msgstr "Document _Text"
 
+#: ../resources/desktop/js/grid.coffee:1044
+msgid "_Name"
+msgstr "_Nume"
+
 #: ../resources/desktop/js/grid.coffee:1045
+msgid "Last modified _time"
+msgstr "_Data ultimei modificări"
+
+#: ../resources/desktop/js/grid.coffee:1049
 #: ../resources/guide/js/desktop.coffee:196
 msgid "_Sort by"
 msgstr "_Sortează după"
 
-#: ../resources/desktop/js/grid.coffee:1046
+#: ../resources/desktop/js/grid.coffee:1050
 #: ../resources/guide/js/desktop.coffee:197
 msgid "_New"
 msgstr "_Nou"
 
-#: ../resources/desktop/js/grid.coffee:1047
+#: ../resources/desktop/js/grid.coffee:1051
 #: ../resources/guide/js/desktop.coffee:198
 msgid "Open in _terminal"
 msgstr "Deschide in _terminal"
 
-#: ../resources/desktop/js/grid.coffee:1048
+#: ../resources/desktop/js/grid.coffee:1052
+#: ../resources/desktop/js/item.coffee:396
 #: ../resources/guide/js/desktop.coffee:199
 msgid "_Paste"
 msgstr "_Lipește"
 
-#: ../resources/desktop/js/grid.coffee:1050
+#: ../resources/desktop/js/grid.coffee:1054
 #: ../resources/guide/js/desktop.coffee:201
 msgid "_Display settings"
 msgstr "Setările _ecranului"
 
-#: ../resources/desktop/js/grid.coffee:1051
+#: ../resources/desktop/js/grid.coffee:1055
 #: ../resources/guide/js/desktop.coffee:202
 msgid "_Corner navigation"
-msgstr ""
+msgstr "_Navigare colț"
 
-#: ../resources/desktop/js/grid.coffee:1052
+#: ../resources/desktop/js/grid.coffee:1056
 #: ../resources/guide/js/desktop.coffee:203
 msgid "Pe_rsonalize"
 msgstr "Pe_rsonalizare"
+
+#: ../resources/desktop/js/item.coffee:395
+msgid "_Cut"
+msgstr "_Taie"
+
+#: ../resources/desktop/js/item.coffee:400
+msgid "_Select All"
+msgstr "_Selectează Tot"
 
 #: ../resources/desktop/js/richdir.coffee:137
 msgid "_Ungroup"
 msgstr "Anulare _grupare"
 
+#: ../resources/desktop/js/specialitem.coffee:34
+msgid "Computer"
+msgstr "Computer"
+
+#: ../resources/desktop/js/specialitem.coffee:87
+#: ../resources/dock/js/main.coffee:47 ../resources/dock/js/main.coffee:117
+msgid "Trash"
+msgstr "Gunoi"
+
+#: ../resources/desktop/js/specialitem.coffee:150
+msgid "_Clean up %1 items"
+msgstr "_Curăță %1 obiecte"
+
+#: ../resources/desktop/js/specialitem.coffee:152
+msgid "_Clean up 1 item"
+msgstr "_Curăță 1 obiect"
+
+#: ../resources/desktop/js/specialitem.coffee:154
+#: ../resources/dock/js/plugins/trash/trash.coffee:34
+msgid "_Empty"
+msgstr "_Gol"
+
+#: ../resources/dock/js/config.coffee:184
+msgid "Unknown"
+msgstr "Necunoscut"
+
+#: ../resources/dock/js/deepin_item.coffee:249
+msgid "_View as analog"
+msgstr "_Vizualizează ca analog"
+
+#: ../resources/dock/js/deepin_item.coffee:250
+#: ../resources/dock/js/deepin_item.coffee:302
+msgid "_Time settings"
+msgstr "Configurări _Timp"
+
+#: ../resources/dock/js/deepin_item.coffee:301
+msgid "_View as digit"
+msgstr "_Vizualizează ca cifră"
+
+#: ../resources/dock/js/global_menu.coffee:9
+msgid "Keep _showing"
+msgstr "Continuă_afișare"
+
+#: ../resources/dock/js/global_menu.coffee:10
+msgid "Keep _hidden"
+msgstr "Continuă_ascuns"
+
+#: ../resources/dock/js/global_menu.coffee:11
+msgid "_Auto hide"
+msgstr "_Ascundere automată"
+
+#: ../resources/dock/js/global_menu.coffee:12
+msgid "_Smart hide"
+msgstr "_Ascundere inteligentă"
+
+#: ../resources/dock/js/global_menu.coffee:24
+msgid "_Fashion mode"
+msgstr "_Mod vogă"
+
+#: ../resources/dock/js/global_menu.coffee:25
+msgid "_Efficient mode"
+msgstr "_Mod eficient"
+
+#: ../resources/dock/js/global_menu.coffee:26
+msgid "_Classic mode"
+msgstr "_Mod clasic"
+
+#: ../resources/dock/js/main.coffee:115 ../resources/zone/js/utils.coffee:10
+msgid "Launcher"
+msgstr "Lansator"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Sun"
+msgstr "Dum"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Mon"
+msgstr "Lun"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Tue"
+msgstr "Mar"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Wed"
+msgstr "Mie"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Thu"
+msgstr "Joi"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Fri"
+msgstr "Vin"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Sat"
+msgstr "Sâm"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:38
+msgid "_Close"
+msgstr "_Închide"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:118
+#: ../resources/launcher/js/item.coffee:379
+msgid "Are you sure to remove"
+msgstr "Sigur doriți indepartarea"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:118
+#: ../resources/launcher/js/item.coffee:379
+msgid "All dependencies will be removed"
+msgstr "Toate dependențele vor fi îndepărtate"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:118
+#: ../resources/launcher/js/item.coffee:379
+msgid "no"
+msgstr "nu"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:118
+#: ../resources/launcher/js/item.coffee:379
+msgid "yes"
+msgstr "da"
+
+#: ../resources/greeter/js/mediacontrol.coffee:167
+msgid "Click button to Play"
+msgstr "Apăsați butonul pentru a reda"
+
 #: ../resources/greeter/js/message.coffee:105
 #: ../resources/greeter/js/message.coffee:82
 msgid "$ sudo reboot\n"
-msgstr ""
+msgstr "$ sudo reboot\n"
 
 #: ../resources/greeter/js/message.coffee:99
 #: ../resources/greeter/js/message.coffee:73
 msgid "Press Ctrl + Alt + F1\n"
-msgstr ""
+msgstr "Tastați Ctrl + Alt + F1\n"
 
 #: ../resources/greeter/js/message.coffee:95
 msgid ""
 "\t\t\t\t-----The daemon of accounts has not started!-----\n"
 ")"
-msgstr ""
+msgstr "\t\t\t-----Procesul conturilor n-a fost startat!-----\n)"
 
 #: ../resources/greeter/js/message.coffee:79
 msgid "$ sudo apt-get install deepin-desktop-Environment\n"
-msgstr ""
+msgstr "$ sudo apt-get install deepin-desktop-Environment\n"
 
 #: ../resources/greeter/js/message.coffee:68
 msgid "\t\t\t\t-----No available desktop sessions!-----\n"
-msgstr ""
+msgstr "                              -----Nu sunt sesiuni disponibile pentru spațiul de lucru !-----\n"
 
-#: ../resources/greeter/js/user.coffee:411
-msgid "Login"
-msgstr ""
+#: ../resources/greeter/js/powermenu.coffee:26
+msgid "Shut down"
+msgstr "Închidere"
+
+#: ../resources/greeter/js/powermenu.coffee:27
+msgid "Restart"
+msgstr "Repornire"
+
+#: ../resources/greeter/js/powermenu.coffee:28
+msgid "Suspend"
+msgstr "Suspendare"
+
+#: ../resources/greeter/js/powermenu.coffee:75
+msgid ""
+"The other users have logged in, shutdown or restart may cause the running "
+"data to be lost."
+msgstr "Alți utilizatori s-au logat, deconectare sau repornire poate cauza pierderea informației."
+
+#: ../resources/greeter/js/powermenu.coffee:77
+msgid ""
+"User %1 has logged in, shutdown or restart may cause the running data to be "
+"lost."
+msgstr "Utiizatorul %1 s-a logat, deconectare sau repornire poate cauza pierderea informației."
+
+#: ../resources/greeter/js/powermenu.coffee:121
+msgid "Enter your password to %1"
+msgstr "Introduceți parola pentru %1"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jan"
@@ -250,101 +403,202 @@ msgstr "Noiem"
 msgid "Dec"
 msgstr "Dec"
 
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Sun"
-msgstr "Dum"
+#: ../resources/greeter/js/user.coffee:413
+msgid "Login"
+msgstr "Logare"
 
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Mon"
-msgstr "Lun"
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Tue"
-msgstr "Mar"
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Wed"
-msgstr "Mie"
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Thu"
-msgstr "Joi"
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Fri"
-msgstr "Vin"
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Sat"
-msgstr "Sâm"
+#: ../resources/greeter/js/user.coffee:415
+msgid "Unlock"
+msgstr "Deblocare"
 
 #: ../resources/greeter/js/usermenu.coffee:57
 msgid "Guest"
-msgstr "oaspete"
+msgstr "Oaspete"
 
-#: ../resources/greeter/js/powermenu.coffee:26
-msgid "Shut down"
-msgstr "Închidere"
+#: ../resources/guide/js/desktop.coffee:27
+msgid ""
+"Let's drag the other icon on the first icon \n"
+" to generate \"application group\""
+msgstr "Haideți să  glisăm o pictogramă pe altă\npentru a crea \"Grupul de Aplicații\""
 
-#: ../resources/greeter/js/powermenu.coffee:27
-msgid "Restart"
-msgstr "Repornire"
+#: ../resources/guide/js/desktop.coffee:116
+msgid "Well, you have learned how to create a \"application group\""
+msgstr "Așadar, dvs ați învățat cum se crează un \"grup de aplicații\""
 
-#: ../resources/greeter/js/powermenu.coffee:28
-msgid "Suspend"
-msgstr "Suspendare"
+#: ../resources/guide/js/desktop.coffee:117
+msgid "tips: Right-click on the application group will provide more functions"
+msgstr "Sfat: Click-dreapta pe grupul de aplicații va arăta mai multe funcții disponibile"
 
-#: ../resources/greeter/js/powermenu.coffee:90
-msgid "Enter your password to %1"
-msgstr ""
+#: ../resources/guide/js/desktop.coffee:128
+msgid ""
+"Slide the mouse to the four top corners, which can trigger four different events\n"
+"Please move to the upper left corner first to show or hide Launcher"
+msgstr "Glisați mouse-ul în fiecare din cele patru colțuri ale ecranului pentru a cauza patru evenimente diferite.\nMai întâi de toate glisați sus în colțul din stânga pentru a afișa sau ascunde Lansatorul."
 
-#: ../resources/greeter/js/mediacontrol.coffee:167
-msgid "Click button to Play"
-msgstr ""
+#: ../resources/guide/js/desktop.coffee:129
+msgid ""
+"tips: Please trigger successively by hints, click on the blank area to "
+"return"
+msgstr "Sfat: Inițializați în mod constant subpunctele, pentru revenire click pe loc gol"
 
-#: ../resources/osd/js/monitor.coffee:38
-msgid "Duplicate"
-msgstr ""
+#: ../resources/guide/js/desktop.coffee:133
+msgid "Show/Hide Launcher"
+msgstr "Afișare/Ascundere Lansator"
 
-#: ../resources/osd/js/monitor.coffee:39
-msgid "Extend"
-msgstr ""
+#: ../resources/guide/js/desktop.coffee:134
+msgid "Show/Hide Desktop"
+msgstr "Arată/Ascunde Spațiu de lucru"
 
-#: ../resources/launcher/js/item.coffee:283
-#: ../resources/guide/js/launcher.coffee:242
+#: ../resources/guide/js/desktop.coffee:135
+msgid "Show/Hide Control Center"
+msgstr "Afișsare/Ascundere Panou de Control"
+
+#: ../resources/guide/js/desktop.coffee:136
+msgid "No default functions setted in right up corner"
+msgstr "Afișare/Ascundere Lansator"
+
+#: ../resources/guide/js/desktop.coffee:178
+msgid ""
+"Right-click on desktop black area to call up the menu, select \"Corner "
+"navigation\" to set the corner used"
+msgstr "Click butonul din dreaptă a mouse-ului pe loc gol al spațiului de lucru, selectați \"Corner navigation\" pentru a selecta acțiunea dorită"
+
+#: ../resources/guide/js/desktop.coffee:179
+msgid "tips: Click on the interface of corner navigation blank area to return"
+msgstr "Sfat: Click pe colț zona de navigare pentru a reveni"
+
+#: ../resources/guide/js/dss.coffee:29
+msgid "Well, please trigger the lower right corner again"
+msgstr "Plasați cursorul jos  în colțul din dreapta încă o dată. "
+
+#: ../resources/guide/js/dss.coffee:30
+msgid "tips: Click the setting icon on dock to implement"
+msgstr "Sfat: Apăsați pe pictograma setărilor de pe dock pentru aplicarea acestora. "
+
+#: ../resources/guide/js/dss.coffee:69
+msgid "Here is the system setting area"
+msgstr "Aici este zona de setare a sistemului"
+
+#: ../resources/guide/js/dss.coffee:70
+msgid ""
+"tips: Hover the setting icon on dock to quickly implement some setting "
+"functions"
+msgstr "Sfat: plasați cursorul peste pictograma setărilor dock  pentru realizarea rapidă a unor funcții de setare. "
+
+#: ../resources/guide/js/end.coffee:25
+msgid "Thanks for your patience while learning. Congratulations."
+msgstr "Mulțumim pentru răbdarea dvs în timpul învățării. Felicitări."
+
+#: ../resources/guide/js/end.coffee:30
+msgid "End"
+msgstr "Sfârșit"
+
+#: ../resources/guide/js/launcher.coffee:29
+msgid ""
+"\"Application Launcher\" can be started by sliding the mouse to the upper "
+"left corner or clicking on the launcher."
+msgstr "\"Lansatorul de Aplicații\" poate fi startat glisând mouse-ul sus în colțul din stânga sau click pe pictograma lansatorului."
+
+#: ../resources/guide/js/launcher.coffee:70
+msgid ""
+"What shown in the first screen of \"launcher\" are the applications "
+"collected."
+msgstr "În primul ecran al \"lansatorului\" sunt afișate aplicațiile din colecție"
+
+#: ../resources/guide/js/launcher.coffee:85
+msgid ""
+"Please click on the \"All Applications\" icon, you will see all "
+"applications."
+msgstr "Click pe pictograma \"Toate Aplicațiile\", vor apărea toate aplicațiile "
+
+#: ../resources/guide/js/launcher.coffee:95
+msgid ""
+"All programs can be located by scrolling the mouse up and down.\n"
+"You can also click on the left classification navigation to locate"
+msgstr "Toate programele pot fi selectate derulând mouse-ul în sus și în jos. \nDeasemenea se poate face click stânga pe clisificarea navigării pentru căutare ulterioară."
+
+#: ../resources/guide/js/launcher.coffee:133
+msgid "Skip the step without scroll"
+msgstr "Treceți la următorul pas fără derulare"
+
+#: ../resources/guide/js/launcher.coffee:163
+msgid ""
+"Use the keyboard to search for applications\n"
+"Try the \"deepin\" keyword to see which applications are shown"
+msgstr "Utilizați tastiera pentru căutarea aplicațiilor\nÎncercați să introduceți cuvântul-cheie \"deepin\" pentru a vedea ce aplicații vor apărea"
+
+#: ../resources/guide/js/launcher.coffee:164
+msgid "tips: Please directly enter the word \"deepin\""
+msgstr "Sfat: Introduceți direct cuvântul \"deepin\""
+
+#: ../resources/guide/js/launcher.coffee:181
+msgid "Use the right mouse button to send two icons to the desktop"
+msgstr "Utilizați butonul din dreaptă a mouse-ului pentru a pune pictograme pe spațiul de lucru"
+
+#: ../resources/guide/js/launcher.coffee:182
+msgid "tips: You can add it to startup items or uninstall it"
+msgstr "Sfat: Puteți să-l  adăugați în meniul de pornire -Startup sau să-l dezinstalați"
+
+#: ../resources/guide/js/launcher.coffee:214
+#: ../resources/launcher/js/const.coffee:81
+msgid "Remove from _favorites"
+msgstr "Înlăturare de la favorite"
+
+#: ../resources/guide/js/launcher.coffee:215
+#: ../resources/launcher/js/const.coffee:84
+msgid "Send to d_esktop"
+msgstr "Trimite pe s_pațiul de lucru"
+
+#: ../resources/guide/js/launcher.coffee:216
+#: ../resources/launcher/js/const.coffee:88
+msgid "Send to do_ck"
+msgstr "Trimite pe ba_ră"
+
+#: ../resources/guide/js/launcher.coffee:218
+#: ../resources/launcher/js/const.coffee:72
+msgid "_Add to autostart"
+msgstr "A_daugă la pornire automată"
+
+#: ../resources/guide/js/launcher.coffee:219
+#: ../resources/launcher/js/item.coffee:308
 msgid "_Uninstall"
-msgstr ""
+msgstr "_Dezinstalare"
 
-#: ../resources/launcher/js/item.coffee:354
-#: ../resources/dock/js/plugins/trash/trash.coffee:113
-msgid "Are you sure to remove"
-msgstr ""
+#: ../resources/guide/js/start.coffee:28
+msgid "New Launcher"
+msgstr "Lansator Nou"
 
-#: ../resources/launcher/js/item.coffee:354
-#: ../resources/dock/js/plugins/trash/trash.coffee:113
-msgid "All dependencies will be removed"
-msgstr ""
+#: ../resources/guide/js/start.coffee:28
+msgid "New Desktop"
+msgstr "Spațiul de lucru Nou"
 
-#: ../resources/launcher/js/item.coffee:354
-#: ../resources/dock/js/plugins/trash/trash.coffee:113
-msgid "no"
-msgstr ""
+#: ../resources/guide/js/start.coffee:28
+msgid "New System Settings"
+msgstr " Setările de Sistem Noi"
 
-#: ../resources/launcher/js/item.coffee:354
-#: ../resources/dock/js/plugins/trash/trash.coffee:113
-msgid "yes"
-msgstr ""
+#: ../resources/guide/js/start.coffee:29
+msgid "The following will guide you to learn how to use some new functions"
+msgstr "Ghidul ce urmează va facilita să învățați cîteva funcții noi."
+
+#: ../resources/guide/js/start.coffee:44
+msgid "Start"
+msgstr "Start"
+
+#: ../resources/guide/js/start.coffee:51
+msgid "I am an experienced user. Exit directly."
+msgstr "Sunt utilizator experimentat. Ieșire directă."
+
+#: ../resources/guide/js/welcome.coffee:35
+msgid "Welcome to use Deepin Operating System"
+msgstr "Bun venit în Sistemul de Operare Deepin"
+
+#: ../resources/guide/js/welcome.coffee:38
+msgid "Prepare for operation ..."
+msgstr "Pregătire pentru operațiunea..."
 
 #: ../resources/launcher/js/const.coffee:64
 msgid "_Hide the icon"
-msgstr ""
+msgstr "_Ascunde pictograma"
 
 #: ../resources/launcher/js/const.coffee:65
 msgid "_Display hidden icons"
@@ -358,55 +612,37 @@ msgstr "_Ascunde această icoană"
 msgid "_Display this icon"
 msgstr "A_rată această icoană"
 
-#: ../resources/launcher/js/const.coffee:72
-#: ../resources/guide/js/launcher.coffee:241
-msgid "_Add to autostart"
-msgstr "A_daugă la pornire automată"
-
 #: ../resources/launcher/js/const.coffee:73
 msgid "_Remove from autostart"
 msgstr "_Înlătură de la pornire automată"
 
 #: ../resources/launcher/js/const.coffee:80
 msgid "Add to _favorites"
-msgstr ""
-
-#: ../resources/launcher/js/const.coffee:81
-#: ../resources/guide/js/launcher.coffee:237
-msgid "Remove from _favorites"
-msgstr ""
-
-#: ../resources/launcher/js/const.coffee:84
-#: ../resources/guide/js/launcher.coffee:238
-msgid "Send to d_esktop"
-msgstr "Trimite pe s_pațiul de lucru"
+msgstr "Adăugare la _favorite"
 
 #: ../resources/launcher/js/const.coffee:85
-#, fuzzy
 msgid "Remove from d_esktop"
-msgstr "_Înlătură de la pornire automată"
-
-#: ../resources/launcher/js/const.coffee:88
-#: ../resources/guide/js/launcher.coffee:239
-msgid "Send to do_ck"
-msgstr "Trimite pe ba_ră"
+msgstr "Eliminare din s_pațiul de lucru"
 
 #: ../resources/launcher/js/const.coffee:89
-#, fuzzy
 msgid "Remove from do_ck"
-msgstr "_Înlătură de la pornire automată"
+msgstr "Eliminare din do_ck"
+
+#: ../resources/osd/js/monitor.coffee:38
+msgid "Duplicate"
+msgstr "Duplicare"
+
+#: ../resources/osd/js/monitor.coffee:39
+msgid "Extend"
+msgstr "Extindere"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "Control Center"
-msgstr ""
+msgstr "Panou de Control"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "All Windows"
-msgstr ""
-
-#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:122
-msgid "Launcher"
-msgstr "Lansator"
+msgstr "Toate Ferestrele"
 
 #: ../resources/zone/js/utils.coffee:10
 msgid "Desktop"
@@ -416,246 +652,90 @@ msgstr "Spațiu de lucru"
 msgid "None"
 msgstr "Nimic"
 
-#: ../resources/guide/js/dss.coffee:29
-msgid "Well, please trigger the lower right corner again"
-msgstr ""
-
-#: ../resources/guide/js/dss.coffee:30
-msgid "tips: Click the setting icon on dock to implement"
-msgstr ""
-
-#: ../resources/guide/js/dss.coffee:69
-msgid "Here is the system setting area"
-msgstr ""
-
-#: ../resources/guide/js/dss.coffee:70
-msgid ""
-"tips: Hover the setting icon on dock to quickly implement some setting "
-"functions"
-msgstr ""
-
-#: ../resources/guide/js/end.coffee:25
-msgid "Thanks for your patience while learning. Congratulations."
-msgstr ""
-
-#: ../resources/guide/js/end.coffee:30
-msgid "End"
-msgstr ""
-
-#: ../resources/guide/js/welcome.coffee:35
-msgid "Welcome to use Deepin Operating System"
-msgstr ""
-
-#: ../resources/guide/js/welcome.coffee:38
-msgid "Prepare for operation ..."
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:27
-msgid ""
-"Let's drag the other icon on the first icon \n"
-" to generate \"application group\""
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:116
-msgid "Well, you have learned how to create a \"application group\""
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:117
-msgid "tips: Right-click on the application group will provide more functions"
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:128
-msgid ""
-"Slide the mouse to the four top corners, which can trigger four different "
-"events\n"
-"Please move to the upper left corner first to show or hide Launcher"
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:129
-msgid ""
-"tips: Please trigger successively by hints, click on the blank area to return"
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:133
-msgid "Show/Hide Launcher"
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:134
-msgid "Show/Hide Desktop"
-msgstr "Arată/Ascunde Spațiu de lucru"
-
-#: ../resources/guide/js/desktop.coffee:135
-msgid "Show/Hide Control Center"
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:136
-msgid "No default functions setted in right up corner"
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:178
-msgid ""
-"Right-click on desktop black area to call up the menu, select \"Corner "
-"navigation\" to set the corner used"
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:179
-msgid "tips: Click on the interface of corner navigation blank area to return"
-msgstr ""
-
-#: ../resources/guide/js/start.coffee:28
-msgid "New Launcher"
-msgstr ""
-
-#: ../resources/guide/js/start.coffee:28
-msgid "New Desktop"
-msgstr ""
-
-#: ../resources/guide/js/start.coffee:28
-msgid "New System Settings"
-msgstr ""
-
-#: ../resources/guide/js/start.coffee:29
-msgid "The following will guide you to learn how to use some new functions"
-msgstr ""
-
-#: ../resources/guide/js/start.coffee:44
-msgid "Start"
-msgstr "Start"
-
-#: ../resources/guide/js/start.coffee:51
-msgid "I am an experienced user. Exit directly."
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:29
-msgid ""
-"\"Application Launcher\" can be started by sliding the mouse to the upper "
-"left corner or clicking on the launcher."
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:70
-msgid ""
-"What shown in the first screen of \"launcher\" are the applications "
-"collected."
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:85
-msgid ""
-"Please click on the \"All Applications\" icon, you will see all applications."
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:95
-msgid ""
-"All programs can be located by scrolling the mouse up and down.\n"
-"You can also click on the left classification navigation to locate"
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:133
-msgid "Skip the step without scroll"
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:163
-msgid ""
-"Use the keyboard to search for applications\n"
-"Try the \"deepin\" keyword to see which applications are shown"
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:164
-msgid "tips: Please directly enter the word \"deepin\""
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:179
-msgid "Use the right mouse button to send two icons to the desktop"
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:180
-msgid "tips: You can add it to startup items or uninstall it"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:9
-msgid "Keep _showing"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:10
-msgid "Keep _hidden"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:11
-msgid "_Auto hide"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:24
-msgid "_Fashion mode"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:25
-msgid "_Efficient mode"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:26
-msgid "_Classic mode"
-msgstr ""
-
-#: ../resources/dock/js/deepin_item.coffee:247
-msgid "_View as analog"
-msgstr "_Vizualizează ca analog"
-
-#: ../resources/dock/js/deepin_item.coffee:248
-#: ../resources/dock/js/deepin_item.coffee:300
-msgid "_Time settings"
-msgstr "Configurări _Timp"
-
-#: ../resources/dock/js/deepin_item.coffee:299
-msgid "_View as digit"
-msgstr "_Vizualizează ca cifră"
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:33
-msgid "_Close"
-msgstr "_Închide"
-
-#: ../resources/common/js/uninstaller.coffee:32
-msgid "You have uninstalled \"%1\" successfully"
-msgstr ""
-
-#: ../resources/common/js/uninstaller.coffee:33
-msgid "\"%1\" failed to be uninstalled"
-msgstr ""
-
-#: ../app/desktop/desktop.c:292
+#: ../app/desktop/desktop.c:300
 msgid "New file"
 msgstr "Fișier nou"
 
-#: ../app/desktop/desktop.c:303
+#: ../app/desktop/desktop.c:311
 msgid "New directory"
 msgstr "Dosar nou"
+
+#: ../app/dock/dock.c:290
+msgid "Dock failed to start, because Compiz is not enabled."
+msgstr "Startarea Dock eșuată, deoarece Compiz-ul nu este activat."
+
+#: ../app/greeter/greeter.c:198 ../app/greeter/lock.c:173
+msgid "Wrong Password"
+msgstr "Parolă Incorectă"
 
 #: ../app/greeter/mutils.c:84
 msgid "%a, %b %d, %Y"
 msgstr "%a, %"
 
-#: ../app/greeter/lock.c:125 ../app/greeter/greeter.c:192
-msgid "Wrong Password"
-msgstr "Parola Invalidă"
+#: ../lib/category.c:45
+msgid "all"
+msgstr "tot"
 
-#: ../app/dock/dock.c:322
-msgid "Dock failed to start, because Compiz is not enabled."
-msgstr ""
+#: ../lib/category.c:46
+msgid "internet"
+msgstr "internet"
+
+#: ../lib/category.c:47
+msgid "multimedia"
+msgstr "multimedia"
+
+#: ../lib/category.c:48
+msgid "games"
+msgstr "jocuri"
+
+#: ../lib/category.c:49
+msgid "graphics"
+msgstr "grafică"
+
+#: ../lib/category.c:50
+msgid "productivity"
+msgstr "productivitate"
+
+#: ../lib/category.c:51
+msgid "industry"
+msgstr "industrie"
+
+#: ../lib/category.c:52
+msgid "education"
+msgstr "educație"
+
+#: ../lib/category.c:53
+msgid "development"
+msgstr "dezvoltare"
+
+#: ../lib/category.c:54
+msgid "system"
+msgstr "sistem"
+
+#: ../lib/category.c:55
+msgid "utilities"
+msgstr "utilități"
+
+#: ../lib/category.c:56
+msgid "others"
+msgstr "altele"
 
 #: ../lib/dentry/entry.c:746
 #, c-format
 msgid ""
 "Cannot rename the item to \"%s\". This may be caused by lack of permissions."
-msgstr ""
+msgstr "Nu pot redenumi obiectul dat în \"%s\". Aceasta poate fi cauzată de lipsa permisiunilor."
 
 #: ../lib/dentry/entry.c:752
 #, c-format
 msgid ""
 "There is already a file with name \"%s\" in this folder. Please consider a "
 "different name."
-msgstr ""
+msgstr "Există deja un fișier cu denumirea \"%s\"   în acest director. Selectați alt nume."
 
 #: ../lib/dentry/entry.c:758
 msgid "The item could not be renamed"
-msgstr ""
+msgstr "Obiectul nu poate fi redenumit"
 
 #: ../lib/dentry/entry.c:833 ../lib/dentry/fileops.c:805
 msgid "copy"
@@ -667,7 +747,7 @@ msgstr "App Grup"
 
 #: ../lib/dentry/fileops.c:566
 msgid "Move"
-msgstr ""
+msgstr "Mută"
 
 #: ../lib/dentry/fileops.c:772
 msgid "Copy"
@@ -675,7 +755,7 @@ msgstr "Copie"
 
 #: ../lib/dentry/fileops_delete.c:29
 msgid "Delete Files"
-msgstr ""
+msgstr "Șterge Fișiere"
 
 #: ../lib/dentry/fileops_delete.c:32
 msgid "Are you sure you want to permanently delete the files?"
@@ -683,7 +763,7 @@ msgstr "Sunteți sigur că vreți să ștergeți definitiv fișierele?"
 
 #: ../lib/dentry/fileops_delete.c:33
 msgid "If you delete the files, they will be permanently lost."
-msgstr ""
+msgstr "Dacă ștergeți fișiere, acestea vor fi pierdute definitiv"
 
 #: ../lib/dentry/fileops_delete.c:36
 msgid "Delete"
@@ -699,7 +779,7 @@ msgstr "_Selectați un nou nume pentru destinație"
 
 #: ../lib/dentry/fileops_error_dialog.c:117
 msgid "Reset"
-msgstr "Reinițializare"
+msgstr "Anulare"
 
 #: ../lib/dentry/fileops_error_dialog.c:126
 msgid "Apply this action to all files"
@@ -720,38 +800,37 @@ msgstr "Înlocuiește"
 #: ../lib/dentry/fileops_error_dialog.c:218
 #, c-format
 msgid "Do you want to merge with folder \"%s\"?"
-msgstr ""
+msgstr "Doriți să comasați cu directorul  \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
 msgid ""
-"The merging operation will be asked to confirm before replacing any files in "
-"the folder conflicted."
-msgstr ""
+"The merging operation will be asked to confirm before replacing any files in"
+" the folder conflicted."
+msgstr "Operațiune de comasare întotdeauna înainte de a substitui orice fișier în director conflict"
 
 #: ../lib/dentry/fileops_error_dialog.c:222
 #, c-format
 msgid "An older folder with the same name already exists in \"%s\"."
-msgstr "Un dosar mai vechi cu același nume există deja în \"%s\"."
+msgstr "Un director mai vechi cu același nume există deja în \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:226
 #, c-format
 msgid "A newer folder with the same name already exists in \"%s\"."
-msgstr "Uun dosar mai nou cu același nume există deja în \"%s\"."
+msgstr "Un director mai nou cu același nume există deja în \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:230
 #, c-format
 msgid "Another folder with the same name already exists in \"%s\"."
-msgstr "Un alt dosar cu același nume există deja în \"%s\"."
+msgstr "Un alt director cu același nume există deja în \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:236
-#, fuzzy
 msgid "All files in the folder will be removed by replacing."
-msgstr "Toate obiectele din Gunoi vor fi șterse definitiv."
+msgstr "Toate fișierele din director vor fi substiuite"
 
 #: ../lib/dentry/fileops_error_dialog.c:237
 #, c-format
 msgid "Do you want to replace folder \"%s\"?"
-msgstr ""
+msgstr "Doriți să substituiți directorul \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:239
 #, c-format
@@ -761,11 +840,11 @@ msgstr "Un dosar cu același nume există deja în \"%s\"."
 #: ../lib/dentry/fileops_error_dialog.c:245
 #, c-format
 msgid "Do you want to replace file \"%s\"?"
-msgstr ""
+msgstr "Doriți să substituiți fișierul \"%s\"? "
 
 #: ../lib/dentry/fileops_error_dialog.c:246
 msgid "The content will be overwritten by replacing."
-msgstr ""
+msgstr "Conținutul va fi suprascris prin substituire"
 
 #: ../lib/dentry/fileops_error_dialog.c:248
 #, c-format
@@ -852,58 +931,3 @@ msgstr "_Vizualizează"
 #: ../lib/dentry/mime_actions.c:213
 msgid "_Run"
 msgstr "_Rulează"
-
-#: ../lib/category.c:45
-msgid "all"
-msgstr "tot"
-
-#: ../lib/category.c:46
-msgid "internet"
-msgstr "internet"
-
-#: ../lib/category.c:47
-msgid "multimedia"
-msgstr "multimedia"
-
-#: ../lib/category.c:48
-msgid "games"
-msgstr "jocuri"
-
-#: ../lib/category.c:49
-msgid "graphics"
-msgstr "grafică"
-
-#: ../lib/category.c:50
-msgid "productivity"
-msgstr "productivitate"
-
-#: ../lib/category.c:51
-msgid "industry"
-msgstr "industrie"
-
-#: ../lib/category.c:52
-msgid "education"
-msgstr "educație"
-
-#: ../lib/category.c:53
-msgid "development"
-msgstr "dezvoltare"
-
-#: ../lib/category.c:54
-msgid "system"
-msgstr "sistem"
-
-#: ../lib/category.c:55
-msgid "utilities"
-msgstr "utilitare"
-
-#: ../lib/category.c:56
-msgid "others"
-msgstr "altele"
-
-#, fuzzy
-#~ msgid "_Dock setting"
-#~ msgstr "Configurări _Timp"
-
-#~ msgid "_Clean up"
-#~ msgstr "_Curăță"

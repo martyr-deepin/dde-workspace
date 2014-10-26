@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-10-17 14:42+0800\n"
-"PO-Revision-Date: 2014-10-23 13:25+0000\n"
+"PO-Revision-Date: 2014-10-25 08:20+0000\n"
 "Last-Translator: Ivica  Kolić <ikoli@yahoo.com>\n"
 "Language-Team: Croatian (http://www.transifex.com/projects/p/deepin-desktop-environment/language/hr/)\n"
 "MIME-Version: 1.0\n"
@@ -343,13 +343,13 @@ msgstr "Suspenzija"
 msgid ""
 "The other users have logged in, shutdown or restart may cause the running "
 "data to be lost."
-msgstr ""
+msgstr "Ostali korisnici su se prijavili, isključivanje ili ponovno pokretanje može uzrokovati gubljenje pokrenutih podataka."
 
 #: ../resources/greeter/js/powermenu.coffee:77
 msgid ""
 "User %1 has logged in, shutdown or restart may cause the running data to be "
 "lost."
-msgstr ""
+msgstr "Korisnik %1 se prijavio, isključivanje ili ponovno pokretanje može uzrokovati gubljenje pokrenutih podataka."
 
 #: ../resources/greeter/js/powermenu.coffee:121
 msgid "Enter your password to %1"
@@ -537,7 +537,7 @@ msgstr "Koristite desnu tipku miša za slanje dvije ikone na radnu površinu."
 
 #: ../resources/guide/js/launcher.coffee:182
 msgid "tips: You can add it to startup items or uninstall it"
-msgstr ""
+msgstr "savjeti: možete dodati u stavke pokretanja ili denstalirati"
 
 #: ../resources/guide/js/launcher.coffee:214
 #: ../resources/launcher/js/const.coffee:81
