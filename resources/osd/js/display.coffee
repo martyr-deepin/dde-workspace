@@ -82,6 +82,7 @@ class Display extends Widget
 
             echo "#{@id} Class  show"
             osdShow()
+            setWinSize(@element)
             @element.style.display = "block"
 
             value = @getFeatureBrightnessValue()

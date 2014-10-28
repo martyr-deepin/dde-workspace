@@ -53,6 +53,13 @@ osdShow = ->
     document.body.opacity = "0"
     jQuery(document.body).animate({opacity:'1';},500)
 
+setWinSize =(ele)->
+    w = jQuery(ele).outerWidth()
+    h = jQuery(ele).outerHeight()
+    DCore.Osd.set_size(w,h)
+    document.body.style.width = w
+    document.body.style.height = h
+
 click_time = 0
 _b.addEventListener("click",(e)=>
     e.stopPropagation()

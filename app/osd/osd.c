@@ -53,12 +53,24 @@
 static GKeyFile* shutdown_config = NULL;
 
 PRIVATE GtkWidget* container = NULL;
-
 guint grab_timeout;
 guint grab_remove_timeout;
 
 #define HARDWARE_KEYCODE_SUPER 133
 #define HARDWARE_KEYCODE_P 33
+
+static int container_width=0,container_height=0;
+
+static
+void container_size_workaround(GtkWidget* win, GdkRectangle* allocation)
+{
+    g_return_if_fail(gtk_widget_get_realized(win));
+    g_return_if_fail(container_width != 0 && container_height != 0);
+    if (allocation->width == container_width && allocation->height == container_height) {
+        return;
+    }
+    gdk_window_resize(gtk_widget_get_window(win), container_width, container_height);
+}
 
 static struct {
     gboolean is_AudioUp;
@@ -128,7 +140,8 @@ const char* osd_get_argv()
 }
 
 PRIVATE
-gboolean keyboard_grab (){
+gboolean keyboard_grab ()
+{
     int status = gdk_keyboard_grab(gtk_widget_get_window(container), FALSE, GDK_CURRENT_TIME);
     g_debug("keyboard grab:%d===%d",status,GDK_GRAB_SUCCESS);
     if (status == GDK_GRAB_SUCCESS){
@@ -140,13 +153,15 @@ gboolean keyboard_grab (){
 }
 
 JS_EXPORT_API
-void osd_grab (){
+void osd_grab ()
+{
     grab_timeout = g_timeout_add(50,(GSourceFunc)keyboard_grab,NULL);
     grab_remove_timeout = g_timeout_add(1000,(GSourceFunc)g_source_remove,(gpointer)grab_timeout);
 }
 
 JS_EXPORT_API
-void osd_ungrab (){
+void osd_ungrab ()
+{
     gdk_keyboard_ungrab(GDK_CURRENT_TIME);
 }
 
@@ -172,14 +187,6 @@ void osd_show()
 {
     gtk_widget_show_all(container);
 }
-
-G_GNUC_UNUSED
-static gboolean
-prevent_exit (GtkWidget* w G_GNUC_UNUSED, GdkEvent* e G_GNUC_UNUSED)
-{
-    return TRUE;
-}
-
 
 static void
 sigterm_cb (int signum G_GNUC_UNUSED)
@@ -207,7 +214,8 @@ key_release_cb (GtkWidget* w G_GNUC_UNUSED, GdkEventKey*e, gpointer user_data G_
 }
 
 JS_EXPORT_API
-void osd_spawn_command(gchar* cmd){
+void osd_spawn_command(gchar* cmd)
+{
     spawn_command_sync(cmd,FALSE);
 }
 
@@ -248,15 +256,22 @@ gboolean osd_capslock_toggle()
 }
 
 JS_EXPORT_API
-void osd_set_background(double opacity){
+void osd_set_background(double opacity)
+{
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
     gdk_window_set_opacity (gdkwindow, opacity);
 }
 
+JS_EXPORT_API
+void osd_set_size(double w, double h)
+{
+    container_width = w;
+    container_height = h;
+    gtk_window_resize(GTK_WINDOW(container), w, h);
+}
+
 int main (int argc, char **argv)
 {
-    g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
-
     signal (SIGTERM, sigterm_cb);
     if (is_application_running(ID_NAME)) {
         g_warning("another instance of application dde-osd is running...\n");
@@ -298,7 +313,7 @@ int main (int argc, char **argv)
     container = create_web_container (FALSE, TRUE);
     gtk_window_set_position (GTK_WINDOW (container), GTK_WIN_POS_CENTER_ALWAYS);
 
-    GtkWidget *webview = d_webview_new_with_uri (CHOICE_HTML_PATH);
+    GtkWidget* webview = d_webview_new_with_uri (CHOICE_HTML_PATH);
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
 
     g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
@@ -306,6 +321,7 @@ int main (int argc, char **argv)
         g_signal_connect (container, "show", G_CALLBACK (show_cb), NULL);
         g_signal_connect (webview, "key-release-event", G_CALLBACK(key_release_cb), NULL);
     }
+    g_signal_connect(container, "size-allocate", G_CALLBACK(container_size_workaround), NULL);
 
     gtk_widget_realize (container);
     gtk_widget_realize (webview);

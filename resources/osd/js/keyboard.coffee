@@ -60,8 +60,8 @@ osd.SwitchLayout = (keydown)->
     if !keydown then return if mode is "dbus"
 
     keyboard = new Keyboard() if not keyboard?
-
-    if keyboard.UserLayoutList.length < 2
+    len = keyboard.UserLayoutList.length
+    if len < 2
         osdHide()
         return
 
@@ -74,6 +74,7 @@ osd.SwitchLayout = (keydown)->
     else
         keyboardList?.chooseOption()
         keyboardList?.scrollOption()
+    keyboardList.setWinSize()
     clearTimeout(timeout_osdHide)
     timeout_osdHide = setTimeout(=>
         keyboard.setCurrentLayout(keyboardList.current)

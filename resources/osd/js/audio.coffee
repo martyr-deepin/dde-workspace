@@ -96,6 +96,7 @@ class Audio extends Widget
         clearTimeout(timeout_osdHide)
         @timepress = setTimeout(=>
             osdShow()
+            setWinSize(@element)
             @element.style.display = "block"
             bgImg = @getBgName(value)
             echo "show #{@id} Volume:#{value} BgName:#{bgImg}.png"

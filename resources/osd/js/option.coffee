@@ -23,8 +23,6 @@ class Option extends Widget
         super
         echo "new Option:#{@id}"
         _b.appendChild(@element)
-        document.body.style.width = 160
-        document.body.style.height = 160
 
     hide:->
         @element.style.Option = "none"
@@ -35,6 +33,7 @@ class Option extends Widget
         @timepress = setTimeout(=>
             echo "Option #{@id} show"
             osdShow()
+            setWinSize(@element)
             @element.style.display = "block"
             set_bg(@,@id,@preImgName)
             @preImgName = @id

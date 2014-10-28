@@ -55,6 +55,16 @@ class ListChoose extends Widget
         @max_show = Math.floor(@whole_h / LI_SIZE.h)
         @boxscroll.style.overflowY = "scroll" if @list.length > @max_show
 
+    setWinSize: ->
+        w = jQuery(@element).outerWidth()
+        h = jQuery(@element).outerHeight()
+        w = Math.max(186,w)
+        h = h + 20 if not @isFromList
+        console.debug "[setWinSize]:::w:#{w},h:#{h}=============="
+        DCore.Osd.set_size(w,h)
+        document.body.style.width = w
+        document.body.style.height = h
+
     boxscroll_remove: ->
         @element.removeChild(@boxscroll) if @boxscroll
         @boxscroll = null
@@ -69,7 +79,7 @@ class ListChoose extends Widget
 
         @boxscroll = create_element("div","boxscroll",@element)
         @boxscroll.setAttribute("id","boxscroll")
- 
+
         @Listul = create_element("ul","Listul",@boxscroll)
         @Listul.style.width = LI_SIZE.w
         for each,i in @list
@@ -125,24 +135,3 @@ class ListChoose extends Widget
         @setCurrentCss()
         @current = @list[@currentIndex]
         return @current
-
-    setKeyupListener:(keyup_code,keyup_cb)->
-        document.body.addEventListener("keyup",(e)=>
-            echo "keyup:#{e.which};keyup_code_demo:#{keyup_code}"
-            if e.which == keyup_code and @isFromList is true
-                @isFromList = false
-                clearTimeout(timeout_osdHide)
-                echo "setKeyupListener keyup_cb"
-                keyup_cb?()
-        )
-
-    setClickCb: (cb) ->
-        that = @
-        for li in @li
-            li.addEventListener("click",->
-                that.current = this.id
-                that.currentIndex = i for each,i in that.list when each is that.current
-                clearTimeout(timeout_osdHide)
-                osdHide()
-                cb?()
-            )
