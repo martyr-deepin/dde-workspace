@@ -10,6 +10,8 @@
 
 GdkWindow* GET_CONTAINER_WINDOW();
 
+static void fix_reparent(GdkWindow* child, GdkWindow* parent);
+
 #define SKIP_UNINIT(key) do {\
     if (__EMBEDED_WINDOWS__ == NULL) { \
 	return;\
@@ -174,10 +176,7 @@ GdkWindow* wrapper(Window xid)
 	parent = gdk_window_new(GET_CONTAINER_WINDOW(), &attr, GDK_WA_VISUAL);
 	g_object_set_data(G_OBJECT(child), "deepin_embed_window_wrapper", parent);
 
-	XReparentWindow(gdk_x11_get_default_xdisplay(),
-		xid,
-		GDK_WINDOW_XID(parent),
-		0, 0);
+        fix_reparent(child, parent);
     } else {
 	parent = child;
     }
@@ -198,11 +197,26 @@ void exwindow_create(double xid, gboolean enable_resize)
     Window win = (Window)xid;
     __init__embed__();
     GdkWindow* p = wrapper(win);
-    if (p != NULL) {
-	gdk_window_reparent(p, GET_CONTAINER_WINDOW(), 0, 0);
-	gdk_window_set_composited(p, TRUE);
-	gdk_window_show(p);
-    }
+    g_return_if_fail(p != NULL);
+
+    fix_reparent(p, GET_CONTAINER_WINDOW());
+
+    gdk_window_set_composited(p, TRUE);
+    gdk_window_show(p);
+}
+
+//Window manager implemented with libmutter will cause reparent
+//failed but without any error.
+//Using an newly opened xdisplay instead of gdk_x11_get_default_display
+//could workaround this.
+static void fix_reparent(GdkWindow* child, GdkWindow* parent)
+{
+    Display* dpy= XOpenDisplay(NULL);
+    XReparentWindow(dpy,
+            GDK_WINDOW_XID(child), GDK_WINDOW_XID(parent),
+            0, 0);
+    XFlush(dpy);
+    XCloseDisplay(dpy);
 }
 
 JSValueRef exwindow_window_size(double xid)
@@ -226,15 +240,14 @@ void exwindow_move_resize(double xid, double x, double y, double width, double h
 {
     SKIP_UNINIT(xid);
     GdkWindow* win = (GdkWindow*)g_hash_table_lookup(__EMBEDED_WINDOWS__, (gpointer)(Window)xid);
-    if (win != NULL) {
+    g_return_if_fail(win != NULL);
 
-	GdkWindow* wrapper = get_wrapper(win);
-	if (wrapper) {
-	    gdk_window_move_resize(wrapper, (int)x, (int)y, (guint)width, (guint)height);
-	    gdk_window_move_resize(win, 0, 0, (guint)width, (guint)height);
-	} else {
-	    gdk_window_move_resize(win, (int)x, (int)y, (guint)width, (guint)height);
-	}
+    GdkWindow* wrapper = get_wrapper(win);
+    if (wrapper) {
+        gdk_window_move_resize(wrapper, (int)x, (int)y, (guint)width, (guint)height);
+        gdk_window_move_resize(win, 0, 0, (guint)width, (guint)height);
+    } else {
+        gdk_window_move_resize(win, (int)x, (int)y, (guint)width, (guint)height);
     }
 }
 
@@ -243,15 +256,14 @@ void exwindow_move(double xid, double x, double y)
 {
     SKIP_UNINIT(xid);
     GdkWindow* win = (GdkWindow*)g_hash_table_lookup(__EMBEDED_WINDOWS__, (gpointer)(Window)xid);
-    if (win != NULL) {
-	gdk_window_move(win, (int)x, (int)y);
+    g_return_if_fail(win != NULL);
 
-	GdkWindow* wrapper = get_wrapper(win);
-	if (wrapper) {
-	    gdk_window_move(wrapper, (int)x, (int)y);
-	} else {
-	    gdk_window_move(win, (int)x, (int)y);
-	}
+    GdkWindow* wrapper = get_wrapper(win);
+    if (wrapper) {
+        gdk_window_move(wrapper, (int)x, (int)y);
+        gdk_window_move(win, 0, 0);
+    } else {
+        gdk_window_move(win, (int)x, (int)y);
     }
 }
 
@@ -270,6 +282,8 @@ void exwindow_undraw(double _xid)
     SKIP_UNINIT(xid);
     g_hash_table_replace(__EMBEDED_WINDOWS_DRAWABLE__, (gpointer)xid, (gpointer)FALSE);
     GdkWindow* win = GDK_WINDOW(g_hash_table_lookup(__EMBEDED_WINDOWS__, (gpointer)xid));
+    g_return_if_fail(win != NULL);
+
     GdkWindow *wrapper = get_wrapper(win);
     cairo_rectangle_int_t rect = {0,0,1,1};
     if (wrapper == NULL) {
@@ -285,13 +299,13 @@ void exwindow_hide(double xid)
 {
     SKIP_UNINIT(xid);
     GdkWindow* win = (GdkWindow*)g_hash_table_lookup(__EMBEDED_WINDOWS__, (gpointer)(Window)xid);
-    if (win != NULL) {
-	GdkWindow* wrapper = get_wrapper(win);
-	if (wrapper) {
-	    gdk_window_hide(wrapper);
-	} else {
-	    gdk_window_hide(win);
-	}
+    g_return_if_fail(win != NULL);
+
+    GdkWindow* wrapper = get_wrapper(win);
+    if (wrapper) {
+        gdk_window_hide(wrapper);
+    } else {
+        gdk_window_hide(win);
     }
 }
 
@@ -301,24 +315,23 @@ void exwindow_show(double xid)
     draw_ew = TRUE;
     SKIP_UNINIT(xid);
     GdkWindow* win = (GdkWindow*)g_hash_table_lookup(__EMBEDED_WINDOWS__, (gpointer)(Window)xid);
-    if (win != NULL) {
-        GdkWindow* wrapper = get_wrapper(win);
-        GdkWindow* valid_window = wrapper == NULL ? win : wrapper;
+    g_return_if_fail(win != NULL);
 
-        gboolean drawable = GPOINTER_TO_INT(g_hash_table_lookup(__EMBEDED_WINDOWS_DRAWABLE__, (gpointer)(Window)xid));
-        if (!drawable) {
-            // TODO:
-            // this is just working for tray icons now.
-            // other window may undraw in the future.
-            g_hash_table_replace(__EMBEDED_WINDOWS_DRAWABLE__, (gpointer)(Window)xid, (gpointer)TRUE);
-            cairo_rectangle_int_t rect = {0,0,16,16};
-            set_input_region(valid_window, &rect);
-        }
+    GdkWindow* wrapper = get_wrapper(win);
+    GdkWindow* valid_window = (wrapper == NULL ? win : wrapper);
 
-        gdk_window_show(valid_window);
-    } else {
-        g_warning("window not found");
+    gboolean drawable = GPOINTER_TO_INT(g_hash_table_lookup(__EMBEDED_WINDOWS_DRAWABLE__, (gpointer)(Window)xid));
+
+    if (!drawable) {
+        // TODO:
+        // this is just working for tray icons now.
+        // other window may undraw in the future.
+        g_hash_table_replace(__EMBEDED_WINDOWS_DRAWABLE__, (gpointer)(Window)xid, (gpointer)TRUE);
+        cairo_rectangle_int_t rect = {0,0,16,16};
+        set_input_region(valid_window, &rect);
     }
+
+    gdk_window_show(valid_window);
 }
 
 
