@@ -85,6 +85,7 @@ DOWN = 1
 
 #draw icon and title to canvas surface
 draw_icon_on_canvas = (canvas_cantext, start_x, start_y, icon, title)->
+    console.debug "[draw_icon_on_canvas]:#{title}"
     # draw icon
     if icon.src.length
         canvas_cantext.shadowColor = "rgba(0, 0, 0, 0)"
@@ -778,7 +779,7 @@ find_nearest_free_pos_id = (id,dest_pos,radius = _PART_) ->
     else
         final_pos = coord_to_pos(dest_pos.x, dest_pos.y, width, height)
     console.log "final_pos:(#{final_pos.x},#{final_pos.y})"
-    final_pos = pos_for_drop(final_pos)
+    final_pos = pos_for_drop(final_pos) if not (id in widget_item)
     console.log "final_pos_for_drop:(#{final_pos.x},#{final_pos.y})"
     final_pos = limit_in_desktop_range(final_pos)
     return final_pos
