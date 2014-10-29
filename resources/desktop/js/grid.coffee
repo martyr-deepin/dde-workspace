@@ -54,8 +54,6 @@ last_widget = ""
 
 # store the buffer canvas for drag the items
 drag_canvas = null
-# store the context of the buffer canvas for drag the items
-drag_context = null
 # store the left top point of drag image start point
 drag_start = {x : 0, y: 0}
 
@@ -81,11 +79,13 @@ RIGHT = 1
 UP  = -1
 DOWN = 1
 
-
+clear_drag_canvas = ->
+    console.debug "[clear_drag_canvas]======"
+    drag_canvas.width = drag_canvas.width if drag_canvas != null
+    drag_canvas = null
 
 #draw icon and title to canvas surface
 draw_icon_on_canvas = (canvas_cantext, start_x, start_y, icon, title)->
-    console.debug "[draw_icon_on_canvas]:#{title}"
     # draw icon
     if icon.src.length
         canvas_cantext.shadowColor = "rgba(0, 0, 0, 0)"
@@ -640,7 +640,10 @@ paste_from_clipboard = ->
 
 
 item_dragstart_handler = (widget, evt) ->
-    #echo "item_dragstart_handler"
+    console.debug "item_dragstart_handler"
+    #fixed there is not canvas when the first drag
+    update_selected_item_drag_image() if drag_canvas == null
+
     all_selected_items_path = ""
     if selected_item.length > 0
         for i in [0 ... selected_item.length] by 1
@@ -721,13 +724,13 @@ item_dragend_handler = (w, evt) ->
             new_pos = find_nearest_free_pos(widget,new_pos)
             move_to_somewhere(widget, new_pos)
 
-        update_selected_item_drag_image()
+        clear_drag_canvas()
 
     return
 
 
 find_nearest_free_pos_id = (id,dest_pos,radius = _PART_) ->
-    console.debug "[find_nearest_free_pos_id]: dest_pos:(#{dest_pos.x},#{dest_pos.y})"
+    #console.debug "[find_nearest_free_pos_id]: dest_pos:(#{dest_pos.x},#{dest_pos.y})"
     width = dest_pos.width
     height = dest_pos.height
     final_pos = coord_to_pos(dest_pos.x, dest_pos.y, width, height)
@@ -766,7 +769,7 @@ find_nearest_free_pos_id = (id,dest_pos,radius = _PART_) ->
             if dis is distance_list_sorted[0]
                 minest.push(i)
                 #echo "#{i},#{distance_list_sorted[0]},#{pos_list[i * 2]},#{pos_list[i *2 + 1]}"
-        console.debug "minest.length:#{minest.length}"
+        #console.debug "minest.length:#{minest.length}"
         switch minest.length
             when 0 then final_pos = coord_to_pos(dest_pos.x, dest_pos.y, width, height)
             when 1 then final_pos = coord_to_pos(pos_list[minest[0] * 2] , pos_list[minest[0] * 2 + 1],width,height)
@@ -778,9 +781,9 @@ find_nearest_free_pos_id = (id,dest_pos,radius = _PART_) ->
         minest.splice(0,pos_list.length)
     else
         final_pos = coord_to_pos(dest_pos.x, dest_pos.y, width, height)
-    console.log "final_pos:(#{final_pos.x},#{final_pos.y})"
+    #console.log "final_pos:(#{final_pos.x},#{final_pos.y})"
     final_pos = pos_for_drop(final_pos) if not (id in widget_item)
-    console.log "final_pos_for_drop:(#{final_pos.x},#{final_pos.y})"
+    #console.log "final_pos_for_drop:(#{final_pos.x},#{final_pos.y})"
     final_pos = limit_in_desktop_range(final_pos)
     return final_pos
 
@@ -835,7 +838,7 @@ cancel_all_selected_stats = () ->
 
 
 update_selected_stats = (w, evt) ->
-    console.debug "[update_selected_stats]:shiftKey:#{evt.shiftKey}"
+    #console.debug "[update_selected_stats]:shiftKey:#{evt.shiftKey}"
     if evt.ctrlKey
         if w.selected == true then cancel_item_selected(w)
         else set_item_selected(w)
@@ -852,10 +855,8 @@ update_selected_stats = (w, evt) ->
                 item_pos = w_i.get_pos()
                 item_pixel = pos_to_pixel(item_pos)
                 if compare_pos_shift_pixel(end_pixel, start_pixel, item_pixel)
-                    console.debug "[update_selected_stats]:#{w_i.get_name()}:true"
                     set_item_selected(w_i) if not w_i.selected
                 else
-                    console.debug "[update_selected_stats]:#{w_i.get_name()}:false"
                     cancel_item_selected(w_i) if w_i.selected
 
     else
@@ -878,6 +879,7 @@ update_selected_stats = (w, evt) ->
 
 # draw selected item icons DND image on special html canvas
 update_selected_item_drag_image = ->
+    console.debug "[update_selected_item_drag_image]"
     drag_draw_delay_timer = -1
 
     if selected_item.length == 0 then return
@@ -899,6 +901,9 @@ update_selected_item_drag_image = ->
     if top_left.x > bottom_right.x then top_left.x = bottom_right.x
     if top_left.y > bottom_right.y then top_left.y = bottom_right.y
 
+    if drag_canvas == null
+        drag_canvas = document.createElement("canvas")
+        drag_canvas.setAttribute("id","item_drag_canvas")
     drag_canvas.width = (bottom_right.x - top_left.x + 1) * _ITEM_WIDTH_
     drag_canvas.height = (bottom_right.y - top_left.y + 1) * _ITEM_HEIGHT_
 
@@ -913,7 +918,7 @@ update_selected_item_drag_image = ->
         start_x = pos.x * _GRID_WIDTH_INIT_
         start_y = pos.y * _GRID_HEIGHT_INIT_
 
-        draw_icon_on_canvas(drag_context, start_x, start_y, w.item_icon, w.item_name.innerText)
+        draw_icon_on_canvas(drag_canvas.getContext('2d'), start_x, start_y, w.item_icon, w.item_name.innerText)
 
     [drag_start.x, drag_start.y] = [top_left.x , top_left.y]
     return
@@ -1096,7 +1101,7 @@ menu_create_templates = (filter) ->
 
 # handle up/down/left/right arrow keys to navigate between items
 grid_do_keydown_to_shortcut = (evt) ->
-    console.debug "[grid_do_keydown_to_shrotcut]:shiftKey:#{evt.shiftKey}"
+    #console.debug "[grid_do_keydown_to_shrotcut]:shiftKey:#{evt.shiftKey}"
     if rename_div_process_events then return
     if evt.keyCode >= 37 and evt.keyCode <= 40
         evt.stopPropagation()
@@ -1133,11 +1138,9 @@ grid_do_keydown_to_shortcut = (evt) ->
                     item_pos = w_i.get_pos()
                     item_pixel = pos_to_pixel(item_pos)
                     if compare_pos_shift_pixel(end_pixel, start_pixel, item_pixel)
-                        console.debug "[update_selected_stats]:#{w_i.get_name()}:true"
                         set_item_selected(w_i) if not w_i.selected
                     else
                         cancel_item_selected(w_i) if w_i.selected
-                        console.debug "[update_selected_stats]:#{w_i.get_name()}:false"
 
                 if last_widget != w_f.get_id()
                     w.item_blur() if last_widget.length > 0 and (w = Widget.look_up(last_widget))?
@@ -1229,10 +1232,6 @@ create_item_grid = ->
     div_grid.parentElement.addEventListener("keypress", grid_do_keypress_to_shrotcut)
     sel_mouse_box = new MouseSelectAreaBox(div_grid.parentElement)
 
-    drag_canvas = document.createElement("canvas")
-    drag_canvas.setAttribute("id","item_drag_canvas")
-    drag_canvas.style.opacity = 0.6
-    drag_context = drag_canvas.getContext('2d')
     return
 
 
@@ -1310,6 +1309,7 @@ class MouseSelectAreaBox
         console.log "mouseup_event"
         evt.stopPropagation()
         evt.preventDefault()
+        clear_drag_canvas()
         @delete_mouse_area()
 
     delete_mouse_area: ->

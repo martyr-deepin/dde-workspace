@@ -44,6 +44,10 @@ body {
     position:absolute;
 }
 
+#item_drag_canvas {
+    opacity:0.6;
+}
+
 .DesktopEntry {
     width:70px;
     padding:2px 4px;
