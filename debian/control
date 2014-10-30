@@ -23,11 +23,7 @@ Homepage: http://www.linuxdeepin.com
 
 Package: deepin-desktop-environment
 Architecture: any
-Depends: ${shlibs:Depends},
- ${misc:Depends},
- deepin-artwork,
- dde-workspace (>=2.1+20140731175954),
- dde-control-center (>= 0.0.3+20140801161324),
+Depends: ${shlibs:Depends},${misc:Depends}, startdde
 Description: Meta Package for Linuxdeepin test desktop environment.
  Linuxdeepin 12.12 testing deskotp environment.
  .
@@ -43,9 +39,11 @@ Conflicts: deepin-desktop-environment-dock, deepin-desktop-environment-launcher,
  deepin-desktop-environment-plugins-weather
 Depends: ${shlibs:Depends},
  ${misc:Depends},
+ deepin-artwork,
  deepin-menu (>= 1.1+20140730105532),
  libdeepin-webkit-3.0-0,
  dde-daemon (>= 0.0.1+20140915),
+ dde-control-center (>= 0.0.3+20140801161324),
  systemd-shim,
 Description: deepin desktop envrionment for Linuxdeepin new desktop environment.
  Linuxdeepin 12.12 testing deskotp environment.
