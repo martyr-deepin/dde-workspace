@@ -150,11 +150,36 @@ void launcher_force_show(gboolean force)
 }
 
 
+static
+void activate_window(Display *dsp, GdkWindow *w)
+{
+    static Atom activeWindowAtom = 0;
+    if (activeWindowAtom == 0) {
+        activeWindowAtom = gdk_x11_get_xatom_by_name("_NET_ACTIVE_WINDOW");
+    }
+    XClientMessageEvent event;
+    event.type = ClientMessage;
+    event.window = GDK_WINDOW_XID(w);
+    event.message_type = activeWindowAtom;
+    event.format = 32;
+    event.data.l[0] = 1; // 1 for application, 2 for pager, 0 for old spec
+    event.data.l[1] = gdk_x11_get_server_time(w);
+    XSendEvent(dsp, GDK_ROOT_WINDOW(), False,
+               StructureNotifyMask, (XEvent*)&event);
+    XFlush(dsp);
+}
+
+
 DBUS_EXPORT_API
 void launcher_show()
 {
+    gtk_window_deiconify(GTK_WINDOW(container)); /* ensure launcher is not minimized */
     gtk_widget_show_all(container);
     is_launcher_shown = TRUE;
+
+    // activate launcher manually
+    activate_window(GDK_DISPLAY_XDISPLAY(gdk_display_get_default()), gtk_widget_get_window(container));
+
     GError* err = NULL;
     GDBusConnection* conn = g_bus_get_sync(G_BUS_TYPE_SESSION, NULL, &err);
     if (err != NULL) {
@@ -545,4 +570,3 @@ int main(int argc, char* argv[])
     gtk_main();
     return 0;
 }
-
