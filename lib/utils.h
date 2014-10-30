@@ -67,5 +67,8 @@ gboolean is_chrome_app(char const* name);
 char* bg_blur_pict_get_dest_path (const char* src_uri);
 gboolean is_livecd();
 gboolean spawn_command_sync (const char* command,gboolean sync);
+const gchar* get_lang();
+const gchar* get_deepin_version();
+const gchar* get_deepin_type(const gchar* lang);
 
 #endif

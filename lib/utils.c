@@ -450,3 +450,77 @@ gboolean spawn_command_sync (const char* command,gboolean sync)
     return TRUE;
 }
 
+const gchar* get_lang()
+{
+    const char * const *language_names = g_get_language_names();
+    if (!language_names[0])
+        return NULL;
+    char const *env_lang = NULL;
+    for (int i = 0; language_names[i] != NULL; ++i) {
+        //["en_US","en","C"]
+        if (strlen(language_names[i]) == 2) {
+            env_lang = language_names[i];
+        }
+        if (strlen(language_names[i]) == 5) {
+            env_lang = language_names[i];
+            break;
+        }
+    }
+    g_debug("[%s]:%s", __func__, env_lang);
+    return env_lang;
+}
+
+#define VERSION_PATH "/etc/deepin-version"
+const gchar* get_deepin_version()
+{
+    GKeyFile* file = g_key_file_new();
+    gboolean load = g_key_file_load_from_file (file, VERSION_PATH, G_KEY_FILE_NONE, NULL);
+    if (!load){
+        g_key_file_unref(file);
+        return NULL;
+    }
+    gsize len;
+    gchar** groups = g_key_file_get_groups(file,&len);
+    const gchar* version = NULL;
+    for (guint i = 0;i < len; i++)
+    {
+        if (g_strcmp0(groups[i], "Release") == 0){
+            version = g_key_file_get_string(file,groups[i],"Version", NULL);
+            g_debug ("[%s]::groups[%d]:%s,Version:%s", __func__, i, groups[i], version);
+        }
+    }
+    g_strfreev(groups);
+    g_key_file_unref(file);
+    g_message ("[%s]::Version:%s", __func__, version);
+    return g_strdup(version);
+}
+
+const gchar* get_deepin_type(const gchar* lang)
+{
+    GKeyFile* file = g_key_file_new();
+    gboolean load = g_key_file_load_from_file (file, VERSION_PATH, G_KEY_FILE_KEEP_TRANSLATIONS, NULL);
+    if (!load){
+        g_key_file_unref(file);
+        return NULL;
+    }
+    gsize len;
+    gchar** groups = g_key_file_get_groups(file,&len);
+    const gchar* type = NULL;
+    for (guint i = 0;i < len; i++)
+    {
+        if (g_strcmp0(groups[i], "Release") == 0){
+            if (lang == NULL)
+                type = g_key_file_get_string(file,groups[i],"Type", NULL);
+            else{
+                type = g_key_file_get_locale_string(file,groups[i],"Type", lang,NULL);
+                if (type == NULL)
+                    type = g_key_file_get_string(file,groups[i],"Type", NULL);
+            }
+            g_debug ("[%s]::groups[%d]:%s,Type[%s]:%s", __func__, i, groups[i], lang, type);
+        }
+    }
+    g_strfreev(groups);
+    g_key_file_unref(file);
+    return g_strdup(type);
+}
+

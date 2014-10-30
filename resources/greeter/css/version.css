@@ -1,0 +1,21 @@
+.Version {
+    display:-webkit-box;
+}
+
+.VerBeta {
+    display:block;
+    margin-left:4px;
+    margin-top:0px;
+    font-family:Arial;
+    font-size:10px;
+    color:rgba(255,255,255,0.9);
+}
+
+.VerType {
+    display:block;
+    margin-left:10px;
+    margin-top:14px;
+    font-family:Arial;
+    font-size:16px;
+    color:rgba(255,255,255,0.9);
+}

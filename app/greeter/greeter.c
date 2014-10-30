@@ -69,6 +69,17 @@ struct AuthHandler {
 
 struct AuthHandler *handler;
 
+JS_EXPORT_API
+const char* greeter_get_lang()
+{
+    return get_lang();
+}
+
+JS_EXPORT_API
+const char* greeter_get_deepin_type(const gchar* lang)
+{
+    return get_deepin_type(lang);
+}
 
 JS_EXPORT_API
 char* greeter_get_theme()

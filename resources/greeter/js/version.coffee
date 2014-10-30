@@ -20,15 +20,20 @@
 class Version extends Widget
     constructor:->
         super
-        @element.style.display = "-webkit-box"
+        inject_css(_b,"css/version.css")
         img_src_before = "images/"
         logo_img = create_img("version_img","",@element)
         logo_img.src = "#{img_src_before}/logo.png"
-        ver = create_element("div","ver",@element)
-        ver.style.display = "block"
-        ver.style.marginLeft = "0.4em"
-        ver.style.top = 0
-        ver.textContent = ""
-        ver.style.fontFamily = "Arial"
-        ver.style.fontSize = "1em"
-        ver.style.color = "rgba(255,255,255,0.9)"
+
+        ver = create_element("div","",@element)
+        ver_txt = ""
+        if is_greeter
+            type_default = DCore[APP_NAME].get_deepin_type(null)
+            if type_default == "Desktop"#if Desktop type, will not show typ,just beta alpha
+                ver.setAttribute("class","VerBeta")
+                ver_txt = ""
+            else
+                ver.setAttribute("class","VerType")
+                lang = DCore[APP_NAME].get_lang()
+                ver_txt = DCore[APP_NAME].get_deepin_type(lang)
+        ver.textContent = ver_txt

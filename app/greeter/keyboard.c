@@ -139,6 +139,7 @@ char** get_user_groups()
     gsize len;
     user_list = g_key_file_get_groups(key_file,&len);
     g_message("get_user_groups length:%d,load:%d",(int)len,load);
+    g_key_file_unref(key_file);
     return user_list;
 }
 
@@ -172,6 +173,7 @@ JSObjectRef greeter_get_user_config_list(const gchar* username)
 
     g_free(current_layout);
     g_free(greeter_theme);
+    g_key_file_unref(key_file);
     return json;
 }
 
@@ -185,6 +187,7 @@ JSObjectRef greeter_get_user_layouts(const gchar* username)
     gchar** layouts = g_key_file_get_string_list(key_file,username,"KeyboardLayoutList",NULL,NULL);
     JSObjectRef obj = export_layouts_des(layouts);
     g_strfreev(layouts);
+    g_key_file_unref(key_file);
     return obj;
 }
 
