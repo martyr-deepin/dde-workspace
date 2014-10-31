@@ -24,9 +24,7 @@
 #include <gio/gio.h>
 #include <jsextension.h>
 
-// the really icon path is determined by theme
-void set_default_theme(const char* theme);
-// deal with the NotShowIn/OnlyShowIn filed. 
+// deal with the NotShowIn/OnlyShowIn filed.
 void set_desktop_env_name(const char* name);
 
 // change the desktop file 's current locale name to "name"
@@ -43,3 +41,4 @@ char* icon_name_to_path_with_check_xpm(const char* name, int size);
 char* lookup_icon_by_gicon(GIcon* icon);
 
 #endif
+

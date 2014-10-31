@@ -10,8 +10,8 @@ class Trash extends PostfixedItem
         @entry = DCore.DEntry.get_trash_entry()
         @emptyIcon = Trash.get_icon(0)
         @fullIcon = Trash.get_icon(1)
-        @emptyOpenIcon = "js/plugins/trash/img/emptyOpenIcon.png"
-        @fullOpenIcon = "js/plugins/trash/img/fullOpenIcon.png"
+        @emptyOpenIcon = DCore.get_theme_icon(EMPTY_TRASH_OPENED_ICON, 48) || Trash.get_icon(0)
+        @fullOpenIcon = DCore.get_theme_icon(FULL_TRASH_OPENED_ICON, 48) || Trash.get_icon(1)
         @change_icon(icon)
         @imgHover.style.display = 'none'
         @isEmpty = false
