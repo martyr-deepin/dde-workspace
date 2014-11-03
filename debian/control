@@ -40,10 +40,10 @@ Conflicts: deepin-desktop-environment-dock, deepin-desktop-environment-launcher,
 Depends: ${shlibs:Depends},
  ${misc:Depends},
  deepin-artwork,
- deepin-menu (>= 1.1+20140730105532),
+ deepin-menu,
  libdeepin-webkit-3.0-0,
- dde-daemon (>= 0.0.1+20140915),
- dde-control-center (>= 0.0.3+20140801161324),
+ dde-daemon,
+ dde-control-center,
  systemd-shim,
 Description: deepin desktop envrionment for Linuxdeepin new desktop environment.
  Linuxdeepin 12.12 testing deskotp environment.
