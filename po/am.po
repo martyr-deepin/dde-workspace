@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-10-17 14:42+0800\n"
-"PO-Revision-Date: 2014-10-17 06:59+0000\n"
-"Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
+"PO-Revision-Date: 2014-11-01 20:11+0000\n"
+"Last-Translator: samson <sambelet@yahoo.com>\n"
 "Language-Team: Amharic (http://www.transifex.com/projects/p/deepin-desktop-environment/language/am/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -342,13 +342,13 @@ msgstr "ማገጃ"
 msgid ""
 "The other users have logged in, shutdown or restart may cause the running "
 "data to be lost."
-msgstr ""
+msgstr "ሌላ ተጠቃሚ ገብቷል ማጥፋት ወይንም እንደገና ማስነሳት የ ዳታ መጥፋትን ሊያስከትል ይችላል"
 
 #: ../resources/greeter/js/powermenu.coffee:77
 msgid ""
 "User %1 has logged in, shutdown or restart may cause the running data to be "
 "lost."
-msgstr ""
+msgstr "ተጠቃሚ %1 ገብቷል ማጥፋት ወይንም እንደገና ማስነሳት የ ዳታ መጥፋትን ሊያስከትል ይችላል"
 
 #: ../resources/greeter/js/powermenu.coffee:121
 msgid "Enter your password to %1"
@@ -426,7 +426,7 @@ msgstr " \"የ መተግበሪያ ቡድን\" መፍጠር አሁን ተምረ�
 
 #: ../resources/guide/js/desktop.coffee:117
 msgid "tips: Right-click on the application group will provide more functions"
-msgstr ""
+msgstr "ጠቃሚ ምክር：በ ቀኝ-ይጫኑ በ መተግበሪያው ቡድን ላይ ተጨማሪ ተግባሮች ለማግኘት"
 
 #: ../resources/guide/js/desktop.coffee:128
 msgid ""
@@ -482,7 +482,7 @@ msgstr "ይህ የስርአቱ ማሰናጃ ቦታ ነው"
 msgid ""
 "tips: Hover the setting icon on dock to quickly implement some setting "
 "functions"
-msgstr ""
+msgstr "ጠቃሚ ምክር： መጠቆሚያውን በ ዶክ ማሰናጃ ምልክት ላይ ያንሳፉ የማሰናጃ ተግባሮች ለመፈጸም"
 
 #: ../resources/guide/js/end.coffee:25
 msgid "Thanks for your patience while learning. Congratulations."
@@ -502,13 +502,13 @@ msgstr ""
 msgid ""
 "What shown in the first screen of \"launcher\" are the applications "
 "collected."
-msgstr ""
+msgstr "በመጀመሪያው መመልከቻ \" ማስነሻ\" ላይ የሚታዩት የመተግበሪያ ስብስቦች ናቸው"
 
 #: ../resources/guide/js/launcher.coffee:85
 msgid ""
 "Please click on the \"All Applications\" icon, you will see all "
 "applications."
-msgstr ""
+msgstr "እባክዎን ይጫኑ በ \"ሁሉም መተግበሪያዎች\" ምልክት ላይ መተግበሪያዎችን በሙሉ ለማየት"
 
 #: ../resources/guide/js/launcher.coffee:95
 msgid ""
@@ -528,7 +528,7 @@ msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:164
 msgid "tips: Please directly enter the word \"deepin\""
-msgstr ""
+msgstr "ጠቃሚ ምክር：እባክዎን በቀጥታ ይህን \"deepin\" ቃል ያስገቡ"
 
 #: ../resources/guide/js/launcher.coffee:181
 msgid "Use the right mouse button to send two icons to the desktop"
@@ -536,7 +536,7 @@ msgstr "ሁለት ምልክቶች ወደ ዴስክቶፕ ለመላክ የ አይ
 
 #: ../resources/guide/js/launcher.coffee:182
 msgid "tips: You can add it to startup items or uninstall it"
-msgstr ""
+msgstr "ጠቃሚ ምክር:ወደ ማስጀመሪያ ወይንም ወደ ማጥፊያ መጨመር ይችላሉ"
 
 #: ../resources/guide/js/launcher.coffee:214
 #: ../resources/launcher/js/const.coffee:81
