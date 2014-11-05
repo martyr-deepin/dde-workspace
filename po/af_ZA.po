@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-17 14:42+0800\n"
-"PO-Revision-Date: 2014-10-17 06:59+0000\n"
+"POT-Creation-Date: 2014-11-18 17:29+0800\n"
+"PO-Revision-Date: 2014-11-18 09:58+0000\n"
 "Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
 "Language-Team: Afrikaans (South Africa) (http://www.transifex.com/projects/p/deepin-desktop-environment/language/af_ZA/)\n"
 "MIME-Version: 1.0\n"
@@ -27,55 +27,57 @@ msgid "\"%1\" failed to be uninstalled"
 msgstr "Verwyder van \"%1\" het misluk"
 
 #: ../resources/desktop/js/application.coffee:179
-#: ../resources/desktop/js/richdir.coffee:332
-#: ../resources/desktop/js/richdir.coffee:583
+#: ../resources/desktop/js/richdir.coffee:348
+#: ../resources/desktop/js/richdir.coffee:600
+#: ../resources/desktop/js/richdir.coffee:643
 msgid "The link is invalid. Do you want to delete it?"
 msgstr "Die skakel is ongeldig. Wil jy dit te verwyder?"
 
 #: ../resources/desktop/js/application.coffee:179
 #: ../resources/desktop/js/desktopentry.coffee:166
-#: ../resources/desktop/js/richdir.coffee:332
-#: ../resources/desktop/js/richdir.coffee:583
-#: ../resources/dock/js/plugins/trash/trash.coffee:81
+#: ../resources/desktop/js/richdir.coffee:348
+#: ../resources/desktop/js/richdir.coffee:600
+#: ../resources/desktop/js/richdir.coffee:643
+#: ../resources/dock/js/plugins/trash/trash.coffee:85
 msgid "Warning"
 msgstr "Waarskuwing"
 
 #: ../resources/desktop/js/desktopentry.coffee:102
-#: ../resources/desktop/js/richdir.coffee:133
-#: ../resources/desktop/js/richdir.coffee:563
+#: ../resources/desktop/js/richdir.coffee:138
+#: ../resources/desktop/js/richdir.coffee:580
 #: ../resources/desktop/js/specialitem.coffee:51
 #: ../resources/desktop/js/specialitem.coffee:146
 #: ../resources/guide/js/launcher.coffee:212
-#: ../resources/launcher/js/item.coffee:301
+#: ../resources/launcher/js/item.coffee:281
 msgid "_Open"
 msgstr "_Maak oop"
 
 #: ../resources/desktop/js/desktopentry.coffee:104
-#: ../resources/desktop/js/richdir.coffee:565
+#: ../resources/desktop/js/richdir.coffee:582
 msgid "Cu_t"
 msgstr "Kni_p"
 
 #: ../resources/desktop/js/desktopentry.coffee:105
-#: ../resources/desktop/js/item.coffee:397
-#: ../resources/desktop/js/richdir.coffee:566
+#: ../resources/desktop/js/item.coffee:401
+#: ../resources/desktop/js/richdir.coffee:583
 msgid "_Copy"
 msgstr "_Kopieer"
 
 #: ../resources/desktop/js/desktopentry.coffee:107
-#: ../resources/desktop/js/richdir.coffee:135
+#: ../resources/desktop/js/richdir.coffee:140
 msgid "_Rename"
 msgstr "_Herbenoem"
 
 #: ../resources/desktop/js/desktopentry.coffee:108
 #: ../resources/desktop/js/invalidlink.coffee:34
-#: ../resources/desktop/js/item.coffee:398
-#: ../resources/desktop/js/richdir.coffee:139
-#: ../resources/desktop/js/richdir.coffee:568
+#: ../resources/desktop/js/item.coffee:402
+#: ../resources/desktop/js/richdir.coffee:144
+#: ../resources/desktop/js/richdir.coffee:585
 msgid "_Delete"
 msgstr "_Verwyder"
 
 #: ../resources/desktop/js/desktopentry.coffee:110
-#: ../resources/desktop/js/richdir.coffee:570
+#: ../resources/desktop/js/richdir.coffee:587
 #: ../resources/desktop/js/specialitem.coffee:53
 msgid "_Properties"
 msgstr "_Eienskappe"
@@ -96,11 +98,11 @@ msgid "Extract _Here"
 msgstr "Onttrek _Hier"
 
 #: ../resources/desktop/js/desktopentry.coffee:166
-#: ../resources/dock/js/plugins/trash/trash.coffee:81
+#: ../resources/dock/js/plugins/trash/trash.coffee:85
 msgid "Can not open this file."
 msgstr "Kan nie die lêer oop maak nie."
 
-#: ../resources/desktop/js/grid.coffee:72 ../lib/dentry/fileops.c:403
+#: ../resources/desktop/js/grid.coffee:70 ../lib/dentry/fileops.c:403
 msgid "Untitled"
 msgstr "Ongetiteld"
 
@@ -136,7 +138,7 @@ msgid "Open in _terminal"
 msgstr "Maak oop in terminaal"
 
 #: ../resources/desktop/js/grid.coffee:1052
-#: ../resources/desktop/js/item.coffee:396
+#: ../resources/desktop/js/item.coffee:400
 #: ../resources/guide/js/desktop.coffee:199
 msgid "_Paste"
 msgstr "_Plak"
@@ -156,15 +158,15 @@ msgstr "_Hoek navigasie"
 msgid "Pe_rsonalize"
 msgstr "Verpe_rsoonlik"
 
-#: ../resources/desktop/js/item.coffee:395
+#: ../resources/desktop/js/item.coffee:399
 msgid "_Cut"
 msgstr ""
 
-#: ../resources/desktop/js/item.coffee:400
+#: ../resources/desktop/js/item.coffee:404
 msgid "_Select All"
 msgstr ""
 
-#: ../resources/desktop/js/richdir.coffee:137
+#: ../resources/desktop/js/richdir.coffee:142
 msgid "_Ungroup"
 msgstr "_Ongroepeer"
 
@@ -186,11 +188,11 @@ msgid "_Clean up 1 item"
 msgstr "_Maak skoon 1 item"
 
 #: ../resources/desktop/js/specialitem.coffee:154
-#: ../resources/dock/js/plugins/trash/trash.coffee:34
+#: ../resources/dock/js/plugins/trash/trash.coffee:38
 msgid "_Empty"
 msgstr "_Leeg"
 
-#: ../resources/dock/js/config.coffee:184
+#: ../resources/dock/js/config.coffee:186
 msgid "Unknown"
 msgstr "Onbekend"
 
@@ -235,7 +237,7 @@ msgstr "_Doeltreffendheid modus"
 msgid "_Classic mode"
 msgstr "_Klassiek modus"
 
-#: ../resources/dock/js/main.coffee:115 ../resources/zone/js/utils.coffee:10
+#: ../resources/dock/js/main.coffee:115 ../resources/zone/js/utils.coffee:13
 msgid "Launcher"
 msgstr "Lanseerder"
 
@@ -274,27 +276,27 @@ msgstr "Fry"
 msgid "Sat"
 msgstr "Sat"
 
-#: ../resources/dock/js/plugins/trash/trash.coffee:38
+#: ../resources/dock/js/plugins/trash/trash.coffee:42
 msgid "_Close"
 msgstr "_Sluit"
 
-#: ../resources/dock/js/plugins/trash/trash.coffee:118
-#: ../resources/launcher/js/item.coffee:379
+#: ../resources/dock/js/plugins/trash/trash.coffee:122
+#: ../resources/launcher/js/item.coffee:351
 msgid "Are you sure to remove"
 msgstr "Is jy seker te verwyder"
 
-#: ../resources/dock/js/plugins/trash/trash.coffee:118
-#: ../resources/launcher/js/item.coffee:379
+#: ../resources/dock/js/plugins/trash/trash.coffee:122
+#: ../resources/launcher/js/item.coffee:351
 msgid "All dependencies will be removed"
 msgstr "Alle afhanklikhede sal verwyder word"
 
-#: ../resources/dock/js/plugins/trash/trash.coffee:118
-#: ../resources/launcher/js/item.coffee:379
+#: ../resources/dock/js/plugins/trash/trash.coffee:122
+#: ../resources/launcher/js/item.coffee:351
 msgid "no"
 msgstr "nee"
 
-#: ../resources/dock/js/plugins/trash/trash.coffee:118
-#: ../resources/launcher/js/item.coffee:379
+#: ../resources/dock/js/plugins/trash/trash.coffee:122
+#: ../resources/launcher/js/item.coffee:351
 msgid "yes"
 msgstr "ja"
 
@@ -402,11 +404,11 @@ msgstr "Nov"
 msgid "Dec"
 msgstr "Des"
 
-#: ../resources/greeter/js/user.coffee:413
+#: ../resources/greeter/js/user.coffee:418
 msgid "Login"
 msgstr "Teken in"
 
-#: ../resources/greeter/js/user.coffee:415
+#: ../resources/greeter/js/user.coffee:420
 msgid "Unlock"
 msgstr ""
 
@@ -539,27 +541,26 @@ msgid "tips: You can add it to startup items or uninstall it"
 msgstr "wenke: Jy kan dit voeg by die opstart item of dit verwyder"
 
 #: ../resources/guide/js/launcher.coffee:214
-#: ../resources/launcher/js/const.coffee:81
 msgid "Remove from _favorites"
 msgstr "Verwyder van _gunstelinge"
 
 #: ../resources/guide/js/launcher.coffee:215
-#: ../resources/launcher/js/const.coffee:84
+#: ../resources/launcher/js/const.coffee:76
 msgid "Send to d_esktop"
 msgstr "Stuur na t_afelblad"
 
 #: ../resources/guide/js/launcher.coffee:216
-#: ../resources/launcher/js/const.coffee:88
+#: ../resources/launcher/js/const.coffee:80
 msgid "Send to do_ck"
 msgstr "Stuur na do_k"
 
 #: ../resources/guide/js/launcher.coffee:218
-#: ../resources/launcher/js/const.coffee:72
+#: ../resources/launcher/js/const.coffee:68
 msgid "_Add to autostart"
 msgstr "_Voeg by outobegin"
 
 #: ../resources/guide/js/launcher.coffee:219
-#: ../resources/launcher/js/item.coffee:308
+#: ../resources/launcher/js/item.coffee:287
 msgid "_Uninstall"
 msgstr "_Verwyder"
 
@@ -595,37 +596,53 @@ msgstr "Welkom by die Deepin Bedryfstelsel"
 msgid "Prepare for operation ..."
 msgstr "Voorberei vir bewerking ..."
 
-#: ../resources/launcher/js/const.coffee:64
+#: ../resources/launcher/js/const.coffee:60
 msgid "_Hide the icon"
 msgstr "_Steek die ikoon weg"
 
-#: ../resources/launcher/js/const.coffee:65
+#: ../resources/launcher/js/const.coffee:61
 msgid "_Display hidden icons"
 msgstr "_Wys verborge ikone"
 
-#: ../resources/launcher/js/const.coffee:68
+#: ../resources/launcher/js/const.coffee:64
 msgid "_Hide this icon"
 msgstr "_Versteek die ikoon"
 
-#: ../resources/launcher/js/const.coffee:69
+#: ../resources/launcher/js/const.coffee:65
 msgid "_Display this icon"
 msgstr "_Vertoon die ikoon"
 
-#: ../resources/launcher/js/const.coffee:73
+#: ../resources/launcher/js/const.coffee:69
 msgid "_Remove from autostart"
 msgstr "_Verwyder van outobegin"
 
-#: ../resources/launcher/js/const.coffee:80
-msgid "Add to _favorites"
-msgstr "Voeg by _gunstelinge"
-
-#: ../resources/launcher/js/const.coffee:85
+#: ../resources/launcher/js/const.coffee:77
 msgid "Remove from d_esktop"
 msgstr "Verwyder van t_afelblad"
 
-#: ../resources/launcher/js/const.coffee:89
+#: ../resources/launcher/js/const.coffee:81
 msgid "Remove from do_ck"
 msgstr "Verwyder na do_k"
+
+#: ../resources/launcher/js/menu.coffee:5
+msgid "By name"
+msgstr ""
+
+#: ../resources/launcher/js/menu.coffee:6
+msgid "By category (icon)"
+msgstr ""
+
+#: ../resources/launcher/js/menu.coffee:7
+msgid "By category (text)"
+msgstr ""
+
+#: ../resources/launcher/js/menu.coffee:8
+msgid "By time installed"
+msgstr ""
+
+#: ../resources/launcher/js/menu.coffee:9
+msgid "By frequency"
+msgstr ""
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
@@ -635,19 +652,19 @@ msgstr "Dupliseer"
 msgid "Extend"
 msgstr "Verleng"
 
-#: ../resources/zone/js/utils.coffee:10
+#: ../resources/zone/js/utils.coffee:13
 msgid "Control Center"
 msgstr "Beheersentrum"
 
-#: ../resources/zone/js/utils.coffee:10
+#: ../resources/zone/js/utils.coffee:13
 msgid "All Windows"
 msgstr "Alle Vensters"
 
-#: ../resources/zone/js/utils.coffee:10
+#: ../resources/zone/js/utils.coffee:13
 msgid "Desktop"
 msgstr "Lessenaarblad"
 
-#: ../resources/zone/js/utils.coffee:10
+#: ../resources/zone/js/utils.coffee:13
 msgid "None"
 msgstr "Geen"
 
@@ -663,7 +680,7 @@ msgstr "Nuwe gids"
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr "Dok het versuim om te begin, want Compiz is nie aangeskakel."
 
-#: ../app/greeter/greeter.c:198 ../app/greeter/lock.c:173
+#: ../app/greeter/greeter.c:209 ../app/greeter/lock.c:173
 msgid "Wrong Password"
 msgstr "Verkeerde Wagwoord"
 

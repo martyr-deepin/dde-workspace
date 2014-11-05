@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-17 14:42+0800\n"
-"PO-Revision-Date: 2014-11-03 12:01+0000\n"
-"Last-Translator: 游荡的坎德人 <nervcn09@gmail.com>\n"
+"POT-Creation-Date: 2014-11-18 17:29+0800\n"
+"PO-Revision-Date: 2014-11-18 09:58+0000\n"
+"Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/deepin-desktop-environment/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,55 +29,57 @@ msgid "\"%1\" failed to be uninstalled"
 msgstr "\"%1\" 解除安裝失敗"
 
 #: ../resources/desktop/js/application.coffee:179
-#: ../resources/desktop/js/richdir.coffee:332
-#: ../resources/desktop/js/richdir.coffee:583
+#: ../resources/desktop/js/richdir.coffee:348
+#: ../resources/desktop/js/richdir.coffee:600
+#: ../resources/desktop/js/richdir.coffee:643
 msgid "The link is invalid. Do you want to delete it?"
 msgstr "此鏈接無效，是否需要刪除它？"
 
 #: ../resources/desktop/js/application.coffee:179
 #: ../resources/desktop/js/desktopentry.coffee:166
-#: ../resources/desktop/js/richdir.coffee:332
-#: ../resources/desktop/js/richdir.coffee:583
-#: ../resources/dock/js/plugins/trash/trash.coffee:81
+#: ../resources/desktop/js/richdir.coffee:348
+#: ../resources/desktop/js/richdir.coffee:600
+#: ../resources/desktop/js/richdir.coffee:643
+#: ../resources/dock/js/plugins/trash/trash.coffee:85
 msgid "Warning"
 msgstr "警告"
 
 #: ../resources/desktop/js/desktopentry.coffee:102
-#: ../resources/desktop/js/richdir.coffee:133
-#: ../resources/desktop/js/richdir.coffee:563
+#: ../resources/desktop/js/richdir.coffee:138
+#: ../resources/desktop/js/richdir.coffee:580
 #: ../resources/desktop/js/specialitem.coffee:51
 #: ../resources/desktop/js/specialitem.coffee:146
 #: ../resources/guide/js/launcher.coffee:212
-#: ../resources/launcher/js/item.coffee:301
+#: ../resources/launcher/js/item.coffee:281
 msgid "_Open"
 msgstr "開啟(_O)"
 
 #: ../resources/desktop/js/desktopentry.coffee:104
-#: ../resources/desktop/js/richdir.coffee:565
+#: ../resources/desktop/js/richdir.coffee:582
 msgid "Cu_t"
 msgstr "剪下(_T)"
 
 #: ../resources/desktop/js/desktopentry.coffee:105
-#: ../resources/desktop/js/item.coffee:397
-#: ../resources/desktop/js/richdir.coffee:566
+#: ../resources/desktop/js/item.coffee:401
+#: ../resources/desktop/js/richdir.coffee:583
 msgid "_Copy"
 msgstr "複製(_C)"
 
 #: ../resources/desktop/js/desktopentry.coffee:107
-#: ../resources/desktop/js/richdir.coffee:135
+#: ../resources/desktop/js/richdir.coffee:140
 msgid "_Rename"
 msgstr "重新命名(_R)"
 
 #: ../resources/desktop/js/desktopentry.coffee:108
 #: ../resources/desktop/js/invalidlink.coffee:34
-#: ../resources/desktop/js/item.coffee:398
-#: ../resources/desktop/js/richdir.coffee:139
-#: ../resources/desktop/js/richdir.coffee:568
+#: ../resources/desktop/js/item.coffee:402
+#: ../resources/desktop/js/richdir.coffee:144
+#: ../resources/desktop/js/richdir.coffee:585
 msgid "_Delete"
 msgstr "刪除(_D)"
 
 #: ../resources/desktop/js/desktopentry.coffee:110
-#: ../resources/desktop/js/richdir.coffee:570
+#: ../resources/desktop/js/richdir.coffee:587
 #: ../resources/desktop/js/specialitem.coffee:53
 msgid "_Properties"
 msgstr "屬性(_P)"
@@ -98,11 +100,11 @@ msgid "Extract _Here"
 msgstr "在此解壓縮(_H)"
 
 #: ../resources/desktop/js/desktopentry.coffee:166
-#: ../resources/dock/js/plugins/trash/trash.coffee:81
+#: ../resources/dock/js/plugins/trash/trash.coffee:85
 msgid "Can not open this file."
 msgstr "無法開啟此檔案。"
 
-#: ../resources/desktop/js/grid.coffee:72 ../lib/dentry/fileops.c:403
+#: ../resources/desktop/js/grid.coffee:70 ../lib/dentry/fileops.c:403
 msgid "Untitled"
 msgstr "無標題"
 
@@ -138,7 +140,7 @@ msgid "Open in _terminal"
 msgstr "在終端機中打開(_T)"
 
 #: ../resources/desktop/js/grid.coffee:1052
-#: ../resources/desktop/js/item.coffee:396
+#: ../resources/desktop/js/item.coffee:400
 #: ../resources/guide/js/desktop.coffee:199
 msgid "_Paste"
 msgstr "貼上(_P)"
@@ -158,15 +160,15 @@ msgstr "熱區設定(_C)"
 msgid "Pe_rsonalize"
 msgstr "個人化(_R)"
 
-#: ../resources/desktop/js/item.coffee:395
+#: ../resources/desktop/js/item.coffee:399
 msgid "_Cut"
 msgstr ""
 
-#: ../resources/desktop/js/item.coffee:400
+#: ../resources/desktop/js/item.coffee:404
 msgid "_Select All"
 msgstr ""
 
-#: ../resources/desktop/js/richdir.coffee:137
+#: ../resources/desktop/js/richdir.coffee:142
 msgid "_Ungroup"
 msgstr "取消群組(_U)"
 
@@ -188,11 +190,11 @@ msgid "_Clean up 1 item"
 msgstr "清理 1 項(_C)"
 
 #: ../resources/desktop/js/specialitem.coffee:154
-#: ../resources/dock/js/plugins/trash/trash.coffee:34
+#: ../resources/dock/js/plugins/trash/trash.coffee:38
 msgid "_Empty"
 msgstr "清空回收桶(_E)"
 
-#: ../resources/dock/js/config.coffee:184
+#: ../resources/dock/js/config.coffee:186
 msgid "Unknown"
 msgstr "未知的"
 
@@ -237,7 +239,7 @@ msgstr "高效率模式"
 msgid "_Classic mode"
 msgstr "傳統模式"
 
-#: ../resources/dock/js/main.coffee:115 ../resources/zone/js/utils.coffee:10
+#: ../resources/dock/js/main.coffee:115 ../resources/zone/js/utils.coffee:13
 msgid "Launcher"
 msgstr "啟動器"
 
@@ -276,27 +278,27 @@ msgstr "星期五"
 msgid "Sat"
 msgstr "星期六"
 
-#: ../resources/dock/js/plugins/trash/trash.coffee:38
+#: ../resources/dock/js/plugins/trash/trash.coffee:42
 msgid "_Close"
 msgstr "關閉(_C)"
 
-#: ../resources/dock/js/plugins/trash/trash.coffee:118
-#: ../resources/launcher/js/item.coffee:379
+#: ../resources/dock/js/plugins/trash/trash.coffee:122
+#: ../resources/launcher/js/item.coffee:351
 msgid "Are you sure to remove"
 msgstr "你確定要刪除"
 
-#: ../resources/dock/js/plugins/trash/trash.coffee:118
-#: ../resources/launcher/js/item.coffee:379
+#: ../resources/dock/js/plugins/trash/trash.coffee:122
+#: ../resources/launcher/js/item.coffee:351
 msgid "All dependencies will be removed"
 msgstr "所有依賴的套件都將被刪除"
 
-#: ../resources/dock/js/plugins/trash/trash.coffee:118
-#: ../resources/launcher/js/item.coffee:379
+#: ../resources/dock/js/plugins/trash/trash.coffee:122
+#: ../resources/launcher/js/item.coffee:351
 msgid "no"
 msgstr "否"
 
-#: ../resources/dock/js/plugins/trash/trash.coffee:118
-#: ../resources/launcher/js/item.coffee:379
+#: ../resources/dock/js/plugins/trash/trash.coffee:122
+#: ../resources/launcher/js/item.coffee:351
 msgid "yes"
 msgstr "是"
 
@@ -404,11 +406,11 @@ msgstr "11月"
 msgid "Dec"
 msgstr "12月"
 
-#: ../resources/greeter/js/user.coffee:413
+#: ../resources/greeter/js/user.coffee:418
 msgid "Login"
 msgstr "登入"
 
-#: ../resources/greeter/js/user.coffee:415
+#: ../resources/greeter/js/user.coffee:420
 msgid "Unlock"
 msgstr ""
 
@@ -541,27 +543,26 @@ msgid "tips: You can add it to startup items or uninstall it"
 msgstr "提示：您可以將它加入開機啟動項目或解除安裝它"
 
 #: ../resources/guide/js/launcher.coffee:214
-#: ../resources/launcher/js/const.coffee:81
 msgid "Remove from _favorites"
 msgstr "從最愛中移除(_F)"
 
 #: ../resources/guide/js/launcher.coffee:215
-#: ../resources/launcher/js/const.coffee:84
+#: ../resources/launcher/js/const.coffee:76
 msgid "Send to d_esktop"
 msgstr "傳送到桌面(_E)"
 
 #: ../resources/guide/js/launcher.coffee:216
-#: ../resources/launcher/js/const.coffee:88
+#: ../resources/launcher/js/const.coffee:80
 msgid "Send to do_ck"
 msgstr "釘選到 Dock(_C)"
 
 #: ../resources/guide/js/launcher.coffee:218
-#: ../resources/launcher/js/const.coffee:72
+#: ../resources/launcher/js/const.coffee:68
 msgid "_Add to autostart"
 msgstr "加入到開機啟動項目(_A)"
 
 #: ../resources/guide/js/launcher.coffee:219
-#: ../resources/launcher/js/item.coffee:308
+#: ../resources/launcher/js/item.coffee:287
 msgid "_Uninstall"
 msgstr "解除安裝(_U)"
 
@@ -597,37 +598,53 @@ msgstr "歡迎使用 Deepin 作業系統"
 msgid "Prepare for operation ..."
 msgstr "正在準備..."
 
-#: ../resources/launcher/js/const.coffee:64
+#: ../resources/launcher/js/const.coffee:60
 msgid "_Hide the icon"
 msgstr "隱藏此圖示(_H)"
 
-#: ../resources/launcher/js/const.coffee:65
+#: ../resources/launcher/js/const.coffee:61
 msgid "_Display hidden icons"
 msgstr "顯示已隱藏的圖示(_D)"
 
-#: ../resources/launcher/js/const.coffee:68
+#: ../resources/launcher/js/const.coffee:64
 msgid "_Hide this icon"
 msgstr "隱藏該圖示(_H)"
 
-#: ../resources/launcher/js/const.coffee:69
+#: ../resources/launcher/js/const.coffee:65
 msgid "_Display this icon"
 msgstr "顯示該圖示(_D)"
 
-#: ../resources/launcher/js/const.coffee:73
+#: ../resources/launcher/js/const.coffee:69
 msgid "_Remove from autostart"
 msgstr "從開機啟動項目中移除(_R)"
 
-#: ../resources/launcher/js/const.coffee:80
-msgid "Add to _favorites"
-msgstr "添加到最愛(_F)"
-
-#: ../resources/launcher/js/const.coffee:85
+#: ../resources/launcher/js/const.coffee:77
 msgid "Remove from d_esktop"
 msgstr "從桌面移除(_F)"
 
-#: ../resources/launcher/js/const.coffee:89
+#: ../resources/launcher/js/const.coffee:81
 msgid "Remove from do_ck"
 msgstr "從 Dock 移除(_C)"
+
+#: ../resources/launcher/js/menu.coffee:5
+msgid "By name"
+msgstr ""
+
+#: ../resources/launcher/js/menu.coffee:6
+msgid "By category (icon)"
+msgstr ""
+
+#: ../resources/launcher/js/menu.coffee:7
+msgid "By category (text)"
+msgstr ""
+
+#: ../resources/launcher/js/menu.coffee:8
+msgid "By time installed"
+msgstr ""
+
+#: ../resources/launcher/js/menu.coffee:9
+msgid "By frequency"
+msgstr ""
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
@@ -637,19 +654,19 @@ msgstr "同步"
 msgid "Extend"
 msgstr "延伸"
 
-#: ../resources/zone/js/utils.coffee:10
+#: ../resources/zone/js/utils.coffee:13
 msgid "Control Center"
 msgstr "控制中心"
 
-#: ../resources/zone/js/utils.coffee:10
+#: ../resources/zone/js/utils.coffee:13
 msgid "All Windows"
 msgstr "所有視窗"
 
-#: ../resources/zone/js/utils.coffee:10
+#: ../resources/zone/js/utils.coffee:13
 msgid "Desktop"
 msgstr "桌面"
 
-#: ../resources/zone/js/utils.coffee:10
+#: ../resources/zone/js/utils.coffee:13
 msgid "None"
 msgstr "沒有"
 
@@ -665,7 +682,7 @@ msgstr "新增資料夾"
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr "由於 Compiz 沒有啟動，Dock 啟動失敗"
 
-#: ../app/greeter/greeter.c:198 ../app/greeter/lock.c:173
+#: ../app/greeter/greeter.c:209 ../app/greeter/lock.c:173
 msgid "Wrong Password"
 msgstr "密碼錯誤"
 
