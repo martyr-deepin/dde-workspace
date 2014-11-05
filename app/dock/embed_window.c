@@ -211,6 +211,7 @@ void exwindow_create(double xid, gboolean enable_resize)
 //could workaround this.
 static void fix_reparent(GdkWindow* child, GdkWindow* parent)
 {
+    gdk_window_reparent(child, parent, 0, 0);
     Display* dpy= XOpenDisplay(NULL);
     XReparentWindow(dpy,
             GDK_WINDOW_XID(child), GDK_WINDOW_XID(parent),
