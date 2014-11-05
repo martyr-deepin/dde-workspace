@@ -258,7 +258,7 @@ body {
   max-height: 48px;
   max-width: 48px;
 }
-.square_img {
+.square_img,.broken_img {
   width: 48px;
   height: 48px;
 }

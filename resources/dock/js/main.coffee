@@ -22,7 +22,7 @@ EntryManager =
     path:"/dde/dock/EntryManager"
     interface:"dde.dock.EntryManager"
 
-trayIcon = DCore.get_theme_icon("deepin-systray", 48) || NOT_FOUND_ICON
+trayIcon = "img/deepin-systray.png"
 systemTray = null
 time = null
 entryManager = null

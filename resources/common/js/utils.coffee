@@ -323,3 +323,7 @@ run_callback_after_prop_changed = (callback, init_value, get_prop_func,
     callback()
 
     runner(interval)
+
+INVALID_IMG = "application-default-icon"
+get_default_application_icon = (size) ->
+    DCore.get_theme_icon(INVALID_IMG, size) || "../common/image/#{INVALID_IMG}.png"

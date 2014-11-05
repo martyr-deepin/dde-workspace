@@ -41,7 +41,7 @@ class Item extends Widget
         @isFavor = false
         @status = SOFTWARE_STATE.IDLE
 
-        im = DCore.get_theme_icon(INVALID_IMG, ITEM_IMG_SIZE)
+        im = get_default_application_icon(ITEM_IMG_SIZE)
         @img = create_img("item_img", im, @hoverBox)
         @load_image(@img)
         itemName = create_element("div", "item_name", @hoverBox)
@@ -127,7 +127,7 @@ class Item extends Widget
 
         im = DCore.get_theme_icon(@icon, ITEM_IMG_SIZE)
         if im == null
-            im = DCore.get_theme_icon(INVALID_IMG, ITEM_IMG_SIZE)
+            im = get_default_application_icon(ITEM_IMG_SIZE)
 
         im
 
@@ -187,12 +187,15 @@ class Item extends Widget
 
     load_image: (img)->
         im = @get_img()
+        if im == null
+            img.classList.add("broken_img")
         # @img.draggable = true
         img.onload = (e) =>
             @setImageSize(img)
         img.onerror = =>
             console.warn("load img(#{img.src}) error")
-            im = DCore.get_theme_icon(INVALID_IMG, ITEM_IMG_SIZE)
+            im = get_default_application_icon(ITEM_IMG_SIZE)
+            img.classList.add("broken_img")
             if img.src != im
                 img.src = im
                 console.warn("using #{img.src} instead")
@@ -420,8 +423,9 @@ class Item extends Widget
                 fn(k, v)
 
     showAutostartFlag:->
-        Item.autostart_flag ?= "file://#{DCore.get_theme_icon(AUTOSTART_ICON.NAME,
-            AUTOSTART_ICON.SIZE)}"
+        icon = DCore.get_theme_icon(AUTOSTART_ICON.NAME, AUTOSTART_ICON.SIZE)
+        autostartFlagPath = if icon then "file://#{icon}" else "img/emblem-autostart.png"
+        Item.autostart_flag ?= autostartFlagPath
 
         @updateProperty((k, v)=>
             innerBox = @getInnerBoxDOM(v)
