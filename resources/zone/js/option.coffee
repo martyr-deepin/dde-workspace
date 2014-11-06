@@ -190,4 +190,3 @@ class Option extends Widget
         key = id
         value = cfgValue[i] for text,i in option_text when current is text
         setZoneConfig(key,value)
-        setZoneDBusSettings(key,value)

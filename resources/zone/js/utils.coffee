@@ -1,6 +1,9 @@
 DEBUG = false
 
  #-------------------------------------------
+DSS_SHOWIN =
+    left: "dbus-send --print-reply --dest=com.deepin.dde.ControlCenter /com/deepin/dde/ControlCenter com.deepin.dde.ControlCenter.ToggleInLeft"
+    toggle: "dbus-send --print-reply --dest=com.deepin.dde.ControlCenter /com/deepin/dde/ControlCenter com.deepin.dde.ControlCenter.Toggle"
 
 cfgKeyVal = []
 zoneKeyText = []
@@ -8,8 +11,9 @@ cfgKey = ["left-up","left-down","right-up","right-down"]
 
 # option_text must be one-to-one with cfgValue
 option_text = [_("Control Center"),_("All Windows"),_("Launcher"),_("Desktop"),_("None")]
+
 cfgValue = [
-    "dbus-send --print-reply --dest=com.deepin.dde.ControlCenter /com/deepin/dde/ControlCenter com.deepin.dde.ControlCenter.Toggle",
+    DSS_SHOWIN.toggle,
     "/usr/bin/xdotool key Super+w",
     "/usr/bin/dde-launcher"
     "/usr/lib/deepin-daemon/desktop-toggle",
@@ -45,18 +49,31 @@ setZoneDBusSettings = (key,value)->
         echo "setZoneDBusSettings error : #{e}"
 
  #-------------------------------------------
+update_cfgValue = (key,value) ->
+    if value in [DSS_SHOWIN.left,DSS_SHOWIN.toggle]
+        console.debug "[update_cfgValue]::[key]:#{key};value:#{value}"
+        if key in ["left-up","left-down"]
+            value = DSS_SHOWIN.left
+        else
+            value = DSS_SHOWIN.toggle
+        cfgValue[0] = value
+        console.debug "[update_cfgValue]::[key]:#{key};value updated to ====:#{value}"
+    value
 
 getZoneConfig = ->
     for key,i in cfgKey
         value = DCore.Zone.get_config(key)
+        value = update_cfgValue(key,value)
         cfgKeyVal[key] = value
         zoneKeyText[key] = option_text[j] for val ,j in cfgValue when val is value
 
 setZoneConfig = (key,value)->
+    value = update_cfgValue(key,value)
     cfgKeyVal[key] = value
     zoneKeyText[key] = option_text[j] for val ,j in cfgValue when val is value
-    echo "setZoneCfg : key: #{key}------value: #{value}"
+    console.debug "setZoneCfg : key: #{key}------value: #{value}"
     DCore.Zone.set_config(key,value)
+    setZoneDBusSettings(key,value)
 
  #-------------------------------------------
 
