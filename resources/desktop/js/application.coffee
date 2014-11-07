@@ -52,12 +52,12 @@ class Application extends DesktopEntry
                     tmp_list.push(e)
 
                 if all_are_apps == true
-                    pos = @get_pos()
                     tmp_list.push(@_entry)
                     if (new_entry = DCore.Desktop.create_rich_dir(tmp_list))?
-                        for e in tmp_list
-                            if (w = Widget.look_up(DCore.DEntry.get_id(e)))?
-                                delete_item(w)
+                        pos = @get_pos() #save current position
+                        delete_item(@) #clear current position
+
+                        #move the new_entry to current position
                         id = DCore.DEntry.get_id(new_entry)
                         if (w = Widget.look_up(id))?
                             move_to_somewhere(w, pos)

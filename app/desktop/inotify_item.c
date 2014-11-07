@@ -34,6 +34,7 @@ PRIVATE gboolean _inotify_poll();
 PRIVATE void _remove_monitor_directory(GFile*);
 PRIVATE void _add_monitor_directory(GFile*);
 void handle_delete(GFile* f);
+PRIVATE GFile* get_gfile_from_ievent(GFile* parent, const struct inotify_event* event);
 
 static GHashTable* _monitor_table = NULL;
 static GFile* _desktop_file = NULL;
@@ -74,34 +75,61 @@ void _add_monitor_directory(GFile* f)
 
 void install_monitor()
 {
-    if (_inotify_fd == -1) {
-        _inotify_fd = inotify_init1(IN_NONBLOCK|IN_CLOEXEC);
-        _monitor_table = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, (GDestroyNotify)g_object_unref);
-        g_timeout_add(50, (GSourceFunc)_inotify_poll, NULL);
+    if (_inotify_fd != -1) {
+        return;
+    }
 
-        _desktop_file = g_file_new_for_commandline_arg(DESKTOP_DIR());
-        _trash_can = g_file_new_for_uri("trash:///");
-        GFileMonitor* m = g_file_monitor(_trash_can, G_FILE_MONITOR_NONE, NULL, NULL);
-        g_signal_connect(m, "changed", G_CALLBACK(trash_changed), NULL);
+    _inotify_fd = inotify_init1(IN_NONBLOCK|IN_CLOEXEC);
+    _monitor_table = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, (GDestroyNotify)g_object_unref);
+    g_timeout_add(50, (GSourceFunc)_inotify_poll, NULL);
 
-        _add_monitor_directory(_desktop_file);
+    _desktop_file = g_file_new_for_commandline_arg(DESKTOP_DIR());
+    _trash_can = g_file_new_for_uri("trash:///");
+    GFileMonitor* m = g_file_monitor(_trash_can, G_FILE_MONITOR_NONE, NULL, NULL);
+    g_signal_connect(m, "changed", G_CALLBACK(trash_changed), NULL);
 
-        GDir *dir =  g_dir_open(DESKTOP_DIR(), 0, NULL);
+    _add_monitor_directory(_desktop_file);
 
-        if (dir != NULL) {
-            const char* filename = NULL;
-            while ((filename = g_dir_read_name(dir)) != NULL) {
-                GFile* f = g_file_get_child(_desktop_file, filename);
-                _add_monitor_directory(f);
-                g_object_unref(f);
-            }
-            g_dir_close(dir);
+    GDir *dir =  g_dir_open(DESKTOP_DIR(), 0, NULL);
+    if (dir == NULL) {
+        g_warning("can't open desktop directory: %s\n", DESKTOP_DIR());
+        return;
+    }
+
+    const char* filename = NULL;
+    while ((filename = g_dir_read_name(dir)) != NULL) {
+        GFile* f = g_file_get_child(_desktop_file, filename);
+        _add_monitor_directory(f);
+        g_object_unref(f);
+    }
+    g_dir_close(dir);
+}
+
+PRIVATE
+gboolean has_same_parent(GFile* a, GFile* b)
+{
+    GFile* parent = g_file_get_parent(a);
+    if (parent == NULL) {
+        parent = g_file_get_parent(b);
+        if (parent != NULL) {
+            g_object_unref(parent);
+            return FALSE;
+        } else {
+            return TRUE;
         }
     }
+
+    gboolean same = FALSE;
+    if (g_file_has_parent(b, parent)) {
+        same = TRUE;
+    }
+    g_object_unref(parent);
+    return same;
 }
 
 void handle_rename(GFile* old_f, GFile* new_f)
 {
+    g_debug("handle_rename:%s-->%s\n", g_file_get_path(old_f), g_file_get_path(new_f));
     _add_monitor_directory(new_f);
     _remove_monitor_directory(old_f);
 
@@ -119,6 +147,7 @@ void handle_rename(GFile* old_f, GFile* new_f)
 
 void handle_delete(GFile* f)
 {
+    g_debug("handle_delete:%s\n", g_file_get_path(f));
     _remove_monitor_directory(f);
     JSObjectRef json = json_create();
     json_append_nobject(json, "entry", f, g_object_ref, g_object_unref);
@@ -127,7 +156,7 @@ void handle_delete(GFile* f)
 
 void handle_update(GFile* f)
 {
-    // g_message("handle_update");
+    g_debug("handle_update:%s\n", g_file_get_path(f));
     if (g_file_query_file_type(f, G_FILE_QUERY_INFO_NONE ,NULL) != G_FILE_TYPE_UNKNOWN) {
         char* path = g_file_get_path(f);
         Entry* entry = dentry_create_by_path(path);
@@ -144,6 +173,7 @@ void handle_update(GFile* f)
 
 void handle_new(GFile* f)
 {
+    g_debug("handle_new:%s\n", g_file_get_path(f));
     _add_monitor_directory(f);
     handle_update(f);
 }
@@ -176,78 +206,92 @@ void _remove_monitor_directory(GFile* f)
 PRIVATE
 gboolean _inotify_poll()
 {
-#define EVENT_SIZE  ( sizeof (struct inotify_event) )
-#define EVENT_BUF_LEN     ( 1024 * ( EVENT_SIZE + 16 ) )
-
-    if (_inotify_fd != -1) {
-        char buffer[EVENT_BUF_LEN];
-        int length = read(_inotify_fd, buffer, EVENT_BUF_LEN);
-
-        struct inotify_event *move_out_event = NULL;
-        GFile* old = NULL;// test : use real fileops to test it
-
-        for (int i=0; i<length; ) {
-            struct inotify_event *event = (struct inotify_event *) &buffer[i];
-            i += EVENT_SIZE+event->len;
-            if(desktop_file_filter(event->name))
-                continue;
-            if (event->len) {
-                GFile* p = g_hash_table_lookup(_monitor_table, GINT_TO_POINTER(event->wd));
-
-                if (g_file_equal(p, _desktop_file)) {
-                    /* BEGIN MOVE EVENT HANDLE */
-                    if ((event->mask & IN_MOVED_FROM) && (move_out_event == NULL)) {
-                        move_out_event = event;
-                        old = g_file_get_child(p, event->name);
-                        continue;
-                    } else if ((event->mask & IN_MOVED_FROM) && (move_out_event != NULL)) {
-                        GFile* f = g_file_get_child(_desktop_file, event->name);
-                        handle_delete(f);
-                        g_object_unref(f);
-                        continue;
-                    } else if ((event->mask & IN_MOVED_TO) && (move_out_event != NULL)) {
-                        move_out_event = NULL;
-                        GFile* f = g_file_get_child(p, event->name);
-
-                        handle_rename(old, f);
-                        g_object_unref(f);
-                        g_object_unref(old);
-                        old = NULL;
-                        continue;
-                    /* END MVOE EVENT HANDLE */
-                    } else if (event->mask & IN_DELETE) {
-                        GFile* f = g_file_get_child(p, event->name);
-                        handle_delete(f);
-                        g_object_unref(f);
-                    } else if (event->mask & IN_CREATE) {
-                        GFile* f = g_file_get_child(p, event->name);
-                        handle_new(f);
-                        g_object_unref(f);
-                    } else {
-                        GFile* f = g_file_get_child(p, event->name);
-                        _add_monitor_directory(f);
-                        handle_update(f);
-                        g_object_unref(f);
-                    }
-
-                } else {
-                    if (event->mask & IN_MOVED_TO) {
-                        GFile* f = g_file_get_child(_desktop_file, event->name);
-                        handle_delete(f);
-                        g_object_unref(f);
-                    }
-                    handle_update(p);
-                }
-            }
-        }
-        if (move_out_event != NULL) {
-            handle_delete(old);
-            move_out_event = NULL;
-        }
-        return TRUE;
-    } else {
+    if (_inotify_fd == -1) {
         return FALSE;
     }
+
+#define EVENT_SIZE  ( sizeof (struct inotify_event) )
+#define EVENT_BUF_LEN     ( 1024 * ( EVENT_SIZE + 16 ) )
+    char buffer[EVENT_BUF_LEN];
+    int length = read(_inotify_fd, buffer, EVENT_BUF_LEN);
+
+    struct inotify_event *move_out_event = NULL;
+
+    for (int i=0; i<length; ) {
+        struct inotify_event *event = (struct inotify_event *) &buffer[i];
+        i += EVENT_SIZE+event->len;
+        if(desktop_file_filter(event->name))
+            continue;
+        if (event->len == 0) {
+            continue;
+        }
+
+        GFile* p = g_hash_table_lookup(_monitor_table, GINT_TO_POINTER(event->wd));
+        if (!g_file_equal(p, _desktop_file)) {
+            handle_update(p);
+            continue;
+        }
+
+        /* BEGIN MOVE EVENT HANDLE */
+        if ((event->mask & IN_MOVED_FROM) && (move_out_event == NULL)) {
+            move_out_event = event;
+            continue;
+        } else if ((event->mask & IN_MOVED_FROM) && (move_out_event != NULL)) {
+            GFile* f = get_gfile_from_ievent(NULL, event);
+            handle_delete(f);
+            g_object_unref(f);
+            continue;
+        } else if ((event->mask & IN_MOVED_TO) && (move_out_event != NULL)) {
+            GFile* f = get_gfile_from_ievent(NULL, event);
+            GFile* old = get_gfile_from_ievent(NULL, move_out_event);
+
+            move_out_event = NULL;
+            if (has_same_parent(old, f)) {
+                handle_rename(old, f);
+            } else {
+                handle_new(f);
+            }
+            g_object_unref(f);
+            g_object_unref(old);
+            continue;
+            /* END MVOE EVENT HANDLE */
+        } else if (event->mask & IN_DELETE) {
+            GFile* f = get_gfile_from_ievent(NULL, event);
+            handle_delete(f);
+            g_object_unref(f);
+        } else if (event->mask & IN_CREATE) {
+            GFile* f = get_gfile_from_ievent(NULL, event);
+            handle_new(f);
+            g_object_unref(f);
+        } else {
+            GFile* f = get_gfile_from_ievent(NULL, event);
+            _add_monitor_directory(f);
+            handle_update(f);
+            g_object_unref(f);
+        }
+    }
+    if (move_out_event != NULL) {
+        GFile* old = get_gfile_from_ievent(NULL, move_out_event);
+        handle_delete(old);
+        g_object_unref(old);
+        move_out_event = NULL;
+    }
+    return TRUE;
+}
+
+static
+GFile* get_gfile_from_ievent(GFile* parent, const struct inotify_event* event)
+{
+    g_assert(event != NULL);
+    if (parent == NULL) {
+        parent = g_hash_table_lookup(_monitor_table, GINT_TO_POINTER(event->wd));
+    }
+    if (parent == NULL) {
+        g_assert_not_reached();
+        return NULL;
+    }
+    g_assert(G_IS_FILE(parent));
+    return  g_file_get_child(parent, event->name);
 }
 
 gboolean desktop_file_filter(const char *file_name)
