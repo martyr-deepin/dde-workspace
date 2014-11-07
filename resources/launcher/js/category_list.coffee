@@ -232,6 +232,7 @@ class CategoryList extends Page
         @
 
     resetScrollOffset:->
+        @gridOffset = 0
         @getScrollableItem().style.webkitTransform = ''
         @
 
