@@ -44,6 +44,7 @@ remove_backup_app_icon = (id, reason)->
     if not icon
         return
     console.log("remove backup icon: #{icon}")
+    DCore.delete_backup_app_icon(icon)
     delete Uninstaller.IdMap[id]
 
 

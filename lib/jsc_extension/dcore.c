@@ -386,22 +386,30 @@ char* dcore_backup_app_icon(char const* path)
         g_free(name);
         data_uri_to_file(path, backup);
     } else {
+        GFile* f = g_file_new_for_path(path);
+        if (f == NULL) {
+            return NULL;
+        }
+
         char* basename = g_path_get_basename(path);
         backup = g_build_filename(dir, basename, NULL);
         g_free(basename);
+
+        GFile* dest = g_file_new_for_path(backup);
+        if (dest == NULL) {
+            g_object_unref(f);
+            return NULL;
+        }
+
         GError* err = NULL;
-        GdkPixbuf* file = gdk_pixbuf_new_from_file(path, &err);
+        g_file_copy(f, dest, G_FILE_COPY_OVERWRITE, NULL, NULL, NULL, &err);
+        g_object_unref(dest);
+        g_object_unref(f);
         if (err != NULL) {
-            g_warning("load file failed: %s", err->message);
+            g_warning("copy file(%s) failed: %s", path, err->message);
+            g_clear_error(&err);
             return NULL;
         }
-        gdk_pixbuf_save(file, backup, "png", &err, NULL);
-        if (err != NULL) {
-            g_warning("save file failed: %s", err->message);
-            g_object_unref(file);
-            return NULL;
-        }
-        g_object_unref(file);
     }
 
     g_free(dir);
@@ -412,6 +420,7 @@ char* dcore_backup_app_icon(char const* path)
 
 void dcore_delete_backup_app_icon(char const* path)
 {
+    g_warning("delete backup app icon: %s", path);
     g_remove(path);
 }
 
