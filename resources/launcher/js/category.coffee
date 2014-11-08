@@ -33,21 +33,12 @@ class Category
         @grid = create_element(tag:"div", class:"grid", @element)
 
         frag = document.createDocumentFragment()
+        @sortItem()
         for id in @items
             if (item = Widget.look_up(id))?
                 item.add(@id, frag)
-        @grid.appendChild(frag)
 
-    setNameDecoration: ->
-        setTimeout(=>
-            MARGIN_TO_NAME = 10
-            # console.log("#{@id}: head: #{@header.clientWidth}, name: #{@nameNode.clientWidth}")
-            width = "#{@header.clientWidth - @nameNode.clientWidth - MARGIN_TO_NAME}px"
-            @decoration.style.width = width
-            @decoration.firstChild.style.width = width
-            @decoration.lastChild.style.width = width
-        , 10)
-        @
+        @grid.appendChild(frag)
 
     isShown: ->
         @element.style.display != "none"
@@ -108,12 +99,25 @@ class Category
 
         @items.remove(id)
 
-    sort:->
+    sortItem:->
         @items.sort((lhs, rhs)->
             l = Widget.look_up(lhs)
             r = Widget.look_up(rhs)
-            l.name - r.name
+            if l.name > r.name
+                return 1
+            if l.name == r.name
+                return 0
+            return -1
         )
+
+    sort:->
+        @sortItem()
+        for i in [0...@grid.children.length]
+            try
+                target = @grid.removeChild(@grid.children[i])
+                @grid.insertBefore(target, @grid.firstChild)
+            catch e
+                console.error(e)
 
     firstItem:->
         el = @grid.firstElementChild

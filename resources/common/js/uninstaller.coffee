@@ -51,26 +51,35 @@ remove_backup_app_icon = (id, reason)->
 class Uninstaller
     @IdMap: {}
     @notifyId: 0
-    constructor: (@appid, @appName, @icon, handler)->
+    constructor: (@appId, @appName, @icon, @successHandler, @failedHandler)->
         @uninstalling_apps = {}
         try
-            @daemon = get_dbus("session", LAUNCHER_DAEMON, "GetPackageName")
+            @daemon = get_dbus("session", LAUNCHER_DAEMON, "RequestUninstall")
         catch e
             console.log(e)
             @daemon = null
-        @uninstallSignalHandler = (info)=>
-            console.log(info)
-            handler?(@, info)
-            if info[0][0] == UNINSTALL_STATUS.SUCCESS || info[0][0] == UNINSTALL_STATUS.FAILED
-                @disconnect()
 
     disconnect: =>
         console.log("disconnect UpdateSignal")
         try
-            @daemon?.dis_connect("UpdateSignal", @uninstallSignalHandler)
-            @daemon?.dis_connect("PackageNameGet", @packageNameHandler)
+            @daemon?.dis_connect("UninstallFailed", @uninstallFailedHandler)
+            @daemon?.dis_connect("UninstallSuccess", @uninstallSuccessHandler)
         catch e
             console.error e
+
+    uninstallSuccessHandler:(appId)=>
+        if appId != @appId
+            return
+        @successHandler(appId)
+        @uninstallReport(UNINSTALL_STATUS.SUCCESS, UNINSTALL_MESSAGE.SUCCESSFUL.args(appId))
+        @disconnect()
+
+    uninstallFailedHandler:(appId, reason)=>
+        if appId != @appId
+            return
+        @failedHandler(appId, reason)
+        @uninstallReport(UNINSTALL_STATUS.FAILED, UNINSTALL_MESSAGE.FAILED.args(appId))
+        @disconnect()
 
     uninstallReport: (status, msg)->
         if status == UNINSTALL_STATUS.FAILED
@@ -81,46 +90,17 @@ class Uninstaller
         console.log "uninstall #{message}, #{msg}"
         try
             notification = get_dbus("session", NOTIFICATIONS, "Notify")
-            console.log("#{@appid} sets icon: #{@icon} to notify icon")
+            console.log("#{@appId} sets icon: #{@icon} to notify icon")
             id = notification.Notify_sync(@appName, @notifyId, @icon, "", msg, [], {}, 0)
             @notifyId += 1
-            console.warn("notify id: #{id}")
+            # console.warn("notify id: #{id}")
             Uninstaller.IdMap[id] = @icon
             notification.connect("NotificationClosed", remove_backup_app_icon)
         catch e
             console.error e
-        if Object.keys(@uninstalling_apps).length == 0
-            console.log 'uninstall: disconnect signal'
-            # @softwareManager = null
 
-    packageNameHandler:(id, package_name)=>
-        console.log "package_name: ##{package_name}#, #{package_name.length}"
-        item = @uninstalling_apps[id]
-        if !package_name
-            console.error("get packages failed")
-            if item.status
-                item.status = SOFTWARE_STATE.IDLE
-                item.show()
-            delete @uninstalling_apps[item.id]
-            @uninstallReport("", UNINSTALL_MESSAGE.FAILED.args(item.id))
-            console.log("get packages failed")
-            @disconnect()
-            return
-
-        item.package_name = package_name
-        console.log("uninstall")
-        @daemon.Uninstall(package_name, item.purge)
-
-    uninstall: (opt) =>
-        console.log "uninstall #{opt.item.path}, #{opt.purge}"
-        item = opt.item
-        item.purge = opt.purge
-        @uninstalling_apps[item.id] = item
-
-        if Object.keys(@uninstalling_apps).length == 1 and @daemon
-            console.log 'uninstall: connect signal'
-            @daemon?.connect("UpdateSignal", @uninstallSignalHandler)
-            @daemon?.connect("PackageNameGet", @packageNameHandler)
-
-        console.log("get package name")
-        @daemon?.GetPackageName(item.id, item.path)
+    uninstall: (purge=true) =>
+        console.log("uninstall #{@appId}")
+        @daemon.connect("UninstallFailed", @uninstallFailedHandler)
+        @daemon.connect("UninstallSuccess", @uninstallSuccessHandler)
+        @daemon.RequestUninstall(@appId, purge)

@@ -26,7 +26,7 @@ class Selector
 
     container:(newPage)->
         el = newPage.getBox()
-        if el? && (not @box? || not @box.isSameNode(el))
+        if el?
             @page?.resetScrollOffset()
             @box = el
             @page = newPage
@@ -56,17 +56,18 @@ class Selector
             @selectedItem.classList.add("selected")
             if not switcher.isShowCategory
                 return
+
+            c = @page.firstCategoryInView()
+            if c.element.getBoundingClientRect().top != _c.getBoundingClientRect().top
+                @page.setMask(Page.MaskHint.TopBottom)
             else
-                c = categoryList.firstCategoryInView()
-                if c.element.getBoundingClientRect().top != _c.getBoundingClientRect().top
-                    @page.setMask(Page.MaskHint.TopBottom)
-                else
-                    @page.setMask(Page.MaskHint.BottomOnly)
+                @page.setMask(Page.MaskHint.BottomOnly)
             categoryEl = @selectedItem.parentNode.parentNode
             categoryBar.focusCategory(categoryEl.dataset.catid)
 
     firstShown:->
         if @box
+            console.log(@page)
             return @page.getFirstItemInView()
         null
 
@@ -84,7 +85,7 @@ class Selector
 
     focusedCategory:(el)->
         cid = parseInt(el.parentNode.parentNode.dataset.catid)
-        categoryList.category(cid)
+        @page.category(cid)
 
     _scroll_to_view: (offset)->
         target = @page.getScrollbaleItem()
@@ -142,8 +143,8 @@ class Selector
     select: (fn)->
         if @selectedItem == null
             selectedItem = @firstShown()
-            # console.log "first shown:"
-            # console.log selectedItem
+            console.log "first shown:"
+            console.log selectedItem
             @update(selectedItem)
             @scroll_to_view(selectedItem)
             return
@@ -154,7 +155,7 @@ class Selector
         @select((o)->
             item = o.selectedItem
             if not (n = o.nextShown(item))? && switcher.isShowCategory
-                if (c = categoryList.nextCategory(o.focusedCategory(item).id))?
+                if (c = o.page.nextCategory(o.focusedCategory(item).id))?
                     n = c.firstItem()
 
             if n?
@@ -167,7 +168,7 @@ class Selector
         @select((o)->
             item = o.selectedItem
             if not (n = o.previousShown(item))? && switcher.isShowCategory
-                if (c = categoryList.previousCategory(o.focusedCategory(item).id))?
+                if (c = o.page.previousCategory(o.focusedCategory(item).id))?
                     n = c.lastItem()
 
             if n?
@@ -184,7 +185,7 @@ class Selector
 
             if switcher.isShowCategory && o.isLastLine(item)
                 console.log 'get next category'
-                if (c = categoryList.nextCategory(o.focusedCategory(item).id))?
+                if (c = o.page.nextCategory(o.focusedCategory(item).id))?
                     n = c.firstItem()
                     count = o.indexOnLine(item)
 
@@ -205,8 +206,9 @@ class Selector
             n = item
             count = o.rowNumber()
 
+            console.log(switcher.isShowCategory)
             if switcher.isShowCategory && o.isFirstLine(item)
-                if (c = categoryList.previousCategory(o.focusedCategory(item).id))?
+                if (c = o.page.previousCategory(o.focusedCategory(item).id))?
                     count = 0
                     n = c.lastItem()
                     selectedIndex = o.indexOnLine(item)

@@ -18,58 +18,13 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-class CategoryItem
-    @PREFIX: "cbi"
-    constructor: (@id, @name)->
-        @element = create_element(
-            tag:'div',
-            class:'category_item_base category_item',
-            id: "#{CategoryItem.PREFIX}#{@id}",
-            'data-catid': "#{@id}"
-        )
-        create_element(
-            tag:'div',
-            class:"category_item_base category_item_board category-mask",
-            'data-catid': "#{@id}",
-            @element
-        )
-        @element.style.backgroundImage = "url(img/category/#{@name}100.png)"
-        @isFocus = false
-
-    categoryId: ->
-        parseInt(@element.dataset.catid)
-
-    show:->
-        @element.style.display = "block"
-        @
-
-    hide:->
-        @element.style.display = "none"
-        @
-
-    focus: ->
-        @isFocus = true
-        @element.style.webkitMask = "-webkit-linear-gradient(top, rgba(0,0,0,1), rgba(0,0,0,1))"
-
-    blur: ->
-        @isFocus = false
-        @element.style.webkitMask = ""
-
-    dark: ->
-        @element.style.webkitMask = "-webkit-linear-gradient(top, rgba(0,0,0,0.3), rgba(0,0,0,0.1))"
-
-    normal:->
-        if @isFocus
-            @focus()
-        else
-            @blur()
-
-
 class CategoryBar
-    constructor: (infos)->
+    constructor: (infos, @displayMode, @sortMethod)->
         @selectedId = null
 
         @category = $("#categoryBar")
+        @indicatorMask = create_element(tag:"div", id: "categoryIndicatorMask", document.body)
+        @indicatorImg = create_element(tag:"img", src:"img/category_indicator.png", id:"categoryIndicator", @indicatorMask)
         @category.addEventListener("click", (e) =>
             e.stopPropagation()
             target = e.target
@@ -83,36 +38,60 @@ class CategoryBar
 
         @category_items = {}
         @load(infos)
+        @changeDisplayMode(@displayMode)
+
+        if @sortMethod != SortMethod.Method.ByCategory
+            @hide()
 
     load: (infos)->
-        frag = document.createDocumentFragment()
         for info in infos
-            id = info[0]
-            name = info[1]
+            id = info[1]
+            name = info[0]
             items = info[2]
-            @category_items[id] = new CategoryItem(id, name)
-            frag.appendChild(@category_items[id].element)
+            if id == CATEGORY_ID.ALL
+                continue
+            @category_items[id] = new CategoryItem(id, name, @displayMode)
             if items.length == 0
                 @category_items[id].hide()
+        frag = document.createDocumentFragment()
+        for id in CATEGORY_ORDER
+            frag.appendChild(@category_items[id].element)
         @category.appendChild(frag)
         @
 
+    changeDisplayMode:(mode)->
+        @category.className = ''
+        if mode == CategoryDisplayMode.Mode.Text
+            @category.classList.add('textCategoryBar')
+            @indicatorMask.classList.remove("hide")
+        else
+            @indicatorMask.classList.add("hide")
+            @category.classList.add('iconCategoryBar')
+        for own id, item of @category_items
+            item.changeDisplayMode(mode)
+
     show: ->
-        if @category.style.display != 'block'
+        if @sortMethod == SortMethod.Method.ByCategory && @category.style.display != 'block'
             @category.style.display = 'block'
+            @indicatorImg.style.display = ''
         @
 
     hide: ->
         if @category.style.display != 'none'
             @category.style.display = 'none'
+            @indicatorImg.style.display = 'none'
         @
 
     focusCategory: (id) =>
         # console.log "selectedId: #{@selectedId}, id: #{id}"
         if @selectedId != id
             @category_items[@selectedId]?.blur()
-            @category_items[id]?.focus()
             @selectedId = id
+            categoryItem = @category_items[id]
+            if categoryItem
+                categoryItem.focus()
+                rect = categoryItem.getBoundingClientRect()
+                @indicatorImg.style.top = rect.top - 2000 + rect.height/2
 
     dark:->
         for own k, v of @category_items

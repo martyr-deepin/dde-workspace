@@ -42,7 +42,7 @@ Depends: ${shlibs:Depends},
  deepin-artwork,
  deepin-menu,
  libdeepin-webkit-3.0-0,
- dde-daemon,
+ dde-daemon (> 0.0.1-20141118131601),
  dde-control-center,
  systemd-shim,
 Description: deepin desktop envrionment for Linuxdeepin new desktop environment.

@@ -20,7 +20,7 @@
 
 LAUNCHER_DAEMON="com.deepin.dde.daemon.Launcher"
 try
-    daemon = get_dbus("session", LAUNCHER_DAEMON, "GetFavors")
+    daemon = get_dbus("session", LAUNCHER_DAEMON, "Search")
 catch e
     console.error(e)
     DCore.Launcher.quit()

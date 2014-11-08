@@ -18,8 +18,8 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-class CategoryList extends Page
-    constructor:(infos)->
+class CategoryListWithCategory extends Page
+    constructor:(infos, @sortMethod)->
         @categories = {}
         super("grid")
         @box.removeEventListener("scroll", @scrollCallback)
@@ -33,25 +33,26 @@ class CategoryList extends Page
         )
 
         @gridOffset = 0
-        frag = document.createDocumentFragment()
+        @finalOffset = 0
         for info in infos
-            id = info[0]
-            name = info[1]
+            id = info[1]
+            name = info[0]
             items = info[2]
+            if id == CATEGORY_ID.ALL
+                continue
             @categories[id] = new Category(id, name, items)
-            frag.appendChild(@categories[id].element)
             if items.length == 0
                 @categories[id].hide()
 
+        frag = document.createDocumentFragment()
+        for id in CATEGORY_ORDER
+            frag.appendChild(@categories[id].element)
         @blank = create_element(tag:'div', id:'blank', frag)
         @container.appendChild(frag)
-        @finalOffset = 0
-
-    updateNameDecoration:->
-        for id in @categories
-            @categories[id].setNameDecoration()
-
-        @
+        Item.updateHorizontalMargin()
+        @hideEmptyCategories()
+        @updateBlankHeight()
+        $("#grid").style.overflowY = "hidden"
 
     updateBlankHeight:->
         containerHeight = $("#container").clientHeight
@@ -78,16 +79,20 @@ class CategoryList extends Page
         @
 
     showNonemptyCategories:->
+        if @sortMethod != SortMethod.Method.ByCategory
+            return @
         for own id, category of @categories
+            categoryItem = $("##{CategoryItem.PREFIX}#{id}")
             if category.number() != 0
                 category.show()
                 category.showHeader()
-                category.setNameDecoration()
                 # show category bar
-                $("##{CategoryItem.PREFIX}#{id}").style.display = "block"
+                if categoryItem.style.display != 'block'
+                    categoryItem.style.display = "block"
             else
                 category.hide()
-                $("##{CategoryItem.PREFIX}#{id}").style.display = "none"
+                if categoryItem.style.display != "none"
+                    categoryItem.style.display = "none"
         @
 
     addItem: (id, categories)->
@@ -109,13 +114,15 @@ class CategoryList extends Page
             try
                 @categories[cat_id].removeItem(id)
             catch e
-                console.log "CategoryList.removeItem: #{e}"
+                console.error "CategoryList.removeItem: #{e}"
 
     category:(id)->
         return @categories[id] if @categories[id]?
         null
 
-    firstCategory:->
+    firstCategory:=>
+        if @sortMethod != SortMethod.Method.ByCategory
+            return null
         for id in [CATEGORY_ID.INTERNET..CATEGORY_ID.UTILITIES]
             if @categories[id].isShown()
                 return @categories[id]
@@ -166,9 +173,6 @@ class CategoryList extends Page
     nextCategory:(id)->
         return null if id == CATEGORY_ID.OTHER
 
-        if id == CATEGORY_ID.FAVOR
-            id = CATEGORY_ID.INTERNET - 1
-
         i = id + 1
         while i <= CATEGORY_ID.UTILITIES
             if @categories[i].isShown()
@@ -181,7 +185,7 @@ class CategoryList extends Page
         return null
 
     previousCategory:(id)->
-        return null if id == CATEGORY_ID.FAVOR
+        return null if id == CATEGORY_ID.INTERNET
 
         if id == CATEGORY_ID.OTHER
             id = CATEGORY_ID.UTILITIES + 1
@@ -231,9 +235,14 @@ class CategoryList extends Page
         @getScrollableItem().style.webkitTransform = "translateY(#{offset}px)"
         @
 
+    reset:()->
+        @resetScrollOffset()
+        @box.removeEventListener("mousewheel", @scrollCallback)
+
     resetScrollOffset:->
         @gridOffset = 0
         @getScrollableItem().style.webkitTransform = ''
+        @setMask(Page.MaskHint.BottomOnly)
         @
 
     scrollCallback:(e)=>
@@ -241,19 +250,25 @@ class CategoryList extends Page
             selector.update(null)
 
         scrollable = @getScrollableItem()
+        # console.log(scrollable)
 
         oldOffset = @getScrollOffset()
+        # console.log("old offset: #{oldOffset}")
         if oldOffset != 0
             @gridOffset = oldOffset
 
         @gridOffset += e.wheelDeltaY / 2
         offset = @box.clientHeight - scrollable.clientHeight
+        # console.log("new offset: #{@gridOffset}")
+        # console.log("box clientHeight: #{@box.clientHeight}, scrollable: #{scrollable.clientHeight}")
+        # console.log("gridOffset: #{@gridOffset}, offset: #{offset}")
 
         if @gridOffset < offset
             @gridOffset = offset
         else if @gridOffset > 0
             @gridOffset = 0
 
+        # console.log("final offset is #{@gridOffset}")
         scrollable.style.webkitTransform = "translateY(#{@gridOffset}px)"
 
         offset = 0
@@ -282,3 +297,59 @@ class CategoryList extends Page
                 offset += scrollable.childNodes[i].clientHeight + CATEGORY_LIST_ITEM_MARGIN
 
         return
+
+
+class CategoryListWithoutCategory extends Page
+    constructor:(infos, @sortMethod)->
+        super("grid")
+
+        frag = document.createDocumentFragment()
+        for id in infos
+            Widget.look_up(id).add(@id, frag)
+        @container.appendChild(frag)
+        Item.updateHorizontalMargin()
+        $("#grid").style.overflowY = ""
+
+    reset:()->
+        @resetScrollOffset()
+
+
+makeCategoryList = (sortMethod)->
+    $("#grid").innerHTML = ""
+    switch sortMethod
+        when SortMethod.Method.ByName
+            console.log("change to sort by name")
+
+            list = sortByName(Object.keys(applications))
+            # console.log(list)
+
+            return new CategoryListWithoutCategory(list, sortMethod)
+        when SortMethod.Method.ByTimeInstalled
+            console.log("change to sort by install time")
+
+            timeInstalled = daemon.GetAllTimeInstalled_sync()
+            timeInstalledObj = {}
+
+            for f in timeInstalled
+                timeInstalledObj[f[0]] = f[1]
+
+            list = sortByTimeInstalled(Object.keys(applications), timeInstalledObj)
+            # console.log(list)
+
+            return new CategoryListWithoutCategory(list, sortMethod)
+        when SortMethod.Method.ByFrequency
+            console.log("change to sort by frequency")
+
+            frequency = daemon.GetAllFrequency_sync()
+            frequencyObj = {}
+
+            for f in frequency
+                frequencyObj[f[0]] = f[1]
+
+            list = sortByFrequency(Object.keys(applications), frequencyObj)
+            # console.log(list)
+
+            return new CategoryListWithoutCategory(list, sortMethod)
+        when SortMethod.Method.ByCategory
+            infos = daemon.GetAllCategoryInfos_sync()
+            return new CategoryListWithCategory(infos, sortMethod)

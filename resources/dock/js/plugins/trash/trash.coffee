@@ -1,5 +1,9 @@
 dialog = null
 
+uninstallSuccessHandler=(id)->
+
+uninstallFailedHandler=(id, reason)->
+
 class Trash extends PostfixedItem
     constructor:(@id, icon, @title)->
         super
@@ -90,9 +94,9 @@ class Trash extends PostfixedItem
                     icon = DCore.get_theme_icon(@data.icon, 48)
                 icon = DCore.backup_app_icon(icon)
                 console.log("set icon: #{icon} to notify icon")
-                uninstaller = new Uninstaller(@data.id, "Deepin Dock", icon, uninstallSignalHandler)
+                uninstaller = new Uninstaller(@data.id, "Deepin Dock", icon, uninstallSuccessHandler, uninstallFailedHandler)
                 setTimeout(=>
-                    uninstaller.uninstall(item:@data, purge:true)
+                    uninstaller.uninstall()
                 , 100)
 
         dialog.dis_connect("ActionInvoked", @uninstallHandler)
@@ -179,24 +183,3 @@ class Trash extends PostfixedItem
             @change_icon(@fullIcon)
 
 
-uninstallSignalHandler = (clss, info)->
-    # console.log info
-    status = info[0][0]
-    package_name = info[0][1][0]
-    console.log "uninstall report ##{status}#"
-    if status == UNINSTALL_STATUS.FAILED
-        message = "uninstall #{package_name} #{info[0][1][3]}"
-        for own id, item of clss.uninstalling_apps
-            if item.package_name == package_name
-                delete clss.uninstalling_apps[item.id]
-                break
-        clss.uninstallReport("", UNINSTALL_MESSAGE.FAILED.args(item.id))
-    else if status == UNINSTALL_STATUS.SUCCESS
-        message = "uninstall #{package_name} success"
-        for own id, item of clss.uninstalling_apps
-            if item.package_name == package_name
-                delete clss.uninstalling_apps[item.id]
-        clss.uninstallReport("", UNINSTALL_MESSAGE.SUCCESSFUL.args(item.id))
-    if message
-        console.log "uninstall: #{message}"
-        console.log "uninstall report #{status}"

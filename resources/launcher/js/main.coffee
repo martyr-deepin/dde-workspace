@@ -27,44 +27,71 @@ applications = {}
 # value: Item class
 uninstalling_apps = {}
 
+try
+    settings = DCore.DBus.session_object(
+        "com.deepin.dde.daemon.Launcher",
+        "/com/deepin/dde/daemon/Launcher",
+        "com.deepin.dde.daemon.launcher.Setting"
+    )
+catch e
+    console.error(e)
+    DCore.Launcher.quit()
+
+launcherSetting = new Setting(settings)
+
 init_all_applications = ->
     # get all applications and sort them by name
-    _all_items = daemon.ItemInfos_sync(CATEGORY_ID.ALL)
+    _all_items = daemon.GetAllItemInfos_sync()
     autostartList = startManager.AutostartList_sync()
 
     for core in _all_items
         createItem(core, autostartList)
 
-
 init_all_applications()
 console.log "load all applications done"
 
-switcher = new Switcher()
+switcher = new Switcher(launcherSetting)
 console.log "load switcher done"
-
-favor = new FavorPage()
-console.log 'load favor done'
 
 searchResult = new SearchResult()
 searchBar = new SearchBar()
+daemon.connect("SearchDone", searchResult.update)
 console.log "create search bar done"
 
-categoryInfos = daemon.CategoryInfos_sync()
+categoryInfos = daemon.GetAllCategoryInfos_sync()
 console.log "get category infos done"
 
-categoryBar = new CategoryBar(categoryInfos)
+categoryBar = new CategoryBar(categoryInfos, launcherSetting.getCategoryDisplayMode(), launcherSetting.getSortMethod())
 console.log "load category bar done"
 
-categoryList = new CategoryList(categoryInfos)
+categoryList = makeCategoryList(launcherSetting.getSortMethod())
 console.log "load category list done"
+
+launcherSetting.listenSortMethodChanged((newMethod)->
+    categoryList.reset()
+    categoryBar.sortMethod = newMethod
+    switcher.isShowCategory = newMethod == SortMethod.Method.ByCategory
+    categoryList = makeCategoryList(newMethod)
+    selector.container(categoryList)
+    if switcher.isShowCategory
+        categoryBar.show()
+        categoryBar.focusCategory(categoryList.firstCategory()?.id)
+    else
+        categoryBar.hide()
+    categoryList.getBox().offsetTop
+)
+launcherSetting.listenCategoryDisplayModeChanged((newMode)=>
+    categoryBar.changeDisplayMode(newMode)
+)
 
 bind_events()
 console.log "bind event done"
 
 selector = new Selector()
-selector.container(favor)
+selector.container(categoryList)
 console.log "create selector done"
 
 DCore.Launcher.webview_ok()
 console.log "webview ok"
+
 DCore.Launcher.test()

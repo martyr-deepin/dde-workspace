@@ -17,51 +17,25 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+uninstallFailedHandler = (itemId, reason)->
+    item = Widget.look_up(itemId)
+    if not item?
+        return
 
-uninstallSignalHandler = (clss, info)->
-    # console.log info
-    status = info[0][0]
-    package_name = info[0][1][0]
-    console.log "uninstall report ##{status}#"
-    if status == UNINSTALL_STATUS.FAILED
-        message = "uninstall #{package_name} #{info[0][1][3]}"
-        for own id, item of clss.uninstalling_apps
-            if item.package_name == package_name
-                item.status = SOFTWARE_STATE.IDLE
-                item.show()
-                categoryList.showNonemptyCategories()
-                delete clss.uninstalling_apps[item.id]
-                break
-        clss.uninstallReport("", UNINSTALL_MESSAGE.FAILED.args(item.id))
-    else if status == UNINSTALL_STATUS.SUCCESS
-        message = "uninstall #{package_name} success"
-        for own id, item of clss.uninstalling_apps
-            console.log(item.package_name)
-            if item.package_name == package_name
-                delete clss.uninstalling_apps[item.id]
-        clss.uninstallReport("", UNINSTALL_MESSAGE.SUCCESSFUL.args(item.id))
-    if message
-        console.log "uninstall: #{message}"
-        console.log "uninstall report #{status}"
+    item.status = SOFTWARE_STATE.IDLE
+    item.show()
+    categoryList.showNonemptyCategories()
 
+uninstallSuccessHandler = (itemId)->
 
 update = (status, info, categories)->
     path = info[0]
     name = info[1]
     id = info[2]
     icon = info[3]
-    # console.log "status: #{status}"
-    # console.log "path: #{path}"
-    # console.log "name: #{name}"
-    # console.log "id: #{id}"
-    # console.log "icon: #{icon}"
-    # console.log "categories: #{categories}"
+    console.log("item #{id} is changed")
 
     if status.match(/^deleted$/i)
-        if uninstalling_apps[id]
-            console.log("delete uninstall_apps")
-            delete uninstalling_apps[id]
-
         if (item = Widget.look_up(id))?
             console.log 'deleted'
             item.status = SOFTWARE_STATE.UNINSTALLING
@@ -81,8 +55,6 @@ update = (status, info, categories)->
         if !switcher.isInSearch()
             if switcher.isShowCategory
                 switcher.switchToCategory()
-            else
-                switcher.switchToFavor()
     else
         console.log 'updated'
         applications[id].update(name:name, path:path, basename:"#{get_path_name(path)}.desktop", icon:icon)

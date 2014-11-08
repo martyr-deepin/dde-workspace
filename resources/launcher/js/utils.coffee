@@ -23,7 +23,7 @@ reset = ->
     searchBar.clean()
     selector.clean()
     searchResult?.hide()
-    switcher.switchToFavor()
+    switcher.switchToCategory()
     gridOffset = 0
     grid.firstElementChild.style.webkitTransform = "translateY(0px)"
 
@@ -65,6 +65,7 @@ createItem = (core, autostartList)->
     name = core[1]
     id = core[2]
     icon = core[3]
+    category = core[4]
 
     basename = RegExp.escape(get_path_name(path) + ".desktop")
     item = new Item(id, name, path, icon)

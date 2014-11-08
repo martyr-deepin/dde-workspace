@@ -5,3 +5,5 @@ uninstaller = null
 searchResult = null
 uninstalling_apps = null
 isNotForceShow = true
+categoryList = null
+# startTime = new Date()

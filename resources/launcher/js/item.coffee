@@ -38,7 +38,6 @@ class Item extends Widget
         @hoverBox = create_element("div", "hoverBox", @hoverBoxOutter)
         @basename = get_path_name(@path) + ".desktop"
         @isAutostart = false
-        @isFavor = false
         @status = SOFTWARE_STATE.IDLE
 
         im = get_default_application_icon(ITEM_IMG_SIZE)
@@ -49,12 +48,10 @@ class Item extends Widget
         @hoverBoxOutter.draggable = true
         # @try_set_title(@element, @name, 80)
         # @element.setAttribute("title", @name)
-        @elements = {'element': @element}#favor: null, search: null
+        @elements = {'element': @element}#search: null
 
     @updateHorizontalMargin:->
         containerWidth = $("#container").clientWidth - GRID_PADDING * 2
-        if switcher.isShowCategory
-            containerWidth -= GRID_EXTRA_LEFT_PADDING
         # console.log "containerWidth:#{containerWidth}"
         Item.itemNumPerLine = Math.floor(containerWidth / ITEM_WIDTH)
         # console.log "itemNumPerLine: #{Item.itemNumPerLine}"
@@ -76,18 +73,16 @@ class Item extends Widget
     destroy: ->
         delete @elements['element']
         for own k, v of @elements
-            if k == 'favor' or k == 'search'
+            if k == 'search'
                 @remove(k)
             else
                 categoryList.category(k).removeItem(@id)
         delete Widget.object_table[@id]
 
     add:(pid, parent)->
-        if @elements[pid]
-            console.log 'exist'
-            return @elements[pid]
-        if pid == CATEGORY_ID.FAVOR
-            pid = 'favor'
+        # if @elements[pid]
+        #     console.log 'exist'
+        #     return @elements[pid]
 
         el = @element.cloneNode(true)
         inner = el.firstElementChild.firstElementChild
@@ -97,9 +92,7 @@ class Item extends Widget
             @load_image(im)
 
         @elements[pid] = el
-        if pid == 'favor'
-            @isFavor = true
-        else if pid != "search"
+        if pid != "search"
             if !parent?
                 categoryList.addItem(@id, pid)
         parent?.appendChild(el)
@@ -112,12 +105,8 @@ class Item extends Widget
         delete @elements[pid]
         pNode = el.parentNode
         pNode.removeChild(el)
-        if pid == 'favor' || pid == CATEGORY_ID.FAVOR
-            @isFavor = false
 
     getElement:(pid)->
-        if pid == CATEGORY_ID.FAVOR
-            pid = 'favor'
         @elements[pid]
 
     get_img: ->
@@ -209,6 +198,7 @@ class Item extends Widget
         startManager.Launch(@path)
         Item.hoverItem = target.parentNode
         target?.style.cursor = "auto"
+        daemon.RecordRate(@id)
         exit_launcher()
 
     setCanvas:(dt, width, height, xoffset=0, yoffset=0)->
@@ -243,25 +233,6 @@ class Item extends Widget
         dt.setData("text/uri-list", "file://#{@path}")
         data = "{\"id\":\"#{@id}\", \"name\": \"#{@name}\", \"path\": \"#{@path}\", \"icon\":\"#{@icon}\"}"
         dt.setData("uninstall", data)
-        if switcher.isFavor()
-            return
-        # TODO: drag between favor items
-        # console.log 'drag start'
-        # grid = target.parentNode.parentNode
-        # console.log grid.parentNode.dataset.catId
-        # if grid.parentNode.dataset.catId == "#{CATEGORY_ID.FAVOR}"
-        #     console.log 'drag favor'
-        #     target = target.parentNode
-        #     dt.effectAllowed = "move"
-        #     dragSrcEl = target
-        #     categoryList.favor.indicatorItem = @
-        #     # dt.setData("text/html", target.innerHtml)
-        #     # TODO: change to animation.
-        #     setTimeout(->
-        #         target.style.display = 'none'
-        #     , 100)
-        #     return
-        switcher.addedToFavor = false
         item = target.parentNode
         item.classList.add("item_dragged")
         dt.setData("text/plain", @id)
@@ -280,7 +251,7 @@ class Item extends Widget
         categoryBar.normal()
         switcher.normal()
 
-        if !switcher.isShowCategory or !switcher.addedToFavor
+        if !switcher.isShowCategory
             return
 
         switcher.notify()
@@ -288,22 +259,27 @@ class Item extends Widget
     createMenu:->
         @menu = null
         try
-            s_dock = get_dbus("session", "com.deepin.dde.dock", "Xid")
+            s_dock = DCore.DBus.session("com.deepin.dde.dock")#get_dbus("session", "com.deepin.dde.dock", "Xid")
         catch e
-            console.log(e)
+            console.error("get dock dbus failed", e)
             s_dock = null
-        dockedAppmanager = DCore.DBus.session_object(
-            "com.deepin.daemon.Dock",
-            "/dde/dock/DockedAppManager",
-            "dde.dock.DockedAppManager"
-        )
-        @isOnDesktop = daemon.IsOnDesktop_sync(@path)
-        @isOnDock = dockedAppmanager.IsDocked_sync(@id)
+        @isOnDock = true
+        try
+            # if failed, this will stuck.
+            dockedAppmanager = DCore.DBus.session_object(
+                "com.deepin.daemon.Dock",
+                "/dde/dock/DockedAppManager",
+                "dde.dock.DockedAppManager"
+            )
+            @isOnDock = dockedAppmanager.IsDocked_sync(@id)
+        catch
+            console.error("get dock app manager failed", e)
+            @isOnDock = true
+        @isOnDesktop = daemon.IsItemOnDesktop_sync(@path)
         @menu = new Menu(
             DEEPIN_MENU_TYPE.NORMAL,
             new MenuItem(1, _("_Open")),
             new MenuSeparator(),
-            new MenuItem(2, FAVOR_MESSAGE[@isFavor]),
             new MenuItem(3, SEND_TO_DESKTOP_MESSAGE[@isOnDesktop]),
             new MenuItem(4, SEND_TO_DOCK_MESSAGE[@isOnDock]).setActive(s_dock != null),
             new MenuSeparator(),
@@ -323,6 +299,7 @@ class Item extends Widget
         e.preventDefault()
         e.stopPropagation()
 
+        console.log("create menu")
         @createMenu()
 
         # console.log @menu
@@ -343,19 +320,11 @@ class Item extends Widget
             when 1
                 startManager.Launch(@basename)
                 # exit_launcher()
-            when 2
-                if @isFavor
-                    console.log 'remove from favor'
-                    favor.remove(@id)
-                else
-                    console.log 'add to favor'
-                    if favor.add(@id)
-                        switcher.notify()
             when 3
                 if @isOnDesktop
-                    daemon.RemoveFromDesktop(@path)
+                    daemon.RequestRemoveFromDesktop(@path)
                 else
-                    daemon.SendToDesktop(@path)
+                    daemon.RequestSendToDesktop(@path)
             when 4
                 try
                     dock = get_dbus(
@@ -404,11 +373,10 @@ class Item extends Widget
                     icon = DCore.get_theme_icon(@icon, 48)
                 icon = DCore.backup_app_icon(icon)
                 console.warn("set icon: #{icon} to notify icon")
-                uninstaller = new Uninstaller(@id, "Deepin Launcher", icon, uninstallSignalHandler)
-                uninstall_apps = uninstaller.uninstall_apps
+                uninstaller = new Uninstaller(@id, "Deepin Launcher", icon, uninstallFailedHandler, uninstallSuccessHandler)
                 # make sure the icon is hidden immediately
                 setTimeout(=>
-                    uninstaller.uninstall(item:@, purge:true)
+                    uninstaller.uninstall()
                 , 100)
         dialog.dis_connect("ActionInvoked", @uninstallHandler)
         dialog = null

@@ -19,7 +19,7 @@
 
 
 class SearchBar
-    constructor:->
+    constructor:()->
         @searchBar = $("#search")
         @key = $("#searchKey")
         DCore.signal_connect("im_commit", (info)=>
@@ -38,7 +38,6 @@ class SearchBar
     show: ->
         if @searchBar.style.visibility != 'visible'
             @searchBar.style.visibility = 'visible'
-            selector.container(searchResult)
         @
 
     value: (t)->
@@ -63,7 +62,7 @@ class SearchBar
         @cancel()
         @searchTimer = setTimeout(=>
             selector.clean()
+            # startTime = new Date()
             console.log "searchKey is : #{@value()}"
-            res = daemon.Search_sync(@value())
-            searchResult.update(res)
+            daemon.Search(@value())
         , 100)

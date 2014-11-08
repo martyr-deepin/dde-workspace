@@ -23,8 +23,7 @@ ITEM_HEIGHT = 160
 
 CONTAINER_BOTTOM_MARGIN = 70
 SEARCH_BAR_HEIGHT = 50
-GRID_PADDING = 110
-GRID_EXTRA_LEFT_PADDING = 45
+GRID_PADDING = 160
 CATEGORY_LIST_ITEM_MARGIN = 20
 CATEGORY_BAR_ITEM_MARGIN = 10
 
@@ -33,7 +32,6 @@ SCROLL_STEP_LEN = ITEM_HEIGHT
 CATEGORY_ID =
     ALL: -1
     OTHER: -2
-    FAVOR: -3
     INTERNET: 0
     MULTIMEDIA: 1
     GAMES: 2
@@ -74,10 +72,6 @@ AUTOSTART_ICON =
     NAME: "emblem-autostart"
     SIZE: 16
 
-FAVOR_MESSAGE =
-    false: _("Add to _favorites")
-    true: _("Remove from _favorites")
-
 SEND_TO_DESKTOP_MESSAGE =
     false: _("Send to d_esktop")
     true: _("Remove from d_esktop")
@@ -87,3 +81,19 @@ SEND_TO_DOCK_MESSAGE =
     true: _("Remove from do_ck")
 
 MASK_TOP_BOTTOM = "-webkit-linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,1) 5%, rgba(0,0,0,1) 90%, rgba(0,0,0,0.3), rgba(0,0,0,0))"
+
+CATEGORY_ORDER = [
+    CATEGORY_ID.INTERNET,
+    CATEGORY_ID.MULTIMEDIA,
+    CATEGORY_ID.GAMES,
+    CATEGORY_ID.GRAPHICS,
+    CATEGORY_ID.PRODUCTIVITY,
+    CATEGORY_ID.INDUSTRY,
+    CATEGORY_ID.EDUCATION,
+    CATEGORY_ID.DEVELOPMENT,
+    CATEGORY_ID.SYSTEM,
+    CATEGORY_ID.UTILITIES,
+    CATEGORY_ID.OTHER
+]
+
+SWITCHER_SHADOW = "img/radial-bg.png"

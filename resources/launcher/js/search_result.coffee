@@ -37,7 +37,8 @@ class SearchResult extends Page
     append: (child)->
         @container.appendChild(child)
 
-    update:(resultList)->
+    update:(resultList)=>
+        # console.log("#{new Date() - startTime}")
         for i in [0...@container.children.length]
             if @container.children[i].style.display != 'none'
                 @container.children[i].style.display = 'none'

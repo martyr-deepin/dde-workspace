@@ -33,3 +33,5 @@ install_manifest.txt
 
 # compiling gschemas
 schemas/gschemas.compiled
+
+node_modules/

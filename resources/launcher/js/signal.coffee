@@ -24,7 +24,7 @@ DCore.signal_connect('workarea_changed', (alloc)->
     $('#container').style.maxHeight = "#{height - CONTAINER_BOTTOM_MARGIN - SEARCH_BAR_HEIGHT}px"
     $('#grid').style.height = "#{height - CONTAINER_BOTTOM_MARGIN - SEARCH_BAR_HEIGHT}px"
     $('#searchResult').style.height = "#{height - CONTAINER_BOTTOM_MARGIN - SEARCH_BAR_HEIGHT}px"
-    $("#categoryWarp").style.height = "#{height - CONTAINER_BOTTOM_MARGIN - SEARCH_BAR_HEIGHT - 110}px"
+    $("#categoryWrap").style.height = "#{height - CONTAINER_BOTTOM_MARGIN - SEARCH_BAR_HEIGHT - 110}px"
     category_column_adaptive_height()
 )
 
@@ -40,7 +40,7 @@ DCore.signal_connect("exit_launcher", ->
 )
 
 DCore.signal_connect("launcher_shown",->
-    switcher.switchToFavor()
+    switcher.switchToCategory()
 )
 
 

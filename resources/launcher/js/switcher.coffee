@@ -18,161 +18,114 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class Switcher
-    constructor:->
-        @isShowCategory = false
+    constructor:(@setting)->
+        @isShowCategory = @setting.getSortMethod() == SortMethod.Method.ByCategory
         @switcher = create_element(tag:'div', id:'switcher', document.body)
-        @switcherHood = create_element(tag:'div', id:"switcher_hood", document.body)
-        @switcherHover = create_element(tag:'div', id:"switcher_hover", class:"notify", document.body)
-        @img = create_img(src: 'img/favor_normal.png', id:'notify',class:"switcher_hover notify", document.body)
-        @img.addEventListener("webkitAnimationEnd", =>
-            @img.style.webkitAnimationName = ''
+        @switcher.addEventListener("click", (e)->
+            e.stopPropagation()
+            e.preventDefault()
         )
-        @switcherHover.addEventListener("webkitAnimationEnd", =>
-            @switcherHover.style.webkitAnimationName = ''
-            @switcherHover.style.webkitBoxShadow = ""
-        )
-        @showCategory()
-        @page = 'Favor'
+        @menu = new SettingMenu(@, @setting)
+        @menu.setSelected(@setting.getSortMethod(), @setting.getCategoryDisplayMode())
+        @switcher.appendChild(@menu.element)
+        @page = 'Category'
         @isHovered = false
-        @switcherHood.addEventListener('click', @on_click)
-        @switcherHover.addEventListener('click', @on_click)
-        @switcherHover.addEventListener("mouseover", (e)=>
-            @isHovered = true
-            switch @page
-                when "Search", "Category"
-                    @showFavorHover()
-                when "Favor"
-                    @showCategoryHover()
+        @changeSetting(@setting.getSortMethod(), @setting.getCategoryDisplayMode())
+        @timeoutId = null
+        @bgShadow = create_element(tag:"img", id: "shadow", src:SWITCHER_SHADOW, document.body)
+        @switcher.addEventListener("mouseover", (e)=>
+            clearTimeout(@timeoutId)
+            @switcher.classList.add("switcher_hover")
+            @showShadow()
+            categoryBar.dark()
         )
-        @switcherHover.addEventListener("mouseout", (e)=>
-            @isHovered = false
-            switch @page
-                when "Search", "Category"
-                    @showFavor()
-                when "Favor"
-                    @showCategory()
+        @switcher.addEventListener("mouseout", (e)=>
+            @timeoutId = setTimeout(=>
+                @switcher.classList.remove("switcher_hover")
+                @hideShadow()
+                categoryBar.normal()
+            , 500)
         )
 
-        @switcherHover.addEventListener("dragover", (e)=>
-            e.preventDefault()
-        )
-        @switcherHover.addEventListener("drop", (e)=>
-            console.log 'drop'
-            e.preventDefault()
-            e.stopPropagation()
-            if @isFavor()
-                return
-            id = e.dataTransfer.getData("text/plain")
-            if favor.add(id)
-                @addedToFavor = true
-                @notify()
-        )
+    showShadow:=>
+        if @bgShadow.style.opacity != '1'
+            @bgShadow.style.opacity = '1'
+
+    hideShadow:=>
+        if @bgShadow.style.opacity != '0'
+            @bgShadow.style.opacity = '0'
+
+    changeSetting:(sortMethod, categoryDisplayMode)->
+        @switcher.className = ""
+        switch sortMethod
+            when SortMethod.Method.ByName
+                console.log("by name")
+                break
+            when SortMethod.Method.ByCategory
+                console.log("by category")
+                if categoryDisplayMode == CategoryDisplayMode.Mode.Text
+                    @switcher.classList.add('setting1')
+                else
+                    @switcher.classList.add('setting1')
+            when SortMethod.Method.ByTimeInstalled
+                console.log("by time installed")
+                @switcher.classList.add('setting2')
+            when SortMethod.Method.ByFrequency
+                console.log("by frequency")
+                @switcher.classList.add('setting3')
 
     on_click:(e)=>
         e.stopPropagation()
         e.preventDefault()
-        if @page != "Favor"
-            @switchToFavor()
-        else
-            @switchToCategory()
 
     isInSearch:->
         @switcher.style.visibility == 'hidden'
 
-    isFavor:->
-        @page == "Favor"
-
     isCategory:->
         @page == "Category"
 
-    showCategory:->
-        @switcher.style.backgroundPosition = "0 -#{SWITCHER_WIDTH}px"
-
-    showCategoryHover:->
-        @switcher.style.backgroundPosition = "-#{SWITCHER_WIDTH}px -#{SWITCHER_WIDTH}px"
-
-    showFavor:->
-        @switcher.style.backgroundPosition = ""
-
-    showFavorHover:->
-        @switcher.style.backgroundPosition = "-#{SWITCHER_WIDTH}px 0px"
-
-    showFavorGlow:->
-        @switcher.style.backgroundPosition = "-#{SWITCHER_WIDTH * 2}px 0px"
-
     switchToCategory:=>
+        @hideMenu()
+        @show()
         searchBar.hide().clean()
         selector.container(categoryList)
-        favor.hide().resetScrollOffset().setMask(Page.MaskHint.BottomOnly)
         categoryList.show()
         categoryList.getBox().offsetTop
-        @isShowCategory = true
-        if @isHovered
-            @showFavorHover()
-        else
-            @showFavor()
-        categoryBar.show()
-        categoryBar.focusCategory(categoryList.firstCategory()?.id)
-        Item.updateHorizontalMargin()
-        categoryList
-            .showNonemptyCategories()
-            .updateBlankHeight()
-            .updateNameDecoration()
-            .showBlank()
+        @isShowCategory = @setting.getSortMethod() == SortMethod.Method.ByCategory
+        if @isShowCategory
+            categoryBar.show()
+            categoryBar.focusCategory(categoryList.firstCategory()?.id)
+            categoryList
+                .showNonemptyCategories()
+                .updateBlankHeight()
+                .showBlank()
         searchResult?.hide().resetScrollOffset().setMask(Page.MaskHint.BottomOnly)
+        Item.updateHorizontalMargin()
         @page = "Category"
 
-    switchToFavor:=>
-        searchBar.hide().clean()
-        selector.container(favor)
-        @isShowCategory = false
-        categoryBar.hide()
-        categoryList.hide()
-            .resetScrollOffset()
-            .setMask(Page.MaskHint.BottomOnly)
-        favor.show()
-        if @isHovered
-            @showCategoryHover()
-        else
-            @showCategory()
-        Item.updateHorizontalMargin()
-        searchResult?.hide()
-            .resetScrollOffset()
-            .setMask(Page.MaskHint.BottomOnly)
-        @page = "Favor"
-
     switchToSearch:=>
+        @hide()
         categoryBar.hide()
-        favor.hide()
-            .resetScrollOffset()
-            .setMask(Page.MaskHint.BottomOnly)
         categoryList.hide()
             .resetScrollOffset()
             .setMask(Page.MaskHint.BottomOnly)
-        if @isHovered
-            @showFavorHover()
-        else
-            @showFavor()
         searchBar.show()
         @page = "Search"
         @isShowCategory = false
         selector.container(searchResult)
 
+    hideMenu:->
+        @switcher.dispatchEvent(new Event("mouseout"))
+
     hide:->
+        @hideMenu()
         @switcher.style.visibility = 'hidden'
 
     show:->
         @switcher.style.visibility = 'visible'
-        selector.container(favor)
 
     normal:->
-        if @page == "Category"
-            @showFavor()
 
     bright:->
-        @showFavorGlow()
 
     notify:->
-        @img.style.webkitAnimationName = 'Separate'
-        @switcherHover.style.webkitAnimationName = 'Separate'
-        @switcherHover.style.webkitBoxShadow = "0 0 2px rgba(255,255,255,0.6)"
