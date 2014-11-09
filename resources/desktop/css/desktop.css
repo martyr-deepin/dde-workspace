@@ -163,6 +163,7 @@ body {
 #pop_grid {
     z-index:20000;
     position:absolute;
+    outline:none;
 }
 
 #pop_grid ul {
@@ -173,25 +174,34 @@ body {
     border-radius: 5px;
     overflow-y:auto;
 }
-#pop_grid ul li {
+
+#pop_grid ul .RichDirItem {
     width:80px;
     height:84px;
     padding:2px 4px;
     margin:1px 1px;
-    border:1px solid transparent;
     display:inline-block;
     vertical-align:top;
     text-align:center;
+
+    border:1px solid transparent;
 }
-#pop_grid ul .auto_height {
-    height:auto;
-}
-#pop_grid ul li:hover {
+
+#pop_grid ul .RichDirItemSlected{
+    width:80px;
+    height:84px;
+    padding:2px 4px;
+    margin:1px 1px;
+    display:inline-block;
+    vertical-align:top;
+    text-align:center;
+
     border:1px solid rgba(255,255,255,0.2);
     background-color:rgba(255, 255, 255, 0.1);
     -webkit-transition:background-color 0.15s ease-in;
     border-radius:3px;
 }
+
 #pop_grid ul li .item_icon {
     padding:0 16px;
     width:48px;

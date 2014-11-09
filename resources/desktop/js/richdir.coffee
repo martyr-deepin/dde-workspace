@@ -26,8 +26,13 @@ richdir_drag_canvas = document.createElement("canvas")
 richdir_drag_context = richdir_drag_canvas.getContext('2d')
 
 class RichDir extends DesktopEntry
-
+    COLUMN_MAX = 6
+    ROW_SHOW_MAX = 3
+    col = 0
+    row = 0
     arrow_pos_at_bottom = false
+    ele_ul = null
+    scroll_flag = false
     constructor : (entry) ->
         super(entry, true, true)
         @div_pop = null
@@ -178,6 +183,8 @@ class RichDir extends DesktopEntry
         else
             if @show_pop == true
                 @sub_items = {}
+                @sub_items_ele = []
+                @sub_items_seleted_i = -1
                 @sub_items_count = 0
                 for e in list
                     @sub_items[DCore.DEntry.get_id(e)] = e
@@ -235,13 +242,15 @@ class RichDir extends DesktopEntry
         @div_pop = document.createElement("div")
         @div_pop.setAttribute("id", "pop_grid")
         document.body.appendChild(@div_pop)
+        @div_pop.setAttribute("tabindex","-1")
+        @div_pop.focus()
         @div_pop.addEventListener("mousedown", @on_event_stoppropagation)
         @div_pop.addEventListener("click", @on_event_stoppropagation)
         @div_pop.addEventListener("contextmenu",(e)=>
             e.preventDefault()
             e.stopPropagation()
         )
-        @div_pop.addEventListener("keyup", @on_event_stoppropagation)
+        @div_pop.addEventListener("keydown", @richdir_do_keydown_to_shortcut)
         @div_pop.addEventListener("dragenter", @on_drag_event_none)
         @div_pop.addEventListener("dragover", @on_drag_event_none)
 
@@ -268,15 +277,16 @@ class RichDir extends DesktopEntry
     fill_pop_block : =>
         ele_ul = document.createElement("ul")
         ele_ul.setAttribute("id", @id)
+        @div_pop.appendChild(ele_ul)
 
-
-        for i, e of @sub_items
-            ele = document.createElement("li")
-            ele.setAttribute('id', i)
+        @sub_items_ele = []
+        @sub_items_seleted_i = -1
+        sub_items_i = 0
+        for id, e of @sub_items
+            ele = create_element("li","RichDirItem",ele_ul)
+            ele.setAttribute('id', id)
             ele.setAttribute('title', DCore.DEntry.get_name(e))
             ele.draggable = true
-
-            if @sub_items_count <= 3 then ele.className = "auto_height"
 
             sb = document.createElement("div")
             sb.className = "item_icon"
@@ -315,6 +325,12 @@ class RichDir extends DesktopEntry
             ele.addEventListener('dragend', (evt) ->
                 evt.stopPropagation()
             )
+            ele.addEventListener('mouseover', (evt) ->
+                evt.stopPropagation()
+                that.sub_items_selected_css(this.id) if not scroll_flag
+                scroll_flag = false
+            )
+
             ele.addEventListener('dragenter', (evt) ->
                 evt.stopPropagation()
                 evt.dataTransfer.dropEffect = "none"
@@ -351,8 +367,8 @@ class RichDir extends DesktopEntry
                     .showMenu(evt.screenX, evt.screenY)
             )
 
-            ele_ul.appendChild(ele)
-
+            @sub_items_ele.push({id:id,index:sub_items_i,name:ele.title,element:ele,w:e})
+            sub_items_i++
         @drawPanel(ele_ul)
         return
 
@@ -362,7 +378,7 @@ class RichDir extends DesktopEntry
         # how many we can hold per line due to workarea width
         # 20px for ul padding, 2px for border, 8px for scrollbar
         num_max = Math.floor((s_width - 30) / _ITEM_WIDTH_)
-        # calc ideal columns
+        # calc ideal columns --lie
         if @sub_items_count <= 3
             col = @sub_items_count
         else if @sub_items_count <= 6
@@ -376,11 +392,10 @@ class RichDir extends DesktopEntry
         # restrict the col item number
         if col > num_max then col = num_max
 
-        # calc ideal rows
+        # calc ideal rows --hang
         row  = Math.ceil(@sub_items_count / col)
         if row < 1 then row = 1
         if row > 4 then row = 4
-        echo "row:#{row};col:#{col}"
         #calc ideal pop div width
         pop_width = col * _ITEM_WIDTH_ + 22
         pop_height = row * _ITEM_HEIGHT_
@@ -402,6 +417,7 @@ class RichDir extends DesktopEntry
         if @sub_items_count > col * row
             pop_width = col * _ITEM_WIDTH_ + 30
         pop_height = row * _ITEM_HEIGHT_
+        echo "=========@sub_items_count:#{@sub_items_count};row:hang:#{row};col:lie:#{col}"
 
         @div_pop.style.width = pop_width
         @div_pop.style.height = pop_height
@@ -440,7 +456,6 @@ class RichDir extends DesktopEntry
         return pop_size_pos
 
     drawPanel:(ele_ul) =>
-        @div_pop.appendChild(ele_ul)
         size = @set_div_pop_size_pos(ele_ul)
 
         @canvas = @canvas || create_element(tag:"canvas", class:"pop_bg", @div_pop)
@@ -542,6 +557,8 @@ class RichDir extends DesktopEntry
 
         if @div_pop?
             @sub_items = {}
+            @sub_items_ele = []
+            @sub_items_seleted_i = -1
             @div_pop.parentElement?.removeChild(@div_pop)
             delete @div_pop
             @div_pop = null
@@ -602,7 +619,6 @@ class RichDir extends DesktopEntry
                     DCore.DEntry.clipboard_copy(list)
                 if w? then w.hide_pop_block()
             when 6
-                echo "6 delete"
                 list = []
                 w = Widget.look_up(self.parentElement.id)
                 echo "w.id" + w.id
@@ -612,10 +628,95 @@ class RichDir extends DesktopEntry
                     list.push(e)
                     DCore.DEntry.trash(list)
             when 8
-                echo "6 properties"
                 list = []
                 w = Widget.look_up(self.parentElement.id)
                 if w? then e = w.sub_items[self.id]
                 show_entries_properties([e]) if e?
             else echo "menu clicked:id=#{id}"
         return
+
+    sub_items_launch: (id) =>
+        @sub_items_selected_css(id)
+        e = @sub_items[id]
+        if e?
+            if !DCore.DEntry.launch(e, [])
+                if confirm(_("The link is invalid. Do you want to delete it?"), _("Warning"))
+                    list = []
+                    list.push(e)
+                    DCore.DEntry.trash(list)
+        @hide_pop_block()
+
+    sub_items_selected_css: (id) =>
+        for item in @sub_items_ele
+            if item.id == id
+                @sub_items_seleted_i = item.index
+                item.element.setAttribute("class","RichDirItemSlected")
+            else
+                item.element.setAttribute("class","RichDirItem")
+
+    check_item_index: (i) ->
+        if not i? then i = 0
+        if i > @sub_items_count - 1 then i = @sub_items_count - 1
+        else if i < 0 then i = 0
+        i
+
+    richdir_do_keydown_to_shortcut : (evt) =>
+        if not @show_pop
+            return
+        evt.stopPropagation()
+        evt.preventDefault()
+
+        delta = 0
+        switch evt.keyCode
+            when KEYCODE.LEFT_ARROW
+                delta = -1
+            when KEYCODE.UP_ARROW
+                delta = -1 * col
+            when KEYCODE.RIGHT_ARROW
+                delta = 1
+            when KEYCODE.DOWN_ARROW
+                delta = col
+            when KEYCODE.ENTER
+                delta = 0
+                @sub_items_seleted_i = @check_item_index(@sub_items_seleted_i)
+                id = @sub_items_ele[@sub_items_seleted_i].id
+                @sub_items_launch(id)
+                return
+            when KEYCODE.ESC
+                delta = 0
+                @hide_pop_block()
+                return
+        if delta == 0
+            return
+        id_origin = null
+        if @sub_items_seleted_i in [0...@sub_items_count - 1]
+            id_origin = @sub_items_ele[@sub_items_seleted_i].id
+        else
+            id_origin = @sub_items_ele[0].id
+        @sub_items_seleted_i = @check_item_index(@sub_items_seleted_i + delta)
+        id = @sub_items_ele[@sub_items_seleted_i].id
+        @scroll_to_item(id_origin,id)
+        @sub_items_selected_css(id)
+
+
+    scroll_to_item: (id_origin,id) =>
+        SHOW_ITEM_MAX = COLUMN_MAX * ROW_SHOW_MAX
+        if @sub_items_count <= SHOW_ITEM_MAX
+            return
+        item_dest = null
+        item_origin = null
+        if id_origin == null
+           id_origin = @sub_items_ele[0].id
+        for item in @sub_items_ele
+            if item.id == id then item_dest = item
+            if item.id == id_origin then item_origin = item
+        if not item_dest? or not item_origin?
+            return
+        console.debug "scroll_to_item:index:#{item_origin.index} to #{item_dest.index}"
+        row_origin = Math.floor(item_origin.index / col) + 1#hang
+        row_dest = Math.floor(item_dest.index / col) + 1#hang
+        offset_top = (row_dest - row_origin) * _ITEM_HEIGHT_
+        scroll_flag = true
+        setTimeout(->
+            ele_ul.scrollTop += offset_top
+        ,20)
