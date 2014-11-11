@@ -505,6 +505,7 @@ int main(int argc, char* argv[])
     g_log_set_default_handler((GLogFunc)log_to_file, "dde-dock");
 
     set_desktop_env_name("Deepin");
+    set_default_theme("Deepin");
 
     container = create_web_container(FALSE, TRUE);
     gtk_window_set_decorated(GTK_WINDOW(container), FALSE);

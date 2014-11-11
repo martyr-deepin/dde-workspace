@@ -517,6 +517,7 @@ int main(int argc, char* argv[])
 #ifdef NDEBUG
     gtk_window_set_title(GTK_WINDOW(container), "launcher");
 #endif
+    set_default_theme("Deepin");
     set_desktop_env_name("Deepin");
 
     webview = d_webview_new_with_uri(GET_HTML_PATH("launcher"));

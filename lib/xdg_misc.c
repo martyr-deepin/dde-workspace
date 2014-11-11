@@ -119,6 +119,11 @@ char* lookup_icon_by_gicon(GIcon* icon)
     return icon_path;
 }
 
+void set_default_theme(const char* theme)
+{
+    GtkSettings* setting = gtk_settings_get_default();
+    g_object_set(setting, "gtk-icon-theme-name", theme, NULL);
+}
 
 gboolean change_desktop_entry_name(const char* path, const char* name)
 {

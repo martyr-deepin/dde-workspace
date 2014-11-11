@@ -620,6 +620,7 @@ int main(int argc, char* argv[])
 
     g_log_set_default_handler((GLogFunc)log_to_file, "dde-desktop");
 
+    set_default_theme("Deepin");
     set_desktop_env_name("Deepin");
 
     update_primary_info(&rect_primary);
