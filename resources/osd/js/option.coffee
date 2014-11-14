@@ -92,15 +92,21 @@ osd.NumLockOff = (keydown)->
     OptionCls.id = "NumLockOff"
     OptionCls.show()
 
-osd.TouchPadOn = (keydown)->
+osd.TouchpadOn = (keydown)->
     if !keydown then return if mode is "dbus"
-    OptionCls  = new Option("TouchPadOn") if not OptionCls?
-    OptionCls.id = "TouchPadOn"
+    OptionCls  = new Option("TouchpadOn") if not OptionCls?
+    OptionCls.id = "TouchpadOn"
     OptionCls.show()
 
-osd.TouchPadOff = (keydown)->
+osd.TouchpadOff = (keydown)->
     if !keydown then return if mode is "dbus"
-    OptionCls  = new Option("TouchPadOff") if not OptionCls?
-    OptionCls.id = "TouchPadOff"
+    OptionCls  = new Option("TouchpadOff") if not OptionCls?
+    OptionCls.id = "TouchpadOff"
+    OptionCls.show()
+
+osd.TouchpadToggle = (keydown)->
+    if !keydown then return if mode is "dbus"
+    OptionCls  = new Option("TouchpadToggle") if not OptionCls?
+    OptionCls.id = "TouchpadToggle"
     OptionCls.show()
 

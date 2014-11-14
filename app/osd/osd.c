@@ -84,8 +84,9 @@ static struct {
     gboolean is_CapsLockOff;
     gboolean is_NumLockOn;
     gboolean is_NumLockOff;
-    gboolean is_TouchPadOn;
-    gboolean is_TouchPadOff;
+    gboolean is_TouchpadOn;
+    gboolean is_TouchpadOff;
+    gboolean is_TouchpadToggle;
 } option = {FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE};
 static GOptionEntry entries[] = {
     {"AudioUp", 0, 0, G_OPTION_ARG_NONE, &option.is_AudioUp, "OSD AudioUp", NULL},
@@ -99,8 +100,9 @@ static GOptionEntry entries[] = {
     {"CapsLockOff", 0, 0, G_OPTION_ARG_NONE, &option.is_CapsLockOff, "OSD CapsLockOff", NULL},
     {"NumLockOn", 0, 0, G_OPTION_ARG_NONE, &option.is_NumLockOn, "OSD NumLockOn", NULL},
     {"NumLockOff", 0, 0, G_OPTION_ARG_NONE, &option.is_NumLockOff, "OSD NumLockOff", NULL},
-    {"TouchPadOn", 0, 0, G_OPTION_ARG_NONE, &option.is_TouchPadOn, "OSD TouchPadOn", NULL},
-    {"TouchPadOff", 0, 0, G_OPTION_ARG_NONE, &option.is_TouchPadOff, "OSD TouchPadOff", NULL},
+    {"TouchpadOn", 0, 0, G_OPTION_ARG_NONE, &option.is_TouchpadOn, "OSD TouchpadOn", NULL},
+    {"TouchpadOff", 0, 0, G_OPTION_ARG_NONE, &option.is_TouchpadOff, "OSD TouchpadOff", NULL},
+    {"TouchpadToggle", 0, 0, G_OPTION_ARG_NONE, &option.is_TouchpadToggle, "OSD TouchpadToggle", NULL},
     {NULL}
 };
 
@@ -130,10 +132,12 @@ const char* osd_get_argv()
         input = "NumLockOn";
     } else if (option.is_NumLockOff) {
         input = "NumLockOff";
-    } else if (option.is_TouchPadOn) {
-        input = "TouchPadOn";
-    } else if (option.is_TouchPadOff) {
-        input = "TouchPadOff";
+    } else if (option.is_TouchpadOn) {
+        input = "TouchpadOn";
+    } else if (option.is_TouchpadOff) {
+        input = "TouchpadOff";
+    } else if (option.is_TouchpadToggle) {
+        input = "TouchpadToggle";
     }
     g_message("osd_get_argv :%s\n",input);
     return input;
