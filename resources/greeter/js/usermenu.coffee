@@ -54,7 +54,7 @@ class UserMenu extends Widget
             uid = user.id
             username = user.username
             usericon = user.usericon
-            if username is _("Guest") then usericon = "/var/lib/AccountsService/icons/guest_96.png"
+            if username is guest.UserName then usericon = guest.IconFile
             @ComboBox.insert(uid, username, usericon,usericon,usericon)
         @ComboBox.frame_build(1)
         @element.appendChild(@ComboBox.element)

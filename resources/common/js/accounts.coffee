@@ -18,11 +18,6 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-guest_id = "118"
-guest_name = _("Guest")
-guest_icon = "/var/lib/AccountsService/icons/guest.png"
-guest_name_in_lightdm = "guest"
-
 class Accounts
     ACCOUNTS_DAEMON = "com.deepin.daemon.Accounts"
     ACCOUNTS_USER =
@@ -58,6 +53,7 @@ class Accounts
         @session_dbus_logined_id = []
 
         @getDBus_account()
+        @guest = @get_guest_info()
 
     getDBus_account:->
         try
@@ -78,14 +74,15 @@ class Accounts
             echo "Dbus_Account #{ACCOUNTS_DAEMON} ERROR: #{e}"
             @get_dbus_failed = true
 
-
+    get_guest_info: ->
+        {Uid:"118",UserName:_("Guest"),IconFile:"/var/lib/AccountsService/icons/bigger/guest.png",Name:"guest"}
 
     get_user_name: (uid) ->
         username = @users_id_dbus[uid].UserName
         return username
 
     get_user_id:(user)->
-        if user is guest_name then return guest_id
+        if user is @guest.UserName then return @guest.Uid
         id = null
         try
             id = @users_name_dbus[user].Uid
@@ -95,7 +92,7 @@ class Accounts
         return id
 
     is_need_pwd: (uid) ->
-        if uid is guest_id then return false
+        if uid is @guest.Uid then return false
         else return true
         username = @get_user_name(uid)
         dbus = null
@@ -115,7 +112,7 @@ class Accounts
     get_user_icon:(uid)->
         icon = null
         try
-            icon = @users_id_dbus[uid].IconFile
+            icon = @users_id_dbus[uid].GetLargeIcon_sync()
         catch e
             echo "get_user_bg #{e}"
         return icon

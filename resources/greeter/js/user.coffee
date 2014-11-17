@@ -36,7 +36,7 @@ class User extends Widget
     get_default_userid:->
         @_default_username = accounts.get_default_username()
         console.log "_default_username:#{@_default_username}"
-        if @_default_username is null or @_default_username == guest_name_in_lightdm then @_default_username = accounts.users_name[0]
+        if @_default_username is null or @_default_username == guest.Name then @_default_username = accounts.users_name[0]
         @_default_userid = accounts.get_user_id(@_default_username)
         echo "_default_username:#{@_default_username};uid:#{@_default_userid}"
         return @_default_userid
@@ -53,7 +53,7 @@ class User extends Widget
 
      isSupportGuest:->
         if is_support_guest and accounts.isAllowGuest() is true
-            u = new UserInfo(guest_id, guest_name, guest_icon)
+            u = new UserInfo(guest.Uid, guest.UserName, guest.IconFile)
             @userinfo_all.push(u)
             #if DCore.Greeter.is_guest_default() then u.show()
             #else u.hide()
@@ -87,7 +87,7 @@ class User extends Widget
     new_userinfo_for_lock:->
         echo "new_userinfo_for_lock"
         if DCore.Lock.is_guest()
-            _current_user = new UserInfo(guest_id, guest_name, guest_icon)
+            _current_user = new UserInfo(guest.Uid, guest.UserName, guest.IconFile)
         else
             username = accounts.users_id_dbus[@_default_userid].UserName
             usericon = accounts.users_id_dbus[@_default_userid].IconFile
@@ -276,7 +276,7 @@ class UserInfo extends Widget
 
     focus:->
         echo "#{@username} focus"
-        @login.password?.focus() if @username isnt guest_name
+        @login.password?.focus() if @username isnt guest.UserName
 
         if @face_login
             DCore[APP_NAME].set_username(@username)
@@ -291,7 +291,7 @@ class UserInfo extends Widget
 
     on_verify: (username, password)->
         echo "on_verify:#{username}"
-        if username is guest_name then username = guest_name_in_lightdm
+        if username is guest.UserName then username = guest.Name
         @password = password
         if is_greeter
             @loginAnimation()
@@ -349,7 +349,7 @@ class LoginEntry extends Widget
         @password = create_element("input", "password", @password_div)
         @caps = create_element("div", "CapsWarning", @password_div)
         @password.type = "password"
-        @password.setAttribute("autofocus", true) if @username isnt guest_name
+        @password.setAttribute("autofocus", true) if @username isnt guest.UserName
         @password_eventlistener()
 
     keyboard_img_create: ->
@@ -444,7 +444,7 @@ class LoginEntry extends Widget
         @password?.addEventListener("click", (e)=>
             e.stopPropagation()
             @keyboard?.hide()
-            if @username is guest_name then return
+            if @username is guest.UserName then return
             if @password.value is password_error_msg or @password.value is localStorage.getItem("password_value_shutdown")
                 @input_password_again()
         )
@@ -454,13 +454,13 @@ class LoginEntry extends Widget
         )
         @password?.addEventListener("focus",=>
             @check_capslock()
-            if @username is guest_name then return
+            if @username is guest.UserName then return
             if @password.value is password_error_msg or @password.value is localStorage.getItem("password_value_shutdown")
                 @input_password_again()
         )
         @password?.addEventListener("keyup",(e)=>
             @check_capslock()
-            if @username is guest_name then return
+            if @username is guest.UserName then return
             if e.which == ENTER_KEY
                 @on_active(@username, @password.value) if @check_completeness()
         )

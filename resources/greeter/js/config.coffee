@@ -82,6 +82,8 @@ zoneDBus = null
 is_guest = false
 
 accounts = new Accounts(APP_NAME)
+guest = accounts.guest
+
 _b = document.body
 
 inject_css(_b,"../common/css/global.css")
