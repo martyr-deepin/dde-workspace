@@ -3,8 +3,8 @@ class SettingMenu
         @element = create_element(tag:"ul", document.body)
         @element.innerHTML = "" +
          "<li data-sort-method=0>%1</li>".args(_("By name")) +
-         "<li data-sort-method=1 data-category-display-mode=0>%1</li>".args(_("By category(icon)")) +
-         "<li data-sort-method=1 data-category-display-mode=1>%1</li>".args(_("By category(text)")) +
+         "<li data-sort-method=1 data-category-display-mode=0>%1</li>".args(_("By category (icon)")) +
+         "<li data-sort-method=1 data-category-display-mode=1>%1</li>".args(_("By category (text)")) +
          "<li data-sort-method=2>%1</li>".args(_("By time installed")) +
          "<li data-sort-method=3>%1</li>".args(_("By frequency"))
         @selected = null

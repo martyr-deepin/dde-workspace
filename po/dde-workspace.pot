@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-18 10:12+0800\n"
+"POT-Creation-Date: 2014-11-18 17:29+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -627,11 +627,11 @@ msgid "By name"
 msgstr ""
 
 #: ../resources/launcher/js/menu.coffee:6
-msgid "By category(icon)"
+msgid "By category (icon)"
 msgstr ""
 
 #: ../resources/launcher/js/menu.coffee:7
-msgid "By category(text)"
+msgid "By category (text)"
 msgstr ""
 
 #: ../resources/launcher/js/menu.coffee:8
