@@ -2,13 +2,13 @@ class GlobalMenu
     constructor:->
         @plugins = {}
 
-    showMenu:(x, y)->
+    showMenu:(@x, y)->
         @menu?.destroy()
         @menu = null
         items = [
             new RadioBoxMenuItem('dockHideMode:radio:keep-showing', _("Keep _showing")),
             new RadioBoxMenuItem('dockHideMode:radio:keep-hidden', _("Keep _hidden"))
-            new RadioBoxMenuItem('dockHideMode:radio:auto-hide', _("_Auto hide")),
+            # new RadioBoxMenuItem('dockHideMode:radio:auto-hide', _("_Auto hide")),
             new RadioBoxMenuItem('dockHideMode:radio:smart-hide', _("_Smart hide")),
         ]
         try
@@ -18,7 +18,10 @@ class GlobalMenu
         catch e
             console.warn e
             delete @plugins["deepinAppletManager"]
-        items[settings.hideMode()].setChecked(true)
+        hideMode = settings.hideMode()
+        if hideMode == HideMode.SmartHide
+            hideMode = hideMode - 1
+        items[hideMode].setChecked(true)
         @menu = new Menu(DEEPIN_MENU_TYPE.NORMAL)
         displayModes = [
             new RadioBoxMenuItem("dockDisplayMode:radio:fashion", _("_Fashion mode")),
@@ -32,15 +35,11 @@ class GlobalMenu
 
         if Object.keys(@plugins).length > 0
             @menu.addSeparator()
-
-        for groupName, dbus of @plugins
-            infos = JSON.parse(dbus.appletInfoList)
-            for info in infos
-                @menu.append(new CheckBoxMenuItem("#{groupName}:checkbox:#{info[0]}", info[1]).setChecked(info[2]))
+            @menu.append(new MenuItem("deepinAppletManager", _("Notice Region Setting")))
 
         _isRightclicked = true
         # @menu.addSeparator().append(new MenuItem("dockSetting", _("_Dock setting")))
-        @menu.addListener(@on_itemselected).showMenu(x, y)
+        @menu.addListener(@on_itemselected).showMenu(@x, y)
         @menu.unregisterHook(handleMenuUnregister)
 
     on_itemselected:(id)=>
@@ -62,7 +61,7 @@ class GlobalMenu
                 if not dbus
                     console.warn("cannot get dbus of #{groupName}")
                     return
-                dbus.ToggleApplet(realId)
+                dbus.ShowSettingWindow(@x)
             when "dockSetting"
                 # TODO:
                 # toggle dock setting panel.

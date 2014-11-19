@@ -24,6 +24,7 @@ def get_files():
 
     #TODO:Here add your app coffee files in special dir
     coffee_files.append("../resources/common/js/uninstaller.coffee")
+    coffee_files.append("../resources/common/js/accounts.coffee")
 
     for d in os.listdir("../app"):
         if d not in except_dirs:
