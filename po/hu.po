@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-18 17:29+0800\n"
-"PO-Revision-Date: 2014-11-18 09:58+0000\n"
+"POT-Creation-Date: 2014-11-20 09:44+0800\n"
+"PO-Revision-Date: 2014-11-20 02:36+0000\n"
 "Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
 "Language-Team: Hungarian (http://www.transifex.com/projects/p/deepin-desktop-environment/language/hu/)\n"
 "MIME-Version: 1.0\n"
@@ -21,6 +21,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: hu\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../resources/common/js/accounts.coffee:78
+msgid "Guest"
+msgstr "Vendég"
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
@@ -221,25 +225,25 @@ msgstr "_nincs elrejtés"
 msgid "Keep _hidden"
 msgstr "_elrejtés"
 
-#: ../resources/dock/js/global_menu.coffee:11
-msgid "_Auto hide"
-msgstr "_Automatikus elrejtés"
-
 #: ../resources/dock/js/global_menu.coffee:12
 msgid "_Smart hide"
 msgstr "_Intelligens elrejtés"
 
-#: ../resources/dock/js/global_menu.coffee:24
+#: ../resources/dock/js/global_menu.coffee:27
 msgid "_Fashion mode"
 msgstr "_Fashion mód"
 
-#: ../resources/dock/js/global_menu.coffee:25
+#: ../resources/dock/js/global_menu.coffee:28
 msgid "_Efficient mode"
 msgstr "_Hatékony mód"
 
-#: ../resources/dock/js/global_menu.coffee:26
+#: ../resources/dock/js/global_menu.coffee:29
 msgid "_Classic mode"
 msgstr "_Klasszikus mód"
+
+#: ../resources/dock/js/global_menu.coffee:38
+msgid "Notice Region Setting"
+msgstr ""
 
 #: ../resources/dock/js/main.coffee:115 ../resources/zone/js/utils.coffee:13
 msgid "Launcher"
@@ -415,10 +419,6 @@ msgstr "Bejelentkezés"
 #: ../resources/greeter/js/user.coffee:420
 msgid "Unlock"
 msgstr "Feloldás"
-
-#: ../resources/greeter/js/usermenu.coffee:57
-msgid "Guest"
-msgstr "Vendég"
 
 #: ../resources/guide/js/desktop.coffee:27
 msgid ""

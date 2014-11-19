@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-18 17:29+0800\n"
-"PO-Revision-Date: 2014-11-18 09:58+0000\n"
+"POT-Creation-Date: 2014-11-20 09:44+0800\n"
+"PO-Revision-Date: 2014-11-20 02:36+0000\n"
 "Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
 "Language-Team: Italian (http://www.transifex.com/projects/p/deepin-desktop-environment/language/it/)\n"
 "MIME-Version: 1.0\n"
@@ -18,6 +18,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../resources/common/js/accounts.coffee:78
+msgid "Guest"
+msgstr "Guest"
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
@@ -218,25 +222,25 @@ msgstr "_Mostra"
 msgid "Keep _hidden"
 msgstr "_Nascondi"
 
-#: ../resources/dock/js/global_menu.coffee:11
-msgid "_Auto hide"
-msgstr "_Nascondi automaticamente"
-
 #: ../resources/dock/js/global_menu.coffee:12
 msgid "_Smart hide"
 msgstr "_Nascondi furbescamente"
 
-#: ../resources/dock/js/global_menu.coffee:24
+#: ../resources/dock/js/global_menu.coffee:27
 msgid "_Fashion mode"
 msgstr "Modalità _Fashion"
 
-#: ../resources/dock/js/global_menu.coffee:25
+#: ../resources/dock/js/global_menu.coffee:28
 msgid "_Efficient mode"
 msgstr "Modalità _Efficiente"
 
-#: ../resources/dock/js/global_menu.coffee:26
+#: ../resources/dock/js/global_menu.coffee:29
 msgid "_Classic mode"
 msgstr "Modalità _Classica"
+
+#: ../resources/dock/js/global_menu.coffee:38
+msgid "Notice Region Setting"
+msgstr ""
 
 #: ../resources/dock/js/main.coffee:115 ../resources/zone/js/utils.coffee:13
 msgid "Launcher"
@@ -412,10 +416,6 @@ msgstr "Login"
 #: ../resources/greeter/js/user.coffee:420
 msgid "Unlock"
 msgstr "Sblocca"
-
-#: ../resources/greeter/js/usermenu.coffee:57
-msgid "Guest"
-msgstr "Guest"
 
 #: ../resources/guide/js/desktop.coffee:27
 msgid ""
@@ -627,23 +627,23 @@ msgstr "Rimuovi dalla do_ck"
 
 #: ../resources/launcher/js/menu.coffee:5
 msgid "By name"
-msgstr ""
+msgstr "Per nome"
 
 #: ../resources/launcher/js/menu.coffee:6
 msgid "By category (icon)"
-msgstr ""
+msgstr "Per categoria (icone)"
 
 #: ../resources/launcher/js/menu.coffee:7
 msgid "By category (text)"
-msgstr ""
+msgstr "Per categoria (testo)"
 
 #: ../resources/launcher/js/menu.coffee:8
 msgid "By time installed"
-msgstr ""
+msgstr "Per data installazione"
 
 #: ../resources/launcher/js/menu.coffee:9
 msgid "By frequency"
-msgstr ""
+msgstr "Per ultima modifica"
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"

@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-18 17:29+0800\n"
-"PO-Revision-Date: 2014-11-18 09:58+0000\n"
+"POT-Creation-Date: 2014-11-20 09:44+0800\n"
+"PO-Revision-Date: 2014-11-20 02:36+0000\n"
 "Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
 "Language-Team: Polish (http://www.transifex.com/projects/p/deepin-desktop-environment/language/pl/)\n"
 "MIME-Version: 1.0\n"
@@ -19,6 +19,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pl\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: ../resources/common/js/accounts.coffee:78
+msgid "Guest"
+msgstr "Gość"
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
@@ -219,25 +223,25 @@ msgstr "Zawsze _pokazuj"
 msgid "Keep _hidden"
 msgstr "Zawsze _chowaj"
 
-#: ../resources/dock/js/global_menu.coffee:11
-msgid "_Auto hide"
-msgstr "_Autoukrywanie"
-
 #: ../resources/dock/js/global_menu.coffee:12
 msgid "_Smart hide"
 msgstr "_Mądre ukrywanie"
 
-#: ../resources/dock/js/global_menu.coffee:24
+#: ../resources/dock/js/global_menu.coffee:27
 msgid "_Fashion mode"
 msgstr "_Tryb modny"
 
-#: ../resources/dock/js/global_menu.coffee:25
+#: ../resources/dock/js/global_menu.coffee:28
 msgid "_Efficient mode"
 msgstr "_Tryb wydajny"
 
-#: ../resources/dock/js/global_menu.coffee:26
+#: ../resources/dock/js/global_menu.coffee:29
 msgid "_Classic mode"
 msgstr "_Tryb klasyczny"
+
+#: ../resources/dock/js/global_menu.coffee:38
+msgid "Notice Region Setting"
+msgstr ""
 
 #: ../resources/dock/js/main.coffee:115 ../resources/zone/js/utils.coffee:13
 msgid "Launcher"
@@ -413,10 +417,6 @@ msgstr "Zaloguj"
 #: ../resources/greeter/js/user.coffee:420
 msgid "Unlock"
 msgstr "Odblokuj"
-
-#: ../resources/greeter/js/usermenu.coffee:57
-msgid "Guest"
-msgstr "Gość"
 
 #: ../resources/guide/js/desktop.coffee:27
 msgid ""
@@ -628,23 +628,23 @@ msgstr "Usuń z _doku"
 
 #: ../resources/launcher/js/menu.coffee:5
 msgid "By name"
-msgstr ""
+msgstr "Wg. nazwy"
 
 #: ../resources/launcher/js/menu.coffee:6
 msgid "By category (icon)"
-msgstr ""
+msgstr "Wg. kategorii (ikona)"
 
 #: ../resources/launcher/js/menu.coffee:7
 msgid "By category (text)"
-msgstr ""
+msgstr "Wg. kategorii (tekst)"
 
 #: ../resources/launcher/js/menu.coffee:8
 msgid "By time installed"
-msgstr ""
+msgstr "Wg. czasu zainstalowania"
 
 #: ../resources/launcher/js/menu.coffee:9
 msgid "By frequency"
-msgstr ""
+msgstr "Wg. częstotliwości"
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"

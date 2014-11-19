@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-18 17:29+0800\n"
-"PO-Revision-Date: 2014-11-18 09:58+0000\n"
+"POT-Creation-Date: 2014-11-20 09:44+0800\n"
+"PO-Revision-Date: 2014-11-20 02:36+0000\n"
 "Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/deepin-desktop-environment/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -19,6 +19,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: zh_TW\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+#: ../resources/common/js/accounts.coffee:78
+msgid "Guest"
+msgstr "來賓"
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
@@ -219,25 +223,25 @@ msgstr "一直顯示(_S)"
 msgid "Keep _hidden"
 msgstr "一直隱藏(_H)"
 
-#: ../resources/dock/js/global_menu.coffee:11
-msgid "_Auto hide"
-msgstr "自動隱藏(_A)"
-
 #: ../resources/dock/js/global_menu.coffee:12
 msgid "_Smart hide"
 msgstr ""
 
-#: ../resources/dock/js/global_menu.coffee:24
+#: ../resources/dock/js/global_menu.coffee:27
 msgid "_Fashion mode"
 msgstr "時尚模式"
 
-#: ../resources/dock/js/global_menu.coffee:25
+#: ../resources/dock/js/global_menu.coffee:28
 msgid "_Efficient mode"
 msgstr "高效率模式"
 
-#: ../resources/dock/js/global_menu.coffee:26
+#: ../resources/dock/js/global_menu.coffee:29
 msgid "_Classic mode"
 msgstr "傳統模式"
+
+#: ../resources/dock/js/global_menu.coffee:38
+msgid "Notice Region Setting"
+msgstr ""
 
 #: ../resources/dock/js/main.coffee:115 ../resources/zone/js/utils.coffee:13
 msgid "Launcher"
@@ -413,10 +417,6 @@ msgstr "登入"
 #: ../resources/greeter/js/user.coffee:420
 msgid "Unlock"
 msgstr ""
-
-#: ../resources/greeter/js/usermenu.coffee:57
-msgid "Guest"
-msgstr "來賓"
 
 #: ../resources/guide/js/desktop.coffee:27
 msgid ""

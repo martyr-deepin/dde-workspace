@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-18 17:29+0800\n"
-"PO-Revision-Date: 2014-11-18 09:58+0000\n"
+"POT-Creation-Date: 2014-11-20 09:44+0800\n"
+"PO-Revision-Date: 2014-11-20 02:36+0000\n"
 "Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/deepin-desktop-environment/language/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -19,6 +19,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: tr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: ../resources/common/js/accounts.coffee:78
+msgid "Guest"
+msgstr "Misafir"
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
@@ -219,25 +223,25 @@ msgstr "Göstermeyi _tutun"
 msgid "Keep _hidden"
 msgstr "Gizlemeyi _tutun"
 
-#: ../resources/dock/js/global_menu.coffee:11
-msgid "_Auto hide"
-msgstr "_Otomatik gizle"
-
 #: ../resources/dock/js/global_menu.coffee:12
 msgid "_Smart hide"
 msgstr "_Akıllı gizleme"
 
-#: ../resources/dock/js/global_menu.coffee:24
+#: ../resources/dock/js/global_menu.coffee:27
 msgid "_Fashion mode"
 msgstr "_Tasarımsal mod"
 
-#: ../resources/dock/js/global_menu.coffee:25
+#: ../resources/dock/js/global_menu.coffee:28
 msgid "_Efficient mode"
 msgstr "_Verimli mod"
 
-#: ../resources/dock/js/global_menu.coffee:26
+#: ../resources/dock/js/global_menu.coffee:29
 msgid "_Classic mode"
 msgstr "_Klasik mod"
+
+#: ../resources/dock/js/global_menu.coffee:38
+msgid "Notice Region Setting"
+msgstr ""
 
 #: ../resources/dock/js/main.coffee:115 ../resources/zone/js/utils.coffee:13
 msgid "Launcher"
@@ -413,10 +417,6 @@ msgstr "Giriş"
 #: ../resources/greeter/js/user.coffee:420
 msgid "Unlock"
 msgstr "Kilidi kaldır"
-
-#: ../resources/greeter/js/usermenu.coffee:57
-msgid "Guest"
-msgstr "Misafir"
 
 #: ../resources/guide/js/desktop.coffee:27
 msgid ""
@@ -628,23 +628,23 @@ msgstr "p_anelden kaldır"
 
 #: ../resources/launcher/js/menu.coffee:5
 msgid "By name"
-msgstr ""
+msgstr "İsme göre"
 
 #: ../resources/launcher/js/menu.coffee:6
 msgid "By category (icon)"
-msgstr ""
+msgstr "Kategoriye göre (simge)"
 
 #: ../resources/launcher/js/menu.coffee:7
 msgid "By category (text)"
-msgstr ""
+msgstr "Kategoriye göre (yazı)"
 
 #: ../resources/launcher/js/menu.coffee:8
 msgid "By time installed"
-msgstr ""
+msgstr "Kurulum zamanına göre"
 
 #: ../resources/launcher/js/menu.coffee:9
 msgid "By frequency"
-msgstr ""
+msgstr "Sıklığa göre"
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"

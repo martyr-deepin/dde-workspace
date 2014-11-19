@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-18 17:29+0800\n"
-"PO-Revision-Date: 2014-11-18 09:58+0000\n"
+"POT-Creation-Date: 2014-11-20 09:44+0800\n"
+"PO-Revision-Date: 2014-11-20 02:36+0000\n"
 "Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/deepin-desktop-environment/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -20,6 +20,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: ../resources/common/js/accounts.coffee:78
+msgid "Guest"
+msgstr "Invité"
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
@@ -220,25 +224,25 @@ msgstr "Maintenir _affiché"
 msgid "Keep _hidden"
 msgstr "Maintenir _caché"
 
-#: ../resources/dock/js/global_menu.coffee:11
-msgid "_Auto hide"
-msgstr "_Cacher automatiquement"
-
 #: ../resources/dock/js/global_menu.coffee:12
 msgid "_Smart hide"
 msgstr "_Cacher intelligent"
 
-#: ../resources/dock/js/global_menu.coffee:24
+#: ../resources/dock/js/global_menu.coffee:27
 msgid "_Fashion mode"
 msgstr "_Mode central"
 
-#: ../resources/dock/js/global_menu.coffee:25
+#: ../resources/dock/js/global_menu.coffee:28
 msgid "_Efficient mode"
 msgstr "_Mode étendu "
 
-#: ../resources/dock/js/global_menu.coffee:26
+#: ../resources/dock/js/global_menu.coffee:29
 msgid "_Classic mode"
 msgstr "_Mode compact"
+
+#: ../resources/dock/js/global_menu.coffee:38
+msgid "Notice Region Setting"
+msgstr ""
 
 #: ../resources/dock/js/main.coffee:115 ../resources/zone/js/utils.coffee:13
 msgid "Launcher"
@@ -414,10 +418,6 @@ msgstr "Identifiant"
 #: ../resources/greeter/js/user.coffee:420
 msgid "Unlock"
 msgstr "Débloquer"
-
-#: ../resources/greeter/js/usermenu.coffee:57
-msgid "Guest"
-msgstr "Invité"
 
 #: ../resources/guide/js/desktop.coffee:27
 msgid ""
@@ -629,23 +629,23 @@ msgstr "Enlever du la_nceur"
 
 #: ../resources/launcher/js/menu.coffee:5
 msgid "By name"
-msgstr ""
+msgstr "Par Nom"
 
 #: ../resources/launcher/js/menu.coffee:6
 msgid "By category (icon)"
-msgstr ""
+msgstr "Par categories (icones)"
 
 #: ../resources/launcher/js/menu.coffee:7
 msgid "By category (text)"
-msgstr ""
+msgstr "Par categories (texte)"
 
 #: ../resources/launcher/js/menu.coffee:8
 msgid "By time installed"
-msgstr ""
+msgstr "Par date d'installation"
 
 #: ../resources/launcher/js/menu.coffee:9
 msgid "By frequency"
-msgstr ""
+msgstr "Par utilisation"
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
