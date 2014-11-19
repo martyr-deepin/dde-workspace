@@ -25,3 +25,6 @@ class LauncherItem extends PrefixedItem
         e.stopPropagation()
         e.preventDefault()
         _isRightclicked = false
+
+    update_icon:->
+        @change_icon(DCore.get_theme_icon("start-here", 48))

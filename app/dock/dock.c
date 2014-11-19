@@ -480,6 +480,12 @@ void dock_quit()
 }
 
 
+void notify_icon_theme_changed(GtkIconTheme* theme G_GNUC_UNUSED, gpointer data G_GNUC_UNUSED)
+{
+    js_post_signal("icon_theme_changed");
+}
+
+
 int main(int argc, char* argv[])
 {
     if (is_application_running(DOCK_ID_NAME)) {
@@ -505,7 +511,8 @@ int main(int argc, char* argv[])
     g_log_set_default_handler((GLogFunc)log_to_file, "dde-dock");
 
     set_desktop_env_name("Deepin");
-    set_default_theme("Deepin");
+    GtkIconTheme* theme = gtk_icon_theme_get_default();
+    g_signal_connect(theme, "changed", G_CALLBACK(notify_icon_theme_changed), NULL);
 
     container = create_web_container(FALSE, TRUE);
     gtk_window_set_decorated(GTK_WINDOW(container), FALSE);

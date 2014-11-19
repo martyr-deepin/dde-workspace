@@ -182,4 +182,9 @@ class Trash extends PostfixedItem
             @isEmpty = false
             @change_icon(@fullIcon)
 
-
+    update_icon:->
+        @emptyIcon = Trash.get_icon(0)
+        @fullIcon = Trash.get_icon(1)
+        @emptyOpenIcon = DCore.get_theme_icon(EMPTY_TRASH_OPENED_ICON, 48) || Trash.get_icon(0)
+        @fullOpenIcon = DCore.get_theme_icon(FULL_TRASH_OPENED_ICON, 48) || Trash.get_icon(1)
+        @update()

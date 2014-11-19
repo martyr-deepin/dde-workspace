@@ -436,6 +436,12 @@ void move_launcher(GtkWidget* widget, gpointer data G_GNUC_UNUSED)
 }
 
 
+void notify_icon_theme_changed(GtkIconTheme* theme G_GNUC_UNUSED, gpointer data G_GNUC_UNUSED)
+{
+    js_post_signal("icon_theme_changed");
+}
+
+
 int main(int argc, char* argv[])
 {
     gtk_init(&argc, &argv);
@@ -517,8 +523,9 @@ int main(int argc, char* argv[])
 #ifdef NDEBUG
     gtk_window_set_title(GTK_WINDOW(container), "launcher");
 #endif
-    set_default_theme("Deepin");
     set_desktop_env_name("Deepin");
+    GtkIconTheme* theme = gtk_icon_theme_get_default();
+    g_signal_connect(theme, "changed", G_CALLBACK(notify_icon_theme_changed), NULL);
 
     webview = d_webview_new_with_uri(GET_HTML_PATH("launcher"));
 
@@ -570,3 +577,4 @@ int main(int argc, char* argv[])
     gtk_main();
     return 0;
 }
+

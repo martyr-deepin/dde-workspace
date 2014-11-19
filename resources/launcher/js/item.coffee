@@ -139,16 +139,19 @@ class Item extends Widget
 
         if @icon != info?.icon
             @icon = info.icon
-            @updateProperty((k, el)=>
-                im = @getImgDOM(el)
-                @load_image(im)
-            )
+            @updateIcon()
 
         if @isAutostart != info?.isAutostart
             @toggle_autostart()
 
         if @status != info?.status
             @status = info.status
+
+    updateIcon:=>
+        @updateProperty((k, el)=>
+            im = @getImgDOM(el)
+            @load_image(im)
+        )
 
     getInnerBoxDOM:(el)->
         #  outter hover box  inner hover box

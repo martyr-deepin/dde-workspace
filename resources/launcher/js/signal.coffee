@@ -46,3 +46,7 @@ DCore.signal_connect("launcher_shown",->
 
 DCore.Launcher.notify_workarea_size()
 
+DCore.signal_connect("icon_theme_changed", ->
+    for own id, item of applications
+        item.updateIcon()
+)

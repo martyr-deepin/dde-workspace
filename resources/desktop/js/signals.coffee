@@ -32,6 +32,7 @@ connect_default_signals = ->
     DCore.signal_connect("get_focus", do_desktop_get_focus)
     DCore.signal_connect("workarea_changed", do_workarea_changed)
     DCore.signal_connect("desktop_config_changed", do_desktop_config_changed)
+    DCore.signal_connect("icon_theme_changed", do_icon_theme_changed)
 
 
 do_item_delete = (data) ->
@@ -135,3 +136,9 @@ do_desktop_config_changed = (cfg) ->
     load_speical_desktop_items()
     place_desktop_items()
     return
+
+do_icon_theme_changed = ->
+    item_list = all_item.concat(speical_item)
+    for i in all_item
+        if (w = Widget.look_up(i))?
+            w.set_icon()

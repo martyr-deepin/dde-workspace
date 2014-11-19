@@ -600,6 +600,13 @@ gboolean desktop_can_paste_text()
     return webkit_web_view_can_paste_clipboard(WEBKIT_WEB_VIEW(webview));
 }
 
+
+void notify_icon_theme_changed(GtkIconTheme* theme G_GNUC_UNUSED, gpointer data G_GNUC_UNUSED)
+{
+    js_post_signal("icon_theme_changed");
+}
+
+
 int main(int argc, char* argv[])
 {
     if (argc == 2 && 0 == g_strcmp0(argv[1], "-d")){
@@ -620,8 +627,9 @@ int main(int argc, char* argv[])
 
     g_log_set_default_handler((GLogFunc)log_to_file, "dde-desktop");
 
-    set_default_theme("Deepin");
     set_desktop_env_name("Deepin");
+    GtkIconTheme* theme = gtk_icon_theme_get_default();
+    g_signal_connect(theme, "changed", G_CALLBACK(notify_icon_theme_changed), NULL);
 
     update_primary_info(&rect_primary);
 

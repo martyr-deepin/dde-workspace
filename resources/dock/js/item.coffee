@@ -393,6 +393,7 @@ class AppItem extends Item
             @hide_open_indicator()
 
         @core?.connect("DataChanged", (name, value)=>
+            # console.log("DataChanged[#{name}]")
             switch name
                 when ITEM_DATA_FIELD.xids
                     if not @clientgroupInited

@@ -28,14 +28,13 @@ time = null
 entryManager = null
 show_launcher = null
 show_desktop = null
+trash = null
 
 initDock = ->
     panel.panel.style.webkitTransform = 'translateY(100%)'
     _CW.style.webkitTransform = "translateY(110%)"
     entryManager = get_dbus('session', EntryManager, "Entries")
     entries = entryManager.Entries
-
-    trash = null
 
     for path in entries
         try
