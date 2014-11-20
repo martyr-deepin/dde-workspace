@@ -278,7 +278,7 @@ class Item extends Widget
         catch
             console.error("get dock app manager failed", e)
             @isOnDock = true
-        @isOnDesktop = daemon.IsItemOnDesktop_sync(@path)
+        @isOnDesktop = daemon.IsItemOnDesktop_sync(@id)
         @menu = new Menu(
             DEEPIN_MENU_TYPE.NORMAL,
             new MenuItem(1, _("_Open")),
@@ -325,9 +325,9 @@ class Item extends Widget
                 # exit_launcher()
             when 3
                 if @isOnDesktop
-                    daemon.RequestRemoveFromDesktop(@path)
+                    daemon.RequestRemoveFromDesktop(@id)
                 else
-                    daemon.RequestSendToDesktop(@path)
+                    daemon.RequestSendToDesktop(@id)
             when 4
                 try
                     dock = get_dbus(
