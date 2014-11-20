@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-11-20 09:44+0800\n"
-"PO-Revision-Date: 2014-11-20 02:43+0000\n"
+"PO-Revision-Date: 2014-11-21 03:30+0000\n"
 "Last-Translator: szd_liufei <liufei@linuxdeepin.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/deepin-desktop-environment/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -631,11 +631,11 @@ msgstr "按名称"
 
 #: ../resources/launcher/js/menu.coffee:6
 msgid "By category (icon)"
-msgstr "按分类（文字）"
+msgstr "按分类（图标）"
 
 #: ../resources/launcher/js/menu.coffee:7
 msgid "By category (text)"
-msgstr "按分类（图标）"
+msgstr "按分类（文字）"
 
 #: ../resources/launcher/js/menu.coffee:8
 msgid "By time installed"

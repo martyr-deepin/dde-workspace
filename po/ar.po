@@ -3,20 +3,311 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Karim Oulad Chalha <herr.linux88@gmail.com>, 2014
 # monzerissa169 <monzerissa169@yahoo.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-26 18:27+0800\n"
-"PO-Revision-Date: 2014-09-28 15:51+0000\n"
-"Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
+"POT-Creation-Date: 2014-11-20 09:44+0800\n"
+"PO-Revision-Date: 2014-11-21 13:41+0000\n"
+"Last-Translator: Karim Oulad Chalha <herr.linux88@gmail.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/projects/p/deepin-desktop-environment/language/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#: ../resources/common/js/accounts.coffee:78
+msgid "Guest"
+msgstr "ضيف"
+
+#: ../resources/common/js/uninstaller.coffee:32
+msgid "You have uninstalled \"%1\" successfully"
+msgstr "لقد تم إلغاء تثبيت \"%1\" بنجاح"
+
+#: ../resources/common/js/uninstaller.coffee:33
+msgid "\"%1\" failed to be uninstalled"
+msgstr "فشل إلغاء تثبيت \"1%\""
+
+#: ../resources/desktop/js/application.coffee:179
+#: ../resources/desktop/js/richdir.coffee:348
+#: ../resources/desktop/js/richdir.coffee:600
+#: ../resources/desktop/js/richdir.coffee:643
+msgid "The link is invalid. Do you want to delete it?"
+msgstr "هذا الرابط غير صالح. هل تريد حذفه؟"
+
+#: ../resources/desktop/js/application.coffee:179
+#: ../resources/desktop/js/desktopentry.coffee:166
+#: ../resources/desktop/js/richdir.coffee:348
+#: ../resources/desktop/js/richdir.coffee:600
+#: ../resources/desktop/js/richdir.coffee:643
+#: ../resources/dock/js/plugins/trash/trash.coffee:85
+msgid "Warning"
+msgstr "تحذير"
+
+#: ../resources/desktop/js/desktopentry.coffee:102
+#: ../resources/desktop/js/richdir.coffee:138
+#: ../resources/desktop/js/richdir.coffee:580
+#: ../resources/desktop/js/specialitem.coffee:51
+#: ../resources/desktop/js/specialitem.coffee:146
+#: ../resources/guide/js/launcher.coffee:212
+#: ../resources/launcher/js/item.coffee:281
+msgid "_Open"
+msgstr "_فتح"
+
+#: ../resources/desktop/js/desktopentry.coffee:104
+#: ../resources/desktop/js/richdir.coffee:582
+msgid "Cu_t"
+msgstr "ق_ص"
+
+#: ../resources/desktop/js/desktopentry.coffee:105
+#: ../resources/desktop/js/item.coffee:401
+#: ../resources/desktop/js/richdir.coffee:583
+msgid "_Copy"
+msgstr "_نسخ"
+
+#: ../resources/desktop/js/desktopentry.coffee:107
+#: ../resources/desktop/js/richdir.coffee:140
+msgid "_Rename"
+msgstr "_إعادة التسمية"
+
+#: ../resources/desktop/js/desktopentry.coffee:108
+#: ../resources/desktop/js/invalidlink.coffee:34
+#: ../resources/desktop/js/item.coffee:402
+#: ../resources/desktop/js/richdir.coffee:144
+#: ../resources/desktop/js/richdir.coffee:585
+msgid "_Delete"
+msgstr "_حذف"
+
+#: ../resources/desktop/js/desktopentry.coffee:110
+#: ../resources/desktop/js/richdir.coffee:587
+#: ../resources/desktop/js/specialitem.coffee:53
+msgid "_Properties"
+msgstr "_خصائص"
+
+#: ../resources/desktop/js/desktopentry.coffee:116
+#: ../resources/desktop/js/desktopentry.coffee:123
+msgid "Co_mpress"
+msgstr "_ضغط"
+
+#: ../resources/desktop/js/desktopentry.coffee:119
+#: ../resources/desktop/js/desktopentry.coffee:124
+msgid "_Extract"
+msgstr "_إستخراج"
+
+#: ../resources/desktop/js/desktopentry.coffee:120
+#: ../resources/desktop/js/desktopentry.coffee:125
+msgid "Extract _Here"
+msgstr "إستخراج _هنا"
+
+#: ../resources/desktop/js/desktopentry.coffee:166
+#: ../resources/dock/js/plugins/trash/trash.coffee:85
+msgid "Can not open this file."
+msgstr "لا يمكن فتح هذا الملف."
+
+#: ../resources/desktop/js/grid.coffee:70 ../lib/dentry/fileops.c:403
+msgid "Untitled"
+msgstr "بدون اسم"
+
+#: ../resources/desktop/js/grid.coffee:1029
+msgid "_Folder"
+msgstr "م_جلد"
+
+#: ../resources/desktop/js/grid.coffee:1030
+msgid "_Text document"
+msgstr "ملف ن_ص"
+
+#: ../resources/desktop/js/grid.coffee:1044
+msgid "_Name"
+msgstr "إس_م"
+
+#: ../resources/desktop/js/grid.coffee:1045
+msgid "Last modified _time"
+msgstr "و_قت أخر تحرير"
+
+#: ../resources/desktop/js/grid.coffee:1049
+#: ../resources/guide/js/desktop.coffee:196
+msgid "_Sort by"
+msgstr "ر_تب حسب"
+
+#: ../resources/desktop/js/grid.coffee:1050
+#: ../resources/guide/js/desktop.coffee:197
+msgid "_New"
+msgstr "ج_ديد"
+
+#: ../resources/desktop/js/grid.coffee:1051
+#: ../resources/guide/js/desktop.coffee:198
+msgid "Open in _terminal"
+msgstr "افتح في _طرفية"
+
+#: ../resources/desktop/js/grid.coffee:1052
+#: ../resources/desktop/js/item.coffee:400
+#: ../resources/guide/js/desktop.coffee:199
+msgid "_Paste"
+msgstr "_لصق"
+
+#: ../resources/desktop/js/grid.coffee:1054
+#: ../resources/guide/js/desktop.coffee:201
+msgid "_Display settings"
+msgstr "إعداد_ات العرض"
+
+#: ../resources/desktop/js/grid.coffee:1055
+#: ../resources/guide/js/desktop.coffee:202
+msgid "_Corner navigation"
+msgstr "التنقل الزاوي"
+
+#: ../resources/desktop/js/grid.coffee:1056
+#: ../resources/guide/js/desktop.coffee:203
+msgid "Pe_rsonalize"
+msgstr "ت_خصيص"
+
+#: ../resources/desktop/js/item.coffee:399
+msgid "_Cut"
+msgstr "ق_ص"
+
+#: ../resources/desktop/js/item.coffee:404
+msgid "_Select All"
+msgstr "إخ_تيار الكل"
+
+#: ../resources/desktop/js/richdir.coffee:142
+msgid "_Ungroup"
+msgstr "إلغاء التجمي_ع"
+
+#: ../resources/desktop/js/specialitem.coffee:34
+msgid "Computer"
+msgstr "الكمبيوتر"
+
+#: ../resources/desktop/js/specialitem.coffee:87
+#: ../resources/dock/js/main.coffee:47 ../resources/dock/js/main.coffee:117
+msgid "Trash"
+msgstr "المهملات"
+
+#: ../resources/desktop/js/specialitem.coffee:150
+msgid "_Clean up %1 items"
+msgstr "تنظي_ف %1 عناصر"
+
+#: ../resources/desktop/js/specialitem.coffee:152
+msgid "_Clean up 1 item"
+msgstr "تنظي_ف عنصر 1"
+
+#: ../resources/desktop/js/specialitem.coffee:154
+#: ../resources/dock/js/plugins/trash/trash.coffee:38
+msgid "_Empty"
+msgstr "_فارغ"
+
+#: ../resources/dock/js/config.coffee:186
+msgid "Unknown"
+msgstr "غير معروف"
+
+#: ../resources/dock/js/deepin_item.coffee:249
+msgid "_View as analog"
+msgstr "ع_رض كنظير"
+
+#: ../resources/dock/js/deepin_item.coffee:250
+#: ../resources/dock/js/deepin_item.coffee:302
+msgid "_Time settings"
+msgstr "إ_عدادات الوقت"
+
+#: ../resources/dock/js/deepin_item.coffee:301
+msgid "_View as digit"
+msgstr "ع_رض كأرقام"
+
+#: ../resources/dock/js/global_menu.coffee:9
+msgid "Keep _showing"
+msgstr "أبق _ظاهرا"
+
+#: ../resources/dock/js/global_menu.coffee:10
+msgid "Keep _hidden"
+msgstr "أبق _مخفيا"
+
+#: ../resources/dock/js/global_menu.coffee:12
+msgid "_Smart hide"
+msgstr "إخفا_ء الذكي"
+
+#: ../resources/dock/js/global_menu.coffee:27
+msgid "_Fashion mode"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:28
+msgid "_Efficient mode"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:29
+msgid "_Classic mode"
+msgstr "النم_ك الكلاسيكي"
+
+#: ../resources/dock/js/global_menu.coffee:38
+msgid "Notice Region Setting"
+msgstr ""
+
+#: ../resources/dock/js/main.coffee:115 ../resources/zone/js/utils.coffee:13
+msgid "Launcher"
+msgstr "مُطلق"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Sun"
+msgstr "الأحد"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Mon"
+msgstr "الأثنين"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Tue"
+msgstr "الثلاثاء"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Wed"
+msgstr "الأربعاء"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Thu"
+msgstr "الخميس"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Fri"
+msgstr "الجمعة"
+
+#: ../resources/dock/js/plugins/time/time.coffee:2
+#: ../resources/greeter/js/time.coffee:44
+msgid "Sat"
+msgstr "السبت"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:42
+msgid "_Close"
+msgstr "_إغلاق"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:122
+#: ../resources/launcher/js/item.coffee:351
+msgid "Are you sure to remove"
+msgstr "هل أنت متأكد من الأزالة"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:122
+#: ../resources/launcher/js/item.coffee:351
+msgid "All dependencies will be removed"
+msgstr ""
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:122
+#: ../resources/launcher/js/item.coffee:351
+msgid "no"
+msgstr "لا"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:122
+#: ../resources/launcher/js/item.coffee:351
+msgid "yes"
+msgstr "نعم"
+
+#: ../resources/greeter/js/mediacontrol.coffee:167
+msgid "Click button to Play"
+msgstr ""
 
 #: ../resources/greeter/js/message.coffee:105
 #: ../resources/greeter/js/message.coffee:82
@@ -41,6 +332,34 @@ msgstr "مدير آبت-جت نزل بيئة-مكتب-ديبإن\n"
 #: ../resources/greeter/js/message.coffee:68
 msgid "\t\t\t\t-----No available desktop sessions!-----\n"
 msgstr "    -----سطوح أخرى للمكتب غير متوفرة-----\n"
+
+#: ../resources/greeter/js/powermenu.coffee:26
+msgid "Shut down"
+msgstr "إيقاف التشغيل"
+
+#: ../resources/greeter/js/powermenu.coffee:27
+msgid "Restart"
+msgstr "إعادة التشغيل"
+
+#: ../resources/greeter/js/powermenu.coffee:28
+msgid "Suspend"
+msgstr "تعليق"
+
+#: ../resources/greeter/js/powermenu.coffee:75
+msgid ""
+"The other users have logged in, shutdown or restart may cause the running "
+"data to be lost."
+msgstr ""
+
+#: ../resources/greeter/js/powermenu.coffee:77
+msgid ""
+"User %1 has logged in, shutdown or restart may cause the running data to be "
+"lost."
+msgstr ""
+
+#: ../resources/greeter/js/powermenu.coffee:121
+msgid "Enter your password to %1"
+msgstr "أدخل كلمة السرفي %1"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jan"
@@ -90,252 +409,83 @@ msgstr "تشرين الثاني"
 msgid "Dec"
 msgstr "ديسمبر"
 
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Sun"
-msgstr "الأحد"
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Mon"
-msgstr "الأثنين"
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Tue"
-msgstr "الثلاثاء"
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Wed"
-msgstr "الأربعاء"
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Thu"
-msgstr "الخميس"
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Fri"
-msgstr "الجمعة"
-
-#: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
-msgid "Sat"
-msgstr "السبت"
-
-#: ../resources/greeter/js/usermenu.coffee:57
-msgid "Guest"
-msgstr "ضيف"
-
-#: ../resources/greeter/js/mediacontrol.coffee:167
-msgid "Click button to Play"
-msgstr ""
-
-#: ../resources/greeter/js/user.coffee:411
+#: ../resources/greeter/js/user.coffee:418
 msgid "Login"
 msgstr ""
 
-#: ../resources/greeter/js/powermenu.coffee:26
-msgid "Shut down"
-msgstr "إيقاف التشغيل"
-
-#: ../resources/greeter/js/powermenu.coffee:27
-msgid "Restart"
-msgstr "إعادة التشغيل"
-
-#: ../resources/greeter/js/powermenu.coffee:28
-msgid "Suspend"
-msgstr "تعليق"
-
-#: ../resources/greeter/js/powermenu.coffee:90
-msgid "Enter your password to %1"
-msgstr "أدخل كلمة السرفي %1"
-
-#: ../resources/desktop/js/richdir.coffee:133
-#: ../resources/desktop/js/richdir.coffee:566
-#: ../resources/desktop/js/specialitem.coffee:51
-#: ../resources/desktop/js/specialitem.coffee:146
-#: ../resources/desktop/js/desktopentry.coffee:102
-#: ../resources/guide/js/launcher.coffee:212
-#: ../resources/launcher/js/item.coffee:301
-msgid "_Open"
-msgstr "_فتح"
-
-#: ../resources/desktop/js/richdir.coffee:135
-#: ../resources/desktop/js/desktopentry.coffee:107
-msgid "_Rename"
-msgstr "_إعادة التسمية"
-
-#: ../resources/desktop/js/richdir.coffee:137
-msgid "_Ungroup"
-msgstr "إلغاء التجمي_ع"
-
-#: ../resources/desktop/js/richdir.coffee:139
-#: ../resources/desktop/js/richdir.coffee:571
-#: ../resources/desktop/js/desktopentry.coffee:108
-#: ../resources/desktop/js/invalidlink.coffee:34
-#: ../resources/desktop/js/item.coffee:398
-msgid "_Delete"
-msgstr "_حذف"
-
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
-#: ../resources/desktop/js/application.coffee:179
-msgid "The link is invalid. Do you want to delete it?"
-msgstr "هذا الرابط غير صالح. هل تريد حذفه؟"
-
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
-#: ../resources/desktop/js/desktopentry.coffee:166
-#: ../resources/desktop/js/application.coffee:179
-#: ../resources/dock/js/plugins/trash/trash.coffee:81
-msgid "Warning"
-msgstr "تحذير"
-
-#: ../resources/desktop/js/richdir.coffee:568
-#: ../resources/desktop/js/desktopentry.coffee:104
-msgid "Cu_t"
-msgstr "ق_ص"
-
-#: ../resources/desktop/js/richdir.coffee:569
-#: ../resources/desktop/js/desktopentry.coffee:105
-#: ../resources/desktop/js/item.coffee:397
-msgid "_Copy"
-msgstr "_نسخ"
-
-#: ../resources/desktop/js/richdir.coffee:573
-#: ../resources/desktop/js/specialitem.coffee:53
-#: ../resources/desktop/js/desktopentry.coffee:110
-msgid "_Properties"
-msgstr "_خصائص"
-
-#: ../resources/desktop/js/specialitem.coffee:34
-msgid "Computer"
-msgstr "الكمبيوتر"
-
-#: ../resources/desktop/js/specialitem.coffee:87
-#: ../resources/dock/js/main.coffee:49 ../resources/dock/js/main.coffee:126
-msgid "Trash"
-msgstr "المهملات"
-
-#: ../resources/desktop/js/specialitem.coffee:150
-msgid "_Clean up %1 items"
-msgstr "تنظي_ف %1 عناصر"
-
-#: ../resources/desktop/js/specialitem.coffee:152
-msgid "_Clean up 1 item"
-msgstr "تنظي_ف عنصر 1"
-
-#: ../resources/desktop/js/specialitem.coffee:154
-#: ../resources/dock/js/plugins/trash/trash.coffee:34
-msgid "_Empty"
+#: ../resources/greeter/js/user.coffee:420
+msgid "Unlock"
 msgstr ""
 
-#: ../resources/desktop/js/desktopentry.coffee:116
-#: ../resources/desktop/js/desktopentry.coffee:123
-msgid "Co_mpress"
-msgstr "_ضغط"
+#: ../resources/guide/js/desktop.coffee:27
+msgid ""
+"Let's drag the other icon on the first icon \n"
+" to generate \"application group\""
+msgstr "دعنا نسحب الأيقونة الأخرى على الأولى \nلتشكيل \"مجموعة تطبيقات\""
 
-#: ../resources/desktop/js/desktopentry.coffee:119
-#: ../resources/desktop/js/desktopentry.coffee:124
-msgid "_Extract"
-msgstr "_إستخراج"
+#: ../resources/guide/js/desktop.coffee:116
+msgid "Well, you have learned how to create a \"application group\""
+msgstr "حسنا, لقد تعلمت كيف تشكل \"مجموعة تطبيقات\""
 
-#: ../resources/desktop/js/desktopentry.coffee:120
-#: ../resources/desktop/js/desktopentry.coffee:125
-msgid "Extract _Here"
-msgstr "إستخراج _هنا"
-
-#: ../resources/desktop/js/desktopentry.coffee:166
-#: ../resources/dock/js/plugins/trash/trash.coffee:81
-msgid "Can not open this file."
-msgstr "لا يمكن فتح هذا الملف."
-
-#: ../resources/desktop/js/grid.coffee:72 ../lib/dentry/fileops.c:403
-msgid "Untitled"
-msgstr "بدون اسم"
-
-#: ../resources/desktop/js/grid.coffee:1021
-msgid "_Folder"
-msgstr "م_جلد"
-
-#: ../resources/desktop/js/grid.coffee:1022
-msgid "_Text document"
-msgstr "ملف ن_ص"
-
-#: ../resources/desktop/js/grid.coffee:1036
-msgid "_Name"
-msgstr "إس_م"
-
-#: ../resources/desktop/js/grid.coffee:1037
-msgid "Last modified _time"
-msgstr "و_قت أخر تحرير"
-
-#: ../resources/desktop/js/grid.coffee:1041
-#: ../resources/guide/js/desktop.coffee:196
-msgid "_Sort by"
-msgstr "ر_تب حسب"
-
-#: ../resources/desktop/js/grid.coffee:1042
-#: ../resources/guide/js/desktop.coffee:197
-msgid "_New"
-msgstr "ج_ديد"
-
-#: ../resources/desktop/js/grid.coffee:1043
-#: ../resources/guide/js/desktop.coffee:198
-msgid "Open in _terminal"
-msgstr "افتح في _طرفية"
-
-#: ../resources/desktop/js/grid.coffee:1044
-#: ../resources/desktop/js/item.coffee:396
-#: ../resources/guide/js/desktop.coffee:199
-msgid "_Paste"
-msgstr "_لصق"
-
-#: ../resources/desktop/js/grid.coffee:1046
-#: ../resources/guide/js/desktop.coffee:201
-msgid "_Display settings"
-msgstr "إعداد_ات العرض"
-
-#: ../resources/desktop/js/grid.coffee:1047
-#: ../resources/guide/js/desktop.coffee:202
-msgid "_Corner navigation"
-msgstr "التنقل الزاوي"
-
-#: ../resources/desktop/js/grid.coffee:1048
-#: ../resources/guide/js/desktop.coffee:203
-msgid "Pe_rsonalize"
-msgstr "ت_خصيص"
-
-#: ../resources/desktop/js/item.coffee:395
-msgid "_Cut"
+#: ../resources/guide/js/desktop.coffee:117
+msgid "tips: Right-click on the application group will provide more functions"
 msgstr ""
 
-#: ../resources/desktop/js/item.coffee:400
-msgid "_Select All"
+#: ../resources/guide/js/desktop.coffee:128
+msgid ""
+"Slide the mouse to the four top corners, which can trigger four different events\n"
+"Please move to the upper left corner first to show or hide Launcher"
 msgstr ""
 
-#: ../resources/zone/js/utils.coffee:10
-msgid "Control Center"
-msgstr "مركز التحكم"
+#: ../resources/guide/js/desktop.coffee:129
+msgid ""
+"tips: Please trigger successively by hints, click on the blank area to "
+"return"
+msgstr ""
 
-#: ../resources/zone/js/utils.coffee:10
-msgid "All Windows"
-msgstr "كل النوافذ"
+#: ../resources/guide/js/desktop.coffee:133
+msgid "Show/Hide Launcher"
+msgstr "عرض/إخفاء المطلق"
 
-#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:124
-msgid "Launcher"
-msgstr "مُطلق"
+#: ../resources/guide/js/desktop.coffee:134
+msgid "Show/Hide Desktop"
+msgstr "عرض / إخفاء سطح المكتب"
 
-#: ../resources/zone/js/utils.coffee:10
-msgid "Desktop"
-msgstr "سطح المكتب"
+#: ../resources/guide/js/desktop.coffee:135
+msgid "Show/Hide Control Center"
+msgstr "عرض/إخفاء لوحة التحكم"
 
-#: ../resources/zone/js/utils.coffee:10
-msgid "None"
-msgstr "لا شيء"
+#: ../resources/guide/js/desktop.coffee:136
+msgid "No default functions setted in right up corner"
+msgstr "لم يتم إعداد أي وظائف في الزاوية العليا اليمنى"
+
+#: ../resources/guide/js/desktop.coffee:178
+msgid ""
+"Right-click on desktop black area to call up the menu, select \"Corner "
+"navigation\" to set the corner used"
+msgstr ""
+
+#: ../resources/guide/js/desktop.coffee:179
+msgid "tips: Click on the interface of corner navigation blank area to return"
+msgstr ""
+
+#: ../resources/guide/js/dss.coffee:29
+msgid "Well, please trigger the lower right corner again"
+msgstr "حسنا, رجاء مرّ فوق الزاوية السفلية اليمنى مرة أخرة"
+
+#: ../resources/guide/js/dss.coffee:30
+msgid "tips: Click the setting icon on dock to implement"
+msgstr ""
+
+#: ../resources/guide/js/dss.coffee:69
+msgid "Here is the system setting area"
+msgstr "هنا منطقة إعدادات النظام"
+
+#: ../resources/guide/js/dss.coffee:70
+msgid ""
+"tips: Hover the setting icon on dock to quickly implement some setting "
+"functions"
+msgstr ""
 
 #: ../resources/guide/js/end.coffee:25
 msgid "Thanks for your patience while learning. Congratulations."
@@ -392,81 +542,28 @@ msgid "tips: You can add it to startup items or uninstall it"
 msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:214
-#: ../resources/launcher/js/const.coffee:81
 msgid "Remove from _favorites"
 msgstr "أزل من _التفضيلات"
 
 #: ../resources/guide/js/launcher.coffee:215
-#: ../resources/launcher/js/const.coffee:84
+#: ../resources/launcher/js/const.coffee:76
 msgid "Send to d_esktop"
 msgstr "إرسال إلى _سطح المكتب "
 
 #: ../resources/guide/js/launcher.coffee:216
-#: ../resources/launcher/js/const.coffee:88
+#: ../resources/launcher/js/const.coffee:80
 msgid "Send to do_ck"
 msgstr "إرسال إلى الرصيف"
 
 #: ../resources/guide/js/launcher.coffee:218
-#: ../resources/launcher/js/const.coffee:72
+#: ../resources/launcher/js/const.coffee:68
 msgid "_Add to autostart"
 msgstr "_أضف إلى التشغيل الذاتي"
 
 #: ../resources/guide/js/launcher.coffee:219
-#: ../resources/launcher/js/item.coffee:308
+#: ../resources/launcher/js/item.coffee:287
 msgid "_Uninstall"
 msgstr "إزالة"
-
-#: ../resources/guide/js/desktop.coffee:27
-msgid ""
-"Let's drag the other icon on the first icon \n"
-" to generate \"application group\""
-msgstr "دعنا نسحب الأيقونة الأخرى على الأولى \nلتشكيل \"مجموعة تطبيقات\""
-
-#: ../resources/guide/js/desktop.coffee:116
-msgid "Well, you have learned how to create a \"application group\""
-msgstr "حسنا, لقد تعلمت كيف تشكل \"مجموعة تطبيقات\""
-
-#: ../resources/guide/js/desktop.coffee:117
-msgid "tips: Right-click on the application group will provide more functions"
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:128
-msgid ""
-"Slide the mouse to the four top corners, which can trigger four different events\n"
-"Please move to the upper left corner first to show or hide Launcher"
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:129
-msgid ""
-"tips: Please trigger successively by hints, click on the blank area to "
-"return"
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:133
-msgid "Show/Hide Launcher"
-msgstr "عرض/إخفاء المطلق"
-
-#: ../resources/guide/js/desktop.coffee:134
-msgid "Show/Hide Desktop"
-msgstr "عرض / إخفاء سطح المكتب"
-
-#: ../resources/guide/js/desktop.coffee:135
-msgid "Show/Hide Control Center"
-msgstr "عرض/إخفاء لوحة التحكم"
-
-#: ../resources/guide/js/desktop.coffee:136
-msgid "No default functions setted in right up corner"
-msgstr "لم يتم إعداد أي وظائف في الزاوية العليا اليمنى"
-
-#: ../resources/guide/js/desktop.coffee:178
-msgid ""
-"Right-click on desktop black area to call up the menu, select \"Corner "
-"navigation\" to set the corner used"
-msgstr ""
-
-#: ../resources/guide/js/desktop.coffee:179
-msgid "tips: Click on the interface of corner navigation blank area to return"
-msgstr ""
 
 #: ../resources/guide/js/start.coffee:28
 msgid "New Launcher"
@@ -500,22 +597,52 @@ msgstr "مرحبا بك في نظام الديب"
 msgid "Prepare for operation ..."
 msgstr "تحضير العملية ..."
 
-#: ../resources/guide/js/dss.coffee:29
-msgid "Well, please trigger the lower right corner again"
-msgstr "حسنا, رجاء مرّ فوق الزاوية السفلية اليمنى مرة أخرة"
+#: ../resources/launcher/js/const.coffee:60
+msgid "_Hide the icon"
+msgstr "اخف الأيقونة"
 
-#: ../resources/guide/js/dss.coffee:30
-msgid "tips: Click the setting icon on dock to implement"
+#: ../resources/launcher/js/const.coffee:61
+msgid "_Display hidden icons"
+msgstr "أظ_هر الأيقونات المخفية"
+
+#: ../resources/launcher/js/const.coffee:64
+msgid "_Hide this icon"
+msgstr "اخف هذه ال_أيقونة"
+
+#: ../resources/launcher/js/const.coffee:65
+msgid "_Display this icon"
+msgstr "_أظهر هذه الأيقونة"
+
+#: ../resources/launcher/js/const.coffee:69
+msgid "_Remove from autostart"
+msgstr "حذف من التشغيلات التلقائية_"
+
+#: ../resources/launcher/js/const.coffee:77
+msgid "Remove from d_esktop"
 msgstr ""
 
-#: ../resources/guide/js/dss.coffee:69
-msgid "Here is the system setting area"
-msgstr "هنا منطقة إعدادات النظام"
+#: ../resources/launcher/js/const.coffee:81
+msgid "Remove from do_ck"
+msgstr ""
 
-#: ../resources/guide/js/dss.coffee:70
-msgid ""
-"tips: Hover the setting icon on dock to quickly implement some setting "
-"functions"
+#: ../resources/launcher/js/menu.coffee:5
+msgid "By name"
+msgstr ""
+
+#: ../resources/launcher/js/menu.coffee:6
+msgid "By category (icon)"
+msgstr ""
+
+#: ../resources/launcher/js/menu.coffee:7
+msgid "By category (text)"
+msgstr ""
+
+#: ../resources/launcher/js/menu.coffee:8
+msgid "By time installed"
+msgstr ""
+
+#: ../resources/launcher/js/menu.coffee:9
+msgid "By frequency"
 msgstr ""
 
 #: ../resources/osd/js/monitor.coffee:38
@@ -526,114 +653,21 @@ msgstr ""
 msgid "Extend"
 msgstr ""
 
-#: ../resources/dock/js/deepin_item.coffee:247
-msgid "_View as analog"
-msgstr "ع_رض كنظير"
+#: ../resources/zone/js/utils.coffee:13
+msgid "Control Center"
+msgstr "مركز التحكم"
 
-#: ../resources/dock/js/deepin_item.coffee:248
-#: ../resources/dock/js/deepin_item.coffee:300
-msgid "_Time settings"
-msgstr "إ_عدادات الوقت"
+#: ../resources/zone/js/utils.coffee:13
+msgid "All Windows"
+msgstr "كل النوافذ"
 
-#: ../resources/dock/js/deepin_item.coffee:299
-msgid "_View as digit"
-msgstr "ع_رض كأرقام"
+#: ../resources/zone/js/utils.coffee:13
+msgid "Desktop"
+msgstr "سطح المكتب"
 
-#: ../resources/dock/js/global_menu.coffee:9
-msgid "Keep _showing"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:10
-msgid "Keep _hidden"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:11
-msgid "_Auto hide"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:24
-msgid "_Fashion mode"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:25
-msgid "_Efficient mode"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:26
-msgid "_Classic mode"
-msgstr ""
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:38
-msgid "_Close"
-msgstr "_إغلاق"
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:118
-#: ../resources/launcher/js/item.coffee:379
-msgid "Are you sure to remove"
-msgstr "هل أنت متأكد من الأزالة"
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:118
-#: ../resources/launcher/js/item.coffee:379
-msgid "All dependencies will be removed"
-msgstr ""
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:118
-#: ../resources/launcher/js/item.coffee:379
-msgid "no"
-msgstr "لا"
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:118
-#: ../resources/launcher/js/item.coffee:379
-msgid "yes"
-msgstr "نعم"
-
-#: ../resources/launcher/js/const.coffee:64
-msgid "_Hide the icon"
-msgstr "اخف الأيقونة"
-
-#: ../resources/launcher/js/const.coffee:65
-msgid "_Display hidden icons"
-msgstr "أظ_هر الأيقونات المخفية"
-
-#: ../resources/launcher/js/const.coffee:68
-msgid "_Hide this icon"
-msgstr "اخف هذه ال_أيقونة"
-
-#: ../resources/launcher/js/const.coffee:69
-msgid "_Display this icon"
-msgstr "_أظهر هذه الأيقونة"
-
-#: ../resources/launcher/js/const.coffee:73
-msgid "_Remove from autostart"
-msgstr "حذف من التشغيلات التلقائية_"
-
-#: ../resources/launcher/js/const.coffee:80
-msgid "Add to _favorites"
-msgstr "أضف للتفضيلات"
-
-#: ../resources/launcher/js/const.coffee:85
-msgid "Remove from d_esktop"
-msgstr ""
-
-#: ../resources/launcher/js/const.coffee:89
-msgid "Remove from do_ck"
-msgstr ""
-
-#: ../resources/common/js/uninstaller.coffee:32
-msgid "You have uninstalled \"%1\" successfully"
-msgstr ""
-
-#: ../resources/common/js/uninstaller.coffee:33
-msgid "\"%1\" failed to be uninstalled"
-msgstr ""
-
-#: ../app/greeter/mutils.c:84
-msgid "%a, %b %d, %Y"
-msgstr "%a, %b %d, %Y"
-
-#: ../app/greeter/lock.c:171 ../app/greeter/greeter.c:192
-msgid "Wrong Password"
-msgstr ""
+#: ../resources/zone/js/utils.coffee:13
+msgid "None"
+msgstr "لا شيء"
 
 #: ../app/desktop/desktop.c:300
 msgid "New file"
@@ -643,9 +677,65 @@ msgstr "ملف جديد"
 msgid "New directory"
 msgstr "فتح الدليل"
 
-#: ../app/dock/dock.c:341
+#: ../app/dock/dock.c:290
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr "فشل الرف في المباشرة, لأن كومبيز غير ممكّن."
+
+#: ../app/greeter/greeter.c:209 ../app/greeter/lock.c:173
+msgid "Wrong Password"
+msgstr ""
+
+#: ../app/greeter/mutils.c:84
+msgid "%a, %b %d, %Y"
+msgstr "%a, %b %d, %Y"
+
+#: ../lib/category.c:45
+msgid "all"
+msgstr "الجميع"
+
+#: ../lib/category.c:46
+msgid "internet"
+msgstr "الأنترنت"
+
+#: ../lib/category.c:47
+msgid "multimedia"
+msgstr "الوسائط المتعددة"
+
+#: ../lib/category.c:48
+msgid "games"
+msgstr "الألعاب"
+
+#: ../lib/category.c:49
+msgid "graphics"
+msgstr "الرسوميات"
+
+#: ../lib/category.c:50
+msgid "productivity"
+msgstr "الإنتاجية "
+
+#: ../lib/category.c:51
+msgid "industry"
+msgstr "الصناعية"
+
+#: ../lib/category.c:52
+msgid "education"
+msgstr "التعليمية"
+
+#: ../lib/category.c:53
+msgid "development"
+msgstr "التطويرية"
+
+#: ../lib/category.c:54
+msgid "system"
+msgstr "النظام"
+
+#: ../lib/category.c:55
+msgid "utilities"
+msgstr "الملحقات"
+
+#: ../lib/category.c:56
+msgid "others"
+msgstr ""
 
 #: ../lib/dentry/entry.c:746
 #, c-format
@@ -858,51 +948,3 @@ msgstr "_عرض"
 #: ../lib/dentry/mime_actions.c:213
 msgid "_Run"
 msgstr "ت_شغيل"
-
-#: ../lib/category.c:45
-msgid "all"
-msgstr "الجميع"
-
-#: ../lib/category.c:46
-msgid "internet"
-msgstr "الأنترنت"
-
-#: ../lib/category.c:47
-msgid "multimedia"
-msgstr "الوسائط المتعددة"
-
-#: ../lib/category.c:48
-msgid "games"
-msgstr "الألعاب"
-
-#: ../lib/category.c:49
-msgid "graphics"
-msgstr "الرسوميات"
-
-#: ../lib/category.c:50
-msgid "productivity"
-msgstr "الإنتاجية "
-
-#: ../lib/category.c:51
-msgid "industry"
-msgstr "الصناعية"
-
-#: ../lib/category.c:52
-msgid "education"
-msgstr "التعليمية"
-
-#: ../lib/category.c:53
-msgid "development"
-msgstr "التطويرية"
-
-#: ../lib/category.c:54
-msgid "system"
-msgstr "النظام"
-
-#: ../lib/category.c:55
-msgid "utilities"
-msgstr "الملحقات"
-
-#: ../lib/category.c:56
-msgid "others"
-msgstr ""
