@@ -28,6 +28,11 @@ all: ${com_coffee} \
 	${plugin_dir}/show_desktop.coffee\
 	${plugin_dir}/launcher.coffee\
 	${plugin_dir}/trash/trash.coffee\
+	${plugin_dir}/time/now.coffee\
+	${plugin_dir}/time/clock.coffee\
+	${plugin_dir}/time/digit_clock.coffee\
+	${plugin_dir}/time/analog_clock.coffee\
+	${plugin_dir}/time/tray_clock.coffee\
 	${plugin_dir}/time/time.coffee\
 	${plugin_dir}/system_tray.coffee\
 	signal.coffee\

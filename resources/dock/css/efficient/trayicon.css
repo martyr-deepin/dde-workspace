@@ -16,6 +16,7 @@
 }
 
 #time {
+  max-width:100%;
   width: auto;
   margin: 0;
   margin-left: 8px;

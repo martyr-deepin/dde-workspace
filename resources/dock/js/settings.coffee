@@ -15,6 +15,8 @@ class Setting
             DCore.Dock.quit()
 
         @displayModeCallback = []
+        @_displayDate = @dbus.GetDisplayDate_sync()
+        @_displayWeek = @dbus.GetDisplayWeek_sync()
 
         @dbus.connect("HideModeChanged", (mode)=>
             hideStatusManager.updateState()
@@ -44,6 +46,21 @@ class Setting
     disconnectDisplayModeChanged: (name)=>
         delete @displayModeCallback[name]
 
+    connectClockTypeChanged:(fn)->
+        @dbus.connect("ClockTypeChanged", fn)
+
+    connectDisplayDateChanged:(fn)->
+        @dbus.connect("DisplayDateChanged", (d)=>
+            @_displayDate = d
+            fn()
+        )
+
+    connectDisplayWeekChanged:(fn)->
+        @dbus.connect("DisplayWeekChanged", (d)=>
+            @_displayWeek = d
+            fn()
+        )
+
     updateSize:(mode)->
         if typeof DisplayMode[mode] == undefined
             console.warn("#{mode} is not defined")
@@ -70,3 +87,22 @@ class Setting
 
     setDisplayMode:(id)->
         @dbus.SetDisplayMode(id)
+
+    clockType:->
+        @dbus.GetClockType_sync()
+
+    setClockType:(t)->
+        @dbus.SetClockType(t)
+
+    displayDate:->
+        @_displayDate
+
+    setDisplayDate:(d)->
+        console.log("set display date to #{d}")
+        @dbus.SetDisplayDate(d)
+
+    displayWeek:->
+        @_displayWeek
+
+    setDisplayWeek:(d)->
+        @dbus.SetDisplayWeek(d)

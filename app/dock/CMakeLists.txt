@@ -21,6 +21,7 @@ SET(SRC_LIST
 	region.c
 	monitor.c
 	switcher.c
+	date_time.c
 	${JSC_GEN} ${DBUS_GEN})
 
 add_executable(${NAME} ${SRC_LIST})

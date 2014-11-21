@@ -133,6 +133,7 @@ class CheckBoxMenuItem extends MenuItem
     constructor: (itemId, itemText, checked=false, isActive=true)->
         super(itemId, itemText)
         @isCheckable = true
+        @setChecked(checked)
 
     setChecked: (checked)->
         @checked = checked

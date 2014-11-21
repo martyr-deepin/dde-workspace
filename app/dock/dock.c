@@ -35,6 +35,7 @@
 #include "DBUS_dock.h"
 #include "monitor.h"
 #include "display_info.h"
+#include "date_time.h"
 #include "session_register.h"
 
 #define DOCK_CONFIG "dock/config.ini"
@@ -486,6 +487,16 @@ void notify_icon_theme_changed(GtkIconTheme* theme G_GNUC_UNUSED, gpointer data 
 }
 
 
+static void emit_use_24_hour_display_changed(int num)
+{
+    if (GD.is_webview_loaded) {
+        JSObjectRef info = json_create();
+        json_append_number(info, "hour_display", (double)num);
+        js_post_message("use_24_hour_display_changed", info);
+    }
+}
+
+
 int main(int argc, char* argv[])
 {
     if (is_application_running(DOCK_ID_NAME)) {
@@ -549,6 +560,7 @@ int main(int argc, char* argv[])
 
     setup_dock_dbus_service();
     GFileMonitor* m G_GNUC_UNUSED = monitor_trash();
+    listen_use_24_hour_changed(emit_use_24_hour_display_changed);
 
     gtk_widget_show_all(container);
 

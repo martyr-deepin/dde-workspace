@@ -21,6 +21,8 @@ class SettingMenu
                 @setting.setCategoryDisplayMode(categoryDisplayMode)
             @setSelected(sortMethod, categoryDisplayMode)
             selector.clean()
+            switcher.hideShadow()
+            categoryBar.normal()
         )
 
     setSelected:(sortMethod, categoryDisplayMode)=>

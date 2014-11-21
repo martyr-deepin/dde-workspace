@@ -2,29 +2,34 @@
   z-index:10;
 }
 
-.DigitClockTime {
-    /* border: solid black 1; */
-    position: absolute;
-    text-align: center;
-    width: 100%;
-    top: 18px;
-    left: 0;
-    font-weight: bold;
-    font-size:8px;
-    color: rgb(255,191,12);
-    cursor: default;
-    display:-webkit-box;
-    -webkit-box-pack:center;
+.hourLow {
+  margin: 0 1px;
 }
 
-.DigitClockWeek {
-    /* border: solid 1px green; */
+.minAndAPM {
+  margin-left:1px;
+}
+.minLow{
+  margin-left:1px;
+}
+.digitWrap,.minWrap {
+  display:-webkit-box;
+}
+
+.amp{
+  margin-top: 3px;
+}
+.clock{
     position: absolute;
-    font-size: 8px;
-    width: 100%;
+    left: 0;
+}
+.DigitClockTime {
+    /* border: solid black 1; */
     text-align: center;
-    color: white;
-    font-weight: bold;
-    top: 6%;
+    width: 100%;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    display:-webkit-box;
+    -webkit-box-pack:center;
 }
 

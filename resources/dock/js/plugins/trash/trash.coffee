@@ -76,7 +76,7 @@ class Trash extends PostfixedItem
         if e.button != 0
             return
         if @is_opened
-            @core.Activate(0,0)
+            @core?.Activate(0,0)
             return
         @is_opened = true
         @openingIndicator.style.display = 'inline'

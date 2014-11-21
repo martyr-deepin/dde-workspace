@@ -165,5 +165,5 @@ initDock = ->
         activeWindow= new ActiveWindow(clientManager.CurrentActiveWindow_sync())
 
 
-time = new Time("time", "js/plugins/time/img/time.png", "")
+time = new Time("time", "js/plugins/time/img/panel.png", "")
 initDock()

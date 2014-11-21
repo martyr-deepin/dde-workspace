@@ -41,6 +41,7 @@ class Switcher
         )
         @switcher.addEventListener("mouseout", (e)=>
             @timeoutId = setTimeout(=>
+                console.log("mouseout")
                 @switcher.classList.remove("switcher_hover")
                 @hideShadow()
                 categoryBar.normal()
@@ -59,19 +60,19 @@ class Switcher
         @switcher.className = ""
         switch sortMethod
             when SortMethod.Method.ByName
-                console.log("by name")
+                # console.log("by name")
                 break
             when SortMethod.Method.ByCategory
-                console.log("by category")
+                # console.log("by category")
                 if categoryDisplayMode == CategoryDisplayMode.Mode.Text
                     @switcher.classList.add('setting1')
                 else
                     @switcher.classList.add('setting1')
             when SortMethod.Method.ByTimeInstalled
-                console.log("by time installed")
+                # console.log("by time installed")
                 @switcher.classList.add('setting2')
             when SortMethod.Method.ByFrequency
-                console.log("by frequency")
+                # console.log("by frequency")
                 @switcher.classList.add('setting3')
 
     on_click:(e)=>

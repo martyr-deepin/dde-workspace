@@ -1,36 +1,38 @@
 class Time extends SystemItem
-    @weekday: [_("Sun"), _("Mon"), _("Tue"), _("Wed"), _("Thu"), _("Fri"), _("Sat")]
     constructor:(@id, icon, @title)->
         super(@id, icon, @title)
-        @time = create_element('div', 'DigitClockTime', @imgWrap)
+        @imgWrap.style.position = 'relative'
 
-        for name in ['hourHeight', 'hourLow', 'minHeight', 'minLow']
-            @loadBit(name)
+        try
+            @setting = DCore.DBus.session_object(
+                "com.deepin.daemon.DateAndTime",
+                "/com/deepin/daemon/DateAndTime",
+                "com.deepin.daemon.DateAndTime"
+            )
+        catch e
+            console.error(e)
+            DCore.Dock.quit()
 
-        timeWrap = create_element(tag:'div', id:'timeWrap')
-        @timeContent = create_element(tag:'div', id:"timeContent", timeWrap)
-        @element.insertBefore(timeWrap, @imgWrap)
+        @digitClock = new DigitClock(@setting, @imgWrap)
+        @digitClock.hide()
 
-        timeWrap.addEventListener("mouseover", @on_mouseover)
-        timeWrap.addEventListener("mouseout", @on_mouseout)
-        timeWrap.addEventListener("click", @on_mouseup)
+        @analogClock = new AnalogClock(@setting, @imgWrap)
+        @analogClock.hide()
 
-        @updateTimeHandler = null
-        @displayModeChangedHandler(settings.displayMode())
+        @trayClock = new TrayClock(@setting, @imgWrap)
+        @trayClock.listenMouseOver(@on_mouseover)
+        @trayClock.listenMouseOut(@on_mouseout)
+        @trayClock.listenMouseUp(@on_mouseup)
+
+        @clock = null
+
+        @changeClock(settings.clockType(), settings.displayMode())
         settings.connectDisplayModeChanged("time", @displayModeChangedHandler)
+        settings.connectClockTypeChanged(@clockTypeChangedHandler)
+
         @updateTime()
-        @update_id = setInterval(@updateTime, 1000)
-        @type = DIGIT_CLOCK['type']
+        setInterval(@updateTime, 1000)
         @indicatorWrap.style.display = 'none'
-
-    loadBit:(name)->
-        this[name] = create_element(tag:'div', class:'timeNumber', @time)
-        @loadNumber(this[name])
-        this["#{name}Number"] = this[name].firstElementChild
-
-    loadNumber:(p)->
-        for i in [0..9]
-            create_img(src:"js/plugins/time/img/#{i}.png", style:"display:none", p)
 
     isNormal:->
         # TODO
@@ -52,10 +54,33 @@ class Time extends SystemItem
         e.stopPropagation()
         Preview_close_now()
 
+        xy = get_page_xy(@element)
+        new Menu(
+            DEEPIN_MENU_TYPE.NORMAL,
+            new MenuItem(1, _("Switch display mode")),
+            new MenuItem(2, _("_Time settings"))
+        ).addListener(@on_itemselected).showMenu(
+            xy.x + @element.clientWidth / 2,
+            xy.y,
+            DEEPIN_MENU_CORNER_DIRECTION.DOWN
+        )
+
+
+    on_itemselected:(id)=>
+        id = +id
+        switch id
+            when 1
+                switch @clock.type
+                    when Clock.Type.Digit
+                        settings.setClockType(Clock.Type.Analog)
+                    when Clock.Type.Analog
+                        settings.setClockType(Clock.Type.Digit)
+            when 2
+                Clock.openDateAndTimeSettingModle()
+
     on_mouseover:=>
         super
         @hide_open_indicator()
-        # @set_tooltip((new Date()).toLocaleDateString())
 
     on_mouseout:=>
         super
@@ -65,87 +90,30 @@ class Time extends SystemItem
         super
         if e.button != 0
             return
-        try
-            sysSettings = get_dbus('session', "com.deepin.dde.ControlCenter", "ShowModule")
-        catch e
-            console.log e
-            sysSettings = null
-        sysSettings?.ShowModule("date_time") if sysSettings
+        @openDateAndTimeSettingModle()
 
     displayModeChangedHandler:(mode)=>
-        switch settings.displayMode()
-            when DisplayMode.Efficient, DisplayMode.Classic
-                @updateTimeHandler = @updateTimeForClassicMode
-            when DisplayMode.Fashion
-                @updateTimeHandler = @updateTimeForModernMode
+        @changeClock(settings.clockType(), mode)
 
-        @updateTimeHandler()
+    clockTypeChangedHandler:(type)=>
+        @changeClock(type, settings.displayMode())
+
+    changeClock:(type, mode)=>
+        switch mode
+            when DisplayMode.Efficient, DisplayMode.Classic
+                @clock?.hide()
+                @clock = @trayClock
+                @clock.show()
+            when DisplayMode.Fashion
+                @clock?.hide()
+                switch type
+                    when Clock.Type.Digit
+                        @clock = @digitClock
+                    when Clock.Type.Analog
+                        @clock = @analogClock
+                @clock.show()
+
+        @updateTime()
 
     updateTime: =>
-        @updateTimeHandler()
-
-    updateTimeForClassicMode: =>
-        d = new Date()
-        @timeContent.textContent = ""
-
-        # # TODO: week
-        # if true
-        #     @timeContent.textContent += "#{Time.weekday[d.getDay()]} "
-        #
-        # @timeContent.textContent += "#{d.toLocaleDateString()}"
-
-        hour = @hour(24, true)
-        @timeContent.textContent += " #{hour}"
-
-        min = @min()
-        @timeContent.textContent += ":#{min}"
-
-    updateTimeForModernMode:=>
-        hour = @hour(24, true)
-        @hourHeightNumber.style.display = 'none'
-        @hourHeightNumber = @hourHeight.children[parseInt(hour[0])]
-        @hourHeightNumber.style.display = ''
-
-        @hourLowNumber.style.display = 'none'
-        @hourLowNumber = @hourLow.children[parseInt(hour[1])]
-        @hourLowNumber.style.display = ''
-        @hourLowNumber.style.marginLeft = '1px'
-        @hourLowNumber.style.marginRight = '2px'
-
-        min = @min()
-        @minHeightNumber.style.display = 'none'
-        @minHeightNumber = @minHeight.children[parseInt(min[0])]
-        @minHeightNumber.style.display = ''
-        @minHeightNumber.style.marginLeft = '2px'
-        @minHeightNumber.style.marginRight = '1px'
-
-        @minLowNumber.style.display = 'none'
-        @minLowNumber = @minLow.children[parseInt(min[1])]
-        @minLowNumber.style.display = ''
-
-    force2bit: (n)->
-        if n < 10 then "0#{n}" else "#{n}"
-
-    hour: (max_hour=24, twobit=false)->
-        hour = new Date().getHours()
-        switch max_hour
-            when 12
-                if twobit then @force2bit(hour % 12) else "#{hour % 12}"
-            when 24
-                if twobit then @force2bit(hour) else "#{hour}"
-
-    min: (twobit=true) ->
-        min = new Date().getMinutes()
-        if twobit then @force2bit(min) else "#{min}"
-
-    year:->
-        new Date().getFullYear()
-
-    month:->
-        new Date().getMonth() + 1
-
-    weekday:->
-        new Date().getDay()
-
-    date:->
-        new Date().getDate()
+        @clock.update()

@@ -46,3 +46,8 @@ DCore.signal_connect("icon_theme_changed", ()->
             icon = DCore.get_theme_icon(icon, 48)
         Widget.look_up(id)?.change_icon(icon)
 )
+DCore.signal_connect("use_24_hour_display_changed", (info)->
+    time?.updateTime()
+    if settings.displayMode() != DisplayMode.Fashion and systemTray?.isShowing
+        systemTray?.updateTrayIcon()
+)
