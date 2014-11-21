@@ -11,18 +11,21 @@ DCore.signal_connect("resolution-changed", ->
 )
 
 DCore.signal_connect("embed_window_configure_changed", (info)->
+    item = $EW_MAP[info.XID]
+    if not item
+        console.log("get item from #{info.XID} failed")
+        return
+    item.updateAppletPosition()
 )
+
 DCore.signal_connect("embed_window_configure_request", (info)->
     item = $EW_MAP[info.XID]
     if not item
         console.log("get item from #{info.XID} failed")
         return
-
-    Preview_container._calc_size(info)
-    setTimeout(->
-        item.moveApplet(info)
-    , 50)
+    item.updateAppletPosition()
 )
+
 DCore.signal_connect("embed_window_destroyed", (info)->
     delete $EW_MAP[info.XID]
 )

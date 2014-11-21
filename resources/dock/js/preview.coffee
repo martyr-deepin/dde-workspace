@@ -28,8 +28,10 @@ class PWContainer extends Widget
         @bg = create_element(tag:'canvas', class:"bg", @border)
         @element.style.maxWidth = screen.width - 30
         @border.appendChild(@element)
-        @border.addEventListener("webkitTransitionEnd", ->
-            @classList.remove("moveAnimation")
+        @callback = null
+        @border.addEventListener("webkitTransitionEnd", =>
+            @border.classList.remove("moveAnimation")
+            @callback?()
         )
         @element.addEventListener("mouseover", @on_mouseover)
         @element.addEventListener("mouseout", @on_mouseout)
@@ -38,27 +40,23 @@ class PWContainer extends Widget
         @_update_id = -1
         @_current_pws = {}
         @hide_border_id = null
+        @setAnimationDuration(400, null)
 
-    _do_hide:=>
+    setAnimationDuration: (duration, cb)->
+        @border.classList.remove("moveAnimation")
+        @border.classList.add("moveAnimation")
+        @border.style.webkitTransitionDuration = "#{duration}ms"
+        @callback= cb
+
+    hide: ->
         @is_showing = false
         @border.style.display = 'none'
 
-    hide: ->
-        @cancelHide()
-        @hide_border_id = setTimeout(=>
-            @_do_hide()
-            # @border.style.opacity = 0
-        , 50)
-
-    cancelHide:->
-        clearTimeout(@hide_border_id)
-
     show: ->
-        @cancelHide()
-        PWContainer._need_move_animation = true
         @is_showing = true
         @border.style.opacity = 1
         @border.style.display = "block"
+        PWContainer._need_move_animation = true
 
     _update: (allocation=null, cb=null)->
         clearInterval(@_update_id)
@@ -85,9 +83,7 @@ class PWContainer extends Widget
                     pw = new PreviewWindow("pw"+w_id, w_id, infos[w_id].title, cb)
 
             setTimeout(->
-                if cb
-                    cb(pw.canvas)
-                else
+                if !cb
                     pw.update_content?()
             , 10)
             @_current_pws[w_id] = false
@@ -273,7 +269,6 @@ class PWContainer extends Widget
 
     show_group: (group, allocation, cb)->
         return if @_current_group == group and Preview_container.is_showing
-        @hide()
         @_current_group = group
         @_update(allocation, cb)
 
@@ -296,6 +291,10 @@ __CLOSE_PREVIEW_ID = -1
 _previewCloseTimer = null
 _previewCloseUpdateStateTimer = null
 __clear_timeout = ->
+    clearTimeout(hide_id)
+    hide_id = -1
+    clearTimeout(closePreviewWindowTimer)
+    closePreviewWindowTimer = -1
     clearTimeout(_previewCloseTimer)
     _previewCloseTimer = null
     clearTimeout(_previewCloseUpdateStateTimer)
@@ -307,9 +306,18 @@ __clear_timeout = ->
 
 Preview_show = (group, allocation, cb) ->
     __clear_timeout()
-    __SHOW_PREVIEW_ID = setTimeout(->
+    if cb and settings.displayMode() != DisplayMode.Fashion
+        Preview_container.setAnimationDuration(200, cb)
         Preview_container.show_group(group, allocation, cb)
-    , 300)
+        if Preview_container.is_showing == false
+            cb?()
+    else
+        Preview_container.setAnimationDuration(400, cb)
+        __SHOW_PREVIEW_ID = setTimeout(->
+            Preview_container.show_group(group, allocation, cb)
+            if Preview_container.is_showing == false
+                cb?()
+        , 300)
 
 Preview_close_now = (client)->
     __clear_timeout()
@@ -319,8 +327,8 @@ Preview_close_now = (client)->
     for own xid, value of $EW_MAP
         $EW.hide(xid)
     return if Preview_container.is_showing == false
-    Preview_container.hide()
     _previewCloseTimer = setTimeout(->
+        Preview_container.hide()
         Preview_container.close()
         PWContainer._need_move_animation = false
         if $tooltip
@@ -331,13 +339,14 @@ Preview_close_now = (client)->
         if debugRegion
             console.warn("[Preview_close_now.close_timer] update_dock_region")
         update_dock_region(Panel.getPanelMiddleWidth())
-    , 300)
+    , 10)
     _previewCloseUpdateStateTimer = setTimeout(->
         if debugRegion
             console.warn("[Preview_close_now.update_state_timer] update_dock_region")
         update_dock_region(Panel.getPanelMiddleWidth())
         hideStatusManager.updateState()
-    , 500)
+    , 10)
+
 Preview_close = ->
     __clear_timeout()
     if Preview_container.is_showing
@@ -456,7 +465,6 @@ class PreviewWindow extends Widget
 
     do_mouseover: (e)=>
         __clear_timeout()
-        Preview_container.cancelHide()
         Preview_container.is_showing = true
         DCore.Dock.require_all_region()
         clearTimeout(normal_mouseout_id)

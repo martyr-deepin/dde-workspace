@@ -7,7 +7,7 @@ itemDBus = (path)->
 moveHoverInfo = do->
     moveHoverInfoTimer = null
     ->
-        clearTime(moveHoverInfoTimer)
+        clearTimeout(moveHoverInfoTimer)
         moveHoverInfoTimer = setTimeout(_moveHoverInfo, 300)
 
 _moveHoverInfo = ->

@@ -149,11 +149,6 @@ class Item extends Widget
     on_mouseup:(e)=>
         @displayIcon('hover')
 
-    # on_click:(e)=>
-    #     e?.preventDefault()
-    #     e?.stopPropagation()
-    #     Preview_close_now()
-
     update_draggable: (el)->
         if @draggable && @draggable.isSameNode(el)
             return
@@ -362,6 +357,8 @@ class AppItem extends Item
         @currentImg = @img
 
         @core = new EntryProxy($DBus[@id])
+        if @isApplet
+            @core?.showQuickWindow()
 
         @lastStatus = @core.status()
         @clientgroupInited = @isActive()
@@ -608,6 +605,7 @@ class AppItem extends Item
             __clear_timeout()
             clearTimeout(hide_id)
             clearTimeout(tooltip_hide_id)
+            clearTimeout(closePreviewWindowTimer)
             _clear_item_timeout()
 
             _lastCliengGroup = @
@@ -615,24 +613,23 @@ class AppItem extends Item
                 if @n_clients.length != 0
                     Preview_show(@)
             else if @embedWindows
-                @core?.showQuickWindow()
                 try
                     size = @embedWindows.window_size(@embedWindows.xids[0])
                 catch e
                     console.log(e)
                 Preview_show(@, size, (c)=>
-                    @moveApplet(size)
-
                     clearTimeout(@showEmWindowTimer || null)
-                    if Preview_container.border.classList.contains("moveAnimation")
-                        @showEmWindowTimer = setTimeout(=>
-                            @embedWindows.show()
-                        , 400)
-                    else
+                    @showEmWindowTimer = setTimeout(=>
+                        _lastCliengGroup?.embedWindows?.hide?()
+                        for own xid, value of $EW_MAP
+                            $EW.hide(xid)
                         @embedWindows.show()
+                    , 0)
+                    @updateAppletPosition()
                 )
 
-    moveApplet: (size)=>
+    updateAppletPosition: ()=>
+        size = @embedWindows.window_size(@embedWindows.xids[0])
         ew = @embedWindows
         xy = get_page_xy(@element)
         w = @element.clientWidth || 0
@@ -642,7 +639,13 @@ class AppItem extends Item
         if x + size.width > screen.width
             x -= x + size.width - screen.width + extraSize
         y = xy.y - extraHeight
-        ew.move(ew.xids[0], x, y)
+
+        clearTimeout(@__move_applet_timeout)
+        @__move_applet_timeout = setTimeout(=>
+            ew.move(ew.xids[0], x, y)
+            if Preview_container._current_group == @
+                Preview_container._calc_size(size)
+        , 10)
 
     on_mouseout:(e)=>
         super

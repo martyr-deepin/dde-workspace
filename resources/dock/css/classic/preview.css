@@ -121,5 +121,5 @@
 }
 
 .moveAnimation {
-  -webkit-transition: -webkit-transform 500ms;
+  -webkit-transition: -webkit-transform;
 }
