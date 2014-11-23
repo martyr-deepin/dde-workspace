@@ -260,14 +260,12 @@ get_dbus = (type, opt, testProperty)->
             throw "Get DBus \"#{opt}\" failed: #{e}"
         else
             throw "Get DBus \"#{opt.name} #{opt.path} #{opt.interface}\" failed: #{e}"
-        return null
 
     if !d
         if typeof opt == 'string'
             throw "Get DBus \"#{opt}\" failed"
         else
             throw "Get DBus \"#{opt.name} #{opt.path} #{opt.interface}\" failed"
-        return null
 
     count = 0
     while d and not d[testProperty]
@@ -286,7 +284,6 @@ get_dbus = (type, opt, testProperty)->
                     throw "Get DBus \"#{opt}\" failed"
                 else
                     throw "Get DBus \"#{opt.name} #{opt.path} #{opt.interface}\" failed"
-                return null
 
     if not d
         if typeof opt == 'string'

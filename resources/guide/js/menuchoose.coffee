@@ -28,7 +28,6 @@ class MenuChoose extends Widget
             @opt[i].style.backgroundColor = "rgba(255,255,255,0.0)"
             @opt[i].style.border = "1px solid rgba(255,255,255,0.0)"
             @opt[i].style.borderRadius = "0px"
-            @normal_state[i]
         @element.style.display = "none"
 
     insert: (id, title, img_normal,img_hover,img_click,enable = true,message = null)->

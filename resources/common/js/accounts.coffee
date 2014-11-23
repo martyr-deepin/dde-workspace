@@ -92,22 +92,10 @@ class Accounts
         return id
 
     is_need_pwd: (uid) ->
-        if uid is @guest.Uid then return false
-        else return true
-        username = @get_user_name(uid)
-        dbus = null
-        try
-            if APP is "Greeter"
-                LIGHTDM = "com.deepin.dde.lightdm"
-                dbus = DCore.DBus.sys(LIGHTDM)
-            else
-                LOCK = "com.deepin.dde.lock"
-                dbus = DCore.DBus.sys(LOCK)
-            return dbus?.NeedPwd_sync(username)
-        catch e
-            echo "is_need_pwd dbus error #{e}"
+        if uid is @guest.Uid
+            return false
+        else
             return true
-
 
     get_user_icon:(uid)->
         icon = null

@@ -24,9 +24,6 @@ class Greeter extends Widget
         echo "Greeter"
         inject_css(_b,"css/greeter.css")
 
-    webview_ok:(_current_user)->
-        DCore.Greeter.webview_ok(_current_user.id) if hide_face_login
-
     start_login_connect:(_current_user)->
         DCore.signal_connect("start-login", ->
             # echo "receive start login"
@@ -87,7 +84,6 @@ userinfo = user.get_current_userinfo()
 _current_user = user.get_current_userinfo()
 
 greeter.start_login_connect(userinfo)
-greeter.webview_ok(_current_user) if hide_face_login
 
 div_version = create_element("div","div_version",_b)
 div_version.setAttribute("id","div_version")

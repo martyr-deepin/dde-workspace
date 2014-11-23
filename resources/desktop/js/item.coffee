@@ -427,8 +427,8 @@ class Item extends Widget
         @rename_menu = null
 
     item_rename : =>
-        if @delay_rename_tid != -1 then
-        if @selected == false then return
+        #if @delay_rename_tid != -1 then
+        return if @selected == false
         if @in_rename == false
             move_widget_to_rename_div(@)
             @display_full_name()

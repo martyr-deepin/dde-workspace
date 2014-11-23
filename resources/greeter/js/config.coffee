@@ -42,18 +42,6 @@ enable_detection = (enabled)->
     finally
         return null
 
-hideFaceLogin = ->
-    return false
-    try
-        face = DCore[APP_NAME].enable_detection()
-        return face
-    catch e
-        echo "face_login #{e}"
-        return false
-    finally
-        return false
-hide_face_login = hideFaceLogin()
-
 is_livecd = false
 try
     is_livecd = DCore[APP_NAME].is_livecd()

@@ -38,9 +38,6 @@ class Lock extends Widget
         localStorage.setObject("shutdown_from_lock",power)
         enableZoneDetect(false)
 
-    webview_ok:(_current_user)->
-        DCore.Lock.webview_ok(_current_user.id) if hide_face_login
-
     start_login_connect:(userinfo)->
         DCore.signal_connect("start-login", ->
             echo "receive start login"
@@ -67,7 +64,6 @@ _current_user = user.get_current_userinfo()
 
 
 lock.start_login_connect(userinfo)
-lock.webview_ok(_current_user) if hide_face_login
 
 div_time = create_element("div","div_time",_b)
 div_time.setAttribute("id","div_time")

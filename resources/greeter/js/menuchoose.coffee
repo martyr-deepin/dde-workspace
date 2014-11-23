@@ -399,7 +399,7 @@ class ComboBox extends Widget
         @element.style.display = "block"
 
     is_hide:->
-        if @element.style.display = "none" then return true
+        if @element.style.display == "none" then return true
         else return false
 
     get_current: ->

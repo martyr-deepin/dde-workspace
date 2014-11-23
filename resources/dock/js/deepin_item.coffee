@@ -201,8 +201,6 @@ class ClockBase extends SystemItem
 
     on_mouseup: (e)=>
         super
-        if e.button != 0
-            return
 
     start_time_settings: ->
         echo 'time settings'

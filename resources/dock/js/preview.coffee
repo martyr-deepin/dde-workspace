@@ -22,7 +22,6 @@
 #TODO: dynamicly create/destroy PreviewWindow when Client added/removed and current PreviewContainer is showing.
 class PWContainer extends Widget
     _need_move_animation: false
-    _cancel_move_animation_id: -1
     constructor: (@id)->
         super
         @border = create_element("div", "PWBorder", _b)
@@ -273,8 +272,6 @@ class PWContainer extends Widget
         update_dock_region()
 
     show_group: (group, allocation, cb)->
-        clearTimeout(PWContainer._cancel_move_animation_id)
-        PWContainer._cancel_move_animation_id = -1
         return if @_current_group == group and Preview_container.is_showing
         @hide()
         @_current_group = group
@@ -372,7 +369,6 @@ class PreviewWindow extends Widget
             @close_button.addEventListener('click', (e)=>
                 e.stopPropagation()
                 @canvas = null
-                clearInterval(@_update_id)
                 clientManager?.CloseWindow(@w_id)
             )
             @close_button.addEventListener("mouseover", (e)=>

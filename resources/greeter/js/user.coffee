@@ -199,13 +199,7 @@ class UserInfo extends Widget
         )
 
     userFaceLogin: (name)->
-        face = false
-        try
-            face = DCore[APP_NAME].use_face_recognition_login(name) if hide_face_login
-        catch e
-            echo "face_login #{e}"
-        finally
-            return face
+        return false
 
     draw_camera: ->
         if !@face_login then return
@@ -313,14 +307,10 @@ class UserInfo extends Widget
     animate_prev: ->
         if @face_login
             DCore[APP_NAME].cancel_detect()
-        if @is_recognizing
-            return
 
     animate_next: ->
         if @face_login
             DCore[APP_NAME].cancel_detect()
-        if @is_recognizing
-            return
 
 class LoginEntry extends Widget
     img_src_before = "images/userinfo/"

@@ -116,7 +116,7 @@ do_desktop_get_focus = ->
     # notify destkop normal items
     if last_widget.length > 0 and (w = Widget.look_up(last_widget))? and last_widget_has_focus == true
         w.item_focus()
-        last_widget_has_focus == false
+        last_widget_has_focus = false
     return
 
 do_workarea_changed = (allo) ->

@@ -94,7 +94,7 @@ class Widget extends Module
                 else if key == "buildmenu"
                     f_menu = v.bind(this)
                 else if key == "contextmenu"
-                    "nothing should do"
+                    #"nothing should do"
                 else
                     @element.addEventListener(key, v.bind(this))
             else

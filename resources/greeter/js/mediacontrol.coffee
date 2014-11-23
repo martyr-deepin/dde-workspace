@@ -56,44 +56,6 @@ class VoiceControl extends Widget
         @element.style.display = "block"
 
         return
-        #width = width * scaleFinal
-        #height = height * scaleFinal
-        remove_element(myCanvas) if myCanvas
-        myCanvas = create_element("canvas","myCanvas",@element)
-        myCanvas.id = "myCanvas"
-        x0 = 0
-        y0 = 0
-        myCanvas.style.width = width * 2
-        myCanvas.style.height = height * 2
-        ctx = myCanvas.getContext("2d")
-
-        #dest
-        ctx.beginPath()
-        ctx.moveTo(x0,y0)
-        ctx.lineTo(x0 + width,y0)
-        ctx.lineTo(x0,y0 + height)
-        ctx.closePath()
-        ctx.strokeStyle = "#DCDCDC"
-        ctx.stroke()
-        ctx.fillStyle = "rgba(255,255,255,1.0)"
-        ctx.fill()
-
-        ctx.globalCompositeOperation = "source-in"
-
-        #src
-        ctx.fillStyle = "rgba(255,255,255,1.0)"
-        ctx.fillRect(x0,y0 + height - vol * height,x0 + width,y0 + height)
-
-        remove_element(num) if num
-        num = create_element("div","num",@element)
-        num.style.position = "relative"
-        fontSize = 10
-        num.style.fontSize = "1em"
-        num.style.left = "-3.8em"
-        num.style.top = "-8em"
-        num.textContent = Math.round(vol * 100)
-
-        @element.style.display = "block"
 
     do_mouseover: (e)->
         mouseover = true

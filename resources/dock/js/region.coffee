@@ -4,7 +4,7 @@ calc_app_item_size = ->
     # calc when added/removed
     #systemTray?.updateTrayIcon()
     apps = $s(".AppItem")
-    return if apps.length = 0
+    return if apps.length == 0
 
     container = $("#container")
     list_width = container.clientWidth
