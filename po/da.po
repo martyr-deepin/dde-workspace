@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-20 09:44+0800\n"
-"PO-Revision-Date: 2014-11-20 16:32+0000\n"
+"POT-Creation-Date: 2014-11-25 10:57+0800\n"
+"PO-Revision-Date: 2014-11-25 16:14+0000\n"
 "Last-Translator: Carl Andersen <carl@manjaro.dk>\n"
 "Language-Team: Danish (http://www.transifex.com/projects/p/deepin-desktop-environment/language/da/)\n"
 "MIME-Version: 1.0\n"
@@ -52,8 +52,8 @@ msgstr "Advarsel"
 #: ../resources/desktop/js/richdir.coffee:580
 #: ../resources/desktop/js/specialitem.coffee:51
 #: ../resources/desktop/js/specialitem.coffee:146
-#: ../resources/guide/js/launcher.coffee:212
-#: ../resources/launcher/js/item.coffee:281
+#: ../resources/guide/js/launcher.coffee:118
+#: ../resources/launcher/js/item.coffee:284
 msgid "_Open"
 msgstr "_Åbn"
 
@@ -128,38 +128,31 @@ msgid "Last modified _time"
 msgstr "Sidst modificeret _tidspunkt"
 
 #: ../resources/desktop/js/grid.coffee:1049
-#: ../resources/guide/js/desktop.coffee:196
 msgid "_Sort by"
 msgstr "_Sorter efter"
 
 #: ../resources/desktop/js/grid.coffee:1050
-#: ../resources/guide/js/desktop.coffee:197
 msgid "_New"
 msgstr "_Ny"
 
 #: ../resources/desktop/js/grid.coffee:1051
-#: ../resources/guide/js/desktop.coffee:198
 msgid "Open in _terminal"
 msgstr "Åbn i _terminal"
 
 #: ../resources/desktop/js/grid.coffee:1052
 #: ../resources/desktop/js/item.coffee:400
-#: ../resources/guide/js/desktop.coffee:199
 msgid "_Paste"
 msgstr "_Sæt ind"
 
 #: ../resources/desktop/js/grid.coffee:1054
-#: ../resources/guide/js/desktop.coffee:201
 msgid "_Display settings"
 msgstr "_Skærmindstillinger"
 
 #: ../resources/desktop/js/grid.coffee:1055
-#: ../resources/guide/js/desktop.coffee:202
 msgid "_Corner navigation"
 msgstr "_​​Hjørnenavigation"
 
 #: ../resources/desktop/js/grid.coffee:1056
-#: ../resources/guide/js/desktop.coffee:203
 msgid "Pe_rsonalize"
 msgstr "Per_sonliggør"
 
@@ -180,7 +173,7 @@ msgid "Computer"
 msgstr "Computer"
 
 #: ../resources/desktop/js/specialitem.coffee:87
-#: ../resources/dock/js/main.coffee:47 ../resources/dock/js/main.coffee:117
+#: ../resources/dock/js/main.coffee:46 ../resources/dock/js/main.coffee:116
 msgid "Trash"
 msgstr "Parpirkurv"
 
@@ -201,111 +194,119 @@ msgstr "_Tom"
 msgid "Unknown"
 msgstr "Ukendt"
 
-#: ../resources/dock/js/deepin_item.coffee:249
-msgid "_View as analog"
-msgstr "_Vis som analog"
-
-#: ../resources/dock/js/deepin_item.coffee:250
-#: ../resources/dock/js/deepin_item.coffee:302
-msgid "_Time settings"
-msgstr "_Tidsindstillinger"
-
-#: ../resources/dock/js/deepin_item.coffee:301
-msgid "_View as digit"
-msgstr "_Vis som tal"
-
 #: ../resources/dock/js/global_menu.coffee:9
+#: ../resources/guide/js/dock.coffee:76
 msgid "Keep _showing"
 msgstr "Bliv ved at _vise"
 
 #: ../resources/dock/js/global_menu.coffee:10
+#: ../resources/guide/js/dock.coffee:77
 msgid "Keep _hidden"
 msgstr "Bliv ved at _skjule"
 
 #: ../resources/dock/js/global_menu.coffee:12
+#: ../resources/guide/js/dock.coffee:78
 msgid "_Smart hide"
 msgstr "_Smartvisning"
 
 #: ../resources/dock/js/global_menu.coffee:27
+#: ../resources/guide/js/dock.coffee:72
 msgid "_Fashion mode"
 msgstr "_Trendy visning"
 
 #: ../resources/dock/js/global_menu.coffee:28
+#: ../resources/guide/js/dock.coffee:73
 msgid "_Efficient mode"
 msgstr "_Effektiv visning"
 
 #: ../resources/dock/js/global_menu.coffee:29
+#: ../resources/guide/js/dock.coffee:74
 msgid "_Classic mode"
 msgstr "_Klassisk klassisk"
 
 #: ../resources/dock/js/global_menu.coffee:38
-msgid "Notice Region Setting"
-msgstr "Meddelelse Region Indstillinger"
+#: ../resources/guide/js/dock.coffee:80
+msgid "Notification area settings"
+msgstr "\t\nNotifikation Område indstillinger"
 
-#: ../resources/dock/js/main.coffee:115 ../resources/zone/js/utils.coffee:13
+#: ../resources/dock/js/main.coffee:114 ../resources/zone/js/utils.coffee:13
 msgid "Launcher"
 msgstr "Launcher"
 
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Sun"
-msgstr "Søn"
+#: ../resources/dock/js/plugins/time/time.coffee:60
+msgid "Switch display mode"
+msgstr "Skift visningstilstand"
 
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Mon"
-msgstr "Man"
+#: ../resources/dock/js/plugins/time/time.coffee:61
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:81
+msgid "_Time settings"
+msgstr "_Tidsindstillinger"
 
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Tue"
-msgstr "Tir"
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:33
+msgid "%b %d %H:%M %a"
+msgstr "%b %d %H:%M %a"
 
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Wed"
-msgstr "Ons"
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:35
+msgid "%b %d %I:%M %p %a"
+msgstr "%b %d %I:%M %p %a"
 
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Thu"
-msgstr "Tor"
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:37
+msgid "%b %d %H:%M"
+msgstr "%b %d %H:%M"
 
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Fri"
-msgstr "Fre"
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:39
+msgid "%b %d %I:%M %p"
+msgstr "%b %d %I:%M %p"
 
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Sat"
-msgstr "Lør"
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:41
+msgid "%H:%M %a"
+msgstr "%H:%M %a"
+
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:43
+msgid "%I:%M %p %a"
+msgstr "%I:%M %p %a"
+
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:45
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:47
+msgid "%I:%M %p"
+msgstr "%I:%M %p"
+
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:79
+msgid "Display date"
+msgstr "Vis dato"
+
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:80
+msgid "Display week"
+msgstr "Vis uge"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:42
 msgid "_Close"
 msgstr "_Luk"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:351
+#: ../resources/launcher/js/item.coffee:354
 msgid "Are you sure to remove"
 msgstr "Er du sikker på, at det skal fjernes"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:351
+#: ../resources/launcher/js/item.coffee:354
 msgid "All dependencies will be removed"
 msgstr "Alle afhængigheder vil blive fjernet"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:351
+#: ../resources/launcher/js/item.coffee:354
 msgid "no"
 msgstr "nej"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:351
+#: ../resources/launcher/js/item.coffee:354
 msgid "yes"
 msgstr "ja"
 
-#: ../resources/greeter/js/mediacontrol.coffee:167
+#: ../resources/greeter/js/mediacontrol.coffee:129
 msgid "Click button to Play"
 msgstr "Klik på knappen for at afspille"
 
@@ -409,11 +410,39 @@ msgstr "Nov"
 msgid "Dec"
 msgstr "Dec"
 
-#: ../resources/greeter/js/user.coffee:418
+#: ../resources/greeter/js/time.coffee:44
+msgid "Sun"
+msgstr "Søn"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Mon"
+msgstr "Man"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Tue"
+msgstr "Tir"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Wed"
+msgstr "Ons"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Thu"
+msgstr "Tor"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Fri"
+msgstr "Fre"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Sat"
+msgstr "Lør"
+
+#: ../resources/greeter/js/user.coffee:408
 msgid "Login"
 msgstr "Log ind"
 
-#: ../resources/greeter/js/user.coffee:420
+#: ../resources/greeter/js/user.coffee:410
 msgid "Unlock"
 msgstr "Lås op"
 
@@ -423,145 +452,125 @@ msgid ""
 " to generate \"application group\""
 msgstr "Lad os trække det andet ikon på det første ikon\nFor at generere en \"programgruppe\""
 
-#: ../resources/guide/js/desktop.coffee:116
+#: ../resources/guide/js/desktop.coffee:117
 msgid "Well, you have learned how to create a \"application group\""
 msgstr "Okay, nu har du lært, hvordan du opretter en \"programgruppe\""
 
-#: ../resources/guide/js/desktop.coffee:117
+#: ../resources/guide/js/desktop.coffee:118
 msgid "tips: Right-click on the application group will provide more functions"
 msgstr "Tip: Højreklik på programmgruppe, så vil du se flere funktioner"
 
 #: ../resources/guide/js/desktop.coffee:128
 msgid ""
-"Slide the mouse to the four top corners, which can trigger four different events\n"
-"Please move to the upper left corner first to show or hide Launcher"
-msgstr "Flyt musen til de fire hjørner på skærmen, der så viser dig forskellige events\nFlyt musen til det øverste venstre hjørne først for at vise eller skjule launcher"
+"Slide the mouse to the four top corners, which can trigger four different "
+"events"
+msgstr "Flyt musen til de fire øverste hjørner, der kan udløse fire forskellige ting"
 
-#: ../resources/guide/js/desktop.coffee:129
+#: ../resources/guide/js/desktop.coffee:150
 msgid ""
-"tips: Please trigger successively by hints, click on the blank area to "
-"return"
-msgstr "Tip: Udløs efter tip, kom tilbage ved at klikke på det tomme område på skærmen"
+"We already know that launcher can be shown/ hidden by sliding the mouse to "
+"the upper left corner"
+msgstr "Vi ved allerede, at auncher kan vises / skjules ved at flytte musen til øverste venstre hjørne"
 
-#: ../resources/guide/js/desktop.coffee:133
-msgid "Show/Hide Launcher"
-msgstr "Vis/Skjul launcher"
-
-#: ../resources/guide/js/desktop.coffee:134
-msgid "Show/Hide Desktop"
-msgstr "Vis/Skjul skrivebord"
-
-#: ../resources/guide/js/desktop.coffee:135
-msgid "Show/Hide Control Center"
-msgstr "Vis/Skjul Kontrolcenter"
-
-#: ../resources/guide/js/desktop.coffee:136
-msgid "No default functions setted in right up corner"
-msgstr "Ingen standardfunktioner tilføjet øverst i højre hjørne"
-
-#: ../resources/guide/js/desktop.coffee:178
+#: ../resources/guide/js/desktop.coffee:172
 msgid ""
-"Right-click on desktop black area to call up the menu, select \"Corner "
-"navigation\" to set the corner used"
-msgstr "Højreklik på skrivebordet frie område for at kalde menuen, vælg \"Hjørnenavigation\" for at indstille hvordan hjørnerne bruges"
+"The workspace will be shown or hidden by sliding the mouse to the lower left"
+" corner"
+msgstr "Arbejdsområdet vises eller skjules ved at flytte musen til det nederste venstre hjørne"
 
-#: ../resources/guide/js/desktop.coffee:179
-msgid "tips: Click on the interface of corner navigation blank area to return"
-msgstr "Tip: Klik på det tomme område i Hjørnenavigation for at vende tilbage"
+#: ../resources/guide/js/desktop.coffee:197
+msgid ""
+"No functions are set in default on the upper right corner\n"
+"Right-click on desktop black area to call up the menu, select \"Corner navigation\" to set the corner used"
+msgstr "Ingen funktioner er sat som standard på øverste højre hjørne\nHøjreklik på skrivebordet tomme område, for at få vist menuen, vælg \"Hjørne navigation\" for at indstille hjørne anvendelse"
+
+#: ../resources/guide/js/desktop.coffee:198
+msgid "tips: Click on the corner navigation blank area to return"
+msgstr "Tips: klik på hjørnet af navigation tomme område for at vende tilbage"
+
+#: ../resources/guide/js/dock.coffee:63
+msgid ""
+"Three modes and the display status can be switched by right-click on the "
+"blank area of dock"
+msgstr "Tre modes og skærmen status kan skiftes ved at højre-klikke på det tomme område i dock"
 
 #: ../resources/guide/js/dss.coffee:29
-msgid "Well, please trigger the lower right corner again"
-msgstr "Okay, Prøvat gå ned og aktivere nederste højre hjørne igen"
+msgid ""
+"The Control Center will be shown or hidden by sliding the mouse to the lower"
+" right corner"
+msgstr "Kontrolcentret vises eller skjules ved at flytte musen til det nederste højre hjørne"
 
 #: ../resources/guide/js/dss.coffee:30
 msgid "tips: Click the setting icon on dock to implement"
 msgstr "Tip: Klik på indstillingsikonet på dock for at gennemføre"
 
-#: ../resources/guide/js/dss.coffee:69
-msgid "Here is the system setting area"
-msgstr "Her er systemets indstillingsområde"
+#: ../resources/guide/js/dss.coffee:68
+msgid "Click the power button to shut down, reboot or do other operations"
+msgstr "Klik på afbryderknappen for at lukke ned, genstarte eller udføre andre funktioner"
 
-#: ../resources/guide/js/dss.coffee:70
+#: ../resources/guide/js/dss.coffee:69
 msgid ""
 "tips: Hover the setting icon on dock to quickly implement some setting "
 "functions"
 msgstr "Tip: Hold musen over ikonet  på dock for hurtigt at gennemføre nogle indstillingsfunktioner"
 
 #: ../resources/guide/js/end.coffee:25
-msgid "Thanks for your patience while learning. Congratulations."
-msgstr "Tak for din tålmodighed, mens undervisningen stod på. Tillykke med Deepin."
+msgid ""
+"Thank you for your patience to learn! More surprises are waiting for you to "
+"explore"
+msgstr "Tak for din tålmodighed for at lære! Flere overraskelser venter på dig til udforskning"
 
 #: ../resources/guide/js/end.coffee:30
-msgid "End"
-msgstr "Slut"
+msgid "Start my Deepin trip"
+msgstr "Start min Deepin tur"
 
-#: ../resources/guide/js/launcher.coffee:29
+#: ../resources/guide/js/launcher.coffee:28
 msgid ""
 "\"Application Launcher\" can be started by sliding the mouse to the upper "
 "left corner or clicking on the launcher."
 msgstr "\"Program Launcher\" kan startes ved at føre musen til øverste venstre hjørne, eller klikke på launcher."
 
-#: ../resources/guide/js/launcher.coffee:70
-msgid ""
-"What shown in the first screen of \"launcher\" are the applications "
-"collected."
-msgstr "Hvad vises i det første skærmbillede af \"launcher\" er de programmer, der er indsamlet."
-
-#: ../resources/guide/js/launcher.coffee:85
-msgid ""
-"Please click on the \"All Applications\" icon, you will see all "
-"applications."
-msgstr "Klik på \"Alle programmer\" ikonet, og du vil se alle programmer."
-
-#: ../resources/guide/js/launcher.coffee:95
-msgid ""
-"All programs can be located by scrolling the mouse up and down.\n"
-"You can also click on the left classification navigation to locate"
-msgstr "Alle programmer kan ses ved at scrolle musen op og ned.\nDu kan også klikke på venstre klassificering navigation til at lokalisere"
-
-#: ../resources/guide/js/launcher.coffee:133
-msgid "Skip the step without scroll"
-msgstr "Spring trinnet over uden scroll"
-
-#: ../resources/guide/js/launcher.coffee:163
+#: ../resources/guide/js/launcher.coffee:65
 msgid ""
 "Use the keyboard to search for applications\n"
 "Try the \"deepin\" keyword to see which applications are shown"
 msgstr "Brug tastaturet til at søge efter programmer\nPrøv søgeordet \"deepin\"  for at se, hvilke programmer der vises"
 
-#: ../resources/guide/js/launcher.coffee:164
+#: ../resources/guide/js/launcher.coffee:66
 msgid "tips: Please directly enter the word \"deepin\""
 msgstr "Tip: Indtast direkte ordet \"deepin\""
 
-#: ../resources/guide/js/launcher.coffee:181
-msgid "Use the right mouse button to send two icons to the desktop"
-msgstr "Brug højre museknap til at sende to ikoner til skrivebordet"
+#: ../resources/guide/js/launcher.coffee:80
+msgid "You can directly drag the application icon to Dock or trash"
+msgstr "Du kan direkte trække programikonet til Dock eller papirkurven"
 
-#: ../resources/guide/js/launcher.coffee:182
-msgid "tips: You can add it to startup items or uninstall it"
-msgstr "Tip: Du kan tilføje det til startelementer eller afinstallere det"
+#: ../resources/guide/js/launcher.coffee:93
+msgid ""
+"tips: Click the right mouse button on the application icon to call up the "
+"context menu"
+msgstr "tip: Klik med højre museknap på programikonet for at hente genvejsmenuen"
 
-#: ../resources/guide/js/launcher.coffee:214
+#: ../resources/guide/js/launcher.coffee:120
 msgid "Remove from _favorites"
 msgstr "Fjern fra _favoritter"
 
-#: ../resources/guide/js/launcher.coffee:215
+#: ../resources/guide/js/launcher.coffee:121
 #: ../resources/launcher/js/const.coffee:76
 msgid "Send to d_esktop"
 msgstr "Send til d_esktop"
 
-#: ../resources/guide/js/launcher.coffee:216
+#: ../resources/guide/js/launcher.coffee:122
 #: ../resources/launcher/js/const.coffee:80
 msgid "Send to do_ck"
 msgstr "Send til do_ck"
 
-#: ../resources/guide/js/launcher.coffee:218
+#: ../resources/guide/js/launcher.coffee:124
 #: ../resources/launcher/js/const.coffee:68
 msgid "_Add to autostart"
 msgstr "_Tilføj til autostart"
 
-#: ../resources/guide/js/launcher.coffee:219
-#: ../resources/launcher/js/item.coffee:287
+#: ../resources/guide/js/launcher.coffee:125
+#: ../resources/launcher/js/item.coffee:290
 msgid "_Uninstall"
 msgstr "_Afinstaller"
 
@@ -586,8 +595,8 @@ msgid "Start"
 msgstr "Start"
 
 #: ../resources/guide/js/start.coffee:51
-msgid "I am an experienced user. Exit directly."
-msgstr "Jeg er en erfaren bruger. Afslut direkte."
+msgid "Skip the guide, experience immediately"
+msgstr "Spring denne guide over straks, jeg kender Deepin"
 
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
@@ -677,7 +686,7 @@ msgstr "Ny fil"
 msgid "New directory"
 msgstr "Ny mappe"
 
-#: ../app/dock/dock.c:290
+#: ../app/dock/dock.c:291
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr "Dock kan ikke starte, fordi Compiz ikke er aktiveret."
 

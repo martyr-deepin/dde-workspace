@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-20 09:44+0800\n"
-"PO-Revision-Date: 2014-11-20 02:36+0000\n"
-"Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
+"POT-Creation-Date: 2014-11-25 10:57+0800\n"
+"PO-Revision-Date: 2014-11-25 06:40+0000\n"
+"Last-Translator: Анатолий Валерианович <ffox909@mail.ru>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/deepin-desktop-environment/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -55,8 +55,8 @@ msgstr "Предупреждение"
 #: ../resources/desktop/js/richdir.coffee:580
 #: ../resources/desktop/js/specialitem.coffee:51
 #: ../resources/desktop/js/specialitem.coffee:146
-#: ../resources/guide/js/launcher.coffee:212
-#: ../resources/launcher/js/item.coffee:281
+#: ../resources/guide/js/launcher.coffee:118
+#: ../resources/launcher/js/item.coffee:284
 msgid "_Open"
 msgstr "Открыть"
 
@@ -131,38 +131,31 @@ msgid "Last modified _time"
 msgstr "Время последнего изменения"
 
 #: ../resources/desktop/js/grid.coffee:1049
-#: ../resources/guide/js/desktop.coffee:196
 msgid "_Sort by"
 msgstr "Сортировать по"
 
 #: ../resources/desktop/js/grid.coffee:1050
-#: ../resources/guide/js/desktop.coffee:197
 msgid "_New"
 msgstr "Новый"
 
 #: ../resources/desktop/js/grid.coffee:1051
-#: ../resources/guide/js/desktop.coffee:198
 msgid "Open in _terminal"
 msgstr "Открыть в  терминале"
 
 #: ../resources/desktop/js/grid.coffee:1052
 #: ../resources/desktop/js/item.coffee:400
-#: ../resources/guide/js/desktop.coffee:199
 msgid "_Paste"
 msgstr "Вставить"
 
 #: ../resources/desktop/js/grid.coffee:1054
-#: ../resources/guide/js/desktop.coffee:201
 msgid "_Display settings"
 msgstr "Настройки дисплея"
 
 #: ../resources/desktop/js/grid.coffee:1055
-#: ../resources/guide/js/desktop.coffee:202
 msgid "_Corner navigation"
 msgstr "Угловая навигация"
 
 #: ../resources/desktop/js/grid.coffee:1056
-#: ../resources/guide/js/desktop.coffee:203
 msgid "Pe_rsonalize"
 msgstr "Персонализация"
 
@@ -183,7 +176,7 @@ msgid "Computer"
 msgstr "Компьютер"
 
 #: ../resources/desktop/js/specialitem.coffee:87
-#: ../resources/dock/js/main.coffee:47 ../resources/dock/js/main.coffee:117
+#: ../resources/dock/js/main.coffee:46 ../resources/dock/js/main.coffee:116
 msgid "Trash"
 msgstr "Корзина"
 
@@ -204,111 +197,119 @@ msgstr "_Пустой"
 msgid "Unknown"
 msgstr "Неизвестный"
 
-#: ../resources/dock/js/deepin_item.coffee:249
-msgid "_View as analog"
-msgstr "_ Аналоговые"
-
-#: ../resources/dock/js/deepin_item.coffee:250
-#: ../resources/dock/js/deepin_item.coffee:302
-msgid "_Time settings"
-msgstr "Настройка времени"
-
-#: ../resources/dock/js/deepin_item.coffee:301
-msgid "_View as digit"
-msgstr "_Цифровые"
-
 #: ../resources/dock/js/global_menu.coffee:9
+#: ../resources/guide/js/dock.coffee:76
 msgid "Keep _showing"
 msgstr "Держать_видимым"
 
 #: ../resources/dock/js/global_menu.coffee:10
+#: ../resources/guide/js/dock.coffee:77
 msgid "Keep _hidden"
 msgstr "Держать_скрытым"
 
 #: ../resources/dock/js/global_menu.coffee:12
+#: ../resources/guide/js/dock.coffee:78
 msgid "_Smart hide"
 msgstr "_Умное скрытие"
 
 #: ../resources/dock/js/global_menu.coffee:27
+#: ../resources/guide/js/dock.coffee:72
 msgid "_Fashion mode"
 msgstr "_Модный режим"
 
 #: ../resources/dock/js/global_menu.coffee:28
+#: ../resources/guide/js/dock.coffee:73
 msgid "_Efficient mode"
 msgstr "_Режим с эффектами"
 
 #: ../resources/dock/js/global_menu.coffee:29
+#: ../resources/guide/js/dock.coffee:74
 msgid "_Classic mode"
 msgstr "_Классический режим"
 
 #: ../resources/dock/js/global_menu.coffee:38
-msgid "Notice Region Setting"
-msgstr ""
+#: ../resources/guide/js/dock.coffee:80
+msgid "Notification area settings"
+msgstr "Отметьте настройки местности"
 
-#: ../resources/dock/js/main.coffee:115 ../resources/zone/js/utils.coffee:13
+#: ../resources/dock/js/main.coffee:114 ../resources/zone/js/utils.coffee:13
 msgid "Launcher"
 msgstr "Лаунчер"
 
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Sun"
-msgstr "Вс"
+#: ../resources/dock/js/plugins/time/time.coffee:60
+msgid "Switch display mode"
+msgstr "Переключить режим дисплея"
 
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Mon"
-msgstr "Пн"
+#: ../resources/dock/js/plugins/time/time.coffee:61
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:81
+msgid "_Time settings"
+msgstr "Настройка времени"
 
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Tue"
-msgstr "Вт"
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:33
+msgid "%b %d %H:%M %a"
+msgstr "%b %d %H:%M %a"
 
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Wed"
-msgstr "Ср"
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:35
+msgid "%b %d %I:%M %p %a"
+msgstr "%b %d %I:%M %p %a"
 
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Thu"
-msgstr "Чт"
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:37
+msgid "%b %d %H:%M"
+msgstr "%b %d %H:%M"
 
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Fri"
-msgstr "Пт"
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:39
+msgid "%b %d %I:%M %p"
+msgstr "%b %d %I:%M %p"
 
-#: ../resources/dock/js/plugins/time/time.coffee:2
-#: ../resources/greeter/js/time.coffee:44
-msgid "Sat"
-msgstr "Сб"
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:41
+msgid "%H:%M %a"
+msgstr "%H:%M %a"
+
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:43
+msgid "%I:%M %p %a"
+msgstr "%I:%M %p %a"
+
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:45
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:47
+msgid "%I:%M %p"
+msgstr "%I:%M %p"
+
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:79
+msgid "Display date"
+msgstr "Показывать дату"
+
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:80
+msgid "Display week"
+msgstr "Показывать неделю"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:42
 msgid "_Close"
 msgstr "_Закрыть"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:351
+#: ../resources/launcher/js/item.coffee:354
 msgid "Are you sure to remove"
 msgstr "Вы уверены, что хотите удалить"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:351
+#: ../resources/launcher/js/item.coffee:354
 msgid "All dependencies will be removed"
 msgstr "Все зависимости будут удалены"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:351
+#: ../resources/launcher/js/item.coffee:354
 msgid "no"
 msgstr "нет"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:351
+#: ../resources/launcher/js/item.coffee:354
 msgid "yes"
 msgstr "да"
 
-#: ../resources/greeter/js/mediacontrol.coffee:167
+#: ../resources/greeter/js/mediacontrol.coffee:129
 msgid "Click button to Play"
 msgstr "Нажать кнопку для проигрывания"
 
@@ -412,11 +413,39 @@ msgstr "Ноя"
 msgid "Dec"
 msgstr "Дек"
 
-#: ../resources/greeter/js/user.coffee:418
+#: ../resources/greeter/js/time.coffee:44
+msgid "Sun"
+msgstr "Вс"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Mon"
+msgstr "Пн"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Tue"
+msgstr "Вт"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Wed"
+msgstr "Ср"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Thu"
+msgstr "Чт"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Fri"
+msgstr "Пт"
+
+#: ../resources/greeter/js/time.coffee:44
+msgid "Sat"
+msgstr "Сб"
+
+#: ../resources/greeter/js/user.coffee:408
 msgid "Login"
 msgstr "Вход"
 
-#: ../resources/greeter/js/user.coffee:420
+#: ../resources/greeter/js/user.coffee:410
 msgid "Unlock"
 msgstr "Разблокировать"
 
@@ -426,145 +455,125 @@ msgid ""
 " to generate \"application group\""
 msgstr "Давайте перетащим один значок на другой\nдля создания \"группы приложений\""
 
-#: ../resources/guide/js/desktop.coffee:116
+#: ../resources/guide/js/desktop.coffee:117
 msgid "Well, you have learned how to create a \"application group\""
 msgstr "И так, вы научились создавать \"группу приложений\""
 
-#: ../resources/guide/js/desktop.coffee:117
+#: ../resources/guide/js/desktop.coffee:118
 msgid "tips: Right-click on the application group will provide more functions"
 msgstr "советы: Щелкните правой кнопкой мыши на группе приложений обеспечив больше функций"
 
 #: ../resources/guide/js/desktop.coffee:128
 msgid ""
-"Slide the mouse to the four top corners, which can trigger four different events\n"
-"Please move to the upper left corner first to show or hide Launcher"
-msgstr "Двигайте мышь в четыре  угла, которые могут вызывать четыре разные события\nНаведите сначала на верхний левый угол чтобы показать или скрыть меню приложений"
+"Slide the mouse to the four top corners, which can trigger four different "
+"events"
+msgstr "Смещение курсора мыши в вершины четырёх углов могут вызывать разные события"
 
-#: ../resources/guide/js/desktop.coffee:129
+#: ../resources/guide/js/desktop.coffee:150
 msgid ""
-"tips: Please trigger successively by hints, click on the blank area to "
-"return"
-msgstr "советы: Инициируйте последовательно подпункты, щелкните по пустой области, чтобы вернуться"
+"We already know that launcher can be shown/ hidden by sliding the mouse to "
+"the upper left corner"
+msgstr "Мы уже знаем, что лаунчер может быть показан/скрыт смещением мыши в верхний левый угол"
 
-#: ../resources/guide/js/desktop.coffee:133
-msgid "Show/Hide Launcher"
-msgstr "Показать / Скрыть Лаунчер"
-
-#: ../resources/guide/js/desktop.coffee:134
-msgid "Show/Hide Desktop"
-msgstr "Показать / Скрыть Рабочий стол"
-
-#: ../resources/guide/js/desktop.coffee:135
-msgid "Show/Hide Control Center"
-msgstr "Показать / Скрыть Центр управления"
-
-#: ../resources/guide/js/desktop.coffee:136
-msgid "No default functions setted in right up corner"
-msgstr "Функция по умолчанию не выставлена для правого верхнего угла"
-
-#: ../resources/guide/js/desktop.coffee:178
+#: ../resources/guide/js/desktop.coffee:172
 msgid ""
-"Right-click on desktop black area to call up the menu, select \"Corner "
-"navigation\" to set the corner used"
-msgstr "Кликните правой кнопкой мыши на свободном пространстве Рабочего стола, выберите «Угловая навигация» для выбора действий при наведении на угол экрана"
+"The workspace will be shown or hidden by sliding the mouse to the lower left"
+" corner"
+msgstr "Рабочая область будет показана или скрыта смещением мыши в левый нижний угол"
 
-#: ../resources/guide/js/desktop.coffee:179
-msgid "tips: Click on the interface of corner navigation blank area to return"
-msgstr "советы: нажмите на углу интерфейса области навигации, чтобы вернуться"
+#: ../resources/guide/js/desktop.coffee:197
+msgid ""
+"No functions are set in default on the upper right corner\n"
+"Right-click on desktop black area to call up the menu, select \"Corner navigation\" to set the corner used"
+msgstr "Нет установленных функций по умолчанию в правом верхнем углу\nПравый клик на чёрной области рабочего стола, для вызова меню. Выберите \"Угловая навигация\" чтобы назначить угол"
+
+#: ../resources/guide/js/desktop.coffee:198
+msgid "tips: Click on the corner navigation blank area to return"
+msgstr "Советы: Кликните по пустой области угла навигации, чтобы вернуться"
+
+#: ../resources/guide/js/dock.coffee:63
+msgid ""
+"Three modes and the display status can be switched by right-click on the "
+"blank area of dock"
+msgstr "Три режима дисплея, можно переключать правым кликом мыши на пустой области дока"
 
 #: ../resources/guide/js/dss.coffee:29
-msgid "Well, please trigger the lower right corner again"
-msgstr "Пожалуйста, наведите на правый нижний угол ещё раз"
+msgid ""
+"The Control Center will be shown or hidden by sliding the mouse to the lower"
+" right corner"
+msgstr "Центр управления будет показываться или скрываться при смещении мыши в правый нижний угол"
 
 #: ../resources/guide/js/dss.coffee:30
 msgid "tips: Click the setting icon on dock to implement"
 msgstr "советы: Нажмите на иконку настроек в доке для  для их применения"
 
-#: ../resources/guide/js/dss.coffee:69
-msgid "Here is the system setting area"
-msgstr "Здесь область настройки системы"
+#: ../resources/guide/js/dss.coffee:68
+msgid "Click the power button to shut down, reboot or do other operations"
+msgstr "Нажмите кнопку питания чтобы выключить, перезагрузить или сделать иные операции"
 
-#: ../resources/guide/js/dss.coffee:70
+#: ../resources/guide/js/dss.coffee:69
 msgid ""
 "tips: Hover the setting icon on dock to quickly implement some setting "
 "functions"
 msgstr "советы: Наведите курсор на значок настройки дока, чтобы быстро реализовать некоторые функции настройки"
 
 #: ../resources/guide/js/end.coffee:25
-msgid "Thanks for your patience while learning. Congratulations."
-msgstr "Благодарим за терпение во время обучения. Поздравляем."
+msgid ""
+"Thank you for your patience to learn! More surprises are waiting for you to "
+"explore"
+msgstr "Благодарим за терпение в обучении! Множество сюрпризов ждут вашего изучения"
 
 #: ../resources/guide/js/end.coffee:30
-msgid "End"
-msgstr "Конец"
+msgid "Start my Deepin trip"
+msgstr "Начать моё Deepin путешествие"
 
-#: ../resources/guide/js/launcher.coffee:29
+#: ../resources/guide/js/launcher.coffee:28
 msgid ""
 "\"Application Launcher\" can be started by sliding the mouse to the upper "
 "left corner or clicking on the launcher."
 msgstr "\"Меню приложений\" может быть запущено смещением мыши в верхний левый угол или кликом по иконке запуска."
 
-#: ../resources/guide/js/launcher.coffee:70
-msgid ""
-"What shown in the first screen of \"launcher\" are the applications "
-"collected."
-msgstr "Приложения представленные на первом экране \"запуска приложений\" являются избранными."
-
-#: ../resources/guide/js/launcher.coffee:85
-msgid ""
-"Please click on the \"All Applications\" icon, you will see all "
-"applications."
-msgstr "Нажмите на значок \"Все приложения\", вы увидите остальные приложения."
-
-#: ../resources/guide/js/launcher.coffee:95
-msgid ""
-"All programs can be located by scrolling the mouse up and down.\n"
-"You can also click on the left classification navigation to locate"
-msgstr "Все программы могут быть выбраны прокруткой мыши вверх и вниз.\nВы также можете нажать слева на классификации навигации, для поиска."
-
-#: ../resources/guide/js/launcher.coffee:133
-msgid "Skip the step without scroll"
-msgstr "Пропустить шаг без прокрутки"
-
-#: ../resources/guide/js/launcher.coffee:163
+#: ../resources/guide/js/launcher.coffee:65
 msgid ""
 "Use the keyboard to search for applications\n"
 "Try the \"deepin\" keyword to see which applications are shown"
 msgstr "Используйте клавиатуру для поиска приложений\nПопробуйте ключевое слово \"Deepin\", чтобы увидеть, какие приложения будут показаны"
 
-#: ../resources/guide/js/launcher.coffee:164
+#: ../resources/guide/js/launcher.coffee:66
 msgid "tips: Please directly enter the word \"deepin\""
 msgstr "советы: Введите непосредственно слово \"Deepin\""
 
-#: ../resources/guide/js/launcher.coffee:181
-msgid "Use the right mouse button to send two icons to the desktop"
-msgstr "Используйте клик правой кнопкой мыши, чтобы поместить ярлык приложения на Рабочий стол"
+#: ../resources/guide/js/launcher.coffee:80
+msgid "You can directly drag the application icon to Dock or trash"
+msgstr "Вы можете перетащить значёк приложения напрямую в док или корзину "
 
-#: ../resources/guide/js/launcher.coffee:182
-msgid "tips: You can add it to startup items or uninstall it"
-msgstr "советы: Вы можете добавить его в автозагрузку и удалить"
+#: ../resources/guide/js/launcher.coffee:93
+msgid ""
+"tips: Click the right mouse button on the application icon to call up the "
+"context menu"
+msgstr "Советы: кликните правой кнопкой мыши на значке приложения для вызова контекстного меню"
 
-#: ../resources/guide/js/launcher.coffee:214
+#: ../resources/guide/js/launcher.coffee:120
 msgid "Remove from _favorites"
 msgstr "Удалить из Избранного"
 
-#: ../resources/guide/js/launcher.coffee:215
+#: ../resources/guide/js/launcher.coffee:121
 #: ../resources/launcher/js/const.coffee:76
 msgid "Send to d_esktop"
 msgstr "Отправить на рабочий стол"
 
-#: ../resources/guide/js/launcher.coffee:216
+#: ../resources/guide/js/launcher.coffee:122
 #: ../resources/launcher/js/const.coffee:80
 msgid "Send to do_ck"
 msgstr "Отправить на панель"
 
-#: ../resources/guide/js/launcher.coffee:218
+#: ../resources/guide/js/launcher.coffee:124
 #: ../resources/launcher/js/const.coffee:68
 msgid "_Add to autostart"
 msgstr "Добавить в автозагрузку"
 
-#: ../resources/guide/js/launcher.coffee:219
-#: ../resources/launcher/js/item.coffee:287
+#: ../resources/guide/js/launcher.coffee:125
+#: ../resources/launcher/js/item.coffee:290
 msgid "_Uninstall"
 msgstr "Удалить"
 
@@ -589,8 +598,8 @@ msgid "Start"
 msgstr "Начать"
 
 #: ../resources/guide/js/start.coffee:51
-msgid "I am an experienced user. Exit directly."
-msgstr "Я опытный пользователь. Выход непосредственно."
+msgid "Skip the guide, experience immediately"
+msgstr "Пропустить руководство, пробовать сразу"
 
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
@@ -630,23 +639,23 @@ msgstr "Удалить из _дока"
 
 #: ../resources/launcher/js/menu.coffee:5
 msgid "By name"
-msgstr ""
+msgstr "По имени"
 
 #: ../resources/launcher/js/menu.coffee:6
 msgid "By category (icon)"
-msgstr ""
+msgstr "По категории (значки)"
 
 #: ../resources/launcher/js/menu.coffee:7
 msgid "By category (text)"
-msgstr ""
+msgstr "По категории (текст)"
 
 #: ../resources/launcher/js/menu.coffee:8
 msgid "By time installed"
-msgstr ""
+msgstr "По времени установки"
 
 #: ../resources/launcher/js/menu.coffee:9
 msgid "By frequency"
-msgstr ""
+msgstr "По частоте"
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
@@ -680,7 +689,7 @@ msgstr "Новый файл"
 msgid "New directory"
 msgstr "Новая папка"
 
-#: ../app/dock/dock.c:290
+#: ../app/dock/dock.c:291
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr "Ошибка запуска панели: отключён плагин Compiz"
 

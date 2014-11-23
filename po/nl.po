@@ -7,13 +7,14 @@
 # Anduxor <itachiandu@gmail.com>, 2014
 # Jop <jop@jopv.net>, 2014
 # closeddoors1559 <mrvnp@msn.com>, 2014
+# Stefan van den Brink <stefan.vandenbrink@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-11-20 09:44+0800\n"
-"PO-Revision-Date: 2014-11-20 02:36+0000\n"
-"Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
+"PO-Revision-Date: 2014-11-22 17:00+0000\n"
+"Last-Translator: Stefan van den Brink <stefan.vandenbrink@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/deepin-desktop-environment/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,11 +28,11 @@ msgstr "Gast"
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
-msgstr ""
+msgstr "U heeft \"%1\" succesvol gedeinstalleerd"
 
 #: ../resources/common/js/uninstaller.coffee:33
 msgid "\"%1\" failed to be uninstalled"
-msgstr ""
+msgstr "\"%1\" is niet gelukt om te deinstalleren"
 
 #: ../resources/desktop/js/application.coffee:179
 #: ../resources/desktop/js/richdir.coffee:348
@@ -167,11 +168,11 @@ msgstr "Pe_rsonaliseren"
 
 #: ../resources/desktop/js/item.coffee:399
 msgid "_Cut"
-msgstr ""
+msgstr "_Knippen"
 
 #: ../resources/desktop/js/item.coffee:404
 msgid "_Select All"
-msgstr ""
+msgstr "_Selecteer Alles"
 
 #: ../resources/desktop/js/richdir.coffee:142
 msgid "_Ungroup"
@@ -533,7 +534,7 @@ msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:164
 msgid "tips: Please directly enter the word \"deepin\""
-msgstr ""
+msgstr "tip: Gebruik aub direct het woord \"deepin\""
 
 #: ../resources/guide/js/launcher.coffee:181
 msgid "Use the right mouse button to send two icons to the desktop"
@@ -633,11 +634,11 @@ msgstr ""
 
 #: ../resources/launcher/js/menu.coffee:6
 msgid "By category (icon)"
-msgstr ""
+msgstr "Per Categorie (icon)"
 
 #: ../resources/launcher/js/menu.coffee:7
 msgid "By category (text)"
-msgstr ""
+msgstr "Per Categorie (tekst)"
 
 #: ../resources/launcher/js/menu.coffee:8
 msgid "By time installed"
@@ -649,7 +650,7 @@ msgstr ""
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
-msgstr ""
+msgstr "Dupliceer"
 
 #: ../resources/osd/js/monitor.coffee:39
 msgid "Extend"
@@ -685,7 +686,7 @@ msgstr "Het dock kon niet gestart worden, want Compiz is niet ingeschakeld."
 
 #: ../app/greeter/greeter.c:209 ../app/greeter/lock.c:173
 msgid "Wrong Password"
-msgstr ""
+msgstr "Ongeldig Wachtwoord"
 
 #: ../app/greeter/mutils.c:84
 msgid "%a, %b %d, %Y"
@@ -737,7 +738,7 @@ msgstr "hulpprogramma's"
 
 #: ../lib/category.c:56
 msgid "others"
-msgstr ""
+msgstr "Andere"
 
 #: ../lib/dentry/entry.c:746
 #, c-format
