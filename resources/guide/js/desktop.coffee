@@ -169,7 +169,7 @@ class DesktopCornerLeftUp extends Page
 class DesktopCornerLeftDown extends Page
     constructor:(@id)->
         super
-        @message =_("Slide the mouse to the lower left corner, which can show or hide the workspace")
+        @message =_("The workspace will be shown or hidden by sliding the mouse to the lower left corner")
         @show_message(@message)
 
         DCore.Guide.spawn_command_sync("/usr/bin/xdg-open computer:///",false)

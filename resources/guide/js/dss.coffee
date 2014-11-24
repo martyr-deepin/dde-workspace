@@ -26,7 +26,7 @@ class DssLaunch extends Page
         enableZoneDetect(true)
         @dss = new Dss()
 
-        @message = _("Slide the mouse to the lower right corner, which can show or hide the Control Center")
+        @message = _("The Control Center will be shown or hidden by sliding the mouse to the lower right corner")
         @tips = _("tips: Click the setting icon on dock to implement")
         @show_message(@message)
         @show_tips(@tips)

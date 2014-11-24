@@ -83,7 +83,6 @@ simulate_input = (modle_keysym,old_page,new_page_cls_name = null) ->
         if guide?.current_page_id isnt "LauncherSearch" then return
         if modle_keysym_finish then return
         input = e.which
-        echo input
         if not (input in white_key_list) then return
         if input is KEYCODE.BACKSPACE
             input = ESC_KEYSYM_TO_CODE

@@ -60,7 +60,7 @@ class DockMenu extends Page
         super
         inject_css(@element,"css/dock.css")
         @dock = new Dock()
-        @message = _("Right-click on the blank area of dock, you can switch three modes and the display status")
+        @message = _("Three modes and the display status can be switched by right-click on the blank area of dock")
         @show_message(@message)
 
         DCore.Guide.cursor_hide()
@@ -75,7 +75,6 @@ class DockMenu extends Page
             {type:MENU.cutline,text:""},
             {type:MENU.option,text:_("Keep _showing")},
             {type:MENU.option,text:_("Keep _hidden")},
-            {type:MENU.option,text:_("_Auto hide")},
             {type:MENU.option,text:_("_Smart hide")},
             {type:MENU.cutline,text:""},
             {type:MENU.option,text:_("Notification area settings")}

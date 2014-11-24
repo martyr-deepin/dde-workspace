@@ -77,7 +77,7 @@ class LauncherSearch extends Page
 class LauncherIconDrag extends Page
     constructor:(@id)->
         super
-        @message = _("You can drag the icon to dock or trash")
+        @message = _("You can directly drag the application icon to Dock or trash")
         @show_message(@message)
         setTimeout(=>
             guide?.switch_page(@,"LauncherMenu")

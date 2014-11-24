@@ -27,7 +27,7 @@ class End extends Page
         #@msg_tips.style.top = "-10%"
         @element.style.webkitBoxOrient = "vertical"
         @choose_div = create_element("div","choose_div",@element)
-        @end = new ButtonNext("end",_("Start my trip with Deepin"),@choose_div)
+        @end = new ButtonNext("end",_("Start my Deepin trip"),@choose_div)
         @end.create_button(=>
             enableZoneDetect(true)
             DCore.Guide.quit()

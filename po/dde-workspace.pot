@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-25 09:55+0800\n"
+"POT-Creation-Date: 2014-11-25 10:57+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -203,7 +203,7 @@ msgid "Keep _hidden"
 msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:12
-#: ../resources/guide/js/dock.coffee:79
+#: ../resources/guide/js/dock.coffee:78
 msgid "_Smart hide"
 msgstr ""
 
@@ -223,7 +223,7 @@ msgid "_Classic mode"
 msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:38
-#: ../resources/guide/js/dock.coffee:81
+#: ../resources/guide/js/dock.coffee:80
 msgid "Notification area settings"
 msgstr ""
 
@@ -472,8 +472,8 @@ msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:172
 msgid ""
-"Slide the mouse to the lower left corner, which can show or hide the "
-"workspace"
+"The workspace will be shown or hidden by sliding the mouse to the lower left "
+"corner"
 msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:197
@@ -489,18 +489,14 @@ msgstr ""
 
 #: ../resources/guide/js/dock.coffee:63
 msgid ""
-"Right-click on the blank area of dock, you can switch three modes and the "
-"display status"
-msgstr ""
-
-#: ../resources/guide/js/dock.coffee:78
-msgid "_Auto hide"
+"Three modes and the display status can be switched by right-click on the "
+"blank area of dock"
 msgstr ""
 
 #: ../resources/guide/js/dss.coffee:29
 msgid ""
-"Slide the mouse to the lower right corner, which can show or hide the "
-"Control Center"
+"The Control Center will be shown or hidden by sliding the mouse to the lower "
+"right corner"
 msgstr ""
 
 #: ../resources/guide/js/dss.coffee:30
@@ -524,7 +520,7 @@ msgid ""
 msgstr ""
 
 #: ../resources/guide/js/end.coffee:30
-msgid "Start my trip with Deepin"
+msgid "Start my Deepin trip"
 msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:28
@@ -544,7 +540,7 @@ msgid "tips: Please directly enter the word \"deepin\""
 msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:80
-msgid "You can drag the icon to dock or trash"
+msgid "You can directly drag the application icon to Dock or trash"
 msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:93
