@@ -35,7 +35,7 @@ class GlobalMenu
 
         if Object.keys(@plugins).length > 0
             @menu.addSeparator()
-            @menu.append(new MenuItem("deepinAppletManager", _("Notice Region Setting")))
+            @menu.append(new MenuItem("deepinAppletManager", _("Notification Area Settings")))
 
         _isRightclicked = true
         # @menu.addSeparator().append(new MenuItem("dockSetting", _("_Dock setting")))

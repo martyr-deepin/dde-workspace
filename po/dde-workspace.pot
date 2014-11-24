@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-20 09:44+0800\n"
+"POT-Creation-Date: 2014-11-24 10:34+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -51,7 +51,7 @@ msgstr ""
 #: ../resources/desktop/js/specialitem.coffee:51
 #: ../resources/desktop/js/specialitem.coffee:146
 #: ../resources/guide/js/launcher.coffee:212
-#: ../resources/launcher/js/item.coffee:281
+#: ../resources/launcher/js/item.coffee:284
 msgid "_Open"
 msgstr ""
 
@@ -178,7 +178,7 @@ msgid "Computer"
 msgstr ""
 
 #: ../resources/desktop/js/specialitem.coffee:87
-#: ../resources/dock/js/main.coffee:47 ../resources/dock/js/main.coffee:117
+#: ../resources/dock/js/main.coffee:46 ../resources/dock/js/main.coffee:116
 msgid "Trash"
 msgstr ""
 
@@ -199,16 +199,16 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
-#: ../resources/dock/js/deepin_item.coffee:249
+#: ../resources/dock/js/deepin_item.coffee:247
 msgid "_View as analog"
 msgstr ""
 
-#: ../resources/dock/js/deepin_item.coffee:250
-#: ../resources/dock/js/deepin_item.coffee:302
+#: ../resources/dock/js/deepin_item.coffee:248
+#: ../resources/dock/js/deepin_item.coffee:300
 msgid "_Time settings"
 msgstr ""
 
-#: ../resources/dock/js/deepin_item.coffee:301
+#: ../resources/dock/js/deepin_item.coffee:299
 msgid "_View as digit"
 msgstr ""
 
@@ -237,10 +237,10 @@ msgid "_Classic mode"
 msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:38
-msgid "Notice Region Setting"
+msgid "Notification Area Settings"
 msgstr ""
 
-#: ../resources/dock/js/main.coffee:115 ../resources/zone/js/utils.coffee:13
+#: ../resources/dock/js/main.coffee:114 ../resources/zone/js/utils.coffee:13
 msgid "Launcher"
 msgstr ""
 
@@ -284,26 +284,26 @@ msgid "_Close"
 msgstr ""
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:351
+#: ../resources/launcher/js/item.coffee:354
 msgid "Are you sure to remove"
 msgstr ""
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:351
+#: ../resources/launcher/js/item.coffee:354
 msgid "All dependencies will be removed"
 msgstr ""
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:351
+#: ../resources/launcher/js/item.coffee:354
 msgid "no"
 msgstr ""
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:351
+#: ../resources/launcher/js/item.coffee:354
 msgid "yes"
 msgstr ""
 
-#: ../resources/greeter/js/mediacontrol.coffee:167
+#: ../resources/greeter/js/mediacontrol.coffee:129
 msgid "Click button to Play"
 msgstr ""
 
@@ -407,11 +407,11 @@ msgstr ""
 msgid "Dec"
 msgstr ""
 
-#: ../resources/greeter/js/user.coffee:418
+#: ../resources/greeter/js/user.coffee:408
 msgid "Login"
 msgstr ""
 
-#: ../resources/greeter/js/user.coffee:420
+#: ../resources/greeter/js/user.coffee:410
 msgid "Unlock"
 msgstr ""
 
@@ -558,7 +558,7 @@ msgid "_Add to autostart"
 msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:219
-#: ../resources/launcher/js/item.coffee:287
+#: ../resources/launcher/js/item.coffee:290
 msgid "_Uninstall"
 msgstr ""
 
