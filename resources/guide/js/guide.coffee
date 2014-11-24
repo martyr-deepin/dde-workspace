@@ -61,7 +61,6 @@ class Guide extends Widget
         else
             DCore.Guide.disable_guide_region()
         enableZoneDetect(false)
-        new Dss().hide() if cls_name isnt "DssArea"
         echo "create_page #{cls_name}"
         switch cls_name
             when "Welcome"

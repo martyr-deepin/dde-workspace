@@ -24,18 +24,9 @@ class Rect extends Widget
         echo "Rect #{@id}"
         parent?.appendChild(@element)
 
-    create_rect_canvas: (@width,@height) ->
-        @myCanvas = create_element("canvas","myCanvas",@element)
-        @myCanvas.style.width = @width
-        @myCanvas.style.height = @height
-        @ctx = @myCanvas.getContext("2d")
-        @ctx.strokeStyle = "rgba(0,0,0,1.0)"
-        @ctx.lineWidth = 1.5
-        @ctx.strokeRect(0,0,@width,@height)
-
     create_rect : (@width,@height) ->
         @rect = create_element("div","rect",@element)
-        @rect.style.borderColor = "#fff"
+        @rect.style.borderColor = "rgba(255,255,255,0.0)"
         @rect.style.borderStyle = "dashed"
         @rect.style.borderWidth = "1px"
         @rect.style.borderRadius = "5px"
@@ -44,19 +35,11 @@ class Rect extends Widget
 
     set_pos : (x,y,position_type = "fixed",type = POS_TYPE.leftup) ->
         set_pos(@element,x,y,position_type,type)
-        #@show_animation()
 
     show_animation: (@show_animation_cb) ->
-        @rect.style.backgroundColor = "rgba(255,255,255,0.5)"
-        @rect.style.opacity = 0.0
-        t_show = 1000
-        jQuery(@rect).animate(
-           {opacity:0.5},t_show,"linear",=>
-                jQuery(@rect).animate(
-                    {opacity:0.0},t_show,"linear",=>
-                        #遮罩效果 
-                        #@element.style.overflow = "hidden"
-                        #@rect.style.border = "#{@area_width}px solid rgba(0,0,0,0.35)"
-                        @show_animation_cb?()
-                )
-        )
+        @rect.style.webkitAnimationName = "breathe"
+        @rect.style.webkitAnimationDuration = "500ms"
+        @rect.style.webkitAnimationTimingFunction = "linear"
+        @rect.style.webkitAnimationIterationCount = "infinite"
+        @rect.style.webkitAnimationDirection = "alternate"
+        @show_animation_cb?()

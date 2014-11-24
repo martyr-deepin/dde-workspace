@@ -36,9 +36,12 @@ class DesktopRichDir extends Page
         @pointer_hand.style.display = "-webkit-box"
         @pointer_hand.style.position = "absolute"
         _ITEM_HEIGHT_ = 84 + 4 * 2
-        #TODO:the top must set by the displaymode of dock
+        #Fixed the top must set by the displaymode of dock
+        offsetY = 0
+        if _dm != DisplayMode.Fashion
+            offsetY = 92 * 2
         @pointer_hand.style.left = 18
-        @pointer_hand.style.top = 13
+        @pointer_hand.style.top = 13 + offsetY
         @pointer_up = create_img("pointer_up","#{@img_src}/pointer_up.png",@pointer_hand)
         @hand_img = create_img("hand_img","#{@img_src}/fleur.png",@pointer_hand)
         width = height = 64
@@ -230,20 +233,12 @@ class DesktopZoneSetting extends Page
         echo "zone_check"
         interval_is_zone = setInterval(=>
             if(DCore.Guide.is_zone_launched())
+                DCore.Guide.enable_guide_region()
                 t = @mouse_moveon_option()
                 clearInterval(interval_is_zone)
-                clearInterval(restack_interval)
-                interval = 0
-                restack_interval = setInterval(=>
-                    interval++
-                    DCore.Guide.restack()
-                    if interval > 10
-                        clearInterval(restack_interval)
-                        DCore.Guide.enable_guide_region()
-                        setTimeout(=>
-                            @switch_page()
-                        ,t + 1000)
-                ,200)
+                setTimeout(=>
+                    @switch_page()
+                ,t + 1000)
         ,200)
 
     mouse_moveon_option: ->

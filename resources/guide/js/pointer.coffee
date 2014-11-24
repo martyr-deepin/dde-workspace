@@ -63,7 +63,7 @@ class Pointer extends Widget
         #shadow_light(@area_div,"circle")
         @area_div.addEventListener(@cb_type, (e)=>
             #if !@show_animation_end then return
-            console.log "area #{@id} click"
+            console.log "area #{@id} #{@cb_type}========="
             @cb?(e)
         )
 

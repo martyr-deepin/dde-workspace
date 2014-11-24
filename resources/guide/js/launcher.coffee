@@ -39,8 +39,8 @@ class LauncherLaunch extends Page
         @circle.create_pointer(AREA_TYPE.circle,circle_type,=>
             @launcher?.show()
         )
-        @circle.enable_area_icon("#{@img_src}/start-here.png",ICON_SIZE[_dm].w,ICON_SIZE[_dm].h)
         get_launchericon_pos_interval = setInterval(=>
+            @circle.enable_area_icon("#{@img_src}/start-here.png",ICON_SIZE[_dm].w,ICON_SIZE[_dm].h)
             @pos = @dock.get_launchericon_pos()
             @circle_x = @pos.x0 - @circle.pointer_width
             @circle_y = @pos.y0 - @circle.pointer_height
@@ -105,7 +105,6 @@ class LauncherMenu extends Page
         app_list = []
         launcher_daemon = new LauncherDaemon()
         app_list = launcher_daemon?.search("deepin")
-        console.debug app_list
         app1_index = i for app,i in app_list when app is APP_NAME_1
         if app1_index == null or app1_index == undefined then app1_index = 1
         app1_pos = launcher_daemon.app_x_y(app1_index)

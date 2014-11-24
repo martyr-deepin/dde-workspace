@@ -9,7 +9,7 @@ primary_info =
 COLLECT_LEFT = 130
 EACH_APP_HEIGHT = 120
 EACH_APP_WIDTH = 120
-EACH_APP_MARGIN_LEFT = 40
+EACH_APP_MARGIN_LEFT = 60
 EACH_APP_MARGIN_TOP = 60
 
 COLLECT_APP_NUMBERS = 10
@@ -48,25 +48,15 @@ ICON_SIZE[DisplayMode.Classic] = {w:24,h:24}
 
 DOCK_PADDING = {}
 DOCK_PADDING[DisplayMode.Fashion] = [5,30,10,30]#top right bottom left
-DOCK_PADDING[DisplayMode.Efficient] = [1,0,0,0]
-DOCK_PADDING[DisplayMode.Classic] = [3,24,10,24]
+DOCK_PADDING[DisplayMode.Efficient] = [-4,0,0,0]
+DOCK_PADDING[DisplayMode.Classic] = [-1,24,10,24]
 
 ICON_MARGIN = {}
-ICON_MARGIN[DisplayMode.Fashion] = 7
-ICON_MARGIN[DisplayMode.Efficient] = 3
-ICON_MARGIN[DisplayMode.Classic] = 7
+ICON_MARGIN[DisplayMode.Fashion] = 3
+ICON_MARGIN[DisplayMode.Efficient] = 16.5
+ICON_MARGIN[DisplayMode.Classic] = 15.5
 
 ITEM_SIZE = {}
-
-DOCK_LAUNCHER_ICON_INDEX = {}
-DOCK_LAUNCHER_ICON_INDEX[DisplayMode.Fashion] = 1
-DOCK_LAUNCHER_ICON_INDEX[DisplayMode.Efficient] = 1
-DOCK_LAUNCHER_ICON_INDEX[DisplayMode.Classic] = 1
-
-DOCK_DSS_ICON_INDEX = {}
-DOCK_DSS_ICON_INDEX[DisplayMode.Fashion] = 8
-DOCK_DSS_ICON_INDEX[DisplayMode.Efficient] = 8
-DOCK_DSS_ICON_INDEX[DisplayMode.Classic] = 8
 
 _dm = DCore.Guide.get_dock_displaymode()
 ITEM_SIZE[_dm] =

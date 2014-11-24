@@ -75,6 +75,28 @@ double guide_get_dock_displaymode()
     return display_mode;
 }
 
+JS_EXPORT_API
+double guide_get_dock_app_index(const gchar* app)
+{
+    int index = -1;
+    GSettings* gsettings = g_settings_new("com.deepin.dde.dock");
+    char** values = g_settings_get_strv(gsettings, "docked-apps");
+    for (int i = 0; values[i] != NULL; ++i) {
+        g_debug("[%s]:values[%d]:%s;", __func__, i, values[i]);
+        if(g_strcmp0(app,values[i]) == 0){
+            index = i;
+            break;
+        }
+    }
+    g_strfreev(values);
+    g_object_unref(gsettings);
+    if (index == -1){
+        g_warning("[%s]:the app:%s cannot find in dock", __func__, app);
+    }
+    return(index);
+}
+
+
 int main (int argc, char **argv)
 {
     if (argc == 2 && 0 == g_strcmp0(argv[1], "-d"))

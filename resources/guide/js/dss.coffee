@@ -20,11 +20,12 @@
 
 
 class DssLaunch extends Page
-    get_dssicon_pos_interval = null
     constructor:(@id)->
         super
         enableZoneDetect(true)
-        @dss = new Dss()
+        get_dssicon_pos_interval = null
+        switch_timeout = null
+        dss = new Dss()
 
         @message = _("The Control Center will be shown or hidden by sliding the mouse to the lower right corner")
         @tips = _("tips: Click the setting icon on dock to implement")
@@ -35,7 +36,7 @@ class DssLaunch extends Page
         @circle = new Pointer("dss_circle",@element)
         @circle.create_pointer(AREA_TYPE.circle,POS_TYPE.rightdown,=>
             clearInterval(get_dssicon_pos_interval)
-            @dss?.show()
+            dss.show()
             guide?.switch_page(@,"DssShutdown")
         )
         @circle.enable_area_icon("#{@img_src}/preferences-system.png",ICON_SIZE[_dm].w,ICON_SIZE[_dm].h)
@@ -61,26 +62,22 @@ class DssLaunch extends Page
 class DssShutdown extends Page
     constructor:(@id)->
         super
-        DCore.Guide.disable_guide_region()
-        restack_time_out = setTimeout(->
-            DCore.Guide.restack()
-        ,200)
         @message = _("Click the power button to shut down, reboot or do other operations")
         @tips = _("tips: Hover the setting icon on dock to quickly implement some setting functions")
         @show_message(@message)
         @show_tips(@tips)
+        restack_tid = setInterval(->
+            DCore.Guide.restack()
+        ,200)
 
-        @dock = new Dock()
-        @dss = new Dss()
-        @dss.show()
+        dss = new Dss()
+        dss.show()
         @rect = new Rect("dss_shutdown",@element)
-        @rect.create_rect(60,60)
-        @rect.set_pos(150,30,"fixed",POS_TYPE.rightdown)
-        #TODO:update the animation
+        @rect.create_rect(50,50)
+        @rect.set_pos(155,35,"fixed",POS_TYPE.rightdown)
         @rect.show_animation(=>
             setTimeout(=>
-                @dss?.hide()
-                clearTimeout(restack_time_out)
+                clearInterval(restack_tid)
                 guide?.switch_page(@,"DesktopCornerRightUp")
-            ,t_mid_switch_page)
+            ,500 * 5)
         )

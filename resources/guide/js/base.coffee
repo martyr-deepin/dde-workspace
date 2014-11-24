@@ -129,7 +129,7 @@ class LauncherDaemon
         cols = index % APP_NUM_MAX_IN_ONE_ROW
         x = COLLECT_LEFT + (EACH_APP_WIDTH + EACH_APP_MARGIN_LEFT) * cols
         y = COLLECT_TOP + (EACH_APP_WIDTH + EACH_APP_MARGIN_TOP) * rows
-        echo "app_x_y:max:#{APP_NUM_MAX_IN_ONE_ROW};index:#{index};rows:#{rows};cols:#{cols};x:#{x},y:#{y}"
+        console.debug "app_x_y:max:#{APP_NUM_MAX_IN_ONE_ROW};index:#{index};rows:#{rows};cols:#{cols};x:#{x},y:#{y}"
         return {x:x,y:y,rows:rows,cols:cols}
 
 class Dock
@@ -153,6 +153,8 @@ class Dock
                 DOCK_SETTING.path,
                 DOCK_SETTING.interface
             )
+            @launcher_index = 1
+            @dock_index = DCore.Guide.get_dock_app_index("dde-control-center") + 2
         catch e
             echo "#{DOCK_REGION}: dbus error:#{e}"
 
@@ -172,18 +174,18 @@ class Dock
             w:0
             h:0
         region = @get_dock_region()
-        pos.x0 = region.x0 + DOCK_PADDING[_dm][3] + ITEM_SIZE[_dm].w * (icon_index - 1)
-        pos.y0 = region.y0 - DOCK_PADDING[_dm][0]
+        pos.x0 = region.x0 + DOCK_PADDING[_dm][3] + ITEM_SIZE[_dm].w * (icon_index - 1) + 6
+        pos.y0 = region.y0 - DOCK_PADDING[_dm][0] + 2
         pos.w = ITEM_SIZE[_dm].w
         pos.h = ITEM_SIZE[_dm].h
         #console.log "[get_icon_pos]:icon_index:#{icon_index}===x0:#{pos.x0},yo:#{pos.y0},x1:#{pos.w},y1:#{pos.h}"
         return pos
 
     get_launchericon_pos: ->
-        return @get_icon_pos(DOCK_LAUNCHER_ICON_INDEX[_dm])
+        return @get_icon_pos(@launcher_index)
 
     get_dssicon_pos: ->
-        return @get_icon_pos(DOCK_DSS_ICON_INDEX[_dm])
+        return @get_icon_pos(@dock_index)
 
     hide: ->
         @dock_setting_dbus.SetHideMode(1)
