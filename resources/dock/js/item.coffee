@@ -357,8 +357,6 @@ class AppItem extends Item
         @currentImg = @img
 
         @core = new EntryProxy($DBus[@id])
-        if @isApplet
-            @core?.showQuickWindow()
 
         @lastStatus = @core.status()
         @clientgroupInited = @isActive()
@@ -613,6 +611,8 @@ class AppItem extends Item
                 if @n_clients.length != 0
                     Preview_show(@)
             else if @embedWindows
+                @core?.showQuickWindow()
+
                 try
                     size = @embedWindows.window_size(@embedWindows.xids[0])
                 catch e
