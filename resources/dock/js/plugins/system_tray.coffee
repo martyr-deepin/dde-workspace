@@ -1,4 +1,3 @@
-
 class SystemTray extends SystemItem
     constructor:(@id, icon, title)->
         super
@@ -14,6 +13,24 @@ class SystemTray extends SystemItem
         @button = create_element(tag:'div', class:'TrayFoldButton', @imgWrap)
         @button.addEventListener('mouseover', @on_mouseover)
         @button.addEventListener('click', @on_button_click)
+
+        @element.addEventListener("webkitTransitionEnd", (e)=>
+            webkitCancelAnimationFrame(@calcTimer)
+            if @isUnfolded
+                @updateTrayIcon()
+                @showAllIcons()
+                if debugRegion
+                    console.warn("[SystemTray.webkitTransitionEnd] unfolded")
+                console.log("update dock region")
+                @updateTrayIconPanel(@upperItemNumber)
+            else
+                @displayIcon()
+                @img.style.display = ''
+                @panel.style.display = 'none'
+                if debugRegion
+                    console.warn("[SystemTray.webkitTransitionEnd] folded")
+            update_dock_region()
+        )
 
         @isShowing = false
         if settings and settings.displayMode() != DisplayMode.Fashion
@@ -38,7 +55,7 @@ class SystemTray extends SystemItem
         @core.connect("Added", (xid)=>
             console.log("tray icon: #{xid} is Added, #{@isShowing}")
             @items.unshift(xid) if @items.indexOf(xid) == -1
-            $EW.create(xid, true)
+            $EW.create(xid, true, $EWType.TrayIcon)
             if @isShowing
                 if @items.length > 4
                     # @hideAllIcons()
@@ -169,22 +186,26 @@ class SystemTray extends SystemItem
         if @items.length > 4 && @items.length % 2 == 0
             @upperItemNumber += 1
 
-        itemSize = 18
+        SHADOW_WIDTH = 4
+        itemSize = 20
 
+        newWidth = 0
         if @isUnfolded && @upperItemNumber > 2
             newWidth = (@upperItemNumber) * itemSize
             # console.log("set width to #{newWidth}")
-            @panel.style.width = "#{newWidth}px"
-            @element.style.width = "#{newWidth + 12}px"
+            # @panel.style.width = "#{newWidth}px"
+            @element.style.width = "#{newWidth + SHADOW_WIDTH*2}px"
+            # @panel.style.backgroundPosition = "0 -#{(@upperItemNumber - 2) * 48}"
         else if not @isUnfolded
             newWidth = 2 * itemSize
-            @panel.style.width = "#{newWidth}px"
-            @element.style.width = "#{newWidth + 12}px"
+            # @panel.style.width = "#{newWidth}px"
+            @element.style.width = "#{newWidth + SHADOW_WIDTH*2}px"
+            # @panel.style.backgroundPosition = "0 0"
 
         xy = get_page_xy(@element)
         for item, i in @items
-            x = xy.x + 7
-            y = xy.y + 7
+            x = xy.x + SHADOW_WIDTH + 2
+            y = xy.y + SHADOW_WIDTH + 2
             if i < @upperItemNumber
                 x += i * itemSize
             else
@@ -271,54 +292,35 @@ class SystemTray extends SystemItem
         @hideAllIcons()
         @hideButton()
 
+    updateTrayIconPanel:(n)->
+        @panel.style.backgroundPosition = "0 -#{(n - 2)*48}"
+
     unfold:=>
         console.log("unfold")
         @isUnfolded = true
         @button.style.backgroundPosition = '0 0'
-        clearTimeout(@hideTimer)
         webkitCancelAnimationFrame(@calcTimer || null)
         @updatePanel()
         # @hideAllIcons()
         @updateTrayIcon()
-        if @upperItemNumber > 2
-            clearTimeout(@showTimer)
-            @showTimer = setTimeout(=>
-                webkitCancelAnimationFrame(@calcTimer)
-                @updateTrayIcon()
-                @showAllIcons()
-                if debugRegion
-                    console.warn("[SystemTray.unfold] update_dock_region")
-                update_dock_region()
-                console.log("update dock region")
-            , SHOW_HIDE_ANIMATION_TIME)
-        else
+        if @upperItemNumber <= 2
             webkitCancelAnimationFrame(@calcTimer)
             @showAllIcons()
             if debugRegion
                 console.warn("[SystemTray.unfold] update_dock_region")
+            @updateTrayIconPanel(@upperItemNumber)
             update_dock_region()
 
     fold: (e)=>
+        @updateTrayIconPanel(2)
         @isUnfolded = false
         @button.style.backgroundPosition = '100% 0'
         console.log("fold")
         @hideAllIcons()
-        clearTimeout(@showTimer)
         webkitCancelAnimationFrame(@calcTimer)
         @updatePanel()
         @updateTrayIcon()
-        if @upperItemNumber > 2
-            clearTimeout(@hideTimer)
-            @hideTimer = setTimeout(=>
-                @displayIcon()
-                @img.style.display = ''
-                @panel.style.display = 'none'
-                webkitCancelAnimationFrame(@calcTimer)
-                if debugRegion
-                    console.warn("[SystemTray.fold] update_dock_region")
-                update_dock_region()
-            , SHOW_HIDE_ANIMATION_TIME)
-        else
+        if @upperItemNumber <= 2
             @displayIcon()
             @img.style.display = ''
             @panel.style.display = 'none'

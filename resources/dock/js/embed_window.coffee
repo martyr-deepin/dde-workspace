@@ -1,11 +1,15 @@
 $EW = DCore.EXWindow
 $EW_MAP = {}
+$EWType =
+    Unknown: 0
+    Plugin:1
+    TrayIcon:2
 class EmbedWindow
-    constructor:(xids, resize)->
+    constructor:(xids, resize, type)->
         @xids = []
         for xid in xids
             @xids.push(xid.Xid)
-            $EW.create(xid.Xid, resize)
+            $EW.create(xid.Xid, resize, type)
             $EW.hide(xid.Xid)
 
     window_size:(xid)->

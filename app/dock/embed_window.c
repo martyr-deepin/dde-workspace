@@ -6,7 +6,14 @@
 #include "jsextension.h"
 #include "dwebview.h"
 #include "region.h"
+#include <cairo.h>
+#include "dock.h"
 
+#define __USE_BSD
+#include <math.h>
+#undef __USE_BSD
+
+#define TRAY_ICON_SIZE 16
 
 GdkWindow* GET_CONTAINER_WINDOW();
 
@@ -14,18 +21,26 @@ static void fix_reparent(GdkWindow* child, GdkWindow* parent);
 
 #define SKIP_UNINIT(key) do {\
     if (__EMBEDED_WINDOWS__ == NULL) { \
-	return;\
+        return;\
     }\
     if (g_hash_table_lookup(__EMBEDED_WINDOWS__, (gpointer)(Window)key) == NULL) {\
-	return;\
+        return;\
     }\
 }while(0)
+
+
+enum _EmbedWindowType {
+    EWTypeUnknown,
+    EWTypePlugin,
+    EWTypeTrayIcon,
+};
 
 
 GHashTable* __EMBEDED_WINDOWS__ = NULL;
 GHashTable* __EMBEDED_WINDOWS_TARGET__ = NULL;
 // key: xid, value: bool
 GHashTable* __EMBEDED_WINDOWS_DRAWABLE__ = NULL;
+GHashTable* __EMBEDED_WINDOWS_TYPE__ = NULL;
 
 GdkWindow* get_wrapper(GdkWindow* win) { return g_object_get_data(G_OBJECT(win), "deepin_embed_window_wrapper"); }
 
@@ -67,14 +82,17 @@ GdkFilterReturn embed_window_configure_request(GdkXEvent* xevent G_GNUC_UNUSED,
 void __init__embed__()
 {
     if (__EMBEDED_WINDOWS__ == NULL) {
-	void destroy_window(GdkWindow* child);
-	__EMBEDED_WINDOWS__ = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, (GDestroyNotify)destroy_window);
+        void destroy_window(GdkWindow* child);
+        __EMBEDED_WINDOWS__ = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, (GDestroyNotify)destroy_window);
     }
     if (__EMBEDED_WINDOWS_TARGET__ == NULL) {
-	__EMBEDED_WINDOWS_TARGET__ = g_hash_table_new(g_direct_hash, g_direct_equal);
+        __EMBEDED_WINDOWS_TARGET__ = g_hash_table_new(g_direct_hash, g_direct_equal);
     }
     if (__EMBEDED_WINDOWS_DRAWABLE__ == NULL) {
-	__EMBEDED_WINDOWS_DRAWABLE__ = g_hash_table_new(g_direct_hash, g_direct_equal);
+        __EMBEDED_WINDOWS_DRAWABLE__ = g_hash_table_new(g_direct_hash, g_direct_equal);
+    }
+    if (__EMBEDED_WINDOWS_TYPE__ == NULL) {
+        __EMBEDED_WINDOWS_TYPE__ = g_hash_table_new(g_direct_hash, g_direct_equal);
     }
     XSelectInput(gdk_x11_get_default_xdisplay(),
                  GDK_WINDOW_XID(GET_CONTAINER_WINDOW()),
@@ -90,7 +108,7 @@ void destroy_window(GdkWindow* win)
 
     GdkWindow* wrapper = get_wrapper(win);
     if (wrapper) {
-	gdk_window_destroy(wrapper);
+        gdk_window_destroy(wrapper);
     }
 
     g_object_unref(win);
@@ -109,49 +127,52 @@ GdkFilterReturn __monitor_embed_window(GdkXEvent *xevent, GdkEvent* ev, gpointer
     data  = data;
     XEvent* xev = xevent;
     if (xev->type == DestroyNotify) {
-	Window xid = ((XDestroyWindowEvent*)xevent)->window;
-	g_hash_table_remove(__EMBEDED_WINDOWS__, (gpointer)xid);
+        Window xid = ((XDestroyWindowEvent*)xevent)->window;
+        g_hash_table_remove(__EMBEDED_WINDOWS__, (gpointer)xid);
+        g_hash_table_remove(__EMBEDED_WINDOWS_TYPE__, (gpointer)xid);
+        g_hash_table_remove(__EMBEDED_WINDOWS_TARGET__, (gpointer)xid);
+        g_hash_table_remove(__EMBEDED_WINDOWS_DRAWABLE__, (gpointer)xid);
 
-	JSObjectRef info = json_create();
-	json_append_number(info, "XID", xid);
-	js_post_message("embed_window_destroyed", info);
+        JSObjectRef info = json_create();
+        json_append_number(info, "XID", xid);
+        js_post_message("embed_window_destroyed", info);
         return GDK_FILTER_CONTINUE;
     } else if (xev->type == ConfigureNotify) {
         XConfigureEvent* xev = (XConfigureEvent*)xevent;
 
-	GdkWindow* win = (GdkWindow*)g_hash_table_lookup(__EMBEDED_WINDOWS__, (gpointer)xev->window);
-	if (win != NULL) {
-	    GdkWindow *wrapper = get_wrapper(win);
-	    if (wrapper) {
-		//TODO: seems no effect at this time
-		gdk_window_resize(wrapper, xev->width, xev->height);
-	    }
-	    JSObjectRef info = json_create();
-	    json_append_number(info, "XID", xev->window);
-	    json_append_number(info, "x", xev->x);
-	    json_append_number(info, "y", xev->y);
-	    json_append_number(info, "width", xev->width);
-	    json_append_number(info, "height",xev->height);
-	    js_post_message("embed_window_configure_changed", info);
-	}
+        GdkWindow* win = (GdkWindow*)g_hash_table_lookup(__EMBEDED_WINDOWS__, (gpointer)xev->window);
+        if (win != NULL) {
+            GdkWindow *wrapper = get_wrapper(win);
+            if (wrapper) {
+                //TODO: seems no effect at this time
+                gdk_window_resize(wrapper, xev->width, xev->height);
+            }
+            JSObjectRef info = json_create();
+            json_append_number(info, "XID", xev->window);
+            json_append_number(info, "x", xev->x);
+            json_append_number(info, "y", xev->y);
+            json_append_number(info, "width", xev->width);
+            json_append_number(info, "height",xev->height);
+            js_post_message("embed_window_configure_changed", info);
+        }
         return GDK_FILTER_CONTINUE;
     } else if (xev->type == GenericEvent) {
-	XGenericEvent* ge = xevent;
-	if (ge->evtype == EnterNotify) {
-	    JSObjectRef info = json_create();
-	    json_append_number(info, "XID", ((XEnterWindowEvent*)xev)->window);
-	    js_post_message("embed_window_enter", info);
-	} else if (ge->evtype == LeaveNotify) {
-	    JSObjectRef info = json_create();
-	    json_append_number(info, "XID", ((XEnterWindowEvent*)xev)->window);
-	    js_post_message("embed_window_leave", info);
-	}
-	return GDK_FILTER_REMOVE;
+        XGenericEvent* ge = xevent;
+        if (ge->evtype == EnterNotify) {
+            JSObjectRef info = json_create();
+            json_append_number(info, "XID", ((XEnterWindowEvent*)xev)->window);
+            js_post_message("embed_window_enter", info);
+        } else if (ge->evtype == LeaveNotify) {
+            JSObjectRef info = json_create();
+            json_append_number(info, "XID", ((XEnterWindowEvent*)xev)->window);
+            js_post_message("embed_window_leave", info);
+        }
+        return GDK_FILTER_REMOVE;
     }
     return GDK_FILTER_CONTINUE;
 }
 
-GdkWindow* wrapper(Window xid)
+GdkWindow* wrapper(Window xid, enum _EmbedWindowType type)
 {
     GdkDisplay* dpy = gdk_window_get_display(GET_CONTAINER_WINDOW());
     GdkWindow* child = gdk_x11_window_foreign_new_for_display(dpy, xid);
@@ -161,42 +182,43 @@ GdkWindow* wrapper(Window xid)
     int mask = GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK | GDK_VISIBILITY_NOTIFY_MASK;
     gdk_window_set_events(child, mask);
     GdkWindow* parent = NULL;
-    gint width = 16, height = 16;
+    gint width = TRAY_ICON_SIZE, height = TRAY_ICON_SIZE;
     gdk_window_get_geometry(child, NULL, NULL, &width, &height);
 
     GdkVisual* visual = gdk_window_get_visual(child);
     if (gdk_visual_get_depth(visual) == 24) {
-	GdkWindowAttr attr={0};
-	attr.width = width;
-	attr.width = width;
-	attr.window_type = GDK_WINDOW_CHILD;
-	attr.wclass = GDK_INPUT_OUTPUT;
-	attr.event_mask = mask;
-	attr.visual = visual;
-	parent = gdk_window_new(GET_CONTAINER_WINDOW(), &attr, GDK_WA_VISUAL);
-	g_object_set_data(G_OBJECT(child), "deepin_embed_window_wrapper", parent);
+        GdkWindowAttr attr={0};
+        attr.width = width;
+        attr.width = width;
+        attr.window_type = GDK_WINDOW_CHILD;
+        attr.wclass = GDK_INPUT_OUTPUT;
+        attr.event_mask = mask;
+        attr.visual = visual;
+        parent = gdk_window_new(GET_CONTAINER_WINDOW(), &attr, GDK_WA_VISUAL);
+        g_object_set_data(G_OBJECT(child), "deepin_embed_window_wrapper", parent);
 
         fix_reparent(child, parent);
     } else {
-	parent = child;
+        parent = child;
     }
 
     gdk_window_add_filter(child, __monitor_embed_window, NULL);
     gdk_window_show(child);
 
     g_hash_table_insert(__EMBEDED_WINDOWS__, (gpointer)xid, child);
+    g_hash_table_insert(__EMBEDED_WINDOWS_TYPE__, (gpointer)xid, GINT_TO_POINTER(type));
     g_hash_table_insert(__EMBEDED_WINDOWS_DRAWABLE__, (gpointer)xid, (gpointer)TRUE);
     return parent;
 }
 
 //JS_EXPORT_API
-void exwindow_create(double xid, gboolean enable_resize)
+void exwindow_create(double xid, gboolean enable_resize, double type)
 {
     //TODO: handle this flag with SubStructureNotify
     enable_resize = enable_resize;
     Window win = (Window)xid;
     __init__embed__();
-    GdkWindow* p = wrapper(win);
+    GdkWindow* p = wrapper(win, (enum _EmbedWindowType)type);
     g_return_if_fail(p != NULL);
 
     fix_reparent(p, GET_CONTAINER_WINDOW());
@@ -328,7 +350,7 @@ void exwindow_show(double xid)
         // this is just working for tray icons now.
         // other window may undraw in the future.
         g_hash_table_replace(__EMBEDED_WINDOWS_DRAWABLE__, (gpointer)(Window)xid, (gpointer)TRUE);
-        cairo_rectangle_int_t rect = {0,0,16,16};
+        cairo_rectangle_int_t rect = {0,0,TRAY_ICON_SIZE,TRAY_ICON_SIZE};
         set_input_region(valid_window, &rect);
     }
 
@@ -374,6 +396,7 @@ gboolean draw_embed_windows(GtkWidget* _w, cairo_t *cr)
     if (__EMBEDED_WINDOWS__ == NULL || g_hash_table_size(__EMBEDED_WINDOWS__) == 0) {
         return FALSE;
     }
+
     GHashTableIter iter;
     gpointer child = NULL;
     g_hash_table_iter_init (&iter, __EMBEDED_WINDOWS__);
@@ -389,19 +412,29 @@ gboolean draw_embed_windows(GtkWidget* _w, cairo_t *cr)
         gboolean has_target =
             GPOINTER_TO_INT(g_hash_table_lookup(__EMBEDED_WINDOWS_TARGET__,
                                                 GINT_TO_POINTER(xid)));
+        enum _EmbedWindowType type = GPOINTER_TO_INT(g_hash_table_lookup(__EMBEDED_WINDOWS_TYPE__, GINT_TO_POINTER(xid)));
         // g_warning("draw_target: %d", draw_target);
         if (win != NULL && drawable && !gdk_window_is_destroyed(win) &&
-            gdk_window_is_visible(win) &&
-            !has_target) {
+            gdk_window_is_visible(win) && !has_target) {
             int x = 0;
             int y = 0;
             int width, height;
             gdk_window_get_geometry(win, &x, &y, &width, &height); //gdk_window_get_position will get error value when dock is hidden!
-            gdk_cairo_set_source_window(cr, win, x, y);
 
-            cairo_paint(cr);
+            if (type == EWTypeTrayIcon) {
+                cairo_save(cr);
+                cairo_arc(cr, x + TRAY_ICON_SIZE/2.0, y + TRAY_ICON_SIZE/2.0, TRAY_ICON_SIZE/2.0, 0, 2*M_PI);
+                cairo_clip(cr);
+                gdk_cairo_set_source_window(cr, win, x, y);
+                cairo_paint(cr);
+                cairo_restore(cr);
+            } else if (EWTypePlugin == type) {
+                gdk_cairo_set_source_window(cr, win, x, y);
+                cairo_paint(cr);
+            }
         }
     }
+
     return FALSE;
 }
 
