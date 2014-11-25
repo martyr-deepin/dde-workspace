@@ -49,6 +49,8 @@ switchToFashionMode = ->
 update_dock=->
     console.log("[update_dock] panel #{Panel.getPanelMiddleWidth()}")
 
+    app_list = $("#app_list")
+    app_list.style.display = 'none'
     panel.set_height(PANEL_HEIGHT)
     setTimeout(->
         panel.set_width(Panel.getPanelMiddleWidth())
@@ -56,6 +58,7 @@ update_dock=->
             console.log("[update_dock] update_dock_region")
         update_dock_region(Panel.getPanelMiddleWidth())
 
+        app_list.style.display = ''
         panel.redraw()
     , 50)
     setTimeout(->
