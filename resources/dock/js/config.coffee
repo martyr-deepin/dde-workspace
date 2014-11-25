@@ -60,12 +60,12 @@ ALL_DOCK_HEIGHT[DisplayMode.Classic] = 36.0
 DOCK_HEIGHT = 68.0
 
 ALL_PANEL_HEIGHT = {}
-ALL_PANEL_HEIGHT[DisplayMode.Fashion] = 60.0
+ALL_PANEL_HEIGHT[DisplayMode.Fashion] = 48.0
 ALL_PANEL_HEIGHT[DisplayMode.Efficient] = 48.0
 ALL_PANEL_HEIGHT[DisplayMode.Classic] = 36.0
-PANEL_HEIGHT = 60
+PANEL_HEIGHT = 48
 
-PANEL_MARGIN = 36
+PANEL_MARGIN = 20
 
 PANEL_LEFT_IMAGE = 'img/fashion/panel/panel_left.svg'
 PANEL_MIDDLE_IMAGE = 'img/fashion/panel/panel.svg'
