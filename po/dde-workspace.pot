@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-24 13:36+0800\n"
+"POT-Creation-Date: 2014-11-25 09:55+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -224,7 +224,7 @@ msgstr ""
 
 #: ../resources/dock/js/global_menu.coffee:38
 #: ../resources/guide/js/dock.coffee:81
-msgid "Notification Area Settings"
+msgid "Notification area settings"
 msgstr ""
 
 #: ../resources/dock/js/main.coffee:114 ../resources/zone/js/utils.coffee:13
@@ -236,47 +236,47 @@ msgid "Switch display mode"
 msgstr ""
 
 #: ../resources/dock/js/plugins/time/time.coffee:61
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:73
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:81
 msgid "_Time settings"
 msgstr ""
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:25
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:33
 msgid "%b %d %H:%M %a"
 msgstr ""
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:27
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:35
 msgid "%b %d %I:%M %p %a"
 msgstr ""
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:29
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:37
 msgid "%b %d %H:%M"
 msgstr ""
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:31
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:39
 msgid "%b %d %I:%M %p"
 msgstr ""
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:33
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:41
 msgid "%H:%M %a"
 msgstr ""
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:35
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:43
 msgid "%I:%M %p %a"
 msgstr ""
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:37
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:45
 msgid "%H:%M"
 msgstr ""
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:39
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:47
 msgid "%I:%M %p"
 msgstr ""
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:71
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:79
 msgid "Display date"
 msgstr ""
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:72
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:80
 msgid "Display week"
 msgstr ""
 

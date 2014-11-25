@@ -78,7 +78,7 @@ class DockMenu extends Page
             {type:MENU.option,text:_("_Auto hide")},
             {type:MENU.option,text:_("_Smart hide")},
             {type:MENU.cutline,text:""},
-            {type:MENU.option,text:_("Notification Area Settings")}
+            {type:MENU.option,text:_("Notification area settings")}
         ]
         @contextmenu = new ContextMenu("dock_contextmenu",@element)
         @contextmenu.menu_create(menu)
