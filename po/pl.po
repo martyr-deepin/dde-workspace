@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-25 10:57+0800\n"
-"PO-Revision-Date: 2014-11-25 03:35+0000\n"
+"POT-Creation-Date: 2014-12-03 14:25+0800\n"
+"PO-Revision-Date: 2014-12-03 07:29+0000\n"
 "Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
 "Language-Team: Polish (http://www.transifex.com/projects/p/deepin-desktop-environment/language/pl/)\n"
 "MIME-Version: 1.0\n"
@@ -53,8 +53,8 @@ msgstr "Uwaga"
 #: ../resources/desktop/js/richdir.coffee:580
 #: ../resources/desktop/js/specialitem.coffee:51
 #: ../resources/desktop/js/specialitem.coffee:146
-#: ../resources/guide/js/launcher.coffee:118
-#: ../resources/launcher/js/item.coffee:284
+#: ../resources/guide/js/launcher.coffee:133
+#: ../resources/launcher/js/item.coffee:289
 msgid "_Open"
 msgstr "_Otwórz"
 
@@ -196,114 +196,114 @@ msgid "Unknown"
 msgstr "Nieznane"
 
 #: ../resources/dock/js/global_menu.coffee:9
-#: ../resources/guide/js/dock.coffee:76
+#: ../resources/guide/js/dock.coffee:38
 msgid "Keep _showing"
 msgstr "Zawsze _pokazuj"
 
 #: ../resources/dock/js/global_menu.coffee:10
-#: ../resources/guide/js/dock.coffee:77
+#: ../resources/guide/js/dock.coffee:39
 msgid "Keep _hidden"
 msgstr "Zawsze _chowaj"
 
 #: ../resources/dock/js/global_menu.coffee:12
-#: ../resources/guide/js/dock.coffee:78
+#: ../resources/guide/js/dock.coffee:40
 msgid "_Smart hide"
 msgstr "_Mądre ukrywanie"
 
 #: ../resources/dock/js/global_menu.coffee:27
-#: ../resources/guide/js/dock.coffee:72
+#: ../resources/guide/js/dock.coffee:34
 msgid "_Fashion mode"
 msgstr "_Tryb modny"
 
 #: ../resources/dock/js/global_menu.coffee:28
-#: ../resources/guide/js/dock.coffee:73
+#: ../resources/guide/js/dock.coffee:35
 msgid "_Efficient mode"
 msgstr "_Tryb wydajny"
 
 #: ../resources/dock/js/global_menu.coffee:29
-#: ../resources/guide/js/dock.coffee:74
+#: ../resources/guide/js/dock.coffee:36
 msgid "_Classic mode"
 msgstr "_Tryb klasyczny"
 
 #: ../resources/dock/js/global_menu.coffee:38
-#: ../resources/guide/js/dock.coffee:80
+#: ../resources/guide/js/dock.coffee:42
 msgid "Notification area settings"
-msgstr ""
+msgstr "Ustawienia obszaru powiadomień"
 
 #: ../resources/dock/js/main.coffee:114 ../resources/zone/js/utils.coffee:13
 msgid "Launcher"
-msgstr "Wyzwalacz"
-
-#: ../resources/dock/js/plugins/time/time.coffee:60
-msgid "Switch display mode"
-msgstr ""
+msgstr "Aktywator"
 
 #: ../resources/dock/js/plugins/time/time.coffee:61
+msgid "Switch display mode"
+msgstr "Przełącz tryb wyświetlania"
+
+#: ../resources/dock/js/plugins/time/time.coffee:62
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:81
 msgid "_Time settings"
 msgstr "_Ustawienia czasu"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:33
 msgid "%b %d %H:%M %a"
-msgstr ""
+msgstr "%a, %d %b, %H:%M"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:35
 msgid "%b %d %I:%M %p %a"
-msgstr ""
+msgstr "%a, %b %d, %I:%M %p"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:37
 msgid "%b %d %H:%M"
-msgstr ""
+msgstr "%d %b, %H:%M"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:39
 msgid "%b %d %I:%M %p"
-msgstr ""
+msgstr "%b %d, %I:%M %p"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:41
 msgid "%H:%M %a"
-msgstr ""
+msgstr "%a, %H:%M"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:43
 msgid "%I:%M %p %a"
-msgstr ""
+msgstr "%a, %I:%M %p"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:45
 msgid "%H:%M"
-msgstr ""
+msgstr "%H:%M"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:47
 msgid "%I:%M %p"
-msgstr ""
+msgstr "%I:%M %p"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:79
 msgid "Display date"
-msgstr ""
+msgstr "Wyświetlaj datę"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:80
 msgid "Display week"
-msgstr ""
+msgstr "Wyświetlaj tydzień"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:42
 msgid "_Close"
 msgstr "_Zamknij"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:354
+#: ../resources/launcher/js/item.coffee:359
 msgid "Are you sure to remove"
 msgstr "Czy na pewno usunąć"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:354
+#: ../resources/launcher/js/item.coffee:359
 msgid "All dependencies will be removed"
 msgstr "Wszystkie zależności zostaną usunięte"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:354
+#: ../resources/launcher/js/item.coffee:359
 msgid "no"
 msgstr "nie"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:354
+#: ../resources/launcher/js/item.coffee:359
 msgid "yes"
 msgstr "tak"
 
@@ -447,69 +447,69 @@ msgstr "Zaloguj"
 msgid "Unlock"
 msgstr "Odblokuj"
 
-#: ../resources/guide/js/desktop.coffee:27
+#: ../resources/guide/js/desktop.coffee:28
 msgid ""
 "Let's drag the other icon on the first icon \n"
 " to generate \"application group\""
 msgstr "Przenieś inną ikonę na pierwszą ikonę,\naby utworzyć \"grupę programów\""
 
-#: ../resources/guide/js/desktop.coffee:117
+#: ../resources/guide/js/desktop.coffee:121
 msgid "Well, you have learned how to create a \"application group\""
 msgstr "Tak więc nauczyłeś się jak utworzyć \"grupę programów\""
 
-#: ../resources/guide/js/desktop.coffee:118
+#: ../resources/guide/js/desktop.coffee:122
 msgid "tips: Right-click on the application group will provide more functions"
 msgstr "wskazówka: Kliknięcie prawym klawiszem myszki na grupie programów zapewni więcej funkcji"
 
-#: ../resources/guide/js/desktop.coffee:128
+#: ../resources/guide/js/desktop.coffee:132
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different "
 "events"
-msgstr ""
+msgstr "Najeżdżanie myszką na cztery główne narożniki ekranu inicjuje cztery różne zdarzenia"
 
-#: ../resources/guide/js/desktop.coffee:150
+#: ../resources/guide/js/desktop.coffee:154
 msgid ""
 "We already know that launcher can be shown/ hidden by sliding the mouse to "
 "the upper left corner"
-msgstr ""
+msgstr "Wiemy już, że aktywator programów może być ukazywany/chowany poprzez najechanie myszką na górny lewy narożnik ekranu"
 
-#: ../resources/guide/js/desktop.coffee:172
+#: ../resources/guide/js/desktop.coffee:176
 msgid ""
 "The workspace will be shown or hidden by sliding the mouse to the lower left"
 " corner"
-msgstr ""
+msgstr "Przestrzenie robocze będą ukazywane lub chowane poprzez najechanie myszką na lewy dolny narożnik ekranu"
 
-#: ../resources/guide/js/desktop.coffee:197
+#: ../resources/guide/js/desktop.coffee:202
 msgid ""
 "No functions are set in default on the upper right corner\n"
 "Right-click on desktop black area to call up the menu, select \"Corner navigation\" to set the corner used"
-msgstr ""
+msgstr "Do prawego górnego narożnika ekranu nie przypisano żadnej domyślnej funkcji\nKliknij prawym przyciskiem myszki na pusty obszar pulpitu, aby wezwać menu, wybierz \"Nawigację narożnikową\" i ustaw użyteczność narożnika"
 
-#: ../resources/guide/js/desktop.coffee:198
+#: ../resources/guide/js/desktop.coffee:203
 msgid "tips: Click on the corner navigation blank area to return"
-msgstr ""
+msgstr "wskazówka: Aby powrócić, kliknij na pusty obszar nawigacji narożnikowej"
 
-#: ../resources/guide/js/dock.coffee:63
+#: ../resources/guide/js/dock.coffee:26
 msgid ""
 "Three modes and the display status can be switched by right-click on the "
 "blank area of dock"
-msgstr ""
+msgstr "Trzy tryby i stany ekranu mogą być przełączane poprzez kliknięcie prawym przyciskiem myszki na pustym obszarze doku"
 
-#: ../resources/guide/js/dss.coffee:29
+#: ../resources/guide/js/dss.coffee:32
 msgid ""
 "The Control Center will be shown or hidden by sliding the mouse to the lower"
 " right corner"
-msgstr ""
+msgstr "Centrum sterowania będzie ukazywane lub chowane przy najeżdżaniu myszką na dolny prawy narożnik ekranu"
 
-#: ../resources/guide/js/dss.coffee:30
+#: ../resources/guide/js/dss.coffee:33
 msgid "tips: Click the setting icon on dock to implement"
 msgstr "wskazówka: Kliknij na ikonę umieszczoną w doku, aby zastosować"
 
-#: ../resources/guide/js/dss.coffee:68
+#: ../resources/guide/js/dss.coffee:76
 msgid "Click the power button to shut down, reboot or do other operations"
-msgstr ""
+msgstr "Kliknij na przycisk zasilania, aby wyłączyć komputer, ponownie go uruchomić lub wykonać inne czynności"
 
-#: ../resources/guide/js/dss.coffee:69
+#: ../resources/guide/js/dss.coffee:77
 msgid ""
 "tips: Hover the setting icon on dock to quickly implement some setting "
 "functions"
@@ -519,85 +519,79 @@ msgstr "wskazówki: najedź wskaźnikiem myszki na ikonę ustawień w doku, aby 
 msgid ""
 "Thank you for your patience to learn! More surprises are waiting for you to "
 "explore"
-msgstr ""
+msgstr "Dziękujemy za Twoją cierpliwość wykazaną podczas nauki! Podczas doświadczania systemu czeka Cię jeszcze więcej niespodzianek"
 
 #: ../resources/guide/js/end.coffee:30
 msgid "Start my Deepin trip"
-msgstr ""
+msgstr "Rozpocznij moją wycieczkę po Deepin"
 
-#: ../resources/guide/js/launcher.coffee:28
+#: ../resources/guide/js/launcher.coffee:31
 msgid ""
 "\"Application Launcher\" can be started by sliding the mouse to the upper "
 "left corner or clicking on the launcher."
-msgstr "\"Wyzwalacz programów\" może zostać uruchomiony poprzez najechanie myszą na górny lewy narożnik ekranu lub poprzez kliknięcie na wyzwalaczu."
+msgstr "\"Aktywator programów\" może zostać uruchomiony poprzez najechanie myszą na górny lewy narożnik ekranu lub poprzez kliknięcie na aktywatorze."
 
-#: ../resources/guide/js/launcher.coffee:65
-msgid ""
-"Use the keyboard to search for applications\n"
-"Try the \"deepin\" keyword to see which applications are shown"
-msgstr "Używaj klawiatury, aby odnaleźć dany program\nSpróbuj wpisać \"deepin\", aby zobaczyć jakie programy zostały wyświetlone"
-
-#: ../resources/guide/js/launcher.coffee:66
-msgid "tips: Please directly enter the word \"deepin\""
-msgstr "porada: Proszę bezpośrednio wpisać słowo \"deepin\""
-
-#: ../resources/guide/js/launcher.coffee:80
-msgid "You can directly drag the application icon to Dock or trash"
+#: ../resources/guide/js/launcher.coffee:83
+msgid "Please directly hit \"deepin\" in keyboard"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:93
+#: ../resources/guide/js/launcher.coffee:96
+msgid "You can directly drag the application icon to Dock or trash"
+msgstr "Możesz bezpośrednio przenosić ikony programów do doku lub kosza"
+
+#: ../resources/guide/js/launcher.coffee:109
 msgid ""
 "tips: Click the right mouse button on the application icon to call up the "
 "context menu"
-msgstr ""
+msgstr "wskazówka: Kliknij prawym przyciskiem myszki na ikonę programów, aby przywołać menu kontekstowe"
 
-#: ../resources/guide/js/launcher.coffee:120
+#: ../resources/guide/js/launcher.coffee:135
 msgid "Remove from _favorites"
 msgstr "Usuń z u_lubionych"
 
-#: ../resources/guide/js/launcher.coffee:121
+#: ../resources/guide/js/launcher.coffee:136
 #: ../resources/launcher/js/const.coffee:76
 msgid "Send to d_esktop"
 msgstr "Wyślij do pulpitu"
 
-#: ../resources/guide/js/launcher.coffee:122
+#: ../resources/guide/js/launcher.coffee:137
 #: ../resources/launcher/js/const.coffee:80
 msgid "Send to do_ck"
 msgstr "Zadokuj"
 
-#: ../resources/guide/js/launcher.coffee:124
+#: ../resources/guide/js/launcher.coffee:139
 #: ../resources/launcher/js/const.coffee:68
 msgid "_Add to autostart"
 msgstr "Dodaj do autostartu"
 
-#: ../resources/guide/js/launcher.coffee:125
-#: ../resources/launcher/js/item.coffee:290
+#: ../resources/guide/js/launcher.coffee:140
+#: ../resources/launcher/js/item.coffee:295
 msgid "_Uninstall"
 msgstr "_Odinstaluj"
 
-#: ../resources/guide/js/start.coffee:28
+#: ../resources/guide/js/start.coffee:29
 msgid "New Launcher"
-msgstr "Nowy wyzwalacz"
+msgstr "Nowy aktywator"
 
-#: ../resources/guide/js/start.coffee:28
+#: ../resources/guide/js/start.coffee:29
 msgid "New Desktop"
 msgstr "Nowy pulpit"
 
-#: ../resources/guide/js/start.coffee:28
+#: ../resources/guide/js/start.coffee:29
 msgid "New System Settings"
 msgstr "Nowe ustawienia systemu"
 
-#: ../resources/guide/js/start.coffee:29
+#: ../resources/guide/js/start.coffee:30
 msgid "The following will guide you to learn how to use some new functions"
 msgstr "Ten poradnik pomoże ci w poznaniu niektórych nowych funkcji"
 
-#: ../resources/guide/js/start.coffee:44
+#: ../resources/guide/js/start.coffee:45
 msgid "Start"
 msgstr "Uruchom"
 
-#: ../resources/guide/js/start.coffee:51
+#: ../resources/guide/js/start.coffee:52
 msgid "Skip the guide, experience immediately"
-msgstr ""
+msgstr "Pomiń przewodnika, natychmiast rozpocznijmy"
 
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"

@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-25 10:57+0800\n"
-"PO-Revision-Date: 2014-11-25 03:35+0000\n"
+"POT-Creation-Date: 2014-12-03 14:25+0800\n"
+"PO-Revision-Date: 2014-12-03 07:29+0000\n"
 "Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
 "Language-Team: Croatian (http://www.transifex.com/projects/p/deepin-desktop-environment/language/hr/)\n"
 "MIME-Version: 1.0\n"
@@ -52,8 +52,8 @@ msgstr "Upozorenje"
 #: ../resources/desktop/js/richdir.coffee:580
 #: ../resources/desktop/js/specialitem.coffee:51
 #: ../resources/desktop/js/specialitem.coffee:146
-#: ../resources/guide/js/launcher.coffee:118
-#: ../resources/launcher/js/item.coffee:284
+#: ../resources/guide/js/launcher.coffee:133
+#: ../resources/launcher/js/item.coffee:289
 msgid "_Open"
 msgstr "_Otvori"
 
@@ -195,114 +195,114 @@ msgid "Unknown"
 msgstr "Nepoznato"
 
 #: ../resources/dock/js/global_menu.coffee:9
-#: ../resources/guide/js/dock.coffee:76
+#: ../resources/guide/js/dock.coffee:38
 msgid "Keep _showing"
 msgstr "_Prikaži"
 
 #: ../resources/dock/js/global_menu.coffee:10
-#: ../resources/guide/js/dock.coffee:77
+#: ../resources/guide/js/dock.coffee:39
 msgid "Keep _hidden"
 msgstr "_Sakrij"
 
 #: ../resources/dock/js/global_menu.coffee:12
-#: ../resources/guide/js/dock.coffee:78
+#: ../resources/guide/js/dock.coffee:40
 msgid "_Smart hide"
-msgstr ""
+msgstr "_Pametno skrivanje"
 
 #: ../resources/dock/js/global_menu.coffee:27
-#: ../resources/guide/js/dock.coffee:72
+#: ../resources/guide/js/dock.coffee:34
 msgid "_Fashion mode"
 msgstr "_Moderan način"
 
 #: ../resources/dock/js/global_menu.coffee:28
-#: ../resources/guide/js/dock.coffee:73
+#: ../resources/guide/js/dock.coffee:35
 msgid "_Efficient mode"
 msgstr "_Učinkovit način"
 
 #: ../resources/dock/js/global_menu.coffee:29
-#: ../resources/guide/js/dock.coffee:74
+#: ../resources/guide/js/dock.coffee:36
 msgid "_Classic mode"
 msgstr "_Klasičan način"
 
 #: ../resources/dock/js/global_menu.coffee:38
-#: ../resources/guide/js/dock.coffee:80
+#: ../resources/guide/js/dock.coffee:42
 msgid "Notification area settings"
-msgstr ""
+msgstr "Postavke područja obavijesti"
 
 #: ../resources/dock/js/main.coffee:114 ../resources/zone/js/utils.coffee:13
 msgid "Launcher"
 msgstr "Pokretač"
 
-#: ../resources/dock/js/plugins/time/time.coffee:60
-msgid "Switch display mode"
-msgstr ""
-
 #: ../resources/dock/js/plugins/time/time.coffee:61
+msgid "Switch display mode"
+msgstr "Prebaci način prikaza"
+
+#: ../resources/dock/js/plugins/time/time.coffee:62
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:81
 msgid "_Time settings"
 msgstr "_Postavke vremena"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:33
 msgid "%b %d %H:%M %a"
-msgstr ""
+msgstr "%b %d %H:%M %a"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:35
 msgid "%b %d %I:%M %p %a"
-msgstr ""
+msgstr "%b %d %I:%M %p %a"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:37
 msgid "%b %d %H:%M"
-msgstr ""
+msgstr "%b %d %H:%M"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:39
 msgid "%b %d %I:%M %p"
-msgstr ""
+msgstr "%b %d %I:%M %p"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:41
 msgid "%H:%M %a"
-msgstr ""
+msgstr "%H:%M %a"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:43
 msgid "%I:%M %p %a"
-msgstr ""
+msgstr "%I:%M %p %a"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:45
 msgid "%H:%M"
-msgstr ""
+msgstr "%H:%M"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:47
 msgid "%I:%M %p"
-msgstr ""
+msgstr "%I:%M %p"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:79
 msgid "Display date"
-msgstr ""
+msgstr "Prikaži datum"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:80
 msgid "Display week"
-msgstr ""
+msgstr "Prikaži tjedan"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:42
 msgid "_Close"
 msgstr "_Zatvori"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:354
+#: ../resources/launcher/js/item.coffee:359
 msgid "Are you sure to remove"
 msgstr "Sigurno želite ukloniti"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:354
+#: ../resources/launcher/js/item.coffee:359
 msgid "All dependencies will be removed"
 msgstr "Sve međuovisnosti će biti uklonjene"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:354
+#: ../resources/launcher/js/item.coffee:359
 msgid "no"
 msgstr "ne"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:354
+#: ../resources/launcher/js/item.coffee:359
 msgid "yes"
 msgstr "da"
 
@@ -446,69 +446,69 @@ msgstr "Prijava"
 msgid "Unlock"
 msgstr "Otključaj"
 
-#: ../resources/guide/js/desktop.coffee:27
+#: ../resources/guide/js/desktop.coffee:28
 msgid ""
 "Let's drag the other icon on the first icon \n"
 " to generate \"application group\""
 msgstr "Povucite odabranu ikonu na prvu ikonu\nda bi stvorili \"grupu aplikacija\""
 
-#: ../resources/guide/js/desktop.coffee:117
+#: ../resources/guide/js/desktop.coffee:121
 msgid "Well, you have learned how to create a \"application group\""
 msgstr "U redu, naučili ste kako napraviti \"grupu aplikacije\""
 
-#: ../resources/guide/js/desktop.coffee:118
+#: ../resources/guide/js/desktop.coffee:122
 msgid "tips: Right-click on the application group will provide more functions"
 msgstr "savjet: desni klik na grupu aplikacije pruža vam više funkcija functions"
 
-#: ../resources/guide/js/desktop.coffee:128
+#: ../resources/guide/js/desktop.coffee:132
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different "
 "events"
-msgstr ""
+msgstr "Klizi mišem u četiri kuta, koji mogu pokrenuti četiri različita događaja"
 
-#: ../resources/guide/js/desktop.coffee:150
+#: ../resources/guide/js/desktop.coffee:154
 msgid ""
 "We already know that launcher can be shown/ hidden by sliding the mouse to "
 "the upper left corner"
-msgstr ""
+msgstr "Već znamo da će pokretqač biti prikazan/skriven klizanjem miša na gornji lijevi kut"
 
-#: ../resources/guide/js/desktop.coffee:172
+#: ../resources/guide/js/desktop.coffee:176
 msgid ""
 "The workspace will be shown or hidden by sliding the mouse to the lower left"
 " corner"
-msgstr ""
+msgstr "Radn iprostor će biti prikazan ili skriven klizanjem miša u donji lijebi kut"
 
-#: ../resources/guide/js/desktop.coffee:197
+#: ../resources/guide/js/desktop.coffee:202
 msgid ""
 "No functions are set in default on the upper right corner\n"
 "Right-click on desktop black area to call up the menu, select \"Corner navigation\" to set the corner used"
-msgstr ""
+msgstr "NIjedna funkcija nije postavljena kao zadana u gornjem desnom kutu.\nDesni klik na crno područje radne površine za pozivanje izbornika, odaberi \"Navigacija kutova\" za postavljanje korištenih kutova"
 
-#: ../resources/guide/js/desktop.coffee:198
+#: ../resources/guide/js/desktop.coffee:203
 msgid "tips: Click on the corner navigation blank area to return"
-msgstr ""
+msgstr "sasvjet: Za povratak klikni na prazno područje navigacije kuta"
 
-#: ../resources/guide/js/dock.coffee:63
+#: ../resources/guide/js/dock.coffee:26
 msgid ""
 "Three modes and the display status can be switched by right-click on the "
 "blank area of dock"
-msgstr ""
+msgstr "Tri načina i prikaz statusa mogu se prebaciti desnim klikom na prazno područje docka"
 
-#: ../resources/guide/js/dss.coffee:29
+#: ../resources/guide/js/dss.coffee:32
 msgid ""
 "The Control Center will be shown or hidden by sliding the mouse to the lower"
 " right corner"
-msgstr ""
+msgstr "Kontrolni centar će biti prikazan ili skriven klizanjem miša u donji desni kut"
 
-#: ../resources/guide/js/dss.coffee:30
+#: ../resources/guide/js/dss.coffee:33
 msgid "tips: Click the setting icon on dock to implement"
 msgstr "savjet: Kliknite na ikonu postavki u doku za pokretanje"
 
-#: ../resources/guide/js/dss.coffee:68
+#: ../resources/guide/js/dss.coffee:76
 msgid "Click the power button to shut down, reboot or do other operations"
-msgstr ""
+msgstr "Kliknite na dugme za napajanje da biste isključili, ponovno podigli ili napravili neke druge operacije"
 
-#: ../resources/guide/js/dss.coffee:69
+#: ../resources/guide/js/dss.coffee:77
 msgid ""
 "tips: Hover the setting icon on dock to quickly implement some setting "
 "functions"
@@ -518,85 +518,79 @@ msgstr "savjet: lebdite iznad ikone postavki u doku za brzi prikaz nekih dodatni
 msgid ""
 "Thank you for your patience to learn! More surprises are waiting for you to "
 "explore"
-msgstr ""
+msgstr "Hvala vam što ste imali strpljenja učiti! Još iznenađenja vas čeka da ih istražite"
 
 #: ../resources/guide/js/end.coffee:30
 msgid "Start my Deepin trip"
-msgstr ""
+msgstr "Započni moje Deepin putovanje"
 
-#: ../resources/guide/js/launcher.coffee:28
+#: ../resources/guide/js/launcher.coffee:31
 msgid ""
 "\"Application Launcher\" can be started by sliding the mouse to the upper "
 "left corner or clicking on the launcher."
 msgstr "\"Pokretač aplikacija\" može se pokrenuti klizanjem mišem gornjim lijevim kutem ili klikom na ikonu u pokretaču."
 
-#: ../resources/guide/js/launcher.coffee:65
-msgid ""
-"Use the keyboard to search for applications\n"
-"Try the \"deepin\" keyword to see which applications are shown"
-msgstr "Koristite tipkovnicu za pretraživanje aplikacija.\nPokušajte s \"deepin\" ključnom riječi da bi vidjeli koje će se aplikacije prikazati."
-
-#: ../resources/guide/js/launcher.coffee:66
-msgid "tips: Please directly enter the word \"deepin\""
-msgstr "savjet: izravno upišite riječ \"deepin\""
-
-#: ../resources/guide/js/launcher.coffee:80
-msgid "You can directly drag the application icon to Dock or trash"
+#: ../resources/guide/js/launcher.coffee:83
+msgid "Please directly hit \"deepin\" in keyboard"
 msgstr ""
 
-#: ../resources/guide/js/launcher.coffee:93
+#: ../resources/guide/js/launcher.coffee:96
+msgid "You can directly drag the application icon to Dock or trash"
+msgstr "Možete direktno povući ikonu programa na dock ili u smeće"
+
+#: ../resources/guide/js/launcher.coffee:109
 msgid ""
 "tips: Click the right mouse button on the application icon to call up the "
 "context menu"
-msgstr ""
+msgstr "savjet: Kliknite desnim dugmetom na ikonu programa za poziv konetekstualnog izbornika"
 
-#: ../resources/guide/js/launcher.coffee:120
+#: ../resources/guide/js/launcher.coffee:135
 msgid "Remove from _favorites"
 msgstr "Ukloni iz _omiljenih"
 
-#: ../resources/guide/js/launcher.coffee:121
+#: ../resources/guide/js/launcher.coffee:136
 #: ../resources/launcher/js/const.coffee:76
 msgid "Send to d_esktop"
 msgstr "Pošalji na r_adnu površinu"
 
-#: ../resources/guide/js/launcher.coffee:122
+#: ../resources/guide/js/launcher.coffee:137
 #: ../resources/launcher/js/const.coffee:80
 msgid "Send to do_ck"
 msgstr "Pošalji u do_k"
 
-#: ../resources/guide/js/launcher.coffee:124
+#: ../resources/guide/js/launcher.coffee:139
 #: ../resources/launcher/js/const.coffee:68
 msgid "_Add to autostart"
 msgstr "_Dodaj u atomatsko pokretanje"
 
-#: ../resources/guide/js/launcher.coffee:125
-#: ../resources/launcher/js/item.coffee:290
+#: ../resources/guide/js/launcher.coffee:140
+#: ../resources/launcher/js/item.coffee:295
 msgid "_Uninstall"
 msgstr "_Deinstaliraj"
 
-#: ../resources/guide/js/start.coffee:28
+#: ../resources/guide/js/start.coffee:29
 msgid "New Launcher"
 msgstr "Novi pokretač"
 
-#: ../resources/guide/js/start.coffee:28
+#: ../resources/guide/js/start.coffee:29
 msgid "New Desktop"
 msgstr "Nova radna površina"
 
-#: ../resources/guide/js/start.coffee:28
+#: ../resources/guide/js/start.coffee:29
 msgid "New System Settings"
 msgstr "Nove postavke sustava"
 
-#: ../resources/guide/js/start.coffee:29
+#: ../resources/guide/js/start.coffee:30
 msgid "The following will guide you to learn how to use some new functions"
 msgstr "Slijedeći vodič će vas naučiti kako koristiti neke nove funkcije"
 
-#: ../resources/guide/js/start.coffee:44
+#: ../resources/guide/js/start.coffee:45
 msgid "Start"
 msgstr "Pokreni"
 
-#: ../resources/guide/js/start.coffee:51
+#: ../resources/guide/js/start.coffee:52
 msgid "Skip the guide, experience immediately"
-msgstr ""
+msgstr "Preskoči vodič, doživi odmah"
 
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
