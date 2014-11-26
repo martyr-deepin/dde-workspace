@@ -39,7 +39,6 @@ class DssLaunch extends Page
             dss.show()
             guide?.switch_page(@,"DssShutdown")
         )
-        @circle.enable_area_icon("#{@img_src}/preferences-system.png",ICON_SIZE[_dm].w,ICON_SIZE[_dm].h)
         @corner = new Pointer("corner_rightdown",@element)
         @corner.create_pointer(AREA_TYPE.corner,POS_TYPE.rightdown,=>
             clearInterval(get_dssicon_pos_interval)
@@ -51,6 +50,8 @@ class DssLaunch extends Page
         @corner.set_area_pos(0,0,"fixed",POS_TYPE.rightdown)
         @corner.show_animation()
         get_dssicon_pos_interval = setInterval(=>
+            icon = DCore.get_theme_icon("preferences-system", 48)
+            @circle.enable_area_icon(icon,ICON_SIZE[_dm].w,ICON_SIZE[_dm].h)
             @pos = @dock.get_dssicon_pos()
             @circle_x = @pos.x0 - @circle.pointer_width
             @circle_y = @pos.y0 - @circle.pointer_height

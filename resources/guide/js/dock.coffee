@@ -18,43 +18,6 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-class DockMode extends Widget
-    constructor:(@id,@mode,parent)->
-        super
-        echo "new DockMode(#{@id},#{@mode})"
-        parent.appendChild(@element)
-        dock = create_element("div","dock_#{@mode}",@element)
-        switch @mode
-            when "mac"
-                @icon_count = 12
-                @applet_count = 0
-                left = create_element("div","left",dock)
-                center = create_element("div","center",dock)
-                for i in [1...@icon_count]
-                    create_img("dock_icon_#{i}","img/dock/#{i}.png",center)
-                right = create_element("div","right",dock)
-            when "win7", "xp"
-                @icon_count = 8
-                @applet_count = 3
-                left = create_element("div","left",dock)
-                for i in [1...@icon_count]
-                    icon = create_img("","img/dock/#{i}.png",left)
-                right = create_element("div","right",dock)
-                time = create_element("div","time",right)
-                d = new Date()
-                time.innerText = @check_time(d.getHours()) + ":" + @check_time(d.getMinutes())
-                for applet in ["sound","net","input"]
-                    create_img(applet,"img/dock/#{applet}.png",right)
-
-    check_time: (t) ->
-        if t < 10
-            return "0" + t
-        t
-
-    destory: ->
-        @element.parentElement?.removeChild(@element)
-        delete Widget.object_table[@id]
-
 class DockMenu extends Page
     constructor:(@id)->
         super
@@ -83,14 +46,14 @@ class DockMenu extends Page
         @contextmenu.menu_create(menu)
         @contextmenu.set_pos(x,y,"fixed",POS_TYPE.leftdown)
         t_move = 1500
-        @dockMode = new DockMode("dockMode","mac",@element)
+        @dockMode = new DockMode("dockModeMac",DisplayMode.Fashion,@element)
         @contextmenu.set_selected(1,t_move * 1,=>
             @dockMode.destory()
-            @dockMode = new DockMode("dockMode","win7",@element)
+            @dockMode = new DockMode("dockModeWin7",DisplayMode.Efficient,@element)
         )
         @contextmenu.set_selected(2,t_move * 2,=>
             @dockMode.destory()
-            @dockMode = new DockMode("dockMode","xp",@element)
+            @dockMode = new DockMode("dockModeXp",DisplayMode.Classic,@element)
             @switch_page()
         )
 

@@ -21,9 +21,7 @@ class ContextMenu extends Widget
             @li[i] = create_element("li","",@ul)
             @li[i].style.cursor = "default"
 
-            console.debug "========before menu.text:" + menu.text
             _index = menu.text.indexOf("_")
-            console.debug _index
             if _index != -1
                 _before = menu.text.slice(0,_index)
                 _char = menu.text.substr(_index,2)
@@ -31,7 +29,6 @@ class ContextMenu extends Widget
                 _char = @underline(_char.slice(1))
                 #_char = _char.slice(1)
                 menu.text = _before.concat(_char,_behind)
-            console.debug "========end menu.text:" + menu.text
             switch menu.type
                 when MENU.cutline then @li[i].setAttribute("class","cutline")
                 when MENU.option

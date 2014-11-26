@@ -40,7 +40,8 @@ class LauncherLaunch extends Page
             @launcher?.show()
         )
         get_launchericon_pos_interval = setInterval(=>
-            @circle.enable_area_icon("#{@img_src}/start-here.png",ICON_SIZE[_dm].w,ICON_SIZE[_dm].h)
+            icon = DCore.get_theme_icon("start-here", 48)
+            @circle.enable_area_icon(icon,ICON_SIZE[_dm].w,ICON_SIZE[_dm].h)
             @pos = @dock.get_launchericon_pos()
             @circle_x = @pos.x0 - @circle.pointer_width
             @circle_y = @pos.y0 - @circle.pointer_height

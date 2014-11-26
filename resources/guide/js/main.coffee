@@ -3,7 +3,7 @@ guide = null
 main = ->
     guide = new Guide()
     if DEBUG
-        guide?.create_page("LauncherLaunch")
+        guide?.create_page("DockMenu")
     else
         guide?.create_page("Welcome")
 

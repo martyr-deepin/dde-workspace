@@ -40,7 +40,6 @@ POINTER_AREA_SIZE[DisplayMode.Fashion] = 64
 POINTER_AREA_SIZE[DisplayMode.Efficient] = 38
 POINTER_AREA_SIZE[DisplayMode.Classic] = 30
 
-
 ICON_SIZE = {}
 ICON_SIZE[DisplayMode.Fashion] = {w:48,h:48}
 ICON_SIZE[DisplayMode.Efficient] = {w:32,h:32}

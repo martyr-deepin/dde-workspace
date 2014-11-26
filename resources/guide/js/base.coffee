@@ -174,7 +174,7 @@ class Dock
             w:0
             h:0
         region = @get_dock_region()
-        pos.x0 = region.x0 + DOCK_PADDING[_dm][3] + ITEM_SIZE[_dm].w * (icon_index - 1) + 6
+        pos.x0 = region.x0 + DOCK_PADDING[_dm][3] + ITEM_SIZE[_dm].w * (icon_index - 1) - 9
         pos.y0 = region.y0 - DOCK_PADDING[_dm][0] + 2
         pos.w = ITEM_SIZE[_dm].w
         pos.h = ITEM_SIZE[_dm].h
@@ -227,3 +227,53 @@ class Page extends Widget
             @tips_div.style.position = "relative"
             @tips_div.style.marginTop = "40px"
         @tips_div.innerText = @tips
+
+
+class DockMode extends Widget
+    constructor:(@id,@mode,parent)->
+        super
+        echo "new DockMode(#{@id},#{@mode})"
+        parent.appendChild(@element)
+        @create_dock()
+
+    create_dock: ->
+        @icons = []
+        cls = "dock_mac"
+        cls = "dock_win7" if @mode == DisplayMode.Efficient
+        cls = "dock_xp" if @mode == DisplayMode.Classic
+        @dock = create_element("div",cls,@element)
+        switch @mode
+            when DisplayMode.Fashion
+                @icon_count = 14
+                @applet_count = 0
+                left = create_element("div","left",@dock)
+                center = create_element("div","center",@dock)
+                for i in [1...@icon_count]
+                    @icons[i] = create_img("dock_icon_#{i}","img/dock/#{i}.png",center)
+                right = create_element("div","right",@dock)
+            when DisplayMode.Efficient, DisplayMode.Classic
+                @icon_count = 8
+                @applet_count = 3
+                left = create_element("div","left",@dock)
+                for i in [1...@icon_count]
+                    @icons[i] = create_img("","img/dock/#{i}.png",left)
+                right = create_element("div","right",@dock)
+                time = create_element("div","time",right)
+                d = new Date()
+                time.innerText = @check_time(d.getHours()) + ":" + @check_time(d.getMinutes())
+                for applet in ["power","sound","net"].reverse()
+                    create_img(applet,"img/dock/#{applet}.png",right)
+
+    get_icon_pos: (icon_index) ->
+        if icon_index > @icons.length then icon_index = 1
+        return jQuery(@icons[icon_index]).position()
+
+    check_time: (t) ->
+        if t < 10
+            return "0" + t
+        t
+
+    destory: ->
+        @element.parentElement?.removeChild(@element)
+        delete Widget.object_table[@id]
+
