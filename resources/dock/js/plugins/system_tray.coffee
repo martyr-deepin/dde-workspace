@@ -220,7 +220,9 @@ class SystemTray extends SystemItem
         if debugRegion
             console.warn("[SystemTray.updatePanel] update_dock_region")
         update_dock_region($("#container").clientWidth)
-        @calcTimer = webkitRequestAnimationFrame(@updatePanel)
+        if $("#container").clientWidth != panel.width()
+            console.log("#{$("#container").clientWidth}, #{panel.width()}")
+            @calcTimer = webkitRequestAnimationFrame(@updatePanel)
 
     hideAllIcons:=>
         for item in @items

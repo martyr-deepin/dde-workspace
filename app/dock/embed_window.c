@@ -8,6 +8,7 @@
 #include "region.h"
 #include <cairo.h>
 #include "dock.h"
+#include "dock_config.h"
 
 #define __USE_BSD
 #include <math.h>
@@ -422,12 +423,17 @@ gboolean draw_embed_windows(GtkWidget* _w, cairo_t *cr)
             gdk_window_get_geometry(win, &x, &y, &width, &height); //gdk_window_get_position will get error value when dock is hidden!
 
             if (type == EWTypeTrayIcon) {
-                cairo_save(cr);
-                cairo_arc(cr, x + TRAY_ICON_SIZE/2.0, y + TRAY_ICON_SIZE/2.0, TRAY_ICON_SIZE/2.0, 0, 2*M_PI);
-                cairo_clip(cr);
-                gdk_cairo_set_source_window(cr, win, x, y);
-                cairo_paint(cr);
-                cairo_restore(cr);
+                if (GD.config.display_mode == FASHION_MODE) {
+                    cairo_save(cr);
+                    cairo_arc(cr, x + TRAY_ICON_SIZE/2.0, y + TRAY_ICON_SIZE/2.0, TRAY_ICON_SIZE/2.0, 0, 2*M_PI);
+                    cairo_clip(cr);
+                    gdk_cairo_set_source_window(cr, win, x, y);
+                    cairo_paint(cr);
+                    cairo_restore(cr);
+                } else {
+                    gdk_cairo_set_source_window(cr, win, x, y);
+                    cairo_paint(cr);
+                }
             } else if (EWTypePlugin == type) {
                 gdk_cairo_set_source_window(cr, win, x, y);
                 cairo_paint(cr);
