@@ -21,6 +21,10 @@
 LAUNCHER_DAEMON="com.deepin.dde.daemon.Launcher"
 try
     daemon = get_dbus("session", LAUNCHER_DAEMON, "Search")
+
+    daemon.connect("NewAppLaunched", (id)->
+        Widget.look_up(id)?.hideNewInstallIndicator()
+    )
 catch e
     console.error(e)
     DCore.Launcher.quit()

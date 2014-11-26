@@ -13,6 +13,7 @@ _CW = $("#containerWrap")
 changeDockRegionTimer = null
 _isRightclicked = false
 _isItemExpanded = false
+launcherDaemon = null
 
 $mousePosition =
     x: 0

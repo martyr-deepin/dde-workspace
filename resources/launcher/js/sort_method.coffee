@@ -36,6 +36,7 @@ sortByNameCompare = (lhs, rhs)->
         if lItem.name < rItem.name
             return -1
         return 0
+
 sortByName = (apps)->
     apps.sort(sortByNameCompare)
 

@@ -24,6 +24,7 @@ all: ${com_coffee} \
 	preview.coffee\
 	embed_window.coffee\
 	item.coffee \
+	app_item.coffee\
 	deepin_item.coffee\
 	${plugin_dir}/show_desktop.coffee\
 	${plugin_dir}/launcher.coffee\

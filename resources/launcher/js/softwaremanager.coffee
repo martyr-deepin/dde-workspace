@@ -53,6 +53,7 @@ update = (status, info, categories)->
         item = createItem(info, autostartList)
         item.add('search')
         searchResult.append(item.elements.search)
+        item.showNewInstallIndicator()
 
         if switcher.isShowCategory
             categoryList.addItem(id, categories)

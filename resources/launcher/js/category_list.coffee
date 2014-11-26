@@ -54,6 +54,10 @@ class CategoryListWithCategory extends Page
         @updateBlankHeight()
         $("#grid").style.overflowY = "hidden"
 
+        appIds = daemon.GetAllNewInstalledApps_sync()
+        for id in appIds
+            Widget.look_up(id)?.showNewInstallIndicator(id)
+
     updateBlankHeight:->
         containerHeight = $("#container").clientHeight
         c = @blank
@@ -317,6 +321,10 @@ class CategoryListWithoutCategory extends Page
         @container.appendChild(frag)
         Item.updateHorizontalMargin()
         $("#grid").style.overflowY = ""
+
+        appIds = daemon.GetAllNewInstalledApps_sync()
+        for id in appIds
+            Widget.look_up(id)?.showNewInstallIndicator(id)
 
     reset:()->
         @resetScrollOffset()

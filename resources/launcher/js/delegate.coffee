@@ -24,7 +24,7 @@ DEvent = (e)->
     element = null
     id = null
     # console.log target.tagName
-    # target is hoverBoxOutter
+    # target should be hoverBoxOutter
     if target.tagName == "IMG"
         p = parent.parentNode
         id = p.dataset.appid
@@ -39,11 +39,17 @@ DEvent = (e)->
         else if target.classList.contains("hoverBox")
             id = parent.dataset.appid
             element = parent
-        else if target.classList.contains("item_name")
+        else if target.classList.contains("nameWrap")
             id = parent.parentNode.dataset.appid
             element = parent.parentNode
+        else if target.classList.contains("item_name") or target.classList.contains("install_indicator")
+            id = parent.parentNode.parentNode.dataset.appid
+            element = parent.parentNode.parentNode
+        else if target.classList.contains("new_install_indicator") or target.classList.contains("new_install_indicator_shadow")
+            id = parent.parentNode.parentNode.parentNode.dataset.appid
+            element = parent.parentNode.parentNode.parentNode
 
-    id: id, target: element, originalEvent: e
+    id: id, target: element||target, originalEvent: e
 
 
 delegateFactory = (fn)->

@@ -43,7 +43,11 @@ class Item extends Widget
         im = get_default_application_icon(ITEM_IMG_SIZE)
         @img = create_img("item_img", im, @hoverBox)
         @load_image(@img)
-        itemName = create_element("div", "item_name", @hoverBox)
+        itemNameWrap = create_element(tag:"div", class:"nameWrap", @hoverBox)
+        @installIndicator = create_element(tag:"div", class:"install_indicator", "data-new":false, itemNameWrap)
+        create_element(tag:"div", class:"new_install_indicator", @installIndicator)
+        create_element(tag:"div", class:"new_install_indicator_shadow", @installIndicator)
+        itemName = create_element(tag:"div", class:"item_name", itemNameWrap)
         itemName.innerText = @name
         @hoverBoxOutter.draggable = true
         # @try_set_title(@element, @name, 80)
@@ -160,7 +164,10 @@ class Item extends Widget
     getItemNameDOM:(el)->
         # cannot use lastElementChild here, the lastElementChild may be the
         # autostart flag.
-        @getInnerBoxDOM(el).children[1]
+        @getInnerBoxDOM(el).children[1].children[1]
+
+    getInstallIndicatorDOM:(el)->
+        @getInnerBoxDOM(el).children[1].children[0]
 
     setImageSize: (img)=>
         if img.width == img.height
@@ -198,6 +205,7 @@ class Item extends Widget
         startManager.Launch(@path)
         Item.hoverItem = target.parentNode
         target?.style.cursor = "auto"
+        daemon.MarkLaunched(@id)
         daemon.RecordRate(@id)
         exit_launcher()
 
@@ -455,3 +463,15 @@ class Item extends Widget
         target = e.target
         item = target.parentNode
         item.classList.remove("item_hovered")
+
+    showNewInstallIndicator:->
+        @updateProperty((parentId, element)=>
+            installIndicator = @getInstallIndicatorDOM(element)
+            installIndicator.dataset.new = true
+        )
+
+    hideNewInstallIndicator:->
+        @updateProperty((parentId, element)=>
+            installIndicator = @getInstallIndicatorDOM(element)
+            installIndicator.dataset.new = false
+        )
