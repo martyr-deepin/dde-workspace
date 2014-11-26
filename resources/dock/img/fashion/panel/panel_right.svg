@@ -1,40 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="20px" height="48px" viewBox="0 0 20 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+<svg width="20px" height="46px" viewBox="0 0 20 46" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
     <!-- Generator: Sketch 3.1.1 (8761) - http://www.bohemiancoding.com/sketch -->
-    <title>dock_right</title>
+    <title>panel_right</title>
     <desc>Created with Sketch.</desc>
     <defs>
-        <rect id="path-1" x="0" y="0" width="20" height="48"></rect>
-        <linearGradient x1="49.9935848%" y1="0.204573805%" x2="49.9935848%" y2="99.9966736%" id="linearGradient-3">
-            <stop stop-color="#000000" stop-opacity="0.4982" offset="0%"></stop>
-            <stop stop-color="#000000" stop-opacity="0.8668" offset="91.37%"></stop>
-            <stop stop-color="#1E1E1E" stop-opacity="0.8772" offset="92.11%"></stop>
-            <stop stop-color="#343434" stop-opacity="0.9" offset="100%"></stop>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#000000" stop-opacity="0.498245018" offset="0%"></stop>
+            <stop stop-color="#000000" stop-opacity="0.866844707" offset="91.3740595%"></stop>
+            <stop stop-color="#1E1E1E" stop-opacity="0.877240115" offset="92.1134107%"></stop>
+            <stop stop-color="#1A1A1A" stop-opacity="0.9" offset="100%"></stop>
         </linearGradient>
-        <linearGradient x1="49.9935848%" y1="0.204573805%" x2="49.9935848%" y2="99.9966736%" id="linearGradient-4">
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-2">
             <stop stop-color="#FFFFFF" stop-opacity="0.05" offset="0%"></stop>
             <stop stop-color="#FFFFFF" stop-opacity="0.1" offset="100%"></stop>
         </linearGradient>
-        <radialGradient cx="50.0026254%" cy="-375.96%" fx="50.0026254%" fy="-375.96%" r="0.0472321935%" id="radialGradient-5">
+        <radialGradient cx="50%" cy="-375.962707%" fx="50%" fy="-375.962707%" r="50%" id="radialGradient-3">
             <stop stop-color="#FFFFFF" stop-opacity="0.25" offset="0%"></stop>
             <stop stop-color="#FFFFFF" stop-opacity="0.2" offset="100%"></stop>
         </radialGradient>
     </defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-        <g id="dock_right" sketch:type="MSLayerGroup">
-            <g id="Page-1-Clipped">
-                <mask id="mask-2" sketch:name="SVGID_1_" fill="white">
-                    <use xlink:href="#path-1"></use>
-                </mask>
-                <g id="SVGID_1_"></g>
-                <g id="Page-1" mask="url(#mask-2)">
-                    <g transform="translate(-1040.000000, 0.000000)" id="dark_dock">
-                        <g>
-                            <path d="M12.5,4.4 L0.2,43.6 C-0.5,46 0.8,48 3.1,48 L1056.9,48 C1059.2,48 1060.5,46 1059.8,43.6 L1047.5,4.3 C1046.7,1.9 1044.3,-0.1 1042,-0.1 L18,-0.1 C15.8,1.77635684e-15 13.3,2 12.5,4.4 L12.5,4.4 Z" id="Rectangle-364" stroke="url(#linearGradient-4)" fill="url(#linearGradient-3)" sketch:type="MSShapeGroup"></path>
-                            <path d="M0.5,43.5 L1059.1,43.5" id="Line" stroke="url(#radialGradient-5)" sketch:type="MSShapeGroup"></path>
-                        </g>
-                    </g>
-                </g>
+        <g id="Artboard-1" sketch:type="MSArtboardGroup" transform="translate(-997.000000, -27.000000)">
+            <g id="dark_dock" sketch:type="MSLayerGroup" transform="translate(18.000000, 28.000000)">
+                <path d="M11.8082102,4.09276022 L0.203716127,40.9072398 C-0.508787202,43.1676088 0.707709965,45 2.91659509,45 L994.910634,45 C997.121419,45 998.335559,43.1661567 997.623513,40.9072398 L986.019019,4.09276022 C985.306516,1.83239117 982.98572,0 980.8395,0 L16.9877298,0 C14.8396634,0 12.5202558,1.83384331 11.8082102,4.09276022 Z" id="Rectangle-364" stroke="url(#linearGradient-2)" fill="url(#linearGradient-1)" sketch:type="MSShapeGroup"></path>
+                <path d="M0.5,41.5 L996.500488,41.5" id="Line" stroke="url(#radialGradient-3)" stroke-linecap="square" sketch:type="MSShapeGroup"></path>
             </g>
         </g>
     </g>

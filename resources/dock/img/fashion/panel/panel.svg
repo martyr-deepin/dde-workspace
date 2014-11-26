@@ -1,42 +1,30 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 18.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="图层_1" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"
-	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 30 48"
-	 enable-background="new 0 0 30 48" xml:space="preserve">
-<title>dock_middle</title>
-<desc>Created with Sketch.</desc>
-<g>
-	<defs>
-		<rect id="SVGID_1_" width="30" height="48"/>
-	</defs>
-	<clipPath id="SVGID_2_">
-		<use xlink:href="#SVGID_1_"  overflow="visible"/>
-	</clipPath>
-	<g id="Page-1" sketch:type="MSPage" clip-path="url(#SVGID_2_)">
-		<g id="dark_dock" transform="translate(-190.000000, 0.000000)" sketch:type="MSLayerGroup">
-			
-				<linearGradient id="Rectangle-364_1_" gradientUnits="userSpaceOnUse" x1="-193.1377" y1="294.7917" x2="-193.1377" y2="293.7917" gradientTransform="matrix(1060 0 0 -48 205256 14150)">
-				<stop  offset="0" style="stop-color:#000000;stop-opacity:0.4982"/>
-				<stop  offset="0.9137" style="stop-color:#000000;stop-opacity:0.8668"/>
-				<stop  offset="0.9211" style="stop-color:#1E1E1E;stop-opacity:0.8772"/>
-				<stop  offset="1" style="stop-color:#343434;stop-opacity:0.9"/>
-			</linearGradient>
-			
-				<linearGradient id="Rectangle-364_2_" gradientUnits="userSpaceOnUse" x1="-193.1377" y1="294.7917" x2="-193.1377" y2="293.7917" gradientTransform="matrix(1060 0 0 -48 205256 14150)">
-				<stop  offset="0" style="stop-color:#FFFFFF;stop-opacity:5.000000e-02"/>
-				<stop  offset="1" style="stop-color:#FFFFFF;stop-opacity:0.1"/>
-			</linearGradient>
-			<path id="Rectangle-364" sketch:type="MSShapeGroup" fill="url(#Rectangle-364_1_)" stroke="url(#Rectangle-364_2_)" d="
-				M12.5,4.4L0.2,43.6C-0.5,46,0.8,48,3.1,48h1053.8c2.3,0,3.6-2,2.9-4.4l-12.3-39.3c-0.8-2.4-3.2-4.4-5.5-4.4H18
-				C15.8,0,13.3,2,12.5,4.4z"/>
-			
-				<radialGradient id="Line_1_" cx="-193.136" cy="53.7596" r="0.5" gradientTransform="matrix(1055.002 0 0 -1 204286.875 93.5)" gradientUnits="userSpaceOnUse">
-				<stop  offset="0" style="stop-color:#FFFFFF;stop-opacity:0.25"/>
-				<stop  offset="1" style="stop-color:#FFFFFF;stop-opacity:0.2"/>
-			</radialGradient>
-			<path id="Line" sketch:type="MSShapeGroup" fill="none" stroke="url(#Line_1_)" stroke-linecap="square" d="M0.5,43.5h1055"/>
-		</g>
-	</g>
-</g>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="21px" height="46px" viewBox="0 0 21 46" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.1.1 (8761) - http://www.bohemiancoding.com/sketch -->
+    <title>panel_middle</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#000000" stop-opacity="0.498245018" offset="0%"></stop>
+            <stop stop-color="#000000" stop-opacity="0.866844707" offset="91.3740595%"></stop>
+            <stop stop-color="#1E1E1E" stop-opacity="0.877240115" offset="92.1134107%"></stop>
+            <stop stop-color="#1A1A1A" stop-opacity="0.9" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#FFFFFF" stop-opacity="0.05" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.1" offset="100%"></stop>
+        </linearGradient>
+        <radialGradient cx="50%" cy="-375.962707%" fx="50%" fy="-375.962707%" r="50%" id="radialGradient-3">
+            <stop stop-color="#FFFFFF" stop-opacity="0.25" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.2" offset="100%"></stop>
+        </radialGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Artboard-1" sketch:type="MSArtboardGroup" transform="translate(-227.000000, -27.000000)">
+            <g id="dark_dock" sketch:type="MSLayerGroup" transform="translate(18.000000, 28.000000)">
+                <path d="M11.8082102,4.09276022 L0.203716127,40.9072398 C-0.508787202,43.1676088 0.707709965,45 2.91659509,45 L994.910634,45 C997.121419,45 998.335559,43.1661567 997.623513,40.9072398 L986.019019,4.09276022 C985.306516,1.83239117 982.98572,0 980.8395,0 L16.9877298,0 C14.8396634,0 12.5202558,1.83384331 11.8082102,4.09276022 Z" id="Rectangle-364" stroke="url(#linearGradient-2)" fill="url(#linearGradient-1)" sketch:type="MSShapeGroup"></path>
+                <path d="M0.5,41.5 L996.500488,41.5" id="Line" stroke="url(#radialGradient-3)" stroke-linecap="square" sketch:type="MSShapeGroup"></path>
+            </g>
+        </g>
+    </g>
 </svg>
