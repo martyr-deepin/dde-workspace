@@ -138,7 +138,8 @@ do_desktop_config_changed = (cfg) ->
     return
 
 do_icon_theme_changed = ->
+    console.debug "===========do_icon_theme_changed"
     item_list = all_item.concat(speical_item)
-    for i in all_item
+    for i in item_list
         if (w = Widget.look_up(i))?
             w.set_icon()
