@@ -360,7 +360,7 @@ gboolean can_be_restart()
 static
 void restart_launcher()
 {
-    g_spawn_command_line_async("dde-launcher -rd", NULL);
+    g_spawn_command_line_async("dde-launcher -rh", NULL);
 }
 
 
