@@ -52,7 +52,7 @@ enum PluginState {
 JS_EXPORT_API
 char* dcore_get_theme_icon(const char* name, double size)
 {
-    return icon_name_to_path_with_check_xpm(name, size);
+    return icon_name_to_path_with_check_xpm(name, (int)size);
 }
 
 

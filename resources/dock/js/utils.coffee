@@ -60,9 +60,6 @@ _moveHoverInfo = ->
 
 createItem = (d)->
     icon = d.Data[ITEM_DATA_FIELD.icon] || NOT_FOUND_ICON
-    if !(icon.indexOf("data:") != -1 or icon[0] == '/' or icon.indexOf("file://") != -1)
-        icon = DCore.get_theme_icon(icon, 48)
-
     title = d.Data[ITEM_DATA_FIELD.title] || "Unknow"
 
     $DBus[d.Id] = d

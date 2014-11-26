@@ -16,6 +16,8 @@ switchToEfficientMode = ->
             # console.log("#{item.id} switch to classic mode")
             item.openIndicator.src = EFFICIENT_ACTIVE_IMG
             item.hoverIndicator.src = EFFICIENT_ACTIVE_HOVER_IMG
+        if item?.isApplet()
+            item.change_icon(item.icon)
     DCore.Dock.fix_switch()
 
 
@@ -29,6 +31,8 @@ switchToClassicMode = ->
             # console.log("#{item.id} switch to classic mode")
             item.openIndicator.src = CLASSIC_ACTIVE_IMG
             item.hoverIndicator.src = CLASSIC_ACTIVE_HOVER_IMG
+        if item?.isApplet()
+            item.change_icon(item.icon)
     DCore.Dock.fix_switch()
 
 switchToFashionMode = ->
@@ -44,6 +48,8 @@ switchToFashionMode = ->
             # console.log("#{item.id} switch to fashion mode")
             item.openIndicator.src = OPEN_INDICATOR
             item.hoverIndicator.src = OPEN_INDICATOR
+        if item?.isApplet()
+            item.change_icon(item.icon)
     DCore.Dock.fix_switch()
 
 update_dock=->
@@ -53,12 +59,12 @@ update_dock=->
     app_list.style.display = 'none'
     panel.set_height(PANEL_HEIGHT)
     setTimeout(->
+        app_list.style.display = ''
         panel.set_width(Panel.getPanelMiddleWidth())
         if debugRegion
             console.log("[update_dock] update_dock_region")
         update_dock_region(Panel.getPanelMiddleWidth())
 
-        app_list.style.display = ''
         panel.redraw()
     , 50)
     setTimeout(->

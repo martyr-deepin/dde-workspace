@@ -1,6 +1,7 @@
 class Time extends SystemItem
     constructor:(@id, icon, @title)->
         super(@id, icon, @title)
+        @img.src = icon
         @imgWrap.style.position = 'relative'
 
         try

@@ -10,12 +10,12 @@ _clear_item_timeout = ->
     clearTimeout(normal_mouseout_id)
 
 class Item extends Widget
-    constructor:(@id, icon, title, @container)->
+    constructor:(@id, @icon, title, @container)->
         super()
         @imgWrap = create_element(tag:'div', class:"imgWrap", @element)
         @imgContainer = create_element(tag:'div', class:"imgContainer", @imgWrap)
         @imgContainer.style.pointerEvents = 'none'
-        @img = create_img(src:icon || NOT_FOUND_ICON, class:"AppItemImg", @imgContainer)
+        @img = create_img(src:"", class:"AppItemImg", @imgContainer)
         @imgHover = create_img(src:"", class:"AppItemImg", @imgContainer)
         @imgHover.style.display = 'none'
         @imgDark = create_img(src:"", class:"AppItemImg", @imgContainer)
@@ -23,11 +23,7 @@ class Item extends Widget
 
         @imgWrap.classList.add("ReflectImg")
 
-        @img.onload = =>
-            dataUrl = bright_image(@img, 40)
-            @imgHover.src = dataUrl
-            dataUrl = bright_image(@img, -40)
-            @imgDark.src = dataUrl
+        @change_icon(icon || NOT_FOUND_ICON)
 
         @imgWrap.style.pointerEvents = "auto"
         @imgWrap.addEventListener("mouseover", @on_mouseover)
@@ -59,10 +55,25 @@ class Item extends Widget
         update_dock_region($("#container").clientWidth)
 
     change_icon: (src)->
+        if not (src.substring(0, 7) == "file://" || src.substring(0, 10) == "data:image")
+            icon_size = 48
+            src = DCore.get_theme_icon(src, icon_size) || DCore.get_theme_icon(NOT_FOUND_ICON, 48)
         @img.src = src
         @img.onload = =>
+            console.error(@img.src)
             @imgHover.src = bright_image(@img, 40)
+            @imgHover.onerror = =>
+                if @imgHover.src != @img.src
+                    @imgHover.src = @img.src
             @imgDark.src = bright_image(@img, -40)
+            @imgDark.onerror = =>
+                if @imgDark.src != @img.src
+                    @imgDark.src = @img.src
+
+        @img.onerror = =>
+            console.error("wrong img")
+            if @img.src != DCore.get_theme_icon(NOT_FOUND_ICON, 48)
+                @img.src = DCore.get_theme_icon(NOT_FOUND_ICON)
 
     set_tooltip: (text) ->
         if @windowTitle
@@ -420,11 +431,7 @@ class AppItem extends Item
                         if @openingIndicator.style.webkitAnimationName == ''
                             @swap_to_clientgroup()
                 when ITEM_DATA_FIELD.icon
-                    if value.substring(0, 7) == "file://" || value.substring(0, 10) == "data:image"
-                        @change_icon(value)
-                    else
-                        v = DCore.get_theme_icon(value, 48)
-                        @change_icon(v)
+                    @change_icon(value)
                 when ITEM_DATA_FIELD.title
                     @set_tooltip(value || UNKNOWN_TITLE)
         )
@@ -567,10 +574,10 @@ class AppItem extends Item
         @core.isActive?()
 
     isApp:->
-        @core.isApp?()
+        @core?.isApp?()
 
     isApplet:->
-        @core.isApplet?()
+        @core?.isApplet?()
 
     isRuntimeApplet:->
         @core?.isRuntimeApplet?()

@@ -131,6 +131,25 @@ class SystemItem extends AppItem
         parentNode.appendChild($("#system-tray")) if $("#system-tray")
         parentNode.appendChild($("#time")) if $("#time")
 
+    change_icon:(src)->
+        if not (src.substring(0, 7) == "file://" || src.substring(0, 10) == "data:image")
+            icon_size = 48
+            switch settings.displayMode()
+                when DisplayMode.Fashon
+                    icon_size = 48
+                when DisplayMode.Efficient
+                    icon_size = 16
+                when DisplayMode.Classic
+                    icon_size = 16
+            console.warn("#{@id} icon size is #{icon_size}")
+            src = DCore.get_theme_icon(src, icon_size)
+            console.warn("#{@id} get icon: #{src}")
+        console.warn("#{@id} change icon src to: #{src}")
+        @img.src = src
+        @img.onload = =>
+            @imgHover.src = bright_image(@img, 40)
+            @imgDark.src = bright_image(@img, -40)
+
     isFirstElementChild:->
         $("#system").firstElementChild.isEqualNode(@element)
 

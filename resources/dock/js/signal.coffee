@@ -42,8 +42,6 @@ DCore.signal_connect("icon_theme_changed", ()->
     trash.update_icon()
     for own id, dbus of $DBus
         icon = dbus.Data[ITEM_DATA_FIELD.icon] || NOT_FOUND_ICON
-        if !(icon.indexOf("data:") != -1 or icon[0] == '/' or icon.indexOf("file://") != -1)
-            icon = DCore.get_theme_icon(icon, 48)
         Widget.look_up(id)?.change_icon(icon)
 )
 DCore.signal_connect("use_24_hour_display_changed", (info)->

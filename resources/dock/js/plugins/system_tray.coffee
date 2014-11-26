@@ -1,6 +1,7 @@
 class SystemTray extends SystemItem
     constructor:(@id, icon, title)->
         super
+        @img.src = icon
         @imgContainer.removeEventListener("mouseout", @on_mouseout)
         @panel = create_element(tag:"div", class:"SystemTrayPanel", @imgWrap)
         @panel.style.display = 'none'
@@ -221,7 +222,6 @@ class SystemTray extends SystemItem
             console.warn("[SystemTray.updatePanel] update_dock_region")
         update_dock_region($("#container").clientWidth)
         if $("#container").clientWidth != panel.width()
-            console.log("#{$("#container").clientWidth}, #{panel.width()}")
             @calcTimer = webkitRequestAnimationFrame(@updatePanel)
 
     hideAllIcons:=>
