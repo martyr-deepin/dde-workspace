@@ -206,7 +206,7 @@ class SystemTray extends SystemItem
         xy = get_page_xy(@element)
         for item, i in @items
             x = xy.x + SHADOW_WIDTH + 2
-            y = xy.y + SHADOW_WIDTH + 2
+            y = xy.y + SHADOW_WIDTH + 3
             if i < @upperItemNumber
                 x += i * itemSize
             else
