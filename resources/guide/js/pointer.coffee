@@ -36,7 +36,6 @@ class Pointer extends Widget
     create_pointer: (@area_type,@pos_type,@cb,@cb_type = "click") ->
         @pointer_img = create_img("pointer_img","",@element)
         @area_div = create_element("div","area_div",@element)
-
         @area_div.style.display = "-webkit-box"
         @area_div.style.webkitBoxPack = "center"
         @area_div.style.webkitBoxAlign = "center"
@@ -44,17 +43,24 @@ class Pointer extends Widget
         @pointer_img.src = "#{@img_src}/pointer_#{@pos_type}.png"
         if @area_type isnt AREA_TYPE.corner
             @area_div.style.backgroundImage = "url(#{@img_src}/#{@area_type}.png)"
+            @area_width = @area_height = 68
+            @area_width = @area_height = 48 if _dm == DisplayMode.Efficient
+            @area_width = @area_height = 38 if _dm == DisplayMode.Classic
+            @area_div.style.boxShadow = "rgba(70,217,249,1.0) 0 0 #{@area_height / 2}px"
+            @area_div.style.borderRadius = "50%"
         else
             @area_div.style.backgroundImage = "url(#{@img_src}/#{@area_type}_#{@pos_type}.png)"
+            @area_width = @area_height = 68
+        @area_div.style.backgroundRepeat = "no-repeat"
 
-        @area_width = @pointer_width = ITEM_SIZE[_dm].w
-        @area_height = @pointer_height = ITEM_SIZE[_dm].h
+        @pointer_width = @pointer_height = 68
         @height = @area_height + @pointer_height
         @width = @area_width + @pointer_width
         @pointer_img.style.width = @pointer_width
         @pointer_img.style.height = @pointer_height
         @area_div.style.width = @area_width
         @area_div.style.height = @area_height
+        @area_div.style.backgroundSize = "#{@area_width}px #{@area_height}px"
         @element.style.width = @width
         @element.style.height = @height
 

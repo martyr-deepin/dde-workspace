@@ -244,7 +244,7 @@ class DesktopZoneSetting extends Page
         OPT_WIDTH = 160
         OPT_HEIGHT = 30
         t_mousemove = 1000
-        x0 = document.body.clientWidth - OPT_WIDTH / 2 - 8
+        x0 = document.body.clientWidth - OPT_WIDTH / 2 - 5
         y0 = 10
         move_mouse(x0,y0,false)
         t = 500

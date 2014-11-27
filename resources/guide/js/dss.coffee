@@ -26,7 +26,7 @@ class DssLaunch extends Page
         super
         enableZoneDetect(true)
         @dockReal = new Dock()
-        dock_hide_tid = setInterval(->
+        dock_hide_tid = setInterval(=>
             @dockReal.hide()
         ,100)
         @dockMode = new DockMode("dockMode_#{_dm}",_dm,@element)
@@ -50,8 +50,16 @@ class DssLaunch extends Page
 
         setTimeout(=>
             @pos = @dockMode.get_icon_pos(@dockMode.get_dss_index())
-            @circle_x = @pos.x - @circle.pointer_width
-            @circle_y = @pos.y - @circle.pointer_height
+            switch _dm
+                when DisplayMode.Fashion
+                    @circle_x = @pos.x - @circle.pointer_width - 10
+                    @circle_y = @pos.y - @circle.pointer_height - 10
+                when DisplayMode.Efficient
+                    @circle_x = @pos.x - @circle.pointer_width - 8
+                    @circle_y = @pos.y - @circle.pointer_height - 8
+                when DisplayMode.Classic
+                    @circle_x = @pos.x - @circle.pointer_width - 7
+                    @circle_y = @pos.y - @circle.pointer_height - 8
             @circle.set_area_pos(@circle_x,@circle_y,"fixed",POS_TYPE.leftup)
             @circle.show_animation()
         ,200)

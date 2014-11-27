@@ -48,8 +48,16 @@ class LauncherLaunch extends Page
         )
         setTimeout(=>
             @pos = @dockMode.get_icon_pos(@dockMode.get_launcher_index())
-            @circle_x = @pos.x - @circle.pointer_width
-            @circle_y = @pos.y - @circle.pointer_height
+            switch _dm
+                when DisplayMode.Fashion
+                    @circle_x = @pos.x - @circle.pointer_width - 9
+                    @circle_y = @pos.y - @circle.pointer_height - 8
+                when DisplayMode.Efficient
+                    @circle_x = @pos.x - @circle.pointer_width + 60
+                    @circle_y = @pos.y - @circle.pointer_height - 8
+                when DisplayMode.Classic
+                    @circle_x = @pos.x - @circle.pointer_width + 60
+                    @circle_y = @pos.y - @circle.pointer_height - 8
             @circle.set_area_pos(@circle_x,@circle_y,"fixed",POS_TYPE.leftup)
             @circle.show_animation()
         ,200)

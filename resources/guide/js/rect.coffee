@@ -29,7 +29,7 @@ class Rect extends Widget
         @rect.style.borderColor = "rgba(255,255,255,0.0)"
         @rect.style.borderStyle = "dashed"
         @rect.style.borderWidth = "1px"
-        @rect.style.borderRadius = "5px"
+        @rect.style.borderRadius = "50%"
         @rect.style.width = @width
         @rect.style.height = @height
 

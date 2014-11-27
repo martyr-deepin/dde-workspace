@@ -135,13 +135,13 @@ class Guide extends Widget
 
             when "DesktopCornerRightUp"
                 page = new DesktopCornerRightUp(cls_name)
+                clearInterval(restack_tid)
 
             when "DesktopZoneSetting"
                 page = new DesktopZoneSetting(cls_name)
 
             when "End"
                 page = new End(cls_name)
-                clearInterval(restack_tid)
 
             else
                 echo "cls_name is #{cls_name}"
