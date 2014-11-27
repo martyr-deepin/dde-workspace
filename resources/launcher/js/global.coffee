@@ -6,4 +6,5 @@ searchResult = null
 uninstalling_apps = null
 isNotForceShow = true
 categoryList = null
+launcherSetting = null
 # startTime = new Date()

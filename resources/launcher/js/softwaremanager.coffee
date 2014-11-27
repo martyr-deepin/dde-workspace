@@ -24,7 +24,8 @@ uninstallFailedHandler = (itemId, reason)->
 
     item.status = SOFTWARE_STATE.IDLE
     item.show()
-    categoryList.showNonemptyCategories()
+    if launcherSetting.getSortMethod() == SortMethod.Method.ByCategory
+        categoryList.showNonemptyCategories()
 
 uninstallSuccessHandler = (itemId)->
 
@@ -40,7 +41,8 @@ update = (status, info, categories)->
             console.log 'deleted'
             item.status = SOFTWARE_STATE.UNINSTALLING
             item.hide()
-            categoryList.hideEmptyCategories()
+            if launcherSetting.getSortMethod() == SortMethod.Method.ByCategory
+                categoryList.hideEmptyCategories()
             item.destroy()
             delete applications[id]
     else if status.match(/^created$/i)
@@ -51,7 +53,8 @@ update = (status, info, categories)->
         searchResult.append(item.elements.search)
 
         categoryList.addItem(id, categories)
-        categoryList.showNonemptyCategories()
+        if launcherSetting.getSortMethod() == SortMethod.Method.ByCategory
+            categoryList.showNonemptyCategories()
         if !switcher.isInSearch()
             if switcher.isShowCategory
                 switcher.switchToCategory()

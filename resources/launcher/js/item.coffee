@@ -368,7 +368,8 @@ class Item extends Widget
             when "2"
                 @status = SOFTWARE_STATE.UNINSTALLING
                 @hide()
-                categoryList.hideEmptyCategories()
+                if launcherSetting.getSortMethod() == SortMethod.Method.ByCategory
+                    categoryList.hideEmptyCategories()
                 console.log 'start uninstall'
                 if @icon.indexOf("data:image") != -1
                     icon = @icon
