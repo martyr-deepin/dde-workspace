@@ -21,12 +21,12 @@
 class DockMenu extends Page
     constructor:(@id)->
         super
-        @dock = new Dock()
+        @dockReal = new Dock()
+        @dockReal.hide()
         @message = _("Three modes and the display status can be switched by right-click on the blank area of dock")
         @show_message(@message)
 
         DCore.Guide.cursor_hide()
-        @dock.hide()
         @menu_create(screen.width / 2, 10)
 
     menu_create: (x,y) ->
@@ -58,7 +58,7 @@ class DockMenu extends Page
 
     switch_page: ->
         setTimeout(=>
-            @dock?.show()
+            @dockReal.show()
             DCore.Guide.cursor_show()
             guide?.switch_page(@,"LauncherLaunch")
         ,t_mid_switch_page)

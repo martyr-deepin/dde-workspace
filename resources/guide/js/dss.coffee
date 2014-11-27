@@ -21,14 +21,11 @@
 
 class DssLaunch extends Page
     switch_timeout = null
-    dock_hide_tid = null
     constructor:(@id)->
         super
         enableZoneDetect(true)
         @dockReal = new Dock()
-        dock_hide_tid = setInterval(=>
-            @dockReal.hide()
-        ,100)
+        @dockReal.hide()
         @dockMode = new DockMode("dockMode_#{_dm}",_dm,@element)
         dss = new Dss()
 
@@ -66,7 +63,6 @@ class DssLaunch extends Page
 
     switch_page: =>
         clearTimeout(switch_timeout)
-        clearInterval(dock_hide_tid)
         switch_timeout = setTimeout(=>
             @dockMode.destroy()
             @dockReal.show()

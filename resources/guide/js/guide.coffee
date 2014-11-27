@@ -1,6 +1,5 @@
 class Guide extends Widget
     page_index = 0
-    restack_tid = null
     constructor: (@id)->
         super
         @pages = []
@@ -9,9 +8,13 @@ class Guide extends Widget
         if DEBUG
             @exit_button_create()
         else
-            restack_tid = setInterval(->
+            @restack_tid = setInterval(->
                 DCore.Guide.restack()
             ,150)
+
+    handle_exit: ->
+        enableZoneDetect(true)
+        new Dock().show()
 
     exit_button_create: ->
         exit_button = create_element("botton","",document.body)
@@ -24,9 +27,10 @@ class Guide extends Widget
         exit_button.style.fontSize = 16
         exit_button.addEventListener("click",(e) =>
             e.stopPropagation()
-            enableZoneDetect(true)
+            @handle_exit()
             DCore.Guide.quit()
         )
+
     set_size: (info) =>
         @element.style.position = "fixed"
         @element.style.left = info.x
@@ -67,6 +71,7 @@ class Guide extends Widget
         else
             DCore.Guide.disable_guide_region()
         enableZoneDetect(false)
+        new Dss().hide() if cls_name != "DssShutdown"
         echo "create_page #{cls_name}"
         switch cls_name
             when "Welcome"
@@ -135,7 +140,7 @@ class Guide extends Widget
 
             when "DesktopCornerRightUp"
                 page = new DesktopCornerRightUp(cls_name)
-                clearInterval(restack_tid)
+                clearInterval(@restack_tid)
 
             when "DesktopZoneSetting"
                 page = new DesktopZoneSetting(cls_name)

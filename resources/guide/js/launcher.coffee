@@ -19,23 +19,22 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class LauncherLaunch extends Page
-    switch_timeout = null
-    dock_hide_tid = null
     constructor:(@id)->
         super
         enableZoneDetect(true)
         @dockReal = new Dock()
-        dock_hide_tid = setInterval(=>
-            @dockReal.hide()
-        ,100)
+        @dockReal.hide()
         @dockMode = new DockMode("dockMode_#{_dm}",_dm,@element)
 
         @launcher = new Launcher()
+        @launcher.hide()
         @message = _("\"Application Launcher\" can be started by sliding the mouse to the upper left corner or clicking on the launcher.")
         @show_message(@message)
 
         @corner_leftup = new Pointer("corner_leftup",@element)
-        @corner_leftup.create_pointer(AREA_TYPE.corner,POS_TYPE.leftup)
+        @corner_leftup.create_pointer(AREA_TYPE.corner,POS_TYPE.leftup,=>
+            @tid_show_signal = setTimeout(@show_signal_cb,3000)
+        ,"mouseenter")
         @corner_leftup.set_area_pos(0,0,"fixed",POS_TYPE.leftup)
         @corner_leftup.show_animation()
         @circle = new Pointer("launcher_circle",@element)
@@ -44,7 +43,8 @@ class LauncherLaunch extends Page
             circle_type = POS_TYPE.rightdown
         else circle_type = POS_TYPE.leftdown
         @circle.create_pointer(AREA_TYPE.circle,circle_type,=>
-            @launcher?.show()
+            @launcher.launch()
+            @tid_show_signal = setTimeout(@show_signal_cb,3000)
         )
         setTimeout(=>
             @pos = @dockMode.get_icon_pos(@dockMode.get_launcher_index())
@@ -65,12 +65,12 @@ class LauncherLaunch extends Page
         @launcher.show_signal(@show_signal_cb)
 
     show_signal_cb:=>
-        clearTimeout(switch_timeout)
-        clearInterval(dock_hide_tid)
+        clearTimeout(@tid_show_signal)
         enableZoneDetect(false)
         @element.style.display = "none"
         setTimeout(=>
             @launcher.show_signal_disconnect()
+            @launcher?.show()
             @dockMode.destroy()
             @dockReal.show()
             guide?.switch_page(@,"LauncherSearch")
@@ -85,6 +85,7 @@ class LauncherSearch extends Page
         @show_message(@message)
         @show_tips(@tips)
 
+        new Launcher()?.show()
         @fcitx = new Fcitx()
         @fcitx?.setCurrentIM("fcitx-keyboard-us")
         deepin_keysym = [68,69,69,80,73,78]
@@ -99,7 +100,7 @@ class LauncherIconDrag extends Page
         @show_message(@message)
         setTimeout(=>
             guide?.switch_page(@,"LauncherMenu")
-        ,t_switch_page)
+        ,t_mid_switch_page)
 
 class LauncherMenu extends Page
     APP_NAME_1 = "deepin-movie"
@@ -159,4 +160,4 @@ class LauncherMenu extends Page
             #DCore.Guide.spawn_command_sync("/usr/lib/deepin-daemon/desktop-toggle",true)
             DCore.Guide.cursor_show()
             guide?.switch_page(@,"DesktopRichDir")
-        ,t_switch_page)
+        ,t_mid_switch_page)

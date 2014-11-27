@@ -37,16 +37,19 @@ class Welcome extends Page
         @readying = create_element("div","readying",@element)
         @readying.innerText = _("Prepare for operation ...")
 
-        interval_switch = setInterval(=>
+        interval_stage = setInterval(=>
             if @session.getStage() < @session.STAGE.SessionStageCoreEnd then return
-            clearInterval(interval_switch)
+            clearInterval(interval_stage)
             @prepare()
         ,200)
 
     show_signal_cb: =>
-        @launcher.hide()
+        clearTimeout(@switch_page_tid)
+        clearInterval(@show_tid)
         try
+            @launcher.hide()
             @launcher.show_signal_disconnect()
+            guide?.switch_page(@,"Start")
         catch e
             console.debug "#{e}"
 
@@ -54,11 +57,16 @@ class Welcome extends Page
         try
             @launcher = new Launcher()
             @launcher.show_signal(@show_signal_cb)
-            @launcher.show()
+            @launcher.launch()
+            @show_tid = setInterval(=>
+                @launcher.show()
+                @launcher.hide()
+            ,500)
         catch e
-            console.debug "#{e}"
+            console.debug "launcher show_signal connect:#{e}"
         finally
-            setTimeout(=>
+            @switch_page_tid = setTimeout(=>
+                console.debug "======Failed::interval to connect launcher show_signal!!!!======"
+                @launcher.launch()
                 @show_signal_cb()
-                guide?.switch_page(@,"Start")
-            ,2000)
+            ,3000)

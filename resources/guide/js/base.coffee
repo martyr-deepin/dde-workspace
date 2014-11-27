@@ -61,6 +61,9 @@ class Desktop
     richdir_signal_disconnect: ->
         @dbus?.dis_connect("RichdirCreate",@richdir_signal_cb)
 
+    show_desktop: (show = true) ->
+        DCore.Guide.toggle_show_desktop(show)
+
 class Dss
     DSS = "com.deepin.dde.ControlCenter"
     constructor: ->
@@ -89,6 +92,9 @@ class Launcher
         catch e
             @dbus_error = true
             console.log "#{LAUNCHER} dbus error :#{e}"
+
+    launch: ->
+        DCore.Guide.spawn_command_sync("/usr/bin/dde-launcher",false)
 
     hide: ->
         @dbus?.Hide_sync()
@@ -141,6 +147,10 @@ class Dock
         name:"com.deepin.daemon.Dock"
         path:"/dde/dock/DockRegion"
         interface:"dde.dock.DockRegion"
+    DOCK_AREA =
+        name:"com.deepin.daemon.Dock"
+        path:"/dde/dock/XMouseAreaProxyer"
+        interface:"dde.dock.XMouseAreaProxyer"
     constructor: ->
         try
             @dock_region_dbus = DCore.DBus.session_object(
@@ -153,10 +163,16 @@ class Dock
                 DOCK_SETTING.path,
                 DOCK_SETTING.interface
             )
+            @dock_area_dbus = DCore.DBus.session_object(
+                DOCK_AREA.name,
+                DOCK_AREA.path,
+                DOCK_AREA.interface
+            )
             @launcher_index = 1
-            @dock_index = DCore.Guide.get_dock_app_index("dde-control-center") + 2
+            @dss_index = DCore.Guide.get_dock_app_index("dde-control-center") + 2
+            @region = @get_dock_region()
         catch e
-            echo "#{DOCK_REGION}: dbus error:#{e}"
+            echo "dock daemon dbus error:#{e}"
 
     get_dock_region: ->
         region = @dock_region_dbus?.GetDockRegion_sync()
@@ -185,13 +201,15 @@ class Dock
         return @get_icon_pos(@launcher_index)
 
     get_dssicon_pos: ->
-        return @get_icon_pos(@dock_index)
+        return @get_icon_pos(@dss_index)
 
     hide: ->
         @dock_setting_dbus.SetHideMode(1)
+        #@dock_area_dbus.RegisterAreas([@region.x,@region.y,0,@region.h],1)
 
     show: ->
         @dock_setting_dbus.SetHideMode(0)
+        #@dock_area_dbus.RegisterAreas([@region.x,@region.y,@region.w,@region.h],1)
 
 
 class Page extends Widget

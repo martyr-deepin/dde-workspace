@@ -29,7 +29,7 @@ class End extends Page
         @choose_div = create_element("div","choose_div",@element)
         @end = new ButtonNext("end",_("Start my Deepin trip"),@choose_div)
         @end.create_button(=>
-            enableZoneDetect(true)
+            guide?.handle_exit()
             DCore.Guide.quit()
         )
 

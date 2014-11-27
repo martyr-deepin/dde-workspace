@@ -303,3 +303,30 @@ void guide_cursor_show()
     g_object_unref(cursor);
 }
 
+JS_EXPORT_API
+void guide_toggle_show_desktop(gboolean show)
+{
+    int status = 0;
+    if (show)
+        status = 1;
+    else
+        status = 0;
+    g_message("[%s]:===%d===,desktop status to %d",__func__, show, status);
+
+    Display* dsp = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
+    static Atom _NET_SHOWING_DESKTOP = 0;
+    if (_NET_SHOWING_DESKTOP == 0) {
+        _NET_SHOWING_DESKTOP = gdk_x11_get_xatom_by_name("_NET_SHOWING_DESKTOP");
+    }
+    XClientMessageEvent event;
+    event.type = ClientMessage;
+    event.send_event = True;
+    event.display = dsp;
+    event.window = GDK_ROOT_WINDOW();
+    event.message_type = _NET_SHOWING_DESKTOP;
+    event.format = 32;
+    event.data.l[0] = status;
+    XSendEvent(dsp, GDK_ROOT_WINDOW(), False,
+               SubstructureRedirectMask | SubstructureNotifyMask, (XEvent*)&event);
+    XFlush(dsp);
+}

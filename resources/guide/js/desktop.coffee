@@ -24,6 +24,7 @@ class DesktopRichDir extends Page
     constructor:(@id)->
         super
         @desktop = new Desktop()
+        @desktop.show_desktop(true)
         @message = _("Let's drag the other icon on the first icon \n to generate \"application group\"")
         @show_message(@message)
 
@@ -187,6 +188,7 @@ class DesktopCornerLeftDown extends Page
             if !mouseovered
                 setTimeout(=>
                     DCore.Guide.spawn_command_sync("pkill nautilus",false)
+                    DCore.Guide.toggle_show_desktop(true)
                     guide?.switch_page(@,"DssLaunch")
                 ,t_mid_switch_page)
             mouseovered = true
@@ -202,8 +204,6 @@ class DesktopCornerRightUp extends Page
         @show_message(@message)
         @show_tips(@tips)
 
-        dss = new Dss()
-        dss.hide()
         @pointer_create()
 
     pointer_create : ->
