@@ -21,7 +21,6 @@
 class DockMenu extends Page
     constructor:(@id)->
         super
-        inject_css(@element,"css/dock.css")
         @dock = new Dock()
         @message = _("Three modes and the display status can be switched by right-click on the blank area of dock")
         @show_message(@message)

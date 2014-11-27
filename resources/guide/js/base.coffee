@@ -233,6 +233,7 @@ class DockMode extends Widget
     constructor:(@id,@mode,parent)->
         super
         echo "new DockMode(#{@id},#{@mode})"
+        inject_css(@element,"css/dock.css")
         parent.appendChild(@element)
         @create_dock()
 
@@ -266,7 +267,21 @@ class DockMode extends Widget
 
     get_icon_pos: (icon_index) ->
         if icon_index > @icons.length then icon_index = 1
-        return jQuery(@icons[icon_index]).position()
+        icon = {x:null,y:null,w:null,h:null}
+        pos = get_page_xy(@icons[icon_index], 0, 0)
+        icon.x = pos.x
+        icon.y = pos.y
+        icon.w = @icons[icon_index].clientWidth
+        icon.h = @icons[icon_index].clientHeight
+        console.log "[get_icon_pos]:#{icon_index}:(#{icon.x},#{icon.y})===w,h:#{icon.w},#{icon.h}"
+        icon
+
+
+    get_dss_index: ->
+        7
+
+    get_launcher_index: ->
+        1
 
     check_time: (t) ->
         if t < 10

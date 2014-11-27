@@ -43,5 +43,22 @@ class Welcome extends Page
             @prepare()
         ,200)
 
+    show_signal_cb: =>
+        @launcher.hide()
+        try
+            @launcher.show_signal_disconnect()
+        catch e
+            console.debug "#{e}"
+
     prepare : =>
-        guide?.switch_page(@,"Start")
+        try
+            @launcher = new Launcher()
+            @launcher.show_signal(@show_signal_cb)
+            @launcher.show()
+        catch e
+            console.debug "#{e}"
+        finally
+            setTimeout(=>
+                @show_signal_cb()
+                guide?.switch_page(@,"Start")
+            ,2000)

@@ -20,11 +20,16 @@
 
 
 class DssLaunch extends Page
+    switch_timeout = null
+    dock_hide_tid = null
     constructor:(@id)->
         super
         enableZoneDetect(true)
-        get_dssicon_pos_interval = null
-        switch_timeout = null
+        @dockReal = new Dock()
+        dock_hide_tid = setInterval(->
+            @dockReal.hide()
+        ,100)
+        @dockMode = new DockMode("dockMode_#{_dm}",_dm,@element)
         dss = new Dss()
 
         @message = _("The Control Center will be shown or hidden by sliding the mouse to the lower right corner")
@@ -32,32 +37,33 @@ class DssLaunch extends Page
         @show_message(@message)
         @show_tips(@tips)
 
-        @dock = new Dock()
         @circle = new Pointer("dss_circle",@element)
         @circle.create_pointer(AREA_TYPE.circle,POS_TYPE.rightdown,=>
-            clearInterval(get_dssicon_pos_interval)
             dss.show()
-            guide?.switch_page(@,"DssShutdown")
+            @switch_page()
         )
+
         @corner = new Pointer("corner_rightdown",@element)
-        @corner.create_pointer(AREA_TYPE.corner,POS_TYPE.rightdown,=>
-            clearInterval(get_dssicon_pos_interval)
-            clearTimeout(switch_timeout)
-            switch_timeout = setTimeout(=>
-                guide?.switch_page(@,"DssShutdown")
-            ,t_min_switch_page)
-        ,"mouseover")
+        @corner.create_pointer(AREA_TYPE.corner,POS_TYPE.rightdown,@switch_page,"mouseover")
         @corner.set_area_pos(0,0,"fixed",POS_TYPE.rightdown)
         @corner.show_animation()
-        get_dssicon_pos_interval = setInterval(=>
-            icon = DCore.get_theme_icon("preferences-system", 48)
-            @circle.enable_area_icon(icon,ICON_SIZE[_dm].w,ICON_SIZE[_dm].h)
-            @pos = @dock.get_dssicon_pos()
-            @circle_x = @pos.x0 - @circle.pointer_width
-            @circle_y = @pos.y0 - @circle.pointer_height
+
+        setTimeout(=>
+            @pos = @dockMode.get_icon_pos(@dockMode.get_dss_index())
+            @circle_x = @pos.x - @circle.pointer_width
+            @circle_y = @pos.y - @circle.pointer_height
             @circle.set_area_pos(@circle_x,@circle_y,"fixed",POS_TYPE.leftup)
-        ,100)
-        @circle.show_animation()
+            @circle.show_animation()
+        ,200)
+
+    switch_page: =>
+        clearTimeout(switch_timeout)
+        clearInterval(dock_hide_tid)
+        switch_timeout = setTimeout(=>
+            @dockMode.destroy()
+            @dockReal.show()
+            guide?.switch_page(@,"DssShutdown")
+        ,t_min_switch_page)
 
 
 class DssShutdown extends Page
@@ -67,9 +73,6 @@ class DssShutdown extends Page
         @tips = _("tips: Hover the setting icon on dock to quickly implement some setting functions")
         @show_message(@message)
         @show_tips(@tips)
-        restack_tid = setInterval(->
-            DCore.Guide.restack()
-        ,200)
 
         dss = new Dss()
         dss.show()
@@ -78,7 +81,6 @@ class DssShutdown extends Page
         @rect.set_pos(155,35,"fixed",POS_TYPE.rightdown)
         @rect.show_animation(=>
             setTimeout(=>
-                clearInterval(restack_tid)
                 guide?.switch_page(@,"DesktopCornerRightUp")
             ,500 * 5)
         )

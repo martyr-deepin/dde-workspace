@@ -19,14 +19,21 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class LauncherLaunch extends Page
-    get_launchericon_pos_interval = null
+    switch_timeout = null
+    dock_hide_tid = null
     constructor:(@id)->
         super
         enableZoneDetect(true)
-        @dock = new Dock()
+        @dockReal = new Dock()
+        dock_hide_tid = setInterval(=>
+            @dockReal.hide()
+        ,100)
+        @dockMode = new DockMode("dockMode_#{_dm}",_dm,@element)
+
         @launcher = new Launcher()
         @message = _("\"Application Launcher\" can be started by sliding the mouse to the upper left corner or clicking on the launcher.")
         @show_message(@message)
+
         @corner_leftup = new Pointer("corner_leftup",@element)
         @corner_leftup.create_pointer(AREA_TYPE.corner,POS_TYPE.leftup)
         @corner_leftup.set_area_pos(0,0,"fixed",POS_TYPE.leftup)
@@ -39,26 +46,28 @@ class LauncherLaunch extends Page
         @circle.create_pointer(AREA_TYPE.circle,circle_type,=>
             @launcher?.show()
         )
-        get_launchericon_pos_interval = setInterval(=>
-            icon = DCore.get_theme_icon("start-here", 48)
-            @circle.enable_area_icon(icon,ICON_SIZE[_dm].w,ICON_SIZE[_dm].h)
-            @pos = @dock.get_launchericon_pos()
-            @circle_x = @pos.x0 - @circle.pointer_width
-            @circle_y = @pos.y0 - @circle.pointer_height
+        setTimeout(=>
+            @pos = @dockMode.get_icon_pos(@dockMode.get_launcher_index())
+            @circle_x = @pos.x - @circle.pointer_width
+            @circle_y = @pos.y - @circle.pointer_height
             @circle.set_area_pos(@circle_x,@circle_y,"fixed",POS_TYPE.leftup)
-        ,100)
-        @circle.show_animation()
+            @circle.show_animation()
+        ,200)
 
         @launcher.show_signal(@show_signal_cb)
 
     show_signal_cb:=>
+        clearTimeout(switch_timeout)
+        clearInterval(dock_hide_tid)
         enableZoneDetect(false)
         @element.style.display = "none"
         setTimeout(=>
             @launcher.show_signal_disconnect()
-            clearInterval(get_launchericon_pos_interval)
+            @dockMode.destroy()
+            @dockReal.show()
             guide?.switch_page(@,"LauncherSearch")
         ,t_min_switch_page)
+
 
 class LauncherSearch extends Page
     constructor:(@id)->

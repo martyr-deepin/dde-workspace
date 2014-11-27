@@ -218,7 +218,6 @@ class DesktopCornerRightUp extends Page
         ,t_switch_page)
 
 class DesktopZoneSetting extends Page
-    restack_interval = null
     constructor:(@id)->
         super
         @pos = ["leftup","leftdown","rightdown","rightup"]
@@ -245,21 +244,19 @@ class DesktopZoneSetting extends Page
         OPT_WIDTH = 160
         OPT_HEIGHT = 30
         t_mousemove = 1000
-        x0 = document.body.clientWidth - OPT_WIDTH / 2
-        y0 = 40
+        x0 = document.body.clientWidth - OPT_WIDTH / 2 - 8
+        y0 = 10
         move_mouse(x0,y0,false)
-        t = null
-        #TODO:
-        #here should make the zone setting menu always show
-        for i in [1...6]
-            t = t_mousemove * i
-            setTimeout(->
-                y0 += OPT_HEIGHT
-                move_mouse(x0,y0,false)
-            ,t)
+        t = 500
+        moveY = y0
+        moveYEnd = y0 + OPT_HEIGHT * 7
+        mouse_move_tid = setInterval(->
+            move_mouse(x0,moveY++,false)
+            if moveY >= moveYEnd
+                clearInterval(mouse_move_tid)
+        ,t / (moveYEnd - moveY))
         t
 
     switch_page: =>
         DCore.Guide.spawn_command_sync("killall dde-zone",true)
-        clearInterval(restack_interval)
         guide?.switch_page(@,"End")

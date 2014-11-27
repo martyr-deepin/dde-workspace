@@ -1,11 +1,17 @@
 class Guide extends Widget
     page_index = 0
+    restack_tid = null
     constructor: (@id)->
         super
         @pages = []
         echo "new Guide"
         document.body.appendChild(@element)
-        @exit_button_create() if DEBUG
+        if DEBUG
+            @exit_button_create()
+        else
+            restack_tid = setInterval(->
+                DCore.Guide.restack()
+            ,150)
 
     exit_button_create: ->
         exit_button = create_element("botton","",document.body)
@@ -135,6 +141,7 @@ class Guide extends Widget
 
             when "End"
                 page = new End(cls_name)
+                clearInterval(restack_tid)
 
             else
                 echo "cls_name is #{cls_name}"
