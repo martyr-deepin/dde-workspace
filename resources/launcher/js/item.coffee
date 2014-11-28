@@ -79,7 +79,7 @@ class Item extends Widget
                 categoryList.category(k).removeItem(@id)
         delete Widget.object_table[@id]
 
-    add:(pid, parent)->
+    add:(pid)->
         # if @elements[pid]
         #     console.log 'exist'
         #     return @elements[pid]
@@ -92,10 +92,6 @@ class Item extends Widget
             @load_image(im)
 
         @elements[pid] = el
-        if pid != "search"
-            if !parent?
-                categoryList.addItem(@id, pid)
-        parent?.appendChild(el)
         el
 
     remove:(pid)->

@@ -36,7 +36,8 @@ class Category
         @sortItem()
         for id in @items
             if (item = Widget.look_up(id))?
-                item.add(@id, frag)
+                el = item.add(@id, frag)
+                frag.appendChild(el)
 
         @grid.appendChild(frag)
 
@@ -87,8 +88,8 @@ class Category
         if item? && @items.indexOf(id) == -1
             console.log "add to category##{@id}"
             @items.push(id)
-            el = item.add(@id, @grid)
-            @sort()
+            el = item.add(@id)
+            @grid.appendChild(el)
             return el
         null
 

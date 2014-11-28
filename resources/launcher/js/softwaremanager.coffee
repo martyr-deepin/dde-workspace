@@ -52,7 +52,12 @@ update = (status, info, categories)->
         item.add('search')
         searchResult.append(item.elements.search)
 
-        categoryList.addItem(id, categories)
+        if switcher.isShowCategory
+            categoryList.addItem(id, categories)
+            categoryList.sort(categories)
+        else
+            categoryList.addItem(id)
+            categoryList.sort()
         if launcherSetting.getSortMethod() == SortMethod.Method.ByCategory
             categoryList.showNonemptyCategories()
         if !switcher.isInSearch()

@@ -116,6 +116,13 @@ class CategoryListWithCategory extends Page
             catch e
                 console.error "CategoryList.removeItem: #{e}"
 
+    sort:(categories)->
+        for cat_id in categories
+            try
+                @categories[cat_id].sort()
+            catch e
+                console.error "CategoryList.removeItem: #{e}"
+
     category:(id)->
         return @categories[id] if @categories[id]?
         null
@@ -305,7 +312,8 @@ class CategoryListWithoutCategory extends Page
 
         frag = document.createDocumentFragment()
         for id in infos
-            Widget.look_up(id).add(@id, frag)
+            el = Widget.look_up(id).add(@id)
+            frag.appendChild(el)
         @container.appendChild(frag)
         Item.updateHorizontalMargin()
         $("#grid").style.overflowY = ""
@@ -313,45 +321,36 @@ class CategoryListWithoutCategory extends Page
     reset:()->
         @resetScrollOffset()
 
+    addItem:(id)->
+        item = Widget.look_up(id)
+        if item? and not item.getElement(id)
+            console.log "add #{item.id} to category##{@id}"
+            el = item.add(@id)
+            @container.appendChild(el)
+            return el
+        null
+
+    sort:->
+        list = getItemList(launcherSetting.getSortMethod())
+        for i in [list.length-1..0]
+            if (item = Widget.look_up(list[i]))?
+                target = item.getElement(@id)
+                @container.removeChild(target)
+                @container.insertBefore(target, @container.firstChild)
+
 
 makeCategoryList = (sortMethod)->
     $("#grid").innerHTML = ""
+    list = getItemList(sortMethod)
     switch sortMethod
         when SortMethod.Method.ByName
             console.log("change to sort by name")
-
-            list = sortByName(Object.keys(applications))
-            # console.log(list)
-
             return new CategoryListWithoutCategory(list, sortMethod)
         when SortMethod.Method.ByTimeInstalled
             console.log("change to sort by install time")
-
-            timeInstalled = daemon.GetAllTimeInstalled_sync()
-            timeInstalledObj = {}
-
-            for f in timeInstalled
-                timeInstalledObj[f[0]] = f[1]
-
-            # console.log(timeInstalledObj)
-            list = sortByTimeInstalled(Object.keys(applications), timeInstalledObj)
-            # console.log(list)
-
             return new CategoryListWithoutCategory(list, sortMethod)
         when SortMethod.Method.ByFrequency
             console.log("change to sort by frequency")
-
-            frequency = daemon.GetAllFrequency_sync()
-            frequencyObj = {}
-
-            for f in frequency
-                frequencyObj[f[0]] = f[1]
-
-            # console.log(frequencyObj)
-            list = sortByFrequency(Object.keys(applications), frequencyObj)
-            # console.log(list)
-
             return new CategoryListWithoutCategory(list, sortMethod)
         when SortMethod.Method.ByCategory
-            infos = daemon.GetAllCategoryInfos_sync()
-            return new CategoryListWithCategory(infos, sortMethod)
+            return new CategoryListWithCategory(list, sortMethod)

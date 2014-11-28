@@ -94,3 +94,42 @@ inView=(el)->
     # console.log("inView: #{inBoxView}")
 
     inBoxView
+
+getItemList =(sortMethod)->
+    switch sortMethod
+        when SortMethod.Method.ByName
+            console.log("change to sort by name")
+
+            list = sortByName(Object.keys(applications))
+            # console.log(list)
+
+            return list
+        when SortMethod.Method.ByTimeInstalled
+            console.log("change to sort by install time")
+
+            timeInstalled = daemon.GetAllTimeInstalled_sync()
+            timeInstalledObj = {}
+
+            for f in timeInstalled
+                timeInstalledObj[f[0]] = f[1]
+
+            list = sortByTimeInstalled(Object.keys(applications), timeInstalledObj)
+            # console.log(list)
+
+            return list
+        when SortMethod.Method.ByFrequency
+            console.log("change to sort by frequency")
+
+            frequency = daemon.GetAllFrequency_sync()
+            frequencyObj = {}
+
+            for f in frequency
+                frequencyObj[f[0]] = f[1]
+
+            list = sortByFrequency(Object.keys(applications), frequencyObj)
+            # console.log(list)
+
+            return list
+        when SortMethod.Method.ByCategory
+            infos = daemon.GetAllCategoryInfos_sync()
+            return infos

@@ -28,7 +28,8 @@ class SearchResult extends Page
 
         frag = document.createDocumentFragment()
         for own k, v of applications
-            el = v.add('search', frag)
+            el = v.add('search')
+            frag.appendChild(el)
             el.style.display = 'none'
         @container.appendChild(frag)
         SearchResult.inited = true
