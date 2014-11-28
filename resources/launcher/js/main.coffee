@@ -67,6 +67,7 @@ console.log "load category bar done"
 categoryList = makeCategoryList(launcherSetting.getSortMethod())
 console.log "load category list done"
 
+_showCategoryBarTimer = null
 launcherSetting.listenSortMethodChanged((newMethod)->
     categoryList.reset()
     categoryBar.sortMethod = newMethod
@@ -75,7 +76,10 @@ launcherSetting.listenSortMethodChanged((newMethod)->
     selector.container(categoryList)
     if switcher.isShowCategory
         categoryBar.show()
-        categoryBar.focusCategory(categoryList.firstCategory()?.id)
+        clearTimeout(_showCategoryBarTimer)
+        _showCategoryBarTimer = setTimeout(->
+            categoryBar.focusCategory(categoryList.firstCategory()?.id)
+        , 50)
     else
         categoryBar.hide()
     categoryList.getBox().offsetTop

@@ -25,6 +25,7 @@ class CategoryBar
         @category = $("#categoryBar")
         @indicatorMask = create_element(tag:"div", id: "categoryIndicatorMask", document.body)
         @indicatorImg = create_element(tag:"img", src:"img/category_indicator.png", id:"categoryIndicator", @indicatorMask)
+        @switchIndicatorTimer = null
         @category.addEventListener("click", (e) =>
             e.stopPropagation()
             target = e.target
@@ -90,8 +91,12 @@ class CategoryBar
             categoryItem = @category_items[id]
             if categoryItem
                 categoryItem.focus()
-                rect = categoryItem.getBoundingClientRect()
-                @indicatorImg.style.top = rect.top - 2000 + rect.height/2
+                clearTimeout(@switchIndicatorTimer)
+                @switchIndicatorTimer = setTimeout(do(categoryItem=categoryItem)=>
+                        rect = categoryItem.getBoundingClientRect()
+                        console.log("rect.top: #{rect.top} rect.height: #{rect.height}")
+                        @indicatorImg.style.top = rect.top - 2000 + rect.height/2
+                , 50)
 
     dark:->
         for own k, v of @category_items
