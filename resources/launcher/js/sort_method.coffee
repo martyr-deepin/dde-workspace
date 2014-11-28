@@ -27,8 +27,7 @@ class SortMethod
         return "unknown"
 
 
-sortByName = (apps)->
-    apps.sort((lhs, rhs)->
+sortByNameCompare = (lhs, rhs)->
         lItem = Widget.look_up(lhs)
         rItem = Widget.look_up(rhs)
 
@@ -37,40 +36,27 @@ sortByName = (apps)->
         if lItem.name < rItem.name
             return -1
         return 0
-    )
+sortByName = (apps)->
+    apps.sort(sortByNameCompare)
 
 sortByFrequency = (apps, frequency)->
     apps.sort((lhs, rhs)->
         if frequency[lhs] > frequency[rhs]
-            return 1
+            return -1
 
         if frequency[lhs] < frequency[rhs]
-            return -1
-
-        lItem = Widget.look_up(lhs)
-        rItem = Widget.look_up(rhs)
-
-        if lItem.name > rItem.name
             return 1
-        if lItem.name < rItem.name
-            return -1
-        return 0
+
+        sortByNameCompare(lhs, rhs)
     )
 
 sortByTimeInstalled = (apps, timeInstalled)->
     apps.sort((lhs, rhs)->
         if timeInstalled[lhs] > timeInstalled[rhs]
-            return 1
+            return -1
 
         if timeInstalled[lhs] < timeInstalled[rhs]
-            return -1
-
-        lItem = Widget.look_up(lhs)
-        rItem = Widget.look_up(rhs)
-
-        if lItem.name > rItem.name
             return 1
-        if lItem.name < rItem.name
-            return -1
-        return 0
+
+        sortByNameCompare(lhs, rhs)
     )

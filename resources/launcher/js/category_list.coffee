@@ -333,6 +333,7 @@ makeCategoryList = (sortMethod)->
             for f in timeInstalled
                 timeInstalledObj[f[0]] = f[1]
 
+            # console.log(timeInstalledObj)
             list = sortByTimeInstalled(Object.keys(applications), timeInstalledObj)
             # console.log(list)
 
@@ -346,6 +347,7 @@ makeCategoryList = (sortMethod)->
             for f in frequency
                 frequencyObj[f[0]] = f[1]
 
+            # console.log(frequencyObj)
             list = sortByFrequency(Object.keys(applications), frequencyObj)
             # console.log(list)
 
