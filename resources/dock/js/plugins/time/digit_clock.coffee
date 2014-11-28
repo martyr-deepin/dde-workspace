@@ -2,7 +2,7 @@ class DigitClock extends Clock
     constructor:(setting, parent)->
         super(setting)
         @type = Clock.Type.Digit
-        @time = create_element('div', 'clock DigitClockTime', parent)
+        @time = create_element(tag:'div', class:'clock DigitClockTime', "data-use24":"true", "data-ampm":"am", parent)
         @digitWrap = create_element(tag:"div", class:"digitWrap", @time)
         @hourHeight = create_element(tag:"div", class:"timeNumber", @digitWrap)
         @loadNumber(@hourHeight, "big", 0, 2)
@@ -14,18 +14,18 @@ class DigitClock extends Clock
 
         wrap = create_element(tag:"div", class:"minAndAPM", @digitWrap)
 
-        minWrap = create_element(tag:"div", class:"minWrap", wrap)
-        @minHeight = create_element(tag:"div", minWrap)
+        @minWrap = create_element(tag:"div", class:"minWrap", wrap)
+        @minHeight = create_element(tag:"div", @minWrap)
         @loadNumber(@minHeight, "small")
         @minHeightNumber = @minHeight.firstElementChild
 
-        @minLow = create_element(tag:"div", class:"minLow", minWrap)
+        @minLow = create_element(tag:"div", class:"minLow", @minWrap)
         @loadNumber(@minLow, "small", )
         @minLowNumber = @minLow.firstElementChild
 
-        apm = create_element(tag:"div", class:"amp", wrap)
-        @am = create_img(src:"js/plugins/time/img/am.png", style:"display:none", apm)
-        @pm = create_img(src:"js/plugins/time/img/pm.png", style:"display:none", apm)
+        @ampmWrap = create_element(tag:"div", class:"ampmWrap", wrap)
+        @am = create_img(src:"js/plugins/time/img/am.png", id:"am", class:"ampm", @ampmWrap)
+        @pm = create_img(src:"js/plugins/time/img/pm.png", id:"pm", class:"ampm", @ampmWrap)
 
     loadNumber:(p, type, l=0, h=9)->
         for i in [l..h]
@@ -34,23 +34,12 @@ class DigitClock extends Clock
     update:->
         now = new Now()
         if @setting.Use24HourDisplay
+            @time.dataset.use24 = true
             hour = now.hour(24, true)
-            if @am.style.display != 'none'
-                @am.style.display = 'none'
-            if @pm.style.display != 'none'
-                @pm.style.display = 'none'
         else
+            @time.dataset.use24 = false
+            @time.dataset.ampm = if now.isMorning() then "am" else "pm"
             hour = now.hour(12, true)
-            if now.isMorning()
-                if @pm.style.display != 'none'
-                    @pm.style.display = 'none'
-                if @am.style.display == 'none'
-                    @am.style.display = ''
-            else
-                if @am.style.display != 'none'
-                    @am.style.display = 'none'
-                if @pm.style.display == 'none'
-                    @pm.style.display = ''
         @hourHeightNumber.style.display = 'none'
         @hourHeightNumber = @hourHeight.children[parseInt(hour[0])]
         @hourHeightNumber.style.display = ''

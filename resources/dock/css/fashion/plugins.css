@@ -8,6 +8,9 @@
 
 .minAndAPM {
   margin-left:1px;
+  display: -webkit-box;
+  -webkit-box-pack: end;
+  -webkit-box-orient: vertical;
 }
 .minLow{
   margin-left:1px;
@@ -15,9 +18,14 @@
 .digitWrap,.minWrap {
   display:-webkit-box;
 }
+.minWrap{
+  margin-bottom:1px;
+}
 
-.amp{
-  margin-top: 3px;
+.ampmWrap {
+  margin-top:2px;
+}
+.ampm{
 }
 .clock{
     position: absolute;
@@ -32,4 +40,12 @@
     display:-webkit-box;
     -webkit-box-pack:center;
 }
-
+.DigitClockTime[data-use24=true] .ampmWrap {
+  display:none;
+}
+.DigitClockTime[data-ampm=am] #pm{
+  display:none;
+}
+.DigitClockTime[data-ampm=pm] #am{
+  display:none;
+}
