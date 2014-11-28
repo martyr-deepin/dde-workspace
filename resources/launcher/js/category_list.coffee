@@ -338,6 +338,10 @@ class CategoryListWithoutCategory extends Page
                 @container.removeChild(target)
                 @container.insertBefore(target, @container.firstChild)
 
+    removeItem:(id)->
+        if (item = Widget.look_up(id))?
+            console.log "remove from category##{@id}"
+            item.remove(@id)
 
 makeCategoryList = (sortMethod)->
     $("#grid").innerHTML = ""

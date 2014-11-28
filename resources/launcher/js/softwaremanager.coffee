@@ -18,6 +18,7 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 uninstallFailedHandler = (itemId, reason)->
+    console.log("[uninstallFailedHandler] uninstall #{itemId} failed: #{reason}")
     item = Widget.look_up(itemId)
     if not item?
         return
@@ -28,6 +29,7 @@ uninstallFailedHandler = (itemId, reason)->
         categoryList.showNonemptyCategories()
 
 uninstallSuccessHandler = (itemId)->
+    console.log("[uninstallSuccessHandler] uninstall #{itemId} successful")
 
 update = (status, info, categories)->
     path = info[0]

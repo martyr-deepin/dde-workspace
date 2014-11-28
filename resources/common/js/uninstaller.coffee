@@ -77,6 +77,7 @@ class Uninstaller
     uninstallFailedHandler:(appId, reason)=>
         if appId != @appId
             return
+        console.log("#{appId} uninstall failed: #{reason}")
         @failedHandler(appId, reason)
         @uninstallReport(UNINSTALL_STATUS.FAILED, UNINSTALL_MESSAGE.FAILED.args(appId))
         @disconnect()

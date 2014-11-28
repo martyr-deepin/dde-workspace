@@ -71,12 +71,13 @@ class Item extends Widget
         , 200)
 
     destroy: ->
+        console.log("destroy #{@id}")
         delete @elements['element']
         for own k, v of @elements
             if k == 'search'
+                console.log("remove from search result")
                 @remove(k)
-            else
-                categoryList.category(k).removeItem(@id)
+        categoryList.removeItem(@id)
         delete Widget.object_table[@id]
 
     add:(pid)->
@@ -373,7 +374,7 @@ class Item extends Widget
                     icon = DCore.get_theme_icon(@icon, 48)
                 icon = DCore.backup_app_icon(icon)
                 console.warn("set icon: #{icon} to notify icon")
-                uninstaller = new Uninstaller(@id, "Deepin Launcher", icon, uninstallFailedHandler, uninstallSuccessHandler)
+                uninstaller = new Uninstaller(@id, "Deepin Launcher", icon, uninstallSuccessHandler, uninstallFailedHandler)
                 # make sure the icon is hidden immediately
                 setTimeout(=>
                     uninstaller.uninstall()
