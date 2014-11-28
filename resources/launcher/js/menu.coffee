@@ -9,6 +9,7 @@ class SettingMenu
          "<li data-sort-method=3>%1</li>".args(_("By frequency"))
         @selected = null
         @element.addEventListener("click", (e)=>
+            switcher.cancelShowMenu()
             e.stopPropagation()
             e.preventDefault()
             if e.target.tagName == "UL"

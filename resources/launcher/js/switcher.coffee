@@ -31,17 +31,23 @@ class Switcher
         @page = 'Category'
         @isHovered = false
         @changeSetting(@setting.getSortMethod(), @setting.getCategoryDisplayMode())
-        @timeoutId = null
+        @mouseoutTimer = null
+        @mouseoverTimer = null
         @bgShadow = create_element(tag:"img", id: "shadow", src:SWITCHER_SHADOW, document.body)
         @switcher.addEventListener("mouseover", (e)=>
-            clearTimeout(@timeoutId)
-            @switcher.classList.add("switcher_hover")
-            @showShadow()
-            categoryBar.dark()
+            e.stopPropagation()
+            e.preventDefault()
+            @cancelShowMenu()
+            @cancelHideMenu()
+            @mouseoverTimer = setTimeout(=>
+                @switcher.classList.add("switcher_hover")
+                @showShadow()
+                categoryBar.dark()
+            , 200)
         )
         @switcher.addEventListener("mouseout", (e)=>
-            @timeoutId = setTimeout(=>
-                console.log("mouseout")
+            @cancelShowMenu()
+            @mouseoutTimer = setTimeout(=>
                 @switcher.classList.remove("switcher_hover")
                 @hideShadow()
                 categoryBar.normal()
@@ -51,6 +57,14 @@ class Switcher
     showShadow:=>
         if @bgShadow.style.opacity != '1'
             @bgShadow.style.opacity = '1'
+
+    cancelShowMenu:->
+        clearTimeout(@mouseoverTimer)
+        @mouseoverTimer = null
+
+    cancelHideMenu:->
+        clearTimeout(@mouseoutTimer)
+        @mouseoutTimer = null
 
     hideShadow:=>
         if @bgShadow.style.opacity != '0'
