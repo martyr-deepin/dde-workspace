@@ -23,7 +23,11 @@ Homepage: http://www.linuxdeepin.com
 
 Package: deepin-desktop-environment
 Architecture: any
-Depends: ${shlibs:Depends},${misc:Depends}, startdde
+Depends: ${misc:Depends},
+         startdde,
+         dde-control-center,
+         dde-dock-applets,
+Conflicts: dde-control-center (<< 0.1)
 Description: Meta Package for Linuxdeepin test desktop environment.
  Linuxdeepin 12.12 testing deskotp environment.
  .
