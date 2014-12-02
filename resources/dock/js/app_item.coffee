@@ -115,7 +115,7 @@ class AppItem extends Item
         if @isApplet()
             for xid in xids
                 $EW_MAP[xid.Xid] = @
-            @embedWindows = new EmbedWindow(xids)
+            @embedWindows = new EmbedWindow(xids, true, $EWType.Plugin)
         else
             @show_open_indicator()
             @element.classList.remove("Activator")
