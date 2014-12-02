@@ -118,3 +118,6 @@ class Time extends SystemItem
 
     updateTime: =>
         @clock.update()
+
+    setUse24Hour:(use)->
+        @clock.setUse24Hour(use)

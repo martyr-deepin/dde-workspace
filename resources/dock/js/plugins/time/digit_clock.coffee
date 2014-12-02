@@ -33,7 +33,7 @@ class DigitClock extends Clock
 
     update:->
         now = new Now()
-        if @setting.Use24HourDisplay
+        if @use24hour
             @time.dataset.use24 = true
             hour = now.hour(24, true)
         else

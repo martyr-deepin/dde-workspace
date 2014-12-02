@@ -50,7 +50,7 @@ class TrayClock extends Clock
         timeFormat = @getTimeFormat(
                 settings.displayDate(),
                 settings.displayWeek(),
-                @setting.Use24HourDisplay
+                @use24hour
         )
         @timeContent.textContent = DCore.Dock.get_time(timeFormat)
 
