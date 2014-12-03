@@ -80,17 +80,14 @@ class LauncherLaunch extends Page
 class LauncherSearch extends Page
     constructor:(@id)->
         super
-        @message = _("Use the keyboard to search for applications\nTry the \"deepin\" keyword to see which applications are shown")
-        @tips = _("tips: Please directly enter the word \"deepin\"")
+        @message = _("Please directly hit \"deepin\" in keyboard")
         @show_message(@message)
-        @show_tips(@tips)
 
         new Launcher()?.show()
         @fcitx = new Fcitx()
         @fcitx?.setCurrentIM("fcitx-keyboard-us")
-        deepin_keysym = [68,69,69,80,73,78]
         setTimeout(=>
-            simulate_input(deepin_keysym,@,"LauncherIconDrag")
+            simulate_input(@,"LauncherIconDrag")
         ,20)
 
 class LauncherIconDrag extends Page

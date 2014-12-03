@@ -74,14 +74,12 @@ white_key_list_spec_key = [KEYCODE.BACKSPACE]
 white_key_list = []
 white_key_list = white_key_list.concat(white_key_list_num,white_key_list_char,white_key_list_spec_key)
 
-simulate_input = (modle_keysym,old_page,new_page_cls_name = null) ->
+simulate_input = (old_page,new_page_cls_name = null) ->
     DCore.Guide.disable_keyboard()
     timeout_deepin = null
     input_keysym = []
-    modle_keysym_finish = false
     document.body.addEventListener("keyup", (e)->
         if guide?.current_page_id isnt "LauncherSearch" then return
-        if modle_keysym_finish then return
         input = e.which
         if not (input in white_key_list) then return
         if input is KEYCODE.BACKSPACE
@@ -91,11 +89,10 @@ simulate_input = (modle_keysym,old_page,new_page_cls_name = null) ->
         else
             input_keysym.push(input)
             DCore.Guide.simulate_input(input)
-        if input_keysym.toString() is modle_keysym.toString()
-            echo "input_keysym finish!!!!!!!!!!!"
-            modle_keysym_finish = true
-            clearTimeout(timeout_deepin)
-            guide?.switch_page(old_page,new_page_cls_name)
+        if timeout_deepin == null
+            timeout_deepin = setTimeout(->
+                guide?.switch_page(old_page,new_page_cls_name)
+            ,t_switch_page)
     )
 
 body_hide = ->
