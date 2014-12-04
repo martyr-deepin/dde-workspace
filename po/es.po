@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-12-03 14:25+0800\n"
-"PO-Revision-Date: 2014-12-03 07:29+0000\n"
+"PO-Revision-Date: 2014-12-04 13:37+0000\n"
 "Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/deepin-desktop-environment/language/es/)\n"
 "MIME-Version: 1.0\n"
@@ -161,11 +161,11 @@ msgstr "Pe_rsonalizar"
 
 #: ../resources/desktop/js/item.coffee:399
 msgid "_Cut"
-msgstr ""
+msgstr "_Cortar"
 
 #: ../resources/desktop/js/item.coffee:404
 msgid "_Select All"
-msgstr ""
+msgstr "_SeleccionarTodo"
 
 #: ../resources/desktop/js/richdir.coffee:142
 msgid "_Ungroup"
@@ -210,7 +210,7 @@ msgstr "Mantener _oculto"
 #: ../resources/dock/js/global_menu.coffee:12
 #: ../resources/guide/js/dock.coffee:40
 msgid "_Smart hide"
-msgstr ""
+msgstr "_Smart ocultar"
 
 #: ../resources/dock/js/global_menu.coffee:27
 #: ../resources/guide/js/dock.coffee:34
@@ -230,7 +230,7 @@ msgstr "Modo _clásico"
 #: ../resources/dock/js/global_menu.coffee:38
 #: ../resources/guide/js/dock.coffee:42
 msgid "Notification area settings"
-msgstr ""
+msgstr "Area de configuración de las notificaciones"
 
 #: ../resources/dock/js/main.coffee:114 ../resources/zone/js/utils.coffee:13
 msgid "Launcher"
@@ -238,7 +238,7 @@ msgstr "Lanzador"
 
 #: ../resources/dock/js/plugins/time/time.coffee:61
 msgid "Switch display mode"
-msgstr ""
+msgstr "Encender el modo de visualización"
 
 #: ../resources/dock/js/plugins/time/time.coffee:62
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:81
@@ -247,43 +247,43 @@ msgstr "_Ajustes de hora"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:33
 msgid "%b %d %H:%M %a"
-msgstr ""
+msgstr "%b %d %H:%M %a"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:35
 msgid "%b %d %I:%M %p %a"
-msgstr ""
+msgstr "%b %d %I:%M %p %a"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:37
 msgid "%b %d %H:%M"
-msgstr ""
+msgstr "%b %d %H:%M"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:39
 msgid "%b %d %I:%M %p"
-msgstr ""
+msgstr "%b %d %I:%M %p"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:41
 msgid "%H:%M %a"
-msgstr ""
+msgstr "%H:%M %a"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:43
 msgid "%I:%M %p %a"
-msgstr ""
+msgstr "%I:%M %p %a"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:45
 msgid "%H:%M"
-msgstr ""
+msgstr "%H:%M"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:47
 msgid "%I:%M %p"
-msgstr ""
+msgstr "%I:%M %p"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:79
 msgid "Display date"
-msgstr ""
+msgstr "Mostrar fecha"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:80
 msgid "Display week"
-msgstr ""
+msgstr "Mostrar semana"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:42
 msgid "_Close"
@@ -353,13 +353,13 @@ msgstr "Suspender"
 msgid ""
 "The other users have logged in, shutdown or restart may cause the running "
 "data to be lost."
-msgstr ""
+msgstr "Los otros usuarios han iniciado sesión, apagar o reiniciar puede causar la pérdida de los datos en curso."
 
 #: ../resources/greeter/js/powermenu.coffee:77
 msgid ""
 "User %1 has logged in, shutdown or restart may cause the running data to be "
 "lost."
-msgstr ""
+msgstr "El usuario  %1  ha iniciado sesión, apagar o reiniciar puede causar la pérdida de los datos en curso."
 
 #: ../resources/greeter/js/powermenu.coffee:121
 msgid "Enter your password to %1"
@@ -447,7 +447,7 @@ msgstr "Acceder"
 
 #: ../resources/greeter/js/user.coffee:410
 msgid "Unlock"
-msgstr ""
+msgstr "Desbloquear"
 
 #: ../resources/guide/js/desktop.coffee:28
 msgid ""
@@ -467,41 +467,41 @@ msgstr "Consejo: Pulsar clic derecho sobre el grupo de aplicaciones proveerá m�
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different "
 "events"
-msgstr ""
+msgstr "Deslizar el ratón a las cuatro esquinas principales, lo que puede activar cuatro eventos diferentes"
 
 #: ../resources/guide/js/desktop.coffee:154
 msgid ""
 "We already know that launcher can be shown/ hidden by sliding the mouse to "
 "the upper left corner"
-msgstr ""
+msgstr "Ya sabemos que el lanzador puede estar visible/oculto desplazando el ratón a la esquina superior izquierda"
 
 #: ../resources/guide/js/desktop.coffee:176
 msgid ""
 "The workspace will be shown or hidden by sliding the mouse to the lower left"
 " corner"
-msgstr ""
+msgstr "El espacio de trabajo puede estar visible/oculto desplazando el ratón a la esquina inferior izquierda"
 
 #: ../resources/guide/js/desktop.coffee:202
 msgid ""
 "No functions are set in default on the upper right corner\n"
 "Right-click on desktop black area to call up the menu, select \"Corner navigation\" to set the corner used"
-msgstr ""
+msgstr "No hay funciones configuradas por defecto en la esquina superior derecha\nHacer clic con el botón derecho sobre la zona negra del escritorio para que se muestre el menú, seleccionar \"Esquina de navegación\" para configurar la esquina usada."
 
 #: ../resources/guide/js/desktop.coffee:203
 msgid "tips: Click on the corner navigation blank area to return"
-msgstr ""
+msgstr "consejos: hacer clic en la esquina de navegación en blanco para volver"
 
 #: ../resources/guide/js/dock.coffee:26
 msgid ""
 "Three modes and the display status can be switched by right-click on the "
 "blank area of dock"
-msgstr ""
+msgstr "Se pueden activar tres modos y mostrar el estatus haciendo clic con el botón derecho en la zona en blanco del ordenador"
 
 #: ../resources/guide/js/dss.coffee:32
 msgid ""
 "The Control Center will be shown or hidden by sliding the mouse to the lower"
 " right corner"
-msgstr ""
+msgstr "El Centro de Control estará visible u oculto deslizando el ratón a la esquina inferior derecha"
 
 #: ../resources/guide/js/dss.coffee:33
 msgid "tips: Click the setting icon on dock to implement"
@@ -509,7 +509,7 @@ msgstr "Consejo: Pulse el icono de opciones en el panel para implementarlo."
 
 #: ../resources/guide/js/dss.coffee:76
 msgid "Click the power button to shut down, reboot or do other operations"
-msgstr ""
+msgstr "Clic en el botón de encendido para apagar, reiniciar o hacer otras operaciones"
 
 #: ../resources/guide/js/dss.coffee:77
 msgid ""
@@ -521,11 +521,11 @@ msgstr "Consejo: Pase el ratón en el icono de configuración en el panel para i
 msgid ""
 "Thank you for your patience to learn! More surprises are waiting for you to "
 "explore"
-msgstr ""
+msgstr "¡Gracias por su paciencia para aprender! Tiene más sorpresas esperando para explorar"
 
 #: ../resources/guide/js/end.coffee:30
 msgid "Start my Deepin trip"
-msgstr ""
+msgstr "Iniciar my viaje Deepin"
 
 #: ../resources/guide/js/launcher.coffee:31
 msgid ""
@@ -535,17 +535,17 @@ msgstr "\"Lanzador de Aplicaciones\" puede ser iniciado deslizando el puntero a 
 
 #: ../resources/guide/js/launcher.coffee:83
 msgid "Please directly hit \"deepin\" in keyboard"
-msgstr ""
+msgstr "Por favor, pulsar directament \"deepin\" en el teclado"
 
 #: ../resources/guide/js/launcher.coffee:96
 msgid "You can directly drag the application icon to Dock or trash"
-msgstr ""
+msgstr "Puedes arrastrar directamente el icono para fijar la aplicación o para tirarla"
 
 #: ../resources/guide/js/launcher.coffee:109
 msgid ""
 "tips: Click the right mouse button on the application icon to call up the "
 "context menu"
-msgstr ""
+msgstr "consejos: hacer clic con el botón derecho del ratón en el icono de la aplicación para mostrar el menú"
 
 #: ../resources/guide/js/launcher.coffee:135
 msgid "Remove from _favorites"
@@ -593,7 +593,7 @@ msgstr "Iniciar"
 
 #: ../resources/guide/js/start.coffee:52
 msgid "Skip the guide, experience immediately"
-msgstr ""
+msgstr "Saltar la guía, probar inmediatamente"
 
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
@@ -633,23 +633,23 @@ msgstr "Remover del p_anel"
 
 #: ../resources/launcher/js/menu.coffee:5
 msgid "By name"
-msgstr ""
+msgstr "Por nombre"
 
 #: ../resources/launcher/js/menu.coffee:6
 msgid "By category (icon)"
-msgstr ""
+msgstr "Por categoría (icono)"
 
 #: ../resources/launcher/js/menu.coffee:7
 msgid "By category (text)"
-msgstr ""
+msgstr "Por categoría (texto)"
 
 #: ../resources/launcher/js/menu.coffee:8
 msgid "By time installed"
-msgstr ""
+msgstr "Por tiempo instalado"
 
 #: ../resources/launcher/js/menu.coffee:9
 msgid "By frequency"
-msgstr ""
+msgstr "Por frecuencia"
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"

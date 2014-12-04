@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-12-03 14:25+0800\n"
-"PO-Revision-Date: 2014-12-03 07:29+0000\n"
+"PO-Revision-Date: 2014-12-04 20:41+0000\n"
 "Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/deepin-desktop-environment/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -210,7 +210,7 @@ msgstr "Blijf _verbergen"
 #: ../resources/dock/js/global_menu.coffee:12
 #: ../resources/guide/js/dock.coffee:40
 msgid "_Smart hide"
-msgstr ""
+msgstr "_Slim verbergen"
 
 #: ../resources/dock/js/global_menu.coffee:27
 #: ../resources/guide/js/dock.coffee:34
@@ -230,7 +230,7 @@ msgstr "_Klassieke modus"
 #: ../resources/dock/js/global_menu.coffee:38
 #: ../resources/guide/js/dock.coffee:42
 msgid "Notification area settings"
-msgstr ""
+msgstr "Instellingen notificatieveld"
 
 #: ../resources/dock/js/main.coffee:114 ../resources/zone/js/utils.coffee:13
 msgid "Launcher"
@@ -238,7 +238,7 @@ msgstr "Launcher"
 
 #: ../resources/dock/js/plugins/time/time.coffee:61
 msgid "Switch display mode"
-msgstr ""
+msgstr "Schakel weergavemodus"
 
 #: ../resources/dock/js/plugins/time/time.coffee:62
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:81
@@ -247,43 +247,43 @@ msgstr "_Tijd instellingen"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:33
 msgid "%b %d %H:%M %a"
-msgstr ""
+msgstr "%b %d %H:%M %a"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:35
 msgid "%b %d %I:%M %p %a"
-msgstr ""
+msgstr "%b %d %I:%M %p %a"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:37
 msgid "%b %d %H:%M"
-msgstr ""
+msgstr "%b %d %H:%M"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:39
 msgid "%b %d %I:%M %p"
-msgstr ""
+msgstr "%b %d %I:%M %p"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:41
 msgid "%H:%M %a"
-msgstr ""
+msgstr "%H:%M %a"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:43
 msgid "%I:%M %p %a"
-msgstr ""
+msgstr "%I:%M %p %a"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:45
 msgid "%H:%M"
-msgstr ""
+msgstr "%H:%M"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:47
 msgid "%I:%M %p"
-msgstr ""
+msgstr "%I:%M %p"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:79
 msgid "Display date"
-msgstr ""
+msgstr "Datum weergave"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:80
 msgid "Display week"
-msgstr ""
+msgstr "Geef week weer"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:42
 msgid "_Close"
@@ -447,7 +447,7 @@ msgstr "Inloggen"
 
 #: ../resources/greeter/js/user.coffee:410
 msgid "Unlock"
-msgstr ""
+msgstr "Ontgrendelen"
 
 #: ../resources/guide/js/desktop.coffee:28
 msgid ""
@@ -461,47 +461,47 @@ msgstr "Nu heeft u geleerd hoe u een \"applicatiegroep\" creërt"
 
 #: ../resources/guide/js/desktop.coffee:122
 msgid "tips: Right-click on the application group will provide more functions"
-msgstr ""
+msgstr "tips: Klik met de rechtermuisknop op de applicatiegroep om meer functies weer te geven"
 
 #: ../resources/guide/js/desktop.coffee:132
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different "
 "events"
-msgstr ""
+msgstr "Sleep de muis naar de vier bovenste hoeken, wat vier verschillende gebeurtenissen in gang kan zetten."
 
 #: ../resources/guide/js/desktop.coffee:154
 msgid ""
 "We already know that launcher can be shown/ hidden by sliding the mouse to "
 "the upper left corner"
-msgstr ""
+msgstr "We weten al dat de starter kan worden weergegeven/verborgen door de muis naar de linkerbovenhoek te bewegen"
 
 #: ../resources/guide/js/desktop.coffee:176
 msgid ""
 "The workspace will be shown or hidden by sliding the mouse to the lower left"
 " corner"
-msgstr ""
+msgstr "De werkruimte wordt weergegeven of verborgen door de muis naar de linker bovenhoek te bewegen"
 
 #: ../resources/guide/js/desktop.coffee:202
 msgid ""
 "No functions are set in default on the upper right corner\n"
 "Right-click on desktop black area to call up the menu, select \"Corner navigation\" to set the corner used"
-msgstr ""
+msgstr "Geen enkele functie is standaard ingesteld in de rechter bovenhoek van het scherm. \nKlik met de rechter muisknop op het zwarte gebied op het bureaublad om het menu te openen, selecteer \"Hoeknavigatie\" om de hoek te kiezen die gebruikt wordt"
 
 #: ../resources/guide/js/desktop.coffee:203
 msgid "tips: Click on the corner navigation blank area to return"
-msgstr ""
+msgstr "tips: Klik op de lege ruimte in de hoeknavigatie om terug te keren"
 
 #: ../resources/guide/js/dock.coffee:26
 msgid ""
 "Three modes and the display status can be switched by right-click on the "
 "blank area of dock"
-msgstr ""
+msgstr "Er kan geschakeld worden tussen drie modi en de weergavestatus door met de rechtermuisknop te klikken op het lege gebied in de dock. "
 
 #: ../resources/guide/js/dss.coffee:32
 msgid ""
 "The Control Center will be shown or hidden by sliding the mouse to the lower"
 " right corner"
-msgstr ""
+msgstr "Het Controlecentrum wordt weergegeven of verborgen door de muis naar de hoek links onderin te bewegen"
 
 #: ../resources/guide/js/dss.coffee:33
 msgid "tips: Click the setting icon on dock to implement"
@@ -509,7 +509,7 @@ msgstr "Tip: Klik het instellingenpictogram in het dock om te implementeren"
 
 #: ../resources/guide/js/dss.coffee:76
 msgid "Click the power button to shut down, reboot or do other operations"
-msgstr ""
+msgstr "Klik op de aan/uit-knop om af te sluiten, opnieuw op te starten of andere bewerkingen uit te voeren"
 
 #: ../resources/guide/js/dss.coffee:77
 msgid ""
@@ -521,31 +521,31 @@ msgstr "Tip: Houd uw muis op het instellingenpictogram in het dock om snelle ins
 msgid ""
 "Thank you for your patience to learn! More surprises are waiting for you to "
 "explore"
-msgstr ""
+msgstr "Bedankt voor uw geduld om te leren! Er zijn nog meer verrassingen die wachten om door u ontdekt te worden"
 
 #: ../resources/guide/js/end.coffee:30
 msgid "Start my Deepin trip"
-msgstr ""
+msgstr "Start mijn Deepin tour"
 
 #: ../resources/guide/js/launcher.coffee:31
 msgid ""
 "\"Application Launcher\" can be started by sliding the mouse to the upper "
 "left corner or clicking on the launcher."
-msgstr ""
+msgstr "\"Applicatiestarter\"kan worden geopend door de muis naar de linker bovenhoek te slepen of op de starter te klikken."
 
 #: ../resources/guide/js/launcher.coffee:83
 msgid "Please directly hit \"deepin\" in keyboard"
-msgstr ""
+msgstr "Gelieve direct \"deepin\" te typen op het toetsenbord"
 
 #: ../resources/guide/js/launcher.coffee:96
 msgid "You can directly drag the application icon to Dock or trash"
-msgstr ""
+msgstr "U kunt het icoontje van de applicatie direct naar de Dock of prullenbak slepen"
 
 #: ../resources/guide/js/launcher.coffee:109
 msgid ""
 "tips: Click the right mouse button on the application icon to call up the "
 "context menu"
-msgstr ""
+msgstr "tips: Klik met de rechter muisknop op het icoontje van de applicatie om het contextmenu te openen. "
 
 #: ../resources/guide/js/launcher.coffee:135
 msgid "Remove from _favorites"
@@ -593,7 +593,7 @@ msgstr "Start"
 
 #: ../resources/guide/js/start.coffee:52
 msgid "Skip the guide, experience immediately"
-msgstr ""
+msgstr "Sla de gids over en ervaar het direct"
 
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
@@ -601,7 +601,7 @@ msgstr "Welkom bij het gebruiken van Deepin Besturingssysteem"
 
 #: ../resources/guide/js/welcome.coffee:38
 msgid "Prepare for operation ..."
-msgstr ""
+msgstr "Bereidt u voor op de bewerking"
 
 #: ../resources/launcher/js/const.coffee:60
 msgid "_Hide the icon"
@@ -633,7 +633,7 @@ msgstr "Verwijderen uit do_ck"
 
 #: ../resources/launcher/js/menu.coffee:5
 msgid "By name"
-msgstr ""
+msgstr "Op naam"
 
 #: ../resources/launcher/js/menu.coffee:6
 msgid "By category (icon)"
@@ -645,11 +645,11 @@ msgstr "Per Categorie (tekst)"
 
 #: ../resources/launcher/js/menu.coffee:8
 msgid "By time installed"
-msgstr ""
+msgstr "Op moment van installeren"
 
 #: ../resources/launcher/js/menu.coffee:9
 msgid "By frequency"
-msgstr ""
+msgstr "Op frequentie"
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
@@ -657,7 +657,7 @@ msgstr "Dupliceer"
 
 #: ../resources/osd/js/monitor.coffee:39
 msgid "Extend"
-msgstr ""
+msgstr "Uitbreiden"
 
 #: ../resources/zone/js/utils.coffee:13
 msgid "Control Center"
@@ -823,13 +823,13 @@ msgstr "Verplaatsen"
 #: ../lib/dentry/fileops_error_dialog.c:218
 #, c-format
 msgid "Do you want to merge with folder \"%s\"?"
-msgstr ""
+msgstr "Wilt u samenvoegen met de map \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
 msgid ""
 "The merging operation will be asked to confirm before replacing any files in"
 " the folder conflicted."
-msgstr ""
+msgstr "Het samenvoegen dient bevestigd te worden voordat conflicterende bestanden in de map vervangen kunnen worden."
 
 #: ../lib/dentry/fileops_error_dialog.c:222
 #, c-format
@@ -848,12 +848,12 @@ msgstr "Een andere map met dezelfde naam bestaat al in \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:236
 msgid "All files in the folder will be removed by replacing."
-msgstr ""
+msgstr "Alle bestanden in de map worden verwijderd bij het vervangen. "
 
 #: ../lib/dentry/fileops_error_dialog.c:237
 #, c-format
 msgid "Do you want to replace folder \"%s\"?"
-msgstr ""
+msgstr "Wilt u de map \"%s\" vervangen?"
 
 #: ../lib/dentry/fileops_error_dialog.c:239
 #, c-format
@@ -863,11 +863,11 @@ msgstr "Een map met dezelfde naam bestaat al in \"%s\"."
 #: ../lib/dentry/fileops_error_dialog.c:245
 #, c-format
 msgid "Do you want to replace file \"%s\"?"
-msgstr ""
+msgstr "Wilt u het bestand \"%s\" vervangen?"
 
 #: ../lib/dentry/fileops_error_dialog.c:246
 msgid "The content will be overwritten by replacing."
-msgstr ""
+msgstr "De inhoud wordt overgeschreven bij vervanging."
 
 #: ../lib/dentry/fileops_error_dialog.c:248
 #, c-format

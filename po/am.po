@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-12-03 14:25+0800\n"
-"PO-Revision-Date: 2014-12-03 07:29+0000\n"
-"Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
+"PO-Revision-Date: 2014-12-07 17:31+0000\n"
+"Last-Translator: samson <sambelet@yahoo.com>\n"
 "Language-Team: Amharic (http://www.transifex.com/projects/p/deepin-desktop-environment/language/am/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -243,43 +243,43 @@ msgstr "_ሰአት ማሰናጃ"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:33
 msgid "%b %d %H:%M %a"
-msgstr ""
+msgstr "%b %d %H:%M %a"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:35
 msgid "%b %d %I:%M %p %a"
-msgstr ""
+msgstr "%b %d %I:%M %p %a"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:37
 msgid "%b %d %H:%M"
-msgstr ""
+msgstr "%b %d %H:%M"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:39
 msgid "%b %d %I:%M %p"
-msgstr ""
+msgstr "%b %d %I:%M %p"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:41
 msgid "%H:%M %a"
-msgstr ""
+msgstr "%H:%M %a"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:43
 msgid "%I:%M %p %a"
-msgstr ""
+msgstr "%I:%M %p %a"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:45
 msgid "%H:%M"
-msgstr ""
+msgstr "%H:%M"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:47
 msgid "%I:%M %p"
-msgstr ""
+msgstr "%I:%M %p"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:79
 msgid "Display date"
-msgstr ""
+msgstr "ቀን ማሳያ"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:80
 msgid "Display week"
-msgstr ""
+msgstr "ሳምንት ማሳያ"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:42
 msgid "_Close"
@@ -629,19 +629,19 @@ msgstr "ከ ዶ_ከ ላይ ማስወገጃ"
 
 #: ../resources/launcher/js/menu.coffee:5
 msgid "By name"
-msgstr ""
+msgstr "በ ስም"
 
 #: ../resources/launcher/js/menu.coffee:6
 msgid "By category (icon)"
-msgstr ""
+msgstr "በ ምድብ (ምልክት)"
 
 #: ../resources/launcher/js/menu.coffee:7
 msgid "By category (text)"
-msgstr ""
+msgstr "በ ምድብ (ጽሁፍ)"
 
 #: ../resources/launcher/js/menu.coffee:8
 msgid "By time installed"
-msgstr ""
+msgstr "በ ተገጠመበት ሰአት"
 
 #: ../resources/launcher/js/menu.coffee:9
 msgid "By frequency"

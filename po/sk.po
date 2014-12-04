@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-12-03 14:25+0800\n"
-"PO-Revision-Date: 2014-12-03 07:29+0000\n"
-"Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
+"PO-Revision-Date: 2014-12-04 04:51+0000\n"
+"Last-Translator: Microtus <hrabosmartin@gmail.com>\n"
 "Language-Team: Slovak (http://www.transifex.com/projects/p/deepin-desktop-environment/language/sk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -226,7 +226,7 @@ msgstr "_Klasický režim"
 #: ../resources/dock/js/global_menu.coffee:38
 #: ../resources/guide/js/dock.coffee:42
 msgid "Notification area settings"
-msgstr ""
+msgstr "Nastavenia upozornení"
 
 #: ../resources/dock/js/main.coffee:114 ../resources/zone/js/utils.coffee:13
 msgid "Launcher"
@@ -234,7 +234,7 @@ msgstr "Spúšťač"
 
 #: ../resources/dock/js/plugins/time/time.coffee:61
 msgid "Switch display mode"
-msgstr ""
+msgstr "Prepnúť zobrazovací režim"
 
 #: ../resources/dock/js/plugins/time/time.coffee:62
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:81
@@ -243,43 +243,43 @@ msgstr "_Nastavenia času"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:33
 msgid "%b %d %H:%M %a"
-msgstr ""
+msgstr "%b %d %H:%M %a"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:35
 msgid "%b %d %I:%M %p %a"
-msgstr ""
+msgstr "%b %d %I:%M %p %a"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:37
 msgid "%b %d %H:%M"
-msgstr ""
+msgstr "%b %d %H:%M"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:39
 msgid "%b %d %I:%M %p"
-msgstr ""
+msgstr "%b %d %I:%M %p"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:41
 msgid "%H:%M %a"
-msgstr ""
+msgstr "%H:%M %a"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:43
 msgid "%I:%M %p %a"
-msgstr ""
+msgstr "%I:%M %p %a"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:45
 msgid "%H:%M"
-msgstr ""
+msgstr "%H:%M"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:47
 msgid "%I:%M %p"
-msgstr ""
+msgstr "%I:%M %p"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:79
 msgid "Display date"
-msgstr ""
+msgstr "Zobraziť dátum"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:80
 msgid "Display week"
-msgstr ""
+msgstr "Zobraziť týždeň"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:42
 msgid "_Close"
@@ -463,41 +463,41 @@ msgstr "tipy: Pravý klik na skupinu aplikácií poskytne viacero funkcií"
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different "
 "events"
-msgstr ""
+msgstr "Pohnite myšou k štyrom rohom, ktoré môžu vykonať štyri rozličné udalosti."
 
 #: ../resources/guide/js/desktop.coffee:154
 msgid ""
 "We already know that launcher can be shown/ hidden by sliding the mouse to "
 "the upper left corner"
-msgstr ""
+msgstr "Už vieme, že spúšťač môže byť zobrazený/skrytý pohnutím myši k hornému ľavému rohu"
 
 #: ../resources/guide/js/desktop.coffee:176
 msgid ""
 "The workspace will be shown or hidden by sliding the mouse to the lower left"
 " corner"
-msgstr ""
+msgstr "Pracovná plocha bude zobrazená alebo skrytá pohnutím myši k ľavému dolnému rohu"
 
 #: ../resources/guide/js/desktop.coffee:202
 msgid ""
 "No functions are set in default on the upper right corner\n"
 "Right-click on desktop black area to call up the menu, select \"Corner navigation\" to set the corner used"
-msgstr ""
+msgstr "Nie sú predvolené žiadne funkcie na pravom hornom rohu\nPravý klik na čierny priestor plochy vyvolá menu, vyberte \"Rohová navigácia\" pre nastavenie aktivity rohu. "
 
 #: ../resources/guide/js/desktop.coffee:203
 msgid "tips: Click on the corner navigation blank area to return"
-msgstr ""
+msgstr "tipy: Kliknite na prázdny priestor rohovej navigácie pre návrat"
 
 #: ../resources/guide/js/dock.coffee:26
 msgid ""
 "Three modes and the display status can be switched by right-click on the "
 "blank area of dock"
-msgstr ""
+msgstr "Tri režimy a stav zobrazenia môžu byť prepnuté pravým kliknutím na prázdny priestor dock-u"
 
 #: ../resources/guide/js/dss.coffee:32
 msgid ""
 "The Control Center will be shown or hidden by sliding the mouse to the lower"
 " right corner"
-msgstr ""
+msgstr "Ovládacie centrum bude zobrazené alebo skryté pohnutím myši k pravému dolnému rohu"
 
 #: ../resources/guide/js/dss.coffee:33
 msgid "tips: Click the setting icon on dock to implement"
@@ -505,7 +505,7 @@ msgstr "tipy: Kliknite na ikonu nastavenia v dock-u pre nastavenie"
 
 #: ../resources/guide/js/dss.coffee:76
 msgid "Click the power button to shut down, reboot or do other operations"
-msgstr ""
+msgstr "Kliknite na tlačidlo energie pre vypnutie, reštartovanie a iné operácie"
 
 #: ../resources/guide/js/dss.coffee:77
 msgid ""
@@ -517,11 +517,11 @@ msgstr "tipy: Prejdite myšou na ikonu nastavenia v dock-u pre rýchle nastaveni
 msgid ""
 "Thank you for your patience to learn! More surprises are waiting for you to "
 "explore"
-msgstr ""
+msgstr "Ďakujeme za trpezlivosť pri učení! Viac prekvapení na Vás ešte čaká. "
 
 #: ../resources/guide/js/end.coffee:30
 msgid "Start my Deepin trip"
-msgstr ""
+msgstr "Začať moju Deepin cestu"
 
 #: ../resources/guide/js/launcher.coffee:31
 msgid ""
@@ -531,17 +531,17 @@ msgstr "\"Aplikácia Spušťač\" môže byť spustená prejdením myšou k ľav
 
 #: ../resources/guide/js/launcher.coffee:83
 msgid "Please directly hit \"deepin\" in keyboard"
-msgstr ""
+msgstr "Prosím zadajte presne \"deepin\" na klávesnici"
 
 #: ../resources/guide/js/launcher.coffee:96
 msgid "You can directly drag the application icon to Dock or trash"
-msgstr ""
+msgstr "Môžte priamo presunúť ikonu aplikácie do Dock-u alebo do koša"
 
 #: ../resources/guide/js/launcher.coffee:109
 msgid ""
 "tips: Click the right mouse button on the application icon to call up the "
 "context menu"
-msgstr ""
+msgstr "tipy: Kliknite pravým tlačidlom myši na ikonu aplikácie pre vyvolanie kontextového menu"
 
 #: ../resources/guide/js/launcher.coffee:135
 msgid "Remove from _favorites"
@@ -589,7 +589,7 @@ msgstr "Spustiť"
 
 #: ../resources/guide/js/start.coffee:52
 msgid "Skip the guide, experience immediately"
-msgstr ""
+msgstr "Preskočiť príručku, skúšať ihneď"
 
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
@@ -629,23 +629,23 @@ msgstr "Odstrániť z pa_nelu"
 
 #: ../resources/launcher/js/menu.coffee:5
 msgid "By name"
-msgstr ""
+msgstr "Podľa názvu"
 
 #: ../resources/launcher/js/menu.coffee:6
 msgid "By category (icon)"
-msgstr ""
+msgstr "Podľa kategórie (ikona)"
 
 #: ../resources/launcher/js/menu.coffee:7
 msgid "By category (text)"
-msgstr ""
+msgstr "Podľa kategórie (text)"
 
 #: ../resources/launcher/js/menu.coffee:8
 msgid "By time installed"
-msgstr ""
+msgstr "Podľa času inštalácie"
 
 #: ../resources/launcher/js/menu.coffee:9
 msgid "By frequency"
-msgstr ""
+msgstr "Podľa frekvencie"
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"

@@ -3,39 +3,40 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Jacques Strydom <jacquesafro@gmail.com>, 2014
+# Jim Spentzos <jimspentzos2000@gmail.com>, 2014
+# Jim Spentzos <jimspentzos2000@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-12-03 14:25+0800\n"
-"PO-Revision-Date: 2014-12-04 04:51+0000\n"
-"Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
-"Language-Team: Afrikaans (South Africa) (http://www.transifex.com/projects/p/deepin-desktop-environment/language/af_ZA/)\n"
+"PO-Revision-Date: 2014-12-05 16:11+0000\n"
+"Last-Translator: Jim Spentzos <jimspentzos2000@gmail.com>\n"
+"Language-Team: Greek (http://www.transifex.com/projects/p/deepin-desktop-environment/language/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: af_ZA\n"
+"Language: el\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../resources/common/js/accounts.coffee:78
 msgid "Guest"
-msgstr "Gas"
+msgstr "Επισκέπτης"
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
-msgstr "Jy het \"%1\" suksesvol verwyder"
+msgstr "Έχετε απεγκαταστήσει το \"%1\" με επιτυχία"
 
 #: ../resources/common/js/uninstaller.coffee:33
 msgid "\"%1\" failed to be uninstalled"
-msgstr "Verwyder van \"%1\" het misluk"
+msgstr "Αποτυχία απεγκατάστασης του \"%1\""
 
 #: ../resources/desktop/js/application.coffee:179
 #: ../resources/desktop/js/richdir.coffee:348
 #: ../resources/desktop/js/richdir.coffee:600
 #: ../resources/desktop/js/richdir.coffee:643
 msgid "The link is invalid. Do you want to delete it?"
-msgstr "Die skakel is ongeldig. Wil jy dit te verwyder?"
+msgstr "Ο σύνδεσμος δεν είναι έγκυρος. Θέλετε να το διαγράψετε;"
 
 #: ../resources/desktop/js/application.coffee:179
 #: ../resources/desktop/js/desktopentry.coffee:166
@@ -44,7 +45,7 @@ msgstr "Die skakel is ongeldig. Wil jy dit te verwyder?"
 #: ../resources/desktop/js/richdir.coffee:643
 #: ../resources/dock/js/plugins/trash/trash.coffee:85
 msgid "Warning"
-msgstr "Waarskuwing"
+msgstr "Προσοχή"
 
 #: ../resources/desktop/js/desktopentry.coffee:102
 #: ../resources/desktop/js/richdir.coffee:138
@@ -54,23 +55,23 @@ msgstr "Waarskuwing"
 #: ../resources/guide/js/launcher.coffee:133
 #: ../resources/launcher/js/item.coffee:289
 msgid "_Open"
-msgstr "_Maak oop"
+msgstr "_Ανοίξτε"
 
 #: ../resources/desktop/js/desktopentry.coffee:104
 #: ../resources/desktop/js/richdir.coffee:582
 msgid "Cu_t"
-msgstr "Kni_p"
+msgstr "_Κόψιμο"
 
 #: ../resources/desktop/js/desktopentry.coffee:105
 #: ../resources/desktop/js/item.coffee:401
 #: ../resources/desktop/js/richdir.coffee:583
 msgid "_Copy"
-msgstr "_Kopieer"
+msgstr "Α_ντιγραφή"
 
 #: ../resources/desktop/js/desktopentry.coffee:107
 #: ../resources/desktop/js/richdir.coffee:140
 msgid "_Rename"
-msgstr "_Herbenoem"
+msgstr "_Μετονομασία"
 
 #: ../resources/desktop/js/desktopentry.coffee:108
 #: ../resources/desktop/js/invalidlink.coffee:34
@@ -78,236 +79,236 @@ msgstr "_Herbenoem"
 #: ../resources/desktop/js/richdir.coffee:144
 #: ../resources/desktop/js/richdir.coffee:585
 msgid "_Delete"
-msgstr "_Verwyder"
+msgstr "_Διαγραφή"
 
 #: ../resources/desktop/js/desktopentry.coffee:110
 #: ../resources/desktop/js/richdir.coffee:587
 #: ../resources/desktop/js/specialitem.coffee:53
 msgid "_Properties"
-msgstr "_Eienskappe"
+msgstr "_Ιδιότητες"
 
 #: ../resources/desktop/js/desktopentry.coffee:116
 #: ../resources/desktop/js/desktopentry.coffee:123
 msgid "Co_mpress"
-msgstr "Ko_mpakteer"
+msgstr "Συ_μπίεση"
 
 #: ../resources/desktop/js/desktopentry.coffee:119
 #: ../resources/desktop/js/desktopentry.coffee:124
 msgid "_Extract"
-msgstr "_Onttrek"
+msgstr "Ε_ξαγωγή"
 
 #: ../resources/desktop/js/desktopentry.coffee:120
 #: ../resources/desktop/js/desktopentry.coffee:125
 msgid "Extract _Here"
-msgstr "Onttrek _Hier"
+msgstr "Εξαγ_ωγή εδώ"
 
 #: ../resources/desktop/js/desktopentry.coffee:166
 #: ../resources/dock/js/plugins/trash/trash.coffee:85
 msgid "Can not open this file."
-msgstr "Kan nie die lêer oop maak nie."
+msgstr "Δεν μπορείτε να ανοίξετε αυτό το αρχείο."
 
 #: ../resources/desktop/js/grid.coffee:70 ../lib/dentry/fileops.c:403
 msgid "Untitled"
-msgstr "Ongetiteld"
+msgstr "Χωρίς τίτλο"
 
 #: ../resources/desktop/js/grid.coffee:1029
 msgid "_Folder"
-msgstr "_Lêer"
+msgstr "_Φάκελος"
 
 #: ../resources/desktop/js/grid.coffee:1030
 msgid "_Text document"
-msgstr "_Teks dokument"
+msgstr "Έγγ_ραφο κειμένου"
 
 #: ../resources/desktop/js/grid.coffee:1044
 msgid "_Name"
-msgstr "_Naam"
+msgstr "Όνομα"
 
 #: ../resources/desktop/js/grid.coffee:1045
 msgid "Last modified _time"
-msgstr "Laas veranderde _tyd"
+msgstr "Τελε_υταία τροποποίηση του χρόνου"
 
 #: ../resources/desktop/js/grid.coffee:1049
 msgid "_Sort by"
-msgstr "_Sorteer deur"
+msgstr "Ταξι_νόμηση κατά"
 
 #: ../resources/desktop/js/grid.coffee:1050
 msgid "_New"
-msgstr "_Nuwe"
+msgstr "Νέο"
 
 #: ../resources/desktop/js/grid.coffee:1051
 msgid "Open in _terminal"
-msgstr "Maak oop in terminaal"
+msgstr "Άνοιγμα σε _τερματικό"
 
 #: ../resources/desktop/js/grid.coffee:1052
 #: ../resources/desktop/js/item.coffee:400
 msgid "_Paste"
-msgstr "_Plak"
+msgstr "Ε_πικόλλησε"
 
 #: ../resources/desktop/js/grid.coffee:1054
 msgid "_Display settings"
-msgstr "_Vertoon verstellings"
+msgstr "_Ρυθμίσεις οθόνης"
 
 #: ../resources/desktop/js/grid.coffee:1055
 msgid "_Corner navigation"
-msgstr "_Hoek navigasie"
+msgstr "_Πλοήγηση γωνιών"
 
 #: ../resources/desktop/js/grid.coffee:1056
 msgid "Pe_rsonalize"
-msgstr "Verpe_rsoonlik"
+msgstr "Πρ_οσαρμόστε"
 
 #: ../resources/desktop/js/item.coffee:399
 msgid "_Cut"
-msgstr ""
+msgstr "_Αποκοπή"
 
 #: ../resources/desktop/js/item.coffee:404
 msgid "_Select All"
-msgstr ""
+msgstr "_Επιλογή όλων"
 
 #: ../resources/desktop/js/richdir.coffee:142
 msgid "_Ungroup"
-msgstr "_Ongroepeer"
+msgstr "Κατάργηση ομα_δοποίησης"
 
 #: ../resources/desktop/js/specialitem.coffee:34
 msgid "Computer"
-msgstr "Rekenaar"
+msgstr "Hλεκτρονικός Yπολογιστής"
 
 #: ../resources/desktop/js/specialitem.coffee:87
 #: ../resources/dock/js/main.coffee:46 ../resources/dock/js/main.coffee:116
 msgid "Trash"
-msgstr "Asblik"
+msgstr "Κάδος απορριμμάτων"
 
 #: ../resources/desktop/js/specialitem.coffee:150
 msgid "_Clean up %1 items"
-msgstr "_Maak skoon %1 van die items"
+msgstr "_Καθαρίστε %1 αντικείμενα"
 
 #: ../resources/desktop/js/specialitem.coffee:152
 msgid "_Clean up 1 item"
-msgstr "_Maak skoon 1 item"
+msgstr "_Καθάρισε 1 τεμάχιο"
 
 #: ../resources/desktop/js/specialitem.coffee:154
 #: ../resources/dock/js/plugins/trash/trash.coffee:38
 msgid "_Empty"
-msgstr "_Leeg"
+msgstr "_Κενό"
 
 #: ../resources/dock/js/config.coffee:186
 msgid "Unknown"
-msgstr "Onbekend"
+msgstr "Άγνωστο"
 
 #: ../resources/dock/js/global_menu.coffee:9
 #: ../resources/guide/js/dock.coffee:38
 msgid "Keep _showing"
-msgstr "Hou _vertoon"
+msgstr "Διατήρηση _εμφάνισης"
 
 #: ../resources/dock/js/global_menu.coffee:10
 #: ../resources/guide/js/dock.coffee:39
 msgid "Keep _hidden"
-msgstr "Hou _weggesteek"
+msgstr "Διατήρηση _απόκρυψης"
 
 #: ../resources/dock/js/global_menu.coffee:12
 #: ../resources/guide/js/dock.coffee:40
 msgid "_Smart hide"
-msgstr ""
+msgstr "_Έξυπνη απόκρυψη"
 
 #: ../resources/dock/js/global_menu.coffee:27
 #: ../resources/guide/js/dock.coffee:34
 msgid "_Fashion mode"
-msgstr "_Mode modus"
+msgstr "_Λειτουργία μόδας"
 
 #: ../resources/dock/js/global_menu.coffee:28
 #: ../resources/guide/js/dock.coffee:35
 msgid "_Efficient mode"
-msgstr "_Doeltreffendheid modus"
+msgstr "_Λειτουργία αποτελεσματικότητας"
 
 #: ../resources/dock/js/global_menu.coffee:29
 #: ../resources/guide/js/dock.coffee:36
 msgid "_Classic mode"
-msgstr "_Klassiek modus"
+msgstr "_Κλασική λειτουργία"
 
 #: ../resources/dock/js/global_menu.coffee:38
 #: ../resources/guide/js/dock.coffee:42
 msgid "Notification area settings"
-msgstr ""
+msgstr "Ρυθμίσεις περιοχής ειδοποιήσεων"
 
 #: ../resources/dock/js/main.coffee:114 ../resources/zone/js/utils.coffee:13
 msgid "Launcher"
-msgstr "Lanseerder"
+msgstr "Πρόγραμμα εκκίνησης"
 
 #: ../resources/dock/js/plugins/time/time.coffee:61
 msgid "Switch display mode"
-msgstr ""
+msgstr "Αλλαγή λειτουργίας προβολής"
 
 #: ../resources/dock/js/plugins/time/time.coffee:62
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:81
 msgid "_Time settings"
-msgstr "_Tyd verstellings"
+msgstr "_Ρυθμίσεις ώρας"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:33
 msgid "%b %d %H:%M %a"
-msgstr ""
+msgstr "%b %d %H:%M %a "
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:35
 msgid "%b %d %I:%M %p %a"
-msgstr ""
+msgstr "%b %d %I:%M %p %a "
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:37
 msgid "%b %d %H:%M"
-msgstr ""
+msgstr "%b %d %H:%M"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:39
 msgid "%b %d %I:%M %p"
-msgstr ""
+msgstr "%b %d %I:%M %p "
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:41
 msgid "%H:%M %a"
-msgstr ""
+msgstr "%H:%M %a "
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:43
 msgid "%I:%M %p %a"
-msgstr ""
+msgstr "%I:%M %p %a "
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:45
 msgid "%H:%M"
-msgstr ""
+msgstr "%H:%M "
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:47
 msgid "%I:%M %p"
-msgstr ""
+msgstr "%I:%M %p "
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:79
 msgid "Display date"
-msgstr ""
+msgstr "Εμφάνιση ημερομηνίας"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:80
 msgid "Display week"
-msgstr ""
+msgstr "Εμφάνιση εβδομάδας"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:42
 msgid "_Close"
-msgstr "_Sluit"
+msgstr "_Κλείσιμο"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
 #: ../resources/launcher/js/item.coffee:359
 msgid "Are you sure to remove"
-msgstr "Is jy seker te verwyder"
+msgstr "Είστε σίγουροι για απομάκρυνση"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
 #: ../resources/launcher/js/item.coffee:359
 msgid "All dependencies will be removed"
-msgstr "Alle afhanklikhede sal verwyder word"
+msgstr "Θα αφαιρεθούν όλες οι εξαρτήσεις"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
 #: ../resources/launcher/js/item.coffee:359
 msgid "no"
-msgstr "nee"
+msgstr "όχι"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
 #: ../resources/launcher/js/item.coffee:359
 msgid "yes"
-msgstr "ja"
+msgstr "ναι"
 
 #: ../resources/greeter/js/mediacontrol.coffee:129
 msgid "Click button to Play"
-msgstr "Druk op die knoppie om te speel"
+msgstr "Πατήστε το κουμπί για Αναπαραγωγή"
 
 #: ../resources/greeter/js/message.coffee:105
 #: ../resources/greeter/js/message.coffee:82
@@ -317,13 +318,13 @@ msgstr "$ sudo reboot\n"
 #: ../resources/greeter/js/message.coffee:99
 #: ../resources/greeter/js/message.coffee:73
 msgid "Press Ctrl + Alt + F1\n"
-msgstr "Druk Ctrl + Alt + F1\n"
+msgstr "Πατήστε Ctrl + Alt + F1\n"
 
 #: ../resources/greeter/js/message.coffee:95
 msgid ""
 "\t\t\t\t-----The daemon of accounts has not started!-----\n"
 ")"
-msgstr "\t\t\t\t-----Die agtergrondproses van rekeninge is nog nie begin nie!-----\n)"
+msgstr "-----Δεν ξεκίνησε ο δαίμονας των λογαριασμών!-----\n)"
 
 #: ../resources/greeter/js/message.coffee:79
 msgid "$ sudo apt-get install deepin-desktop-Environment\n"
@@ -331,361 +332,361 @@ msgstr "$ sudo apt-get install deepin-desktop-Environment\n"
 
 #: ../resources/greeter/js/message.coffee:68
 msgid "\t\t\t\t-----No available desktop sessions!-----\n"
-msgstr "\t\t\t\t-----Geen beskikbaar lessenaar sessies!-----\n"
+msgstr "-----Δεν υπάρχουν διαθέσιμες περίοδοι λειτουργίας επιφάνειας εργασίας!-----\n"
 
 #: ../resources/greeter/js/powermenu.coffee:26
 msgid "Shut down"
-msgstr "Skakel af"
+msgstr "Τερματισμός λειτουργίας"
 
 #: ../resources/greeter/js/powermenu.coffee:27
 msgid "Restart"
-msgstr "Herlaai"
+msgstr "Επανεκκίνηση"
 
 #: ../resources/greeter/js/powermenu.coffee:28
 msgid "Suspend"
-msgstr "Opskort"
+msgstr "Αναστολή λειτουργίας"
 
 #: ../resources/greeter/js/powermenu.coffee:75
 msgid ""
 "The other users have logged in, shutdown or restart may cause the running "
 "data to be lost."
-msgstr ""
+msgstr "Οι άλλοι χρήστες έχουν συνδεθεί, ο τερματισμός λειτουργίας ή η επανεκκίνηση ίσως προκαλέσουν απώλεια τρεχόντων δεδομένων."
 
 #: ../resources/greeter/js/powermenu.coffee:77
 msgid ""
 "User %1 has logged in, shutdown or restart may cause the running data to be "
 "lost."
-msgstr ""
+msgstr "Ο χρήστης %1 έχει συνδεθεί, ο τερματισμός λειτουργίας ή η επανεκκίνηση ίσως προκαλέσουν απώλεια τρεχόντων δεδομένων."
 
 #: ../resources/greeter/js/powermenu.coffee:121
 msgid "Enter your password to %1"
-msgstr "Gee jou wagwoord te om %1"
+msgstr "Πληκτρολογήστε τον κωδικό σας για %1"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jan"
-msgstr "Jan"
+msgstr "Ιαν"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Feb"
-msgstr "Feb"
+msgstr "Φεβ"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Mar"
-msgstr "Mar"
+msgstr "Μάρ"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Apr"
-msgstr "Apr"
+msgstr "Απρ"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "May"
-msgstr "Mei"
+msgstr "Μάι"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jun"
-msgstr "Jun"
+msgstr "Ιούν"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jul"
-msgstr "Jul"
+msgstr "Ιούλ"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Aug"
-msgstr "Aug"
+msgstr "Αύγ"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Sep"
-msgstr "Sep"
+msgstr "Σεπ"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Oct"
-msgstr "Okt"
+msgstr "Οκτ"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Nov"
-msgstr "Nov"
+msgstr "Νοέ"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Dec"
-msgstr "Des"
+msgstr "Δεκ"
 
 #: ../resources/greeter/js/time.coffee:44
 msgid "Sun"
-msgstr "Son"
+msgstr "Κυρ"
 
 #: ../resources/greeter/js/time.coffee:44
 msgid "Mon"
-msgstr "Maa"
+msgstr "Δευ"
 
 #: ../resources/greeter/js/time.coffee:44
 msgid "Tue"
-msgstr "Din"
+msgstr "Τρι"
 
 #: ../resources/greeter/js/time.coffee:44
 msgid "Wed"
-msgstr "Woe"
+msgstr "Τετ"
 
 #: ../resources/greeter/js/time.coffee:44
 msgid "Thu"
-msgstr "Don"
+msgstr "Πεμ"
 
 #: ../resources/greeter/js/time.coffee:44
 msgid "Fri"
-msgstr "Fry"
+msgstr "Παρ"
 
 #: ../resources/greeter/js/time.coffee:44
 msgid "Sat"
-msgstr "Sat"
+msgstr "Σάβ"
 
 #: ../resources/greeter/js/user.coffee:408
 msgid "Login"
-msgstr "Teken in"
+msgstr "Είσοδος"
 
 #: ../resources/greeter/js/user.coffee:410
 msgid "Unlock"
-msgstr ""
+msgstr "Ξεκλείδωμα"
 
 #: ../resources/guide/js/desktop.coffee:28
 msgid ""
 "Let's drag the other icon on the first icon \n"
 " to generate \"application group\""
-msgstr "Kom ons sleep die ander ikoon op die eerste ikoon\nom 'n \"toepassing groep\" te genereer"
+msgstr "Ας σύρουμε το άλλο εικονίδιο στο πρώτο εικονίιο\nώστε να δημιουργήσουμε \"ομάδα εφαρμογής\""
 
 #: ../resources/guide/js/desktop.coffee:121
 msgid "Well, you have learned how to create a \"application group\""
-msgstr "Wel, jy het geleer hoe om 'n \"toepassing groep\" te skep"
+msgstr "Λοιπόν, μάθατε πώς να δημιουργείτε μία \"ομάδα εφαρμογής\""
 
 #: ../resources/guide/js/desktop.coffee:122
 msgid "tips: Right-click on the application group will provide more functions"
-msgstr "wenke: Regs-kliek op die toepassing groep om meer funksies te verkry"
+msgstr "συμβουλές: Με ένα δεξί κλικ στην ομάδα εφαρμογής θα εμφανιστούν κι άλλες λειτουργίες."
 
 #: ../resources/guide/js/desktop.coffee:132
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different "
 "events"
-msgstr ""
+msgstr "Σύρετε το ποντίκι στις τέσσερεις πάνω γωνίες, που μπορούν να ενεργοποιήσουν τέσσερα διαφορετικά συμβάντα"
 
 #: ../resources/guide/js/desktop.coffee:154
 msgid ""
 "We already know that launcher can be shown/ hidden by sliding the mouse to "
 "the upper left corner"
-msgstr ""
+msgstr "Γνωρίζουμε ήδη ότι η εκκίνηση μπορεί να εμφανιστεί/κρυφτεί σέρνοντας το ποντίκι στην πάνω αριστερή γωνία"
 
 #: ../resources/guide/js/desktop.coffee:176
 msgid ""
 "The workspace will be shown or hidden by sliding the mouse to the lower left"
 " corner"
-msgstr ""
+msgstr "Ο χώρος εργασίας θα εμφανίζεται ή θα αποκρύπτεται σέρνοντας το ποντίκι στην κάτω αριστερή γωνία"
 
 #: ../resources/guide/js/desktop.coffee:202
 msgid ""
 "No functions are set in default on the upper right corner\n"
 "Right-click on desktop black area to call up the menu, select \"Corner navigation\" to set the corner used"
-msgstr ""
+msgstr "Δεν έχουν τεθεί λειτουργίες στην πάνω δεξιά γωνία.\nΠατήστε δεξί κλικ στη μαύρη περιοχή της επιφάνειας εργασίας για να ανοίξτε το μενού, επιλέξτε \"Περιήγηση από τις γωνίες\" για να ορίσετε τη γωνία που χρησιμοποιείται"
 
 #: ../resources/guide/js/desktop.coffee:203
 msgid "tips: Click on the corner navigation blank area to return"
-msgstr ""
+msgstr "συμβουλές: Κάντε κλικ στη κενή περιοχή περιήγησης από τις γωνίες για επιστροφή"
 
 #: ../resources/guide/js/dock.coffee:26
 msgid ""
 "Three modes and the display status can be switched by right-click on the "
 "blank area of dock"
-msgstr ""
+msgstr "Τρεις λειτουργίες και η κατάσταση εμφάνισης μπορούν να αλλάξουν με δεξί κλικ στην κενή περιοχή της πλατφόρμας."
 
 #: ../resources/guide/js/dss.coffee:32
 msgid ""
 "The Control Center will be shown or hidden by sliding the mouse to the lower"
 " right corner"
-msgstr ""
+msgstr "Το Κέντρο Ελέγχου θα εμφανίζεται ή θα αποκρύπτεται σέρνοντας το ποντίκι στην κάτω δεξιά γωνία."
 
 #: ../resources/guide/js/dss.coffee:33
 msgid "tips: Click the setting icon on dock to implement"
-msgstr "wenke: Druk die omgewing ikoon op dok om te implementeer"
+msgstr "συμβουλή: Επιλέξε το εικονίδιο ρυθμίσεων στην πλατφόρμα για υλοποίηση"
 
 #: ../resources/guide/js/dss.coffee:76
 msgid "Click the power button to shut down, reboot or do other operations"
-msgstr ""
+msgstr "Πατήστε το κουμπί τροφοδοσίας για να απενεργοποίηση, επανεκκίνηση ή οποιαδήποτε άλλη λειτουργία"
 
 #: ../resources/guide/js/dss.coffee:77
 msgid ""
 "tips: Hover the setting icon on dock to quickly implement some setting "
 "functions"
-msgstr "wenke: Beweeg oor die toepassing ikoon op die dok om 'n paar instelling funksies vinnag te implementeer"
+msgstr "συμβουλές: Περάστε πάνω από το εικονίδιο ρυθμίσεων στην πλατφόρμα ώστε να υλοποιήσετε γρήγορα κάποιες λειτουργίες ρυθμίσεων"
 
 #: ../resources/guide/js/end.coffee:25
 msgid ""
 "Thank you for your patience to learn! More surprises are waiting for you to "
 "explore"
-msgstr ""
+msgstr "Ευχαριστούμε για την υπομονή σας ώστε να μάθετε! Σας περιμένουν κι άλλες εκπλήξεις για να εξερευνήσετε"
 
 #: ../resources/guide/js/end.coffee:30
 msgid "Start my Deepin trip"
-msgstr ""
+msgstr "Ξεκίνα το ταξίδι μου στο Deepin"
 
 #: ../resources/guide/js/launcher.coffee:31
 msgid ""
 "\"Application Launcher\" can be started by sliding the mouse to the upper "
 "left corner or clicking on the launcher."
-msgstr "\"Toepassing lanseerder\" kan begin word deur die muis in te skuif na die boonste linker hoek of kliek op die lanseerder."
+msgstr "Η \"Εφαρμογή Εκκίνησης\" μπορεί να ξεκινήσει σέρνοντας το ποντίκι στην πάνω αριστερή γωνία ή κλικάροντας στην εκκίνηση."
 
 #: ../resources/guide/js/launcher.coffee:83
 msgid "Please directly hit \"deepin\" in keyboard"
-msgstr ""
+msgstr "Παρακαλώ κλικάρετε απευθείας \"deepin\" στο πληκτρολόγιο"
 
 #: ../resources/guide/js/launcher.coffee:96
 msgid "You can directly drag the application icon to Dock or trash"
-msgstr ""
+msgstr "Μπορείτε να σύρετε απευθείας το εικονίδιο της εφαρμογής στην πλατφόρμα ή στα απορρίμματα"
 
 #: ../resources/guide/js/launcher.coffee:109
 msgid ""
 "tips: Click the right mouse button on the application icon to call up the "
 "context menu"
-msgstr ""
+msgstr "συμβουλές: Πατήστε με το δεξί κουμπό του ποντικιού στο εικονίδιο εφαρμογής για να εμφανιστεί το μενού περιβάλλοντος"
 
 #: ../resources/guide/js/launcher.coffee:135
 msgid "Remove from _favorites"
-msgstr "Verwyder van _gunstelinge"
+msgstr "Αφαίρεση από τα _αγαπημένα"
 
 #: ../resources/guide/js/launcher.coffee:136
 #: ../resources/launcher/js/const.coffee:76
 msgid "Send to d_esktop"
-msgstr "Stuur na t_afelblad"
+msgstr "Αποστολή στην επιφάνεια ερ_γασίας"
 
 #: ../resources/guide/js/launcher.coffee:137
 #: ../resources/launcher/js/const.coffee:80
 msgid "Send to do_ck"
-msgstr "Stuur na do_k"
+msgstr "Αποστολή στο Dock"
 
 #: ../resources/guide/js/launcher.coffee:139
 #: ../resources/launcher/js/const.coffee:68
 msgid "_Add to autostart"
-msgstr "_Voeg by outobegin"
+msgstr "_Προσθήκη στη αυτόματη εκκίνηση"
 
 #: ../resources/guide/js/launcher.coffee:140
 #: ../resources/launcher/js/item.coffee:295
 msgid "_Uninstall"
-msgstr "_Verwyder"
+msgstr "_Απεγκατάσταση"
 
 #: ../resources/guide/js/start.coffee:29
 msgid "New Launcher"
-msgstr "Nuwe Lanseerder"
+msgstr "Νέος Εκκινητής"
 
 #: ../resources/guide/js/start.coffee:29
 msgid "New Desktop"
-msgstr "Nuwe Tafelblad"
+msgstr "Νέα Επιφάνεια Εργασίας"
 
 #: ../resources/guide/js/start.coffee:29
 msgid "New System Settings"
-msgstr "Nuwe Stelse Verstelling"
+msgstr "Νέες Ρυθμίσεις Συστήματος"
 
 #: ../resources/guide/js/start.coffee:30
 msgid "The following will guide you to learn how to use some new functions"
-msgstr "Die volgende sal jou lei om te leer hoe om 'n paar nuwe funksies te gebruik"
+msgstr "Τα ακόλουθα θα σας οδηγήσουν ώστε να μάθετε να χρησιμοποιείτε κάποιες λειτουργίες."
 
 #: ../resources/guide/js/start.coffee:45
 msgid "Start"
-msgstr "Begin"
+msgstr "Έναρξη"
 
 #: ../resources/guide/js/start.coffee:52
 msgid "Skip the guide, experience immediately"
-msgstr ""
+msgstr "Παράλειψη οδηγού, απευθείς στην εμπειρία"
 
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
-msgstr "Welkom by die Deepin Bedryfstelsel"
+msgstr "Καλώς ήρθατε στο Λειτουργικό Σύστημα Deepin "
 
 #: ../resources/guide/js/welcome.coffee:38
 msgid "Prepare for operation ..."
-msgstr "Voorberei vir bewerking ..."
+msgstr "Προετοιμασία για λειτουργία ..."
 
 #: ../resources/launcher/js/const.coffee:60
 msgid "_Hide the icon"
-msgstr "_Steek die ikoon weg"
+msgstr "_Απόκρυψη εικονιδίου"
 
 #: ../resources/launcher/js/const.coffee:61
 msgid "_Display hidden icons"
-msgstr "_Wys verborge ikone"
+msgstr "Εμφανίστε τα κρυμμένα _εικονίδια"
 
 #: ../resources/launcher/js/const.coffee:64
 msgid "_Hide this icon"
-msgstr "_Versteek die ikoon"
+msgstr "Αποκρύψετε αυτό το ει_κονίδιο"
 
 #: ../resources/launcher/js/const.coffee:65
 msgid "_Display this icon"
-msgstr "_Vertoon die ikoon"
+msgstr "Ε_μφανίστε αυτό το εικονίδιο"
 
 #: ../resources/launcher/js/const.coffee:69
 msgid "_Remove from autostart"
-msgstr "_Verwyder van outobegin"
+msgstr "_Αφαιρέστε από την αυτόματη εκκίνηση"
 
 #: ../resources/launcher/js/const.coffee:77
 msgid "Remove from d_esktop"
-msgstr "Verwyder van t_afelblad"
+msgstr "Αφαίρεση από την επι_φάνεια εργασίας"
 
 #: ../resources/launcher/js/const.coffee:81
 msgid "Remove from do_ck"
-msgstr "Verwyder na do_k"
+msgstr "Αφαίρεση από την μπά_ρα εφαρμογών"
 
 #: ../resources/launcher/js/menu.coffee:5
 msgid "By name"
-msgstr ""
+msgstr "Κατά όνομα"
 
 #: ../resources/launcher/js/menu.coffee:6
 msgid "By category (icon)"
-msgstr ""
+msgstr "Ανά κατηγορία (εικονίδιο)"
 
 #: ../resources/launcher/js/menu.coffee:7
 msgid "By category (text)"
-msgstr ""
+msgstr "Ανά κατηγορία (κείμενο)"
 
 #: ../resources/launcher/js/menu.coffee:8
 msgid "By time installed"
-msgstr ""
+msgstr "Εγκατάσταση κατά ώρα"
 
 #: ../resources/launcher/js/menu.coffee:9
 msgid "By frequency"
-msgstr ""
+msgstr "κατά συχνότητα"
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
-msgstr "Dupliseer"
+msgstr "Διπλότυπο"
 
 #: ../resources/osd/js/monitor.coffee:39
 msgid "Extend"
-msgstr "Verleng"
+msgstr "Επέκταση"
 
 #: ../resources/zone/js/utils.coffee:13
 msgid "Control Center"
-msgstr "Beheersentrum"
+msgstr "Κέντρο Ελέγχου"
 
 #: ../resources/zone/js/utils.coffee:13
 msgid "All Windows"
-msgstr "Alle Vensters"
+msgstr "Όλα τα Παράθυρα"
 
 #: ../resources/zone/js/utils.coffee:13
 msgid "Desktop"
-msgstr "Lessenaarblad"
+msgstr "Επιφάνεια εργασίας"
 
 #: ../resources/zone/js/utils.coffee:13
 msgid "None"
-msgstr "Geen"
+msgstr "Κανένα"
 
 #: ../app/desktop/desktop.c:300
 msgid "New file"
-msgstr "Nuwe lêer"
+msgstr "Νέο αρχείο"
 
 #: ../app/desktop/desktop.c:311
 msgid "New directory"
-msgstr "Nuwe gids"
+msgstr "Νέος κατάλογο"
 
 #: ../app/dock/dock.c:291
 msgid "Dock failed to start, because Compiz is not enabled."
-msgstr "Dok het versuim om te begin, want Compiz is nie aangeskakel."
+msgstr "Απέτυχε να ξεκινήσει η πλατφόρμα γιατί είναι απενεργοποιημένο το Compiz."
 
 #: ../app/greeter/greeter.c:209 ../app/greeter/lock.c:173
 msgid "Wrong Password"
-msgstr "Verkeerde Wagwoord"
+msgstr "Λάθος Κωδικός Πρόσβασης"
 
 #: ../app/greeter/mutils.c:84
 msgid "%a, %b %d, %Y"
@@ -693,260 +694,260 @@ msgstr "%a, %b %d, %Y"
 
 #: ../lib/category.c:45
 msgid "all"
-msgstr "alle"
+msgstr "όλα"
 
 #: ../lib/category.c:46
 msgid "internet"
-msgstr "internet"
+msgstr "διαδίκτυο"
 
 #: ../lib/category.c:47
 msgid "multimedia"
-msgstr "multimedia"
+msgstr "πολυμέσα"
 
 #: ../lib/category.c:48
 msgid "games"
-msgstr "speletjies"
+msgstr "παιχνίδια"
 
 #: ../lib/category.c:49
 msgid "graphics"
-msgstr "grafika"
+msgstr "γραφικών"
 
 #: ../lib/category.c:50
 msgid "productivity"
-msgstr "produktiwiteit"
+msgstr "παραγωγικότητα"
 
 #: ../lib/category.c:51
 msgid "industry"
-msgstr "industrie"
+msgstr "βιομηχανία"
 
 #: ../lib/category.c:52
 msgid "education"
-msgstr "onderwys"
+msgstr "εκπαίδευση"
 
 #: ../lib/category.c:53
 msgid "development"
-msgstr "ontwikkeling"
+msgstr "ανάπτυξη"
 
 #: ../lib/category.c:54
 msgid "system"
-msgstr "stelsel"
+msgstr "σύστημα"
 
 #: ../lib/category.c:55
 msgid "utilities"
-msgstr "nuts"
+msgstr "βοηθητικά προγράμματα"
 
 #: ../lib/category.c:56
 msgid "others"
-msgstr "ander"
+msgstr "άλλα"
 
 #: ../lib/dentry/entry.c:746
 #, c-format
 msgid ""
 "Cannot rename the item to \"%s\". This may be caused by lack of permissions."
-msgstr "Kan nie die naam van die item verander na \"%s\". Dit kan veroorsaak word deur 'n gebrek aan regte."
+msgstr "Το αντικείμενο δεν μπορεί να μετονομαστεί στο \"%s\". Αυτό μπορεί να οφείλεται σε έλλειψη αδειών."
 
 #: ../lib/dentry/entry.c:752
 #, c-format
 msgid ""
 "There is already a file with name \"%s\" in this folder. Please consider a "
 "different name."
-msgstr "Daar is reeds 'n lêer met die naam \"%s\" in hierdie gids. Oorweeg dit asseblief om 'n ander naam te gebruik."
+msgstr "Υπάρχει ήδη ένα αρχείο με το όνομα \"%s\" σε αυτόν το φάκελο. Παρακαλώ εισάγετε άλλο όνομα."
 
 #: ../lib/dentry/entry.c:758
 msgid "The item could not be renamed"
-msgstr "Die item kan nie hernoem word nie"
+msgstr "Το στοιχείο δεν μπορεί να μετονομαστεί"
 
 #: ../lib/dentry/entry.c:833 ../lib/dentry/fileops.c:805
 msgid "copy"
-msgstr "kopieer"
+msgstr "αντιγραφή"
 
 #: ../lib/dentry/entry.c:1415
 msgid "App Group"
-msgstr "Toepassing Groep"
+msgstr "Ομάδα εφαρμογών"
 
 #: ../lib/dentry/fileops.c:566
 msgid "Move"
-msgstr "Skuif"
+msgstr "Λειτουργία"
 
 #: ../lib/dentry/fileops.c:772
 msgid "Copy"
-msgstr "Kopieer"
+msgstr "Αντιγραφή"
 
 #: ../lib/dentry/fileops_delete.c:29
 msgid "Delete Files"
-msgstr "Verwyder Lêers"
+msgstr "Διαγραφή Αρχείων"
 
 #: ../lib/dentry/fileops_delete.c:32
 msgid "Are you sure you want to permanently delete the files?"
-msgstr "Is jy seker jy wil die lêers permanent uitvee?"
+msgstr "Είστε σίγουροι ότι θέλετε να διαγράψετε οριστικά τα αρχεία;"
 
 #: ../lib/dentry/fileops_delete.c:33
 msgid "If you delete the files, they will be permanently lost."
-msgstr "As jy die lêers verwyder, sal hulle permanent verlore wees."
+msgstr "Αν διαγράψετε τα αρχεία, θα χαθούν μόνιμα."
 
 #: ../lib/dentry/fileops_delete.c:36
 msgid "Delete"
-msgstr "Verwyder"
+msgstr "Διαγραφή"
 
 #: ../lib/dentry/fileops_error_dialog.c:63
 msgid "File conflict"
-msgstr "Lêer konflik"
+msgstr "Σύγκρουση αρχείου"
 
 #: ../lib/dentry/fileops_error_dialog.c:106
 msgid "_Select a new name for the destination"
-msgstr "_Kies 'n nuwe naam vir die bestemming"
+msgstr "_Επιλέξτε ένα νέο όνομα για τον προορισμό"
 
 #: ../lib/dentry/fileops_error_dialog.c:117
 msgid "Reset"
-msgstr "Terugstel"
+msgstr "Επαναφορά"
 
 #: ../lib/dentry/fileops_error_dialog.c:126
 msgid "Apply this action to all files"
-msgstr "Pas hierdie aksie toe vir alle lêers"
+msgstr "Εφαρμόστε αυτήν την ενέργεια σε όλα τα αρχεία"
 
 #: ../lib/dentry/fileops_error_dialog.c:133
 msgid "_Skip"
-msgstr "_Oorslaan"
+msgstr "_Παράκαμψη"
 
 #: ../lib/dentry/fileops_error_dialog.c:136
 msgid "Re_name"
-msgstr "Her_noem"
+msgstr "Με_τονομασία"
 
 #: ../lib/dentry/fileops_error_dialog.c:141
 msgid "Replace"
-msgstr "Vervang"
+msgstr "Αντικαταστήστε"
 
 #: ../lib/dentry/fileops_error_dialog.c:218
 #, c-format
 msgid "Do you want to merge with folder \"%s\"?"
-msgstr "Wil jy die gids saam smelt met die gids \"%s\"?"
+msgstr "Θέλετε να συγχωνεύσετε με το φάκελο \"%s\";"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
 msgid ""
 "The merging operation will be asked to confirm before replacing any files in"
 " the folder conflicted."
-msgstr "Die samesmelting werking sal gevra word om te bevestig voordat die vervanging van enige lêers in die gids plaasvind."
+msgstr "Η λειτουργία συγχώνευσης θα ζητήσει επιβεβαίωση πριν αντικαταστήσει τα αρχεία στο φάκελο σε διένεξη,"
 
 #: ../lib/dentry/fileops_error_dialog.c:222
 #, c-format
 msgid "An older folder with the same name already exists in \"%s\"."
-msgstr "'N ouer gids met dieselfde naam bestaan ​​reeds in \"%s\"."
+msgstr "Ένας παλαιότερος φάκελος με το ίδιο όνομα υπάρχει ήδη στο \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:226
 #, c-format
 msgid "A newer folder with the same name already exists in \"%s\"."
-msgstr "'N nuwer gids met dieselfde naam bestaan ​​reeds in \"%s\"."
+msgstr "Ένας νεότερος φάκελος με το ίδιο όνομα υπάρχει ήδη στο \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:230
 #, c-format
 msgid "Another folder with the same name already exists in \"%s\"."
-msgstr "Nog 'n gids met dieselfde naam bestaan ​​reeds in \"%s\"."
+msgstr "Ένας άλλος φάκελος με το ίδιο όνομα υπάρχει ήδη στο \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:236
 msgid "All files in the folder will be removed by replacing."
-msgstr "Alle lêers in die gids sal verwyder word deur vervanging."
+msgstr "Όλα τα αρχεία στο φάκελο θα απομακρυνθούν μέσω αντικατάστασης."
 
 #: ../lib/dentry/fileops_error_dialog.c:237
 #, c-format
 msgid "Do you want to replace folder \"%s\"?"
-msgstr "Wil jy die gids \"%s\" vervang?"
+msgstr "Θέλετε να αντικαταστήσετε το φάκελο \"%s\";"
 
 #: ../lib/dentry/fileops_error_dialog.c:239
 #, c-format
 msgid "A folder with the same name already exists in \"%s\"."
-msgstr "'N gids met dieselfde naam bestaan ​​reeds in \"%s\"."
+msgstr "Ένας φάκελος με το ίδιο όνομα υπάρχει ήδη στο \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:245
 #, c-format
 msgid "Do you want to replace file \"%s\"?"
-msgstr "Wil jy die lêer \"%s\" vervang?"
+msgstr "Θέλετε να αντικαταστήσετε το αρχείο \"%s\";"
 
 #: ../lib/dentry/fileops_error_dialog.c:246
 msgid "The content will be overwritten by replacing."
-msgstr "Die inhoud sal oorsryf word deur vervanging."
+msgstr "Το περιεχόμενο θα αντικατασταθεί με την αντικατάσταση."
 
 #: ../lib/dentry/fileops_error_dialog.c:248
 #, c-format
 msgid "An older file with the same name already exists in \"%s\"."
-msgstr "'N ouer lêer met dieselfde naam bestaan ​​reeds in \"%s\"."
+msgstr "Ένα παλαιότερο αρχείο με το ίδιο όνομα υπάρχει ήδη στο \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:252
 #, c-format
 msgid "A newer file with the same name already exists in \"%s\"."
-msgstr "'N nuwer lêer met dieselfde naam bestaan ​​reeds in \"%s\"."
+msgstr "Ένα νεότερο αρχείο με το ίδιο όνομα υπάρχει ήδη στο \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:256
 #, c-format
 msgid "Another file with the same name already exists in \"%s\"."
-msgstr "Nog 'n lêer met dieselfde naam bestaan ​​reeds in \"%s\"."
+msgstr "Ένα άλλο αρχείο με το ίδιο όνομα υπάρχει ήδη στο \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:328
 msgid "Original file"
-msgstr "Oorspronklike lêer"
+msgstr "Αρχικό αρχείο"
 
 #: ../lib/dentry/fileops_error_dialog.c:329
 #: ../lib/dentry/fileops_error_dialog.c:357
 msgid "Size:"
-msgstr "Groote:"
+msgstr "Μέγεθος:"
 
 #: ../lib/dentry/fileops_error_dialog.c:333
 #: ../lib/dentry/fileops_error_dialog.c:361
 msgid "Type:"
-msgstr "Tipe:"
+msgstr "Τύπος:"
 
 #: ../lib/dentry/fileops_error_dialog.c:337
 #: ../lib/dentry/fileops_error_dialog.c:365
 msgid "Last modified:"
-msgstr "Laaste wysiging:"
+msgstr "Τελευταία ενημέρωση:"
 
 #: ../lib/dentry/fileops_error_dialog.c:356
 msgid "Replace with"
-msgstr "Vervang met"
+msgstr "Αντικατάσταση με"
 
 #: ../lib/dentry/fileops_error_dialog.c:382
 msgid "Merge"
-msgstr "Saamsmelt"
+msgstr "Συγχώνευση"
 
 #: ../lib/dentry/fileops_error_reporting.c:106
 #: ../lib/dentry/fileops_error_reporting.c:191
 #, c-format
 msgid "Error while %s files"
-msgstr "Fout tydens %s lêer"
+msgstr "Παρουσιάστηκε σφάλμα κατά την %s αρχεία"
 
 #: ../lib/dentry/fileops_trash.c:58
 msgid "Empty Trash"
-msgstr "Maak Asblik Leeg"
+msgstr "Αδειάστε τον κάδο απορριμάτων"
 
 #: ../lib/dentry/fileops_trash.c:67
 msgid "Empty all items from Trash?"
-msgstr "Verwyder alle items van Asblik?"
+msgstr "Θα θέλατε για να αδειάσετε όλα τα αντικείμενα από τον Κάδο απορριμμάτων;"
 
 #: ../lib/dentry/fileops_trash.c:68
 msgid "All items in the Trash will be permanently deleted."
-msgstr "Alle items in die Asblik sal permanent verwyder word."
+msgstr "Όλα τα στοιχεία στον Κάδο απορριμμάτων θα διαγραφούν οριστικά."
 
 #: ../lib/dentry/fileops_trash.c:71
 msgid "Empty _Trash"
-msgstr "Verwyder _Gemors"
+msgstr "_Αδειάστε τον κάδο απορριμάτων"
 
 #: ../lib/dentry/mime_actions.c:198
 #, c-format
 msgid "Do you want to run \"%s\", or display its contents?"
-msgstr "Wil jy \"%s\" uitvoer, of die inhoud wys?"
+msgstr "Μήπως θέλετε να εκτελέσετε \"%s\", ή να εμφανίσετε τα περιεχόμενά του;"
 
 #: ../lib/dentry/mime_actions.c:199
 #, c-format
 msgid "\"%s\" is an executable text file."
-msgstr "\"%s\" is 'n uitvoerbare tekslêer."
+msgstr "Το \"%s\" είναι ένα εκτελέσιμο αρχείο κειμένου."
 
 #: ../lib/dentry/mime_actions.c:210
 msgid "Run in _Terminal"
-msgstr "Voer uit in _Terminaal"
+msgstr "Εκτέλεση σε _τερματικό"
 
 #: ../lib/dentry/mime_actions.c:211
 msgid "_Display"
-msgstr "_Vertoon"
+msgstr "_Οθόνη"
 
 #: ../lib/dentry/mime_actions.c:213
 msgid "_Run"
-msgstr "_Voer uit"
+msgstr "_Εκτελέστε"
