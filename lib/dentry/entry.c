@@ -116,55 +116,66 @@ gboolean dentry_is_gapp(Entry* e)
     else return FALSE;
 }
 
+
+enum {
+    FILE_TYPE_NOT_SUPPORT = -1,
+    FILE_TYPE_APP = 0,
+    FILE_TYPE_FILE = 1,
+    FILE_TYPE_DIR = 2,
+    FILE_TYPE_RICH_DIR = 3,
+    FILE_TYPE_INVALID_LINK = 4,
+};
+
 JS_EXPORT_API
 double dentry_get_type(Entry* e)
 {
     TEST_GFILE(e, f)
         switch (g_file_query_file_type(f, G_FILE_QUERY_INFO_NONE, NULL)) {
-            case G_FILE_TYPE_REGULAR:
-                return 1;
-            case G_FILE_TYPE_DIRECTORY:
-                {
-                    char* path = g_file_get_basename(f);
-                    if (g_str_has_prefix(path, DEEPIN_RICH_DIR)) {
-                        g_free(path);
-                        return 3;
-                    } else {
-                        g_free(path);
-                        return 2;
-                    }
-                }
-        case G_FILE_TYPE_SYMBOLIC_LINK:
-        {
-            char* src = g_file_get_path(f);
-            char* target = g_file_read_link (src, NULL);
-            g_free (src);
-            if (target != NULL||g_file_test(target, G_FILE_TEST_EXISTS))
+        case G_FILE_TYPE_REGULAR:
+            return FILE_TYPE_FILE;
+        case G_FILE_TYPE_DIRECTORY:
             {
-            GFile* target_gfile = g_file_new_for_commandline_arg(target);
-            g_free(target);
-            double retval = dentry_get_type(target_gfile);
-            g_object_unref(target_gfile);
-            if (retval == -1)
-                retval = 4;
-            return retval;
+                char* path = g_file_get_basename(f);
+                if (g_str_has_prefix(path, DEEPIN_RICH_DIR)) {
+                    g_free(path);
+                    return FILE_TYPE_RICH_DIR;
+                } else {
+                    g_free(path);
+                    return FILE_TYPE_DIR;
+                }
             }
-            return 4;
-        }
-        //the remaining file type values.
+        case G_FILE_TYPE_SYMBOLIC_LINK:
+            {
+                char* src = g_file_get_path(f);
+                char* target = g_file_read_link (src, NULL);
+                g_free (src);
+                if (target != NULL||g_file_test(target, G_FILE_TEST_EXISTS))
+                {
+                    GFile* target_gfile = g_file_new_for_commandline_arg(target);
+                    g_free(target);
+                    double retval = dentry_get_type(target_gfile);
+                    g_object_unref(target_gfile);
+                    if (retval == FILE_TYPE_NOT_SUPPORT)
+                        retval = FILE_TYPE_INVALID_LINK;
+                    return retval;
+                }
+                g_free(target);
+                return FILE_TYPE_INVALID_LINK;
+            }
+            //the remaining file type values.
         case G_FILE_TYPE_SPECIAL:
         case G_FILE_TYPE_MOUNTABLE:
-            default:
-                {
-                    char* path = g_file_get_path(f);
-                    g_warning("Did't know file type %s", path);
-                    g_free(path);
-                    return -1;
-                }
+        default:
+            {
+                char* path = g_file_get_path(f);
+                g_warning("Did't know file type %s", path);
+                g_free(path);
+                return FILE_TYPE_NOT_SUPPORT;
+            }
         }
     TEST_GAPP(e, app)
     TEST_END
-        return 0;
+        return FILE_TYPE_APP;
 }
 
 //TODO:
@@ -314,6 +325,8 @@ char* dentry_get_icon_path(Entry* e)
     TEST_END
     return ret;
 }
+
+
 JS_EXPORT_API
 gboolean dentry_can_thumbnail(Entry* e)
 {
@@ -377,10 +390,7 @@ gboolean dentry_launch(Entry* e, const ArrayContainer fs)
 
             if (fs.num != 0)
             {
-                for (size_t i=0; i<_fs.num; i++) {
-                     g_object_unref(((GObject**)_fs.data)[i]);
-                }
-                g_free(_fs.data);
+                ArrayContainer_free(_fs);
             }
 
             g_object_unref(info);
@@ -420,10 +430,7 @@ gboolean dentry_launch(Entry* e, const ArrayContainer fs)
         g_object_unref(launch_context);
         g_list_free(list);
 
-        for (size_t i=0; i<_fs.num; i++) {
-            g_object_unref(((GObject**)_fs.data)[i]);
-        }
-        g_free(_fs.data);
+        ArrayContainer_free(_fs);
         return ret;
 
     TEST_END
@@ -499,16 +506,17 @@ double dentry_files_compressibility(ArrayContainer fs)
         GFile *f = files[0];
         if(_file_is_archive(f))
         {
-            g_free(_fs.data);
+            ArrayContainer_free(_fs);
             return FILES_DECOMPRESSIBLE;
         }
         char *filename = g_file_get_basename(f);
         if(NULL!=filename && g_str_has_suffix(filename, ".desktop"))
         {
-            g_free(_fs.data);
+            ArrayContainer_free(_fs);
             g_free(filename);
             return FILES_COMPRESSIBLE_NONE;
         }
+        g_free(filename);
     }
     else if(1 < fs.num)
     {
@@ -518,7 +526,7 @@ double dentry_files_compressibility(ArrayContainer fs)
             GFile *f = files[i];
             if(NULL == f)
             {
-                g_free(_fs.data);
+                ArrayContainer_free(_fs);
                 return FILES_COMPRESSIBLE_NONE;
             }
             if(!_file_is_archive(f))
@@ -526,7 +534,7 @@ double dentry_files_compressibility(ArrayContainer fs)
                 all_compressed = FALSE;
                 if(!g_file_get_path(f))
                 {
-                    g_free(_fs.data);
+                    ArrayContainer_free(_fs);
                     return FILES_COMPRESSIBLE_NONE;
                 }
             }
@@ -534,30 +542,28 @@ double dentry_files_compressibility(ArrayContainer fs)
             char *filename = g_file_get_basename(f);
             if(NULL!=filename && g_str_has_suffix(filename, ".desktop"))
             {
-                g_free(_fs.data);
+                ArrayContainer_free(_fs);
                 g_free(filename);
                 return FILES_COMPRESSIBLE_NONE;
             }
+            g_free(filename);
         }
 
         if(all_compressed)
         {
-            g_free(_fs.data);
+            ArrayContainer_free(_fs);
             return FILES_COMPRESSIBLE_ALL;
         }
     }
 
-    if(_fs.data != NULL)
-    {
-        g_free(_fs.data);
-    }
+    ArrayContainer_free(_fs);
     return FILES_COMPRESSIBLE;
 }
 
 static gboolean
 _file_is_archive (GFile *file)
 {
-    char *mime_type = NULL;
+    const char *mime_type = NULL;
     guint i;
     static const char * archive_mime_types[] = { "application/x-gtar",
         "application/x-zip",
@@ -600,13 +606,18 @@ _file_is_archive (GFile *file)
 
     GFileInfo* info = g_file_query_info(file, "standard::content-type", G_FILE_QUERY_INFO_NONE, NULL, NULL);
     if (info != NULL) {
-        mime_type = (char*)g_file_info_get_attribute_string(info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE);
+        mime_type = g_file_info_get_attribute_string(info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE);
+        if (mime_type == NULL) {
+            g_object_unref(info);
+            return FALSE;
+        }
+
         char* path = g_file_get_path(file);
         g_debug("[%s] \"%s\" MINE type is: \"%s\"", __func__, path, mime_type);
         g_free(path);
 
         for (i = 0; i < G_N_ELEMENTS (archive_mime_types); i++) {
-            if (!strcmp (mime_type, archive_mime_types[i])) {
+            if (0 == strcmp (mime_type, archive_mime_types[i])) {
                 return TRUE;
             }
         }
@@ -635,10 +646,7 @@ void dentry_compress_files(ArrayContainer fs)
         _commandline_exec("file-roller -d %U ", list);
 
         g_list_free(list);
-        for (size_t i=0; i<_fs.num; i++) {
-             g_object_unref(((GObject**)_fs.data)[i]);
-        }
-        g_free(_fs.data);
+        ArrayContainer_free(_fs);
     }
 }
 
@@ -662,10 +670,7 @@ void dentry_decompress_files(ArrayContainer fs)
             g_list_free(list);
         }
 
-        for (size_t i=0; i<_fs.num; i++) {
-             g_object_unref(((GObject**)_fs.data)[i]);
-        }
-        g_free(_fs.data);
+        ArrayContainer_free(_fs);
     }
 }
 
@@ -689,10 +694,7 @@ void dentry_decompress_files_here(ArrayContainer fs)
         _commandline_exec("file-roller -h ", list);
 
         g_list_free(list);
-        for (size_t i=0; i<_fs.num; i++) {
-             g_object_unref(((GObject**)_fs.data)[i]);
-        }
-        g_free(_fs.data);
+        ArrayContainer_free(_fs);
     }
 }
 
@@ -762,6 +764,8 @@ static void show_rename_error_dialog (const char* name, gboolean is_app)
     gtk_widget_destroy (dialog);
     g_free(secondary_text);
 }
+
+
 JS_EXPORT_API
 gboolean dentry_set_name(Entry* e, const char* name)
 {
@@ -816,10 +820,7 @@ gboolean dentry_move(ArrayContainer fs, GFile* dest, gboolean prompt)
     gboolean retval = TRUE;
     ArrayContainer _fs = _normalize_array_container(fs);
     retval = fileops_move(_fs.data, _fs.num, dest, prompt);
-    for (size_t i=0; i<_fs.num; i++) {
-        g_object_unref(((GObject**)_fs.data)[i]);
-    }
-    g_free(_fs.data);
+    ArrayContainer_free(_fs);
     return retval;
 }
 
@@ -891,22 +892,16 @@ void dentry_copy_dereference_symlink(ArrayContainer fs, GFile* dest_dir)
         g_object_unref(dest);
     }
 
-    for (size_t i=0; i<_fs.num; i++) {
-        g_object_unref(((GObject**)_fs.data)[i]);
-    }
-    g_free(_fs.data);
+    ArrayContainer_free(_fs);
 }
 
 JS_EXPORT_API
 void dentry_copy (ArrayContainer fs, GFile* dest)
 {
     ArrayContainer _fs = _normalize_array_container(fs);
-    /*fileops_copy (_fs.data, _fs.num, dest);*/
+    // fileops_copy (_fs.data, _fs.num, dest);
     files_copy_via_dbus (_fs.data, _fs.num, dest);
-    for (size_t i=0; i<_fs.num; i++) {
-        g_object_unref(((GObject**)_fs.data)[i]);
-    }
-    g_free(_fs.data);
+    ArrayContainer_free(_fs);
 }
 
 
@@ -931,20 +926,16 @@ void dentry_delete_files(ArrayContainer fs, gboolean show_dialog)
 {
     ArrayContainer _fs = _normalize_array_container(fs);
     fileops_confirm_delete(_fs.data, _fs.num, show_dialog);
-    for (size_t i=0; i<_fs.num; i++) {
-        g_object_unref(((GObject**)_fs.data)[i]);
-    }
-    g_free(_fs.data);
+    ArrayContainer_free(_fs);
 }
+
+
 JS_EXPORT_API
 void dentry_trash(ArrayContainer fs)
 {
     ArrayContainer _fs = _normalize_array_container(fs);
     fileops_trash (_fs.data, _fs.num);
-    for (size_t i=0; i<_fs.num; i++) {
-        g_object_unref(((GObject**)_fs.data)[i]);
-    }
-    g_free(_fs.data);
+    ArrayContainer_free(_fs);
 }
 
 
@@ -953,10 +944,7 @@ void dentry_clipboard_copy(ArrayContainer fs)
 {
     ArrayContainer _fs = _normalize_array_container(fs);
     init_fileops_clipboard (_fs.data, _fs.num, FALSE);
-    for (size_t i=0; i<_fs.num; i++) {
-        g_object_unref(((GObject**)_fs.data)[i]);
-    }
-    g_free(_fs.data);
+    ArrayContainer_free(_fs);
 }
 
 JS_EXPORT_API
@@ -964,10 +952,7 @@ void dentry_clipboard_cut(ArrayContainer fs)
 {
     ArrayContainer _fs = _normalize_array_container(fs);
     init_fileops_clipboard (_fs.data, _fs.num, TRUE);
-    for (size_t i=0; i<_fs.num; i++) {
-        g_object_unref(((GObject**)_fs.data)[i]);
-    }
-    g_free(_fs.data);
+    ArrayContainer_free(_fs);
 }
 
 JS_EXPORT_API
@@ -1008,6 +993,8 @@ void ArrayContainer_free0(ArrayContainer array)
         g_object_unref(((GObject**)array.data)[i]);
     }
 }
+
+
 void ArrayContainer_free(ArrayContainer array)
 {
     for(size_t i = 0 ; i < array.num ; i++)
@@ -1016,6 +1003,8 @@ void ArrayContainer_free(ArrayContainer array)
     }
     g_free(array.data);
 }
+
+
 void g_message_boolean(gboolean b)
 {
     (b == TRUE)?(g_message("TRUE")):(g_message("FALSE"));
@@ -1138,11 +1127,10 @@ void dentry_report_bad_icon(Entry* entry)
 }
 
 
-
 JS_EXPORT_API
 ArrayContainer dentry_get_templates_files(void)
 {
-    ArrayContainer ac;
+    ArrayContainer ac= {0};
     g_debug("templates dir:--%s--",TEMPLATES_DIR());
     gboolean is_exist = g_file_test(TEMPLATES_DIR(),G_FILE_TEST_EXISTS);
     if(is_exist)
@@ -1150,8 +1138,6 @@ ArrayContainer dentry_get_templates_files(void)
         if(0 == g_strcmp0(TEMPLATES_DIR(),HOME_DIR()))
         {
             g_debug("the templates directory is HOME_DIR,it isnt TEMPLATES_DIR");
-            ac.data = NULL;
-            ac.num = 0;
         }
         else
         {
@@ -1163,11 +1149,10 @@ ArrayContainer dentry_get_templates_files(void)
     }
     else{
         g_debug("the templates directory isnot exist!");
-        ac.data = NULL;
-        ac.num = 0;
     }
     return ac ;
 }
+
 
 JS_EXPORT_API
 ArrayContainer dentry_get_templates_filter(ArrayContainer fs)
@@ -1185,7 +1170,7 @@ ArrayContainer dentry_get_templates_filter(ArrayContainer fs)
         if (type != G_FILE_TYPE_DIRECTORY){
             g_ptr_array_add(array, f);
         }
-     }
+    }
     g_free(_fs.data);
     ArrayContainer ac;
     ac.num = array->len;
@@ -1198,7 +1183,6 @@ ArrayContainer dentry_get_templates_filter(ArrayContainer fs)
 JS_EXPORT_API
 GFile* dentry_create_templates(GFile* src, char* name_add_before)
 {
-    gboolean result G_GNUC_UNUSED = FALSE;
     char* basename = dentry_get_name(src);
     g_debug("choose templates name :---%s---",basename);
 
@@ -1210,9 +1194,12 @@ GFile* dentry_create_templates(GFile* src, char* name_add_before)
     for (int i=0; g_file_query_exists(child, NULL) && (i<500); i++) {
         g_object_unref(child);
         g_free(name);
-        name = g_strdup_printf("%s(%d)%s",name_add_before, i,basename);
+        name = g_strdup_printf("%s(%d)%s", name_add_before, i, basename);
         child = g_file_get_child(dir, name);
     }
+
+    g_free(basename);
+    g_object_unref(dir);
 
     g_debug("choose templates new name :---%s---",name);
 
@@ -1220,22 +1207,20 @@ GFile* dentry_create_templates(GFile* src, char* name_add_before)
     GFileType type = g_file_query_file_type (src, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
     if (type == G_FILE_TYPE_DIRECTORY)
     {
-        result = g_file_make_directory (child, NULL, NULL);
+        g_file_make_directory (child, NULL, NULL);
         g_debug ("create_templates: new directory : g_file_make_directory : %s", name);
         ArrayContainer ac;
         ac = dentry_list_files(src);
         dentry_copy(ac,child);
         ArrayContainer_free(ac);
-        result = TRUE;
     }
     else
     {
-        result = g_file_copy(src, child, G_FILE_COPY_NONE, NULL, NULL, NULL, NULL);
+        g_file_copy(src, child, G_FILE_COPY_NONE, NULL, NULL, NULL, NULL);
         char* uri = dentry_get_uri(child);
         g_debug ("create_templates: new file : %s", uri);
         g_free(uri);
     }
-    g_object_unref(dir);
 
     return child;
 }

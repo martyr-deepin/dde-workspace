@@ -9,6 +9,7 @@
 #include "utils.h"
 #include "fileops.h"
 #include "fileops_error_reporting.h"
+#include "nautilus_file_operations.h"
 
 #define DBUS_NAUTILUS_NAME  "org.gnome.Nautilus"
 #define DBUS_NAUTILUS_PATH  "/org/gnome/Nautilus"
@@ -23,11 +24,6 @@ static gboolean _delete_files_async     (GFile* file, gpointer data);
 static gboolean _trash_files_async      (GFile* file, gpointer data);
 static gboolean _move_files_async       (GFile* file, gpointer data);
 static gboolean _copy_files_async       (GFile* file, gpointer data);
-
-static void dbus_call_method_cb (GObject *source_object,
-        GAsyncResult *res, gpointer user_data);
-static void call_method_via_dbus (const GVariantBuilder *builder,
-        const gchar *dest_uri);
 
 
 /*
@@ -136,7 +132,7 @@ traverse_directory (GFile* src, GFileProcessingFunc pre_hook, GFileProcessingFun
         retval = FALSE;
         goto post_processing;
     }
-#if 1
+#if 0
     char* src_uri = NULL;
 
     src_uri = g_file_get_uri (src);
@@ -174,7 +170,7 @@ traverse_directory (GFile* src, GFileProcessingFunc pre_hook, GFileProcessingFun
         if (dest_dir != NULL)
         {
             dest_child_file = g_file_get_child (dest_dir, src_child_name);
-#if 1
+#if 0
             char* dest_child_file_uri = g_file_get_uri (dest_child_file);
             g_debug ("dest_child_file_uri: %s", dest_child_file_uri);
             g_free (dest_child_file_uri);
@@ -203,7 +199,7 @@ traverse_directory (GFile* src, GFileProcessingFunc pre_hook, GFileProcessingFun
         g_error_free (error);
     }
 
-#if 1
+#if 0
     //change to parent directory.
     g_debug ("traverse_directory: come out: %s", src_uri);
     g_free (src_uri);
@@ -391,6 +387,7 @@ fileops_copy (GFile* file_list[], guint num, GFile* dest_dir)
         GFileType type = g_file_query_file_type (dest_dir, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
         if (type != G_FILE_TYPE_DIRECTORY)
         {
+            g_free(dest_dir_uri);
             //TODO: how to handle symbolic links
             return;
         }
@@ -879,68 +876,175 @@ _copy_files_async (GFile* src, gpointer data)
     return COPY_ASYNC_FINISH;
 }
 
-void
-files_copy_via_dbus (GFile *file_list[], guint num, GFile *dest_dir)
-{
-    g_debug ("files copy start ...\n");
-    guint i = 0;
-    GVariantBuilder builder;
 
-    g_variant_builder_init (&builder, G_VARIANT_TYPE("as"));
-    for ( ; i < num; i++ ) {
-        gchar *src_uri = g_file_get_uri (file_list[i]);
-        g_variant_builder_add (&builder, "s", src_uri);
-        g_free (src_uri);
-    }
-    gchar *dest_uri = g_file_get_uri (dest_dir);
-    call_method_via_dbus (&builder, dest_uri);
-    g_variant_builder_clear (&builder);
-    g_free (dest_uri);
+typedef struct CopyInfo {
+    GPtrArray* src_files;
+    GPtrArray* dest_files;
+} CopyInfo;
+
+
+CopyInfo* new_copy_info(GPtrArray* srcs, GPtrArray* dests)
+{
+    CopyInfo* ci = g_slice_new(CopyInfo);
+    ci->src_files = srcs == NULL ? NULL : g_ptr_array_ref(srcs);
+    ci->dest_files = dests == NULL ? NULL : g_ptr_array_ref(dests);
+    return ci;
 }
 
-static void
-call_method_via_dbus (const GVariantBuilder *builder, const gchar *dest_uri)
-{
-    GDBusProxy *proxy = NULL;
-    GError *error = NULL;
 
-    proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
-            G_DBUS_PROXY_FLAGS_NONE, NULL,
-            DBUS_NAUTILUS_NAME, DBUS_NAUTILUS_PATH,
-            DBUS_NAUTILUS_INFACE, NULL, &error);
-    if ( error ) {
-        g_warning ("get new proxy failed: %s", error->message);
-        g_error_free (error);
-        error = NULL;
-        return ;
+void destroy_copy_info(CopyInfo* ci)
+{
+    if (ci->src_files != NULL) {
+        g_ptr_array_free(ci->src_files, TRUE);
     }
 
-    g_dbus_proxy_call (proxy, DBUS_COPY_METHOD,
-            g_variant_new ("(ass)", builder, dest_uri),
-            G_DBUS_CALL_FLAGS_NONE,
-            -1, NULL, (GAsyncReadyCallback)dbus_call_method_cb,
-            NULL);
+    if (ci->dest_files != NULL) {
+        g_ptr_array_free(ci->dest_files, TRUE);
+    }
+
+    g_slice_free(CopyInfo, ci);
+}
+
+static void copy_file(GDBusProxy* proxy, GFile* src_file, GFile* dest_file)
+{
+    char* dest_uri = g_file_get_uri(dest_file);
+    char* dest_dir_uri = g_path_get_dirname(dest_uri);
+    char* dest_display_name = g_file_get_basename(dest_file);
+    g_free(dest_uri);
+
+    char* src_uri = g_file_get_uri(src_file);
+
+    g_dbus_proxy_call(proxy,
+                      "CopyFile",
+                      g_variant_new("(ssss)", src_uri, "", dest_dir_uri, dest_display_name),
+                      G_DBUS_CALL_FLAGS_NONE,
+                      -1,
+                      NULL,
+                      NULL,
+                      NULL
+                     );
+
+    g_free(src_uri);
+    g_free(dest_dir_uri);
+    g_free(dest_display_name);
+}
+
+
+static void copy_directory(GDBusProxy* proxy, GFile* src_dir, GFile* dest_dir)
+{
+    g_file_make_directory(dest_dir, NULL, NULL);
+    GFileEnumerator* enumerator = g_file_enumerate_children(src_dir,
+                                                            G_FILE_ATTRIBUTE_STANDARD_NAME,
+                                                            G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
+                                                            NULL,
+                                                            NULL);
+    if (enumerator != NULL) {
+        GFileInfo* info = NULL;
+        while ((info = g_file_enumerator_next_file(enumerator, NULL, NULL)) != NULL) {
+            const char* child_name = g_file_info_get_name(info);
+            GFile* src_file = g_file_get_child(src_dir, child_name);
+            GFile* dest_file = g_file_get_child_for_display_name(dest_dir, child_name, NULL);
+
+            GFileType file_type = g_file_query_file_type(src_file, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
+
+            if (file_type == G_FILE_TYPE_DIRECTORY) {
+                copy_directory(proxy, src_file, dest_file);
+            } else {
+                copy_file(proxy, src_file, dest_file);
+            }
+
+            g_object_unref(dest_file);
+            g_object_unref(src_file);
+            g_object_unref(info);
+        }
+
+        g_file_enumerator_close (enumerator, NULL, NULL);
+        g_object_unref(enumerator);
+    }
+}
+
+
+static void copy_task_callback(GTask* task G_GNUC_UNUSED,
+                               gpointer source_object G_GNUC_UNUSED,
+                               gpointer task_data,
+                               GCancellable* cancellable G_GNUC_UNUSED)
+{
+    GError* error = NULL;
+    GDBusProxy* proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SESSION,
+                                                      G_DBUS_PROXY_FLAGS_NONE,
+                                                      NULL,
+                                                      DBUS_NAUTILUS_NAME,
+                                                      DBUS_NAUTILUS_PATH,
+                                                      DBUS_NAUTILUS_INFACE,
+                                                      NULL,
+                                                      &error);
+    if (error != NULL) {
+        g_warning ("get dbus proxy failed: %s", error->message);
+        g_clear_error(&error);
+        return;
+    }
+
+    // CopyInfo will be destroyed automaticlly by GTask.
+    CopyInfo* copy_info = task_data;
+    for (size_t i = 0; i < copy_info->src_files->len; ++i) {
+        GFile* dest_file = g_ptr_array_index(copy_info->dest_files, i);
+        GFile* src_file = g_ptr_array_index(copy_info->src_files, i);
+
+        GFileType file_type = g_file_query_file_type(src_file, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
+        if (file_type == G_FILE_TYPE_DIRECTORY) {
+            copy_directory(proxy, src_file, dest_file);
+        } else {
+            copy_file(proxy, src_file, dest_file);
+        }
+    }
+
     g_object_unref (proxy);
 }
 
-static void
-dbus_call_method_cb (GObject *source_object,
-        GAsyncResult *res, gpointer user_data G_GNUC_UNUSED)
-{
-    GError *error = NULL;
-    GVariant *retval = NULL;
-    GDBusProxy *proxy = (GDBusProxy*)source_object;
 
-    retval = g_dbus_proxy_call_finish (proxy, res, &error);
-    if ( error ) {
-        g_warning ("call method failed: %s", error->message);
-        g_error_free (error);
-        error = NULL;
-        return ;
+void
+files_copy_via_dbus (GFile *file_list[], guint num, GFile *dest_dir)
+{
+    GPtrArray* src_files = g_ptr_array_new_full(num, g_object_unref);
+    for (guint i = 0; i < num; ++i) {
+        g_ptr_array_insert(src_files, i, g_object_ref(file_list[i]));
     }
-    if ( retval ) {
-        g_variant_unref (retval);
+
+    GPtrArray* dest_files = g_ptr_array_new_full(num, g_object_unref);
+    for (guint i = 0; i < src_files->len; ++i) {
+        GFile* src_file = G_FILE(g_ptr_array_index(src_files, i));
+        GFileInfo* src_info = g_file_query_info(src_file,
+                                                G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME,
+                                                0, NULL, NULL);
+        char* name = NULL;
+        if (src_info == NULL) {
+            name = g_file_get_basename(src_file);
+        } else {
+            name = g_strdup(g_file_info_get_attribute_string(src_info, G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME));
+            g_object_unref(src_info);
+        }
+
+        GFile* dest_file = g_file_get_child_for_display_name(dest_dir, name, NULL);
+        g_free(name);
+
+        GFileType file_type = g_file_query_file_type(src_file, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
+        while (g_file_query_exists(dest_file, NULL)) {
+            GFile* last_dest_file = dest_file;
+            dest_file = get_unique_target_file(file_type, last_dest_file, dest_dir, NULL, 1);
+            g_object_unref(last_dest_file);
+        }
+
+        g_ptr_array_insert(dest_files, i, dest_file);
     }
-    g_debug ("call method success!\n");
+
+    CopyInfo* copy_info = new_copy_info(src_files, dest_files);
+
+    g_ptr_array_unref(src_files);
+    g_ptr_array_unref(dest_files);
+
+    GTask* task = g_task_new(NULL, NULL, NULL, NULL);
+    g_task_set_task_data(task, copy_info, (GDestroyNotify)destroy_copy_info);
+    g_task_run_in_thread(task, copy_task_callback);
+    g_object_unref(task);
 }
 

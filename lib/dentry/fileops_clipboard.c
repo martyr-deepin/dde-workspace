@@ -132,7 +132,7 @@ fileops_paste (GFile* dest_dir)
     else
     {
 	//copy can be done multiple times. so we should not free real_info;
-	/*fileops_copy (real_info->file_list, real_info->num, dest_dir);*/
+	// fileops_copy (real_info->file_list, real_info->num, dest_dir);
         files_copy_via_dbus (real_info->file_list, real_info->num, dest_dir);
     }
 }
