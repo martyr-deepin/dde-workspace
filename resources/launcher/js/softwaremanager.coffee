@@ -38,6 +38,10 @@ update = (status, info, categories)->
     icon = info[3]
     console.log("item #{id} is changed")
 
+    if Widget.look_up(id)? and status.match(/^created$/i)
+        status = "updated"
+        return
+
     if status.match(/^deleted$/i)
         if (item = Widget.look_up(id))?
             console.log 'deleted'
