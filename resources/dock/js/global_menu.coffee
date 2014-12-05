@@ -55,6 +55,7 @@ class GlobalMenu
                     if item and item.isApp?() and item.isActive?()
                         item.hide_open_indicator()
 
+                systemTray?.hideAllIcons()
                 settings.setDisplayMode(DisplayModeNameMap[realId])
             when "deepinAppletManager"
                 dbus = @plugins[groupName]

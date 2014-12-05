@@ -6,51 +6,48 @@ changeThemeCss = (theme)->
     _b.style.display = ''
 
 
-switchToEfficientMode = ->
-    changeThemeCss("efficient")
+switchToEfficientModeTimer = null
+switchToClassicModeTimer = null
+
+
+switchMode = (modeName, normalImg, hoverImg, op)->
+    clearTimeout(switchToClassicModeTimer)
+    clearTimeout(switchToEfficientModeTimer)
+    changeThemeCss(modeName)
     update_dock() if panel
-    systemTray?.showAllIcons()
     for own k, v of $DBus
         item = Widget.look_up(k)
         if item and item.isApp?()
-            # console.log("#{item.id} switch to classic mode")
-            item.openIndicator.src = EFFICIENT_ACTIVE_IMG
-            item.hoverIndicator.src = EFFICIENT_ACTIVE_HOVER_IMG
+            item.openIndicator.src = normalImg
+            item.hoverIndicator.src = hoverImg
         if item?.isApplet()
             item.change_icon(item.icon)
     DCore.Dock.fix_switch()
+    op()
+
+
+switchToFashionMode = ->
+    switchMode("fashion", OPEN_INDICATOR, OPEN_INDICATOR, ->
+        systemTray?.hideButton()
+        systemTray?.fold()
+    )
+
+
+switchToEfficientMode = ->
+    switchMode("efficient", EFFICIENT_ACTIVE_IMG, EFFICIENT_ACTIVE_HOVER_IMG, ->
+        switchToEfficientModeTimer = setTimeout(->
+            systemTray?.showAllIcons()
+        , 800)
+    )
 
 
 switchToClassicMode = ->
-    changeThemeCss("classic")
-    update_dock() if panel
-    systemTray?.showAllIcons()
-    for own k, v of $DBus
-        item = Widget.look_up(k)
-        if item and item.isApp?()
-            # console.log("#{item.id} switch to classic mode")
-            item.openIndicator.src = CLASSIC_ACTIVE_IMG
-            item.hoverIndicator.src = CLASSIC_ACTIVE_HOVER_IMG
-        if item?.isApplet()
-            item.change_icon(item.icon)
-    DCore.Dock.fix_switch()
+    switchMode("classic", CLASSIC_ACTIVE_IMG, CLASSIC_ACTIVE_HOVER_IMG,->
+        switchToClassicModeTimer = setTimeout(->
+            systemTray?.showAllIcons()
+        , 800)
+    )
 
-switchToFashionMode = ->
-    changeThemeCss("fashion")
-    update_dock() if panel
-    if systemTray
-        systemTray.hideAllIcons()
-        systemTray.hideButton()
-        systemTray.fold()
-    for own k, v of $DBus
-        item = Widget.look_up(k)
-        if item and item.isApp?()
-            # console.log("#{item.id} switch to fashion mode")
-            item.openIndicator.src = OPEN_INDICATOR
-            item.hoverIndicator.src = OPEN_INDICATOR
-        if item?.isApplet()
-            item.change_icon(item.icon)
-    DCore.Dock.fix_switch()
 
 update_dock=->
     console.log("[update_dock] panel #{Panel.getPanelMiddleWidth()}")

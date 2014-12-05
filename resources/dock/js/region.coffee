@@ -40,7 +40,7 @@ calc_app_item_size = ->
 update_dock_region = do->
     lastWidth = null
     (w, h)->
-        console.warn("do_update_dock_region")
+        # console.warn("do_update_dock_region")
         settings?.updateSize(settings.displayMode())
         h = DOCK_HEIGHT unless h?
         if w

@@ -60,7 +60,6 @@ class Item extends Widget
             src = DCore.get_theme_icon(src, icon_size) || DCore.get_theme_icon(NOT_FOUND_ICON, 48)
         @img.src = src
         @img.onload = =>
-            console.error(@img.src)
             @imgHover.src = bright_image(@img, 40)
             @imgHover.onerror = =>
                 if @imgHover.src != @img.src

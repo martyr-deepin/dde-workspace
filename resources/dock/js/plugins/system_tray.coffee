@@ -225,10 +225,12 @@ class SystemTray extends SystemItem
             @calcTimer = webkitRequestAnimationFrame(@updatePanel)
 
     hideAllIcons:=>
+        # console.error("hideAllIcons")
         for item in @items
             $EW.undraw(item)
 
     showAllIcons:=>
+        # console.error("showAllIcons")
         if hideStatusManager and hideStatusManager.state != HideState.Shown
             console.log("[showAllIcons] #{HideStateMap[hideStatusManager.state]}")
             return
@@ -254,6 +256,7 @@ class SystemTray extends SystemItem
         if hideStatusManager and hideStatusManager.state != HideState.Shown
             console.log("[minShow] #{HideStateMap[hideStatusManager.state]}")
             return
+        # console.error("minShow")
         @isShowing = true
         @img.style.display = 'none'
         @panel.style.display = ''
