@@ -879,31 +879,69 @@ _copy_files_async (GFile* src, gpointer data)
 
 typedef struct CopyInfo {
     GPtrArray* src_files;
-    GPtrArray* dest_files;
+    GFile* dest_dir;
 } CopyInfo;
 
 
-CopyInfo* new_copy_info(GPtrArray* srcs, GPtrArray* dests)
+CopyInfo* new_copy_info(GPtrArray* srcs, GFile* dest_dir)
 {
-    CopyInfo* ci = g_slice_new(CopyInfo);
-    ci->src_files = srcs == NULL ? NULL : g_ptr_array_ref(srcs);
-    ci->dest_files = dests == NULL ? NULL : g_ptr_array_ref(dests);
-    return ci;
+    CopyInfo* c = g_slice_new(CopyInfo);
+    c->src_files = srcs == NULL ? NULL : g_ptr_array_ref(srcs);
+    c->dest_dir = dest_dir == NULL ? NULL : g_object_ref(dest_dir);
+    return c;
 }
 
 
-void destroy_copy_info(CopyInfo* ci)
+void destroy_copy_info(CopyInfo* c)
 {
-    if (ci->src_files != NULL) {
-        g_ptr_array_free(ci->src_files, TRUE);
+    if (c->src_files != NULL) {
+        g_ptr_array_free(c->src_files, TRUE);
     }
 
-    if (ci->dest_files != NULL) {
-        g_ptr_array_free(ci->dest_files, TRUE);
+    if (c->dest_dir != NULL) {
+        g_object_unref(c->dest_dir);
     }
 
-    g_slice_free(CopyInfo, ci);
+    g_slice_free(CopyInfo, c);
 }
+
+
+static
+GFile* get_dest_file(GFile* src_file, GFile* dest_dir, GHashTable* debuting_files)
+{
+    GFileInfo* src_info = g_file_query_info(src_file,
+                                            G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME,
+                                            0, NULL, NULL);
+    char* name = NULL;
+    if (src_info == NULL) {
+        name = g_file_get_basename(src_file);
+    } else {
+        name = g_strdup(g_file_info_get_attribute_string(src_info, G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME));
+        g_object_unref(src_info);
+    }
+
+    GFile* dest_file = g_file_get_child_for_display_name(dest_dir, name, NULL);
+    g_free(name);
+
+    GFileType file_type = g_file_query_file_type(src_file, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
+    while (1) {
+        char* name = g_file_get_path(dest_file);
+        if (!g_file_query_exists(dest_file, NULL) && g_hash_table_lookup(debuting_files, name) == NULL) {
+            g_free(name);
+            break;
+        }
+        g_free(name);
+
+        GFile* last_dest_file = dest_file;
+        dest_file = get_unique_target_file(file_type, last_dest_file, dest_dir, NULL, 1);
+        g_object_unref(last_dest_file);
+    }
+
+    g_hash_table_add(debuting_files, g_file_get_path(dest_file));
+
+    return dest_file;
+}
+
 
 static void copy_file(GDBusProxy* proxy, GFile* src_file, GFile* dest_file)
 {
@@ -914,19 +952,54 @@ static void copy_file(GDBusProxy* proxy, GFile* src_file, GFile* dest_file)
 
     char* src_uri = g_file_get_uri(src_file);
 
-    g_dbus_proxy_call(proxy,
-                      "CopyFile",
-                      g_variant_new("(ssss)", src_uri, "", dest_dir_uri, dest_display_name),
-                      G_DBUS_CALL_FLAGS_NONE,
-                      -1,
-                      NULL,
-                      NULL,
-                      NULL
-                     );
+    char* srcPath = g_file_get_path(src_file);
+    char* destPath = g_file_get_path(dest_file);
+    g_debug("copy %s to %s", srcPath, destPath);
+
+    g_dbus_proxy_call_sync(proxy,
+                           "CopyFile",
+                           g_variant_new("(ssss)", src_uri, "", dest_dir_uri, dest_display_name),
+                           G_DBUS_CALL_FLAGS_NONE,
+                           -1,
+                           NULL,
+                           // NULL,
+                           NULL
+                          );
 
     g_free(src_uri);
     g_free(dest_dir_uri);
     g_free(dest_display_name);
+
+    g_debug("copy %s to %s done!!!", srcPath, destPath);
+    g_free(srcPath);
+    g_free(destPath);
+}
+
+
+typedef struct CopyContext {
+    GDBusProxy* proxy;
+    GFile* src;
+    GFile* dest;
+} CopyContext;
+
+
+CopyContext* new_copy_context(GDBusProxy* proxy, GFile* src, GFile* dest)
+{
+    CopyContext* c = g_slice_new(CopyContext);
+    c->proxy = g_object_ref(proxy);
+    c->src = g_object_ref(src);
+    c->dest = g_object_ref(dest);
+
+    return c;
+}
+
+
+void destroy_copy_context(CopyContext* c)
+{
+    g_object_unref(c->proxy);
+    g_object_unref(c->src);
+    g_object_unref(c->dest);
+    g_slice_free(CopyContext, c);
 }
 
 
@@ -984,11 +1057,14 @@ static void copy_task_callback(GTask* task G_GNUC_UNUSED,
         return;
     }
 
+    GHashTable* debuting_files = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
     // CopyInfo will be destroyed automaticlly by GTask.
     CopyInfo* copy_info = task_data;
     for (size_t i = 0; i < copy_info->src_files->len; ++i) {
-        GFile* dest_file = g_ptr_array_index(copy_info->dest_files, i);
+        GFile* dest_dir = G_FILE(copy_info->dest_dir);
         GFile* src_file = g_ptr_array_index(copy_info->src_files, i);
+
+        GFile* dest_file = get_dest_file(src_file, dest_dir, debuting_files);
 
         GFileType file_type = g_file_query_file_type(src_file, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
         if (file_type == G_FILE_TYPE_DIRECTORY) {
@@ -996,7 +1072,9 @@ static void copy_task_callback(GTask* task G_GNUC_UNUSED,
         } else {
             copy_file(proxy, src_file, dest_file);
         }
+        g_object_unref(dest_file);
     }
+    g_hash_table_unref(debuting_files);
 
     g_object_unref (proxy);
 }
@@ -1010,37 +1088,9 @@ files_copy_via_dbus (GFile *file_list[], guint num, GFile *dest_dir)
         g_ptr_array_insert(src_files, i, g_object_ref(file_list[i]));
     }
 
-    GPtrArray* dest_files = g_ptr_array_new_full(num, g_object_unref);
-    for (guint i = 0; i < src_files->len; ++i) {
-        GFile* src_file = G_FILE(g_ptr_array_index(src_files, i));
-        GFileInfo* src_info = g_file_query_info(src_file,
-                                                G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME,
-                                                0, NULL, NULL);
-        char* name = NULL;
-        if (src_info == NULL) {
-            name = g_file_get_basename(src_file);
-        } else {
-            name = g_strdup(g_file_info_get_attribute_string(src_info, G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME));
-            g_object_unref(src_info);
-        }
-
-        GFile* dest_file = g_file_get_child_for_display_name(dest_dir, name, NULL);
-        g_free(name);
-
-        GFileType file_type = g_file_query_file_type(src_file, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
-        while (g_file_query_exists(dest_file, NULL)) {
-            GFile* last_dest_file = dest_file;
-            dest_file = get_unique_target_file(file_type, last_dest_file, dest_dir, NULL, 1);
-            g_object_unref(last_dest_file);
-        }
-
-        g_ptr_array_insert(dest_files, i, dest_file);
-    }
-
-    CopyInfo* copy_info = new_copy_info(src_files, dest_files);
+    CopyInfo* copy_info = new_copy_info(src_files, dest_dir);
 
     g_ptr_array_unref(src_files);
-    g_ptr_array_unref(dest_files);
 
     GTask* task = g_task_new(NULL, NULL, NULL, NULL);
     g_task_set_task_data(task, copy_info, (GDestroyNotify)destroy_copy_info);
