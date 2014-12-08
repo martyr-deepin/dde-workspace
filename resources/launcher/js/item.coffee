@@ -46,7 +46,6 @@ class Item extends Widget
         itemNameWrap = create_element(tag:"div", class:"nameWrap", @hoverBox)
         @installIndicator = create_element(tag:"div", class:"install_indicator", "data-new":false, itemNameWrap)
         create_element(tag:"div", class:"new_install_indicator", @installIndicator)
-        create_element(tag:"div", class:"new_install_indicator_shadow", @installIndicator)
         itemName = create_element(tag:"div", class:"item_name", itemNameWrap)
         itemName.innerText = @name
         @hoverBoxOutter.draggable = true
