@@ -114,10 +114,11 @@ class Time extends SystemItem
                         @clock = @analogClock
                 @clock.show()
 
+        @clock.setUse24Hour?(@setting.Use24HourDisplay)
         @updateTime()
 
     updateTime: =>
         @clock.update()
 
     setUse24Hour:(use)->
-        @clock.setUse24Hour(use)
+        @clock.setUse24Hour?(use)

@@ -1,5 +1,6 @@
-class TrayClock extends Clock
-    constructor:(@setting, parent)->
+class TrayClock extends ClockWith24Hour
+    constructor:(setting, parent)->
+        super(setting)
         @type = Clock.Type.Tray
         @time = create_element(tag:'div', id:'timeWrap')
         @timeContent = create_element(tag:'div', id:"timeContent", @time)

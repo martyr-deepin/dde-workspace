@@ -1,7 +1,6 @@
 class Clock
     @Type: {Digit:0, Analog:1, Tray:2}
     constructor:(@setting)->
-        @use24hour = @setting.Use24HourDisplay
 
     show:->
         if @time.style.display == 'none'
@@ -19,5 +18,11 @@ class Clock
             sysSettings = null
         sysSettings?.ShowModule("date_time")
 
-    setUse24Hour:(use24)->
-        @use24hour = use24
+
+class ClockWith24Hour extends Clock
+    constructor:(setting)->
+        super(setting)
+        @use24hour = @setting.Use24HourDisplay
+
+    setUse24Hour:(use24hour)->
+        @use24hour = use24hour

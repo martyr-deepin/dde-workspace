@@ -1,4 +1,4 @@
-class DigitClock extends Clock
+class DigitClock extends ClockWith24Hour
     constructor:(setting, parent)->
         super(setting)
         @type = Clock.Type.Digit
