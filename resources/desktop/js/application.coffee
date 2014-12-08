@@ -31,7 +31,7 @@ class Application extends DesktopEntry
     set_icon : (src = null) =>
         if src == null
             if (icon = DCore.DEntry.get_icon(@_entry)) == null
-                icon = DCore.get_theme_icon("invalid-dock_app", D_ICON_SIZE_NORMAL)
+                icon = DCore.get_theme_icon("application-x-desktop", D_ICON_SIZE_NORMAL)
         else
             icon = src
         super(icon)

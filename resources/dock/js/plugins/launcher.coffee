@@ -27,4 +27,4 @@ class LauncherItem extends PrefixedItem
         _isRightclicked = false
 
     update_icon:->
-        @change_icon(DCore.get_theme_icon("start-here", 48))
+        @change_icon(DCore.get_theme_icon("deepin-launcher", 48))

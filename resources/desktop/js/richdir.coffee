@@ -296,7 +296,7 @@ class RichDir extends DesktopEntry
             s.style.height = "48px"
             # s.src = DCore.DEntry.get_icon(e)
             if (s.src = DCore.DEntry.get_icon(e)) == null
-                s.src = DCore.get_theme_icon("invalid-dock_app", D_ICON_SIZE_NORMAL)
+                s.src = DCore.get_theme_icon("application-x-desktop", D_ICON_SIZE_NORMAL)
                 echo "warning: richdir child get_icon is null:" + s.src
             sb.appendChild(s)
             s = document.createElement("div")

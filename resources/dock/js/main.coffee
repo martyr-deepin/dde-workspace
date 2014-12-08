@@ -109,7 +109,7 @@ initDock = ->
     )
 
     try
-        icon_launcher = DCore.get_theme_icon("start-here", 48)
+        icon_launcher = DCore.get_theme_icon("deepin-launcher", 48)
 
     show_launcher = new LauncherItem("show_launcher", icon_launcher, _("Launcher"))
     if not trash
