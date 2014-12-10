@@ -121,6 +121,8 @@ class CategoryListWithCategory extends Page
                 console.error "CategoryList.removeItem: #{e}"
 
     sort:(categories)->
+        if !Array.isArray(categories)
+            categories = [categories]
         for cat_id in categories
             try
                 @categories[cat_id].sort()
@@ -210,7 +212,7 @@ class CategoryListWithCategory extends Page
         return null
 
     fixOffset:(id)->
-        console.log "fixOffset"
+        # console.log "fixOffset"
         children = $("#grid").firstElementChild.childNodes
         offset = 0
         for i in [0...children.length]
@@ -227,7 +229,7 @@ class CategoryListWithCategory extends Page
         @currentOffset = $("##{Category.PREFIX}#{currentId}").offsetTop
         @fixOffset(targetId)
         offset = @finalOffset - @currentOffset
-        console.log("finalOffset: #{@finalOffset}")
+        # console.log("finalOffset: #{@finalOffset}")
         @gridOffset = -@finalOffset
         @container.style.webkitTransition = '-webkit-transform 200ms cubic-bezier(0.28,0.9,0.7,1)'
         @container.style.webkitTransform = "translateY(#{@gridOffset}px)"

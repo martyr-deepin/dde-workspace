@@ -101,22 +101,16 @@ class Category
         @items.remove(id)
 
     sortItem:->
-        @items.sort((lhs, rhs)->
-            l = Widget.look_up(lhs)
-            r = Widget.look_up(rhs)
-            if l.name > r.name
-                return 1
-            if l.name == r.name
-                return 0
-            return -1
-        )
+        @items.sort(sortByNameCompare)
 
     sort:->
         @sortItem()
-        for i in [0...@grid.children.length]
+        for id in @items
             try
-                target = @grid.removeChild(@grid.children[i])
-                @grid.insertBefore(target, @grid.firstChild)
+                item = Widget.look_up(id)
+                element = item.getElement(@id)
+                target = @grid.removeChild(element)
+                @grid.appendChild(target, @grid.firstChild)
             catch e
                 console.error(e)
 

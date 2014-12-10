@@ -94,7 +94,7 @@ class CategoryBar
                 clearTimeout(@switchIndicatorTimer)
                 @switchIndicatorTimer = setTimeout(do(categoryItem=categoryItem)=>
                         rect = categoryItem.getBoundingClientRect()
-                        console.log("rect.top: #{rect.top} rect.height: #{rect.height}")
+                        # console.log("rect.top: #{rect.top} rect.height: #{rect.height}")
                         @indicatorImg.style.top = rect.top - 2000 + rect.height/2
                 , 50)
 
