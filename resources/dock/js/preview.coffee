@@ -99,7 +99,7 @@ class PWContainer extends Widget
         ctx.save()
 
         ctx.shadowBlur = PREVIEW_SHADOW_BLUR
-        ctx.shadowColor = 'black'
+        ctx.shadowColor = 'rgba(0,0,0,.5)'
         ctx.shadowOffsetY = PREVIEW_CONTAINER_BORDER_WIDTH
 
         ctx.strokeStyle = 'rgba(255,255,255,0.4)'

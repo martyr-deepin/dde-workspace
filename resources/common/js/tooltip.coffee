@@ -219,7 +219,7 @@ class ArrowToolTip extends ToolTipBase
         ctx.closePath()
 
         ctx.shadowBlur = offsetForShadow
-        ctx.shadowColor = 'black'
+        ctx.shadowColor = 'rgba(0,0,0,.5)'
         ctx.shadowOffsetY = 2
 
         ctx.strokeStyle = 'rgba(255,255,255, 0.7)'
