@@ -126,7 +126,6 @@ class Item extends Widget
         if @name != info?.name
             @name = info.name
             @updateProperty((k, el)=>
-                innerBox = el.firstElementChild.firstElementChild
                 itemName = @getItemNameDOM(el)
                 itemName.innerText = @name
             )
@@ -141,10 +140,10 @@ class Item extends Widget
             @icon = info.icon
             @updateIcon()
 
-        if @isAutostart != info?.isAutostart
+        if info?.isAutostart? and @isAutostart != info?.isAutostart
             @toggle_autostart()
 
-        if @status != info?.status
+        if info?.status? and @status != info?.status
             @status = info.status
 
     updateIcon:=>

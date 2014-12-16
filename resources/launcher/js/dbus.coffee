@@ -43,15 +43,18 @@ catch e
 
 startManager?.connect("AutostartChanged", (status, path)->
     console.log "autostart changed: #{status}"
+    item = null
     for own k, v of applications
         if v.basename == "#{get_path_name(path)}.desktop"
             item = v
             break
 
+    if item == null
+        console.log("no such a item to change autostart")
+        return
+
     if status == "deleted"
-        console.log "deleted"
         item.remove_from_autostart()
     else
-        console.log "add"
         item.add_to_autostart()
 )
