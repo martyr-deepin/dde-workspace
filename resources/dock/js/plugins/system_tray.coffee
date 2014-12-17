@@ -57,7 +57,7 @@ class SystemTray extends SystemItem
             console.log("tray icon: #{xid} is Added, #{@isShowing}")
             @items.unshift(xid) if @items.indexOf(xid) == -1
             $EW.create(xid, true, $EWType.TrayIcon)
-            if @isShowing
+            if @isShowing and hideStatusManager?.state == HideState.Shown
                 if @items.length > 4
                     # @hideAllIcons()
                     @unfold()
@@ -91,6 +91,10 @@ class SystemTray extends SystemItem
                 return
 
             console.log("tray icon #{xid} is Changed")
+            if hideStatusManager?.state != HideState.Shown
+                console.log("the dock is not shown")
+                return
+
             @isShowing = true
             @img.style.display = 'none'
             @panel.style.display = ''
@@ -275,7 +279,7 @@ class SystemTray extends SystemItem
             console.log("tray icons length: #{@items.length}")
             $EW.show(@items[2])
         i = if @upperItemNumber == 2 then @upperItemNumber + 1 else @upperItemNumber
-        console.log("the last tray icon to be shown #{i}")
+        # console.log("the last tray icon to be shown #{i}")
         $EW.show(@items[i]) if @items[i]
 
     on_mouseout: (e)=>
@@ -287,6 +291,7 @@ class SystemTray extends SystemItem
             console.warn("[SystemTray.on_mouseout] update_dock_region")
         update_dock_region()
         hideStatusManager?.updateState()
+
         if @isUnfolded
             return
 

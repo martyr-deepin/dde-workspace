@@ -90,7 +90,7 @@ class HideStatusManager
             systemTray.updateTrayIcon()
             systemTray.showAllIcons()
         else if systemTray.isShowing
-            if settings.displayMode() != DisplayMode.Fashion
+            if settings.displayMode() == DisplayMode.Fashion
                 systemTray.minShow()
             else
                 systemTray.showAllIcons()
@@ -102,7 +102,8 @@ class HideStatusManager
     changeDockRegion: =>
         if @state == HideState.Showing
             @setState(HideState.Shown)
-            systemTray?.isShowing = true
+            if settings.displayMode() != DisplayMode.Fashion
+                systemTray?.isShowing = true
             @updateTrayIcons()
         else if @state == HideState.Hidding
             @setState(HideState.Hidden)
