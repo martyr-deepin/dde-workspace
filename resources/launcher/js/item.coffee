@@ -39,6 +39,7 @@ class Item extends Widget
         @basename = get_path_name(@path) + ".desktop"
         @isAutostart = false
         @status = SOFTWARE_STATE.IDLE
+        @timeInstalled = 0
 
         im = get_default_application_icon(ITEM_IMG_SIZE)
         @img = create_img("item_img", im, @hoverBox)
