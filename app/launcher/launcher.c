@@ -313,14 +313,9 @@ void primary_changed_handler(GDBusConnection* conn G_GNUC_UNUSED,
 JS_EXPORT_API
 void launcher_webview_ok()
 {
-    static gboolean inited = FALSE;
     dde_session_register();
     is_js_already = TRUE;
-    if (!is_hidden && !inited) {
-        listen_primary_changed_signal(primary_changed_handler, &launcher, NULL);
-        inited = TRUE;
-        js_post_signal("launcher_shown");
-    }
+    listen_primary_changed_signal(primary_changed_handler, &launcher, NULL);
 }
 
 

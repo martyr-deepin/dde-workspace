@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-12-03 14:25+0800\n"
-"PO-Revision-Date: 2014-12-04 04:51+0000\n"
+"PO-Revision-Date: 2014-12-16 20:01+0000\n"
 "Last-Translator: Massimo Antonio Carofano <real.massimo@hotmail.it>\n"
 "Language-Team: Italian (http://www.transifex.com/projects/p/deepin-desktop-environment/language/it/)\n"
 "MIME-Version: 1.0\n"
@@ -21,7 +21,7 @@ msgstr ""
 
 #: ../resources/common/js/accounts.coffee:78
 msgid "Guest"
-msgstr "Guest"
+msgstr "Ospite"
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
@@ -36,7 +36,7 @@ msgstr "\"%1\" non è stato disinstallato."
 #: ../resources/desktop/js/richdir.coffee:600
 #: ../resources/desktop/js/richdir.coffee:643
 msgid "The link is invalid. Do you want to delete it?"
-msgstr "Questo link è invalido. Vuoi eliminarlo?"
+msgstr "Questo link non è valido, vuoi eliminarlo?"
 
 #: ../resources/desktop/js/application.coffee:179
 #: ../resources/desktop/js/desktopentry.coffee:166
@@ -227,7 +227,7 @@ msgstr "Modalità _Classica"
 #: ../resources/dock/js/global_menu.coffee:38
 #: ../resources/guide/js/dock.coffee:42
 msgid "Notification area settings"
-msgstr "Notification area settings"
+msgstr "Imposta indicatori Dock"
 
 #: ../resources/dock/js/main.coffee:114 ../resources/zone/js/utils.coffee:13
 msgid "Launcher"
@@ -486,7 +486,7 @@ msgstr "Nessuna azione è preimpostata sull'angolo in alto a destra\nClicca col 
 
 #: ../resources/guide/js/desktop.coffee:203
 msgid "tips: Click on the corner navigation blank area to return"
-msgstr "Trucco: clicca su un'area vuota per tornare indietro"
+msgstr "Trucco: click-sinistro su un'area vuota per tornare indietro"
 
 #: ../resources/guide/js/dock.coffee:26
 msgid ""
@@ -518,7 +518,7 @@ msgstr "Trucco: prova l'icona Impostazioni sulla Dock per implementare subito qu
 msgid ""
 "Thank you for your patience to learn! More surprises are waiting for you to "
 "explore"
-msgstr "Grazie per la tua pazienza!Sappi che c'è ancora molto da scoprire"
+msgstr "Grazie per la tua pazienza! Ci sono ancora molte cose da scoprire.."
 
 #: ../resources/guide/js/end.coffee:30
 msgid "Start my Deepin trip"
@@ -590,7 +590,7 @@ msgstr "Inizia"
 
 #: ../resources/guide/js/start.coffee:52
 msgid "Skip the guide, experience immediately"
-msgstr "Salta l'intro, goditi Deepin immediatamente!"
+msgstr "Salta il tutorial, goditi immediatamente Deepin OS!"
 
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"

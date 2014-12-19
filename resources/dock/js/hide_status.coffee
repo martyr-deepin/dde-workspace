@@ -80,7 +80,6 @@ class HideStatusManager
 
     changeToHide:()->
         @changeState(HideState.Hidding, "translateY(110%)", "translateY(100%)")
-        clearTimeout(@updateSystemTrayTimer || null)
         systemTray?.hideAllIcons()
         $tooltip?.hide()
 
@@ -91,17 +90,21 @@ class HideStatusManager
             systemTray.updateTrayIcon()
             systemTray.showAllIcons()
         else if systemTray.isShowing
-            systemTray.minShow()
+            if settings.displayMode() == DisplayMode.Fashion
+                systemTray.minShow()
+            else
+                systemTray.showAllIcons()
         DCore.Dock.set_is_hovered(false)
 
     changeToShow:()->
         @changeState(HideState.Showing, "translateY(0)", "translateY(0)")
-        clearTimeout(@updateSystemTrayTimer || null)
-        @updateSystemTrayTimer = setTimeout(@updateTrayIcons, SHOW_HIDE_ANIMATION_TIME)
 
     changeDockRegion: =>
         if @state == HideState.Showing
             @setState(HideState.Shown)
+            if settings.displayMode() != DisplayMode.Fashion
+                systemTray?.isShowing = true
+            @updateTrayIcons()
         else if @state == HideState.Hidding
             @setState(HideState.Hidden)
 

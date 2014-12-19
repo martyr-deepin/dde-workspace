@@ -42,3 +42,8 @@ install(
     FILES ${CMAKE_CURRENT_SOURCE_DIR}/deepin-launcher.desktop
     DESTINATION /etc/xdg/autostart/
     )
+
+install(
+    FILES ${CMAKE_CURRENT_SOURCE_DIR}/com.deepin.dde.launcher.service
+    DESTINATION /usr/share/dbus-1/services/
+    )

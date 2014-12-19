@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Adrian Paesani <adrian.paesani@gmail.com>, 2014
 # fedesanchez <fedesanchez888@gmail.com>, 2014
 # Mariano Agüero <nero1000000@gmail.com>, 2014
 # seba.wetzel <seba.wetzel@gmail.com>, 2014
@@ -11,8 +12,8 @@ msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-12-03 14:25+0800\n"
-"PO-Revision-Date: 2014-12-04 04:51+0000\n"
-"Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
+"PO-Revision-Date: 2014-12-16 02:31+0000\n"
+"Last-Translator: Adrian Paesani <adrian.paesani@gmail.com>\n"
 "Language-Team: Spanish (Argentina) (http://www.transifex.com/projects/p/deepin-desktop-environment/language/es_AR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,7 +31,7 @@ msgstr "Se ha desinstalado \"%1\" correctamente"
 
 #: ../resources/common/js/uninstaller.coffee:33
 msgid "\"%1\" failed to be uninstalled"
-msgstr "\"%1\" falló al desintalarse"
+msgstr "\"%1\" falló al desinstalarse"
 
 #: ../resources/desktop/js/application.coffee:179
 #: ../resources/desktop/js/richdir.coffee:348
@@ -189,7 +190,7 @@ msgstr "_Limpiar 1 elemento"
 #: ../resources/desktop/js/specialitem.coffee:154
 #: ../resources/dock/js/plugins/trash/trash.coffee:38
 msgid "_Empty"
-msgstr ""
+msgstr "_Vacio"
 
 #: ../resources/dock/js/config.coffee:186
 msgid "Unknown"
@@ -228,7 +229,7 @@ msgstr "Modo _clásico"
 #: ../resources/dock/js/global_menu.coffee:38
 #: ../resources/guide/js/dock.coffee:42
 msgid "Notification area settings"
-msgstr ""
+msgstr "Configuración del área de notificaciones"
 
 #: ../resources/dock/js/main.coffee:114 ../resources/zone/js/utils.coffee:13
 msgid "Launcher"
@@ -236,7 +237,7 @@ msgstr "Lanzador"
 
 #: ../resources/dock/js/plugins/time/time.coffee:61
 msgid "Switch display mode"
-msgstr ""
+msgstr "Cambiar el modo de pantalla"
 
 #: ../resources/dock/js/plugins/time/time.coffee:62
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:81
@@ -245,43 +246,43 @@ msgstr "Ajustes de _Tiempo"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:33
 msgid "%b %d %H:%M %a"
-msgstr ""
+msgstr "%b %d %H:%M %a"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:35
 msgid "%b %d %I:%M %p %a"
-msgstr ""
+msgstr "%b %d %I:%M %p %a"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:37
 msgid "%b %d %H:%M"
-msgstr ""
+msgstr "%b %d %H:%M"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:39
 msgid "%b %d %I:%M %p"
-msgstr ""
+msgstr "%b %d %I:%M %p"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:41
 msgid "%H:%M %a"
-msgstr ""
+msgstr "%H:%M %a"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:43
 msgid "%I:%M %p %a"
-msgstr ""
+msgstr "%I:%M %p %a"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:45
 msgid "%H:%M"
-msgstr ""
+msgstr "%H:%M"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:47
 msgid "%I:%M %p"
-msgstr ""
+msgstr "%I:%M %p"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:79
 msgid "Display date"
-msgstr ""
+msgstr "Mostrar fecha"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:80
 msgid "Display week"
-msgstr ""
+msgstr "Mostrar semana"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:42
 msgid "_Close"
@@ -309,7 +310,7 @@ msgstr "si"
 
 #: ../resources/greeter/js/mediacontrol.coffee:129
 msgid "Click button to Play"
-msgstr ""
+msgstr "Presionar para Reproducir"
 
 #: ../resources/greeter/js/message.coffee:105
 #: ../resources/greeter/js/message.coffee:82
@@ -441,11 +442,11 @@ msgstr "Sáb"
 
 #: ../resources/greeter/js/user.coffee:408
 msgid "Login"
-msgstr ""
+msgstr "Ingresar"
 
 #: ../resources/greeter/js/user.coffee:410
 msgid "Unlock"
-msgstr ""
+msgstr "Desbloquear"
 
 #: ../resources/guide/js/desktop.coffee:28
 msgid ""
@@ -459,91 +460,91 @@ msgstr "Bueno, ha aprendido como crear un \"grupo de aplicaciones\""
 
 #: ../resources/guide/js/desktop.coffee:122
 msgid "tips: Right-click on the application group will provide more functions"
-msgstr ""
+msgstr "consejos: clic derecho en el grupo de aplicaciones proporcionará más funciones"
 
 #: ../resources/guide/js/desktop.coffee:132
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different "
 "events"
-msgstr ""
+msgstr "Deslice el ratón por las cuatro esquinas superiores, que pueden desencadenar cuatro eventos distintos"
 
 #: ../resources/guide/js/desktop.coffee:154
 msgid ""
 "We already know that launcher can be shown/ hidden by sliding the mouse to "
 "the upper left corner"
-msgstr ""
+msgstr "Ya sabemos que el lanzador puede mostrarse/ocultarse al colocar el mouse en la esquina superior izquierda"
 
 #: ../resources/guide/js/desktop.coffee:176
 msgid ""
 "The workspace will be shown or hidden by sliding the mouse to the lower left"
 " corner"
-msgstr ""
+msgstr "El espacio de trabajo se mostrará u ocultará al deslizar el puntero por la esquina inferior izquierda"
 
 #: ../resources/guide/js/desktop.coffee:202
 msgid ""
 "No functions are set in default on the upper right corner\n"
 "Right-click on desktop black area to call up the menu, select \"Corner navigation\" to set the corner used"
-msgstr ""
+msgstr "No hay configurada ninguna función para la esquina superior derecha\nHaz clic derecho en la parte negra del escritorio para abrir el menú, selecciona \"Navegación de Esquina\" para configurar la esquina utilizada."
 
 #: ../resources/guide/js/desktop.coffee:203
 msgid "tips: Click on the corner navigation blank area to return"
-msgstr ""
+msgstr "consejos: Haz clic en el área blanca de la esquina de navegación para volver"
 
 #: ../resources/guide/js/dock.coffee:26
 msgid ""
 "Three modes and the display status can be switched by right-click on the "
 "blank area of dock"
-msgstr ""
+msgstr "Se pueden cambiar tres modos y ver el estado de la pantalla al hacer clic en el área blanca del dock"
 
 #: ../resources/guide/js/dss.coffee:32
 msgid ""
 "The Control Center will be shown or hidden by sliding the mouse to the lower"
 " right corner"
-msgstr ""
+msgstr "El Centro de Control se mostrará u ocultará al deslizar el puntero por la esquina inferior derecha"
 
 #: ../resources/guide/js/dss.coffee:33
 msgid "tips: Click the setting icon on dock to implement"
-msgstr ""
+msgstr "consejos: Haz clic sobre el icono de configuración del dock para implementar"
 
 #: ../resources/guide/js/dss.coffee:76
 msgid "Click the power button to shut down, reboot or do other operations"
-msgstr ""
+msgstr "Haz clic sobre el botón de energía para apagar, reiniciar o realizar otras operaciones"
 
 #: ../resources/guide/js/dss.coffee:77
 msgid ""
 "tips: Hover the setting icon on dock to quickly implement some setting "
 "functions"
-msgstr ""
+msgstr "consejos: Coloca el puntero sobre el icono de configuración en el dock para implementar rápidamente algunas funciones de ajuste"
 
 #: ../resources/guide/js/end.coffee:25
 msgid ""
 "Thank you for your patience to learn! More surprises are waiting for you to "
 "explore"
-msgstr ""
+msgstr "¡Gracias por tu paciencia para aprender! Te esperan más sorpresas por explorar"
 
 #: ../resources/guide/js/end.coffee:30
 msgid "Start my Deepin trip"
-msgstr ""
+msgstr "Comenzar mi viaje Deepin"
 
 #: ../resources/guide/js/launcher.coffee:31
 msgid ""
 "\"Application Launcher\" can be started by sliding the mouse to the upper "
 "left corner or clicking on the launcher."
-msgstr ""
+msgstr "El \"Lanzador de Aplicaciones\" puede iniciarse deslizando el mouse por la esquina superior izquierda o haciendo clic en el lanzador."
 
 #: ../resources/guide/js/launcher.coffee:83
 msgid "Please directly hit \"deepin\" in keyboard"
-msgstr ""
+msgstr "Por favor escribe \"deepin\" con el teclado"
 
 #: ../resources/guide/js/launcher.coffee:96
 msgid "You can directly drag the application icon to Dock or trash"
-msgstr ""
+msgstr "Puedes arrastrar el icono de la aplicación al Dock o la papelera"
 
 #: ../resources/guide/js/launcher.coffee:109
 msgid ""
 "tips: Click the right mouse button on the application icon to call up the "
 "context menu"
-msgstr ""
+msgstr "sugerencia: "
 
 #: ../resources/guide/js/launcher.coffee:135
 msgid "Remove from _favorites"
@@ -591,7 +592,7 @@ msgstr "Iniciar"
 
 #: ../resources/guide/js/start.coffee:52
 msgid "Skip the guide, experience immediately"
-msgstr ""
+msgstr "Saltar la guía, experimentar inmediatamente"
 
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
@@ -643,7 +644,7 @@ msgstr "Por categoría (texto)"
 
 #: ../resources/launcher/js/menu.coffee:8
 msgid "By time installed"
-msgstr ""
+msgstr "Por fecha de instalación"
 
 #: ../resources/launcher/js/menu.coffee:9
 msgid "By frequency"
@@ -651,11 +652,11 @@ msgstr "Por frecuencia"
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
-msgstr ""
+msgstr "Duplicado"
 
 #: ../resources/osd/js/monitor.coffee:39
 msgid "Extend"
-msgstr ""
+msgstr "Extender"
 
 #: ../resources/zone/js/utils.coffee:13
 msgid "Control Center"
@@ -687,7 +688,7 @@ msgstr "El dock fallo al iniciar, porque Compiz no esta activado."
 
 #: ../app/greeter/greeter.c:209 ../app/greeter/lock.c:173
 msgid "Wrong Password"
-msgstr ""
+msgstr "Contraseña Incorrecta"
 
 #: ../app/greeter/mutils.c:84
 msgid "%a, %b %d, %Y"
@@ -827,7 +828,7 @@ msgstr "Quiere combinar con la carpeta \"%s\"?"
 msgid ""
 "The merging operation will be asked to confirm before replacing any files in"
 " the folder conflicted."
-msgstr ""
+msgstr "La operación de combinación deberá ser confirmada antes de reemplazar cualquier archivo en el directorio en conflicto."
 
 #: ../lib/dentry/fileops_error_dialog.c:222
 #, c-format
@@ -846,7 +847,7 @@ msgstr "Otra carpeta con el mismo nombre ya existe en \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:236
 msgid "All files in the folder will be removed by replacing."
-msgstr ""
+msgstr "Todos los archivos en el directorio serán eliminados por reemplazo."
 
 #: ../lib/dentry/fileops_error_dialog.c:237
 #, c-format
@@ -865,7 +866,7 @@ msgstr "Quiere reemplazar los archivos \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:246
 msgid "The content will be overwritten by replacing."
-msgstr ""
+msgstr "El contenido será sobrescrito por reemplazo."
 
 #: ../lib/dentry/fileops_error_dialog.c:248
 #, c-format
