@@ -88,9 +88,10 @@ traverse_directory (GFile* src, GFileProcessingFunc pre_hook, GFileProcessingFun
         //src_enumerator must be NULL, nothing to free.
         switch (error->code)
         {
-            case G_IO_ERROR_NOT_FOUND:
+            case G_IO_ERROR_NOT_FOUND: {
                 //TODO: showup a message box and quit.
-                if (g_file_query_file_type (src, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL) == G_FILE_TYPE_REGULAR)
+                GFileType file_type = g_file_query_file_type (src, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
+                if (file_type == G_FILE_TYPE_REGULAR || file_type == G_FILE_TYPE_SYMBOLIC_LINK)
                 {
                     //for smb files, previous enumeration can fail and return G_IO_ERROR_NOT_FOUND.
                     //pass to G_IO_ERROR_NOT_DIRECTORY
@@ -100,6 +101,7 @@ traverse_directory (GFile* src, GFileProcessingFunc pre_hook, GFileProcessingFun
                     g_debug("G_IO_ERROR_NOT_FOUND");
                     break;
                 }
+            }
             case G_IO_ERROR_NOT_DIRECTORY:
                 //TODO:we're using a file.
                 // g_debug("G_IO_ERROR_NOT_DIRECTORY");
