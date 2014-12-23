@@ -107,7 +107,7 @@ class PrefixedItem extends FixedItem
 
 class SystemItem extends AppItem
     is_fixed_pos: true
-    position: ['AppletNetwork', 'AppletDiskMount', 'AppletPower', 'AppletSound']
+    position: ['AppletNetwork', 'AppletDiskMount', 'AppletSound', 'AppletPower']
     constructor:(@id, icon, title)->
         super(@id, icon, title, $("#system"))
         @windowTitleWrap.style.display = 'none'
