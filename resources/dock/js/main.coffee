@@ -167,3 +167,4 @@ initDock = ->
 
 time = new Time("time", "js/plugins/time/img/panel.png", "")
 initDock()
+listenInvalidIdSignal()
