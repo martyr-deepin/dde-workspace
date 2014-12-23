@@ -59,6 +59,9 @@ initDock = ->
             systemTray = new SystemTray("system-tray", trayIcon, "")
         else if systemTray
             systemTray.clearItems()
+            setTimeout(->
+                systemTray.core.RetryManager_sync()
+            , 1000)
     )
 
     entryManager.connect("Added", (path)->

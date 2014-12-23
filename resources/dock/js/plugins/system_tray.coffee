@@ -90,7 +90,7 @@ class SystemTray extends SystemItem
                     @fold()
                 return
 
-            console.log("tray icon #{xid} is Changed")
+            # console.log("tray icon #{xid} is Changed")
             if hideStatusManager?.state != HideState.Shown
                 console.log("the dock is not shown")
                 return
@@ -112,6 +112,7 @@ class SystemTray extends SystemItem
         @core.connect("Removed", (xid)=>
             console.log("tray icon #{xid} is Removed")
             @items.remove(xid)
+            $EW.dismiss(xid)
 
             if @items.length == 0
                 @hideButton()
@@ -140,6 +141,8 @@ class SystemTray extends SystemItem
         @core.RetryManager_sync()
 
     clearItems:->
+        for item in @items.slice(0)
+            $EW.dismiss(item)
         if Array.isArray @core.TrayIcons
             @items = @core.TrayIcons.slice(0) || []
 
@@ -253,7 +256,7 @@ class SystemTray extends SystemItem
             console.log("is unfolded")
             return
         DCore.Dock.require_all_region()
-        console.log("system tray mouseover")
+        # console.log("system tray mouseover")
         @minShow()
 
     minShow:=>
@@ -283,7 +286,7 @@ class SystemTray extends SystemItem
         $EW.show(@items[i]) if @items[i]
 
     on_mouseout: (e)=>
-        console.log("system tray mouseout")
+        # console.log("system tray mouseout")
         # super
         DCore.Dock.set_is_hovered(false)
         clearTimeout(@showEmWindowTimer)
@@ -296,7 +299,7 @@ class SystemTray extends SystemItem
             return
 
         @isShowing = false
-        console.log("tray mouseout")
+        # console.log("tray mouseout")
         @img.style.display = ''
         @panel.style.display = 'none'
         @hideAllIcons()
