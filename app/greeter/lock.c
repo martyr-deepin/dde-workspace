@@ -185,20 +185,28 @@ sigterm_cb (int signum G_GNUC_UNUSED)
 }
 
 
-#ifdef NDEBUG
 static void
 focus_out_cb (GtkWidget* w G_GNUC_UNUSED, GdkEvent*e G_GNUC_UNUSED, gpointer user_data G_GNUC_UNUSED)
 {
     gdk_window_focus (gtk_widget_get_window (container), 0);
 }
 
-#endif
-
 static void
 show_cb (GtkWindow* container, gpointer data G_GNUC_UNUSED)
 {
     gs_grab_move_to_window (grab,gtk_widget_get_window (container),gtk_window_get_screen (container),FALSE);
 }
+
+
+JS_EXPORT_API
+gboolean lock_is_debug()
+{
+#ifdef NDEBUG
+    return FALSE;
+#endif
+    return TRUE;
+}
+
 
 int main (int argc, char **argv)
 {
@@ -222,8 +230,9 @@ int main (int argc, char **argv)
     update_screen_info(&rect_screen);
 
     bg_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    draw_background_by_theme(bg_window,NULL,rect_screen);
-
+    if (!lock_is_debug()){
+        draw_background_by_theme(bg_window,NULL,rect_screen);
+    }
     container = create_web_container (FALSE, TRUE);
     widget_move_by_rect(container,rect_workarea);
 
@@ -232,20 +241,21 @@ int main (int argc, char **argv)
     g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
     listen_leave_notify_signal(container, NULL);
 
-    grab = gs_grab_new ();
-    g_signal_connect (container, "show", G_CALLBACK (show_cb), NULL);
-#ifdef NDEBUG
-    g_message(" Lock Not DEBUG");
-    g_signal_connect (webview, "focus-out-event", G_CALLBACK(focus_out_cb), NULL);
-#endif
+    if (!lock_is_debug()){
+        g_message(" Lock Not DEBUG");
+        grab = gs_grab_new ();
+        g_signal_connect (container, "show", G_CALLBACK (show_cb), NULL);
+        g_signal_connect (webview, "focus-out-event", G_CALLBACK(focus_out_cb), NULL);
+    }
     gtk_widget_realize (container);
     gtk_widget_realize (webview);
 
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
-    gdk_window_set_keep_above (gdkwindow, TRUE);
     gdk_window_set_accept_focus(gdkwindow,TRUE);
-    gdk_window_set_override_redirect (gdkwindow, TRUE);
-
+    if (!lock_is_debug()){
+        gdk_window_set_keep_above (gdkwindow, TRUE);
+        gdk_window_set_override_redirect (gdkwindow, TRUE);
+    }
     gtk_widget_show_all (container);
     setup_screenlock_dbus_service();
 
