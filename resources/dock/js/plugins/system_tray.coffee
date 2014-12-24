@@ -245,6 +245,7 @@ class SystemTray extends SystemItem
             return
         for item in @items
             $EW.show(item)
+        @isShowing = true
 
     showButton:->
         @button.style.visibility = 'visible'

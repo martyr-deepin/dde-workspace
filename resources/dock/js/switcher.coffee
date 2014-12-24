@@ -35,6 +35,7 @@ switchToFashionMode = ->
 
 switchToEfficientMode = ->
     switchMode("efficient", EFFICIENT_ACTIVE_IMG, EFFICIENT_ACTIVE_HOVER_IMG, ->
+        systemTray?.isShowing = true
         switchToEfficientModeTimer = setTimeout(->
             systemTray?.showAllIcons()
         , 800)
@@ -43,6 +44,7 @@ switchToEfficientMode = ->
 
 switchToClassicMode = ->
     switchMode("classic", CLASSIC_ACTIVE_IMG, CLASSIC_ACTIVE_HOVER_IMG,->
+        systemTray?.isShowing = true
         switchToClassicModeTimer = setTimeout(->
             systemTray?.showAllIcons()
         , 800)
