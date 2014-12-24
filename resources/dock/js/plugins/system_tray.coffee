@@ -14,6 +14,7 @@ class SystemTray extends SystemItem
         @button = create_element(tag:'div', class:'TrayFoldButton', @imgWrap)
         @button.addEventListener('mouseover', @on_mouseover)
         @button.addEventListener('click', @on_button_click)
+        @isTransitionDone = true
 
         @element.addEventListener("webkitTransitionEnd", (e)=>
             webkitCancelAnimationFrame(@calcTimer)
@@ -31,6 +32,7 @@ class SystemTray extends SystemItem
                 if debugRegion
                     console.warn("[SystemTray.webkitTransitionEnd] folded")
             update_dock_region()
+            @isTransitionDone = true
         )
 
         @isShowing = false
@@ -251,9 +253,12 @@ class SystemTray extends SystemItem
         @button.style.visibility = 'hidden'
 
     on_mouseover: (e)=>
+        if !@isTransitionDone
+            return
+
         Preview_close_now(_lastCliengGroup)
         if @isUnfolded
-            console.log("is unfolded")
+            #console.log("is unfolded")
             return
         DCore.Dock.require_all_region()
         # console.log("system tray mouseover")
@@ -272,10 +277,6 @@ class SystemTray extends SystemItem
             @showButton()
         @imgContainer.style.webkitTransform = 'translateY(0)'
         @imgContainer.style.webkitTransition = ''
-        # for item,i in @items
-        #     if i == 0 || i == 1
-        #         continue
-        #     $EW.move(item, 0, 0)
         $EW.show(@items[0]) if @items[0]
         $EW.show(@items[1]) if @items[1]
         if @items[2] and @items.length <= 4
@@ -349,6 +350,7 @@ class SystemTray extends SystemItem
         if @upperItemNumber <= 2
             return
 
+        @isTransitionDone = false
         if @isUnfolded
             @fold()
         else
