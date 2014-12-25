@@ -94,7 +94,7 @@ class Time extends SystemItem
         super
         if e.button != 0
             return
-        @openDateAndTimeSettingModle()
+        Clock.openDateAndTimeSettingModle()
 
     displayModeChangedHandler:(mode)=>
         @changeClock(settings.clockType(), mode)

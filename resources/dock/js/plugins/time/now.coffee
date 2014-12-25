@@ -8,7 +8,9 @@ class Now
         hour = new Date().getHours()
         switch max_hour
             when 12
-                if twobit then @force2bit(hour % 12) else "#{hour % 12}"
+                hour = hour % 12
+                hour = 12 if hour == 0
+                if twobit then @force2bit(hour) else "#{hour}"
             when 24
                 if twobit then @force2bit(hour) else "#{hour}"
     min:(twobit=true)->
