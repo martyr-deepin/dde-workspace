@@ -43,6 +43,8 @@ class FixedItem extends Applet
     constructor:(@id, icon, title, @container)->
         super
         @img.draggable = false
+        @imgContainer.draggable = false
+        @imgWrap.draggable=false
 
     show: (v)->
         @__show = v
@@ -67,8 +69,6 @@ class FixedItem extends Applet
 class PrefixedItem extends FixedItem
     constructor:(@id, icon, title)->
         super(@id, icon, title, $("#pre_fixed"))
-        @imgContainer.draggable = false
-        @imgWrap.draggable=false
         # $("#pre_fixed").appendChild(@element)
 
     isFirstElementChild:->
@@ -198,4 +198,3 @@ class SystemItem extends AppItem
 class PostfixedItem extends FixedItem
     constructor:(@id, icon, title)->
         super(@id, icon, title, $("#post_fixed"))
-        @imgContainer.draggable = false
