@@ -115,10 +115,8 @@ set_element_pos = ->
     div_media_control?.style.bottom = "3.5em"
     div_media_control?.style.right = "19em"
 
-    menuchoose = jQuery(".MenuChoose")
     for menu in menuchoose
-        w = Widget.look_up(menu.id)
-        w.setPos()
+        menu.setPos()
 
 set_element_pos()
 

@@ -99,6 +99,10 @@ class User extends Widget
     get_current_userinfo:->
         return _current_user
 
+    set_current_userinfo: (uid)->
+        if _current_user.id is uid then return
+        _current_user = user for user in @userinfo_all when user.id is uid
+
     check_index:(index)->
         if index > @userinfo_all.length - 1 then index = 0
         else if index < 0 then index = @userinfo_all.length - 1
