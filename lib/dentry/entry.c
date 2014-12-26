@@ -1525,9 +1525,6 @@ char* dentry_get_rich_dir_group_name(ArrayContainer const fs)
 
     if (group_name == NULL)
         group_name = _get_group_name_from_category_field(fs);
-    //TODO:check group_name with po.
-    //the po must contain all the possible categories.
-
     return group_name;
 }
 

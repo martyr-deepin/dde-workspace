@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-24 15:51+0800\n"
+"POT-Creation-Date: 2014-12-26 11:18+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -231,12 +231,12 @@ msgstr ""
 msgid "Launcher"
 msgstr ""
 
-#: ../resources/dock/js/plugins/time/time.coffee:61
+#: ../resources/dock/js/plugins/time/time.coffee:64
 msgid "Switch display mode"
 msgstr ""
 
-#: ../resources/dock/js/plugins/time/time.coffee:62
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:82
+#: ../resources/dock/js/plugins/time/time.coffee:65
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:84
 msgid "_Time settings"
 msgstr ""
 
@@ -272,11 +272,11 @@ msgstr ""
 msgid "%I:%M %p"
 msgstr ""
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:80
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:82
 msgid "Display date"
 msgstr ""
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:81
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:83
 msgid "Display week"
 msgstr ""
 
@@ -713,6 +713,18 @@ msgstr ""
 
 #: ../lib/category.c:56
 msgid "others"
+msgstr ""
+
+#: ../lib/category.c:60
+msgid "Network"
+msgstr ""
+
+#: ../lib/category.c:61
+msgid "Game"
+msgstr ""
+
+#: ../lib/category.c:62
+msgid "Office"
 msgstr ""
 
 #: ../lib/dentry/entry.c:748
