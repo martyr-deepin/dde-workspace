@@ -33,6 +33,8 @@ DCore.signal_connect("embed_window_enter", (info)->
     __clear_timeout()
     clearTimeout(tooltip_hide_id)
     clearTimeout(hide_id)
+    if not $EW_MAP[info.XID]
+        Preview_close_now()
 )
 DCore.signal_connect("embed_window_leave", (info)->
 )

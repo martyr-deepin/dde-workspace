@@ -167,11 +167,12 @@ GdkFilterReturn __monitor_embed_window(GdkXEvent *xevent, GdkEvent* ev, gpointer
         XGenericEvent* ge = xevent;
         if (ge->evtype == EnterNotify) {
             JSObjectRef info = json_create();
-            json_append_number(info, "XID", ((XEnterWindowEvent*)xev)->window);
+            // wrong xid is gotten from XEnterWindowEvent
+            json_append_number(info, "XID", GDK_WINDOW_XID(((GdkEventMotion*)ev)->window));
             js_post_message("embed_window_enter", info);
         } else if (ge->evtype == LeaveNotify) {
             JSObjectRef info = json_create();
-            json_append_number(info, "XID", ((XEnterWindowEvent*)xev)->window);
+            json_append_number(info, "XID", GDK_WINDOW_XID(((GdkEventMotion*)ev)->window));
             js_post_message("embed_window_leave", info);
         }
         return GDK_FILTER_REMOVE;

@@ -5,7 +5,7 @@ $EWType =
     Plugin:1
     TrayIcon:2
 class EmbedWindow
-    constructor:(xids, resize, type)->
+    constructor:(xids, resize, @type)->
         @xids = []
         for xid in xids
             @xids.push(xid.Xid)
