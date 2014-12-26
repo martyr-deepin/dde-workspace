@@ -57,7 +57,7 @@ class Item extends Widget
     change_icon: (src)->
         if not (src.substring(0, 7) == "file://" || src.substring(0, 10) == "data:image")
             icon_size = 48
-            src = DCore.get_theme_icon(src, icon_size) || DCore.get_theme_icon(NOT_FOUND_ICON, 48)
+            src = DCore.get_theme_icon(src, icon_size) || DCore.get_theme_icon(NOT_FOUND_ICON, icon_size)
         @img.src = src
         @img.onload = =>
             @imgHover.src = bright_image(@img, 40)

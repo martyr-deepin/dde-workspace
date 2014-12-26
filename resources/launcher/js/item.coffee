@@ -169,10 +169,10 @@ class Item extends Widget
         @getInnerBoxDOM(el).children[1].children[0]
 
     setImageSize: (img)=>
-        if img.width == img.height
+        if img.naturalWidth == img.naturalHeight
             # console.log 'set class name to square img'
             img.classList.add('square_img')
-        else if img.width > img.height
+        else if img.naturalWidth > img.naturalHeight
             img.classList.add('hbar_img')
             new_height = ITEM_IMG_SIZE * img.height / img.width
             grap = (ITEM_IMG_SIZE - Math.floor(new_height)) / 2

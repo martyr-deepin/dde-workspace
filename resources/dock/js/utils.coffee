@@ -113,18 +113,6 @@ bright_image = (img, adjustment)->
     #     ctx.drawImage(i, 0, 0)
     return dataUrl
 
-dark_image = (img, adjustment)->
-    ctx = iconCanvas.getContext("2d")
-    # clear the last icon.
-    ctx.clearRect(0, 0, iconCanvas.width, iconCanvas.height)
-    ctx.drawImage(img, 0, 0, iconCanvas.width, iconCanvas.height)
-    origDataUrl = iconCanvas.toDataURL()
-    dataUrl = DCore.Dock.dark_image(origDataUrl, adjustment)
-    # i = new Image()
-    # i.src = dataUrl
-    # i.onload = ->
-    #     ctx.drawImage(i, 0, 0)
-    return dataUrl
 
 updatePanel = do ->
     _updatePanelTimer = null
