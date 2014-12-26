@@ -68,6 +68,7 @@ class PrefixedItem extends FixedItem
     constructor:(@id, icon, title)->
         super(@id, icon, title, $("#pre_fixed"))
         @imgContainer.draggable = false
+        @imgWrap.draggable=false
         # $("#pre_fixed").appendChild(@element)
 
     isFirstElementChild:->
