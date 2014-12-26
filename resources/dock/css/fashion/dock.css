@@ -56,7 +56,6 @@ body {
 
 .item_container {
   display: -webkit-box;
-  -webkit-box-pack: center;
 }
 
 #panel {

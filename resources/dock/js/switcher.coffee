@@ -26,16 +26,42 @@ switchMode = (modeName, normalImg, hoverImg, op)->
     op()
 
 
+reshowItems = ->
+    setTimeout(->
+        apps = $("#app_list").children
+        for i in [0...apps.length]
+            apps[i].style.display = 'none'
+        $("#app_list").style.display = 'none'
+        panel.set_width(Panel.getPanelMiddleWidth())
+        if debugRegion
+            console.log("[update_dock] update_dock_region")
+        update_dock_region(Panel.getPanelMiddleWidth())
+    , 50)
+    setTimeout(->
+        $("#app_list").style.display = ''
+        setTimeout(->
+            apps = $("#app_list").children
+            for i in [0...apps.length]
+                apps[i].style.display = ''
+            panel.set_width(Panel.getPanelMiddleWidth())
+            if debugRegion
+                console.log("[update_dock] update_dock_region")
+            update_dock_region(Panel.getPanelMiddleWidth())
+        , 50)
+    , 100)
+
+
 switchToFashionMode = ->
     switchMode("fashion", OPEN_INDICATOR, OPEN_INDICATOR, ->
         systemTray?.hideButton()
         systemTray?.fold()
+        reshowItems()
     )
 
 
 switchToEfficientMode = ->
     switchMode("efficient", EFFICIENT_ACTIVE_IMG, EFFICIENT_ACTIVE_HOVER_IMG, ->
-        systemTray?.isShowing = true
+        # systemTray?.isShowing = true
         switchToEfficientModeTimer = setTimeout(->
             systemTray?.showAllIcons()
         , 800)
@@ -44,7 +70,7 @@ switchToEfficientMode = ->
 
 switchToClassicMode = ->
     switchMode("classic", CLASSIC_ACTIVE_IMG, CLASSIC_ACTIVE_HOVER_IMG,->
-        systemTray?.isShowing = true
+        # systemTray?.isShowing = true
         switchToClassicModeTimer = setTimeout(->
             systemTray?.showAllIcons()
         , 800)
