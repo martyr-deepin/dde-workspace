@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-24 15:51+0800\n"
-"PO-Revision-Date: 2014-12-24 09:17+0000\n"
-"Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
+"POT-Creation-Date: 2014-12-26 11:18+0800\n"
+"PO-Revision-Date: 2014-12-26 05:40+0000\n"
+"Last-Translator: szd_liufei <liufei@linuxdeepin.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/deepin-desktop-environment/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -233,12 +233,12 @@ msgstr "通知区域设置"
 msgid "Launcher"
 msgstr "启动器"
 
-#: ../resources/dock/js/plugins/time/time.coffee:61
+#: ../resources/dock/js/plugins/time/time.coffee:64
 msgid "Switch display mode"
 msgstr "切换显示方式"
 
-#: ../resources/dock/js/plugins/time/time.coffee:62
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:82
+#: ../resources/dock/js/plugins/time/time.coffee:65
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:84
 msgid "_Time settings"
 msgstr "时间设置(_T)"
 
@@ -274,11 +274,11 @@ msgstr " %H:%M"
 msgid "%I:%M %p"
 msgstr " %p%I:%M"
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:80
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:82
 msgid "Display date"
 msgstr "显示日期"
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:81
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:83
 msgid "Display week"
 msgstr "显示星期几"
 
@@ -715,6 +715,18 @@ msgstr "实用工具"
 #: ../lib/category.c:56
 msgid "others"
 msgstr "其他"
+
+#: ../lib/category.c:60
+msgid "Network"
+msgstr "网络应用"
+
+#: ../lib/category.c:61
+msgid "Game"
+msgstr "游戏娱乐"
+
+#: ../lib/category.c:62
+msgid "Office"
+msgstr "办公软件"
 
 #: ../lib/dentry/entry.c:748
 #, c-format

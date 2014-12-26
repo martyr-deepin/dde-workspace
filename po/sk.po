@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-24 15:51+0800\n"
-"PO-Revision-Date: 2014-12-24 09:17+0000\n"
+"POT-Creation-Date: 2014-12-26 11:18+0800\n"
+"PO-Revision-Date: 2014-12-26 04:47+0000\n"
 "Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
 "Language-Team: Slovak (http://www.transifex.com/projects/p/deepin-desktop-environment/language/sk/)\n"
 "MIME-Version: 1.0\n"
@@ -232,12 +232,12 @@ msgstr "Nastavenia upozornení"
 msgid "Launcher"
 msgstr "Spúšťač"
 
-#: ../resources/dock/js/plugins/time/time.coffee:61
+#: ../resources/dock/js/plugins/time/time.coffee:64
 msgid "Switch display mode"
 msgstr "Prepnúť zobrazovací režim"
 
-#: ../resources/dock/js/plugins/time/time.coffee:62
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:82
+#: ../resources/dock/js/plugins/time/time.coffee:65
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:84
 msgid "_Time settings"
 msgstr "_Nastavenia času"
 
@@ -273,11 +273,11 @@ msgstr "%H:%M"
 msgid "%I:%M %p"
 msgstr "%I:%M %p"
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:80
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:82
 msgid "Display date"
 msgstr "Zobraziť dátum"
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:81
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:83
 msgid "Display week"
 msgstr "Zobraziť týždeň"
 
@@ -714,6 +714,18 @@ msgstr "Pomôcky"
 #: ../lib/category.c:56
 msgid "others"
 msgstr "ostatné"
+
+#: ../lib/category.c:60
+msgid "Network"
+msgstr "Sieť"
+
+#: ../lib/category.c:61
+msgid "Game"
+msgstr ""
+
+#: ../lib/category.c:62
+msgid "Office"
+msgstr "Kancelária"
 
 #: ../lib/dentry/entry.c:748
 #, c-format

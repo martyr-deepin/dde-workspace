@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-24 15:51+0800\n"
-"PO-Revision-Date: 2014-12-24 09:17+0000\n"
+"POT-Creation-Date: 2014-12-26 11:18+0800\n"
+"PO-Revision-Date: 2014-12-26 04:47+0000\n"
 "Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
 "Language-Team: Danish (http://www.transifex.com/projects/p/deepin-desktop-environment/language/da/)\n"
 "MIME-Version: 1.0\n"
@@ -233,12 +233,12 @@ msgstr "\t\nNotifikation Område indstillinger"
 msgid "Launcher"
 msgstr "Launcher"
 
-#: ../resources/dock/js/plugins/time/time.coffee:61
+#: ../resources/dock/js/plugins/time/time.coffee:64
 msgid "Switch display mode"
 msgstr "Skift visningstilstand"
 
-#: ../resources/dock/js/plugins/time/time.coffee:62
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:82
+#: ../resources/dock/js/plugins/time/time.coffee:65
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:84
 msgid "_Time settings"
 msgstr "_Tidsindstillinger"
 
@@ -274,11 +274,11 @@ msgstr "%H:%M"
 msgid "%I:%M %p"
 msgstr "%I:%M %p"
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:80
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:82
 msgid "Display date"
 msgstr "Vis dato"
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:81
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:83
 msgid "Display week"
 msgstr "Vis uge"
 
@@ -715,6 +715,18 @@ msgstr "programværktøjer"
 #: ../lib/category.c:56
 msgid "others"
 msgstr "andre"
+
+#: ../lib/category.c:60
+msgid "Network"
+msgstr "Netværk"
+
+#: ../lib/category.c:61
+msgid "Game"
+msgstr ""
+
+#: ../lib/category.c:62
+msgid "Office"
+msgstr "Kontor"
 
 #: ../lib/dentry/entry.c:748
 #, c-format

@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-24 15:51+0800\n"
-"PO-Revision-Date: 2014-12-24 09:17+0000\n"
-"Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
+"POT-Creation-Date: 2014-12-26 11:18+0800\n"
+"PO-Revision-Date: 2014-12-26 04:51+0000\n"
+"Last-Translator: Анатолий Валерианович <ffox909@mail.ru>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/deepin-desktop-environment/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -236,12 +236,12 @@ msgstr "Настройки области уведомления"
 msgid "Launcher"
 msgstr "Лаунчер"
 
-#: ../resources/dock/js/plugins/time/time.coffee:61
+#: ../resources/dock/js/plugins/time/time.coffee:64
 msgid "Switch display mode"
 msgstr "Переключить режим дисплея"
 
-#: ../resources/dock/js/plugins/time/time.coffee:62
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:82
+#: ../resources/dock/js/plugins/time/time.coffee:65
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:84
 msgid "_Time settings"
 msgstr "Настройка времени"
 
@@ -277,11 +277,11 @@ msgstr "%H:%M"
 msgid "%I:%M %p"
 msgstr "%I:%M %p"
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:80
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:82
 msgid "Display date"
 msgstr "Показывать дату"
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:81
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:83
 msgid "Display week"
 msgstr "Показывать неделю"
 
@@ -718,6 +718,18 @@ msgstr "утилиты"
 #: ../lib/category.c:56
 msgid "others"
 msgstr "другие"
+
+#: ../lib/category.c:60
+msgid "Network"
+msgstr "Сеть"
+
+#: ../lib/category.c:61
+msgid "Game"
+msgstr "Игра"
+
+#: ../lib/category.c:62
+msgid "Office"
+msgstr "Офис"
 
 #: ../lib/dentry/entry.c:748
 #, c-format
