@@ -556,18 +556,17 @@ int main(int argc, char* argv[])
     g_signal_connect(im_context, "commit", G_CALLBACK(_do_im_commit), NULL);
     g_message("set im done");
 
-    setup_launcher_dbus_service();
-    g_message("start launcher dbus service done");
-
 #ifndef NDEBUG
     // monitor_resource_file("launcher", webview);
     g_debug("xid: 0x%lx", gdk_x11_window_get_xid(gtk_widget_get_window(container)));
 #endif
 
-    gtk_widget_show_all(webview);
-    if (!is_hidden) {
-        launcher_show();
-        g_message("show launcher done");
+    setup_launcher_dbus_service();
+    if (g_getenv("DBUS_STARTER_BUS_TYPE") == NULL) {
+        //We aren't launched by dbus-daemon.
+        if (!is_hidden) {
+            g_idle_add(launcher_show, NULL);
+        }
     }
     gtk_main();
     return 0;
