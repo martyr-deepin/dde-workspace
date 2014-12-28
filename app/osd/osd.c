@@ -334,11 +334,10 @@ int main (int argc, char **argv)
     if(option.is_SwitchMonitors){
         gdk_window_set_events(gdkwindow,GDK_KEY_RELEASE_MASK);
     }
+    set_wmspec_window_type_hint(gdkwindow, gdk_atom_intern("_NET_WM_WINDOW_TYPE_NOTIFICATION", FALSE));
     gdk_window_set_keep_above (gdkwindow, TRUE);
-    gdk_window_set_override_redirect(gdkwindow, TRUE);
     osd_set_focus(FALSE);
 
-    gtk_widget_hide(container);
     gtk_main ();
     return 0;
 }
