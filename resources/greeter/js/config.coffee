@@ -25,6 +25,7 @@ CANVAS_HEIGHT = 150
 ANIMATION_TIME = 2
 APP_NAME = ''
 
+
 is_greeter = null
 try
     DCore.Greeter.get_date()
@@ -33,6 +34,8 @@ try
 catch error
     is_greeter = false
     APP_NAME = "Lock"
+
+DEBUG = DCore[APP_NAME].is_debug()
 
 enable_detection = (enabled)->
     try
@@ -77,23 +80,19 @@ _b = document.body
 inject_css(_b,"../common/css/global.css")
 inject_css(_b,"../common/css/animation.css")
 
+menuchoose = []
 body_keydown_listener =(all_menu_hide_cb)->
-    menuchoose = []
     w_menu = []
-    menuchoose = jQuery(".MenuChoose")
-    for menu in menuchoose
-        w = Widget.look_up(menu.id)
-        if w then w_menu.push(w)
     document.body.addEventListener("keydown",(e)->
         try
             echo "body keydown:#{e.which}"
             all_menu_hide = true
-            for w in w_menu
+            for w in menuchoose
                 if not w.is_hide() then all_menu_hide = false
             if all_menu_hide
                 all_menu_hide_cb?(e)
             else
-                for w in w_menu
+                for w in menuchoose
                     w.keydown(e)
         catch e
             echo "body keydown error:#{e}"
