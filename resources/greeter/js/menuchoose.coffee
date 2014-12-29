@@ -41,10 +41,9 @@ class MenuChoose extends Widget
 
     constructor: (@id,@parent = document.body)->
         super
-        menuchoose.push(@) if not (@ in menuchoose)
         inject_css(_b,"css/menuchoose.css")
         @from_enter = false
-        @current = _current_user.id
+        @current = @id
         @option = []
         @option_disable = []
         @message_text = []
@@ -71,15 +70,8 @@ class MenuChoose extends Widget
         XStartShow = (screen.width - left) - @element.clientWidth
         XEndHide = XStartShow
 
-    show_direct: ->
-        _current_user?.hide()
-        $("#div_users").style.display = "none"
-        @element.style.display = "-webkit-box"
-        @animation_end = true
-
     show:->
         echo "show"
-        if !@animation_end then return
         @animation_end = false
         animation_opt_text_show = (i)=>
             if i != @opt.length - 1 then return
@@ -127,16 +119,8 @@ class MenuChoose extends Widget
                     animation_opt_move_show(i,i * t_delay)
         )
 
-    hide_direct: ->
-        @animation_end = true
-        @element.style.display = "none"
-        _current_user?.show()
-        $("#div_users").style.display = "-webkit-box"
-        $("#div_users").style.opacity = 1.0
-
     hide: ->
         echo "hide"
-        if !@animation_end then return
         @animation_end = false
         animation_user_show = (i)=>
             if i != 0 then return
@@ -203,6 +187,7 @@ class MenuChoose extends Widget
             e.stopPropagation()
             if !@frame_click and @element.style.display isnt "none"
                 echo "body_click_to_hide"
+                if !@animation_end then return
                 @hide()
                 $(".password")?.focus()
             else
@@ -237,7 +222,7 @@ class MenuChoose extends Widget
         @message_text_div = create_element("div","message_text_div",@message_div)
         @message_div.style.opacity = 0
 
-    frame_build: ->
+    frame_build:(img_method)->
         @message_div_build()
         @frame = create_element("div", "frame", @element)
         @button = create_element("div","button",@frame)
@@ -251,7 +236,17 @@ class MenuChoose extends Widget
             @opt[i].style.backgroundColor = "rgba(255,255,255,0.0)"
             @opt[i].style.border = "1px solid rgba(255,255,255,0.0)"
             @opt[i].value = i
-            @opt_img[i] = create_img("opt_img_m0",@img_url_normal[i],@opt[i])
+            switch img_method
+                when 0
+                    @opt_img[i] = create_img("opt_img_m0",@img_url_normal[i],@opt[i])
+                when 1
+                    img_div = create_element("div","img_div",@opt[i])
+                    img_border = create_element("div","img_border",img_div)
+                    img_background = create_element("div","img_background",img_border)
+                    @opt_img[i] = create_img("opt_img_m1", @img_url_normal[i], img_background)
+                else
+                    @opt_img[i] = create_img("opt_img_m0",@img_url_normal[i],@opt[i])
+
             @opt_text[i] = create_element("div","opt_text",@opt[i])
             @opt_text[i].textContent = @option_text[i]
             that = @
@@ -263,6 +258,7 @@ class MenuChoose extends Widget
             @opt[i].addEventListener("mouseout",->
                 that.normal_state(this.value)
             )
+            #click
             @opt[i].addEventListener("click",(e)->
                 e.stopPropagation()
                 i = this.value
@@ -361,178 +357,18 @@ class MenuChoose extends Widget
         else @hide()
 
 
-class UserMenuChoose extends MenuChoose
-    t_usermenu = 500
-    t_text_show = 500
-
-    constructor: (@id,@parent = document.body)->
-        super(@id,@parent)
-        @moveX = []
-        @img_div = []
-
-    frame_build: ->
-        @frame = create_element("div", "frame", @element)
-        @button = create_element("div","button",@frame)
-        @frame.addEventListener("click",(e)=>
-            e.stopPropagation()
-            @frame_click = true
-        )
-        @body_click_to_hide()
-        for tmp ,i in @option_text
-            @opt[i] = create_element("div","opt",@button)
-            @opt[i].style.backgroundColor = "rgba(255,255,255,0.0)"
-            @opt[i].style.border = "1px solid rgba(255,255,255,0.0)"
-            @opt[i].value = i
-            @img_div[i] = create_element("div","img_div",@opt[i])
-            img_border = create_element("div","img_border",@img_div[i])
-            img_background = create_element("div","img_background",img_border)
-            @opt_img[i] = create_img("opt_img_m1", @img_url_normal[i], img_background)
-
-            @opt_text[i] = create_element("div","opt_text_user",@opt[i])
-            @opt_text[i].textContent = @option_text[i]
-            that = @
-            #hover
-            @opt[i].addEventListener("mouseover",->
-                that.hover_state(this.value)
-            )
-            #normal
-            @opt[i].addEventListener("mouseout",->
-                that.normal_state(this.value)
-            )
-            #click
-            @opt[i].addEventListener("click",(e)->
-                e.stopPropagation()
-                i = this.value
-                that.frame_click = true
-                that.click_state(i)
-                that.fade(i)
-            )
-        @element.style.display = "none"
-
-    opt_pos_init: ->
-        @final_width = 120
-        @element.style.display = "-webkit-box"
-        for opt,i in @opt
-            @left = (screen.width  - 250) / 2 + 53
-            @top = (screen.height  - 180) / 2 * 0.8 - 19
-            opt.style.position = "fixed"
-            opt.style.padding = "20px 10px 20px 10px"
-            opt.style.left = @left
-            opt.style.top = @top
-        console.debug "MenucChoose.opt:left:#{@left},top:#{@top}"
-        @element.style.display = "none"
-
-    show:->
-        echo "show_usermenu========="
-        @opt_pos_init()
-        if !@animation_end then return
-        @animation_end = false
-        $('#div_users').style.display = "none"
-        _current_user?.hide()
-        @element.style.display = "-webkit-box"
-        OPT_MARGIN = 30
-        center_index = Math.round((@opt.length - 1) / 2)
-        for opt,i in @opt
-            @moveX[i] = (@final_width + OPT_MARGIN) * (i - center_index)
-            if @opt.length % 2 == 0
-                @moveX[i] += (@final_width + OPT_MARGIN * 2) / 2
-            console.log "#{i}===moveX:#{@moveX[i]}"
-            if @option[i] is @current
-                console.debug "@current:#{_current_user.username}"
-                opt.style.zIndex = 40
-                opt.style.opacity = "1.0"
-                jQuery(opt).animate(
-                    {
-                        left:"+=#{@moveX[i]}px"
-                    },t_usermenu)
-                animation_scale(@img_div[i],0.8,t_usermenu)
-            else
-                opt.style.zIndex = 30
-                opt.style.opacity = "0"
-                jQuery(opt).animate(
-                    {
-                        opacity:"1.0"
-                        left:"+=#{@moveX[i]}px"
-                    },t_usermenu)
-                animation_scale(@img_div[i],0.8,1)
-            @opt_text[i].style.opacity = 0
-            jQuery(@opt_text[i]).animate({opacity:1},t_usermenu)
-        setTimeout(=>
-            @animation_end = true
-        ,t_usermenu)
-
-    hide:->
-        echo "hide_usermenu========="
-        if !@animation_end then return
-        @animation_end = false
-        if @frame_click or @from_enter
-           @from_enter = false
-           user?.set_current_userinfo(@current)
-        @element.style.display = "-webkit-box"
-        $('#div_users').style.display = "-webkit-box"
-        _current_user?.show()
-        _current_user.userbase.style.opacity = 0
-        _current_user.login.element.style.opacity = 0
-
-        for opt,i in @opt
-            opt.style.backgroundColor = "rgba(255,255,255,0.0)"
-            opt.style.border = "1px solid rgba(255,255,255,0.0)"
-            opt.style.borderRadius = "0px"
-            console.log "#{i}===moveX:#{@moveX[i]}"
-            if @option[i] is @current
-                console.debug "@current:#{_current_user.username}"
-                opt.style.zIndex = 40
-                opt.style.opacity = "1.0"
-                animation_scale(@img_div[i],1,t_usermenu)
-                jQuery(opt).animate(
-                    {
-                        left:"-=#{@moveX[i]}px"
-                    },t_usermenu)
-                jQuery(@opt_text[i]).animate(
-                    {
-                        opacity:0
-                    },t_usermenu + t_text_show)
-                jQuery(_current_user.login.element).animate({opacity:1},t_usermenu + 200)
-            else
-                opt.style.zIndex = 30
-                jQuery(@opt_text[i]).animate({opacity:0},t_usermenu)
-                opt.style.opacity = "1.0"
-                jQuery(opt).animate(
-                    {
-                        opacity:"0.0"
-                        left:"-=#{@moveX[i]}px"
-                    },t_usermenu)
-        setTimeout(=>
-            @animation_end = true
-            setTimeout(=>
-                @element.style.display = "none"
-            ,t_text_show)
-            $('#div_users').style.display = "-webkit-box"
-            console.debug "_current_user?.show();#{_current_user.username}"
-            _current_user?.show()
-            _current_user.userbase.style.opacity = 1
-            _current_user.username_div.style.opacity = 0
-            jQuery(@opt_text[i]).animate({fontSize:"1.6em"},t_text_show,"linear",=>
-            )
-            jQuery(_current_user.username_div).animate({opacity:1},t_text_show)
-        ,t_usermenu)
-
-
 class ComboBox extends Widget
     constructor: (@id, @on_click_cb) ->
         super
         @current_img = create_img("current_img", "", @element)
-        if @id == "user"
-            @menu = new UserMenuChoose("#{@id}_menuchoose")
-        else
-            @menu = new MenuChoose("#{@id}_menuchoose")
+        @menu = new MenuChoose("#{@id}_menuchoose")
         @menu.set_callback(@on_click_cb)
 
     insert: (id, title, img_normal,img_hover,img_click,can_exe = true,message_text = null)->
         @menu.insert(id, title, img_normal,img_hover,img_click,can_exe,message_text)
 
-    frame_build: ->
-        @menu.frame_build()
+    frame_build:(img_method = 0)->
+        @menu.frame_build(img_method)
 
     showMessage:(msg)->
         @menu.showMessage(msg)
@@ -543,15 +379,17 @@ class ComboBox extends Widget
 
     only_show_current_Menuchoose: ->
        echo "only_show_current_Menuchoose"
+       menuchoose = []
+       menuchoose = jQuery(".MenuChoose")
        for menu in menuchoose
-           if menu?.id isnt @id
-               menu?.hide_direct()
+           if menu?.id isnt @id then menu?.style.display = "none"
 
     do_click: (e)->
         e.stopPropagation()
         echo "current_img do_click:#{@id}"
         if !@menu.is_hide() then return
         @only_show_current_Menuchoose()
+        if !@menu.animation_end then return
         @menu.toggle()
 
     hide:->

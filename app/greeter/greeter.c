@@ -70,15 +70,6 @@ struct AuthHandler {
 struct AuthHandler *handler;
 
 JS_EXPORT_API
-gboolean greeter_is_debug()
-{
-#ifdef NDEBUG
-    return FALSE;
-#endif
-    return TRUE;
-}
-
-JS_EXPORT_API
 const char* greeter_get_lang()
 {
     return get_lang();
