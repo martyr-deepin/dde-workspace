@@ -22,6 +22,7 @@ class LauncherLaunch extends Page
     constructor:(@id)->
         super
         enableZoneDetect(true)
+        DCore.Guide.cursor_show()
         @dockReal = new Dock()
         @dockReal.hide()
         @dockMode = new DockMode("dockMode_#{_dm}",_dm,@element)
