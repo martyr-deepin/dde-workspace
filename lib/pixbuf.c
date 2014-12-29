@@ -182,7 +182,7 @@ char* get_data_uri_by_pixbuf(GdkPixbuf* pixbuf)
     g_assert(buf != NULL);
 
     if (error != NULL) {
-        g_warning("%s\n", error->message);
+        g_warning("[%s] %s\n", __func__, error->message);
         g_error_free(error);
         g_free(buf);
         return NULL;

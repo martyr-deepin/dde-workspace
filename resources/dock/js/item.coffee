@@ -16,10 +16,34 @@ class Item extends Widget
         @imgContainer = create_element(tag:'div', class:"imgContainer", @imgWrap)
         @imgContainer.style.pointerEvents = 'none'
         @img = create_img(src:"", class:"AppItemImg", @imgContainer)
+
         @imgHover = create_img(src:"", class:"AppItemImg", @imgContainer)
         @imgHover.style.display = 'none'
+        @imgHover.onerror = =>
+            if @imgHover.src != @img.src
+                @imgHover.src = @img.src
+
         @imgDark = create_img(src:"", class:"AppItemImg", @imgContainer)
         @imgDark.style.display = 'none'
+        @imgDark.onerror = =>
+            if @imgDark.src != @img.src
+                @imgDark.src = @img.src
+
+        @img.onload = =>
+            # console.log("load image #{@img.src} for #{@id}")
+            dataurl = get_image_dataurl(iconCanvas, @img, 48)
+            @imgHover.src = bright_image(dataurl, 40)
+            if @imgHover.src == null
+                @imgHover.onerror()
+            @imgDark.src = bright_image(dataurl, -40)
+            if @imgDark.src == null
+                @imgDark.onerror()
+
+        @img.onerror = =>
+            console.error("#{@id} wrong img")
+            not_found = DCore.get_theme_icon(NOT_FOUND_ICON, 48)
+            if @img.src != not_found
+                @img.src = not_found
 
         @imgWrap.classList.add("ReflectImg")
 
@@ -55,24 +79,10 @@ class Item extends Widget
         update_dock_region($("#container").clientWidth)
 
     change_icon: (src)->
-        if not (src.substring(0, 7) == "file://" || src.substring(0, 10) == "data:image")
+        if src and not src.isPath() and not src.isDataURLImage()
             icon_size = 48
             src = DCore.get_theme_icon(src, icon_size) || DCore.get_theme_icon(NOT_FOUND_ICON, icon_size)
-        @img.src = src
-        @img.onload = =>
-            @imgHover.src = bright_image(@img, 40)
-            @imgHover.onerror = =>
-                if @imgHover.src != @img.src
-                    @imgHover.src = @img.src
-            @imgDark.src = bright_image(@img, -40)
-            @imgDark.onerror = =>
-                if @imgDark.src != @img.src
-                    @imgDark.src = @img.src
-
-        @img.onerror = =>
-            console.error("wrong img")
-            if @img.src != DCore.get_theme_icon(NOT_FOUND_ICON, 48)
-                @img.src = DCore.get_theme_icon(NOT_FOUND_ICON)
+        @img.src = src if src?
 
     set_tooltip: (text) ->
         if @windowTitle
@@ -110,7 +120,7 @@ class Item extends Widget
         @img.style.display = 'none'
         @imgHover.style.display = 'none'
         @imgDark.style.display = 'none'
-        this["img#{type}"].style.display = ''
+        this["img#{type}"]?.style.display = ''
 
     on_mousemove: (e)=>
         if e

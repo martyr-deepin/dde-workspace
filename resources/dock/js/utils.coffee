@@ -100,18 +100,17 @@ iconCanvas.width = iconCanvas.height = 48
 iconCanvas.style.position = 'absolute'
 iconCanvas.style.top = -screen.height
 
-bright_image = (img, adjustment)->
+
+get_image_dataurl = (iconCanvas, img, imgSize) ->
     ctx = iconCanvas.getContext("2d")
     # clear the last icon.
-    ctx.clearRect(0, 0, iconCanvas.width, iconCanvas.height)
-    ctx.drawImage(img, 0, 0, iconCanvas.width, iconCanvas.height)
-    origDataUrl = iconCanvas.toDataURL()
-    dataUrl = DCore.Dock.bright_image(origDataUrl, adjustment)
-    # i = new Image()
-    # i.src = dataUrl
-    # i.onload = ->
-    #     ctx.drawImage(i, 0, 0)
-    return dataUrl
+    ctx.clearRect(0, 0, imgSize, imgSize)
+    ctx.drawImage(img, 0, 0, imgSize, imgSize)
+    iconCanvas.toDataURL()
+
+
+bright_image = (origDataUrl, adjustment)->
+    DCore.Dock.bright_image(origDataUrl, adjustment)
 
 
 updatePanel = do ->
