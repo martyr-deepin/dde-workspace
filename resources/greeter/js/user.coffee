@@ -176,6 +176,7 @@ class UserInfo extends Widget
         @username_div.style.display = "block"
         @login.show()
         @element.style.display = "-webkit-box"
+        @userimg.style.opacity = "1.0"
         @focus()
 
     hide_animation:(cb)->
