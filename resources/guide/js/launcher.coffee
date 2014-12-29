@@ -44,7 +44,7 @@ class LauncherLaunch extends Page
             circle_type = POS_TYPE.rightdown
         else circle_type = POS_TYPE.leftdown
         @circle.create_pointer(AREA_TYPE.circle,circle_type,=>
-            @launcher.launch()
+            @launcher.show()
             @tid_show_signal = setTimeout(@show_signal_cb,3000)
         )
         setTimeout(=>

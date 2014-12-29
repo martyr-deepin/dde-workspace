@@ -93,9 +93,6 @@ class Launcher
             @dbus_error = true
             console.log "#{LAUNCHER} dbus error :#{e}"
 
-    launch: ->
-        DCore.Guide.spawn_command_sync("/usr/bin/dde-launcher",false)
-
     hide: ->
         @dbus?.Hide_sync()
 
