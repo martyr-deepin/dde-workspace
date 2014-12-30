@@ -169,6 +169,11 @@ void activate_window(Display *dsp, GdkWindow *w)
     XFlush(dsp);
 }
 
+gboolean launcher_show_source_func()
+{
+    launcher_show();
+    return G_SOURCE_REMOVE;
+}
 
 DBUS_EXPORT_API
 void launcher_show()
@@ -565,7 +570,7 @@ int main(int argc, char* argv[])
     if (g_getenv("DBUS_STARTER_BUS_TYPE") == NULL) {
         //We aren't launched by dbus-daemon.
         if (!is_hidden) {
-            g_idle_add(launcher_show, NULL);
+            g_idle_add(launcher_show_source_func, NULL);
         }
     }
     gtk_main();
