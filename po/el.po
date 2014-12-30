@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-12-26 11:18+0800\n"
-"PO-Revision-Date: 2014-12-26 04:47+0000\n"
+"PO-Revision-Date: 2014-12-29 13:21+0000\n"
 "Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
 "Language-Team: Greek (http://www.transifex.com/projects/p/deepin-desktop-environment/language/el/)\n"
 "MIME-Version: 1.0\n"
@@ -722,7 +722,7 @@ msgstr "Δίκτυο"
 
 #: ../lib/category.c:61
 msgid "Game"
-msgstr ""
+msgstr "Παιχνίδι"
 
 #: ../lib/category.c:62
 msgid "Office"

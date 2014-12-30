@@ -5,14 +5,15 @@
 # Translators:
 # electricface <songwentai@linuxdeepin.com>, 2014
 # freddy4212 <freddy4212@gmail.com>, 2014
+# szd_liufei <liufei@linuxdeepin.com>, 2014
 # 游荡的坎德人 <nervcn09@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-12-26 11:18+0800\n"
-"PO-Revision-Date: 2014-12-26 04:47+0000\n"
-"Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
+"PO-Revision-Date: 2014-12-30 03:23+0000\n"
+"Last-Translator: szd_liufei <liufei@linuxdeepin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/deepin-desktop-environment/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -159,11 +160,11 @@ msgstr "個人化(_R)"
 
 #: ../resources/desktop/js/item.coffee:399
 msgid "_Cut"
-msgstr ""
+msgstr "_剪切"
 
 #: ../resources/desktop/js/item.coffee:404
 msgid "_Select All"
-msgstr ""
+msgstr "全選"
 
 #: ../resources/desktop/js/richdir.coffee:142
 msgid "_Ungroup"
@@ -208,7 +209,7 @@ msgstr "一直隱藏(_H)"
 #: ../resources/dock/js/global_menu.coffee:12
 #: ../resources/guide/js/dock.coffee:40
 msgid "_Smart hide"
-msgstr ""
+msgstr "智能隱藏"
 
 #: ../resources/dock/js/global_menu.coffee:27
 #: ../resources/guide/js/dock.coffee:34
@@ -228,7 +229,7 @@ msgstr "傳統模式"
 #: ../resources/dock/js/global_menu.coffee:38
 #: ../resources/guide/js/dock.coffee:42
 msgid "Notification area settings"
-msgstr ""
+msgstr "通知區域設置"
 
 #: ../resources/dock/js/main.coffee:117 ../resources/zone/js/utils.coffee:13
 msgid "Launcher"
@@ -236,7 +237,7 @@ msgstr "啟動器"
 
 #: ../resources/dock/js/plugins/time/time.coffee:64
 msgid "Switch display mode"
-msgstr ""
+msgstr "切換顯示方式"
 
 #: ../resources/dock/js/plugins/time/time.coffee:65
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:84
@@ -245,43 +246,43 @@ msgstr "時間設定(_T)"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:34
 msgid "%b %d %H:%M %a"
-msgstr ""
+msgstr "%b%d日 %A %H:%M"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:36
 msgid "%b %d %I:%M %p %a"
-msgstr ""
+msgstr "%b%d日 %A %p%I:%M"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:38
 msgid "%b %d %H:%M"
-msgstr ""
+msgstr "%b%d日 %H:%M"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:40
 msgid "%b %d %I:%M %p"
-msgstr ""
+msgstr "%b%d日 %p%I:%M"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:42
 msgid "%H:%M %a"
-msgstr ""
+msgstr "%A %H:%M"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:44
 msgid "%I:%M %p %a"
-msgstr ""
+msgstr "%A %p%I:%M"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:46
 msgid "%H:%M"
-msgstr ""
+msgstr "%H:%M"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:48
 msgid "%I:%M %p"
-msgstr ""
+msgstr "%p%I:%M"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:82
 msgid "Display date"
-msgstr ""
+msgstr "顯示日期"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:83
 msgid "Display week"
-msgstr ""
+msgstr "顯示星期幾"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:42
 msgid "_Close"
@@ -421,7 +422,7 @@ msgstr "登入"
 
 #: ../resources/greeter/js/user.coffee:410
 msgid "Unlock"
-msgstr ""
+msgstr "解锁"
 
 #: ../resources/guide/js/desktop.coffee:28
 msgid ""
@@ -441,41 +442,41 @@ msgstr "提示：在應用程式群組上單擊右鍵將看到更多功能"
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different "
 "events"
-msgstr ""
+msgstr "鼠標滑動到四個頂角，可觸發四個不同的事件"
 
 #: ../resources/guide/js/desktop.coffee:154
 msgid ""
 "We already know that launcher can be shown/ hidden by sliding the mouse to "
 "the upper left corner"
-msgstr ""
+msgstr "我們已經知道鼠標滑動到左上角，可以顯示/隱藏啟動器"
 
 #: ../resources/guide/js/desktop.coffee:176
 msgid ""
 "The workspace will be shown or hidden by sliding the mouse to the lower left"
 " corner"
-msgstr ""
+msgstr "鼠標滑動到左下角，可以顯示/隱藏工作區"
 
 #: ../resources/guide/js/desktop.coffee:202
 msgid ""
 "No functions are set in default on the upper right corner\n"
 "Right-click on desktop black area to call up the menu, select \"Corner navigation\" to set the corner used"
-msgstr ""
+msgstr "右上角的熱區默認未設置任何功能\\n在桌面空白區點擊右鍵調出菜單，選擇“熱區設置”來設置剛才使用的熱區"
 
 #: ../resources/guide/js/desktop.coffee:203
 msgid "tips: Click on the corner navigation blank area to return"
-msgstr ""
+msgstr "提示：點擊熱區空白區域可返回"
 
 #: ../resources/guide/js/dock.coffee:26
 msgid ""
 "Three modes and the display status can be switched by right-click on the "
 "blank area of dock"
-msgstr ""
+msgstr "任務欄上的空白區域點擊右鍵，您可以切換任務欄的3種模式和顯示狀"
 
 #: ../resources/guide/js/dss.coffee:32
 msgid ""
 "The Control Center will be shown or hidden by sliding the mouse to the lower"
 " right corner"
-msgstr ""
+msgstr "鼠標滑動到右下角​​，可以顯示/隱藏控制中心"
 
 #: ../resources/guide/js/dss.coffee:33
 msgid "tips: Click the setting icon on dock to implement"
@@ -483,7 +484,7 @@ msgstr "提示：點擊 Dock 上的設定圖示"
 
 #: ../resources/guide/js/dss.coffee:76
 msgid "Click the power button to shut down, reboot or do other operations"
-msgstr ""
+msgstr "點擊電源按鈕可以進行關機或者重啟等操作"
 
 #: ../resources/guide/js/dss.coffee:77
 msgid ""
@@ -495,11 +496,11 @@ msgstr "提示：將鼠標指標移動到 Dodk 圖示上將可進行一些方便
 msgid ""
 "Thank you for your patience to learn! More surprises are waiting for you to "
 "explore"
-msgstr ""
+msgstr "感謝您的耐心學習！更多的驚喜等待您的探索"
 
 #: ../resources/guide/js/end.coffee:30
 msgid "Start my Deepin trip"
-msgstr ""
+msgstr "開始我的深度之旅"
 
 #: ../resources/guide/js/launcher.coffee:31
 msgid ""
@@ -509,17 +510,17 @@ msgstr "將滑鼠只標移動至左上角或者點擊啟動器圖示都可以打
 
 #: ../resources/guide/js/launcher.coffee:83
 msgid "Please directly hit \"deepin\" in keyboard"
-msgstr ""
+msgstr "請直接使用鍵盤敲擊“deepin”"
 
 #: ../resources/guide/js/launcher.coffee:96
 msgid "You can directly drag the application icon to Dock or trash"
-msgstr ""
+msgstr "您可以直接将应用图标拖拽到任务栏或者回收站上"
 
 #: ../resources/guide/js/launcher.coffee:109
 msgid ""
 "tips: Click the right mouse button on the application icon to call up the "
 "context menu"
-msgstr ""
+msgstr "提示：應用圖標上點擊右鍵可以調出右鍵菜單"
 
 #: ../resources/guide/js/launcher.coffee:135
 msgid "Remove from _favorites"
@@ -567,7 +568,7 @@ msgstr "開始"
 
 #: ../resources/guide/js/start.coffee:52
 msgid "Skip the guide, experience immediately"
-msgstr ""
+msgstr "跳過嚮導，立即體驗"
 
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
@@ -607,23 +608,23 @@ msgstr "從 Dock 移除(_C)"
 
 #: ../resources/launcher/js/menu.coffee:5
 msgid "By name"
-msgstr ""
+msgstr "按名稱"
 
 #: ../resources/launcher/js/menu.coffee:6
 msgid "By category (icon)"
-msgstr ""
+msgstr "按分類（圖標）"
 
 #: ../resources/launcher/js/menu.coffee:7
 msgid "By category (text)"
-msgstr ""
+msgstr "按分類（文字）"
 
 #: ../resources/launcher/js/menu.coffee:8
 msgid "By time installed"
-msgstr ""
+msgstr "按安裝時間"
 
 #: ../resources/launcher/js/menu.coffee:9
 msgid "By frequency"
-msgstr ""
+msgstr "按使用頻率"
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
@@ -723,7 +724,7 @@ msgstr "網路"
 
 #: ../lib/category.c:61
 msgid "Game"
-msgstr ""
+msgstr "遊戲娛樂"
 
 #: ../lib/category.c:62
 msgid "Office"
