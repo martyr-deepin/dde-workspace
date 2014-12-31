@@ -5,14 +5,15 @@
 # Translators:
 # electricface <songwentai@linuxdeepin.com>, 2014
 # freddy4212 <freddy4212@gmail.com>, 2014
+# szd_liufei <liufei@linuxdeepin.com>, 2014
 # 游荡的坎德人 <nervcn09@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-03 14:25+0800\n"
-"PO-Revision-Date: 2014-12-04 04:51+0000\n"
-"Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
+"POT-Creation-Date: 2014-12-26 11:18+0800\n"
+"PO-Revision-Date: 2014-12-30 03:23+0000\n"
+"Last-Translator: szd_liufei <liufei@linuxdeepin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/deepin-desktop-environment/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -54,7 +55,7 @@ msgstr "警告"
 #: ../resources/desktop/js/specialitem.coffee:51
 #: ../resources/desktop/js/specialitem.coffee:146
 #: ../resources/guide/js/launcher.coffee:133
-#: ../resources/launcher/js/item.coffee:289
+#: ../resources/launcher/js/item.coffee:288
 msgid "_Open"
 msgstr "開啟(_O)"
 
@@ -108,7 +109,7 @@ msgstr "在此解壓縮(_H)"
 msgid "Can not open this file."
 msgstr "無法開啟此檔案。"
 
-#: ../resources/desktop/js/grid.coffee:70 ../lib/dentry/fileops.c:403
+#: ../resources/desktop/js/grid.coffee:70 ../lib/dentry/fileops.c:402
 msgid "Untitled"
 msgstr "無標題"
 
@@ -159,11 +160,11 @@ msgstr "個人化(_R)"
 
 #: ../resources/desktop/js/item.coffee:399
 msgid "_Cut"
-msgstr ""
+msgstr "_剪切"
 
 #: ../resources/desktop/js/item.coffee:404
 msgid "_Select All"
-msgstr ""
+msgstr "全選"
 
 #: ../resources/desktop/js/richdir.coffee:142
 msgid "_Ungroup"
@@ -174,7 +175,7 @@ msgid "Computer"
 msgstr "電腦"
 
 #: ../resources/desktop/js/specialitem.coffee:87
-#: ../resources/dock/js/main.coffee:46 ../resources/dock/js/main.coffee:116
+#: ../resources/dock/js/main.coffee:46 ../resources/dock/js/main.coffee:119
 msgid "Trash"
 msgstr "回收桶"
 
@@ -208,7 +209,7 @@ msgstr "一直隱藏(_H)"
 #: ../resources/dock/js/global_menu.coffee:12
 #: ../resources/guide/js/dock.coffee:40
 msgid "_Smart hide"
-msgstr ""
+msgstr "智能隱藏"
 
 #: ../resources/dock/js/global_menu.coffee:27
 #: ../resources/guide/js/dock.coffee:34
@@ -228,112 +229,88 @@ msgstr "傳統模式"
 #: ../resources/dock/js/global_menu.coffee:38
 #: ../resources/guide/js/dock.coffee:42
 msgid "Notification area settings"
-msgstr ""
+msgstr "通知區域設置"
 
-#: ../resources/dock/js/main.coffee:114 ../resources/zone/js/utils.coffee:13
+#: ../resources/dock/js/main.coffee:117 ../resources/zone/js/utils.coffee:13
 msgid "Launcher"
 msgstr "啟動器"
 
-#: ../resources/dock/js/plugins/time/time.coffee:61
+#: ../resources/dock/js/plugins/time/time.coffee:64
 msgid "Switch display mode"
-msgstr ""
+msgstr "切換顯示方式"
 
-#: ../resources/dock/js/plugins/time/time.coffee:62
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:81
+#: ../resources/dock/js/plugins/time/time.coffee:65
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:84
 msgid "_Time settings"
 msgstr "時間設定(_T)"
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:33
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:34
 msgid "%b %d %H:%M %a"
-msgstr ""
+msgstr "%b%d日 %A %H:%M"
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:35
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:36
 msgid "%b %d %I:%M %p %a"
-msgstr ""
+msgstr "%b%d日 %A %p%I:%M"
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:37
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:38
 msgid "%b %d %H:%M"
-msgstr ""
+msgstr "%b%d日 %H:%M"
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:39
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:40
 msgid "%b %d %I:%M %p"
-msgstr ""
+msgstr "%b%d日 %p%I:%M"
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:41
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:42
 msgid "%H:%M %a"
-msgstr ""
+msgstr "%A %H:%M"
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:43
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:44
 msgid "%I:%M %p %a"
-msgstr ""
+msgstr "%A %p%I:%M"
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:45
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:46
 msgid "%H:%M"
-msgstr ""
+msgstr "%H:%M"
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:47
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:48
 msgid "%I:%M %p"
-msgstr ""
+msgstr "%p%I:%M"
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:79
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:82
 msgid "Display date"
-msgstr ""
+msgstr "顯示日期"
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:80
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:83
 msgid "Display week"
-msgstr ""
+msgstr "顯示星期幾"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:42
 msgid "_Close"
 msgstr "關閉(_C)"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:359
+#: ../resources/launcher/js/item.coffee:358
 msgid "Are you sure to remove"
 msgstr "你確定要刪除"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:359
+#: ../resources/launcher/js/item.coffee:358
 msgid "All dependencies will be removed"
 msgstr "所有依賴的套件都將被刪除"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:359
+#: ../resources/launcher/js/item.coffee:358
 msgid "no"
 msgstr "否"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:359
+#: ../resources/launcher/js/item.coffee:358
 msgid "yes"
 msgstr "是"
 
 #: ../resources/greeter/js/mediacontrol.coffee:129
 msgid "Click button to Play"
 msgstr "單擊按鈕播放"
-
-#: ../resources/greeter/js/message.coffee:105
-#: ../resources/greeter/js/message.coffee:82
-msgid "$ sudo reboot\n"
-msgstr "$ sudo reboot\n"
-
-#: ../resources/greeter/js/message.coffee:99
-#: ../resources/greeter/js/message.coffee:73
-msgid "Press Ctrl + Alt + F1\n"
-msgstr "按下 Ctrl + Alt + F1\n"
-
-#: ../resources/greeter/js/message.coffee:95
-msgid ""
-"\t\t\t\t-----The daemon of accounts has not started!-----\n"
-")"
-msgstr "\t\t\t\t-----帳號服務尚未啟動！-----\n)"
-
-#: ../resources/greeter/js/message.coffee:79
-msgid "$ sudo apt-get install deepin-desktop-Environment\n"
-msgstr "$ sudo apt-get install deepin-desktop-Environment\n"
-
-#: ../resources/greeter/js/message.coffee:68
-msgid "\t\t\t\t-----No available desktop sessions!-----\n"
-msgstr "\t\t\t\t-----沒有可使用的桌面環境！-----\n"
 
 #: ../resources/greeter/js/powermenu.coffee:26
 msgid "Shut down"
@@ -445,7 +422,7 @@ msgstr "登入"
 
 #: ../resources/greeter/js/user.coffee:410
 msgid "Unlock"
-msgstr ""
+msgstr "解锁"
 
 #: ../resources/guide/js/desktop.coffee:28
 msgid ""
@@ -465,41 +442,41 @@ msgstr "提示：在應用程式群組上單擊右鍵將看到更多功能"
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different "
 "events"
-msgstr ""
+msgstr "鼠標滑動到四個頂角，可觸發四個不同的事件"
 
 #: ../resources/guide/js/desktop.coffee:154
 msgid ""
 "We already know that launcher can be shown/ hidden by sliding the mouse to "
 "the upper left corner"
-msgstr ""
+msgstr "我們已經知道鼠標滑動到左上角，可以顯示/隱藏啟動器"
 
 #: ../resources/guide/js/desktop.coffee:176
 msgid ""
 "The workspace will be shown or hidden by sliding the mouse to the lower left"
 " corner"
-msgstr ""
+msgstr "鼠標滑動到左下角，可以顯示/隱藏工作區"
 
 #: ../resources/guide/js/desktop.coffee:202
 msgid ""
 "No functions are set in default on the upper right corner\n"
 "Right-click on desktop black area to call up the menu, select \"Corner navigation\" to set the corner used"
-msgstr ""
+msgstr "右上角的熱區默認未設置任何功能\\n在桌面空白區點擊右鍵調出菜單，選擇“熱區設置”來設置剛才使用的熱區"
 
 #: ../resources/guide/js/desktop.coffee:203
 msgid "tips: Click on the corner navigation blank area to return"
-msgstr ""
+msgstr "提示：點擊熱區空白區域可返回"
 
 #: ../resources/guide/js/dock.coffee:26
 msgid ""
 "Three modes and the display status can be switched by right-click on the "
 "blank area of dock"
-msgstr ""
+msgstr "任務欄上的空白區域點擊右鍵，您可以切換任務欄的3種模式和顯示狀"
 
 #: ../resources/guide/js/dss.coffee:32
 msgid ""
 "The Control Center will be shown or hidden by sliding the mouse to the lower"
 " right corner"
-msgstr ""
+msgstr "鼠標滑動到右下角​​，可以顯示/隱藏控制中心"
 
 #: ../resources/guide/js/dss.coffee:33
 msgid "tips: Click the setting icon on dock to implement"
@@ -507,7 +484,7 @@ msgstr "提示：點擊 Dock 上的設定圖示"
 
 #: ../resources/guide/js/dss.coffee:76
 msgid "Click the power button to shut down, reboot or do other operations"
-msgstr ""
+msgstr "點擊電源按鈕可以進行關機或者重啟等操作"
 
 #: ../resources/guide/js/dss.coffee:77
 msgid ""
@@ -519,11 +496,11 @@ msgstr "提示：將鼠標指標移動到 Dodk 圖示上將可進行一些方便
 msgid ""
 "Thank you for your patience to learn! More surprises are waiting for you to "
 "explore"
-msgstr ""
+msgstr "感謝您的耐心學習！更多的驚喜等待您的探索"
 
 #: ../resources/guide/js/end.coffee:30
 msgid "Start my Deepin trip"
-msgstr ""
+msgstr "開始我的深度之旅"
 
 #: ../resources/guide/js/launcher.coffee:31
 msgid ""
@@ -533,17 +510,17 @@ msgstr "將滑鼠只標移動至左上角或者點擊啟動器圖示都可以打
 
 #: ../resources/guide/js/launcher.coffee:83
 msgid "Please directly hit \"deepin\" in keyboard"
-msgstr ""
+msgstr "請直接使用鍵盤敲擊“deepin”"
 
 #: ../resources/guide/js/launcher.coffee:96
 msgid "You can directly drag the application icon to Dock or trash"
-msgstr ""
+msgstr "您可以直接将应用图标拖拽到任务栏或者回收站上"
 
 #: ../resources/guide/js/launcher.coffee:109
 msgid ""
 "tips: Click the right mouse button on the application icon to call up the "
 "context menu"
-msgstr ""
+msgstr "提示：應用圖標上點擊右鍵可以調出右鍵菜單"
 
 #: ../resources/guide/js/launcher.coffee:135
 msgid "Remove from _favorites"
@@ -565,7 +542,7 @@ msgid "_Add to autostart"
 msgstr "加入到開機啟動項目(_A)"
 
 #: ../resources/guide/js/launcher.coffee:140
-#: ../resources/launcher/js/item.coffee:295
+#: ../resources/launcher/js/item.coffee:294
 msgid "_Uninstall"
 msgstr "解除安裝(_U)"
 
@@ -591,7 +568,7 @@ msgstr "開始"
 
 #: ../resources/guide/js/start.coffee:52
 msgid "Skip the guide, experience immediately"
-msgstr ""
+msgstr "跳過嚮導，立即體驗"
 
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
@@ -631,23 +608,23 @@ msgstr "從 Dock 移除(_C)"
 
 #: ../resources/launcher/js/menu.coffee:5
 msgid "By name"
-msgstr ""
+msgstr "按名稱"
 
 #: ../resources/launcher/js/menu.coffee:6
 msgid "By category (icon)"
-msgstr ""
+msgstr "按分類（圖標）"
 
 #: ../resources/launcher/js/menu.coffee:7
 msgid "By category (text)"
-msgstr ""
+msgstr "按分類（文字）"
 
 #: ../resources/launcher/js/menu.coffee:8
 msgid "By time installed"
-msgstr ""
+msgstr "按安裝時間"
 
 #: ../resources/launcher/js/menu.coffee:9
 msgid "By frequency"
-msgstr ""
+msgstr "按使用頻率"
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
@@ -741,36 +718,48 @@ msgstr "公用程式"
 msgid "others"
 msgstr "其他"
 
-#: ../lib/dentry/entry.c:746
+#: ../lib/category.c:60
+msgid "Network"
+msgstr "網路"
+
+#: ../lib/category.c:61
+msgid "Game"
+msgstr "遊戲娛樂"
+
+#: ../lib/category.c:62
+msgid "Office"
+msgstr "辦公套件"
+
+#: ../lib/dentry/entry.c:748
 #, c-format
 msgid ""
 "Cannot rename the item to \"%s\". This may be caused by lack of permissions."
 msgstr "無法重新命名項目 \"%s\"，可能是因爲您缺乏權限。"
 
-#: ../lib/dentry/entry.c:752
+#: ../lib/dentry/entry.c:754
 #, c-format
 msgid ""
 "There is already a file with name \"%s\" in this folder. Please consider a "
 "different name."
 msgstr "此資料夾下已經有一個名爲 \"%s\" 的檔案，請考慮其他的名稱。"
 
-#: ../lib/dentry/entry.c:758
+#: ../lib/dentry/entry.c:760
 msgid "The item could not be renamed"
 msgstr "此項目不能被重新命名"
 
-#: ../lib/dentry/entry.c:833 ../lib/dentry/fileops.c:805
+#: ../lib/dentry/entry.c:834 ../lib/dentry/fileops.c:804
 msgid "copy"
 msgstr "複製"
 
-#: ../lib/dentry/entry.c:1415
+#: ../lib/dentry/entry.c:1400
 msgid "App Group"
 msgstr "應用程式群組"
 
-#: ../lib/dentry/fileops.c:566
+#: ../lib/dentry/fileops.c:565
 msgid "Move"
 msgstr "移動"
 
-#: ../lib/dentry/fileops.c:772
+#: ../lib/dentry/fileops.c:771
 msgid "Copy"
 msgstr "複製"
 
@@ -790,122 +779,122 @@ msgstr "若您刪除這些文件，它們將永久消失。"
 msgid "Delete"
 msgstr "刪除"
 
-#: ../lib/dentry/fileops_error_dialog.c:63
+#: ../lib/dentry/fileops_error_dialog.c:60
 msgid "File conflict"
 msgstr "檔案衝突"
 
-#: ../lib/dentry/fileops_error_dialog.c:106
+#: ../lib/dentry/fileops_error_dialog.c:103
 msgid "_Select a new name for the destination"
 msgstr "為目標選擇新的名稱(_S)"
 
-#: ../lib/dentry/fileops_error_dialog.c:117
+#: ../lib/dentry/fileops_error_dialog.c:114
 msgid "Reset"
 msgstr "重設"
 
-#: ../lib/dentry/fileops_error_dialog.c:126
+#: ../lib/dentry/fileops_error_dialog.c:123
 msgid "Apply this action to all files"
 msgstr "將該動作套用到全部檔案"
 
-#: ../lib/dentry/fileops_error_dialog.c:133
+#: ../lib/dentry/fileops_error_dialog.c:130
 msgid "_Skip"
 msgstr "略過(_S)"
 
-#: ../lib/dentry/fileops_error_dialog.c:136
+#: ../lib/dentry/fileops_error_dialog.c:133
 msgid "Re_name"
 msgstr "重新命名(_N)"
 
-#: ../lib/dentry/fileops_error_dialog.c:141
+#: ../lib/dentry/fileops_error_dialog.c:138
 msgid "Replace"
 msgstr "取代"
 
-#: ../lib/dentry/fileops_error_dialog.c:218
+#: ../lib/dentry/fileops_error_dialog.c:215
 #, c-format
 msgid "Do you want to merge with folder \"%s\"?"
 msgstr "你想要合併資料夾 \"%s\"  嗎？"
 
-#: ../lib/dentry/fileops_error_dialog.c:220
+#: ../lib/dentry/fileops_error_dialog.c:217
 msgid ""
 "The merging operation will be asked to confirm before replacing any files in"
 " the folder conflicted."
 msgstr "合併操作將會在取代衝突檔案時請求。"
 
-#: ../lib/dentry/fileops_error_dialog.c:222
+#: ../lib/dentry/fileops_error_dialog.c:219
 #, c-format
 msgid "An older folder with the same name already exists in \"%s\"."
 msgstr "在 \"%s\" 中有較舊的相同名稱資料夾存在。"
 
-#: ../lib/dentry/fileops_error_dialog.c:226
+#: ../lib/dentry/fileops_error_dialog.c:223
 #, c-format
 msgid "A newer folder with the same name already exists in \"%s\"."
 msgstr "在 \"%s\" 中有較新的相同名稱資料夾存在。"
 
-#: ../lib/dentry/fileops_error_dialog.c:230
+#: ../lib/dentry/fileops_error_dialog.c:227
 #, c-format
 msgid "Another folder with the same name already exists in \"%s\"."
 msgstr "在 \"%s\" 中有相同名稱的資料夾存在。"
 
-#: ../lib/dentry/fileops_error_dialog.c:236
+#: ../lib/dentry/fileops_error_dialog.c:233
 msgid "All files in the folder will be removed by replacing."
 msgstr "替換操作將移除資料夾中的所有檔案。"
 
-#: ../lib/dentry/fileops_error_dialog.c:237
+#: ../lib/dentry/fileops_error_dialog.c:234
 #, c-format
 msgid "Do you want to replace folder \"%s\"?"
 msgstr "你想要取代資料夾  \"%s\" 嗎？"
 
-#: ../lib/dentry/fileops_error_dialog.c:239
+#: ../lib/dentry/fileops_error_dialog.c:236
 #, c-format
 msgid "A folder with the same name already exists in \"%s\"."
 msgstr "在 \"%s\" 中有相同名稱的資料夾存在。"
 
-#: ../lib/dentry/fileops_error_dialog.c:245
+#: ../lib/dentry/fileops_error_dialog.c:242
 #, c-format
 msgid "Do you want to replace file \"%s\"?"
 msgstr "你想要取代檔案 \"%s\" 嗎？"
 
-#: ../lib/dentry/fileops_error_dialog.c:246
+#: ../lib/dentry/fileops_error_dialog.c:243
 msgid "The content will be overwritten by replacing."
 msgstr "替換操作將覆蓋它的內容。"
 
-#: ../lib/dentry/fileops_error_dialog.c:248
+#: ../lib/dentry/fileops_error_dialog.c:245
 #, c-format
 msgid "An older file with the same name already exists in \"%s\"."
 msgstr "在 \"%s\" 中有較舊的相同名稱資料夾存在。"
 
-#: ../lib/dentry/fileops_error_dialog.c:252
+#: ../lib/dentry/fileops_error_dialog.c:249
 #, c-format
 msgid "A newer file with the same name already exists in \"%s\"."
 msgstr "在 \"%s\" 中有較新的相同名稱資料夾存在。"
 
-#: ../lib/dentry/fileops_error_dialog.c:256
+#: ../lib/dentry/fileops_error_dialog.c:253
 #, c-format
 msgid "Another file with the same name already exists in \"%s\"."
 msgstr "在 \"%s\" 中有相同名稱的資料夾存在。"
 
-#: ../lib/dentry/fileops_error_dialog.c:328
+#: ../lib/dentry/fileops_error_dialog.c:325
 msgid "Original file"
 msgstr "原始檔案"
 
-#: ../lib/dentry/fileops_error_dialog.c:329
-#: ../lib/dentry/fileops_error_dialog.c:357
+#: ../lib/dentry/fileops_error_dialog.c:326
+#: ../lib/dentry/fileops_error_dialog.c:354
 msgid "Size:"
 msgstr "大小："
 
-#: ../lib/dentry/fileops_error_dialog.c:333
-#: ../lib/dentry/fileops_error_dialog.c:361
+#: ../lib/dentry/fileops_error_dialog.c:330
+#: ../lib/dentry/fileops_error_dialog.c:358
 msgid "Type:"
 msgstr "類型："
 
-#: ../lib/dentry/fileops_error_dialog.c:337
-#: ../lib/dentry/fileops_error_dialog.c:365
+#: ../lib/dentry/fileops_error_dialog.c:334
+#: ../lib/dentry/fileops_error_dialog.c:362
 msgid "Last modified:"
 msgstr "修改日期："
 
-#: ../lib/dentry/fileops_error_dialog.c:356
+#: ../lib/dentry/fileops_error_dialog.c:353
 msgid "Replace with"
 msgstr "取代為"
 
-#: ../lib/dentry/fileops_error_dialog.c:382
+#: ../lib/dentry/fileops_error_dialog.c:379
 msgid "Merge"
 msgstr "合併"
 

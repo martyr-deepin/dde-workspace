@@ -74,3 +74,17 @@ clearRegion = ->
     if debugRegion
         console.warn("[clearRegion] update_dock_region")
     update_dock_region()
+
+
+listenInvalidIdSignal = ->
+    dbus = DCore.DBus.session_object(
+        "com.deepin.daemon.Dock",
+        "/dde/dock/XMouseAreaProxyer",
+        "dde.dock.XMouseAreaProxyer"
+    )
+
+    dbus?.connect("InvalidId", ->
+        # console.log("InvalidId")
+        update_dock_region()
+        hideStatusManager.setState(hideStatusManager.state)
+    )

@@ -93,9 +93,6 @@ class Launcher
             @dbus_error = true
             console.log "#{LAUNCHER} dbus error :#{e}"
 
-    launch: ->
-        DCore.Guide.spawn_command_sync("/usr/bin/dde-launcher",false)
-
     hide: ->
         @dbus?.Hide_sync()
 
@@ -280,7 +277,7 @@ class DockMode extends Widget
                 time = create_element("div","time",right)
                 d = new Date()
                 time.innerText = @check_time(d.getHours()) + ":" + @check_time(d.getMinutes())
-                for applet in ["power","sound","net"].reverse()
+                for applet in ["sound","power","net"].reverse()
                     create_img(applet,"img/dock/#{applet}.png",right)
 
     get_icon_pos: (icon_index) ->

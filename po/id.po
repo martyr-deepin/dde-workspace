@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-03 14:25+0800\n"
-"PO-Revision-Date: 2014-12-08 09:33+0000\n"
+"POT-Creation-Date: 2014-12-26 11:18+0800\n"
+"PO-Revision-Date: 2014-12-29 06:50+0000\n"
 "Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
 "Language-Team: Indonesian (http://www.transifex.com/projects/p/deepin-desktop-environment/language/id/)\n"
 "MIME-Version: 1.0\n"
@@ -56,7 +56,7 @@ msgstr "Peringatan"
 #: ../resources/desktop/js/specialitem.coffee:51
 #: ../resources/desktop/js/specialitem.coffee:146
 #: ../resources/guide/js/launcher.coffee:133
-#: ../resources/launcher/js/item.coffee:289
+#: ../resources/launcher/js/item.coffee:288
 msgid "_Open"
 msgstr "_Buka"
 
@@ -110,7 +110,7 @@ msgstr "Ekstrak_Di Sini"
 msgid "Can not open this file."
 msgstr "Tidak bisa membuka berkas ini."
 
-#: ../resources/desktop/js/grid.coffee:70 ../lib/dentry/fileops.c:403
+#: ../resources/desktop/js/grid.coffee:70 ../lib/dentry/fileops.c:402
 msgid "Untitled"
 msgstr "Tanpa Judul"
 
@@ -176,7 +176,7 @@ msgid "Computer"
 msgstr "Komputer"
 
 #: ../resources/desktop/js/specialitem.coffee:87
-#: ../resources/dock/js/main.coffee:46 ../resources/dock/js/main.coffee:116
+#: ../resources/dock/js/main.coffee:46 ../resources/dock/js/main.coffee:119
 msgid "Trash"
 msgstr "Tong sampah"
 
@@ -230,112 +230,88 @@ msgstr "_Klasik mode"
 #: ../resources/dock/js/global_menu.coffee:38
 #: ../resources/guide/js/dock.coffee:42
 msgid "Notification area settings"
-msgstr ""
+msgstr "Pengaturan area notifikasi"
 
-#: ../resources/dock/js/main.coffee:114 ../resources/zone/js/utils.coffee:13
+#: ../resources/dock/js/main.coffee:117 ../resources/zone/js/utils.coffee:13
 msgid "Launcher"
 msgstr "Peluncur"
 
-#: ../resources/dock/js/plugins/time/time.coffee:61
+#: ../resources/dock/js/plugins/time/time.coffee:64
 msgid "Switch display mode"
-msgstr ""
+msgstr "Ubah modus tampilan"
 
-#: ../resources/dock/js/plugins/time/time.coffee:62
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:81
+#: ../resources/dock/js/plugins/time/time.coffee:65
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:84
 msgid "_Time settings"
 msgstr "_Pengaturan waktu"
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:33
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:34
 msgid "%b %d %H:%M %a"
-msgstr ""
+msgstr "%b %d %H:%M %a"
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:35
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:36
 msgid "%b %d %I:%M %p %a"
-msgstr ""
+msgstr "%b %d %I:%M %p %a"
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:37
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:38
 msgid "%b %d %H:%M"
-msgstr ""
+msgstr "%b %d %H:%M"
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:39
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:40
 msgid "%b %d %I:%M %p"
-msgstr ""
+msgstr "%b %d %I:%M %p"
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:41
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:42
 msgid "%H:%M %a"
-msgstr ""
+msgstr "%H:%M %a"
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:43
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:44
 msgid "%I:%M %p %a"
-msgstr ""
+msgstr "%I:%M %p %a"
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:45
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:46
 msgid "%H:%M"
-msgstr ""
+msgstr "%H:%M"
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:47
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:48
 msgid "%I:%M %p"
-msgstr ""
+msgstr "%I:%M %p"
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:79
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:82
 msgid "Display date"
-msgstr ""
+msgstr "Tampilkan tanggal"
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:80
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:83
 msgid "Display week"
-msgstr ""
+msgstr "Tampilkan minggu"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:42
 msgid "_Close"
 msgstr "_Tutup"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:359
+#: ../resources/launcher/js/item.coffee:358
 msgid "Are you sure to remove"
 msgstr "Apakah Anda yakin untuk menghapus"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:359
+#: ../resources/launcher/js/item.coffee:358
 msgid "All dependencies will be removed"
 msgstr "Semua ketergantungan akan dihapus"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:359
+#: ../resources/launcher/js/item.coffee:358
 msgid "no"
 msgstr "tidak"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:359
+#: ../resources/launcher/js/item.coffee:358
 msgid "yes"
 msgstr "ya"
 
 #: ../resources/greeter/js/mediacontrol.coffee:129
 msgid "Click button to Play"
 msgstr "Klik tombol untuk Memainkan"
-
-#: ../resources/greeter/js/message.coffee:105
-#: ../resources/greeter/js/message.coffee:82
-msgid "$ sudo reboot\n"
-msgstr "$ sudo reboot\n"
-
-#: ../resources/greeter/js/message.coffee:99
-#: ../resources/greeter/js/message.coffee:73
-msgid "Press Ctrl + Alt + F1\n"
-msgstr "Tekan Ctrl + Alt + F1\n"
-
-#: ../resources/greeter/js/message.coffee:95
-msgid ""
-"\t\t\t\t-----The daemon of accounts has not started!-----\n"
-")"
-msgstr "-----Akun daemon tidak dapat berjalan!-----)"
-
-#: ../resources/greeter/js/message.coffee:79
-msgid "$ sudo apt-get install deepin-desktop-Environment\n"
-msgstr "$ sudo apt-get install deepin-desktop-Environment\n"
-
-#: ../resources/greeter/js/message.coffee:68
-msgid "\t\t\t\t-----No available desktop sessions!-----\n"
-msgstr "-----Tidak ada sesi desktop yang tersedia!-----\n"
 
 #: ../resources/greeter/js/powermenu.coffee:26
 msgid "Shut down"
@@ -467,41 +443,41 @@ msgstr "tips: Klik kanan pada grup aplikasi akan menyediakan fungsi lainnya"
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different "
 "events"
-msgstr ""
+msgstr "Geser mouse ke empat sudut atas, dan picu empat tindakan berbeda"
 
 #: ../resources/guide/js/desktop.coffee:154
 msgid ""
 "We already know that launcher can be shown/ hidden by sliding the mouse to "
 "the upper left corner"
-msgstr ""
+msgstr "Kami tahu bahwa launcher dapat ditampilkan/disembunyikan dengan menggeser mouse ke sudut kiri atas"
 
 #: ../resources/guide/js/desktop.coffee:176
 msgid ""
 "The workspace will be shown or hidden by sliding the mouse to the lower left"
 " corner"
-msgstr ""
+msgstr "Ruang kerja akan ditampilkan atau disembunyikan dengan menggeser mouse ke sudut kiri bawah"
 
 #: ../resources/guide/js/desktop.coffee:202
 msgid ""
 "No functions are set in default on the upper right corner\n"
 "Right-click on desktop black area to call up the menu, select \"Corner navigation\" to set the corner used"
-msgstr ""
+msgstr "Fungsi default tidak diatur untuk sudut kanan atas\nKlik kanan pada area hitam di dekstop untuk menampilkan menu, pilih \"Navigasi sudut\" untuk mengatur sudut yang dipakai"
 
 #: ../resources/guide/js/desktop.coffee:203
 msgid "tips: Click on the corner navigation blank area to return"
-msgstr ""
+msgstr "tips: Klik pada area kosong navigasi di sudut untuk kembali"
 
 #: ../resources/guide/js/dock.coffee:26
 msgid ""
 "Three modes and the display status can be switched by right-click on the "
 "blank area of dock"
-msgstr ""
+msgstr "Tiga modus dan status tampilan dapat diganti dengan klik kanan pada area kosong di dok"
 
 #: ../resources/guide/js/dss.coffee:32
 msgid ""
 "The Control Center will be shown or hidden by sliding the mouse to the lower"
 " right corner"
-msgstr ""
+msgstr "Pusat Kendali akan ditampilkan atau disembunyikan dengan menggeser mouse ke sudut kanan bawah"
 
 #: ../resources/guide/js/dss.coffee:33
 msgid "tips: Click the setting icon on dock to implement"
@@ -509,7 +485,7 @@ msgstr "tips: Klik pada icon pengaturan pada dock untuk mengimplementasikan"
 
 #: ../resources/guide/js/dss.coffee:76
 msgid "Click the power button to shut down, reboot or do other operations"
-msgstr ""
+msgstr "Klik tombol daya untuk mematikan, rebooting, atau melakukan operasi lainnya"
 
 #: ../resources/guide/js/dss.coffee:77
 msgid ""
@@ -521,11 +497,11 @@ msgstr "tips: Arahkan ikon pengaturan pada dok untuk cepat melaksanakan beberapa
 msgid ""
 "Thank you for your patience to learn! More surprises are waiting for you to "
 "explore"
-msgstr ""
+msgstr "Terima kasih atas kesabaran Anda untuk mempelajarinya! Ada lebih banyak lagi kejutan menanti untuk Anda jelajahi"
 
 #: ../resources/guide/js/end.coffee:30
 msgid "Start my Deepin trip"
-msgstr ""
+msgstr "Mulai perjalanan Deepin saya"
 
 #: ../resources/guide/js/launcher.coffee:31
 msgid ""
@@ -535,17 +511,17 @@ msgstr "\"Peluncur Aplikasi\" dapat dimulai dengan menggeser mouse ke sudut kiri
 
 #: ../resources/guide/js/launcher.coffee:83
 msgid "Please directly hit \"deepin\" in keyboard"
-msgstr ""
+msgstr "Silakan ketikkan \"deepin\" pada keyboard"
 
 #: ../resources/guide/js/launcher.coffee:96
 msgid "You can directly drag the application icon to Dock or trash"
-msgstr ""
+msgstr "Anda dapat menarik ikon aplikasi langsung ke Dok atau sampah"
 
 #: ../resources/guide/js/launcher.coffee:109
 msgid ""
 "tips: Click the right mouse button on the application icon to call up the "
 "context menu"
-msgstr ""
+msgstr "tips: Klik tombol kanan mouse pada ikon aplikasi untuk menampilkan menu"
 
 #: ../resources/guide/js/launcher.coffee:135
 msgid "Remove from _favorites"
@@ -567,7 +543,7 @@ msgid "_Add to autostart"
 msgstr "_Tambahkan ke aplikasi awalan"
 
 #: ../resources/guide/js/launcher.coffee:140
-#: ../resources/launcher/js/item.coffee:295
+#: ../resources/launcher/js/item.coffee:294
 msgid "_Uninstall"
 msgstr "_Bongkar"
 
@@ -593,7 +569,7 @@ msgstr "Mulai"
 
 #: ../resources/guide/js/start.coffee:52
 msgid "Skip the guide, experience immediately"
-msgstr ""
+msgstr "Lewati panduan, gunakan segera"
 
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
@@ -633,23 +609,23 @@ msgstr "Hapus dari do_ck"
 
 #: ../resources/launcher/js/menu.coffee:5
 msgid "By name"
-msgstr ""
+msgstr "Berdasarkan nama"
 
 #: ../resources/launcher/js/menu.coffee:6
 msgid "By category (icon)"
-msgstr ""
+msgstr "Berdasarkan kategori (ikon)"
 
 #: ../resources/launcher/js/menu.coffee:7
 msgid "By category (text)"
-msgstr ""
+msgstr "Berdasarkan kategori (teks)"
 
 #: ../resources/launcher/js/menu.coffee:8
 msgid "By time installed"
-msgstr ""
+msgstr "Berdasarkan waktu pemasangan"
 
 #: ../resources/launcher/js/menu.coffee:9
 msgid "By frequency"
-msgstr ""
+msgstr "Berdasarkan frekuensi"
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
@@ -743,36 +719,48 @@ msgstr "utiliti"
 msgid "others"
 msgstr "lainnya"
 
-#: ../lib/dentry/entry.c:746
+#: ../lib/category.c:60
+msgid "Network"
+msgstr "Jaringan"
+
+#: ../lib/category.c:61
+msgid "Game"
+msgstr "Permainan"
+
+#: ../lib/category.c:62
+msgid "Office"
+msgstr "Perkantoran"
+
+#: ../lib/dentry/entry.c:748
 #, c-format
 msgid ""
 "Cannot rename the item to \"%s\". This may be caused by lack of permissions."
 msgstr "Tidak dapat mengubah nama item ke \"%s\". Hal ini mungkin disebabkan masalah perizinan."
 
-#: ../lib/dentry/entry.c:752
+#: ../lib/dentry/entry.c:754
 #, c-format
 msgid ""
 "There is already a file with name \"%s\" in this folder. Please consider a "
 "different name."
 msgstr "Sudah ada file dengan nama \"%s\" di folder ini. Silakan mempertimbangkan nama yang berbeda."
 
-#: ../lib/dentry/entry.c:758
+#: ../lib/dentry/entry.c:760
 msgid "The item could not be renamed"
 msgstr "Nama Item tidak dapat diubah"
 
-#: ../lib/dentry/entry.c:833 ../lib/dentry/fileops.c:805
+#: ../lib/dentry/entry.c:834 ../lib/dentry/fileops.c:804
 msgid "copy"
 msgstr "salin"
 
-#: ../lib/dentry/entry.c:1415
+#: ../lib/dentry/entry.c:1400
 msgid "App Group"
 msgstr "Kelompok Aplikasi"
 
-#: ../lib/dentry/fileops.c:566
+#: ../lib/dentry/fileops.c:565
 msgid "Move"
 msgstr "Pindah"
 
-#: ../lib/dentry/fileops.c:772
+#: ../lib/dentry/fileops.c:771
 msgid "Copy"
 msgstr "Salin"
 
@@ -792,122 +780,122 @@ msgstr "JIka Anda menghapus berkas ini, maka akan hilang secara permanen"
 msgid "Delete"
 msgstr "Hapus"
 
-#: ../lib/dentry/fileops_error_dialog.c:63
+#: ../lib/dentry/fileops_error_dialog.c:60
 msgid "File conflict"
 msgstr "Konflik berkas"
 
-#: ../lib/dentry/fileops_error_dialog.c:106
+#: ../lib/dentry/fileops_error_dialog.c:103
 msgid "_Select a new name for the destination"
 msgstr "_Pilih Nama baru untuk tujuan"
 
-#: ../lib/dentry/fileops_error_dialog.c:117
+#: ../lib/dentry/fileops_error_dialog.c:114
 msgid "Reset"
 msgstr "Atur ulang"
 
-#: ../lib/dentry/fileops_error_dialog.c:126
+#: ../lib/dentry/fileops_error_dialog.c:123
 msgid "Apply this action to all files"
 msgstr "Terapkan aksi ini ke semua berkas"
 
-#: ../lib/dentry/fileops_error_dialog.c:133
+#: ../lib/dentry/fileops_error_dialog.c:130
 msgid "_Skip"
 msgstr "_Lewatkan"
 
-#: ../lib/dentry/fileops_error_dialog.c:136
+#: ../lib/dentry/fileops_error_dialog.c:133
 msgid "Re_name"
 msgstr "Ga_nti nama"
 
-#: ../lib/dentry/fileops_error_dialog.c:141
+#: ../lib/dentry/fileops_error_dialog.c:138
 msgid "Replace"
 msgstr "Ganti"
 
-#: ../lib/dentry/fileops_error_dialog.c:218
+#: ../lib/dentry/fileops_error_dialog.c:215
 #, c-format
 msgid "Do you want to merge with folder \"%s\"?"
 msgstr "Apakah Anda ingin menggabungkan dengan folder \"%s\"?"
 
-#: ../lib/dentry/fileops_error_dialog.c:220
+#: ../lib/dentry/fileops_error_dialog.c:217
 msgid ""
 "The merging operation will be asked to confirm before replacing any files in"
 " the folder conflicted."
 msgstr "Operasi penggabungan akan di tanyakan untuk mengkonfirmasi sebelum mengganti setiap berkas dalam folder yang bermasalah."
 
-#: ../lib/dentry/fileops_error_dialog.c:222
+#: ../lib/dentry/fileops_error_dialog.c:219
 #, c-format
 msgid "An older folder with the same name already exists in \"%s\"."
 msgstr "Folder lama dengan nama yang sama telah tersedia di \"%s\""
 
-#: ../lib/dentry/fileops_error_dialog.c:226
+#: ../lib/dentry/fileops_error_dialog.c:223
 #, c-format
 msgid "A newer folder with the same name already exists in \"%s\"."
 msgstr "Folder baru dengan nama yang sama sudah tersedia di \"%s\""
 
-#: ../lib/dentry/fileops_error_dialog.c:230
+#: ../lib/dentry/fileops_error_dialog.c:227
 #, c-format
 msgid "Another folder with the same name already exists in \"%s\"."
 msgstr "Folder lain dengan nama yang sama sudah tersedia di \"%s\""
 
-#: ../lib/dentry/fileops_error_dialog.c:236
+#: ../lib/dentry/fileops_error_dialog.c:233
 msgid "All files in the folder will be removed by replacing."
 msgstr "Semua berkas pada folder akan dihapus dengan cara ditimpa."
 
-#: ../lib/dentry/fileops_error_dialog.c:237
+#: ../lib/dentry/fileops_error_dialog.c:234
 #, c-format
 msgid "Do you want to replace folder \"%s\"?"
 msgstr "Apakah Anda ingin menimpa folder \"%s\"?"
 
-#: ../lib/dentry/fileops_error_dialog.c:239
+#: ../lib/dentry/fileops_error_dialog.c:236
 #, c-format
 msgid "A folder with the same name already exists in \"%s\"."
 msgstr "Folder dengan nama yang sama sudah tersedia di \"%s\""
 
-#: ../lib/dentry/fileops_error_dialog.c:245
+#: ../lib/dentry/fileops_error_dialog.c:242
 #, c-format
 msgid "Do you want to replace file \"%s\"?"
 msgstr "Apakah Anda ingin menimpa berkas \"%s\"?"
 
-#: ../lib/dentry/fileops_error_dialog.c:246
+#: ../lib/dentry/fileops_error_dialog.c:243
 msgid "The content will be overwritten by replacing."
 msgstr "Semua konten akan ditimpa dengan cara ditimpa."
 
-#: ../lib/dentry/fileops_error_dialog.c:248
+#: ../lib/dentry/fileops_error_dialog.c:245
 #, c-format
 msgid "An older file with the same name already exists in \"%s\"."
 msgstr "Folder lama dengan nama yang sama telah tersedia di \"%s\""
 
-#: ../lib/dentry/fileops_error_dialog.c:252
+#: ../lib/dentry/fileops_error_dialog.c:249
 #, c-format
 msgid "A newer file with the same name already exists in \"%s\"."
 msgstr "Folder baru dengan nama yang sama sudah tersedia di \"%s\""
 
-#: ../lib/dentry/fileops_error_dialog.c:256
+#: ../lib/dentry/fileops_error_dialog.c:253
 #, c-format
 msgid "Another file with the same name already exists in \"%s\"."
 msgstr "Folder lain dengan nama yang sama sudah tersedia di \"%s\""
 
-#: ../lib/dentry/fileops_error_dialog.c:328
+#: ../lib/dentry/fileops_error_dialog.c:325
 msgid "Original file"
 msgstr "File Asli"
 
-#: ../lib/dentry/fileops_error_dialog.c:329
-#: ../lib/dentry/fileops_error_dialog.c:357
+#: ../lib/dentry/fileops_error_dialog.c:326
+#: ../lib/dentry/fileops_error_dialog.c:354
 msgid "Size:"
 msgstr "Ukuran:"
 
-#: ../lib/dentry/fileops_error_dialog.c:333
-#: ../lib/dentry/fileops_error_dialog.c:361
+#: ../lib/dentry/fileops_error_dialog.c:330
+#: ../lib/dentry/fileops_error_dialog.c:358
 msgid "Type:"
 msgstr "Tipe:"
 
-#: ../lib/dentry/fileops_error_dialog.c:337
-#: ../lib/dentry/fileops_error_dialog.c:365
+#: ../lib/dentry/fileops_error_dialog.c:334
+#: ../lib/dentry/fileops_error_dialog.c:362
 msgid "Last modified:"
 msgstr "Terakhir diubah:"
 
-#: ../lib/dentry/fileops_error_dialog.c:356
+#: ../lib/dentry/fileops_error_dialog.c:353
 msgid "Replace with"
 msgstr "Timpa dengan"
 
-#: ../lib/dentry/fileops_error_dialog.c:382
+#: ../lib/dentry/fileops_error_dialog.c:379
 msgid "Merge"
 msgstr "Gabungkan"
 

@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-03 14:25+0800\n"
-"PO-Revision-Date: 2014-12-04 04:51+0000\n"
+"POT-Creation-Date: 2014-12-26 11:18+0800\n"
+"PO-Revision-Date: 2014-12-26 13:11+0000\n"
 "Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
 "Language-Team: Azerbaijani (http://www.transifex.com/projects/p/deepin-desktop-environment/language/az/)\n"
 "MIME-Version: 1.0\n"
@@ -53,7 +53,7 @@ msgstr "Xəbərdarlıq"
 #: ../resources/desktop/js/specialitem.coffee:51
 #: ../resources/desktop/js/specialitem.coffee:146
 #: ../resources/guide/js/launcher.coffee:133
-#: ../resources/launcher/js/item.coffee:289
+#: ../resources/launcher/js/item.coffee:288
 msgid "_Open"
 msgstr "_Aç"
 
@@ -107,7 +107,7 @@ msgstr "_Bura Ekstrakt Elə"
 msgid "Can not open this file."
 msgstr "Bu fayl açıla bilmir."
 
-#: ../resources/desktop/js/grid.coffee:70 ../lib/dentry/fileops.c:403
+#: ../resources/desktop/js/grid.coffee:70 ../lib/dentry/fileops.c:402
 msgid "Untitled"
 msgstr "Başlıqsız"
 
@@ -173,7 +173,7 @@ msgid "Computer"
 msgstr "Kompüter"
 
 #: ../resources/desktop/js/specialitem.coffee:87
-#: ../resources/dock/js/main.coffee:46 ../resources/dock/js/main.coffee:116
+#: ../resources/dock/js/main.coffee:46 ../resources/dock/js/main.coffee:119
 msgid "Trash"
 msgstr "Zibil Qutusu"
 
@@ -229,56 +229,56 @@ msgstr "_Klassik rejim"
 msgid "Notification area settings"
 msgstr ""
 
-#: ../resources/dock/js/main.coffee:114 ../resources/zone/js/utils.coffee:13
+#: ../resources/dock/js/main.coffee:117 ../resources/zone/js/utils.coffee:13
 msgid "Launcher"
 msgstr "Başladıcı"
 
-#: ../resources/dock/js/plugins/time/time.coffee:61
+#: ../resources/dock/js/plugins/time/time.coffee:64
 msgid "Switch display mode"
 msgstr ""
 
-#: ../resources/dock/js/plugins/time/time.coffee:62
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:81
+#: ../resources/dock/js/plugins/time/time.coffee:65
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:84
 msgid "_Time settings"
 msgstr "_Vaxt tənzimləmələri"
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:33
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:34
 msgid "%b %d %H:%M %a"
 msgstr ""
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:35
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:36
 msgid "%b %d %I:%M %p %a"
 msgstr ""
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:37
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:38
 msgid "%b %d %H:%M"
 msgstr ""
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:39
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:40
 msgid "%b %d %I:%M %p"
 msgstr ""
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:41
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:42
 msgid "%H:%M %a"
 msgstr ""
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:43
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:44
 msgid "%I:%M %p %a"
 msgstr ""
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:45
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:46
 msgid "%H:%M"
 msgstr ""
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:47
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:48
 msgid "%I:%M %p"
 msgstr ""
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:79
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:82
 msgid "Display date"
 msgstr ""
 
-#: ../resources/dock/js/plugins/time/tray_clock.coffee:80
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:83
 msgid "Display week"
 msgstr ""
 
@@ -287,52 +287,28 @@ msgid "_Close"
 msgstr "_Bağla"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:359
+#: ../resources/launcher/js/item.coffee:358
 msgid "Are you sure to remove"
 msgstr "Silmək istədiyinizdən əminsiniz?"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:359
+#: ../resources/launcher/js/item.coffee:358
 msgid "All dependencies will be removed"
 msgstr "Bütün asılılıqlar silinəcək"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:359
+#: ../resources/launcher/js/item.coffee:358
 msgid "no"
 msgstr "yox"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
-#: ../resources/launcher/js/item.coffee:359
+#: ../resources/launcher/js/item.coffee:358
 msgid "yes"
 msgstr "hə"
 
 #: ../resources/greeter/js/mediacontrol.coffee:129
 msgid "Click button to Play"
 msgstr "Oynatmaq üçün düyməyə basın"
-
-#: ../resources/greeter/js/message.coffee:105
-#: ../resources/greeter/js/message.coffee:82
-msgid "$ sudo reboot\n"
-msgstr "$ sudo reboot\n"
-
-#: ../resources/greeter/js/message.coffee:99
-#: ../resources/greeter/js/message.coffee:73
-msgid "Press Ctrl + Alt + F1\n"
-msgstr "Ctrl + Alt + F1 düymələrini basın\n"
-
-#: ../resources/greeter/js/message.coffee:95
-msgid ""
-"\t\t\t\t-----The daemon of accounts has not started!-----\n"
-")"
-msgstr "\t\t\t\t-----Hesabların arxa plan proqramı başladılmayıb!-----\n)"
-
-#: ../resources/greeter/js/message.coffee:79
-msgid "$ sudo apt-get install deepin-desktop-Environment\n"
-msgstr "$ sudo apt-get install deepin-desktop-Environment\n"
-
-#: ../resources/greeter/js/message.coffee:68
-msgid "\t\t\t\t-----No available desktop sessions!-----\n"
-msgstr "\t\t\t\t-----Mövcud iş masası seansı yoxdu!-----\n"
 
 #: ../resources/greeter/js/powermenu.coffee:26
 msgid "Shut down"
@@ -564,7 +540,7 @@ msgid "_Add to autostart"
 msgstr "Avtomatik başlatmaya _əlavə et"
 
 #: ../resources/guide/js/launcher.coffee:140
-#: ../resources/launcher/js/item.coffee:295
+#: ../resources/launcher/js/item.coffee:294
 msgid "_Uninstall"
 msgstr "_Sil"
 
@@ -740,36 +716,48 @@ msgstr "köməkçi tətbiqetmələr"
 msgid "others"
 msgstr "digərləri"
 
-#: ../lib/dentry/entry.c:746
+#: ../lib/category.c:60
+msgid "Network"
+msgstr "Şəbəkə"
+
+#: ../lib/category.c:61
+msgid "Game"
+msgstr ""
+
+#: ../lib/category.c:62
+msgid "Office"
+msgstr ""
+
+#: ../lib/dentry/entry.c:748
 #, c-format
 msgid ""
 "Cannot rename the item to \"%s\". This may be caused by lack of permissions."
 msgstr "\"%s\" yenidən adlandırıla bilməz. Ola bilsin ki, bu icazənin olmaması ilə əlaqəlidir."
 
-#: ../lib/dentry/entry.c:752
+#: ../lib/dentry/entry.c:754
 #, c-format
 msgid ""
 "There is already a file with name \"%s\" in this folder. Please consider a "
 "different name."
 msgstr "Qovluğun içində artıq \"%s\" adı mövcuddur. Xahiş edirik başqa bir ad seçəsiniz."
 
-#: ../lib/dentry/entry.c:758
+#: ../lib/dentry/entry.c:760
 msgid "The item could not be renamed"
 msgstr "Element yenidən adlandırıla bilmir"
 
-#: ../lib/dentry/entry.c:833 ../lib/dentry/fileops.c:805
+#: ../lib/dentry/entry.c:834 ../lib/dentry/fileops.c:804
 msgid "copy"
 msgstr "kopyala"
 
-#: ../lib/dentry/entry.c:1415
+#: ../lib/dentry/entry.c:1400
 msgid "App Group"
 msgstr "Tətbiqetmə Qrupu"
 
-#: ../lib/dentry/fileops.c:566
+#: ../lib/dentry/fileops.c:565
 msgid "Move"
 msgstr "Daşı"
 
-#: ../lib/dentry/fileops.c:772
+#: ../lib/dentry/fileops.c:771
 msgid "Copy"
 msgstr "Kopyala"
 
@@ -789,122 +777,122 @@ msgstr "Əgər faylları silsəniz, siz onları bir dəfəlik itirəcəksiniz."
 msgid "Delete"
 msgstr "Sil"
 
-#: ../lib/dentry/fileops_error_dialog.c:63
+#: ../lib/dentry/fileops_error_dialog.c:60
 msgid "File conflict"
 msgstr "Fayl toqquşması"
 
-#: ../lib/dentry/fileops_error_dialog.c:106
+#: ../lib/dentry/fileops_error_dialog.c:103
 msgid "_Select a new name for the destination"
 msgstr "Təyinat üçün yeni ad _seçin"
 
-#: ../lib/dentry/fileops_error_dialog.c:117
+#: ../lib/dentry/fileops_error_dialog.c:114
 msgid "Reset"
 msgstr "Sıfırla"
 
-#: ../lib/dentry/fileops_error_dialog.c:126
+#: ../lib/dentry/fileops_error_dialog.c:123
 msgid "Apply this action to all files"
 msgstr "Bu əməliyyatı bütün fayllarda tətbiq et"
 
-#: ../lib/dentry/fileops_error_dialog.c:133
+#: ../lib/dentry/fileops_error_dialog.c:130
 msgid "_Skip"
 msgstr "_Keç"
 
-#: ../lib/dentry/fileops_error_dialog.c:136
+#: ../lib/dentry/fileops_error_dialog.c:133
 msgid "Re_name"
 msgstr "Yenidən _adlandır"
 
-#: ../lib/dentry/fileops_error_dialog.c:141
+#: ../lib/dentry/fileops_error_dialog.c:138
 msgid "Replace"
 msgstr "Əvəz et"
 
-#: ../lib/dentry/fileops_error_dialog.c:218
+#: ../lib/dentry/fileops_error_dialog.c:215
 #, c-format
 msgid "Do you want to merge with folder \"%s\"?"
 msgstr "\"%s\" qovluğu ilə birləşdirmək istəyirsiniz?"
 
-#: ../lib/dentry/fileops_error_dialog.c:220
+#: ../lib/dentry/fileops_error_dialog.c:217
 msgid ""
 "The merging operation will be asked to confirm before replacing any files in"
 " the folder conflicted."
 msgstr "Birləşdirmə əməliyyatında qovluqdakı toqquşan faylları əvəz etmədən öncə nə ediləcəyini soruş."
 
-#: ../lib/dentry/fileops_error_dialog.c:222
+#: ../lib/dentry/fileops_error_dialog.c:219
 #, c-format
 msgid "An older folder with the same name already exists in \"%s\"."
 msgstr "\"%s\" ilə eyni adı daşıyan başqa bir qovluq artıq mövcuddur."
 
-#: ../lib/dentry/fileops_error_dialog.c:226
+#: ../lib/dentry/fileops_error_dialog.c:223
 #, c-format
 msgid "A newer folder with the same name already exists in \"%s\"."
 msgstr "\"%s\" adında yeni qovluq artıq mövcuddur."
 
-#: ../lib/dentry/fileops_error_dialog.c:230
+#: ../lib/dentry/fileops_error_dialog.c:227
 #, c-format
 msgid "Another folder with the same name already exists in \"%s\"."
 msgstr "\"%s\" adında başqa bir qovluq artıq mövcuddur."
 
-#: ../lib/dentry/fileops_error_dialog.c:236
+#: ../lib/dentry/fileops_error_dialog.c:233
 msgid "All files in the folder will be removed by replacing."
 msgstr "Əvəz edilmə zamanı qovluqdakı bütün fayllar silinəcək."
 
-#: ../lib/dentry/fileops_error_dialog.c:237
+#: ../lib/dentry/fileops_error_dialog.c:234
 #, c-format
 msgid "Do you want to replace folder \"%s\"?"
 msgstr "\"%s\" qovluğunu əvəz etmək istəyirsiniz?"
 
-#: ../lib/dentry/fileops_error_dialog.c:239
+#: ../lib/dentry/fileops_error_dialog.c:236
 #, c-format
 msgid "A folder with the same name already exists in \"%s\"."
 msgstr "\"%s\" adında başqa bir qovluq artıq mövcuddur."
 
-#: ../lib/dentry/fileops_error_dialog.c:245
+#: ../lib/dentry/fileops_error_dialog.c:242
 #, c-format
 msgid "Do you want to replace file \"%s\"?"
 msgstr "\"%s\" faylını əvəz etmək istəyirsiniz?"
 
-#: ../lib/dentry/fileops_error_dialog.c:246
+#: ../lib/dentry/fileops_error_dialog.c:243
 msgid "The content will be overwritten by replacing."
 msgstr "Bu məzmun əvəz edilmə zamanı üzərinə yazılacaq."
 
-#: ../lib/dentry/fileops_error_dialog.c:248
+#: ../lib/dentry/fileops_error_dialog.c:245
 #, c-format
 msgid "An older file with the same name already exists in \"%s\"."
 msgstr "\"%s\" adında köhnə bir fayl artıq mövcuddur."
 
-#: ../lib/dentry/fileops_error_dialog.c:252
+#: ../lib/dentry/fileops_error_dialog.c:249
 #, c-format
 msgid "A newer file with the same name already exists in \"%s\"."
 msgstr "\"%s\" adında yeni bir fayl artıq mövcuddur."
 
-#: ../lib/dentry/fileops_error_dialog.c:256
+#: ../lib/dentry/fileops_error_dialog.c:253
 #, c-format
 msgid "Another file with the same name already exists in \"%s\"."
 msgstr "\"%s\" adında başqa bir fayl artıq mövcuddur."
 
-#: ../lib/dentry/fileops_error_dialog.c:328
+#: ../lib/dentry/fileops_error_dialog.c:325
 msgid "Original file"
 msgstr "Orijinal fayl"
 
-#: ../lib/dentry/fileops_error_dialog.c:329
-#: ../lib/dentry/fileops_error_dialog.c:357
+#: ../lib/dentry/fileops_error_dialog.c:326
+#: ../lib/dentry/fileops_error_dialog.c:354
 msgid "Size:"
 msgstr "Ölçü:"
 
-#: ../lib/dentry/fileops_error_dialog.c:333
-#: ../lib/dentry/fileops_error_dialog.c:361
+#: ../lib/dentry/fileops_error_dialog.c:330
+#: ../lib/dentry/fileops_error_dialog.c:358
 msgid "Type:"
 msgstr "Növ:"
 
-#: ../lib/dentry/fileops_error_dialog.c:337
-#: ../lib/dentry/fileops_error_dialog.c:365
+#: ../lib/dentry/fileops_error_dialog.c:334
+#: ../lib/dentry/fileops_error_dialog.c:362
 msgid "Last modified:"
 msgstr "Son redaktə olunma:"
 
-#: ../lib/dentry/fileops_error_dialog.c:356
+#: ../lib/dentry/fileops_error_dialog.c:353
 msgid "Replace with"
 msgstr "İlə əvəz et"
 
-#: ../lib/dentry/fileops_error_dialog.c:382
+#: ../lib/dentry/fileops_error_dialog.c:379
 msgid "Merge"
 msgstr "Birləşdir"
 

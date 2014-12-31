@@ -14,6 +14,7 @@ class SystemTray extends SystemItem
         @button = create_element(tag:'div', class:'TrayFoldButton', @imgWrap)
         @button.addEventListener('mouseover', @on_mouseover)
         @button.addEventListener('click', @on_button_click)
+        @isTransitionDone = true
 
         @element.addEventListener("webkitTransitionEnd", (e)=>
             webkitCancelAnimationFrame(@calcTimer)
@@ -31,6 +32,7 @@ class SystemTray extends SystemItem
                 if debugRegion
                     console.warn("[SystemTray.webkitTransitionEnd] folded")
             update_dock_region()
+            @isTransitionDone = true
         )
 
         @isShowing = false
@@ -90,7 +92,7 @@ class SystemTray extends SystemItem
                     @fold()
                 return
 
-            console.log("tray icon #{xid} is Changed")
+            # console.log("tray icon #{xid} is Changed")
             if hideStatusManager?.state != HideState.Shown
                 console.log("the dock is not shown")
                 return
@@ -112,6 +114,7 @@ class SystemTray extends SystemItem
         @core.connect("Removed", (xid)=>
             console.log("tray icon #{xid} is Removed")
             @items.remove(xid)
+            $EW.dismiss(xid)
 
             if @items.length == 0
                 @hideButton()
@@ -140,6 +143,8 @@ class SystemTray extends SystemItem
         @core.RetryManager_sync()
 
     clearItems:->
+        for item in @items.slice(0)
+            $EW.dismiss(item)
         if Array.isArray @core.TrayIcons
             @items = @core.TrayIcons.slice(0) || []
 
@@ -240,6 +245,7 @@ class SystemTray extends SystemItem
             return
         for item in @items
             $EW.show(item)
+        @isShowing = true
 
     showButton:->
         @button.style.visibility = 'visible'
@@ -248,12 +254,15 @@ class SystemTray extends SystemItem
         @button.style.visibility = 'hidden'
 
     on_mouseover: (e)=>
+        if !@isTransitionDone
+            return
+
         Preview_close_now(_lastCliengGroup)
         if @isUnfolded
-            console.log("is unfolded")
+            #console.log("is unfolded")
             return
         DCore.Dock.require_all_region()
-        console.log("system tray mouseover")
+        # console.log("system tray mouseover")
         @minShow()
 
     minShow:=>
@@ -269,10 +278,6 @@ class SystemTray extends SystemItem
             @showButton()
         @imgContainer.style.webkitTransform = 'translateY(0)'
         @imgContainer.style.webkitTransition = ''
-        # for item,i in @items
-        #     if i == 0 || i == 1
-        #         continue
-        #     $EW.move(item, 0, 0)
         $EW.show(@items[0]) if @items[0]
         $EW.show(@items[1]) if @items[1]
         if @items[2] and @items.length <= 4
@@ -283,7 +288,7 @@ class SystemTray extends SystemItem
         $EW.show(@items[i]) if @items[i]
 
     on_mouseout: (e)=>
-        console.log("system tray mouseout")
+        # console.log("system tray mouseout")
         # super
         DCore.Dock.set_is_hovered(false)
         clearTimeout(@showEmWindowTimer)
@@ -296,7 +301,7 @@ class SystemTray extends SystemItem
             return
 
         @isShowing = false
-        console.log("tray mouseout")
+        # console.log("tray mouseout")
         @img.style.display = ''
         @panel.style.display = 'none'
         @hideAllIcons()
@@ -346,6 +351,7 @@ class SystemTray extends SystemItem
         if @upperItemNumber <= 2
             return
 
+        @isTransitionDone = false
         if @isUnfolded
             @fold()
         else

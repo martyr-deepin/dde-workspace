@@ -75,14 +75,16 @@ class TrayClock extends ClockWith24Hour
 
         element = @time.parentNode
         xy = get_page_xy(element)
+        deltaX = e.clientX - xy.x
+        deltaY = e.clientY - xy.y
         new Menu(
             DEEPIN_MENU_TYPE.NORMAL,
             new CheckBoxMenuItem(1, _("Display date"), settings.displayDate()),
             new CheckBoxMenuItem(2, _("Display week"), settings.displayWeek()),
             new MenuItem(3, _("_Time settings"))
         ).addListener(@on_itemselected).showMenu(
-            xy.x + element.clientWidth / 2,
-            xy.y,
+            e.screenX - deltaX + element.clientWidth / 2,
+            e.screenY - deltaY,
             DEEPIN_MENU_CORNER_DIRECTION.DOWN
         )
 

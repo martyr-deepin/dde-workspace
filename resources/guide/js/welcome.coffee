@@ -40,33 +40,7 @@ class Welcome extends Page
         interval_stage = setInterval(=>
             if @session.getStage() < @session.STAGE.SessionStageCoreEnd then return
             clearInterval(interval_stage)
-            @prepare()
-        ,200)
-
-    show_signal_cb: =>
-        clearTimeout(@switch_page_tid)
-        clearInterval(@show_tid)
-        try
-            @launcher.hide()
-            @launcher.show_signal_disconnect()
-            guide?.switch_page(@,"Start")
-        catch e
-            console.debug "#{e}"
-
-    prepare : =>
-        try
             @launcher = new Launcher()
-            @launcher.show_signal(@show_signal_cb)
-            @launcher.launch()
-            @show_tid = setInterval(=>
-                @launcher.show()
-                @launcher.hide()
-            ,500)
-        catch e
-            console.debug "launcher show_signal connect:#{e}"
-        finally
-            @switch_page_tid = setTimeout(=>
-                console.debug "======Failed::interval to connect launcher show_signal!!!!======"
-                @launcher.launch()
-                @show_signal_cb()
-            ,3000)
+            @launcher.hide()
+            guide?.switch_page(@,"Start")
+        ,200)

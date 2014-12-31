@@ -100,9 +100,8 @@
 .userimg_border{
     width:9.76em;
     height:9.76em;
-    border-radius:50%; 
+    border-radius:50%;
     overflow:hidden;
-    /*border:rgba(0,0,0,0.3) 0.2em solid;*/
 
     display:-webkit-box;
     -webkit-box-pack:center;
@@ -110,12 +109,9 @@
 }
 
 .userimg_background{
-    /*width:9.28em;*/
-    /*height:9.28em;*/
-    border-radius:50%; 
+    border-radius:50%;
     overflow:hidden;
     border:white 0.3em solid;
-    /*background-color:white;*/
 
     display:-webkit-box;
     -webkit-box-pack:center;
@@ -123,14 +119,13 @@
 }
 
 .userimg {
-    border-radius:50%; 
+    border-radius:50%;
     width:8.8em;
     height:8.8em;
     /*overflow:hidden;*/
 }
 
 .username_div {
-    /*margin-top:0.5em;*/
     width:100%;
     height:1.2em;
     text-align:center;

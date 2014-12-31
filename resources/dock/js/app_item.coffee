@@ -167,7 +167,7 @@ class AppItem extends Item
             if @leader != id
                 @leader = id
 
-        @element.style.display = "block"
+        @element.style.display = ""
 
     remove_client: (id, used_internal=false) ->
         if not used_internal
@@ -195,7 +195,7 @@ class AppItem extends Item
         else
             if Preview_container._current_group && @id == Preview_container._current_group.id
                 Preview_close_now(@)
-            @element.style.display = "block"
+            @element.style.display = ""
             super
 
         delete $DBus[@id]

@@ -25,6 +25,7 @@
 #include <gdk/gdkx.h>
 void set_wmspec_desktop_hint(GdkWindow *window);
 void set_wmspec_dock_hint(GdkWindow *window);
+void set_wmspec_window_type_hint(GdkWindow *window, GdkAtom type);
 
 enum {
     ORIENTATION_LEFT,

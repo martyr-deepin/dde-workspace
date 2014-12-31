@@ -1112,8 +1112,7 @@ void dentry_report_bad_icon(Entry* entry)
         g_free(svg_path);
     }
 
-    char const* desktop_path = g_get_user_special_dir(G_USER_DIRECTORY_DESKTOP);
-    char* bad_icon_dir_path = g_build_filename(desktop_path, "bad_icons", NULL);
+    char* bad_icon_dir_path = g_build_filename(DESKTOP_DIR(), "bad_icons", NULL);
     GFile* bad_icon_dir = g_file_new_for_path(bad_icon_dir_path);
     g_free(bad_icon_dir_path);
 
@@ -1525,9 +1524,6 @@ char* dentry_get_rich_dir_group_name(ArrayContainer const fs)
 
     if (group_name == NULL)
         group_name = _get_group_name_from_category_field(fs);
-    //TODO:check group_name with po.
-    //the po must contain all the possible categories.
-
     return group_name;
 }
 

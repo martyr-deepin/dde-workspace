@@ -62,7 +62,6 @@ GdkFilterReturn embed_window_configure_request(GdkXEvent* xevent G_GNUC_UNUSED,
             return GDK_FILTER_CONTINUE;
         }
 
-        g_message("find embeded window");
         JSObjectRef info = json_create();
         json_append_number(info, "XID", xev->window);
         json_append_number(info, "x", xev->x);
@@ -112,6 +111,16 @@ void destroy_window(GdkWindow* win)
         gdk_window_destroy(wrapper);
     }
 
+    Window xid = GDK_WINDOW_XID(win);
+    if (__EMBEDED_WINDOWS_TYPE__ != NULL) {
+        g_hash_table_remove(__EMBEDED_WINDOWS_TYPE__, (gpointer)xid);
+    }
+    if (__EMBEDED_WINDOWS_TARGET__ != NULL) {
+        g_hash_table_remove(__EMBEDED_WINDOWS_TARGET__, (gpointer)xid);
+    }
+    if (__EMBEDED_WINDOWS_DRAWABLE__ != NULL) {
+        g_hash_table_remove(__EMBEDED_WINDOWS_DRAWABLE__, (gpointer)xid);
+    }
     g_object_unref(win);
 
 }
@@ -130,9 +139,6 @@ GdkFilterReturn __monitor_embed_window(GdkXEvent *xevent, GdkEvent* ev, gpointer
     if (xev->type == DestroyNotify) {
         Window xid = ((XDestroyWindowEvent*)xevent)->window;
         g_hash_table_remove(__EMBEDED_WINDOWS__, (gpointer)xid);
-        g_hash_table_remove(__EMBEDED_WINDOWS_TYPE__, (gpointer)xid);
-        g_hash_table_remove(__EMBEDED_WINDOWS_TARGET__, (gpointer)xid);
-        g_hash_table_remove(__EMBEDED_WINDOWS_DRAWABLE__, (gpointer)xid);
 
         JSObjectRef info = json_create();
         json_append_number(info, "XID", xid);
@@ -161,11 +167,12 @@ GdkFilterReturn __monitor_embed_window(GdkXEvent *xevent, GdkEvent* ev, gpointer
         XGenericEvent* ge = xevent;
         if (ge->evtype == EnterNotify) {
             JSObjectRef info = json_create();
-            json_append_number(info, "XID", ((XEnterWindowEvent*)xev)->window);
+            // wrong xid is gotten from XEnterWindowEvent
+            json_append_number(info, "XID", GDK_WINDOW_XID(((GdkEventMotion*)ev)->window));
             js_post_message("embed_window_enter", info);
         } else if (ge->evtype == LeaveNotify) {
             JSObjectRef info = json_create();
-            json_append_number(info, "XID", ((XEnterWindowEvent*)xev)->window);
+            json_append_number(info, "XID", GDK_WINDOW_XID(((GdkEventMotion*)ev)->window));
             js_post_message("embed_window_leave", info);
         }
         return GDK_FILTER_REMOVE;
@@ -442,6 +449,34 @@ gboolean draw_embed_windows(GtkWidget* _w, cairo_t *cr)
     }
 
     return FALSE;
+}
+
+
+//JS_EXPORT_API
+void exwindow_dismiss(double _xid)
+{
+    if (__EMBEDED_WINDOWS__ == NULL) {
+        g_debug("[%s] __EMBEDED_WINDOWS__ is NULL", __func__);
+        return;
+    }
+
+    Window xid = (Window)_xid;
+    GdkWindow* w = find_embed_window(xid);
+    if (w == NULL) {
+        g_debug("[%s] no such a embeded window %d", __func__, (guint32)xid);
+        return;
+    }
+
+    if (gdk_window_is_destroyed(w)) {
+        g_debug("[%s] %d is destroyed", __func__, (guint32)xid);
+        g_hash_table_remove(__EMBEDED_WINDOWS__, w);
+        return;
+    }
+
+    int reparentSucces = XReparentWindow(gdk_x11_get_default_xdisplay(), GDK_WINDOW_XID(w), GDK_ROOT_WINDOW(), 0, 0);
+    g_debug("reparent: %d", reparentSucces);
+
+    g_hash_table_remove(__EMBEDED_WINDOWS__, w);
 }
 
 

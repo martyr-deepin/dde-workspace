@@ -56,8 +56,13 @@ void for_translate()
         _("others"),
         NULL
     };
+    const char* const categoriesAdd[] G_GNUC_UNUSED = {
+        _("Network"),
+        _("Game"),
+        _("Office"),
+        NULL
+    };
 }
-
 
 PRIVATE
 gboolean _need_to_update(const char* db_path)

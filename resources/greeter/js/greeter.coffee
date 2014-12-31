@@ -118,7 +118,7 @@ set_element_pos = ->
     div_version?.style.left = "3em"
 
     div_desktop?.style.bottom = "3.0em"
-    div_desktop?.style.right = "19em"
+    div_desktop?.style.right = "17em"
 
     div_userchoose?.style.bottom = "3.0em"
     div_userchoose?.style.right = "10em"
@@ -126,10 +126,8 @@ set_element_pos = ->
     div_power?.style.bottom = "3.0em"
     div_power?.style.right = "3em"
 
-    menuchoose = jQuery(".MenuChoose")
     for menu in menuchoose
-        w = Widget.look_up(menu.id)
-        w.setPos()
+        menu.setPos()
 
 set_element_pos()
 
