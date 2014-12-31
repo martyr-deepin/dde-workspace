@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=com.deepin.dde.launcher
+Exec=/usr/bin/dde-launcher --hidden

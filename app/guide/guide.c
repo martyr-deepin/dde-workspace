@@ -31,10 +31,15 @@ void notify_primary_size()
 }
 
 JS_EXPORT_API
+void guide_monitors_ok()
+{
+    notify_primary_size();
+}
+
+JS_EXPORT_API
 void guide_emit_webview_ok()
 {
     dde_session_register();
-    notify_primary_size();
 }
 
 JS_EXPORT_API

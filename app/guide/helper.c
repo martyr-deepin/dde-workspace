@@ -279,7 +279,7 @@ void guide_OpenUrl(const char* url)
 JS_EXPORT_API
 void guide_copy_file_to_desktop(const char* src)
 {
-    const char* cmd = g_strdup_printf("cp %s %s/",src,DESKTOP_DIR());
+    const char* cmd = g_strdup_printf("cp %s '%s/'",src,DESKTOP_DIR());
     guide_spawn_command_sync(cmd,true);
 }
 

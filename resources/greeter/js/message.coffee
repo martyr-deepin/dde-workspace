@@ -65,23 +65,19 @@ class Message extends Widget
 class NoSessionMessage
 
     constructor: ->
-        @title = _("\t\t\t\t-----No available desktop sessions!-----\n
-            You can try the following steps and install the Deepin Desktop Environment.\n
-            ")
-        @text = []
+        @title = "\t\t\t\tNo available desktop environment.\n
+            You can try the following steps to install Deepin Desktop Environment.\n"
         @text = [
-            _("Press Ctrl + Alt + F1\n
-                \tSwitch to a virtual console.\n
-                \tYou can do this by pressing the Ctrl + Alt + F1~F6 key combination (press and hold \"Ctrl\" and \"Alt\" at the same time and press the \"F(x)\" key corresponding to the TTY you want to switch to.\n
-                \tFor example, press  \"F1\" to switch to TTY 1 or \"F2\" to switch to TTY 2.\n
-                \tAnd you can press \"Ctrl\" and \"Alt\" and \"F7\ to return this Page.\n
-                "),
-            _("$ sudo apt-get install deepin-desktop-Environment\n
+            "Press Ctrl + Alt + F1\n
+                \tSwitch to a virtual console (tty 1) to enter your username and password and then press ENTER.\n
+                \tOr you can press  Ctrl + Alt + F7 to return.\n
+                ",
+            "$ sudo apt-get install deepin-desktop-environment\n
                 \tInstall Deepin Desktop Environment.\n
-                "),
-            _("$ sudo reboot\n
-                \tRestart your system.\n
-                ")
+                ",
+            "$ sudo reboot\n
+                \tRestart.\n
+                "
         ]
         @message = new Message("NoSession")
         @message.title_text(@title,@text)
@@ -92,19 +88,15 @@ class NoSessionMessage
 class NoAccountServiceMessage
 
     constructor: ->
-        @title = _("\t\t\t\t-----The daemon of accounts has not started!-----\n
-                    ")
-        @text = []
+        @title = "\t\t\t\tNo account daemon started.\n"
         @text = [
-            _("Press Ctrl + Alt + F1\n
-                \tSwitch to a virtual console.\n
-                \tYou can do this by pressing the Ctrl + Alt + F1~F6 key combination (press and hold \"Ctrl\" and \"Alt\" at the same time and press the \"F(x)\" key corresponding to the TTY you want to switch to.\n
-                \tFor example, press  \"F1\" to switch to TTY 1 or \"F2\" to switch to TTY 2.\n
-                \tAnd you can press \"Ctrl\" and \"Alt\" and \"F7\ to return this Page.\n
-                "),
-            _("$ sudo reboot\n
-                \tRestart your system.\n
-                ")
+            "Press Ctrl + Alt + F1\n
+                \tSwitch to a virtual console (tty 1) to enter your username and password and then press ENTER.\n
+                \tOr you can press  Ctrl + Alt + F7 to return.\n
+                ",
+            "$ sudo reboot\n
+                \tRestart.\n
+                "
         ]
         @message = new Message("NoAccountService")
         #@message.element.style.textAlign = "center"
@@ -112,5 +104,4 @@ class NoAccountServiceMessage
         @message.frame_build()
         @message.setZIndex(65530)
         @message.append(document.body)
-
 

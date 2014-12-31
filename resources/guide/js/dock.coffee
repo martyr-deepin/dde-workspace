@@ -59,6 +59,5 @@ class DockMenu extends Page
     switch_page: ->
         setTimeout(=>
             @dockReal.show()
-            DCore.Guide.cursor_show()
             guide?.switch_page(@,"LauncherLaunch")
         ,t_mid_switch_page)

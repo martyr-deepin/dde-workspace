@@ -66,9 +66,11 @@ createItem = (core, autostartList)->
     id = core[2]
     icon = core[3]
     category = core[4]
+    timeInstalled = core[5]
 
     basename = RegExp.escape(get_path_name(path) + ".desktop")
     item = new Item(id, name, path, icon)
+    item.timeInstalled = timeInstalled
     applications[id] = item
     autostart = autostartList.filter((el)-> el.match("#{basename}$"))
     if autostart.length != 0
@@ -107,13 +109,7 @@ getItemList =(sortMethod)->
         when SortMethod.Method.ByTimeInstalled
             console.log("change to sort by install time")
 
-            timeInstalled = daemon.GetAllTimeInstalled_sync()
-            timeInstalledObj = {}
-
-            for f in timeInstalled
-                timeInstalledObj[f[0]] = f[1]
-
-            list = sortByTimeInstalled(Object.keys(applications), timeInstalledObj)
+            list = sortByTimeInstalled(Object.keys(applications))
             # console.log(list)
 
             return list

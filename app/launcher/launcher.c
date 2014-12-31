@@ -169,6 +169,11 @@ void activate_window(Display *dsp, GdkWindow *w)
     XFlush(dsp);
 }
 
+gboolean launcher_show_source_func()
+{
+    launcher_show();
+    return G_SOURCE_REMOVE;
+}
 
 DBUS_EXPORT_API
 void launcher_show()
@@ -313,14 +318,9 @@ void primary_changed_handler(GDBusConnection* conn G_GNUC_UNUSED,
 JS_EXPORT_API
 void launcher_webview_ok()
 {
-    static gboolean inited = FALSE;
     dde_session_register();
     is_js_already = TRUE;
-    if (!is_hidden && !inited) {
-        listen_primary_changed_signal(primary_changed_handler, &launcher, NULL);
-        inited = TRUE;
-        js_post_signal("launcher_shown");
-    }
+    listen_primary_changed_signal(primary_changed_handler, &launcher, NULL);
 }
 
 
@@ -561,18 +561,17 @@ int main(int argc, char* argv[])
     g_signal_connect(im_context, "commit", G_CALLBACK(_do_im_commit), NULL);
     g_message("set im done");
 
-    setup_launcher_dbus_service();
-    g_message("start launcher dbus service done");
-
 #ifndef NDEBUG
     // monitor_resource_file("launcher", webview);
     g_debug("xid: 0x%lx", gdk_x11_window_get_xid(gtk_widget_get_window(container)));
 #endif
 
-    gtk_widget_show_all(webview);
-    if (!is_hidden) {
-        launcher_show();
-        g_message("show launcher done");
+    setup_launcher_dbus_service();
+    if (g_getenv("DBUS_STARTER_BUS_TYPE") == NULL) {
+        //We aren't launched by dbus-daemon.
+        if (!is_hidden) {
+            g_idle_add(launcher_show_source_func, NULL);
+        }
     }
     gtk_main();
     return 0;

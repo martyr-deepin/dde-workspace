@@ -22,6 +22,8 @@ class Setting
             hideStatusManager.updateState()
         )
         @dbus.connect("DisplayModeChanged", (mode)=>
+            # dde-session-daemon will restart dock
+            # DCore.Dock.quit()
             @updateSize(mode)
 
             # TODO:

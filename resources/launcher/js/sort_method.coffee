@@ -51,12 +51,14 @@ sortByFrequency = (apps, frequency)->
         sortByNameCompare(lhs, rhs)
     )
 
-sortByTimeInstalled = (apps, timeInstalled)->
+sortByTimeInstalled = (apps)->
     apps.sort((lhs, rhs)->
-        if timeInstalled[lhs] > timeInstalled[rhs]
+        lItem = Widget.look_up(lhs)
+        rItem = Widget.look_up(rhs)
+        if lItem.timeInstalled > rItem.timeInstalled
             return -1
 
-        if timeInstalled[lhs] < timeInstalled[rhs]
+        if lItem.timeInstalled < rItem.timeInstalled
             return 1
 
         sortByNameCompare(lhs, rhs)

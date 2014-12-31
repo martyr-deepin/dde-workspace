@@ -14,6 +14,7 @@ changeDockRegionTimer = null
 _isRightclicked = false
 _isItemExpanded = false
 launcherDaemon = null
+settings = null
 
 $mousePosition =
     x: 0

@@ -56,13 +56,16 @@ class Time extends SystemItem
         Preview_close_now()
 
         xy = get_page_xy(@element)
+        deltaX = e.clientX - xy.x
+        deltaY = e.clientY - xy.y
+        console.log("#{e.clientX}, #{e.screenX}, #{xy.x}")
         new Menu(
             DEEPIN_MENU_TYPE.NORMAL,
             new MenuItem(1, _("Switch display mode")),
             new MenuItem(2, _("_Time settings"))
         ).addListener(@on_itemselected).showMenu(
-            xy.x + @element.clientWidth / 2,
-            xy.y,
+            e.screenX - deltaX + @element.clientWidth / 2,
+            e.screenY - deltaY,
             DEEPIN_MENU_CORNER_DIRECTION.DOWN
         )
 
@@ -91,7 +94,7 @@ class Time extends SystemItem
         super
         if e.button != 0
             return
-        @openDateAndTimeSettingModle()
+        Clock.openDateAndTimeSettingModle()
 
     displayModeChangedHandler:(mode)=>
         @changeClock(settings.clockType(), mode)

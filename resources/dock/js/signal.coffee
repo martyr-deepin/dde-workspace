@@ -13,7 +13,7 @@ DCore.signal_connect("resolution-changed", ->
 DCore.signal_connect("embed_window_configure_changed", (info)->
     item = $EW_MAP[info.XID]
     if not item
-        console.log("get item from #{info.XID} failed")
+        #console.log("get item from #{info.XID} failed")
         return
     item.updateAppletPosition()
 )
@@ -21,7 +21,7 @@ DCore.signal_connect("embed_window_configure_changed", (info)->
 DCore.signal_connect("embed_window_configure_request", (info)->
     item = $EW_MAP[info.XID]
     if not item
-        console.log("get item from #{info.XID} failed")
+        #console.log("get item from #{info.XID} failed")
         return
     item.updateAppletPosition()
 )
@@ -33,6 +33,8 @@ DCore.signal_connect("embed_window_enter", (info)->
     __clear_timeout()
     clearTimeout(tooltip_hide_id)
     clearTimeout(hide_id)
+    if not $EW_MAP[info.XID]
+        Preview_close_now()
 )
 DCore.signal_connect("embed_window_leave", (info)->
 )

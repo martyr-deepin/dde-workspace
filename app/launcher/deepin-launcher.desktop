@@ -1,7 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Deepin Launcher
-Comment[zh_CN]=深度启动器
-Exec=sh -c 'sleep 20 && dde-launcher -H'
-NoDisplay=true
-OnlyShowIn=Deepin

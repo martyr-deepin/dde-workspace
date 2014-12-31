@@ -37,6 +37,12 @@ String::args = ->
 
     return o
 
+String::isPath = ->
+    @indexOf("/") != -1
+
+String::isDataURLImage = ->
+    @match(/^data:image\/.+(;base64)?,/)
+
 String::addSlashes = ->
     @replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0')
 

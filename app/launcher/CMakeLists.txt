@@ -39,6 +39,6 @@ install(
 GEN_JS_FILE(${NAME})
 
 install(
-    FILES ${CMAKE_CURRENT_SOURCE_DIR}/deepin-launcher.desktop
-    DESTINATION /etc/xdg/autostart/
+    FILES ${CMAKE_CURRENT_SOURCE_DIR}/com.deepin.dde.launcher.service
+    DESTINATION /usr/share/dbus-1/services/
     )

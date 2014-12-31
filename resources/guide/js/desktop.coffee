@@ -237,7 +237,7 @@ class DesktopZoneSetting extends Page
                 clearInterval(interval_is_zone)
                 setTimeout(=>
                     @switch_page()
-                ,t + 1000)
+                ,t + 2000)
         ,200)
 
     mouse_moveon_option: ->

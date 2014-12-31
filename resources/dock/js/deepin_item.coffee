@@ -43,6 +43,8 @@ class FixedItem extends Applet
     constructor:(@id, icon, title, @container)->
         super
         @img.draggable = false
+        @imgContainer.draggable = false
+        @imgWrap.draggable=false
 
     show: (v)->
         @__show = v
@@ -67,7 +69,6 @@ class FixedItem extends Applet
 class PrefixedItem extends FixedItem
     constructor:(@id, icon, title)->
         super(@id, icon, title, $("#pre_fixed"))
-        @imgContainer.draggable = false
         # $("#pre_fixed").appendChild(@element)
 
     isFirstElementChild:->
@@ -107,7 +108,7 @@ class PrefixedItem extends FixedItem
 
 class SystemItem extends AppItem
     is_fixed_pos: true
-    position: ['AppletNetwork', 'AppletDiskMount', 'AppletPower', 'AppletSound']
+    position: ['AppletNetwork', 'AppletDiskMount', 'AppletSound', 'AppletPower']
     constructor:(@id, icon, title)->
         super(@id, icon, title, $("#system"))
         @windowTitleWrap.style.display = 'none'
@@ -132,7 +133,7 @@ class SystemItem extends AppItem
         parentNode.appendChild($("#time")) if $("#time")
 
     change_icon:(src)->
-        if not (src.substring(0, 7) == "file://" || src.substring(0, 10) == "data:image")
+        if src and not src.isPath() and not src.isDataURLImage()
             icon_size = 48
             switch settings.displayMode()
                 when DisplayMode.Fashon
@@ -141,14 +142,8 @@ class SystemItem extends AppItem
                     icon_size = 16
                 when DisplayMode.Classic
                     icon_size = 16
-            console.warn("#{@id} icon size is #{icon_size}")
             src = DCore.get_theme_icon(src, icon_size)
-            console.warn("#{@id} get icon: #{src}")
-        console.warn("#{@id} change icon src to: #{src}")
-        @img.src = src
-        @img.onload = =>
-            @imgHover.src = bright_image(@img, 40)
-            @imgDark.src = bright_image(@img, -40)
+        @img.src = src if src?
 
     isFirstElementChild:->
         $("#system").firstElementChild.isEqualNode(@element)
@@ -197,4 +192,3 @@ class SystemItem extends AppItem
 class PostfixedItem extends FixedItem
     constructor:(@id, icon, title)->
         super(@id, icon, title, $("#post_fixed"))
-        @imgContainer.draggable = false

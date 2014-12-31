@@ -6,6 +6,7 @@ main = ->
         guide?.create_page("LauncherSearch")
     else
         guide?.create_page("Welcome")
+    DCore.Guide.emit_webview_ok()
 
 DCore.signal_connect('primary_size_changed', (alloc)->
     echo "primary_size_changed:#{alloc.x},#{alloc.y},#{alloc.width},#{alloc.height}"
@@ -27,4 +28,4 @@ DCore.signal_connect('primary_size_changed', (alloc)->
     main()
 )
 
-DCore.Guide.emit_webview_ok()
+DCore.Guide.monitors_ok()

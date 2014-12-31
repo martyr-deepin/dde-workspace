@@ -28,22 +28,22 @@
 
 void set_wmspec_desktop_hint (GdkWindow *window)
 {
-    GdkAtom atom = gdk_atom_intern ("_NET_WM_WINDOW_TYPE_DESKTOP", FALSE);
-
-    gdk_property_change (window,
-            gdk_atom_intern ("_NET_WM_WINDOW_TYPE", FALSE),
-            gdk_x11_xatom_to_atom (XA_ATOM), 32,
-            GDK_PROP_MODE_REPLACE, (guchar *) &atom, 1);
+    GdkAtom type = gdk_atom_intern ("_NET_WM_WINDOW_TYPE_DESKTOP", FALSE);
+    set_wmspec_window_type_hint(window, type);
 }
 
 void set_wmspec_dock_hint(GdkWindow *window)
 {
-    GdkAtom atom = gdk_atom_intern ("_NET_WM_WINDOW_TYPE_DOCK", FALSE);
+    GdkAtom type = gdk_atom_intern ("_NET_WM_WINDOW_TYPE_DOCK", FALSE);
+    set_wmspec_window_type_hint(window, type);
+}
 
+void set_wmspec_window_type_hint(GdkWindow *window, GdkAtom type)
+{
     gdk_property_change (window,
             gdk_atom_intern ("_NET_WM_WINDOW_TYPE", FALSE),
             gdk_x11_xatom_to_atom (XA_ATOM), 32,
-            GDK_PROP_MODE_REPLACE, (guchar *) &atom, 1);
+            GDK_PROP_MODE_REPLACE, (guchar *) &type, 1);
 }
 
 void get_workarea_size(int* x, int* y, int* width, int* height)
