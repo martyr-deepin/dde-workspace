@@ -335,21 +335,19 @@ void _change_workarea_height(int height)
 
     // update_primary_info(&dock);
     int workarea_width = (dock.width - GD.dock_panel_width) / 2;
+    int workarea_start = dock.x + workarea_width;
+    // NB: minus 1 to avoid struct cross screens.
+    int workarea_end = MAX(workarea_start, dock.x + dock.width - workarea_width - 1);
     if (GD.config.hide_mode == NO_HIDE_MODE ) {
         g_message("NO_HIDE_MODE, set workarea height to %d", height);
-        set_struct_partial(DOCK_GDK_WINDOW(),
-                           ORIENTATION_BOTTOM,
-                           height,
-                           dock.x + workarea_width,
-                           dock.x + dock.width - workarea_width);
     } else {
         g_message("HIDE_MODE, set workarea height to 0");
-        set_struct_partial(DOCK_GDK_WINDOW(),
-                           ORIENTATION_BOTTOM,
-                           0,
-                           dock.x + workarea_width,
-                           dock.x + dock.width - workarea_width);
     }
+    set_struct_partial(DOCK_GDK_WINDOW(),
+                       ORIENTATION_BOTTOM,
+                       height,
+                       workarea_start,
+                       workarea_end);
 }
 
 
