@@ -28,7 +28,7 @@ class ImgListChoose extends ListChoose
     ListAllBuild:(@list,@current,@img_src = "img",@img_type = "png") ->
         @length = @list.length
         @img_srcs = []
-        @img_srcs_hover = []
+        @img_srcs_focus = []
         @li_img = []
         @li_text = []
         inject_css(@element,"css/imglistchoose.css")
@@ -38,8 +38,8 @@ class ImgListChoose extends ListChoose
             @li[i].setAttribute("id",each.name)
             @li[i].style.width = LI_SIZE.w
             @li[i].style.height = LI_SIZE.h
-            @img_srcs[i] = "#{@img_src}/#{each.img}.#{@img_type}"
-            @img_srcs_hover[i] = "#{@img_src}/#{each.img}_hover.#{@img_type}"
+            @img_srcs[i] = getThemeIcon(each.img,ICON_SIZE_NORMAL)
+            @img_srcs_focus[i] = getThemeIcon(each.imgFocus,ICON_SIZE_NORMAL)
             @li_img[i] = create_img("Img_li_img",@img_srcs[i],@li[i])
             @li_text[i] = create_element("div","Img_li_text",@li[i])
             @li_text[i].textContent = each.fullname
@@ -47,7 +47,7 @@ class ImgListChoose extends ListChoose
         @setCurrentCss()
 
     selectCss: (i)=>
-        @li_img[i].src = @img_srcs_hover[i]
+        @li_img[i].src = @img_srcs_focus[i]
         @li_text[i].style.color = "#01bdff"
 
     unselectCss: (i) =>

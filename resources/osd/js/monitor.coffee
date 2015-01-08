@@ -35,15 +35,15 @@ class Monitor extends Display
     constructor:(@id)->
         super
         @MonitorListChoose = [
-            {fullname:_("Duplicate"),value:MODE.duplicate,name:"",img:"duplicate"},
-            {fullname:_("Extend"),value:MODE.extend,name:"",img:"extend"}
+            {fullname:_("Duplicate"),value:MODE.duplicate,name:"",img:"project_screen-duplicate-symbolic",imgFocus:"project_screen-duplicate-symbolic-focus"},
+            {fullname:_("Extend"),value:MODE.extend,name:"",img:"project_screen-extend-symbolic",imgFocus:"project_screen-extend-symbolic-focus"}
         ]
         @setMode = {}
 
     createDisplayMonitorsList: ->
         MODE.max = @MonitorsName.length
         for name in @MonitorsName
-            mode = {fullname:@getFullName(name),value:MODE.onlyone,name:name,img:"onlyone"}
+            mode = {fullname:@getFullName(name),value:MODE.onlyone,name:name,img:"project_screen-onlyone-symbolic",imgFocus:"project_screen-onlyone-symbolic-focus"}
             @MonitorListChoose.push(mode)
         echo "@MonitorListChoose.length:#{@MonitorListChoose.length}"
 

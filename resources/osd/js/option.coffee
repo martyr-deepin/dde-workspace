@@ -35,8 +35,8 @@ class Option extends Widget
             osdShow()
             setWinSize(@element)
             @element.style.display = "block"
-            set_bg(@,@id,@preImgName)
-            @preImgName = @id
+            set_bg(@,@image,@preImgName)
+            @preImgName = @image
 
             timeout_osdHide = setTimeout(osdHide,TIME_HIDE)
         ,TIME_PRESS)
@@ -69,6 +69,7 @@ osd.CapsLockOn = (keydown)->
         return
     OptionCls = new Option("CapsLockOn") if not OptionCls?
     OptionCls.id = "CapsLockOn"
+    OptionCls.image = "capslock-enabled-symbolic"
     OptionCls.show()
 
 osd.CapsLockOff = (keydown)->
@@ -78,35 +79,40 @@ osd.CapsLockOff = (keydown)->
         return
     OptionCls = new Option("CapsLockOff") if not OptionCls?
     OptionCls.id = "CapsLockOff"
+    OptionCls.image = "capslock-disabled-symbolic"
     OptionCls.show()
 
 osd.NumLockOn = (keydown)->
     if !keydown then return if mode is "dbus"
     OptionCls = new Option("NumLockOn") if not OptionCls?
     OptionCls.id = "NumLockOn"
+    OptionCls.image = "numlock-enabled-symbolic"
     OptionCls.show()
 
 osd.NumLockOff = (keydown)->
     if !keydown then return if mode is "dbus"
     OptionCls = new Option("NumLockOff") if not OptionCls?
     OptionCls.id = "NumLockOff"
+    OptionCls.image = "numlock-disabled-symbolic"
     OptionCls.show()
 
 osd.TouchpadOn = (keydown)->
     if !keydown then return if mode is "dbus"
     OptionCls  = new Option("TouchpadOn") if not OptionCls?
     OptionCls.id = "TouchpadOn"
+    OptionCls.image = "input-touchpad-symbolic"
     OptionCls.show()
 
 osd.TouchpadOff = (keydown)->
     if !keydown then return if mode is "dbus"
     OptionCls  = new Option("TouchpadOff") if not OptionCls?
     OptionCls.id = "TouchpadOff"
+    OptionCls.image = "touchpad-disabled-symbolic"
     OptionCls.show()
 
 osd.TouchpadToggle = (keydown)->
     if !keydown then return if mode is "dbus"
     OptionCls  = new Option("TouchpadToggle") if not OptionCls?
     OptionCls.id = "TouchpadToggle"
+    OptionCls.image = "touchpad-toggled-symbolic"
     OptionCls.show()
-
