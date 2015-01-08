@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# alibacha19 <alibacha19@gmail.com>, 2014
 # Karim Oulad Chalha <herr.linux88@gmail.com>, 2014
 # monzerissa169 <monzerissa169@yahoo.com>, 2014
 # monzerissa169 <monzerissa169@yahoo.com>, 2014
@@ -11,7 +12,7 @@ msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-12-26 11:18+0800\n"
-"PO-Revision-Date: 2014-12-27 17:50+0000\n"
+"PO-Revision-Date: 2014-12-30 13:21+0000\n"
 "Last-Translator: alibacha19 <alibacha19@gmail.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/projects/p/deepin-desktop-environment/language/ar/)\n"
 "MIME-Version: 1.0\n"
@@ -228,7 +229,7 @@ msgstr "نم_ط كلاسيكي"
 #: ../resources/dock/js/global_menu.coffee:38
 #: ../resources/guide/js/dock.coffee:42
 msgid "Notification area settings"
-msgstr ""
+msgstr "إعدادات المنطقة /الموقع"
 
 #: ../resources/dock/js/main.coffee:117 ../resources/zone/js/utils.coffee:13
 msgid "Launcher"
@@ -715,7 +716,7 @@ msgstr "الملحقات"
 
 #: ../lib/category.c:56
 msgid "others"
-msgstr ""
+msgstr "أخرى"
 
 #: ../lib/category.c:60
 msgid "Network"
@@ -723,7 +724,7 @@ msgstr "الشبكة"
 
 #: ../lib/category.c:61
 msgid "Game"
-msgstr ""
+msgstr "لعبة"
 
 #: ../lib/category.c:62
 msgid "Office"

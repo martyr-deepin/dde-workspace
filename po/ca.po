@@ -3,39 +3,40 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# samson <sambelet@yahoo.com>, 2014-2015
+# victor.guardiola <victor.guardiola@gmail.com>, 2014
+# victor.guardiola <victor.guardiola@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-12-26 11:18+0800\n"
-"PO-Revision-Date: 2015-01-01 01:40+0000\n"
-"Last-Translator: samson <sambelet@yahoo.com>\n"
-"Language-Team: Amharic (http://www.transifex.com/projects/p/deepin-desktop-environment/language/am/)\n"
+"PO-Revision-Date: 2015-01-06 13:51+0000\n"
+"Last-Translator: Marc Sancho <msgsistemes@gmail.com>\n"
+"Language-Team: Catalan (http://www.transifex.com/projects/p/deepin-desktop-environment/language/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: am\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: ca\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../resources/common/js/accounts.coffee:78
 msgid "Guest"
-msgstr "እንግዳ"
+msgstr "Convidat"
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
-msgstr "ማጥፋቱ \"%1\" በሚገባ ተሳክቷል"
+msgstr "Ha desinstal·lat \"%1\" correctament."
 
 #: ../resources/common/js/uninstaller.coffee:33
 msgid "\"%1\" failed to be uninstalled"
-msgstr "\"%1\" ለማጥፋት አልተቻለም"
+msgstr "\"%1\" ha fallat amb la desintal·lació."
 
 #: ../resources/desktop/js/application.coffee:179
 #: ../resources/desktop/js/richdir.coffee:348
 #: ../resources/desktop/js/richdir.coffee:600
 #: ../resources/desktop/js/richdir.coffee:643
 msgid "The link is invalid. Do you want to delete it?"
-msgstr "አገናኙ ዋጋ ያለው አይደለም፡ ማጥፋት ይፈልጋሉ?"
+msgstr "L'enllaç és invàlid. Voleu esborrar-ho?"
 
 #: ../resources/desktop/js/application.coffee:179
 #: ../resources/desktop/js/desktopentry.coffee:166
@@ -44,7 +45,7 @@ msgstr "አገናኙ ዋጋ ያለው አይደለም፡ ማጥፋት ይፈል�
 #: ../resources/desktop/js/richdir.coffee:643
 #: ../resources/dock/js/plugins/trash/trash.coffee:85
 msgid "Warning"
-msgstr "ማስጠንቀቂያ"
+msgstr "Alerta"
 
 #: ../resources/desktop/js/desktopentry.coffee:102
 #: ../resources/desktop/js/richdir.coffee:138
@@ -54,23 +55,23 @@ msgstr "ማስጠንቀቂያ"
 #: ../resources/guide/js/launcher.coffee:133
 #: ../resources/launcher/js/item.coffee:288
 msgid "_Open"
-msgstr "_መክፈቻ"
+msgstr "_Obrir"
 
 #: ../resources/desktop/js/desktopentry.coffee:104
 #: ../resources/desktop/js/richdir.coffee:582
 msgid "Cu_t"
-msgstr "መቁ_ረጫ"
+msgstr "Ta_llar"
 
 #: ../resources/desktop/js/desktopentry.coffee:105
 #: ../resources/desktop/js/item.coffee:401
 #: ../resources/desktop/js/richdir.coffee:583
 msgid "_Copy"
-msgstr "_ኮፒ ማድረጊያ"
+msgstr "_Copiar"
 
 #: ../resources/desktop/js/desktopentry.coffee:107
 #: ../resources/desktop/js/richdir.coffee:140
 msgid "_Rename"
-msgstr "_እንደገና መሰየሚያ"
+msgstr "_Renombrar"
 
 #: ../resources/desktop/js/desktopentry.coffee:108
 #: ../resources/desktop/js/invalidlink.coffee:34
@@ -78,168 +79,168 @@ msgstr "_እንደገና መሰየሚያ"
 #: ../resources/desktop/js/richdir.coffee:144
 #: ../resources/desktop/js/richdir.coffee:585
 msgid "_Delete"
-msgstr " _ማጥፊያ"
+msgstr "_Esborrar"
 
 #: ../resources/desktop/js/desktopentry.coffee:110
 #: ../resources/desktop/js/richdir.coffee:587
 #: ../resources/desktop/js/specialitem.coffee:53
 msgid "_Properties"
-msgstr "_ባህሪዎች"
+msgstr "_Propietats"
 
 #: ../resources/desktop/js/desktopentry.coffee:116
 #: ../resources/desktop/js/desktopentry.coffee:123
 msgid "Co_mpress"
-msgstr "ማመ_ቂያ"
+msgstr "Co_mprimir"
 
 #: ../resources/desktop/js/desktopentry.coffee:119
 #: ../resources/desktop/js/desktopentry.coffee:124
 msgid "_Extract"
-msgstr "_ማራገፊያ"
+msgstr "_Extreure"
 
 #: ../resources/desktop/js/desktopentry.coffee:120
 #: ../resources/desktop/js/desktopentry.coffee:125
 msgid "Extract _Here"
-msgstr "_እዚህ ማራገፊያ"
+msgstr "_Extreure aquí"
 
 #: ../resources/desktop/js/desktopentry.coffee:166
 #: ../resources/dock/js/plugins/trash/trash.coffee:85
 msgid "Can not open this file."
-msgstr "ይህን ፋይል መክፈት አልተቻለም"
+msgstr "No es pot obrir aquest arxiu."
 
 #: ../resources/desktop/js/grid.coffee:70 ../lib/dentry/fileops.c:402
 msgid "Untitled"
-msgstr "ያልተሰየመ"
+msgstr "Sense títol"
 
 #: ../resources/desktop/js/grid.coffee:1029
 msgid "_Folder"
-msgstr "_ፎልደር"
+msgstr "_Carpeta"
 
 #: ../resources/desktop/js/grid.coffee:1030
 msgid "_Text document"
-msgstr "የ _ጽሁፍ ሰነድ"
+msgstr "_Documet de text"
 
 #: ../resources/desktop/js/grid.coffee:1044
 msgid "_Name"
-msgstr "_ስም"
+msgstr "_Nom"
 
 #: ../resources/desktop/js/grid.coffee:1045
 msgid "Last modified _time"
-msgstr "መጨረሻ የተሻሻለበት _ሰአት"
+msgstr "Darrera _modificació"
 
 #: ../resources/desktop/js/grid.coffee:1049
 msgid "_Sort by"
-msgstr "_መለያ በ"
+msgstr "_Ordenar per"
 
 #: ../resources/desktop/js/grid.coffee:1050
 msgid "_New"
-msgstr "_አዲስ"
+msgstr "_Nou"
 
 #: ../resources/desktop/js/grid.coffee:1051
 msgid "Open in _terminal"
-msgstr "በ _ተርሚናል ውስጥ መክፈቻ"
+msgstr "Obrir en _terminal"
 
 #: ../resources/desktop/js/grid.coffee:1052
 #: ../resources/desktop/js/item.coffee:400
 msgid "_Paste"
-msgstr "_መለጠፊያ"
+msgstr "_Pegar"
 
 #: ../resources/desktop/js/grid.coffee:1054
 msgid "_Display settings"
-msgstr "ማሰናጃዎች _ማሳያ"
+msgstr "Característiques de _pantalla"
 
 #: ../resources/desktop/js/grid.coffee:1055
 msgid "_Corner navigation"
-msgstr "_የጥግ መቃኛ"
+msgstr "_Cantonada de navegació"
 
 #: ../resources/desktop/js/grid.coffee:1056
 msgid "Pe_rsonalize"
-msgstr "የግ_ልዎ ማድረጊያ"
+msgstr "Pe_rsonalitzar"
 
 #: ../resources/desktop/js/item.coffee:399
 msgid "_Cut"
-msgstr "_መቁረጫ"
+msgstr "_Tallar"
 
 #: ../resources/desktop/js/item.coffee:404
 msgid "_Select All"
-msgstr "_ሁሉንም መምረጫ"
+msgstr "_Seleccionar tot"
 
 #: ../resources/desktop/js/richdir.coffee:142
 msgid "_Ungroup"
-msgstr "_መለያያ"
+msgstr "_Desagrupar"
 
 #: ../resources/desktop/js/specialitem.coffee:34
 msgid "Computer"
-msgstr "ኮምፒዩተር"
+msgstr "Ordinador"
 
 #: ../resources/desktop/js/specialitem.coffee:87
 #: ../resources/dock/js/main.coffee:46 ../resources/dock/js/main.coffee:119
 msgid "Trash"
-msgstr "ቆሻሻ"
+msgstr "Paperera"
 
 #: ../resources/desktop/js/specialitem.coffee:150
 msgid "_Clean up %1 items"
-msgstr "_ማጽጃ %1 እቃዎችን"
+msgstr "_Netejar %1 elements"
 
 #: ../resources/desktop/js/specialitem.coffee:152
 msgid "_Clean up 1 item"
-msgstr "_ማጽጃ 1 እቃ"
+msgstr "_Netejar 1 element"
 
 #: ../resources/desktop/js/specialitem.coffee:154
 #: ../resources/dock/js/plugins/trash/trash.coffee:38
 msgid "_Empty"
-msgstr "_ባዶ"
+msgstr "_Buit"
 
 #: ../resources/dock/js/config.coffee:186
 msgid "Unknown"
-msgstr "ያልታወቀ"
+msgstr "Desconegut"
 
 #: ../resources/dock/js/global_menu.coffee:9
 #: ../resources/guide/js/dock.coffee:38
 msgid "Keep _showing"
-msgstr "እንደ ታየ _ማቆያ"
+msgstr "Mantenir _visible"
 
 #: ../resources/dock/js/global_menu.coffee:10
 #: ../resources/guide/js/dock.coffee:39
 msgid "Keep _hidden"
-msgstr "እንደ ተደበቅ _ማቆያ"
+msgstr "Mantenir _amagat"
 
 #: ../resources/dock/js/global_menu.coffee:12
 #: ../resources/guide/js/dock.coffee:40
 msgid "_Smart hide"
-msgstr "_በራሱ መደበቂያ"
+msgstr "_Amaga intel·ligent"
 
 #: ../resources/dock/js/global_menu.coffee:27
 #: ../resources/guide/js/dock.coffee:34
 msgid "_Fashion mode"
-msgstr ""
+msgstr "_Estil modern"
 
 #: ../resources/dock/js/global_menu.coffee:28
 #: ../resources/guide/js/dock.coffee:35
 msgid "_Efficient mode"
-msgstr ""
+msgstr "_Estil eficient"
 
 #: ../resources/dock/js/global_menu.coffee:29
 #: ../resources/guide/js/dock.coffee:36
 msgid "_Classic mode"
-msgstr "_ዘመናዊ ዘዴ"
+msgstr "_Estil clàssic"
 
 #: ../resources/dock/js/global_menu.coffee:38
 #: ../resources/guide/js/dock.coffee:42
 msgid "Notification area settings"
-msgstr "ማስታወቂያ ቦታ ማሰናጃ"
+msgstr "Configuració de l'àrea de notificació"
 
 #: ../resources/dock/js/main.coffee:117 ../resources/zone/js/utils.coffee:13
 msgid "Launcher"
-msgstr "ማስጀመሪያ"
+msgstr "Llançador"
 
 #: ../resources/dock/js/plugins/time/time.coffee:64
 msgid "Switch display mode"
-msgstr "የ ማሳያ ዘዴ መቀየሪያ"
+msgstr "Canviar el mode de visualització"
 
 #: ../resources/dock/js/plugins/time/time.coffee:65
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:84
 msgid "_Time settings"
-msgstr "_ሰአት ማሰናጃ"
+msgstr "_Configuració de l'hora"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:34
 msgid "%b %d %H:%M %a"
@@ -275,183 +276,183 @@ msgstr "%I:%M %p"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:82
 msgid "Display date"
-msgstr "ቀን ማሳያ"
+msgstr "Mostrar la data"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:83
 msgid "Display week"
-msgstr "ሳምንት ማሳያ"
+msgstr "Mostrar la setmana"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:42
 msgid "_Close"
-msgstr "_መዝጊያ"
+msgstr "_Tancar"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
 #: ../resources/launcher/js/item.coffee:358
 msgid "Are you sure to remove"
-msgstr "በእርግጥ ማስወገድ ይፈልጋሉ?"
+msgstr "Estàs segur de treure"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
 #: ../resources/launcher/js/item.coffee:358
 msgid "All dependencies will be removed"
-msgstr "ሁሉም ጥገኞች ይወገዳሉ"
+msgstr "Totes les dependències seran eliminades"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
 #: ../resources/launcher/js/item.coffee:358
 msgid "no"
-msgstr "አይ"
+msgstr "no"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
 #: ../resources/launcher/js/item.coffee:358
 msgid "yes"
-msgstr "አዎ"
+msgstr "si"
 
 #: ../resources/greeter/js/mediacontrol.coffee:129
 msgid "Click button to Play"
-msgstr "ለማጫወት ቁልፍፉን ይጫኑ"
+msgstr "Prem el botó per reproduir"
 
 #: ../resources/greeter/js/powermenu.coffee:26
 msgid "Shut down"
-msgstr "ማጥፊያ"
+msgstr "Apagar"
 
 #: ../resources/greeter/js/powermenu.coffee:27
 msgid "Restart"
-msgstr "እንደገና ማስጀመሪያ"
+msgstr "Reiniciar"
 
 #: ../resources/greeter/js/powermenu.coffee:28
 msgid "Suspend"
-msgstr "ማገጃ"
+msgstr "Suspendre"
 
 #: ../resources/greeter/js/powermenu.coffee:75
 msgid ""
 "The other users have logged in, shutdown or restart may cause the running "
 "data to be lost."
-msgstr "ሌላ ተጠቃሚ ገብቷል ማጥፋት ወይንም እንደገና ማስነሳት የ ዳታ መጥፋትን ሊያስከትል ይችላል"
+msgstr "Els altres usuaris han iniciat sessió, apagar o reiniciar poden ocasionar la pèrdua de les dades en execució."
 
 #: ../resources/greeter/js/powermenu.coffee:77
 msgid ""
 "User %1 has logged in, shutdown or restart may cause the running data to be "
 "lost."
-msgstr "ተጠቃሚ %1 ገብቷል ማጥፋት ወይንም እንደገና ማስነሳት የ ዳታ መጥፋትን ሊያስከትል ይችላል"
+msgstr "L'usuari %1 ha iniciat sessió, apagar o reiniciar pot ocasionar la pèrdua de les dades en execució."
 
 #: ../resources/greeter/js/powermenu.coffee:121
 msgid "Enter your password to %1"
-msgstr "የ መግቢያ ቃል ያስገቡ ለ %1"
+msgstr "Escriu la teva contrasenya per %1"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jan"
-msgstr "ጥር"
+msgstr "Gen"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Feb"
-msgstr "የካቲ"
+msgstr "Feb"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Mar"
-msgstr "መጋቢ"
+msgstr "Mar"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Apr"
-msgstr "ሚያዚ"
+msgstr "Abr"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "May"
-msgstr "ግንቦ"
+msgstr "Mai"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jun"
-msgstr "ሰኔ"
+msgstr "Jun"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jul"
-msgstr "ሐምሌ"
+msgstr "Jul"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Aug"
-msgstr "ነሐ/ጳ"
+msgstr "Ago"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Sep"
-msgstr "መስከ"
+msgstr "Set"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Oct"
-msgstr "ጥቅም"
+msgstr "Jul"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Nov"
-msgstr "ኅዳር"
+msgstr "Nov"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Dec"
-msgstr "ታሕሳ"
+msgstr "Des"
 
 #: ../resources/greeter/js/time.coffee:44
 msgid "Sun"
-msgstr "እሑድ"
+msgstr "Diu"
 
 #: ../resources/greeter/js/time.coffee:44
 msgid "Mon"
-msgstr "ሰኞ"
+msgstr "Dill"
 
 #: ../resources/greeter/js/time.coffee:44
 msgid "Tue"
-msgstr "ማክሰ"
+msgstr "Dim"
 
 #: ../resources/greeter/js/time.coffee:44
 msgid "Wed"
-msgstr "ረቡዕ"
+msgstr "Dic"
 
 #: ../resources/greeter/js/time.coffee:44
 msgid "Thu"
-msgstr "ሐሙስ"
+msgstr "Dij"
 
 #: ../resources/greeter/js/time.coffee:44
 msgid "Fri"
-msgstr "አርብ"
+msgstr "Div"
 
 #: ../resources/greeter/js/time.coffee:44
 msgid "Sat"
-msgstr "ቅዳሜ"
+msgstr "Dis"
 
 #: ../resources/greeter/js/user.coffee:408
 msgid "Login"
-msgstr "መግቢያ"
+msgstr "Accedir"
 
 #: ../resources/greeter/js/user.coffee:410
 msgid "Unlock"
-msgstr "መክፈቻ"
+msgstr "Desbloquejar"
 
 #: ../resources/guide/js/desktop.coffee:28
 msgid ""
 "Let's drag the other icon on the first icon \n"
 " to generate \"application group\""
-msgstr "ወደ መጀመሪያው ምልክት ላይ ሌላ ምልክት ይጎትቱ \nየ \"መተግበሪያዎች ቡድን\" ለማመንጨት"
+msgstr "Anem a arrossegar la icona sobre l'altra\n per generar un \"grup d'aplicacions\""
 
 #: ../resources/guide/js/desktop.coffee:121
 msgid "Well, you have learned how to create a \"application group\""
-msgstr " \"የ መተግበሪያ ቡድን\" መፍጠር አሁን ተምረዋል"
+msgstr "Bé, has après com crear un \"grup d'aplicacions\""
 
 #: ../resources/guide/js/desktop.coffee:122
 msgid "tips: Right-click on the application group will provide more functions"
-msgstr "ጠቃሚ ምክር：በ ቀኝ-ይጫኑ በ መተግበሪያው ቡድን ላይ ተጨማሪ ተግባሮች ለማግኘት"
+msgstr "Consell: Prémer clic dret sobre el grup d'aplicacions proveirà més funcions."
 
 #: ../resources/guide/js/desktop.coffee:132
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different "
 "events"
-msgstr ""
+msgstr "Feu lliscar el ratolí per les quatre cantonades superiors, el que pot desencadenar quatre esdeveniments diferents"
 
 #: ../resources/guide/js/desktop.coffee:154
 msgid ""
 "We already know that launcher can be shown/ hidden by sliding the mouse to "
 "the upper left corner"
-msgstr ""
+msgstr "Ja sabem que el llançador es pot mostrar/amagar lliscant el ratolí a la cantonada superior esquerra"
 
 #: ../resources/guide/js/desktop.coffee:176
 msgid ""
 "The workspace will be shown or hidden by sliding the mouse to the lower left"
 " corner"
-msgstr ""
+msgstr "L'escriptori es mostrarà/amagarà lliscant el ratolí a la cantonada inferior esquerra"
 
 #: ../resources/guide/js/desktop.coffee:202
 msgid ""
@@ -487,7 +488,7 @@ msgstr ""
 msgid ""
 "tips: Hover the setting icon on dock to quickly implement some setting "
 "functions"
-msgstr "ጠቃሚ ምክር： መጠቆሚያውን በ ዶክ ማሰናጃ ምልክት ላይ ያንሳፉ የማሰናጃ ተግባሮች ለመፈጸም"
+msgstr ""
 
 #: ../resources/guide/js/end.coffee:25
 msgid ""
@@ -497,7 +498,7 @@ msgstr ""
 
 #: ../resources/guide/js/end.coffee:30
 msgid "Start my Deepin trip"
-msgstr ""
+msgstr "Inicia el meu viatge Deepin"
 
 #: ../resources/guide/js/launcher.coffee:31
 msgid ""
@@ -521,147 +522,147 @@ msgstr ""
 
 #: ../resources/guide/js/launcher.coffee:135
 msgid "Remove from _favorites"
-msgstr "ከ _ምወዳቸው ውስጥ ማስወገጃ"
+msgstr "Esborra de _favorits"
 
 #: ../resources/guide/js/launcher.coffee:136
 #: ../resources/launcher/js/const.coffee:76
 msgid "Send to d_esktop"
-msgstr "ወደ ዴ_ስክቶፕ መላኪያ"
+msgstr "Envia a e_scriptori"
 
 #: ../resources/guide/js/launcher.coffee:137
 #: ../resources/launcher/js/const.coffee:80
 msgid "Send to do_ck"
-msgstr "ወደ ዶ_ክ መላኪያ"
+msgstr "Envia al pa_nell"
 
 #: ../resources/guide/js/launcher.coffee:139
 #: ../resources/launcher/js/const.coffee:68
 msgid "_Add to autostart"
-msgstr "ወደ በራሱ ማስጀመሪያ _መጨመሪያ"
+msgstr "_Afegir al autoinici"
 
 #: ../resources/guide/js/launcher.coffee:140
 #: ../resources/launcher/js/item.coffee:294
 msgid "_Uninstall"
-msgstr "_ማጥፊያ"
+msgstr "_Desinstal·lar"
 
 #: ../resources/guide/js/start.coffee:29
 msgid "New Launcher"
-msgstr "አዲስ ማስጀመሪያ"
+msgstr "Nou llançador"
 
 #: ../resources/guide/js/start.coffee:29
 msgid "New Desktop"
-msgstr "አዲስ ዴስክቶፕ"
+msgstr "Nou escriptori"
 
 #: ../resources/guide/js/start.coffee:29
 msgid "New System Settings"
-msgstr "አዲስ የስርአት ማሰናጃ"
+msgstr "Nova configuració de sistema"
 
 #: ../resources/guide/js/start.coffee:30
 msgid "The following will guide you to learn how to use some new functions"
-msgstr "የሚቀጥለው መምሪያ አዲስ ተግባሮችን እንዴት እንደሚጠቀሙ ያስተምርዎታል"
+msgstr "A continuació se'l guiarà per aprendre noves funcions"
 
 #: ../resources/guide/js/start.coffee:45
 msgid "Start"
-msgstr "ማስጀመሪያ"
+msgstr "Inici"
 
 #: ../resources/guide/js/start.coffee:52
 msgid "Skip the guide, experience immediately"
-msgstr ""
+msgstr "Saltar la guia, provar inmediatament"
 
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
-msgstr "እንኳን ደህና መጡ ወደ እዚህ ስርአት"
+msgstr "Benvingut al sistema operatiu Deepin"
 
 #: ../resources/guide/js/welcome.coffee:38
 msgid "Prepare for operation ..."
-msgstr "ለመፈጸም በዝግጅት ላይ ..."
+msgstr "Preparant per la operació ..."
 
 #: ../resources/launcher/js/const.coffee:60
 msgid "_Hide the icon"
-msgstr "ምልክቱን _መደበቂያ"
+msgstr "_Amagar la icona"
 
 #: ../resources/launcher/js/const.coffee:61
 msgid "_Display hidden icons"
-msgstr "የተደበቁ ምልክቶች _ማሳያ"
+msgstr "_Mostrar icones ocultes"
 
 #: ../resources/launcher/js/const.coffee:64
 msgid "_Hide this icon"
-msgstr "ይህን ምልክት _መደበቂያ"
+msgstr "_Amaga aquesta icona"
 
 #: ../resources/launcher/js/const.coffee:65
 msgid "_Display this icon"
-msgstr "ይህን ምልክት _ማሳያ"
+msgstr "_Mostra aquesta icona"
 
 #: ../resources/launcher/js/const.coffee:69
 msgid "_Remove from autostart"
-msgstr " ከ በራሱ ማስጀመሪያ _ማስወገጃ"
+msgstr "_Treure de l'autoinici"
 
 #: ../resources/launcher/js/const.coffee:77
 msgid "Remove from d_esktop"
-msgstr "ከ ዴ _ስክቶፕ ላይ ማስወገጃ"
+msgstr "Treure de l'e_scriptori"
 
 #: ../resources/launcher/js/const.coffee:81
 msgid "Remove from do_ck"
-msgstr "ከ ዶ_ከ ላይ ማስወገጃ"
+msgstr "Treure del pa_nell"
 
 #: ../resources/launcher/js/menu.coffee:5
 msgid "By name"
-msgstr "በ ስም"
+msgstr "Per nom"
 
 #: ../resources/launcher/js/menu.coffee:6
 msgid "By category (icon)"
-msgstr "በ ምድብ (ምልክት)"
+msgstr "Per categoria (icones)"
 
 #: ../resources/launcher/js/menu.coffee:7
 msgid "By category (text)"
-msgstr "በ ምድብ (ጽሁፍ)"
+msgstr "Per categoria (text)"
 
 #: ../resources/launcher/js/menu.coffee:8
 msgid "By time installed"
-msgstr "በ ተገጠመበት ሰአት"
+msgstr "Per temps de instal·lació"
 
 #: ../resources/launcher/js/menu.coffee:9
 msgid "By frequency"
-msgstr ""
+msgstr "Per freqüència"
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
-msgstr "ማባዣ"
+msgstr "Duplicar"
 
 #: ../resources/osd/js/monitor.coffee:39
 msgid "Extend"
-msgstr "ማስፋፊያ"
+msgstr "Extendre"
 
 #: ../resources/zone/js/utils.coffee:13
 msgid "Control Center"
-msgstr "መቆጣጠሪያ ማእከል"
+msgstr "Centre de control"
 
 #: ../resources/zone/js/utils.coffee:13
 msgid "All Windows"
-msgstr "ሁሉንም መስኮቶች"
+msgstr "Totes les finestres"
 
 #: ../resources/zone/js/utils.coffee:13
 msgid "Desktop"
-msgstr "ዴስክቶፕ"
+msgstr "Escriptori"
 
 #: ../resources/zone/js/utils.coffee:13
 msgid "None"
-msgstr "ምንም"
+msgstr "Cap"
 
 #: ../app/desktop/desktop.c:300
 msgid "New file"
-msgstr "አዲስ ፋይል"
+msgstr "Nou fitxer"
 
 #: ../app/desktop/desktop.c:311
 msgid "New directory"
-msgstr "አዲስ ዳይሬክቶሪ"
+msgstr "Nou directori"
 
 #: ../app/dock/dock.c:291
 msgid "Dock failed to start, because Compiz is not enabled."
-msgstr "ዶክን ማስጀመር አልተቻለም ምክንያቱም ኮምፒዝ ተሰናክሏል"
+msgstr "El panell no s'ha pogut iniciar ja que Compiz no està habilitat."
 
 #: ../app/greeter/greeter.c:209 ../app/greeter/lock.c:173
 msgid "Wrong Password"
-msgstr "የተሳሳተ የመግቢያ ቃል"
+msgstr "Contrasenya incorrecta"
 
 #: ../app/greeter/mutils.c:84
 msgid "%a, %b %d, %Y"
@@ -669,145 +670,145 @@ msgstr "%a, %b %d, %Y"
 
 #: ../lib/category.c:45
 msgid "all"
-msgstr "ሁሉንም"
+msgstr "tot"
 
 #: ../lib/category.c:46
 msgid "internet"
-msgstr "ኢንተርኔት"
+msgstr "internet"
 
 #: ../lib/category.c:47
 msgid "multimedia"
-msgstr "በርካታ መገናኛ"
+msgstr "multimèdia"
 
 #: ../lib/category.c:48
 msgid "games"
-msgstr "ጨዋታዎች"
+msgstr "jocs"
 
 #: ../lib/category.c:49
 msgid "graphics"
-msgstr "ንድፎች"
+msgstr "disseny"
 
 #: ../lib/category.c:50
 msgid "productivity"
-msgstr "ማምረቻ"
+msgstr "productivitat"
 
 #: ../lib/category.c:51
 msgid "industry"
-msgstr "ኢንዱስትሪ"
+msgstr "indústria"
 
 #: ../lib/category.c:52
 msgid "education"
-msgstr "ትምሕርት"
+msgstr "educació"
 
 #: ../lib/category.c:53
 msgid "development"
-msgstr "ብልጽግና"
+msgstr "desenvolup..."
 
 #: ../lib/category.c:54
 msgid "system"
-msgstr "ስርአት"
+msgstr "sistema"
 
 #: ../lib/category.c:55
 msgid "utilities"
-msgstr "የተለያዩ"
+msgstr "utilitats"
 
 #: ../lib/category.c:56
 msgid "others"
-msgstr "ሌላ"
+msgstr "altres"
 
 #: ../lib/category.c:60
 msgid "Network"
-msgstr "ኔትዎርክ"
+msgstr "Xarxa"
 
 #: ../lib/category.c:61
 msgid "Game"
-msgstr ""
+msgstr "Jocs"
 
 #: ../lib/category.c:62
 msgid "Office"
-msgstr "ቢሮ"
+msgstr "Oficina"
 
 #: ../lib/dentry/entry.c:748
 #, c-format
 msgid ""
 "Cannot rename the item to \"%s\". This may be caused by lack of permissions."
-msgstr "አካሉን በድጋሚ መሰየም አልተቻለም \"%s\". ምክንያቱም ፍቃድ ላይኖሮት ይችላል"
+msgstr "No es pot canviar el nom de l'element a \"%s\". Això pot ser causat per la manca de permisos."
 
 #: ../lib/dentry/entry.c:754
 #, c-format
 msgid ""
 "There is already a file with name \"%s\" in this folder. Please consider a "
 "different name."
-msgstr "በዚህ ስም ፋይል ቀደም ሲል \"%s\" በዚህ ፎልደር ውስጥ ነበር እባክዎን የተለየ ስም ያስገቡ"
+msgstr "Ja existeix un fitxer amb el nom \"%s\" en aquesta carpeta. Si us plau consideri un nom diferent."
 
 #: ../lib/dentry/entry.c:760
 msgid "The item could not be renamed"
-msgstr "ይህን እቃ በድጋሚ መሰየም አይቻልም"
+msgstr "L'arxiu no pot ser renombrat"
 
 #: ../lib/dentry/entry.c:834 ../lib/dentry/fileops.c:804
 msgid "copy"
-msgstr "ኮፒ ማድረጊያ"
+msgstr "copiar"
 
 #: ../lib/dentry/entry.c:1400
 msgid "App Group"
-msgstr "የቡድን መተግበሪያ"
+msgstr "Afegir grup"
 
 #: ../lib/dentry/fileops.c:565
 msgid "Move"
-msgstr "ማንቀሳቀሻ"
+msgstr "Moure"
 
 #: ../lib/dentry/fileops.c:771
 msgid "Copy"
-msgstr "ኮፒ ማድረጊያ"
+msgstr "Copiar"
 
 #: ../lib/dentry/fileops_delete.c:29
 msgid "Delete Files"
-msgstr "ፋይሎች ማጥፊያ"
+msgstr "Esborrar fitxers"
 
 #: ../lib/dentry/fileops_delete.c:32
 msgid "Are you sure you want to permanently delete the files?"
-msgstr "በእርግጥ እነዚህን ፋይሎች በቋሚነት ማጥፋት ይፈልጋሉ?"
+msgstr "Estàs segur que vols suprimir definitivament aquests fitxers?"
 
 #: ../lib/dentry/fileops_delete.c:33
 msgid "If you delete the files, they will be permanently lost."
-msgstr "ፋይሎቹን ካጠፉዋቸው በቋሚነት ይጠፋሉ"
+msgstr "Si esborres aquests arxius, es perdran definitivament."
 
 #: ../lib/dentry/fileops_delete.c:36
 msgid "Delete"
-msgstr "ማጥፊያ"
+msgstr "Esborra"
 
 #: ../lib/dentry/fileops_error_dialog.c:60
 msgid "File conflict"
-msgstr "የ ፋይል አለመስማማት"
+msgstr "Conflicte d'arxiu"
 
 #: ../lib/dentry/fileops_error_dialog.c:103
 msgid "_Select a new name for the destination"
-msgstr "ለመድረሻው አዲስ ስም _ይምረጡ"
+msgstr "_Selecciona un nou nom per al destí"
 
 #: ../lib/dentry/fileops_error_dialog.c:114
 msgid "Reset"
-msgstr "እንደ ነበር መመለሻ"
+msgstr "Reiniciar"
 
 #: ../lib/dentry/fileops_error_dialog.c:123
 msgid "Apply this action to all files"
-msgstr "ይህን ተግባር ለሁሉም ፋይሎች መፈጸሚያ"
+msgstr "Aplica aquesta acció a tots els arxius"
 
 #: ../lib/dentry/fileops_error_dialog.c:130
 msgid "_Skip"
-msgstr "_መዝለያ"
+msgstr "_Saltar"
 
 #: ../lib/dentry/fileops_error_dialog.c:133
 msgid "Re_name"
-msgstr "እን_ደገና መሰየሚያ"
+msgstr "Re_nombrar"
 
 #: ../lib/dentry/fileops_error_dialog.c:138
 msgid "Replace"
-msgstr "መቀየሪያ"
+msgstr "Reemplaçar "
 
 #: ../lib/dentry/fileops_error_dialog.c:215
 #, c-format
 msgid "Do you want to merge with folder \"%s\"?"
-msgstr "ፎልደሩን ማዋሀድ ይፈልጋሉ \"%s\"?"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:217
 msgid ""
@@ -818,17 +819,17 @@ msgstr ""
 #: ../lib/dentry/fileops_error_dialog.c:219
 #, c-format
 msgid "An older folder with the same name already exists in \"%s\"."
-msgstr "በዚህ ስም ቀደም ሲል ሌላ ፋይል ነበር በ \"%s\"."
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:223
 #, c-format
 msgid "A newer folder with the same name already exists in \"%s\"."
-msgstr "አዲስ ፎልደር በዚህ ስም ቀደም ሲል ነበር በ \"%s\"."
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:227
 #, c-format
 msgid "Another folder with the same name already exists in \"%s\"."
-msgstr "ሌላ ፎልደር በዚህ ስም ቀደም ሲል ነበር በ \"%s\"."
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:233
 msgid "All files in the folder will be removed by replacing."
@@ -837,17 +838,17 @@ msgstr ""
 #: ../lib/dentry/fileops_error_dialog.c:234
 #, c-format
 msgid "Do you want to replace folder \"%s\"?"
-msgstr "ፎልደሩን መቀየር ይፈልጋሉ \"%s\"?"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:236
 #, c-format
 msgid "A folder with the same name already exists in \"%s\"."
-msgstr "ፎልደር በዚህ ስም ቀደም ሲል ነበር በ \"%s\"."
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:242
 #, c-format
 msgid "Do you want to replace file \"%s\"?"
-msgstr "ፋይሉን መቀየር ይፈልጋሉ \"%s\"?"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:243
 msgid "The content will be overwritten by replacing."
@@ -856,85 +857,85 @@ msgstr ""
 #: ../lib/dentry/fileops_error_dialog.c:245
 #, c-format
 msgid "An older file with the same name already exists in \"%s\"."
-msgstr "በዚህ ስም ቀደም ሲል ሌላ ፋይል ነበር በ \"%s\"."
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:249
 #, c-format
 msgid "A newer file with the same name already exists in \"%s\"."
-msgstr "አዲስ ፋይል በዚህ ስም ቀደም ሲል ነበር በ \"%s\"."
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:253
 #, c-format
 msgid "Another file with the same name already exists in \"%s\"."
-msgstr "ሌላ ፋይል በዚህ ስም ቀደም ሲል ነበር በ \"%s\"."
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:325
 msgid "Original file"
-msgstr "ዋናው ፋይል"
+msgstr "Fitxer original"
 
 #: ../lib/dentry/fileops_error_dialog.c:326
 #: ../lib/dentry/fileops_error_dialog.c:354
 msgid "Size:"
-msgstr "መጠን:"
+msgstr "Mida:"
 
 #: ../lib/dentry/fileops_error_dialog.c:330
 #: ../lib/dentry/fileops_error_dialog.c:358
 msgid "Type:"
-msgstr "አይነት:"
+msgstr "Tipus:"
 
 #: ../lib/dentry/fileops_error_dialog.c:334
 #: ../lib/dentry/fileops_error_dialog.c:362
 msgid "Last modified:"
-msgstr "መጨረሻ የተሻሻለው:"
+msgstr "Última modificació:"
 
 #: ../lib/dentry/fileops_error_dialog.c:353
 msgid "Replace with"
-msgstr "መቀየሪያ በ"
+msgstr "Reemplaçar per"
 
 #: ../lib/dentry/fileops_error_dialog.c:379
 msgid "Merge"
-msgstr "ማዋሀጃ"
+msgstr "Fussionar"
 
 #: ../lib/dentry/fileops_error_reporting.c:106
 #: ../lib/dentry/fileops_error_reporting.c:191
 #, c-format
 msgid "Error while %s files"
-msgstr "ስህተት ተፈጥሯል %s ፋይሎች"
+msgstr "Error mentre %s arxius"
 
 #: ../lib/dentry/fileops_trash.c:58
 msgid "Empty Trash"
-msgstr "ቆሻሻውን ባዶ ማድረጊያ"
+msgstr "Paperera buida"
 
 #: ../lib/dentry/fileops_trash.c:67
 msgid "Empty all items from Trash?"
-msgstr "በ ቆሻሻው ውስጥ ያሉትን በሙሉ ባዶ ላድርገው"
+msgstr "Esborrar tot lo de la paperera?"
 
 #: ../lib/dentry/fileops_trash.c:68
 msgid "All items in the Trash will be permanently deleted."
-msgstr "በ ቆሻሻው ውስጥ ያሉትን በሙሉ በቋሚነት ይጠፋሉ"
+msgstr "Tots els elements en la paperera seran esborrats de forma permanent"
 
 #: ../lib/dentry/fileops_trash.c:71
 msgid "Empty _Trash"
-msgstr "_ቆሻሻውን ባዶ ማድረጊያ"
+msgstr "_Buidar la paperera"
 
 #: ../lib/dentry/mime_actions.c:198
 #, c-format
 msgid "Do you want to run \"%s\", or display its contents?"
-msgstr "ማስኬድ ነው የሚፈልጉት \"%s\", ወይንስ ይዞታዎችን ማሳየት?"
+msgstr "Voleu executar \"%s\", o mostrar el seu contingut?"
 
 #: ../lib/dentry/mime_actions.c:199
 #, c-format
 msgid "\"%s\" is an executable text file."
-msgstr "\"%s\" is an executable text file."
+msgstr "\"%s\" és un arxiu de text executable."
 
 #: ../lib/dentry/mime_actions.c:210
 msgid "Run in _Terminal"
-msgstr "በ _ተርሚናል ውስጥ ማስኬጃ"
+msgstr "Executa amb _Terminal"
 
 #: ../lib/dentry/mime_actions.c:211
 msgid "_Display"
-msgstr "_ማሳያ"
+msgstr "_Mostra"
 
 #: ../lib/dentry/mime_actions.c:213
 msgid "_Run"
-msgstr "_ማስኬጃ"
+msgstr "_Executar"
