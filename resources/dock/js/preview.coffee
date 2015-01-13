@@ -397,7 +397,7 @@ class PreviewWindow extends Widget
             if not activeWindow
                 activeWindow= new ActiveWindow(clientManager.CurrentActiveWindow_sync())
 
-            if activeWindow.active_window == @w_id
+            if activeWindow.itemId and activeWindow.active_window == @w_id
                 @to_active()
             else
                 @to_normal()
