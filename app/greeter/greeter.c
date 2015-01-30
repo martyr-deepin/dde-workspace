@@ -159,7 +159,6 @@ respond_authentication (LightDMGreeter *greeter, const gchar *text G_GNUC_UNUSED
         g_warning ("respond authentication failed:invalid prompt type\n");
         return ;
     }
-    g_warning ("respond authentication:%s\n", respond);
 
     lightdm_greeter_respond (greeter, respond);
 
