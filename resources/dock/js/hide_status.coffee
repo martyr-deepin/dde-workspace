@@ -112,7 +112,11 @@ class HideStatusManager
         if $("#panel").style.webkitTransform == "translateY(100%)"
             regionHeight = 0
 
+        workareaHeight = DOCK_HEIGHT
+        if HideMode.KeepShowing != settings.hideMode()
+            workareaHeight = 0
+
         if debugRegion
             console.warn("[HideStateManager.changeDockRegion] update_dock_region: #{regionHeight}")
-        DCore.Dock.change_workarea_height(regionHeight)
+        DCore.Dock.change_workarea_height(workareaHeight)
         update_dock_region(null, regionHeight)
