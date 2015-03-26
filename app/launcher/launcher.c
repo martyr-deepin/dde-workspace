@@ -169,11 +169,6 @@ void activate_window(Display *dsp, GdkWindow *w)
     XFlush(dsp);
 }
 
-gboolean launcher_show_source_func()
-{
-    launcher_show();
-    return G_SOURCE_REMOVE;
-}
 
 DBUS_EXPORT_API
 void launcher_show()
@@ -208,6 +203,13 @@ void launcher_show()
     if (is_js_already) {
         js_post_signal("launcher_shown");
     }
+}
+
+
+gboolean launcher_show_source_func()
+{
+    launcher_show();
+    return G_SOURCE_REMOVE;
 }
 
 
@@ -441,6 +443,16 @@ void notify_icon_theme_changed(GtkIconTheme* theme G_GNUC_UNUSED, gpointer data 
     js_post_signal("icon_theme_changed");
 }
 
+gboolean im_focus_in(GtkWidget* webview G_GNUC_UNUSED, GdkEvent* e G_GNUC_UNUSED , GtkIMContext* im_context)
+{
+    gtk_im_context_focus_in(im_context);
+    return G_SOURCE_CONTINUE;
+}
+gboolean im_focus_out(GtkWidget* webview G_GNUC_UNUSED, GdkEvent* e G_GNUC_UNUSED, GtkIMContext* im_context)
+{
+    gtk_im_context_focus_in(im_context);
+    return G_SOURCE_CONTINUE;
+}
 
 int main(int argc, char* argv[])
 {
@@ -553,13 +565,13 @@ int main(int argc, char* argv[])
     gdk_window_set_skip_pager_hint(gdkwindow, TRUE);
 
     GtkIMContext* im_context = gtk_im_multicontext_new();
-    gtk_im_context_set_client_window(im_context, gdkwindow);
     GdkRectangle area = {0, 60, 0, 0};
     area.x = launcher.width * .5 - 150;
     gtk_im_context_set_cursor_location(im_context, &area);
-    gtk_im_context_focus_in(im_context);
+    gtk_im_context_set_client_window(im_context, gdkwindow);
+    g_signal_connect(container, "focus-in-event", G_CALLBACK(im_focus_in), im_context);
+    g_signal_connect(container, "focus-out-event", G_CALLBACK(im_focus_out), im_context);
     g_signal_connect(im_context, "commit", G_CALLBACK(_do_im_commit), NULL);
-    g_message("set im done");
 
 #ifndef NDEBUG
     // monitor_resource_file("launcher", webview);
