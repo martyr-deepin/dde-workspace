@@ -379,9 +379,17 @@ JSValueRef dynamic_get (JSContextRef ctx,
     GVariantType* sig_out = g_variant_type_new("(v)");
     char* prop_name = jsstring_to_cstr(ctx, propertyName);
 
-    GVariant * v = g_dbus_connection_call_sync(obj_info->connection, obj_info->name, obj_info->path, "org.freedesktop.DBus.Properties", "Get",
-            g_variant_new("(ss)", obj_info->iface, prop_name), sig_out,
-            G_DBUS_CALL_FLAGS_NONE, -1, NULL, &error);
+    GVariant * v = g_dbus_connection_call_sync(obj_info->connection,
+                                               obj_info->name,
+                                               obj_info->path,
+                                               "org.freedesktop.DBus.Properties",
+                                               "Get",
+                                               g_variant_new("(ss)", obj_info->iface, prop_name),
+                                               sig_out,
+                                               G_DBUS_CALL_FLAGS_NONE,
+                                               -1,
+                                               NULL,
+                                               &error);
 
     g_free(prop_name);
     g_variant_type_free(sig_out);
