@@ -786,7 +786,7 @@ _copy_files_async (GFile* src, gpointer data)
             // g_debug("check the g_file_copy_async error first!");
 
             char* dest_path = g_file_get_path (dest);
-            gboolean is_exist = g_file_test(dest_path,G_FILE_TEST_EXISTS);
+            gboolean is_exist = g_file_test(dest_path, G_FILE_TEST_EXISTS);
             g_free (dest_path);
             if (is_exist)
             {
@@ -915,11 +915,13 @@ GFile* get_dest_file(GFile* src_file, GFile* dest_dir, GHashTable* debuting_file
                                             G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME,
                                             0, NULL, NULL);
     char* name = NULL;
-    if (src_info == NULL) {
-        name = g_file_get_basename(src_file);
-    } else {
+    if (src_info != NULL) {
         name = g_strdup(g_file_info_get_attribute_string(src_info, G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME));
         g_object_unref(src_info);
+    }
+
+    if (name == NULL) {
+        name = g_file_get_basename(src_file);
     }
 
     GFile* dest_file = g_file_get_child_for_display_name(dest_dir, name, NULL);
@@ -927,7 +929,8 @@ GFile* get_dest_file(GFile* src_file, GFile* dest_dir, GHashTable* debuting_file
 
     GFileType file_type = g_file_query_file_type(src_file, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
     while (1) {
-        char* name = g_file_get_path(dest_file);
+        // using is better than path, becase sometimes g_file_get_path will return NULL, like iphone.
+        char* name = g_file_get_uri(dest_file);
         if (!g_file_query_exists(dest_file, NULL) && g_hash_table_lookup(debuting_files, name) == NULL) {
             g_free(name);
             break;
@@ -939,7 +942,7 @@ GFile* get_dest_file(GFile* src_file, GFile* dest_dir, GHashTable* debuting_file
         g_object_unref(last_dest_file);
     }
 
-    g_hash_table_add(debuting_files, g_file_get_path(dest_file));
+    g_hash_table_add(debuting_files, g_file_get_uri(dest_file));
 
     return dest_file;
 }
