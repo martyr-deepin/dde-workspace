@@ -163,6 +163,8 @@ void registerRegions(cairo_rectangle_int_t* regions, gsize n)
                                            &err
                                           ));
 
+    g_object_unref(dbus);
+
 out:
     if (err != NULL) {
         g_warning("[%s] %s", __func__, err->message);

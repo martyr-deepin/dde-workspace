@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# samson <sambelet@yahoo.com>, 2014
+# samson <sambelet@yahoo.com>, 2014-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-12-26 11:18+0800\n"
-"PO-Revision-Date: 2014-12-26 04:47+0000\n"
-"Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
+"PO-Revision-Date: 2015-03-25 01:21+0000\n"
+"Last-Translator: samson <sambelet@yahoo.com>\n"
 "Language-Team: Amharic (http://www.transifex.com/projects/p/deepin-desktop-environment/language/am/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -226,7 +226,7 @@ msgstr "_ዘመናዊ ዘዴ"
 #: ../resources/dock/js/global_menu.coffee:38
 #: ../resources/guide/js/dock.coffee:42
 msgid "Notification area settings"
-msgstr ""
+msgstr "ማስታወቂያ ቦታ ማሰናጃ"
 
 #: ../resources/dock/js/main.coffee:117 ../resources/zone/js/utils.coffee:13
 msgid "Launcher"
@@ -721,7 +721,7 @@ msgstr "ኔትዎርክ"
 
 #: ../lib/category.c:61
 msgid "Game"
-msgstr ""
+msgstr "ጨዋታ"
 
 #: ../lib/category.c:62
 msgid "Office"

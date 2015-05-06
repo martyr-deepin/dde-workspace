@@ -83,6 +83,7 @@ class Item extends Widget
             icon_size = 48
             src = DCore.get_theme_icon(src, icon_size) || DCore.get_theme_icon(NOT_FOUND_ICON, icon_size)
         @img.src = src if src?
+        @icon = src
 
     set_tooltip: (text) ->
         if @windowTitle

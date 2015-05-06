@@ -6,6 +6,7 @@ class EntryProxy
     constructor: (@dbus)->
         @updateCache = true
         @stat = null
+        @type = @getType()
 
     connect: (signal, cb)->
         @dbus?.connect(signal, (name, value)=>
@@ -46,8 +47,17 @@ class EntryProxy
     menuContent:->
         @getProperty(ITEM_DATA_FIELD.menu, true)
 
-    type:->
+    getTypeProperty: ->
         @getProperty(ITEM_PROPERTY.type, false)
+
+    # FIXME: this is a temp solution and does not solve the real problem.
+    # reading dbus properties will lead to memory leak for unknown reason.
+    # NB:
+    # 1. getType assumes that the type won't be changed.
+    # 2. getType will return a function for code compatibility.
+    getType: ->
+        res = @getTypeProperty()
+        -> res
 
     id:->
         @getProperty(ITEM_PROPERTY.id, false)

@@ -15,6 +15,7 @@ autologin-user=${autologin_user}"
 fi
 echo "${LIGHTDM_SESSION}" | tee ${LIGHTDM_CONF} > /dev/null
 
-if [ "$1" = "configure" ];then
+if [ "$1" = "install" ] || [ "$1" = "upgrade" ]; then
+	[ -e /etc/init/dde-account.conf ] && rm -f /etc/init/dde-account.conf
 	[ -e /etc/xdg/autostart/dde-osd.desktop ] && rm -f /etc/xdg/autostart/dde-osd.desktop || true
 fi

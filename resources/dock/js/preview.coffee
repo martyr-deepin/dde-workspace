@@ -307,17 +307,15 @@ __clear_timeout = ->
 Preview_show = (group, allocation, cb) ->
     __clear_timeout()
     if cb and settings.displayMode() != DisplayMode.Fashion
-        Preview_container.setAnimationDuration(200, cb)
+        animationDuration = 200
+    else
+        animationDuration = 400
+    Preview_container.setAnimationDuration(animationDuration, cb)
+    __SHOW_PREVIEW_ID = setTimeout(->
         Preview_container.show_group(group, allocation, cb)
         if Preview_container.is_showing == false
             cb?()
-    else
-        Preview_container.setAnimationDuration(400, cb)
-        __SHOW_PREVIEW_ID = setTimeout(->
-            Preview_container.show_group(group, allocation, cb)
-            if Preview_container.is_showing == false
-                cb?()
-        , 300)
+    , 300)
 
 Preview_close_now = (client)->
     __clear_timeout()
@@ -397,7 +395,7 @@ class PreviewWindow extends Widget
             if not activeWindow
                 activeWindow= new ActiveWindow(clientManager.CurrentActiveWindow_sync())
 
-            if activeWindow.active_window == @w_id
+            if activeWindow.itemId and activeWindow.active_window == @w_id
                 @to_active()
             else
                 @to_normal()

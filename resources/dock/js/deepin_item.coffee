@@ -143,7 +143,10 @@ class SystemItem extends AppItem
                 when DisplayMode.Classic
                     icon_size = 16
             src = DCore.get_theme_icon(src, icon_size)
-        @img.src = src if src?
+
+        if src?
+            @img.src = src
+            @icon = src
 
     isFirstElementChild:->
         $("#system").firstElementChild.isEqualNode(@element)

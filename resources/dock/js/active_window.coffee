@@ -31,7 +31,6 @@ clientManager?.connect("ActiveWindowChanged", (xid)->
         item.show_open_indicator()
     else
         activeWindow.itemId = null
-        activeWindow.active_window = 0
 
     if origItem and origItem.isApp() and origItem.isActive()
         origItem.show_open_indicator()

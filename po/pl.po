@@ -5,13 +5,13 @@
 # Translators:
 # Kaczor <3drian@gmail.com>, 2014
 # mefjak <mefjak@gmail.com>, 2014
-# Piotr Strębski <strebski@o2.pl>, 2014
+# Piotr Strębski <strebski@o2.pl>, 2014-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-12-26 11:18+0800\n"
-"PO-Revision-Date: 2014-12-29 19:50+0000\n"
+"PO-Revision-Date: 2015-03-23 10:24+0000\n"
 "Last-Translator: Piotr Strębski <strebski@o2.pl>\n"
 "Language-Team: Polish (http://www.transifex.com/projects/p/deepin-desktop-environment/language/pl/)\n"
 "MIME-Version: 1.0\n"
@@ -106,7 +106,7 @@ msgstr "Rozpakuj _tutaj"
 #: ../resources/desktop/js/desktopentry.coffee:166
 #: ../resources/dock/js/plugins/trash/trash.coffee:85
 msgid "Can not open this file."
-msgstr "Nie mogę otworzyć tego pliku."
+msgstr "Nie można otworzyć tego pliku."
 
 #: ../resources/desktop/js/grid.coffee:70 ../lib/dentry/fileops.c:402
 msgid "Untitled"
@@ -167,7 +167,7 @@ msgstr "W_ybierz wszystko"
 
 #: ../resources/desktop/js/richdir.coffee:142
 msgid "_Ungroup"
-msgstr "Rozpruj"
+msgstr "Rozgrupuj"
 
 #: ../resources/desktop/js/specialitem.coffee:34
 msgid "Computer"
@@ -203,7 +203,7 @@ msgstr "Zawsze _pokazuj"
 #: ../resources/dock/js/global_menu.coffee:10
 #: ../resources/guide/js/dock.coffee:39
 msgid "Keep _hidden"
-msgstr "Zawsze _chowaj"
+msgstr "Zawsze _ukrywaj"
 
 #: ../resources/dock/js/global_menu.coffee:12
 #: ../resources/guide/js/dock.coffee:40
@@ -431,7 +431,7 @@ msgstr "Przenieś inną ikonę na pierwszą ikonę,\naby utworzyć \"grupę prog
 
 #: ../resources/guide/js/desktop.coffee:121
 msgid "Well, you have learned how to create a \"application group\""
-msgstr "Tak więc nauczyłeś się jak utworzyć \"grupę programów\""
+msgstr "Tak więc nauczyłeś się jak utworzyć grupę programów"
 
 #: ../resources/guide/js/desktop.coffee:122
 msgid "tips: Right-click on the application group will provide more functions"
@@ -447,13 +447,13 @@ msgstr "Najeżdżanie myszką na cztery główne narożniki ekranu inicjuje czte
 msgid ""
 "We already know that launcher can be shown/ hidden by sliding the mouse to "
 "the upper left corner"
-msgstr "Wiemy już, że aktywator programów może być ukazywany/chowany poprzez najechanie myszką na górny lewy narożnik ekranu"
+msgstr "Wiemy już, że aktywator programów może być ukazywany/ukrywany poprzez najechanie myszką na górny lewy narożnik ekranu"
 
 #: ../resources/guide/js/desktop.coffee:176
 msgid ""
 "The workspace will be shown or hidden by sliding the mouse to the lower left"
 " corner"
-msgstr "Przestrzenie robocze będą ukazywane lub chowane poprzez najechanie myszką na lewy dolny narożnik ekranu"
+msgstr "Przestrzenie robocze będą ukazywane lub ukrywane poprzez najechanie myszką na lewy dolny narożnik ekranu"
 
 #: ../resources/guide/js/desktop.coffee:202
 msgid ""
@@ -475,7 +475,7 @@ msgstr "Trzy tryby i stany ekranu mogą być przełączane poprzez kliknięcie p
 msgid ""
 "The Control Center will be shown or hidden by sliding the mouse to the lower"
 " right corner"
-msgstr "Centrum sterowania będzie ukazywane lub chowane przy najeżdżaniu myszką na dolny prawy narożnik ekranu"
+msgstr "Centrum sterowania będzie ukazywane lub ukrywane przy najeżdżaniu myszką na dolny prawy narożnik ekranu"
 
 #: ../resources/guide/js/dss.coffee:33
 msgid "tips: Click the setting icon on dock to implement"
@@ -740,7 +740,7 @@ msgstr "Nie udało się zmienić nazwy na \"%s\". Może to być spowodowane brak
 msgid ""
 "There is already a file with name \"%s\" in this folder. Please consider a "
 "different name."
-msgstr "Nazwa \"%s\" jest już używana w tym folderze. Proszę użyj innej nazwy."
+msgstr "Nazwa \"%s\" jest już używana w tym katalogu. Proszę użyj innej nazwy."
 
 #: ../lib/dentry/entry.c:760
 msgid "The item could not be renamed"
@@ -815,7 +815,7 @@ msgstr "Czy chcesz połączyć z katalogiem \"%s\"?"
 msgid ""
 "The merging operation will be asked to confirm before replacing any files in"
 " the folder conflicted."
-msgstr "Połączenie zapyta o potwierdzenie przed zastąpieniem jakichkolwiek plików w folderze, które powodują konflikty."
+msgstr "Połączenie zapyta o potwierdzenie przed zastąpieniem jakichkolwiek plików w katalogu, które powodują konflikty."
 
 #: ../lib/dentry/fileops_error_dialog.c:219
 #, c-format
@@ -834,7 +834,7 @@ msgstr "Inny katalog o tej samej nazwie już istnieje w \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:233
 msgid "All files in the folder will be removed by replacing."
-msgstr "Wszystkie pliki w folderze zostaną usunięte poprzez ich zamianę."
+msgstr "Wszystkie pliki w katalogu zostaną usunięte poprzez ich zamianę."
 
 #: ../lib/dentry/fileops_error_dialog.c:234
 #, c-format
