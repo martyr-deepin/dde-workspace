@@ -211,7 +211,9 @@ GdkWindow* wrapper(Window xid, enum _EmbedWindowType type)
     }
 
     gdk_window_add_filter(child, __monitor_embed_window, NULL);
-    gdk_window_show(child);
+    if (type == EWTypeTrayIcon) {
+        gdk_window_show(child);
+    }
 
     g_hash_table_insert(__EMBEDED_WINDOWS__, (gpointer)xid, child);
     g_hash_table_insert(__EMBEDED_WINDOWS_TYPE__, (gpointer)xid, GINT_TO_POINTER(type));
