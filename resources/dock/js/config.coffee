@@ -115,7 +115,7 @@ NOT_FOUND_ICON = get_default_application_icon(48)
 
 ICON_SCALE = MAX_SCALE  #this will be modify on runtime
 
-EMPTY_TRASH_ICON = "user-trash-empyt"
+EMPTY_TRASH_ICON = "user-trash-empty"
 FULL_TRASH_ICON = "user-trash-full"
 EMPTY_TRASH_OPENED_ICON = "user-trash-empty-opened"
 FULL_TRASH_OPENED_ICON = "user-trash-full-opened"
