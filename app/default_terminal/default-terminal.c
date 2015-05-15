@@ -4,9 +4,9 @@ int main(int argc, char* *argv)
 {
     GSettings *s = g_settings_new("com.deepin.desktop.default-applications.terminal");
     char* exec = g_settings_get_string(s, "exec");
-    if (g_strcmp0(exec, argv[0]) == 0)
-        return;
     g_object_unref(s);
+    if (g_strcmp0(exec, argv[0]) == 0)
+        return 0;
     argv[0] = exec;
     if (argc > 1 && (g_strcmp0(exec, "gnome-terminal") == 0 ||
             g_strcmp0(exec, "terminator") == 0)) {

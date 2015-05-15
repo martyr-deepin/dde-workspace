@@ -17,7 +17,3 @@ override_dh_auto_configure:
 
 override_dh_shlibdeps:
 	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info
-
-override_dh_auto_install:
-	gcc -o debian/default-terminal debian/default-terminal.c `pkg-config --libs --cflags glib-2.0 gio-unix-2.0`
-	dh_auto_install
