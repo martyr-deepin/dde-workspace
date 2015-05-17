@@ -62,6 +62,7 @@ static GOptionEntry entries[] = {
     {"replace", 'r', 0, G_OPTION_ARG_NONE, &is_replace, "replace launcher", NULL},
     {"hidden", 'h', 0, G_OPTION_ARG_NONE, &is_hidden, "start and hide launcher", NULL},
     {"quit", 'q', 0, G_OPTION_ARG_NONE, &is_quit, "start and hide launcher", NULL},
+    {NULL}
 };
 
 
@@ -105,7 +106,7 @@ gboolean set_size()
         GdkWindow* gdk = gtk_widget_get_window(webview);
         gdk_window_set_geometry_hints(gdk, &geo, GDK_HINT_MIN_SIZE);
         gdk_window_move_resize(gdk, 0, 0, launcher.width, launcher.height);
-        gdk_window_flush(gdk);
+        gdk_flush();
     }
 
 #ifndef NDEBUG
@@ -129,7 +130,7 @@ void size_allocate_handler(GtkWidget* widget G_GNUC_UNUSED,
         GdkWindow* gdk = gtk_widget_get_window(widget);
         gdk_window_set_geometry_hints(gdk, &geo, GDK_HINT_MIN_SIZE);
         gdk_window_resize(gdk, launcher.width, launcher.height);
-        gdk_window_flush(gdk);
+        gdk_flush();
     }
 }
 

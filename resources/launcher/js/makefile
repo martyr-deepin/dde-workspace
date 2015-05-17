@@ -1,3 +1,5 @@
+NODE_PATH?=../../../node_modules
+coffee?=${NODE_PATH}/.bin/coffee
 com_dir = ../../common/js
 com_coffee = ${com_dir}/strict_mode.coffee ${com_dir}/config.coffee \
 	     ${com_dir}/module.coffee ${com_dir}/utils.coffee \
@@ -28,4 +30,4 @@ all: ${com_coffee} \
 	event.coffee \
 	signal.coffee \
 	main.coffee
-	coffee -cj launcher.js $^
+	cat $^ | ${coffee} -c --stdio > launcher.js

@@ -53,7 +53,10 @@ GtkWidget* fileops_error_conflict_dialog_new (GtkWindow* parent, GFile* src,
 
     g_debug ("show_conflict_dialog");
     //details from parameters
-    GtkWidget *hbox, *vbox, *vbox2, *alignment;
+    GtkWidget *hbox, *vbox, *vbox2;
+#if !GTK_CHECK_VERSION(3, 14, 0)
+    GtkWidget *alignment;
+#endif
     GtkWidget *widget, *dialog_area;
 
     dialog = gtk_dialog_new ();
@@ -70,7 +73,12 @@ GtkWidget* fileops_error_conflict_dialog_new (GtkWindow* parent, GFile* src,
     /* Setup the dialog image */
     widget = gtk_image_new_from_icon_name("gtk-dialog-warning", GTK_ICON_SIZE_DIALOG);
     gtk_box_pack_start (GTK_BOX (hbox), widget, FALSE, FALSE, 0);
+#if GTK_CHECK_VERSION(3, 14, 0)
+    gtk_widget_set_halign(widget, .5);
+    gtk_widget_set_valign(widget, .0);
+#else
     gtk_misc_set_alignment (GTK_MISC (widget), 0.5, 0.0);
+#endif
 
     /* Setup the vbox containing the dialog body */
     vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
@@ -84,11 +92,16 @@ GtkWidget* fileops_error_conflict_dialog_new (GtkWindow* parent, GFile* src,
     details.titles_vbox = widget;
 
     /* Setup the hboxes to pack file infos into */
+    vbox2 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
+#if GTK_CHECK_VERSION(3, 14, 0)
+    gtk_widget_set_margin_start(vbox2, 12);
+    gtk_box_pack_start(GTK_BOX(vbox), vbox2, FALSE, FALSE, 0);
+#else
     alignment = gtk_alignment_new (0.0, 0.0, 0.0, 0.0);
     g_object_set (alignment, "left-padding", 12, NULL);
-    vbox2 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
     gtk_container_add (GTK_CONTAINER (alignment), vbox2);
     gtk_box_pack_start (GTK_BOX (vbox), alignment, FALSE, FALSE, 0);
+#endif
 
     //2.src
     hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
@@ -117,7 +130,11 @@ GtkWidget* fileops_error_conflict_dialog_new (GtkWindow* parent, GFile* src,
     gtk_box_pack_start (GTK_BOX (hbox), widget, FALSE, FALSE, 6);
     g_signal_connect (widget, "clicked", G_CALLBACK (_reset_button_clicked_cb), dialog);
 
+#if GTK_CHECK_VERSION(3, 14, 0)
+    gtk_widget_show_all(vbox2);
+#else
     gtk_widget_show_all (alignment);
+#endif
 
     //6. checkbox
     widget = gtk_check_button_new_with_mnemonic (_("Apply this action to all files"));
@@ -264,7 +281,12 @@ _setup_dialog_labels (GFile* src, GFile* dest, GtkWidget* dialog G_GNUC_UNUSED)
     label = gtk_label_new (primary_text);
     gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
     gtk_label_set_line_wrap_mode (GTK_LABEL (label), PANGO_WRAP_WORD_CHAR);
+#if GTK_CHECK_VERSION(3, 14, 0)
+    gtk_widget_set_halign(label, .0);
+    gtk_widget_set_valign(label, .5);
+#else
     gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+#endif
     gtk_box_pack_start (GTK_BOX (details.titles_vbox), label, FALSE, FALSE, 0);
     gtk_widget_show (label);
 
@@ -277,7 +299,12 @@ _setup_dialog_labels (GFile* src, GFile* dest, GtkWidget* dialog G_GNUC_UNUSED)
 
     label = gtk_label_new (secondary_text);
     gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+#if GTK_CHECK_VERSION(3, 14, 0)
+    gtk_widget_set_halign(label, .0);
+    gtk_widget_set_valign(label, .5);
+#else
     gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+#endif
     gtk_box_pack_start (GTK_BOX (details.titles_vbox), label, FALSE, FALSE, 0);
     gtk_widget_show (label);
     g_free (primary_text);

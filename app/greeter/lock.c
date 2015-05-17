@@ -194,7 +194,7 @@ focus_out_cb (GtkWidget* w G_GNUC_UNUSED, GdkEvent*e G_GNUC_UNUSED, gpointer use
 static void
 show_cb (GtkWindow* container, gpointer data G_GNUC_UNUSED)
 {
-    gs_grab_move_to_window (grab,gtk_widget_get_window (container),gtk_window_get_screen (container),FALSE);
+    gs_grab_move_to_window (grab,gtk_widget_get_window (GTK_WIDGET(container)),gtk_window_get_screen (container),FALSE);
 }
 
 

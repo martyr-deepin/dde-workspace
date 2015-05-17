@@ -1,3 +1,5 @@
+NODE_PATH?=../../../node_modules
+coffee?=${NODE_PATH}/.bin/coffee
 com_dir = ../../common/js
 com_coffee =${com_dir}/config.coffee ${com_dir}/utils.coffee  ${com_dir}/module.coffee ${com_dir}/widget.coffee ${com_dir}/selector.coffee ${com_dir}/accounts.coffee ${com_dir}/power.coffee
 
@@ -9,6 +11,6 @@ greeter_coffee = ${common_coffee} version.coffee desktopmenu.coffee usermenu.cof
 lock_coffee = ${common_coffee} keyboard.coffee time.coffee switchuser.coffee ${com_dir}/audioplay.coffee mediacontrol.coffee lock.coffee
 
 all: ${greeter_coffee} ${lock_coffee}
-	coffee -cj greeter.js ${greeter_coffee}
-	coffee -cj lock.js ${lock_coffee}
+	cat ${greeter_coffee} | ${coffee} -c --stdio > greeter.js
+	cat ${lock_coffee} | ${coffee} -c --stdio >  lock.js
 

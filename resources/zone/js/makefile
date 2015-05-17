@@ -1,6 +1,8 @@
+NODE_PATH?=../../../node_modules
+coffee?=${NODE_PATH}/.bin/coffee
 com_dir = ../../common/js
 com_coffee = ${com_dir}/utils.coffee ${com_dir}/module.coffee ${com_dir}/widget.coffee
 
 zone_coffee = utils.coffee animation.coffee option.coffee zone.coffee
 all: ${com_coffee} ${zone_coffee} main.coffee
-	coffee -cj zone.js $^
+	cat $^ | ${coffee} -c --stdio > zone.js

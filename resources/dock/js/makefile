@@ -1,3 +1,5 @@
+NODE_PATH?=../../../node_modules
+coffee?=${NODE_PATH}/.bin/coffee
 com_dir = ../../common/js
 com_coffee = ${com_dir}/config.coffee ${com_dir}/utils.coffee \
 	     ${com_dir}/animation.coffee ${com_dir}/module.coffee \
@@ -39,4 +41,4 @@ all: ${com_coffee} \
 	signal.coffee\
 	event.coffee\
 	main.coffee
-	coffee -cj dock.js $^
+	cat $^ | ${coffee} -c --stdio > dock.js

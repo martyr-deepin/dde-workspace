@@ -87,7 +87,7 @@ static struct {
     gboolean is_TouchpadOn;
     gboolean is_TouchpadOff;
     gboolean is_TouchpadToggle;
-} option = {FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE};
+} option = {FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE};
 static GOptionEntry entries[] = {
     {"AudioUp", 0, 0, G_OPTION_ARG_NONE, &option.is_AudioUp, "OSD AudioUp", NULL},
     {"AudioDown", 0, 0, G_OPTION_ARG_NONE, &option.is_AudioDown, "OSD AudioDown", NULL},
@@ -143,15 +143,44 @@ const char* osd_get_argv()
     return input;
 }
 
+
+static
+GList* get_keyboards()
+{
+    GList* keyboards = NULL;
+
+    GdkDeviceManager* device_manager = gdk_display_get_device_manager(gdk_display_get_default());
+    GList* master_devices = gdk_device_manager_list_devices(device_manager, GDK_DEVICE_TYPE_MASTER);
+    GList* l = NULL;
+
+    for (l = master_devices; l != NULL; l = l->next) {
+        GdkDevice* device = (GdkDevice*)(l->data);
+        if (gdk_device_get_source(device) == GDK_SOURCE_KEYBOARD) {
+            keyboards = g_list_prepend(keyboards, l->data);
+        }
+    }
+
+    g_list_free(master_devices);
+
+    return g_list_reverse(keyboards);
+}
+
 PRIVATE
 gboolean keyboard_grab ()
 {
-    int status = gdk_keyboard_grab(gtk_widget_get_window(container), FALSE, GDK_CURRENT_TIME);
-    g_debug("keyboard grab:%d===%d",status,GDK_GRAB_SUCCESS);
-    if (status == GDK_GRAB_SUCCESS){
+    GList* keyboards = get_keyboards();
+    GList* l = NULL;
+    gboolean grab_success = TRUE;
+    for (l = keyboards; l != NULL; l = l->next) {
+        GdkDevice* device = l->data;
+        GdkGrabStatus status = gdk_device_grab(device, gtk_widget_get_window(container), GDK_OWNERSHIP_NONE/**/, FALSE, GDK_ALL_EVENTS_MASK/**/, NULL/**/, GDK_CURRENT_TIME);
+        grab_success = grab_success && status == GDK_GRAB_SUCCESS;
+    }
+
+    if (grab_success) {
         g_source_remove(grab_remove_timeout);
         return FALSE;
-    }else{
+    } else {
         return TRUE;
     }
 }
@@ -160,13 +189,17 @@ JS_EXPORT_API
 void osd_grab ()
 {
     grab_timeout = g_timeout_add(50,(GSourceFunc)keyboard_grab,NULL);
-    grab_remove_timeout = g_timeout_add(1000,(GSourceFunc)g_source_remove,(gpointer)grab_timeout);
+    grab_remove_timeout = g_timeout_add(1000,(GSourceFunc)g_source_remove,GSIZE_TO_POINTER(grab_timeout));
 }
 
 JS_EXPORT_API
 void osd_ungrab ()
 {
-    gdk_keyboard_ungrab(GDK_CURRENT_TIME);
+    GList* keyboards = get_keyboards();
+    GList* l = NULL;
+    for (l = keyboards; l != NULL; l = l->next) {
+        gdk_device_ungrab(GDK_DEVICE(l->data), GDK_CURRENT_TIME);
+    }
 }
 
 JS_EXPORT_API
@@ -175,7 +208,7 @@ void osd_quit()
     g_warning("osd_quit");
     g_key_file_free(shutdown_config);
     if(option.is_SwitchMonitors){
-        gdk_keyboard_ungrab(GDK_CURRENT_TIME);
+        osd_ungrab();
     }
     gtk_main_quit();
 }
@@ -292,9 +325,8 @@ int main (int argc, char **argv)
     g_option_context_add_group(ctx, gtk_get_option_group(TRUE));
 
     if (argc == 1){
-        g_warning("please input the option\n");
         const gchar * help = g_option_context_get_help(ctx,TRUE,gtk_get_option_group(TRUE));
-        g_message("%s",help);
+        g_print("%s",help);
         return 0;
     }
 
