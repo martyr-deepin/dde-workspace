@@ -8,7 +8,7 @@ class Trash extends PostfixedItem
     constructor:(@id, icon, @title)->
         super
         # @imgContainer.draggable = true
-        @set_tooltip(title)
+        @set_tooltip(@title)
         @w_id = 0
         @is_opened = false
         @entry = DCore.DEntry.get_trash_entry()

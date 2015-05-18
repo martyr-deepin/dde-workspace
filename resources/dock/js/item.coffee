@@ -47,7 +47,7 @@ class Item extends Widget
 
         @imgWrap.classList.add("ReflectImg")
 
-        @change_icon(icon || NOT_FOUND_ICON)
+        @change_icon(@icon || NOT_FOUND_ICON)
 
         @imgWrap.style.pointerEvents = "auto"
         @imgWrap.addEventListener("mouseover", @on_mouseover)

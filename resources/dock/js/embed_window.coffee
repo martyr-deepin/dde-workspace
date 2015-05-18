@@ -9,7 +9,7 @@ class EmbedWindow
         @xids = []
         for xid in xids
             @xids.push(xid.Xid)
-            $EW.create(xid.Xid, resize, type)
+            $EW.create(xid.Xid, resize, @type)
             $EW.hide(xid.Xid)
 
     window_size:(xid)->
