@@ -1,7 +1,4 @@
-NODE_PATH?=../../../node_modules
-coffee?=${NODE_PATH}/.bin/coffee
-com_dir = ../../common/js
-com_coffee =${com_dir}/config.coffee ${com_dir}/utils.coffee  ${com_dir}/module.coffee ${com_dir}/widget.coffee ${com_dir}/selector.coffee ${com_dir}/accounts.coffee ${com_dir}/power.coffee
+include ../../common/js/Makefile
 
 init_coffee = config.coffee resolution.coffee animation.coffee
 com_module_coffee = select.coffee theme.coffee message.coffee user.coffee menuchoose.coffee powermenu.coffee

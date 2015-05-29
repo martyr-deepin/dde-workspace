@@ -41,12 +41,9 @@ endmacro()
 macro(GEN_JS_FILE NAME)
     set(_DIR ${PROJECT_SOURCE_DIR}/resources/${NAME}/js)
     add_custom_target(${NAME}_js
-	    COMMAND coffee=${PROJECT_SOURCE_DIR}/node_modules/.bin/coffee make -C ${_DIR}
+	    COMMAND make -C ${_DIR} -e NODE_PATH=${PROJECT_SOURCE_DIR}/node_modules/
         DEPENDS ${_DIR}/makefile
     )
-    # execute_process(
-    #     COMMAND make -C ${_DIR}
-    # )
 endmacro()
 
 if (DEVELOP)

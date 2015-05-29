@@ -15,11 +15,6 @@ SET_TARGET_PROPERTIES(${NAME}
     PROPERTIES OUTPUT_NAME dde-${NAME}
     )
 
-execute_process(
-    COMMAND make
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/resources/${NAME}/js
-    )
-
 install(
     PROGRAMS ${PROJECT_BINARY_DIR}/dde-${NAME}
     DESTINATION lib/deepin-daemon
