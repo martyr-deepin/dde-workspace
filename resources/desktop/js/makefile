@@ -1,8 +1,6 @@
 include ../../common/js/Makefile
 
 desktop_item_coffee = \
-		      operations.coffee \
-		      dentry.coffee \
 		      item.coffee \
 		      desktopentry.coffee \
 		      floder.coffee \
