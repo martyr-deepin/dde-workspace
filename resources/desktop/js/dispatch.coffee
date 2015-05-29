@@ -18,11 +18,6 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-FILE_TYPE_APP = 0
-FILE_TYPE_FILE = 1
-FILE_TYPE_DIR = 2
-FILE_TYPE_RICH_DIR = 3
-FILE_TYPE_INVALID_LINK = 4
 
 
 attach_item_to_grid = (w) ->

@@ -3,6 +3,7 @@ coffee?=${NODE_PATH}/coffee-script/bin/coffee
 com_dir=../../common/js
 com_coffee = ${com_dir}/strict_mode.coffee\
 	     ${com_dir}/config.coffee \
+	     ${com_dir}/monkey_patch.coffee \
 	     ${com_dir}/utils.coffee \
 	     ${com_dir}/animation.coffee \
 	     ${com_dir}/module.coffee \

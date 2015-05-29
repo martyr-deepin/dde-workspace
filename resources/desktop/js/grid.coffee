@@ -1094,8 +1094,7 @@ menu_create_new_file = (NAME_ADD_BEFORE) ->
     create_entry_to_new_item(entry)
 
 menu_create_templates = (filter) ->
-    entry = DCore.DEntry.create_templates(filter,NAME_ADD_BEFORE)
-    create_entry_to_new_item(entry)
+    DCore.DEntry.create_templates(filter,NAME_ADD_BEFORE)
     return
 
 

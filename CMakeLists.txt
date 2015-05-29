@@ -15,6 +15,11 @@ macro(GEN_JSC_SOURCE2 JSC_GEN_SRC CFG_DIR OUTPUT)
 endmacro()
 
 macro(GEN_DBUS_SOURCE DBUS_GEN CFG_FILE PREFIX)
+    add_custom_target(${PREFIX}_dbus
+        COMMAND go run "${CMAKE_CURRENT_SOURCE_DIR}/${CFG_FILE}" -prefix=DBUS_${PREFIX}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        DEPENDS ${PROJECT_SOURCE_DIR}/app/${NAME}/jsc/dbus.go
+        )
     execute_process(
         COMMAND go run "${CMAKE_CURRENT_SOURCE_DIR}/${CFG_FILE}" -prefix=DBUS_${PREFIX}
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
@@ -41,8 +46,8 @@ endmacro()
 macro(GEN_JS_FILE NAME)
     set(_DIR ${PROJECT_SOURCE_DIR}/resources/${NAME}/js)
     add_custom_target(${NAME}_js
-	    COMMAND make -C ${_DIR} -e NODE_PATH=${PROJECT_SOURCE_DIR}/node_modules/
-        DEPENDS ${_DIR}/makefile
+        COMMAND make -C ${_DIR} -e NODE_PATH=${PROJECT_SOURCE_DIR}/node_modules/
+        DEPENDS ${_DIR}/makefile ${PROJECT_SOURCE_DIR}/app/${NAME}/jsc/${NAME}.cfg
     )
 endmacro()
 

@@ -5,6 +5,8 @@ com_coffee += \
 	      ${com_dir}/menu.coffee
 
 desktop_item_coffee = \
+		      operations.coffee \
+		      dentry.coffee \
 		      item.coffee \
 		      desktopentry.coffee \
 		      floder.coffee \

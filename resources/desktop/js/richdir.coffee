@@ -215,7 +215,6 @@ class RichDir extends DesktopEntry
         clear_occupy(@id, @_position)
         [@_position.x, @_position.y] = [-1, -1]
         DCore.DEntry.move(DCore.DEntry.list_files(@_entry), g_desktop_entry, false)
-        DCore.DEntry.delete_files([@_entry], false)
 
 
     on_rename : (new_name) =>

@@ -76,7 +76,7 @@ PRIVATE
 GSettings* desktop_gsettings = NULL;
 GSettings* dock_gsettings = NULL;
 
-PRIVATE GtkWidget* container = NULL;
+GtkWidget* container = NULL;
 PRIVATE GtkWidget* webview = NULL;
 PRIVATE GtkIMContext* im_context = NULL;
 
@@ -672,7 +672,7 @@ int main(int argc, char* argv[])
 
 
 #ifndef NDEBUG
-    monitor_resource_file("desktop", webview);
+    /* monitor_resource_file("desktop", webview); */
 #endif
 
     __DESKTOP_XID[0] = GDK_WINDOW_XID(gtk_widget_get_window(container));

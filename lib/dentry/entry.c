@@ -268,8 +268,8 @@ char* dentry_get_icon(Entry* e)
         if (info != NULL) {
             GIcon* icon = g_file_info_get_icon(info);
             ret = lookup_icon_by_gicon(icon);
+            g_object_unref(info);
         }
-        g_object_unref(info);
     TEST_GAPP(e, app)
         GIcon *icon = g_app_info_get_icon(app);
 
@@ -765,6 +765,12 @@ static void show_rename_error_dialog (const char* name, gboolean is_app)
     g_free(secondary_text);
 }
 
+JS_EXPORT_API
+void dentry_show_rename_error_dialog(const char* name, gboolean is_app)
+{
+    show_rename_error_dialog(name, is_app);
+}
+
 
 JS_EXPORT_API
 gboolean dentry_set_name(Entry* e, const char* name)
@@ -970,7 +976,9 @@ gboolean dentry_can_paste ()
 JS_EXPORT_API
 void dentry_confirm_trash()
 {
-    fileops_confirm_trash();
+    int result = fileops_confirm_trash(NULL);
+    if (result == GTK_RESPONSE_OK)
+        fileops_empty_trash ();
 }
 
 JS_EXPORT_API

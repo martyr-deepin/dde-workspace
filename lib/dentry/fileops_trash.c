@@ -45,12 +45,13 @@ focus_cb (GtkWidget* widget, GtkDirectionType direction, gpointer user_data)
     gdk_window_raise (gdk_dialog);
     return FALSE;
 }
-void fileops_confirm_trash ()
+
+int fileops_confirm_trash (GtkWindow* window)
 {
     GtkWidget* dialog;
     int result;
 
-    dialog = gtk_message_dialog_new (NULL,
+    dialog = gtk_message_dialog_new (window,
                                      0,  // use unmodal dialog
                                      GTK_MESSAGE_WARNING,
                                      GTK_BUTTONS_CANCEL,
@@ -79,6 +80,7 @@ void fileops_confirm_trash ()
     result = gtk_dialog_run (GTK_DIALOG (dialog));
     gtk_widget_destroy (dialog);
 
+    return result;
     if (result == GTK_RESPONSE_OK)
         fileops_empty_trash ();
 }

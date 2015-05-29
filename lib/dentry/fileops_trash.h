@@ -2,8 +2,9 @@
 #ifndef _FILEOPS_CONFIRM_TRASH_H_
 #define _FILEOPS_CONFIRM_TRASH_H_
 
+#include <gtk/gtk.h>
 
-void fileops_confirm_trash ();
+int fileops_confirm_trash (GtkWindow* window);
 
 void fileops_empty_trash ();
 
