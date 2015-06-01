@@ -1,5 +1,9 @@
 include ../../common/js/Makefile
 
+com_coffee += \
+	${com_dir}/menu.coffee\
+	${com_dir}/uninstaller.coffee \
+
 all: ${com_coffee} \
 	const.coffee \
 	global.coffee \

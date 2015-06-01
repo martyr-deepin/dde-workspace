@@ -1,4 +1,8 @@
 include ../../common/js/Makefile
+com_coffee += \
+	${com_dir}/tooltip.coffee \
+	${com_dir}/menu.coffee\
+	${com_dir}/uninstaller.coffee \
 
 plugin_dir=plugins
 all: ${com_coffee} \
