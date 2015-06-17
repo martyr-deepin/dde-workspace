@@ -1,9 +1,9 @@
-com_dir = ../../common/js
-com_coffee = ${com_dir}/strict_mode.coffee ${com_dir}/config.coffee \
-	     ${com_dir}/module.coffee ${com_dir}/utils.coffee \
-	     ${com_dir}/selector.coffee ${com_dir}/widget.coffee \
-	     ${com_dir}/animation.coffee ${com_dir}/menu.coffee \
-	     ${com_dir}/uninstaller.coffee
+include ../../common/js/Makefile
+
+com_coffee += \
+	${com_dir}/menu.coffee\
+	${com_dir}/uninstaller.coffee \
+
 all: ${com_coffee} \
 	const.coffee \
 	global.coffee \
@@ -28,4 +28,4 @@ all: ${com_coffee} \
 	event.coffee \
 	signal.coffee \
 	main.coffee
-	coffee -cj launcher.js $^
+	cat $^ | ${coffee} -c --stdio > launcher.js

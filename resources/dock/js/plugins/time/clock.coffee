@@ -22,7 +22,7 @@ class Clock
 class ClockWith24Hour extends Clock
     constructor:(setting)->
         super(setting)
-        @use24hour = @setting.Use24HourDisplay
+        @use24hour = @setting.Use24HourFormat
 
     setUse24Hour:(use24hour)->
         @use24hour = use24hour

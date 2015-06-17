@@ -6,15 +6,7 @@ resources/desktop/plugin
 tags
 cscope*
 build/
-resources/desktop/js/desktop.js
-resources/dock/js/dock.js
-resources/dominant_color/js/main.js
-resources/launcher/js/launcher.js
-resources/lock/js/lock.js
-resources/memory_test/js/test.js
-resources/greeter/js/greeter.js
-resources/greeter/js/lock.js
-resources/greeter/js/time.js
+resources/*/js/*.js
 *.sw[po]
 *.log
 *~
@@ -26,12 +18,9 @@ try/
 # CMake
 CMakeFiles/
 CMakeCache.txt
-Makefile
 cmake_install.cmake
 install_manifest.txt
-*.js
 
 # compiling gschemas
 schemas/gschemas.compiled
 
-node_modules/

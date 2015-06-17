@@ -102,7 +102,7 @@ class LauncherIconDrag extends Page
 
 class LauncherMenu extends Page
     APP_NAME_1 = "deepin-movie"
-    APP_NAME_2 = "deepin-music-player"
+    APP_NAME_2 = "deepin-music"
     constructor:(@id)->
         super
         @launcher = new Launcher()

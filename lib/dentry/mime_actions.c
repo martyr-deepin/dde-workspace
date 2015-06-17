@@ -10,16 +10,16 @@
 
 /*static GSettings* terminal_gsettings = NULL;*/
 
-GAppInfo *gen_app_info (const char* executable);
-gboolean exec_app_info (const char *executable);
+GAppInfo *gen_app_info (const char* executable, GAppInfoCreateFlags);
+gboolean exec_app_info (const char *executable, GAppInfoCreateFlags);
 
 //used by dentry/mime_actions.c
 
-GAppInfo *gen_app_info (const char* executable)
+GAppInfo *gen_app_info (const char* executable, GAppInfoCreateFlags flags)
 {
     GAppInfo *appinfo = NULL;
     GError* error = NULL;
-    char* cmd_line;
+    char* cmd_line = NULL;
 
     if (executable == NULL)
     {
@@ -38,7 +38,7 @@ GAppInfo *gen_app_info (const char* executable)
     }
 
     appinfo = g_app_info_create_from_commandline(cmd_line, NULL,
-            G_APP_INFO_CREATE_NEEDS_TERMINAL, &error);
+            flags, &error);
     g_free(cmd_line);
     if (error!=NULL)
     {
@@ -51,13 +51,13 @@ GAppInfo *gen_app_info (const char* executable)
     return appinfo;
 }
 
-gboolean exec_app_info (const char *executable)
+gboolean exec_app_info (const char *executable, GAppInfoCreateFlags flags)
 {
     GAppInfo *appinfo = NULL;
     GError *error = NULL;
     gboolean is_ok __attribute__((unused)) = FALSE;
 
-    appinfo = gen_app_info (executable);
+    appinfo = gen_app_info (executable, flags);
     if ( appinfo == NULL ) {
         g_debug ("gen app info failed!");
         return FALSE;
@@ -84,13 +84,34 @@ void desktop_run_in_terminal(char* executable)
 {
     gboolean is_ok = FALSE;
 
-    is_ok = exec_app_info (executable);
+    GSettings* s = g_settings_new("com.deepin.desktop.default-applications.terminal");
+    if (s != NULL) {
+        char* terminal = g_settings_get_string(s, "exec");
+        g_object_unref(s);
+        if (terminal != NULL && terminal[0] != '\0') {
+            char* quoted_dir = g_shell_quote(DESKTOP_DIR());
+            char* exec = NULL;
+            exec = g_strdup_printf("sh -c 'cd %s && %s'", quoted_dir, terminal);
+            g_free(quoted_dir);
+            g_free(terminal);
+            is_ok = exec_app_info(exec, G_APP_INFO_CREATE_NONE);
+            g_free(exec);
+            if (!is_ok) {
+                g_debug("exec app info failed!");
+            }
+            return;
+        }
+        g_free(terminal);
+    }
+
+
+    is_ok = exec_app_info (executable, G_APP_INFO_CREATE_NEEDS_TERMINAL);
     if ( !is_ok ) {
         g_debug ("exec app info failed!");
         /*exec_app_info (executable);*/
     }
 
-    return ;
+    return;
 }
 
 #define RESPONSE_RUN 1000

@@ -15,7 +15,7 @@ SET(SRC_LIST ${CFILES} ${JSC_GEN} ${DBUS_GEN})
 include_directories(${DWEBVIEW_INCLUDE_DIRS} ${DBUS_INCLUDE_DIRS})
 
 add_executable(${NAME} ${SRC_LIST})
-add_dependencies(${NAME} ${NAME}_js ${NAME}-daemon)
+add_dependencies(${NAME} ${NAME}_js)
 set_target_properties(${NAME}
 	PROPERTIES OUTPUT_NAME dde-${NAME}
 	)

@@ -6,9 +6,9 @@ class Time extends SystemItem
 
         try
             @setting = DCore.DBus.session_object(
-                "com.deepin.daemon.DateAndTime",
-                "/com/deepin/daemon/DateAndTime",
-                "com.deepin.daemon.DateAndTime"
+                "com.deepin.daemon.Timedate",
+                "/com/deepin/daemon/Timedate",
+                "com.deepin.daemon.Timedate"
             )
         catch e
             console.error(e)
@@ -117,7 +117,7 @@ class Time extends SystemItem
                         @clock = @analogClock
                 @clock.show()
 
-        @clock.setUse24Hour?(@setting.Use24HourDisplay)
+        @clock.setUse24Hour?(@setting.Use24HourFormat)
         @updateTime()
 
     updateTime: =>

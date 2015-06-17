@@ -381,7 +381,6 @@ void exwindow_draw_to_canvas(double _xid, JSValueRef canvas)
         GdkWindow* window = g_hash_table_lookup(__EMBEDED_WINDOWS__, (gpointer)xid);
         if (window != NULL) {
             gdk_window_show(window);
-            gdk_window_flush(window);
             gdk_flush();
             // gdk_display_sync(gdk_display_get_default());
             // sleep(1);

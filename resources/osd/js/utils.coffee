@@ -31,6 +31,8 @@ TIME_HIDE = 1500
 TIME_PRESS = 5
 timeout_osdHide = null
 
+ICON_SIZE_NORMAL = 96
+
 allElsHide = ->
     echo "allElsHide"
     els = _b.children
@@ -81,26 +83,39 @@ setBodySize = (width,height)->
     _b.style.width = width
     _b.style.height = height
 
-set_bg = (cls,imgName,prevImgName)->
+getThemeIcon = (iconName,size) ->
+    icon = DCore.get_theme_icon(iconName,size)
+    console.debug "[getThemeIcon]:#{iconName},#{size} ===#{icon}==="
+    icon
+
+set_bg = (cls,imgName,prevImgName,width = ICON_SIZE_NORMAL,height = ICON_SIZE_NORMAL)->
     if prevImgName == imgName then return
+    if prevImgName == undefined or prevImgName == null then prevImgName = imgName
     echo "set_bg: bgChanged from #{prevImgName} to #{imgName}"
 
-    cls.bg1 = create_element("div","#{cls.id}_bg1",cls.element) if not cls.bg1?
-    cls.bg2 = create_element("div","#{cls.id}_bg2",cls.element) if not cls.bg2?
-    cls.bg1.style.position = "absolute"
-    cls.bg2.style.position = "absolute"
-    cls.bg1.style.width = "100%"
-    cls.bg2.style.width = "100%"
-    cls.bg1.style.height = "100%"
-    cls.bg2.style.height = "100%"
+    if not cls.bgContainer?
+        cls.bgContainer = create_element("div","#{cls.id}_bg1",cls.element)
+        cls.bgContainer.style.position = "absolute"
+    cls.bgContainer.style.width = width
+    cls.bgContainer.style.height = height
+    cls.bgContainer.style.left = (cls.element.clientWidth - cls.bgContainer.clientWidth) / 2
+    top = (cls.element.clientHeight - cls.bgContainer.clientHeight) / 2
+    top -= 12 if cls.bar isnt undefined
+    cls.bgContainer.style.top = top
+    cls.bgContainer.style.display = "block"
 
+    if not cls.bg1?
+        cls.bg1 = create_img("#{cls.id}_bg1","",cls.bgContainer)
+        cls.bg2 = create_img("#{cls.id}_bg2","",cls.bgContainer)
+        cls.bg1.style.position = cls.bg2.style.position = "absolute"
+        cls.bg1.style.width = cls.bg2.style.width = width
+        cls.bg1.style.height = cls.bg2.style.height = height
     try
-        cls.bg1.style.backgroundImage = "url(img/#{prevImgName}.png)"
-        cls.bg2.style.backgroundImage = "url(img/#{imgName}.png)"
+        cls.bg1.src = getThemeIcon(prevImgName,ICON_SIZE_NORMAL)
+        cls.bg2.src = getThemeIcon(imgName,ICON_SIZE_NORMAL)
+        console.debug "#{cls.bgContainer.clientWidth},#{cls.bgContainer.clientHeight}"
     catch e
-        echo "#{e}"
-    cls.bg1.style.display = "block"
-    cls.bg2.style.display = "block"
+        console.debug "[set_bg]:error:#{e}"
 
     t = 500
     cls.bg1.style.opacity = "1.0"

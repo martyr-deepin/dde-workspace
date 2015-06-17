@@ -84,11 +84,11 @@ class Audio extends Widget
         @setMute(muteset)
 
     getBgName:(volume)->
-        bg = "Audio_2"
-        if volume <= 0 then bg = "Audio_0"
-        else if volume <= 40 then bg = "Audio_1"
-        else if volume <= 70 then bg = "Audio_2"
-        else bg = "Audio_3"
+        bg = "audio-volume-medium-symbolic-osd"
+        if volume <= 0 then bg = "audio-volume-muted-symbolic-osd"
+        else if volume <= 40 then bg = "audio-volume-low-symbolic-osd"
+        else if volume <= 70 then bg = "audio-volume-medium-symbolic-osd"
+        else bg = "audio-volume-high-symbolic-osd"
         return bg
 
     show:(value)->
@@ -100,9 +100,9 @@ class Audio extends Widget
             @element.style.display = "block"
             bgImg = @getBgName(value)
             echo "show #{@id} Volume:#{value} BgName:#{bgImg}.png"
+            showValue(value,0,100,@,"Audio_bar")
             set_bg(@,bgImg,@prebgImg)
             @prebgImg = bgImg
-            showValue(value,0,100,@,"Audio_bar")
 
             timeout_osdHide = setTimeout(osdHide,TIME_HIDE)
         ,TIME_PRESS)

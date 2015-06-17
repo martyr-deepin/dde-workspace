@@ -1,5 +1,5 @@
-com_dir = ../../common/js
+include ../../common/js/Makefile
 com_coffee = ${com_dir}/utils.coffee 
 
 all: ${com_coffee} lowpower.coffee 
-	coffee -cj lowpower.js $^
+	cat $^ | ${coffee} -c --stdio > lowpower.js

@@ -87,10 +87,10 @@ class Display extends Widget
 
             value = @getFeatureBrightnessValue()
             echo "showBrightValue:#{value}"
-            set_bg(@,@id,@prebgImg)
-            @prebgImg = @id
-
             showValue(value,0,1,@,"Brightness_bar")
+            set_bg(@,@image,@prebgImg)
+            @prebgImg = @image
+
             timeout_osdHide = setTimeout(osdHide,TIME_HIDE)
         ,TIME_PRESS)
 
@@ -101,11 +101,12 @@ osd.BrightnessUp = (keydown)->
     if !keydown then return if mode is "dbus"
     BrightCls  = new Display("Brightness") if not BrightCls?
     BrightCls.id = "BrightnessUp"
+    BrightCls.image = "display-brightness-symbolic"
     BrightCls.showBrightness()
 
 osd.BrightnessDown = (keydown)->
     if !keydown then return if mode is "dbus"
     BrightCls  = new Display("Brightness") if not BrightCls?
-    BrightCls.id = "BrightnessUp"#the backgroundImage is same ,so the @id can equal to BrightnessUp
+    BrightCls.id = "BrightnessDown"
+    BrightCls.image = "display-brightness-symbolic"
     BrightCls.showBrightness()
-

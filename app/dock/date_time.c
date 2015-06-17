@@ -17,7 +17,7 @@ static void listen_use_24_hour(GDBusProxy* proxy G_GNUC_UNUSED,
     gchar* key = NULL;
     GVariant* value = NULL;
     while (g_variant_iter_next(&array_iter, "{sv}", &key, &value)) {
-        if (g_strcmp0(key, "Use24HourDisplay") == 0) {
+        if (g_strcmp0(key, "Use24HourFormat") == 0) {
             gboolean use24 = g_variant_get_boolean(value);
             if (fn != NULL) {
                 ((use_24_hour_handler)fn)(use24 ? 24 : 12);
@@ -61,9 +61,9 @@ void listen_use_24_hour_changed(use_24_hour_handler fn)
     g_dbus_proxy_new(conn,
                      G_DBUS_PROXY_FLAGS_NONE,
                      NULL,
-                     "com.deepin.daemon.DateAndTime",
-                     "/com/deepin/daemon/DateAndTime",
-                     "com.deepin.daemon.DateAndTime",
+                     "com.deepin.daemon.Timedate",
+                     "/com/deepin/daemon/Timedate",
+                     "com.deepin.daemon.Timedate",
                      NULL,
                      dbus_ready,
                      fn
