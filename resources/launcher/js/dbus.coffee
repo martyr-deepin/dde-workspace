@@ -25,6 +25,12 @@ try
     daemon.connect("NewAppLaunched", (id)->
         Widget.look_up(id)?.hideNewInstallIndicator()
     )
+    daemon.connect("SendToDesktopFailed", (id, res) ->
+        console.log("send '#{id}' to desktop failed: #{res}")
+    )
+    daemon.connect("RemoveFromDesktopFailed", (id, res) ->
+        console.log("remove '#{id}' from desktop failed: #{res}")
+    )
 catch e
     console.error(e)
     DCore.Launcher.quit()

@@ -1,74 +1,89 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
-# Zoom <termosyura@ukr.net>, 2014
+# Yuriy Moskalchuk <termosyura@ukr.net>, 2014-2015
+# Victor <krelker1@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-22 11:12+0800\n"
-"PO-Revision-Date: 2014-07-03 22:32+0000\n"
-"Last-Translator: Zoom <termosyura@ukr.net>\n"
-"Language-Team: Ukrainian (http://www.transifex.com/projects/p/deepin-desktop-"
-"environment/language/uk/)\n"
-"Language: uk\n"
+"POT-Creation-Date: 2014-12-26 11:18+0800\n"
+"PO-Revision-Date: 2015-03-23 10:24+0000\n"
+"Last-Translator: Martin <martin.ceronio@infosize.co.za>\n"
+"Language-Team: Ukrainian (http://www.transifex.com/projects/p/deepin-desktop-environment/language/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Language: uk\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: ../resources/desktop/js/invalidlink.coffee:34
-#: ../resources/desktop/js/desktopentry.coffee:108
-#: ../resources/desktop/js/richdir.coffee:139
-#: ../resources/desktop/js/richdir.coffee:571
-msgid "_Delete"
-msgstr "_Видалити"
+#: ../resources/common/js/accounts.coffee:78
+msgid "Guest"
+msgstr "Гість"
+
+#: ../resources/common/js/uninstaller.coffee:32
+msgid "You have uninstalled \"%1\" successfully"
+msgstr "Ви успішно видалили \"%1\""
+
+#: ../resources/common/js/uninstaller.coffee:33
+msgid "\"%1\" failed to be uninstalled"
+msgstr "Не вдалось видалити \"%1\""
 
 #: ../resources/desktop/js/application.coffee:179
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
+#: ../resources/desktop/js/richdir.coffee:348
+#: ../resources/desktop/js/richdir.coffee:600
+#: ../resources/desktop/js/richdir.coffee:643
 msgid "The link is invalid. Do you want to delete it?"
 msgstr "Посилання недійсне! Бажаєте видалити його?"
 
 #: ../resources/desktop/js/application.coffee:179
-#: ../resources/desktop/js/desktopentry.coffee:165
-#: ../resources/desktop/js/richdir.coffee:335
-#: ../resources/desktop/js/richdir.coffee:586
-#: ../resources/dock/js/plugins/trash/trash.coffee:76
+#: ../resources/desktop/js/desktopentry.coffee:166
+#: ../resources/desktop/js/richdir.coffee:348
+#: ../resources/desktop/js/richdir.coffee:600
+#: ../resources/desktop/js/richdir.coffee:643
+#: ../resources/dock/js/plugins/trash/trash.coffee:85
 msgid "Warning"
 msgstr "Попередження"
 
 #: ../resources/desktop/js/desktopentry.coffee:102
+#: ../resources/desktop/js/richdir.coffee:138
+#: ../resources/desktop/js/richdir.coffee:580
 #: ../resources/desktop/js/specialitem.coffee:51
-#: ../resources/desktop/js/specialitem.coffee:147
-#: ../resources/desktop/js/richdir.coffee:133
-#: ../resources/desktop/js/richdir.coffee:566
-#: ../resources/launcher/js/item.coffee:276
-#: ../resources/guide/js/launcher.coffee:235
+#: ../resources/desktop/js/specialitem.coffee:146
+#: ../resources/guide/js/launcher.coffee:133
+#: ../resources/launcher/js/item.coffee:288
 msgid "_Open"
 msgstr "_Відкрити"
 
 #: ../resources/desktop/js/desktopentry.coffee:104
-#: ../resources/desktop/js/richdir.coffee:568
+#: ../resources/desktop/js/richdir.coffee:582
 msgid "Cu_t"
 msgstr "_Вирізати"
 
 #: ../resources/desktop/js/desktopentry.coffee:105
-#: ../resources/desktop/js/richdir.coffee:569
+#: ../resources/desktop/js/item.coffee:401
+#: ../resources/desktop/js/richdir.coffee:583
 msgid "_Copy"
 msgstr "_Копіювати"
 
 #: ../resources/desktop/js/desktopentry.coffee:107
-#: ../resources/desktop/js/richdir.coffee:135
+#: ../resources/desktop/js/richdir.coffee:140
 msgid "_Rename"
 msgstr "_Перейменувати"
 
+#: ../resources/desktop/js/desktopentry.coffee:108
+#: ../resources/desktop/js/invalidlink.coffee:34
+#: ../resources/desktop/js/item.coffee:402
+#: ../resources/desktop/js/richdir.coffee:144
+#: ../resources/desktop/js/richdir.coffee:585
+msgid "_Delete"
+msgstr "_Видалити"
+
 #: ../resources/desktop/js/desktopentry.coffee:110
+#: ../resources/desktop/js/richdir.coffee:587
 #: ../resources/desktop/js/specialitem.coffee:53
-#: ../resources/desktop/js/richdir.coffee:573
 msgid "_Properties"
 msgstr "_Властивості"
 
@@ -87,123 +102,241 @@ msgstr "_Видобути"
 msgid "Extract _Here"
 msgstr "Видобути _сюди"
 
-#: ../resources/desktop/js/desktopentry.coffee:165
-#: ../resources/dock/js/plugins/trash/trash.coffee:76
+#: ../resources/desktop/js/desktopentry.coffee:166
+#: ../resources/dock/js/plugins/trash/trash.coffee:85
 msgid "Can not open this file."
 msgstr "Не вдається відкрити цей файл."
 
-#: ../resources/desktop/js/specialitem.coffee:34
-msgid "Computer"
-msgstr ""
-
-#: ../resources/desktop/js/specialitem.coffee:87
-#: ../resources/dock/js/main.coffee:47 ../resources/dock/js/main.coffee:124
-msgid "Trash"
-msgstr "Смітник"
-
-#: ../resources/desktop/js/specialitem.coffee:152
-#, fuzzy
-msgid "_Clean up %1 items"
-msgstr "_Очистити"
-
-#: ../resources/desktop/js/specialitem.coffee:154
-#, fuzzy
-msgid "_Clean up 1 item"
-msgstr "_Очистити"
-
-#: ../resources/desktop/js/specialitem.coffee:156
-#: ../resources/dock/js/plugins/trash/trash.coffee:29
-msgid "_Empty"
-msgstr ""
-
-#: ../resources/desktop/js/grid.coffee:71 ../lib/dentry/fileops.c:403
+#: ../resources/desktop/js/grid.coffee:70 ../lib/dentry/fileops.c:402
 msgid "Untitled"
 msgstr "Без назви"
 
-#: ../resources/desktop/js/grid.coffee:1022
-msgid "_Name"
-msgstr "_Назві"
-
-#: ../resources/desktop/js/grid.coffee:1023
-msgid "Last modified _time"
-msgstr "_Часом останньої зміни"
-
-#: ../resources/desktop/js/grid.coffee:1028
+#: ../resources/desktop/js/grid.coffee:1029
 msgid "_Folder"
 msgstr "_Папка"
 
-#: ../resources/desktop/js/grid.coffee:1029
+#: ../resources/desktop/js/grid.coffee:1030
 msgid "_Text document"
 msgstr "_Текстовий документ"
 
+#: ../resources/desktop/js/grid.coffee:1044
+msgid "_Name"
+msgstr "_Назві"
+
 #: ../resources/desktop/js/grid.coffee:1045
-#: ../resources/guide/js/desktop.coffee:196
+msgid "Last modified _time"
+msgstr "_Часом останньої зміни"
+
+#: ../resources/desktop/js/grid.coffee:1049
 msgid "_Sort by"
 msgstr "_Сортувати за"
 
-#: ../resources/desktop/js/grid.coffee:1046
-#: ../resources/guide/js/desktop.coffee:197
+#: ../resources/desktop/js/grid.coffee:1050
 msgid "_New"
 msgstr "_Новий"
 
-#: ../resources/desktop/js/grid.coffee:1047
-#: ../resources/guide/js/desktop.coffee:198
+#: ../resources/desktop/js/grid.coffee:1051
 msgid "Open in _terminal"
 msgstr "Відкрити у _терміналі"
 
-#: ../resources/desktop/js/grid.coffee:1048
-#: ../resources/guide/js/desktop.coffee:199
+#: ../resources/desktop/js/grid.coffee:1052
+#: ../resources/desktop/js/item.coffee:400
 msgid "_Paste"
 msgstr "_Вставити"
 
-#: ../resources/desktop/js/grid.coffee:1050
-#: ../resources/guide/js/desktop.coffee:201
+#: ../resources/desktop/js/grid.coffee:1054
 msgid "_Display settings"
 msgstr "_Налаштування дисплею"
 
-#: ../resources/desktop/js/grid.coffee:1051
-#: ../resources/guide/js/desktop.coffee:202
+#: ../resources/desktop/js/grid.coffee:1055
 msgid "_Corner navigation"
 msgstr "_Кутова навігація"
 
-#: ../resources/desktop/js/grid.coffee:1052
-#: ../resources/guide/js/desktop.coffee:203
+#: ../resources/desktop/js/grid.coffee:1056
 msgid "Pe_rsonalize"
 msgstr "_Персоналізація"
 
-#: ../resources/desktop/js/richdir.coffee:137
+#: ../resources/desktop/js/item.coffee:399
+msgid "_Cut"
+msgstr "_Вирізати"
+
+#: ../resources/desktop/js/item.coffee:404
+msgid "_Select All"
+msgstr "_Виділити все"
+
+#: ../resources/desktop/js/richdir.coffee:142
 msgid "_Ungroup"
 msgstr "_Розгрупувати"
 
-#: ../resources/greeter/js/message.coffee:105
-#: ../resources/greeter/js/message.coffee:82
-msgid "$ sudo reboot\n"
-msgstr "$ sudo reboot\n"
+#: ../resources/desktop/js/specialitem.coffee:34
+msgid "Computer"
+msgstr "Комп’ютер"
 
-#: ../resources/greeter/js/message.coffee:99
-#: ../resources/greeter/js/message.coffee:73
-msgid "Press Ctrl + Alt + F1\n"
-msgstr "Натисніть Ctrl + Alt + F1\n"
+#: ../resources/desktop/js/specialitem.coffee:87
+#: ../resources/dock/js/main.coffee:46 ../resources/dock/js/main.coffee:119
+msgid "Trash"
+msgstr "Смітник"
 
-#: ../resources/greeter/js/message.coffee:95
+#: ../resources/desktop/js/specialitem.coffee:150
+msgid "_Clean up %1 items"
+msgstr "_Очистити %1 об’єкти"
+
+#: ../resources/desktop/js/specialitem.coffee:152
+msgid "_Clean up 1 item"
+msgstr "_Очистити 1 об’єкт"
+
+#: ../resources/desktop/js/specialitem.coffee:154
+#: ../resources/dock/js/plugins/trash/trash.coffee:38
+msgid "_Empty"
+msgstr "_Порожній"
+
+#: ../resources/dock/js/config.coffee:186
+msgid "Unknown"
+msgstr "Невідомо"
+
+#: ../resources/dock/js/global_menu.coffee:9
+#: ../resources/guide/js/dock.coffee:38
+msgid "Keep _showing"
+msgstr "Показувати"
+
+#: ../resources/dock/js/global_menu.coffee:10
+#: ../resources/guide/js/dock.coffee:39
+msgid "Keep _hidden"
+msgstr "Приховувати"
+
+#: ../resources/dock/js/global_menu.coffee:12
+#: ../resources/guide/js/dock.coffee:40
+msgid "_Smart hide"
+msgstr "_Розумне приховування"
+
+#: ../resources/dock/js/global_menu.coffee:27
+#: ../resources/guide/js/dock.coffee:34
+msgid "_Fashion mode"
+msgstr "_Модний режим"
+
+#: ../resources/dock/js/global_menu.coffee:28
+#: ../resources/guide/js/dock.coffee:35
+msgid "_Efficient mode"
+msgstr "_Ефективний режим"
+
+#: ../resources/dock/js/global_menu.coffee:29
+#: ../resources/guide/js/dock.coffee:36
+msgid "_Classic mode"
+msgstr "_Класичний режим"
+
+#: ../resources/dock/js/global_menu.coffee:38
+#: ../resources/guide/js/dock.coffee:42
+msgid "Notification area settings"
+msgstr "Налаштування області повідомлень"
+
+#: ../resources/dock/js/main.coffee:117 ../resources/zone/js/utils.coffee:13
+msgid "Launcher"
+msgstr "Запускач"
+
+#: ../resources/dock/js/plugins/time/time.coffee:64
+msgid "Switch display mode"
+msgstr "Перемкнути режим відображення"
+
+#: ../resources/dock/js/plugins/time/time.coffee:65
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:84
+msgid "_Time settings"
+msgstr "_Налаштування часу"
+
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:34
+msgid "%b %d %H:%M %a"
+msgstr "%b %d %H:%M %a"
+
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:36
+msgid "%b %d %I:%M %p %a"
+msgstr "%b %d %I:%M %p %a"
+
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:38
+msgid "%b %d %H:%M"
+msgstr "%b %d %H:%M"
+
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:40
+msgid "%b %d %I:%M %p"
+msgstr "%b %d %I:%M %p"
+
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:42
+msgid "%H:%M %a"
+msgstr "%H:%M %a"
+
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:44
+msgid "%I:%M %p %a"
+msgstr "%I:%M %p %a"
+
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:46
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:48
+msgid "%I:%M %p"
+msgstr "%I:%M %p"
+
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:82
+msgid "Display date"
+msgstr "Показувати дату"
+
+#: ../resources/dock/js/plugins/time/tray_clock.coffee:83
+msgid "Display week"
+msgstr "Показувати тиждень"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:42
+msgid "_Close"
+msgstr "_Закрити"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:122
+#: ../resources/launcher/js/item.coffee:358
+msgid "Are you sure to remove"
+msgstr "Ви впевнені, що хочете видалити"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:122
+#: ../resources/launcher/js/item.coffee:358
+msgid "All dependencies will be removed"
+msgstr "Усі залежності будуть видалені"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:122
+#: ../resources/launcher/js/item.coffee:358
+msgid "no"
+msgstr "ні"
+
+#: ../resources/dock/js/plugins/trash/trash.coffee:122
+#: ../resources/launcher/js/item.coffee:358
+msgid "yes"
+msgstr "так"
+
+#: ../resources/greeter/js/mediacontrol.coffee:129
+msgid "Click button to Play"
+msgstr "Натисніть кнопку щоб \"Грати\""
+
+#: ../resources/greeter/js/powermenu.coffee:26
+msgid "Shut down"
+msgstr "Вимкнути"
+
+#: ../resources/greeter/js/powermenu.coffee:27
+msgid "Restart"
+msgstr "Перезавантажити"
+
+#: ../resources/greeter/js/powermenu.coffee:28
+msgid "Suspend"
+msgstr "Призупинити"
+
+#: ../resources/greeter/js/powermenu.coffee:75
 msgid ""
-"\t\t\t\t-----The daemon of accounts has not started!-----\n"
-")"
-msgstr ""
-"\t\t\t\t-----Процес облікових записів не запущено!-----\n"
-")"
+"The other users have logged in, shutdown or restart may cause the running "
+"data to be lost."
+msgstr "Існують інші авторизовані користувачі у системі - вимикання, або перезавантаження може призвести до втрати даних."
 
-#: ../resources/greeter/js/message.coffee:79
-msgid "$ sudo apt-get install deepin-desktop-Environment\n"
-msgstr "$ sudo apt-get install deepin-desktop-Environment\n"
+#: ../resources/greeter/js/powermenu.coffee:77
+msgid ""
+"User %1 has logged in, shutdown or restart may cause the running data to be "
+"lost."
+msgstr "Користувач %1 авторизований у системі - вимикання, або перезавантаження може призвести до втрати даних."
 
-#: ../resources/greeter/js/message.coffee:68
-msgid "\t\t\t\t-----No available desktop sessions!-----\n"
-msgstr ""
-
-#: ../resources/greeter/js/user.coffee:411
-msgid "Login"
-msgstr ""
+#: ../resources/greeter/js/powermenu.coffee:121
+msgid "Enter your password to %1"
+msgstr "Введіть свій пароль для %1"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jan"
@@ -254,202 +387,186 @@ msgid "Dec"
 msgstr "Гру"
 
 #: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
 msgid "Sun"
 msgstr "Нд"
 
 #: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
 msgid "Mon"
 msgstr "Пн"
 
 #: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
 msgid "Tue"
 msgstr "Вт"
 
 #: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
 msgid "Wed"
 msgstr "Ср"
 
 #: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
 msgid "Thu"
 msgstr "Чт"
 
 #: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
 msgid "Fri"
 msgstr "Пт"
 
 #: ../resources/greeter/js/time.coffee:44
-#: ../resources/dock/js/plugins/time/time.coffee:2
 msgid "Sat"
 msgstr "Сб"
 
-#: ../resources/greeter/js/usermenu.coffee:57
-msgid "Guest"
-msgstr "Гість"
+#: ../resources/greeter/js/user.coffee:408
+msgid "Login"
+msgstr "Увійти"
 
-#: ../resources/greeter/js/powermenu.coffee:26
-msgid "Shut down"
-msgstr "Вимкнути"
+#: ../resources/greeter/js/user.coffee:410
+msgid "Unlock"
+msgstr "Розблокувати"
 
-#: ../resources/greeter/js/powermenu.coffee:27
-msgid "Restart"
-msgstr "Перезавантажити"
+#: ../resources/guide/js/desktop.coffee:28
+msgid ""
+"Let's drag the other icon on the first icon \n"
+" to generate \"application group\""
+msgstr "Перетягніть одну іконку на іншу, для створення \"групи застосунків\""
 
-#: ../resources/greeter/js/powermenu.coffee:28
-msgid "Suspend"
-msgstr "Призупинити"
+#: ../resources/guide/js/desktop.coffee:121
+msgid "Well, you have learned how to create a \"application group\""
+msgstr "Отже, Ви навчились створювати \"групу застосунків\""
 
-#: ../resources/greeter/js/powermenu.coffee:90
-msgid "Enter your password to %1"
-msgstr "Введіть свій пароль для %1"
+#: ../resources/guide/js/desktop.coffee:122
+msgid "tips: Right-click on the application group will provide more functions"
+msgstr "Підказка: Натискання правої кнопки на групі застосунків надасть більше можливостей"
 
-#: ../resources/greeter/js/mediacontrol.coffee:167
-#, fuzzy
-msgid "Click button to Play"
-msgstr "натисніть кнопку входу щоб увійти"
+#: ../resources/guide/js/desktop.coffee:132
+msgid ""
+"Slide the mouse to the four top corners, which can trigger four different "
+"events"
+msgstr "Перемістіть курсор у чотири кути, що може викликати чотири різні події"
 
-#: ../resources/osd/js/monitor.coffee:38
-msgid "Duplicate"
-msgstr ""
+#: ../resources/guide/js/desktop.coffee:154
+msgid ""
+"We already know that launcher can be shown/ hidden by sliding the mouse to "
+"the upper left corner"
+msgstr "Ми вже знаємо, що запускач може бути показаний/прихований переміщенням курсора у верхній лівий кут"
 
-#: ../resources/osd/js/monitor.coffee:39
-msgid "Extend"
-msgstr ""
+#: ../resources/guide/js/desktop.coffee:176
+msgid ""
+"The workspace will be shown or hidden by sliding the mouse to the lower left"
+" corner"
+msgstr "Робочий простір буде показано чи приховано переміщенням курсора у лівий нижній кут"
 
-#: ../resources/launcher/js/item.coffee:283
-#: ../resources/guide/js/launcher.coffee:242
-msgid "_Uninstall"
-msgstr "Видалити"
+#: ../resources/guide/js/desktop.coffee:202
+msgid ""
+"No functions are set in default on the upper right corner\n"
+"Right-click on desktop black area to call up the menu, select \"Corner navigation\" to set the corner used"
+msgstr "У верхньому правому куті за замовчуванням не назначено жодної функції\nПравий клік на чорній області робочого столу викличе меню. Оберіть \"Кутова навігація\" щоб назначити функцію для кута"
 
-#: ../resources/launcher/js/item.coffee:354
-#: ../resources/dock/js/plugins/trash/trash.coffee:113
-msgid "Are you sure to remove"
-msgstr "Ви впевнені, що хочете видалити"
+#: ../resources/guide/js/desktop.coffee:203
+msgid "tips: Click on the corner navigation blank area to return"
+msgstr "Підказка: Натисніть на порожню область кута навігації аби повернутись"
 
-#: ../resources/launcher/js/item.coffee:354
-#: ../resources/dock/js/plugins/trash/trash.coffee:113
-msgid "All dependencies will be removed"
-msgstr "Усі залежності будуть видалені"
+#: ../resources/guide/js/dock.coffee:26
+msgid ""
+"Three modes and the display status can be switched by right-click on the "
+"blank area of dock"
+msgstr "Три режими відображення можна перемикати правим кліком на порожній області панелі"
 
-#: ../resources/launcher/js/item.coffee:354
-#: ../resources/dock/js/plugins/trash/trash.coffee:113
-msgid "no"
-msgstr "ні"
+#: ../resources/guide/js/dss.coffee:32
+msgid ""
+"The Control Center will be shown or hidden by sliding the mouse to the lower"
+" right corner"
+msgstr "Центр керування буде показано чи приховано переміщенням курсора у правий нижній кут"
 
-#: ../resources/launcher/js/item.coffee:354
-#: ../resources/dock/js/plugins/trash/trash.coffee:113
-msgid "yes"
-msgstr "так"
-
-#: ../resources/launcher/js/const.coffee:64
-msgid "_Hide the icon"
-msgstr "_Приховати значок"
-
-#: ../resources/launcher/js/const.coffee:65
-msgid "_Display hidden icons"
-msgstr "_Відображати приховані значки"
-
-#: ../resources/launcher/js/const.coffee:68
-msgid "_Hide this icon"
-msgstr "_Приховати цей значок"
-
-#: ../resources/launcher/js/const.coffee:69
-msgid "_Display this icon"
-msgstr "_Показати цей значок"
-
-#: ../resources/launcher/js/const.coffee:72
-#: ../resources/guide/js/launcher.coffee:241
-msgid "_Add to autostart"
-msgstr "_Додати до автозапуску"
-
-#: ../resources/launcher/js/const.coffee:73
-msgid "_Remove from autostart"
-msgstr "_Видалити з автозапуску"
-
-#: ../resources/launcher/js/const.coffee:80
-msgid "Add to _favorites"
-msgstr "Додати до _обраного"
-
-#: ../resources/launcher/js/const.coffee:81
-#: ../resources/guide/js/launcher.coffee:237
-msgid "Remove from _favorites"
-msgstr "Видалити з _обраного"
-
-#: ../resources/launcher/js/const.coffee:84
-#: ../resources/guide/js/launcher.coffee:238
-msgid "Send to d_esktop"
-msgstr "Надіслати на _робочий стіл"
-
-#: ../resources/launcher/js/const.coffee:85
-#, fuzzy
-msgid "Remove from d_esktop"
-msgstr "Видалити з _обраного"
-
-#: ../resources/launcher/js/const.coffee:88
-#: ../resources/guide/js/launcher.coffee:239
-msgid "Send to do_ck"
-msgstr "Надіслати на _панель"
-
-#: ../resources/launcher/js/const.coffee:89
-#, fuzzy
-msgid "Remove from do_ck"
-msgstr "Видалити з _обраного"
-
-#: ../resources/zone/js/utils.coffee:10
-msgid "Control Center"
-msgstr "Центр керування"
-
-#: ../resources/zone/js/utils.coffee:10
-msgid "All Windows"
-msgstr "Усі вікна"
-
-#: ../resources/zone/js/utils.coffee:10 ../resources/dock/js/main.coffee:122
-msgid "Launcher"
-msgstr "Запускач"
-
-#: ../resources/zone/js/utils.coffee:10
-msgid "Desktop"
-msgstr "Робочий стіл"
-
-#: ../resources/zone/js/utils.coffee:10
-msgid "None"
-msgstr "Нічого"
-
-#: ../resources/guide/js/dss.coffee:29
-msgid "Well, please trigger the lower right corner again"
-msgstr "Будь ласка, наведіть курсор на нижній правий кут знову"
-
-#: ../resources/guide/js/dss.coffee:30
-#, fuzzy
+#: ../resources/guide/js/dss.coffee:33
 msgid "tips: Click the setting icon on dock to implement"
 msgstr "Підказка: Для застосування натисніть на значок налаштувань на панелі"
 
-#: ../resources/guide/js/dss.coffee:69
-msgid "Here is the system setting area"
-msgstr "Ось область налаштування системи"
+#: ../resources/guide/js/dss.coffee:76
+msgid "Click the power button to shut down, reboot or do other operations"
+msgstr "Натисніть на кнопку живлення щоб вимкнути, перезавантажити або виконати інші операції"
 
-#: ../resources/guide/js/dss.coffee:70
-#, fuzzy
+#: ../resources/guide/js/dss.coffee:77
 msgid ""
 "tips: Hover the setting icon on dock to quickly implement some setting "
 "functions"
-msgstr ""
-"Підказка: Наведіть курсор на значок налаштувань на панелі щоб швидко змінити "
-"деякі налаштування"
+msgstr "Підказка: Наведіть курсор на значок налаштувань на панелі щоб швидко змінити деякі налаштування"
 
 #: ../resources/guide/js/end.coffee:25
-#, fuzzy
-msgid "Thanks for your patience while learning. Congratulations."
-msgstr "Спасибі за Ваше терпіння до навчання. Вітаємо!"
+msgid ""
+"Thank you for your patience to learn! More surprises are waiting for you to "
+"explore"
+msgstr "Спасибі за ваше терпіння у навчанні! Більше сюрпризів вже очікують на Вас"
 
 #: ../resources/guide/js/end.coffee:30
-msgid "End"
-msgstr "Кінець"
+msgid "Start my Deepin trip"
+msgstr "Почати мою подорож Deepin"
+
+#: ../resources/guide/js/launcher.coffee:31
+msgid ""
+"\"Application Launcher\" can be started by sliding the mouse to the upper "
+"left corner or clicking on the launcher."
+msgstr "\"Запускач застосунків\" може бути запущений переміщенням курсора у верхній лівий кут або кліком по значку запускача."
+
+#: ../resources/guide/js/launcher.coffee:83
+msgid "Please directly hit \"deepin\" in keyboard"
+msgstr "Будь ласка, введіть \"deepin\" на клавіатурі"
+
+#: ../resources/guide/js/launcher.coffee:96
+msgid "You can directly drag the application icon to Dock or trash"
+msgstr "Ви можете безпосередньо перетягнути значок програми на Панель або у Смітник"
+
+#: ../resources/guide/js/launcher.coffee:109
+msgid ""
+"tips: Click the right mouse button on the application icon to call up the "
+"context menu"
+msgstr "Підказка: Натисніть правою кнопкою миші на значку застосунка для виклику контекстного меню"
+
+#: ../resources/guide/js/launcher.coffee:135
+msgid "Remove from _favorites"
+msgstr "Видалити з _обраного"
+
+#: ../resources/guide/js/launcher.coffee:136
+#: ../resources/launcher/js/const.coffee:76
+msgid "Send to d_esktop"
+msgstr "Надіслати на _робочий стіл"
+
+#: ../resources/guide/js/launcher.coffee:137
+#: ../resources/launcher/js/const.coffee:80
+msgid "Send to do_ck"
+msgstr "Надіслати на _панель"
+
+#: ../resources/guide/js/launcher.coffee:139
+#: ../resources/launcher/js/const.coffee:68
+msgid "_Add to autostart"
+msgstr "_Додати до автозапуску"
+
+#: ../resources/guide/js/launcher.coffee:140
+#: ../resources/launcher/js/item.coffee:294
+msgid "_Uninstall"
+msgstr "Видалити"
+
+#: ../resources/guide/js/start.coffee:29
+msgid "New Launcher"
+msgstr "Новий Запускач"
+
+#: ../resources/guide/js/start.coffee:29
+msgid "New Desktop"
+msgstr "Новий Робочий стіл"
+
+#: ../resources/guide/js/start.coffee:29
+msgid "New System Settings"
+msgstr "Нові Системні налаштування"
+
+#: ../resources/guide/js/start.coffee:30
+msgid "The following will guide you to learn how to use some new functions"
+msgstr "Наступна інструкція допоможе Вам навчитись використовувати деякі нові функції"
+
+#: ../resources/guide/js/start.coffee:45
+msgid "Start"
+msgstr "Старт"
+
+#: ../resources/guide/js/start.coffee:52
+msgid "Skip the guide, experience immediately"
+msgstr "Пропустити інструкції, приступити до використання негайно"
 
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
@@ -459,242 +576,194 @@ msgstr "Вітаємо в Операційній системі Deepin!"
 msgid "Prepare for operation ..."
 msgstr "Підготовка до операції..."
 
-#: ../resources/guide/js/desktop.coffee:27
-msgid ""
-"Let's drag the other icon on the first icon \n"
-" to generate \"application group\""
-msgstr ""
+#: ../resources/launcher/js/const.coffee:60
+msgid "_Hide the icon"
+msgstr "_Приховати значок"
 
-#: ../resources/guide/js/desktop.coffee:116
-msgid "Well, you have learned how to create a \"application group\""
-msgstr "Отже, Ви навчились створювати \"групу застосунків\""
+#: ../resources/launcher/js/const.coffee:61
+msgid "_Display hidden icons"
+msgstr "_Відображати приховані значки"
 
-#: ../resources/guide/js/desktop.coffee:117
-#, fuzzy
-msgid "tips: Right-click on the application group will provide more functions"
-msgstr ""
-"Підказка: Натискання правої кнопки на групі застосунків надасть більше "
-"можливостей"
+#: ../resources/launcher/js/const.coffee:64
+msgid "_Hide this icon"
+msgstr "_Приховати цей значок"
 
-#: ../resources/guide/js/desktop.coffee:128
-#, fuzzy
-msgid ""
-"Slide the mouse to the four top corners, which can trigger four different "
-"events\n"
-"Please move to the upper left corner first to show or hide Launcher"
-msgstr ""
-"Перемістіть курсор у чотири кути, що може викликати чотири різні події\n"
-"Будь ласка, перемістіть курсор спочатку у лівий верхній кут щоб показати або "
-"приховати Запускач"
+#: ../resources/launcher/js/const.coffee:65
+msgid "_Display this icon"
+msgstr "_Показати цей значок"
 
-#: ../resources/guide/js/desktop.coffee:129
-#, fuzzy
-msgid ""
-"tips: Please trigger successively by hints, click on the blank area to return"
-msgstr ""
-"Підказка: Послідовно ініціюйте інші події за допомогою підказок, натисніть "
-"на пусте місце для повернення"
+#: ../resources/launcher/js/const.coffee:69
+msgid "_Remove from autostart"
+msgstr "_Видалити з автозапуску"
 
-#: ../resources/guide/js/desktop.coffee:133
-msgid "Show/Hide Launcher"
-msgstr "Показати/Сховати Запускач"
+#: ../resources/launcher/js/const.coffee:77
+msgid "Remove from d_esktop"
+msgstr "Видалити з робочого _столу"
 
-#: ../resources/guide/js/desktop.coffee:134
-msgid "Show/Hide Desktop"
-msgstr "Показати/Сховати Робочий стіл"
+#: ../resources/launcher/js/const.coffee:81
+msgid "Remove from do_ck"
+msgstr "Видалити з _панелі"
 
-#: ../resources/guide/js/desktop.coffee:135
-msgid "Show/Hide Control Center"
-msgstr "Показати/Сховати Центр керування"
+#: ../resources/launcher/js/menu.coffee:5
+msgid "By name"
+msgstr "За ім’ям"
 
-#: ../resources/guide/js/desktop.coffee:136
-msgid "No default functions setted in right up corner"
-msgstr "Функція по-замовчуванню не задана для правого верхнього кута"
+#: ../resources/launcher/js/menu.coffee:6
+msgid "By category (icon)"
+msgstr "За категорією (значок)"
 
-#: ../resources/guide/js/desktop.coffee:178
-msgid ""
-"Right-click on desktop black area to call up the menu, select \"Corner "
-"navigation\" to set the corner used"
-msgstr ""
+#: ../resources/launcher/js/menu.coffee:7
+msgid "By category (text)"
+msgstr "За категорією (текст)"
 
-#: ../resources/guide/js/desktop.coffee:179
-msgid "tips: Click on the interface of corner navigation blank area to return"
-msgstr ""
+#: ../resources/launcher/js/menu.coffee:8
+msgid "By time installed"
+msgstr "За часом встановлення"
 
-#: ../resources/guide/js/start.coffee:28
-msgid "New Launcher"
-msgstr ""
+#: ../resources/launcher/js/menu.coffee:9
+msgid "By frequency"
+msgstr "За частотою"
 
-#: ../resources/guide/js/start.coffee:28
-msgid "New Desktop"
-msgstr ""
+#: ../resources/osd/js/monitor.coffee:38
+msgid "Duplicate"
+msgstr "Дублікат"
 
-#: ../resources/guide/js/start.coffee:28
-msgid "New System Settings"
-msgstr ""
+#: ../resources/osd/js/monitor.coffee:39
+msgid "Extend"
+msgstr "Продовжити"
 
-#: ../resources/guide/js/start.coffee:29
-msgid "The following will guide you to learn how to use some new functions"
-msgstr ""
+#: ../resources/zone/js/utils.coffee:13
+msgid "Control Center"
+msgstr "Центр керування"
 
-#: ../resources/guide/js/start.coffee:44
-msgid "Start"
-msgstr ""
+#: ../resources/zone/js/utils.coffee:13
+msgid "All Windows"
+msgstr "Усі вікна"
 
-#: ../resources/guide/js/start.coffee:51
-msgid "I am an experienced user. Exit directly."
-msgstr ""
+#: ../resources/zone/js/utils.coffee:13
+msgid "Desktop"
+msgstr "Робочий стіл"
 
-#: ../resources/guide/js/launcher.coffee:29
-msgid ""
-"\"Application Launcher\" can be started by sliding the mouse to the upper "
-"left corner or clicking on the launcher."
-msgstr ""
+#: ../resources/zone/js/utils.coffee:13
+msgid "None"
+msgstr "Нічого"
 
-#: ../resources/guide/js/launcher.coffee:70
-msgid ""
-"What shown in the first screen of \"launcher\" are the applications "
-"collected."
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:85
-msgid ""
-"Please click on the \"All Applications\" icon, you will see all applications."
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:95
-msgid ""
-"All programs can be located by scrolling the mouse up and down.\n"
-"You can also click on the left classification navigation to locate"
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:133
-msgid "Skip the step without scroll"
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:163
-msgid ""
-"Use the keyboard to search for applications\n"
-"Try the \"deepin\" keyword to see which applications are shown"
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:164
-msgid "tips: Please directly enter the word \"deepin\""
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:179
-msgid "Use the right mouse button to send two icons to the desktop"
-msgstr ""
-
-#: ../resources/guide/js/launcher.coffee:180
-msgid "tips: You can add it to startup items or uninstall it"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:9
-msgid "Keep _showing"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:10
-msgid "Keep _hidden"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:11
-msgid "_Auto hide"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:24
-msgid "_Fashion mode"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:25
-msgid "_Efficient mode"
-msgstr ""
-
-#: ../resources/dock/js/global_menu.coffee:26
-msgid "_Classic mode"
-msgstr ""
-
-#: ../resources/dock/js/deepin_item.coffee:247
-msgid "_View as analog"
-msgstr ""
-
-#: ../resources/dock/js/deepin_item.coffee:248
-#: ../resources/dock/js/deepin_item.coffee:300
-msgid "_Time settings"
-msgstr ""
-
-#: ../resources/dock/js/deepin_item.coffee:299
-msgid "_View as digit"
-msgstr ""
-
-#: ../resources/dock/js/plugins/trash/trash.coffee:33
-msgid "_Close"
-msgstr "_Закрити"
-
-#: ../resources/common/js/uninstaller.coffee:32
-msgid "You have uninstalled \"%1\" successfully"
-msgstr ""
-
-#: ../resources/common/js/uninstaller.coffee:33
-msgid "\"%1\" failed to be uninstalled"
-msgstr ""
-
-#: ../app/desktop/desktop.c:292
+#: ../app/desktop/desktop.c:300
 msgid "New file"
 msgstr "Новий файл"
 
-#: ../app/desktop/desktop.c:303
+#: ../app/desktop/desktop.c:311
 msgid "New directory"
 msgstr "Новий каталог"
+
+#: ../app/dock/dock.c:291
+msgid "Dock failed to start, because Compiz is not enabled."
+msgstr "Не вдалось запустити панель, оскільки Compiz не ввімкнено"
+
+#: ../app/greeter/greeter.c:209 ../app/greeter/lock.c:173
+msgid "Wrong Password"
+msgstr "Неправильний Пароль"
 
 #: ../app/greeter/mutils.c:84
 msgid "%a, %b %d, %Y"
 msgstr "%a, %b %d, %Y"
 
-#: ../app/greeter/lock.c:125 ../app/greeter/greeter.c:192
-msgid "Wrong Password"
-msgstr "Невірний пароль"
+#: ../lib/category.c:45
+msgid "all"
+msgstr "усі"
 
-#: ../app/dock/dock.c:322
-msgid "Dock failed to start, because Compiz is not enabled."
-msgstr ""
+#: ../lib/category.c:46
+msgid "internet"
+msgstr "інтернет"
 
-#: ../lib/dentry/entry.c:746
+#: ../lib/category.c:47
+msgid "multimedia"
+msgstr "мультимедіа"
+
+#: ../lib/category.c:48
+msgid "games"
+msgstr "ігри"
+
+#: ../lib/category.c:49
+msgid "graphics"
+msgstr "графіка"
+
+#: ../lib/category.c:50
+msgid "productivity"
+msgstr "продуктивність"
+
+#: ../lib/category.c:51
+msgid "industry"
+msgstr "індустрія"
+
+#: ../lib/category.c:52
+msgid "education"
+msgstr "освіта"
+
+#: ../lib/category.c:53
+msgid "development"
+msgstr "розробка"
+
+#: ../lib/category.c:54
+msgid "system"
+msgstr "система"
+
+#: ../lib/category.c:55
+msgid "utilities"
+msgstr "утиліти"
+
+#: ../lib/category.c:56
+msgid "others"
+msgstr "інші"
+
+#: ../lib/category.c:60
+msgid "Network"
+msgstr "Мережа"
+
+#: ../lib/category.c:61
+msgid "Game"
+msgstr "Гра"
+
+#: ../lib/category.c:62
+msgid "Office"
+msgstr "Офіс"
+
+#: ../lib/dentry/entry.c:748
 #, c-format
 msgid ""
 "Cannot rename the item to \"%s\". This may be caused by lack of permissions."
-msgstr ""
+msgstr "Неможливо перейменувати об'єкт на \"%s\". Це може бути викликане відсутністю дозволів. "
 
-#: ../lib/dentry/entry.c:752
+#: ../lib/dentry/entry.c:754
 #, c-format
 msgid ""
 "There is already a file with name \"%s\" in this folder. Please consider a "
 "different name."
-msgstr ""
+msgstr "Файл із назвою \"%s\" вже існує у даному каталозі. Будь ласка, оберіть іншу назву."
 
-#: ../lib/dentry/entry.c:758
+#: ../lib/dentry/entry.c:760
 msgid "The item could not be renamed"
-msgstr ""
+msgstr "Об’єкт не може бути перейменований"
 
-#: ../lib/dentry/entry.c:833 ../lib/dentry/fileops.c:805
+#: ../lib/dentry/entry.c:834 ../lib/dentry/fileops.c:804
 msgid "copy"
 msgstr "копіювати"
 
-#: ../lib/dentry/entry.c:1415
+#: ../lib/dentry/entry.c:1400
 msgid "App Group"
 msgstr "Група програм"
 
-#: ../lib/dentry/fileops.c:566
+#: ../lib/dentry/fileops.c:565
 msgid "Move"
-msgstr ""
+msgstr "Перемістити"
 
-#: ../lib/dentry/fileops.c:772
+#: ../lib/dentry/fileops.c:771
 msgid "Copy"
 msgstr "Копіювати"
 
 #: ../lib/dentry/fileops_delete.c:29
 msgid "Delete Files"
-msgstr ""
+msgstr "Видалити Файли"
 
 #: ../lib/dentry/fileops_delete.c:32
 msgid "Are you sure you want to permanently delete the files?"
@@ -702,250 +771,171 @@ msgstr "Ви впевнені, що хочете остаточно видали
 
 #: ../lib/dentry/fileops_delete.c:33
 msgid "If you delete the files, they will be permanently lost."
-msgstr ""
+msgstr "Якщо Ви видалите файли, їх буде втрачено остаточно."
 
 #: ../lib/dentry/fileops_delete.c:36
 msgid "Delete"
 msgstr "Видалити"
 
-#: ../lib/dentry/fileops_error_dialog.c:63
+#: ../lib/dentry/fileops_error_dialog.c:60
 msgid "File conflict"
 msgstr "Конфлікт файлу"
 
-#: ../lib/dentry/fileops_error_dialog.c:106
+#: ../lib/dentry/fileops_error_dialog.c:103
 msgid "_Select a new name for the destination"
 msgstr "_Виберіть нове ім'я для призначення"
 
-#: ../lib/dentry/fileops_error_dialog.c:117
+#: ../lib/dentry/fileops_error_dialog.c:114
 msgid "Reset"
 msgstr "Скинути"
 
-#: ../lib/dentry/fileops_error_dialog.c:126
+#: ../lib/dentry/fileops_error_dialog.c:123
 msgid "Apply this action to all files"
 msgstr "Застосувати цю дію до всіх файлів"
 
-#: ../lib/dentry/fileops_error_dialog.c:133
+#: ../lib/dentry/fileops_error_dialog.c:130
 msgid "_Skip"
 msgstr "_Пропустити"
 
-#: ../lib/dentry/fileops_error_dialog.c:136
+#: ../lib/dentry/fileops_error_dialog.c:133
 msgid "Re_name"
 msgstr "_Перейменувати"
 
-#: ../lib/dentry/fileops_error_dialog.c:141
+#: ../lib/dentry/fileops_error_dialog.c:138
 msgid "Replace"
 msgstr "Замінити"
 
-#: ../lib/dentry/fileops_error_dialog.c:218
+#: ../lib/dentry/fileops_error_dialog.c:215
 #, c-format
 msgid "Do you want to merge with folder \"%s\"?"
-msgstr ""
+msgstr "Бажаєте об’єднати з каталогом \"%s\"?"
 
-#: ../lib/dentry/fileops_error_dialog.c:220
+#: ../lib/dentry/fileops_error_dialog.c:217
 msgid ""
-"The merging operation will be asked to confirm before replacing any files in "
-"the folder conflicted."
-msgstr ""
+"The merging operation will be asked to confirm before replacing any files in"
+" the folder conflicted."
+msgstr "Операція об'єднання запропонує підтвердження перед заміною будь-яких конфліктних файлів у каталозі."
 
-#: ../lib/dentry/fileops_error_dialog.c:222
+#: ../lib/dentry/fileops_error_dialog.c:219
 #, c-format
 msgid "An older folder with the same name already exists in \"%s\"."
-msgstr ""
+msgstr "Старіший каталог із такою ж назвою вже існує у \"%s\"."
 
-#: ../lib/dentry/fileops_error_dialog.c:226
+#: ../lib/dentry/fileops_error_dialog.c:223
 #, c-format
 msgid "A newer folder with the same name already exists in \"%s\"."
-msgstr ""
+msgstr "Новіший каталог із такою ж назвою вже існує у \"%s\"."
 
-#: ../lib/dentry/fileops_error_dialog.c:230
+#: ../lib/dentry/fileops_error_dialog.c:227
 #, c-format
 msgid "Another folder with the same name already exists in \"%s\"."
-msgstr ""
+msgstr "Інший каталог із такою ж назвою вже існує у \"%s\"."
 
-#: ../lib/dentry/fileops_error_dialog.c:236
+#: ../lib/dentry/fileops_error_dialog.c:233
 msgid "All files in the folder will be removed by replacing."
-msgstr ""
+msgstr "Усі файли у каталозі будуть видалені заміною."
 
-#: ../lib/dentry/fileops_error_dialog.c:237
+#: ../lib/dentry/fileops_error_dialog.c:234
 #, c-format
 msgid "Do you want to replace folder \"%s\"?"
-msgstr ""
+msgstr "Бажаєте замінити каталог \"%s\"?"
 
-#: ../lib/dentry/fileops_error_dialog.c:239
+#: ../lib/dentry/fileops_error_dialog.c:236
 #, c-format
 msgid "A folder with the same name already exists in \"%s\"."
-msgstr ""
+msgstr "Каталог із такою ж назвою вже існує у \"%s\"."
+
+#: ../lib/dentry/fileops_error_dialog.c:242
+#, c-format
+msgid "Do you want to replace file \"%s\"?"
+msgstr "Бажаєте замінити файл \"%s\"?"
+
+#: ../lib/dentry/fileops_error_dialog.c:243
+msgid "The content will be overwritten by replacing."
+msgstr "Вміст буде перезаписано із заміною."
 
 #: ../lib/dentry/fileops_error_dialog.c:245
 #, c-format
-msgid "Do you want to replace file \"%s\"?"
-msgstr ""
-
-#: ../lib/dentry/fileops_error_dialog.c:246
-msgid "The content will be overwritten by replacing."
-msgstr ""
-
-#: ../lib/dentry/fileops_error_dialog.c:248
-#, c-format
 msgid "An older file with the same name already exists in \"%s\"."
-msgstr ""
+msgstr "Старіший файл із такою ж назвою вже існує у \"%s\"."
 
-#: ../lib/dentry/fileops_error_dialog.c:252
+#: ../lib/dentry/fileops_error_dialog.c:249
 #, c-format
 msgid "A newer file with the same name already exists in \"%s\"."
-msgstr ""
+msgstr "Новіший файл із такою ж назвою вже існує у \"%s\"."
 
-#: ../lib/dentry/fileops_error_dialog.c:256
+#: ../lib/dentry/fileops_error_dialog.c:253
 #, c-format
 msgid "Another file with the same name already exists in \"%s\"."
-msgstr ""
+msgstr "Інший файл із такою ж назвою вже існує у \"%s\"."
 
-#: ../lib/dentry/fileops_error_dialog.c:328
+#: ../lib/dentry/fileops_error_dialog.c:325
 msgid "Original file"
-msgstr ""
+msgstr "Оригінальний файл"
 
-#: ../lib/dentry/fileops_error_dialog.c:329
-#: ../lib/dentry/fileops_error_dialog.c:357
+#: ../lib/dentry/fileops_error_dialog.c:326
+#: ../lib/dentry/fileops_error_dialog.c:354
 msgid "Size:"
-msgstr ""
+msgstr "Розмір:"
 
-#: ../lib/dentry/fileops_error_dialog.c:333
-#: ../lib/dentry/fileops_error_dialog.c:361
+#: ../lib/dentry/fileops_error_dialog.c:330
+#: ../lib/dentry/fileops_error_dialog.c:358
 msgid "Type:"
-msgstr ""
+msgstr "Тип:"
 
-#: ../lib/dentry/fileops_error_dialog.c:337
-#: ../lib/dentry/fileops_error_dialog.c:365
+#: ../lib/dentry/fileops_error_dialog.c:334
+#: ../lib/dentry/fileops_error_dialog.c:362
 msgid "Last modified:"
-msgstr ""
+msgstr "Востаннє модифіковано"
 
-#: ../lib/dentry/fileops_error_dialog.c:356
+#: ../lib/dentry/fileops_error_dialog.c:353
 msgid "Replace with"
-msgstr ""
+msgstr "Замінити на"
 
-#: ../lib/dentry/fileops_error_dialog.c:382
+#: ../lib/dentry/fileops_error_dialog.c:379
 msgid "Merge"
-msgstr ""
+msgstr "Об'єднати"
 
 #: ../lib/dentry/fileops_error_reporting.c:106
 #: ../lib/dentry/fileops_error_reporting.c:191
 #, c-format
 msgid "Error while %s files"
-msgstr ""
+msgstr "Помилка на %s файлах"
 
 #: ../lib/dentry/fileops_trash.c:58
 msgid "Empty Trash"
-msgstr ""
+msgstr "Очистити Смітник"
 
 #: ../lib/dentry/fileops_trash.c:67
 msgid "Empty all items from Trash?"
-msgstr ""
+msgstr "Видалити вміст Смітника?"
 
 #: ../lib/dentry/fileops_trash.c:68
 msgid "All items in the Trash will be permanently deleted."
-msgstr ""
+msgstr "Весь вміст Смітника буде видалено остаточно."
 
 #: ../lib/dentry/fileops_trash.c:71
 msgid "Empty _Trash"
-msgstr ""
+msgstr "Очистити _Смітник"
 
 #: ../lib/dentry/mime_actions.c:198
 #, c-format
 msgid "Do you want to run \"%s\", or display its contents?"
-msgstr ""
+msgstr "Бажаєте виконати файл \"%s\", чи відобразити його вміст?"
 
 #: ../lib/dentry/mime_actions.c:199
 #, c-format
 msgid "\"%s\" is an executable text file."
-msgstr ""
+msgstr "\"%s\" є виконуваним текстовим файлом."
 
 #: ../lib/dentry/mime_actions.c:210
 msgid "Run in _Terminal"
-msgstr ""
+msgstr "Виконати у _Терміналі"
 
 #: ../lib/dentry/mime_actions.c:211
 msgid "_Display"
-msgstr ""
+msgstr "_Відобразити"
 
 #: ../lib/dentry/mime_actions.c:213
 msgid "_Run"
-msgstr "_Запустити"
-
-#: ../lib/category.c:45
-msgid "all"
-msgstr ""
-
-#: ../lib/category.c:46
-msgid "internet"
-msgstr ""
-
-#: ../lib/category.c:47
-msgid "multimedia"
-msgstr ""
-
-#: ../lib/category.c:48
-msgid "games"
-msgstr ""
-
-#: ../lib/category.c:49
-msgid "graphics"
-msgstr ""
-
-#: ../lib/category.c:50
-msgid "productivity"
-msgstr ""
-
-#: ../lib/category.c:51
-msgid "industry"
-msgstr ""
-
-#: ../lib/category.c:52
-msgid "education"
-msgstr ""
-
-#: ../lib/category.c:53
-msgid "development"
-msgstr ""
-
-#: ../lib/category.c:54
-msgid "system"
-msgstr ""
-
-#: ../lib/category.c:55
-msgid "utilities"
-msgstr ""
-
-#: ../lib/category.c:56
-msgid "others"
-msgstr ""
-
-#~ msgid "click login button to log in"
-#~ msgstr "натисніть кнопку входу щоб увійти"
-
-#~ msgid "Expand"
-#~ msgstr "Розширити"
-
-#~ msgid "Only the first Screen"
-#~ msgstr "Лише перший екран"
-
-#~ msgid "Only the second Screen"
-#~ msgstr "Лише другий екран"
-
-#, fuzzy
-#~ msgid "_Dock setting"
-#~ msgstr "_Налаштування дисплею"
-
-#~ msgid "_Clean up"
-#~ msgstr "_Очистити"
-
-#~ msgid "Thanks for your patience to learn.You get the novice package"
-#~ msgstr "Спасибі за Ваше терпіння до навчання. Ви отримуєте пакет початківця"
-
-#~ msgid "tips：Please receive in Deepin account"
-#~ msgstr "Підказка: Отримайте в обліковому записі Deepin"
-
-#~ msgid "Get"
-#~ msgstr "Отримати"
-
-#~ msgid "New users directly jump to the registration page"
-#~ msgstr "Нові користувачі відразу потрапляють на сторінку реєстрації"
+msgstr "_Виконати"

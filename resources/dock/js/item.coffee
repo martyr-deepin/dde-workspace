@@ -47,7 +47,7 @@ class Item extends Widget
 
         @imgWrap.classList.add("ReflectImg")
 
-        @change_icon(icon || NOT_FOUND_ICON)
+        @change_icon(@icon || NOT_FOUND_ICON)
 
         @imgWrap.style.pointerEvents = "auto"
         @imgWrap.addEventListener("mouseover", @on_mouseover)
@@ -83,6 +83,7 @@ class Item extends Widget
             icon_size = 48
             src = DCore.get_theme_icon(src, icon_size) || DCore.get_theme_icon(NOT_FOUND_ICON, icon_size)
         @img.src = src if src?
+        @icon = src
 
     set_tooltip: (text) ->
         if @windowTitle

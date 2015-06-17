@@ -75,17 +75,6 @@ gboolean mouse_pointer_leave(int x, int y)
 }
 
 
-JS_EXPORT_API
-double dock_get_active_window()
-{
-    Window aw = 0;
-    Atom ATOM_ACTIVE_WINDOW = gdk_x11_get_xatom_by_name("_NET_ACTIVE_WINDOW");
-    Display* _dsp = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
-    get_atom_value_by_atom(_dsp, GDK_ROOT_WINDOW(), ATOM_ACTIVE_WINDOW, &aw, get_atom_value_for_index, 0);
-    return aw;
-}
-
-
 Window get_dock_window()
 {
     g_assert(container != NULL);
@@ -335,21 +324,19 @@ void _change_workarea_height(int height)
 
     // update_primary_info(&dock);
     int workarea_width = (dock.width - GD.dock_panel_width) / 2;
+    int workarea_start = dock.x + workarea_width;
+    // NB: minus 1 to avoid struct cross screens.
+    int workarea_end = MAX(workarea_start, dock.x + dock.width - workarea_width - 1);
     if (GD.config.hide_mode == NO_HIDE_MODE ) {
         g_message("NO_HIDE_MODE, set workarea height to %d", height);
-        set_struct_partial(DOCK_GDK_WINDOW(),
-                           ORIENTATION_BOTTOM,
-                           height,
-                           dock.x + workarea_width,
-                           dock.x + dock.width - workarea_width);
     } else {
         g_message("HIDE_MODE, set workarea height to 0");
-        set_struct_partial(DOCK_GDK_WINDOW(),
-                           ORIENTATION_BOTTOM,
-                           0,
-                           dock.x + workarea_width,
-                           dock.x + dock.width - workarea_width);
     }
+    set_struct_partial(DOCK_GDK_WINDOW(),
+                       ORIENTATION_BOTTOM,
+                       height,
+                       workarea_start,
+                       workarea_end);
 }
 
 

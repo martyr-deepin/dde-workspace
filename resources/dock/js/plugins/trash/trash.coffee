@@ -8,9 +8,8 @@ class Trash extends PostfixedItem
     constructor:(@id, icon, @title)->
         super
         # @imgContainer.draggable = true
-        @set_tooltip(title)
+        @set_tooltip(@title)
         @w_id = 0
-        @is_opened = false
         @entry = DCore.DEntry.get_trash_entry()
         @emptyIcon = Trash.get_icon(0)
         @fullIcon = Trash.get_icon(1)
@@ -20,9 +19,16 @@ class Trash extends PostfixedItem
         @imgHover.style.display = 'none'
         @isEmpty = false
         @update()
+        @openingIndicator.addEventListener("webkitAnimationEnd", @on_animationend)
         DCore.signal_connect("trash_count_changed", (info)=>
             @update(info.value)
         )
+
+    on_animationend: (e)=>
+        @openingIndicator.style.webkitAnimationName = ''
+        @openingIndicator.style.display = 'none'
+        if not @core?
+            @hide_indicator()
 
     on_mouseover:(e)=>
         super
@@ -38,7 +44,7 @@ class Trash extends PostfixedItem
             new MenuItem(1, _("_Empty")).setActive(DCore.DEntry.get_trash_count() != 0)
         )
         menu.unregisterHook(handleMenuUnregister)
-        if @is_opened
+        if @core?
             menu.append(new MenuItem(2, _("_Close")))
         screenOffset =
             x: e.screenX - e.pageX
@@ -75,10 +81,9 @@ class Trash extends PostfixedItem
         super
         if e.button != 0
             return
-        if @is_opened
-            @core?.Activate(0,0)
+        if @core?
+            @core.Activate(0,0)
             return
-        @is_opened = true
         @openingIndicator.style.display = 'inline'
         @openingIndicator.style.webkitAnimationName = 'Breath'
         if !DCore.DEntry.launch(@entry, [])
@@ -153,13 +158,11 @@ class Trash extends PostfixedItem
 
     show_indicator: ->
         console.log("show_indicator")
-        @is_opened = true
         @openIndicator.style.display = ""
         @openingIndicator.style.display = 'none'
         @openingIndicator.style.webkitAnimationName = ''
 
     hide_indicator:->
-        @is_opened = false
         @id = 0
         @openIndicator.style.display = "none"
 

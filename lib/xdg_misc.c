@@ -128,10 +128,9 @@ void set_default_theme(const char* theme)
 gboolean change_desktop_entry_name(const char* path, const char* name)
 {
     GKeyFile *de = g_key_file_new();
-    if (!g_key_file_load_from_file(de, path,
+    gboolean ok = FALSE;
+    if (g_key_file_load_from_file(de, path,
                 G_KEY_FILE_KEEP_COMMENTS | G_KEY_FILE_KEEP_TRANSLATIONS, NULL)) {
-        return FALSE;
-    } else {
         const char* locale = *g_get_language_names();
         if (locale && !g_str_has_prefix(locale, "en"))
             g_key_file_set_locale_string(de, GROUP, "Name", locale, name);
@@ -140,15 +139,11 @@ gboolean change_desktop_entry_name(const char* path, const char* name)
 
         gsize size;
         gchar* content = g_key_file_to_data(de, &size, NULL);
-        if (write_to_file(path, content, size)) {
-            g_key_file_free(de);
-            g_free(content);
-            return TRUE;
-        } else {
-            g_key_file_free(de);
-            g_free(content);
-            return FALSE;
-        }
+        ok = write_to_file(path, content, size);
+        g_free(content);
     }
+
+    g_key_file_free(de);
+    return ok;
 }
 

@@ -5,15 +5,15 @@
 # Translators:
 # Adrian Paesani <adrian.paesani@gmail.com>, 2014
 # fedesanchez <fedesanchez888@gmail.com>, 2014
-# Mariano Agüero <nero1000000@gmail.com>, 2014
+# Mariano Agüero <nero1000000@gmail.com>, 2014-2015
 # seba.wetzel <seba.wetzel@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-12-26 11:18+0800\n"
-"PO-Revision-Date: 2014-12-26 04:47+0000\n"
-"Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
+"PO-Revision-Date: 2015-03-23 10:24+0000\n"
+"Last-Translator: Mariano Agüero <nero1000000@gmail.com>\n"
 "Language-Team: Spanish (Argentina) (http://www.transifex.com/projects/p/deepin-desktop-environment/language/es_AR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -38,7 +38,7 @@ msgstr "\"%1\" falló al desinstalarse"
 #: ../resources/desktop/js/richdir.coffee:600
 #: ../resources/desktop/js/richdir.coffee:643
 msgid "The link is invalid. Do you want to delete it?"
-msgstr "El link es inválido. Desea borrarlo?"
+msgstr "El link es inválido. ¿Desea borrarlo?"
 
 #: ../resources/desktop/js/application.coffee:179
 #: ../resources/desktop/js/desktopentry.coffee:166
@@ -572,7 +572,7 @@ msgstr "Saltar la guía, experimentar inmediatamente"
 
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
-msgstr "Bienvenidos a utilizar Deepin Sistema Operativo"
+msgstr "Bienvenidos a utilizar el Sistema Operativo Deepin"
 
 #: ../resources/guide/js/welcome.coffee:38
 msgid "Prepare for operation ..."
@@ -741,7 +741,7 @@ msgstr "No se puede renombrar el elemento a \"%s\". Esto puede ser causado por l
 msgid ""
 "There is already a file with name \"%s\" in this folder. Please consider a "
 "different name."
-msgstr "Ya hay archivos con el nombre \"%s\" en esta carpeta. Por favor considere un nombre diferente."
+msgstr "Ya existe un archivo con el nombre \"%s\" en esta carpeta. Por favor considere un nombre diferente."
 
 #: ../lib/dentry/entry.c:760
 msgid "The item could not be renamed"
@@ -810,47 +810,47 @@ msgstr "Reemplazar"
 #: ../lib/dentry/fileops_error_dialog.c:215
 #, c-format
 msgid "Do you want to merge with folder \"%s\"?"
-msgstr "Quiere combinar con la carpeta \"%s\"?"
+msgstr "¿Quiere combinar con la carpeta \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:217
 msgid ""
 "The merging operation will be asked to confirm before replacing any files in"
 " the folder conflicted."
-msgstr "La operación de combinación deberá ser confirmada antes de reemplazar cualquier archivo en el directorio en conflicto."
+msgstr "La operación de combinación deberá ser confirmada antes de reemplazar cualquier archivo de la carpeta en conflicto."
 
 #: ../lib/dentry/fileops_error_dialog.c:219
 #, c-format
 msgid "An older folder with the same name already exists in \"%s\"."
-msgstr "Una carpeta más antigua con el mismo nombre ya existe en \"%s\"."
+msgstr "Ya existe una carpeta más antigua con el mismo nombre en \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:223
 #, c-format
 msgid "A newer folder with the same name already exists in \"%s\"."
-msgstr "Una carpeta más nueva con el mismo nombre ya existe en \"%s\"."
+msgstr "Ya existe una carpeta más nueva con el mismo nombre en \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:227
 #, c-format
 msgid "Another folder with the same name already exists in \"%s\"."
-msgstr "Otra carpeta con el mismo nombre ya existe en \"%s\"."
+msgstr "Ya existe otra carpeta con el mismo nombre en \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:233
 msgid "All files in the folder will be removed by replacing."
-msgstr "Todos los archivos en el directorio serán eliminados por reemplazo."
+msgstr "Todos los archivos en la carpeta serán eliminados por reemplazo."
 
 #: ../lib/dentry/fileops_error_dialog.c:234
 #, c-format
 msgid "Do you want to replace folder \"%s\"?"
-msgstr "Quiere reemplazar las carpetas \"%s\"?"
+msgstr "¿Quiere reemplazar las carpetas \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:236
 #, c-format
 msgid "A folder with the same name already exists in \"%s\"."
-msgstr "Una carpeta con el mismo nombre ya existe en \"%s\"."
+msgstr "Ya existe una carpeta con el mismo nombre en \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:242
 #, c-format
 msgid "Do you want to replace file \"%s\"?"
-msgstr "Quiere reemplazar los archivos \"%s\"?"
+msgstr "¿Quiere reemplazar los archivos \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:243
 msgid "The content will be overwritten by replacing."
@@ -859,17 +859,17 @@ msgstr "El contenido será sobrescrito por reemplazo."
 #: ../lib/dentry/fileops_error_dialog.c:245
 #, c-format
 msgid "An older file with the same name already exists in \"%s\"."
-msgstr "Un archivo más antiguo con el mismo nombre ya existe en \"%s\"."
+msgstr "Ya existe un archivo más antiguo con el mismo nombre en \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:249
 #, c-format
 msgid "A newer file with the same name already exists in \"%s\"."
-msgstr "Un archivo más nuevo con el mismo nombre ya existe en \"%s\"."
+msgstr "Ya existe un archivo más nuevo con el mismo nombre en \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:253
 #, c-format
 msgid "Another file with the same name already exists in \"%s\"."
-msgstr "Otro archivo con el mismo nombre ya existe en \"%s\"."
+msgstr "Ya existe otro archivo con el mismo nombre en \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:325
 msgid "Original file"
