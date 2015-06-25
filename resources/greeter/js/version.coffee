@@ -31,7 +31,7 @@ class Version extends Widget
             type_default = DCore[APP_NAME].get_deepin_type(null)
             if type_default == "Desktop"#if Desktop type, will not show typ,just beta alpha
                 ver.setAttribute("class","VerBeta")
-                ver_txt = ""
+                ver_txt = DCore[APP_NAME].get_deepin_milestone()
             else
                 ver.setAttribute("class","VerType")
                 lang = DCore[APP_NAME].get_lang()

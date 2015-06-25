@@ -91,6 +91,12 @@ const char* greeter_get_deepin_type(const gchar* lang)
 }
 
 JS_EXPORT_API
+const char* greeter_get_deepin_milestone()
+{
+    return get_deepin_milestone();
+}
+
+JS_EXPORT_API
 char* greeter_get_theme()
 {
     return get_theme_config();

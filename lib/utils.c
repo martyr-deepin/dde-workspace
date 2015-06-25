@@ -495,6 +495,32 @@ const gchar* get_deepin_version()
     return g_strdup(version);
 }
 
+const gchar* get_deepin_milestone()
+{
+    GKeyFile* file = g_key_file_new();
+    gboolean load = g_key_file_load_from_file (file, VERSION_PATH, G_KEY_FILE_NONE, NULL);
+    if (!load){
+        g_key_file_unref(file);
+        return NULL;
+    }
+    gsize len;
+    gchar** groups = g_key_file_get_groups(file,&len);
+    const gchar* milestone = NULL;
+    for (guint i = 0;i < len; i++)
+    {
+        if (g_strcmp0(groups[i], "Addition") != 0){
+            continue;
+        }
+
+        milestone = g_key_file_get_string(file,groups[i],"Milestone", NULL);
+        g_debug ("[%s]::groups[%d]:%s,Milestone:%s", __func__, i, groups[i], milestone);
+    }
+    g_strfreev(groups);
+    g_key_file_unref(file);
+    g_message ("[%s]::milestone:%s", __func__, milestone);
+    return g_strdup(milestone);
+}
+
 const gchar* get_deepin_type(const gchar* lang)
 {
     GKeyFile* file = g_key_file_new();

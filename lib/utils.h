@@ -69,6 +69,7 @@ gboolean is_livecd();
 gboolean spawn_command_sync (const char* command,gboolean sync);
 const gchar* get_lang();
 const gchar* get_deepin_version();
+const gchar* get_deepin_milestone();
 const gchar* get_deepin_type(const gchar* lang);
 
 #endif
