@@ -66,7 +66,6 @@
 
 #define SHOW_COMPUTER_ICON "show-computer-icon"
 #define SHOW_TRASH_ICON "show-trash-icon"
-#define ENABLED_PLUGINS "enabled-plugins"
 
 #define APP_DEFAULT_ICON "application-default-icon"
 
@@ -426,47 +425,6 @@ PRIVATE void desktop_config_changed(GSettings* settings G_GNUC_UNUSED,
     js_post_message ("desktop_config_changed",info);
 }
 
-extern GHashTable* enabled_plugins;
-extern GHashTable* disabled_plugins;
-extern GHashTable* plugins_state;
-#define SCHEMA_KEY_ENABLED_PLUGINS "enabled-plugins"
-enum PluginState {
-    DISABLED_PLUGIN,
-    ENABLED_PLUGIN,
-    UNKNOWN_PLUGIN
-};
-
-
-extern void get_enabled_plugins(GSettings* gsettings, char const* key);
-
-PRIVATE
-void _change_to_json(gpointer key, gpointer value, gpointer user_data)
-{
-    json_append_number((JSObjectRef)user_data, key, GPOINTER_TO_INT(value));
-}
-
-
-PRIVATE void desktop_plugins_changed(GSettings* settings, char* key G_GNUC_UNUSED, gpointer user_data G_GNUC_UNUSED)
-{
-    extern gchar * get_schema_id(GSettings* gsettings);
-    extern void _init_state(gpointer key, gpointer value, gpointer user_data);
-
-    g_hash_table_foreach(plugins_state, _init_state, plugins_state);
-    get_enabled_plugins(settings, ENABLED_PLUGINS);
-
-    JSObjectRef json = json_create();
-    char* current_gsettings_schema_id = get_schema_id(settings);
-    char* desktop_gsettings_schema_id = get_schema_id(desktop_gsettings);
-    if (0 == g_strcmp0(current_gsettings_schema_id, desktop_gsettings_schema_id))
-        json_append_string(json, "app_name", "desktop");
-
-    g_free(desktop_gsettings_schema_id);
-    g_free(current_gsettings_schema_id);
-
-    g_hash_table_foreach(plugins_state, _change_to_json, (gpointer)json);
-    js_post_message("plugins_changed", json);
-}
-
 
 JS_EXPORT_API
 char* desktop_get_data_dir()
@@ -759,8 +717,6 @@ void desktop_emit_webview_ok()
                           G_CALLBACK(desktop_config_changed), NULL);
         g_signal_connect (desktop_gsettings, "changed::show-trash-icon",
                           G_CALLBACK(desktop_config_changed), NULL);
-        g_signal_connect(desktop_gsettings, "changed::enabled-plugins",
-                         G_CALLBACK(desktop_plugins_changed), NULL);
 
         setup_root_window_watcher(container, dock_gsettings);
     }
