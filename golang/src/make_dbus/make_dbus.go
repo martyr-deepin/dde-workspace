@@ -165,10 +165,10 @@ static void _bus_method_call (GDBusConnection * connection,
         {{$arg.CName}} arg{{$index}};
     {{end}}
     {{get_c_content .}}
-    {{if .Ret.Type }} {{..Ret.CName}} _c_retval ={{end}} {{gen_arg_call .}}
+    {{if .Ret.Type }} {{.Ret.CName}} _c_retval ={{end}} {{gen_arg_call .}}
 
     {{if .Ret.Type }}
-        retval = g_variant_new("({{..Ret.DName}})", _c_retval);
+        retval = g_variant_new("({{.Ret.DName}})", _c_retval);
         {{if is_string .Ret.CName}}g_free(_c_retval);{{end}}
     {{end}}
         g_dbus_method_invocation_return_value (invocation, retval);
@@ -215,7 +215,7 @@ void
 {{range .Methods}}{{if .IsSignal}}"       <signal name=\"{{.Name}}\">"
 {{range .Args}}"             <arg name=\"{{.Name}}\" type=\"{{.DName}}\" ></arg>"
 {{end}}"       </signal>"{{else}}"       <method name=\"{{.Name}}\">"
-{{if .Ret.Type}}"             <arg name=\"{{..Ret.Name}}\" type=\"{{..Ret.DName}}\" direction=\"out\"></arg>"
+{{if .Ret.Type}}"             <arg name=\"{{.Ret.Name}}\" type=\"{{.Ret.DName}}\" direction=\"out\"></arg>"
 {{end}}{{range .Args}}"             <arg name=\"{{.Name}}\" type=\"{{.DName}}\" direction=\"{{.Type}}\"></arg>"
 {{end}}"       </method>" {{end}}
 {{end}}"</interface>"
