@@ -24,7 +24,7 @@
 #include "background.h"
 #include "theme.h"
 
-#define SCHEMA_ID "com.deepin.dde.personalization"
+#define SCHEMA_ID "com.deepin.dde.appearance"
 #define GREETER_THEME_KEY "greeter-theme"
 #define GREETER_THEME_PATH ""RESOURCE_DIR"greeter/greeter-theme"
 
