@@ -3,15 +3,8 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# ACJ <acj259@gmail.com>, 2014
-# Albert Schotschneider <schotschneider@hotmail.de>, 2014
-# Pr0TuRk38 <almassiva_38@hotmail.de>, 2014
-# Eduard Gotwig <eduardgotwig@gmail.com>, 2014
-# Eduard Gotwig <eduardgotwig@gmail.com>, 2014
-# Ettore Atalan <atalanttore@googlemail.com>, 2014-2015
-# jonnius <jonatan_zeidler@gmx.de>, 2014
-# Steven Eisenreich, 2014
-# webcrush <chris.plescher@yahoo.de>, 2014
+# Tobias Ahlström <tobias.ahlstrom@gmail.com>, 2015
+# tompa <tompatulpan@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
@@ -19,31 +12,31 @@ msgstr ""
 "POT-Creation-Date: 2014-12-26 11:18+0800\n"
 "PO-Revision-Date: 2015-09-17 05:33+0000\n"
 "Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
-"Language-Team: German (http://www.transifex.com/linuxdeepin/deepin-desktop-environment/language/de/)\n"
+"Language-Team: Swedish (http://www.transifex.com/linuxdeepin/deepin-desktop-environment/language/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de\n"
+"Language: sv\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../resources/common/js/accounts.coffee:78
 msgid "Guest"
-msgstr "Gast"
+msgstr "Gäst"
 
 #: ../resources/common/js/uninstaller.coffee:32
 msgid "You have uninstalled \"%1\" successfully"
-msgstr "\"%1\" wurde erfolgreich deinstalliert"
+msgstr "Du har framgångsrikt avinstallerat \"%1\" "
 
 #: ../resources/common/js/uninstaller.coffee:33
 msgid "\"%1\" failed to be uninstalled"
-msgstr "\"%1\" konnte nicht deinstalliert werden"
+msgstr "\"%1\" misslyckades med att avinstalleras"
 
 #: ../resources/desktop/js/application.coffee:179
 #: ../resources/desktop/js/richdir.coffee:348
 #: ../resources/desktop/js/richdir.coffee:600
 #: ../resources/desktop/js/richdir.coffee:643
 msgid "The link is invalid. Do you want to delete it?"
-msgstr "Der Link ist ungültig. Soll er entfernt werden?"
+msgstr "Länken är ogiltig. Vill du ta bort den?"
 
 #: ../resources/desktop/js/application.coffee:179
 #: ../resources/desktop/js/desktopentry.coffee:166
@@ -52,7 +45,7 @@ msgstr "Der Link ist ungültig. Soll er entfernt werden?"
 #: ../resources/desktop/js/richdir.coffee:643
 #: ../resources/dock/js/plugins/trash/trash.coffee:85
 msgid "Warning"
-msgstr "Warnung"
+msgstr "Varning"
 
 #: ../resources/desktop/js/desktopentry.coffee:102
 #: ../resources/desktop/js/richdir.coffee:138
@@ -62,23 +55,23 @@ msgstr "Warnung"
 #: ../resources/guide/js/launcher.coffee:133
 #: ../resources/launcher/js/item.coffee:288
 msgid "_Open"
-msgstr "_Öffnen"
+msgstr "_Öppna"
 
 #: ../resources/desktop/js/desktopentry.coffee:104
 #: ../resources/desktop/js/richdir.coffee:582
 msgid "Cu_t"
-msgstr "Aus_schneiden"
+msgstr "Klipp u_t"
 
 #: ../resources/desktop/js/desktopentry.coffee:105
 #: ../resources/desktop/js/item.coffee:401
 #: ../resources/desktop/js/richdir.coffee:583
 msgid "_Copy"
-msgstr "_Kopieren"
+msgstr "_Kopiera"
 
 #: ../resources/desktop/js/desktopentry.coffee:107
 #: ../resources/desktop/js/richdir.coffee:140
 msgid "_Rename"
-msgstr "_Umbennenen"
+msgstr "_Byt namn"
 
 #: ../resources/desktop/js/desktopentry.coffee:108
 #: ../resources/desktop/js/invalidlink.coffee:34
@@ -86,41 +79,41 @@ msgstr "_Umbennenen"
 #: ../resources/desktop/js/richdir.coffee:144
 #: ../resources/desktop/js/richdir.coffee:585
 msgid "_Delete"
-msgstr "_Löschen"
+msgstr "_Ta bort"
 
 #: ../resources/desktop/js/desktopentry.coffee:110
 #: ../resources/desktop/js/richdir.coffee:587
 #: ../resources/desktop/js/specialitem.coffee:53
 msgid "_Properties"
-msgstr "_Eigenschaften"
+msgstr "_Egenskaper"
 
 #: ../resources/desktop/js/desktopentry.coffee:116
 #: ../resources/desktop/js/desktopentry.coffee:123
 msgid "Co_mpress"
-msgstr "_Komprimieren"
+msgstr "Ko_mprimera"
 
 #: ../resources/desktop/js/desktopentry.coffee:119
 #: ../resources/desktop/js/desktopentry.coffee:124
 msgid "_Extract"
-msgstr "_Entpacken"
+msgstr "_Extrahera"
 
 #: ../resources/desktop/js/desktopentry.coffee:120
 #: ../resources/desktop/js/desktopentry.coffee:125
 msgid "Extract _Here"
-msgstr "_Hier entpacken"
+msgstr "Extrahera _här"
 
 #: ../resources/desktop/js/desktopentry.coffee:166
 #: ../resources/dock/js/plugins/trash/trash.coffee:85
 msgid "Can not open this file."
-msgstr "Datei kann nicht geöffnet werden."
+msgstr "Det går inte att öppna filen."
 
 #: ../resources/desktop/js/grid.coffee:70 ../lib/dentry/fileops.c:402
 msgid "Untitled"
-msgstr "Unbenannt"
+msgstr "Namnlös"
 
 #: ../resources/desktop/js/grid.coffee:1029
 msgid "_Folder"
-msgstr "_Ordner"
+msgstr "_Mapp"
 
 #: ../resources/desktop/js/grid.coffee:1030
 msgid "_Text document"
@@ -128,126 +121,126 @@ msgstr "_Textdokument"
 
 #: ../resources/desktop/js/grid.coffee:1044
 msgid "_Name"
-msgstr "_Name"
+msgstr "_Namn"
 
 #: ../resources/desktop/js/grid.coffee:1045
 msgid "Last modified _time"
-msgstr "Letzte Änderungszei_t"
+msgstr "Senast ändrad _tid"
 
 #: ../resources/desktop/js/grid.coffee:1049
 msgid "_Sort by"
-msgstr "_Sortieren nach"
+msgstr "_Sortera efter"
 
 #: ../resources/desktop/js/grid.coffee:1050
 msgid "_New"
-msgstr "_Neu"
+msgstr "_Ny"
 
 #: ../resources/desktop/js/grid.coffee:1051
 msgid "Open in _terminal"
-msgstr "Im _Terminal öffnen"
+msgstr "Öppna i _terminal"
 
 #: ../resources/desktop/js/grid.coffee:1052
 #: ../resources/desktop/js/item.coffee:400
 msgid "_Paste"
-msgstr "_Einfügen"
+msgstr "_Klistra in"
 
 #: ../resources/desktop/js/grid.coffee:1054
 msgid "_Display settings"
-msgstr "_Anzeigeeinstellungen"
+msgstr "_Utseendeinställningar"
 
 #: ../resources/desktop/js/grid.coffee:1055
 msgid "_Corner navigation"
-msgstr "_Eckennavigation"
+msgstr "_Hörn navigering"
 
 #: ../resources/desktop/js/grid.coffee:1056
 msgid "Pe_rsonalize"
-msgstr "Pe_rsonalisieren"
+msgstr "Pe_rsonifiera"
 
 #: ../resources/desktop/js/item.coffee:399
 msgid "_Cut"
-msgstr "Auss_chneiden"
+msgstr "_Klipp ut"
 
 #: ../resources/desktop/js/item.coffee:404
 msgid "_Select All"
-msgstr "Alle au_swählen"
+msgstr "_Välj Alla"
 
 #: ../resources/desktop/js/richdir.coffee:142
 msgid "_Ungroup"
-msgstr "Gr_uppierung aufheben"
+msgstr "_Dela upp"
 
 #: ../resources/desktop/js/specialitem.coffee:34
 msgid "Computer"
-msgstr "Rechner"
+msgstr "Dator"
 
 #: ../resources/desktop/js/specialitem.coffee:87
 #: ../resources/dock/js/main.coffee:46 ../resources/dock/js/main.coffee:119
 msgid "Trash"
-msgstr "Papierkorb"
+msgstr "Papperskorg"
 
 #: ../resources/desktop/js/specialitem.coffee:150
 msgid "_Clean up %1 items"
-msgstr "%1 Objekt _leeren"
+msgstr "_Städa upp %1 föremål"
 
 #: ../resources/desktop/js/specialitem.coffee:152
 msgid "_Clean up 1 item"
-msgstr "_1 Objekt leeren"
+msgstr "_Städa upp 1 föremål"
 
 #: ../resources/desktop/js/specialitem.coffee:154
 #: ../resources/dock/js/plugins/trash/trash.coffee:38
 msgid "_Empty"
-msgstr "_Leer"
+msgstr "_Tom"
 
 #: ../resources/dock/js/config.coffee:186
 msgid "Unknown"
-msgstr "Unbekannt"
+msgstr "Okänd"
 
 #: ../resources/dock/js/global_menu.coffee:9
 #: ../resources/guide/js/dock.coffee:38
 msgid "Keep _showing"
-msgstr "_Angezeigt lassen"
+msgstr "Håll _synlig"
 
 #: ../resources/dock/js/global_menu.coffee:10
 #: ../resources/guide/js/dock.coffee:39
 msgid "Keep _hidden"
-msgstr "_Versteckt lassen"
+msgstr "Håll _gömd"
 
 #: ../resources/dock/js/global_menu.coffee:12
 #: ../resources/guide/js/dock.coffee:40
 msgid "_Smart hide"
-msgstr "_Intelligent verbergen"
+msgstr "_Dölj smart"
 
 #: ../resources/dock/js/global_menu.coffee:27
 #: ../resources/guide/js/dock.coffee:34
 msgid "_Fashion mode"
-msgstr "_Fashion mode"
+msgstr "_Modernt läge"
 
 #: ../resources/dock/js/global_menu.coffee:28
 #: ../resources/guide/js/dock.coffee:35
 msgid "_Efficient mode"
-msgstr "_Effizienter Modus"
+msgstr "_Effektivt läge"
 
 #: ../resources/dock/js/global_menu.coffee:29
 #: ../resources/guide/js/dock.coffee:36
 msgid "_Classic mode"
-msgstr "_Klassischer Modus"
+msgstr "_Klassiskt läge"
 
 #: ../resources/dock/js/global_menu.coffee:38
 #: ../resources/guide/js/dock.coffee:42
 msgid "Notification area settings"
-msgstr "Benachrichtigungsbereich-Einstellungen"
+msgstr "Meddelandefältsinställningar"
 
 #: ../resources/dock/js/main.coffee:117 ../resources/zone/js/utils.coffee:13
 msgid "Launcher"
-msgstr "Starter"
+msgstr "Startare"
 
 #: ../resources/dock/js/plugins/time/time.coffee:64
 msgid "Switch display mode"
-msgstr "Anzeigemodus umschalten"
+msgstr "Ändra visningsläge"
 
 #: ../resources/dock/js/plugins/time/time.coffee:65
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:84
 msgid "_Time settings"
-msgstr "_Zeiteinstellungen"
+msgstr "_Tid inställningar"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:34
 msgid "%b %d %H:%M %a"
@@ -283,67 +276,67 @@ msgstr "%I:%M %p"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:82
 msgid "Display date"
-msgstr "Datum anzeigen"
+msgstr "Visa datum"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:83
 msgid "Display week"
-msgstr "Woche anzeigen"
+msgstr "Visa vecka"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:42
 msgid "_Close"
-msgstr "_Schließen"
+msgstr "_Stäng"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
 #: ../resources/launcher/js/item.coffee:358
 msgid "Are you sure to remove"
-msgstr "Sind Sie sicher dass Sie das folgende Programm entfernen möchten"
+msgstr "Är du säker på att ta bort"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
 #: ../resources/launcher/js/item.coffee:358
 msgid "All dependencies will be removed"
-msgstr "Alle Abhängigkeiten werden entfernt"
+msgstr "Alla beroenden kommer att tas bort"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
 #: ../resources/launcher/js/item.coffee:358
 msgid "no"
-msgstr "Nein"
+msgstr "nej"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
 #: ../resources/launcher/js/item.coffee:358
 msgid "yes"
-msgstr "Ja"
+msgstr "ja"
 
 #: ../resources/greeter/js/mediacontrol.coffee:129
 msgid "Click button to Play"
-msgstr "Schaltfläche zur Wiedergabe anklicken"
+msgstr "Klicka på knappen för att spela"
 
 #: ../resources/greeter/js/powermenu.coffee:26
 msgid "Shut down"
-msgstr "Herunterfahren"
+msgstr "Stäng av"
 
 #: ../resources/greeter/js/powermenu.coffee:27
 msgid "Restart"
-msgstr "Neustarten"
+msgstr "Starta om"
 
 #: ../resources/greeter/js/powermenu.coffee:28
 msgid "Suspend"
-msgstr "Bereitschaft"
+msgstr "Vänteläge"
 
 #: ../resources/greeter/js/powermenu.coffee:75
 msgid ""
 "The other users have logged in, shutdown or restart may cause the running "
 "data to be lost."
-msgstr "Die anderen Benutzer haben sich eingeloggt, Herunterfahren oder Neustart kann den Verlust der laufenden Daten verursachen."
+msgstr "Andra användare är inloggade, avstängning eller omstart kan orsaka att deras uppgifterna kan gå förlorade."
 
 #: ../resources/greeter/js/powermenu.coffee:77
 msgid ""
 "User %1 has logged in, shutdown or restart may cause the running data to be "
 "lost."
-msgstr "Benutzer %1 hat sich eingeloggt, Herunterfahren oder Neustart kann bewirken, dass die laufenden Daten verloren gehen."
+msgstr "Användare %1 har loggat in, avstängning eller omstart kan resultera i dataförlust."
 
 #: ../resources/greeter/js/powermenu.coffee:121
 msgid "Enter your password to %1"
-msgstr "Geben Sie Ihr Passwort ein zum %1"
+msgstr "Ange ditt lösenord till %1"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jan"
@@ -355,7 +348,7 @@ msgstr "Feb"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Mar"
-msgstr "Mär"
+msgstr "Mar"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Apr"
@@ -363,7 +356,7 @@ msgstr "Apr"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "May"
-msgstr "Mai"
+msgstr "Maj"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jun"
@@ -391,558 +384,558 @@ msgstr "Nov"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Dec"
-msgstr "Dez"
+msgstr "Dec"
 
 #: ../resources/greeter/js/time.coffee:44
 msgid "Sun"
-msgstr "So"
+msgstr "Sön"
 
 #: ../resources/greeter/js/time.coffee:44
 msgid "Mon"
-msgstr "Mo"
+msgstr "Mån"
 
 #: ../resources/greeter/js/time.coffee:44
 msgid "Tue"
-msgstr "Di"
+msgstr "Tis"
 
 #: ../resources/greeter/js/time.coffee:44
 msgid "Wed"
-msgstr "Mi"
+msgstr "Ons"
 
 #: ../resources/greeter/js/time.coffee:44
 msgid "Thu"
-msgstr "Do"
+msgstr "Tor"
 
 #: ../resources/greeter/js/time.coffee:44
 msgid "Fri"
-msgstr "Fr"
+msgstr "Fre"
 
 #: ../resources/greeter/js/time.coffee:44
 msgid "Sat"
-msgstr "Sa"
+msgstr "Lör"
 
 #: ../resources/greeter/js/user.coffee:408
 msgid "Login"
-msgstr "Anmelden"
+msgstr "Inloggning"
 
 #: ../resources/greeter/js/user.coffee:410
 msgid "Unlock"
-msgstr "Entsperren"
+msgstr "Lås upp"
 
 #: ../resources/guide/js/desktop.coffee:28
 msgid ""
 "Let's drag the other icon on the first icon \n"
 " to generate \"application group\""
-msgstr "Ziehe das andere Symbol auf das erste Symbol, \num eine \"Anwendungsgruppe\" zu erzeugen"
+msgstr "Drag den andra ikonen och släpp den på den första ikonen\nför att skapa en \"programgrupp\""
 
 #: ../resources/guide/js/desktop.coffee:121
 msgid "Well, you have learned how to create a \"application group\""
-msgstr "Gut, Sie haben soeben gelernt eine sogenannte \"Anwendungsgruppe\" zu erstellen."
+msgstr ""
 
 #: ../resources/guide/js/desktop.coffee:122
 msgid "tips: Right-click on the application group will provide more functions"
-msgstr "Tipps: Rechtsklick auf die Anwendungsgruppe für mehr Funktionen"
+msgstr "Tips: Högerklicka på programgruppen det kommer att ge fler funktioner"
 
 #: ../resources/guide/js/desktop.coffee:132
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different "
 "events"
-msgstr "Wischen Sie die Maus zu den vier hauptsächlichen Ecken, was vier unterschiedliche Ereignisse auslösen kann"
+msgstr "För musen till de fyra hörnen, det kan starta fyra olika händelser"
 
 #: ../resources/guide/js/desktop.coffee:154
 msgid ""
 "We already know that launcher can be shown/ hidden by sliding the mouse to "
 "the upper left corner"
-msgstr "Wir wissen bereits, dass der Starter durch Wischen der Maus in die obere linke Ecke angezeigt oder verborgen werden kann"
+msgstr "Vi vet redan att startaren kan visas/döljas av att föra musen till översta vänstra hörnet"
 
 #: ../resources/guide/js/desktop.coffee:176
 msgid ""
 "The workspace will be shown or hidden by sliding the mouse to the lower left"
 " corner"
-msgstr "Der Arbeitsbereich wird angezeigt oder verborgen, indem die Maus in die untere linke Ecke gewischt wird"
+msgstr "Arbetsytan kommer att visas eller döljas genom att skjuta med musen till det nedre vänstra hörnet"
 
 #: ../resources/guide/js/desktop.coffee:202
 msgid ""
 "No functions are set in default on the upper right corner\n"
 "Right-click on desktop black area to call up the menu, select \"Corner navigation\" to set the corner used"
-msgstr "Per Default sind der oberen rechten Ecke keine Funktionen zugewiesen\nKlicken Sie rechts auf den schwarzen Bereich des Desktops, um das Menü aufzurufen, wählen Sie \"Ecknavigation\", um der Ecke eine Nutzung zuzuweisen"
+msgstr "Inga funktion är inställda som standard till de översta högra hörnet\nHögerklicka på skrivbordets svarta yta för att få upp menyn, välj \"Hörn navigering\" för att börja använda hörnet"
 
 #: ../resources/guide/js/desktop.coffee:203
 msgid "tips: Click on the corner navigation blank area to return"
-msgstr "Tipps: Klicken Sie auf den freien Bereich der Ecknavigation, um zurückzugehen"
+msgstr "tips: Klicka på hörnets tomma område för att återvända"
 
 #: ../resources/guide/js/dock.coffee:26
 msgid ""
 "Three modes and the display status can be switched by right-click on the "
 "blank area of dock"
-msgstr "Drei Modi und der Status des Displays können durch Rechtsklicken auf den freien Bereich von Dock umgeschaltet werden"
+msgstr "Tre lägen och visningsläge kan ändras genom att högerklicka på på ett tomt område på din dock"
 
 #: ../resources/guide/js/dss.coffee:32
 msgid ""
 "The Control Center will be shown or hidden by sliding the mouse to the lower"
 " right corner"
-msgstr "Das Control Center wird angezeigt oder verborgen, indem die Maus in die untere rechte Ecke gewischt wird"
+msgstr "Kontrollcenter kommer visas/döljas genom att musen förs till de nedre högra hörnet"
 
 #: ../resources/guide/js/dss.coffee:33
 msgid "tips: Click the setting icon on dock to implement"
-msgstr "Tipps: Klicken Sie auf das Einstellungsymbol auf den Dock zum implementieren"
+msgstr "tips: Klicka på inställningsikonen på din dock för att verkställa"
 
 #: ../resources/guide/js/dss.coffee:76
 msgid "Click the power button to shut down, reboot or do other operations"
-msgstr "Klicken Sie auf den Netzschalter, um herunterzufahren, neu zu starten oder andere Operationen auszuführen"
+msgstr "Klicka på strömknappen för att stänga av, starta om eller genomföra andra kommando"
 
 #: ../resources/guide/js/dss.coffee:77
 msgid ""
 "tips: Hover the setting icon on dock to quickly implement some setting "
 "functions"
-msgstr "Tipps: Bewegen Sie das Symbol Einstellung am Dock, um schnell einige Funktionen  zu implementieren"
+msgstr "tips: Håll över inställningsikonen på din dock för att snabbt verkställa några inställningsfunktioner"
 
 #: ../resources/guide/js/end.coffee:25
 msgid ""
 "Thank you for your patience to learn! More surprises are waiting for you to "
 "explore"
-msgstr "Danke für Ihre Geduld beim Lernen! Es warten noch mehr Überraschungen darauf, von Ihnen entdeckt zu werden"
+msgstr "Tack för ditt tålamod med att lära! Mer överaskningar att utforska väntar på dig "
 
 #: ../resources/guide/js/end.coffee:30
 msgid "Start my Deepin trip"
-msgstr "Meinen Deepin-Trip starten"
+msgstr "Starta min Deepin introduktion"
 
 #: ../resources/guide/js/launcher.coffee:31
 msgid ""
 "\"Application Launcher\" can be started by sliding the mouse to the upper "
 "left corner or clicking on the launcher."
-msgstr "Der \"Anwendungsstarter\" kann gestartet werden, indem die Maus in die obere linke Ecke gewischt oder indem auf den Starter geklickt wird."
+msgstr "\"Programstartaren\" kan startas genom att musen förs till de övre vänstra hörnet eller genom att klicka på startaren."
 
 #: ../resources/guide/js/launcher.coffee:83
 msgid "Please directly hit \"deepin\" in keyboard"
-msgstr "Bitte drücken Sie direkt \"deepin\" auf der Tastatur"
+msgstr "Var vänlig skriv \"deepin\" på tangentbordet"
 
 #: ../resources/guide/js/launcher.coffee:96
 msgid "You can directly drag the application icon to Dock or trash"
-msgstr "Sie können das Icon der Applikation direkt auf Dock oder den Papierkorb ziehen"
+msgstr "Du kan dra programikoner till dockan eller papperskorgen"
 
 #: ../resources/guide/js/launcher.coffee:109
 msgid ""
 "tips: Click the right mouse button on the application icon to call up the "
 "context menu"
-msgstr "Tipps: Klicken Sie mit der rechten Maustaste auf das Icon der Anwendung, um das Kontextmenü aufzurufen"
+msgstr "tips: Klicka på höger musknapp på programikonen för att få upp snabbmenyn"
 
 #: ../resources/guide/js/launcher.coffee:135
 msgid "Remove from _favorites"
-msgstr "Aus den _Favoriten entfernen"
+msgstr "Ta bort från _favoriter"
 
 #: ../resources/guide/js/launcher.coffee:136
 #: ../resources/launcher/js/const.coffee:76
 msgid "Send to d_esktop"
-msgstr "An _Desktop senden"
+msgstr "Lägg till på s_krivbordet"
 
 #: ../resources/guide/js/launcher.coffee:137
 #: ../resources/launcher/js/const.coffee:80
 msgid "Send to do_ck"
-msgstr "An Do_ck senden"
+msgstr "Lägg till på do_cken"
 
 #: ../resources/guide/js/launcher.coffee:139
 #: ../resources/launcher/js/const.coffee:68
 msgid "_Add to autostart"
-msgstr "_Zum Autostart hinzufügen"
+msgstr "_Lägg till i uppstart"
 
 #: ../resources/guide/js/launcher.coffee:140
 #: ../resources/launcher/js/item.coffee:294
 msgid "_Uninstall"
-msgstr "_Software deinstallieren"
+msgstr "_Avinstallera"
 
 #: ../resources/guide/js/start.coffee:29
 msgid "New Launcher"
-msgstr "Neuer Programmstarter"
+msgstr "Ny Startare"
 
 #: ../resources/guide/js/start.coffee:29
 msgid "New Desktop"
-msgstr "Neuer Desktop"
+msgstr "Nytt Skrivbord"
 
 #: ../resources/guide/js/start.coffee:29
 msgid "New System Settings"
-msgstr "Neue Systemeinstellungen"
+msgstr "Ny Systeminställning"
 
 #: ../resources/guide/js/start.coffee:30
 msgid "The following will guide you to learn how to use some new functions"
-msgstr "Im folgenden werden Sie im Umgang mit der Nutzung einiger neuer Funktionen vertraut gemacht"
+msgstr "Följande guide kommer lära dig hur du använder några nya funktioner"
 
 #: ../resources/guide/js/start.coffee:45
 msgid "Start"
-msgstr "Start"
+msgstr "Starta"
 
 #: ../resources/guide/js/start.coffee:52
 msgid "Skip the guide, experience immediately"
-msgstr "Überspringen Sie die Einführung, erleben Sie es unmittelbar"
+msgstr "Hoppa över guiden, börja experimentera direkt"
 
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
-msgstr "Willkommen zur Benutzung des Deepin Betriebssystems"
+msgstr "Välkommen att använda Deepin Operativsystem"
 
 #: ../resources/guide/js/welcome.coffee:38
 msgid "Prepare for operation ..."
-msgstr "Bereiten Sie sich zum Umsetzen verschiedener Aufgaben vor..."
+msgstr "Förbereder för användning..."
 
 #: ../resources/launcher/js/const.coffee:60
 msgid "_Hide the icon"
-msgstr "Symbol _verstecken"
+msgstr "_Göm ikonen"
 
 #: ../resources/launcher/js/const.coffee:61
 msgid "_Display hidden icons"
-msgstr "_Versteckte Symbole anzeigen"
+msgstr "_Visa dolda filer"
 
 #: ../resources/launcher/js/const.coffee:64
 msgid "_Hide this icon"
-msgstr "_Dieses Symbol verstecken"
+msgstr "_Dölj filen"
 
 #: ../resources/launcher/js/const.coffee:65
 msgid "_Display this icon"
-msgstr "_Dieses Symbol anzeigen"
+msgstr "_Visa filen"
 
 #: ../resources/launcher/js/const.coffee:69
 msgid "_Remove from autostart"
-msgstr "_Vom Autostart entfernen"
+msgstr "_Ta bort från uppstart"
 
 #: ../resources/launcher/js/const.coffee:77
 msgid "Remove from d_esktop"
-msgstr "Vom D_esktop entfernen"
+msgstr "Ta bort från s_krivbord"
 
 #: ../resources/launcher/js/const.coffee:81
 msgid "Remove from do_ck"
-msgstr "Vom Do_ck entfernen"
+msgstr ""
 
 #: ../resources/launcher/js/menu.coffee:5
 msgid "By name"
-msgstr "Nach Name"
+msgstr "På namn"
 
 #: ../resources/launcher/js/menu.coffee:6
 msgid "By category (icon)"
-msgstr "Nach Kategorie (Symbol)"
+msgstr "På kategori (ikon)"
 
 #: ../resources/launcher/js/menu.coffee:7
 msgid "By category (text)"
-msgstr "Nach Kategorie (Text)"
+msgstr "På kategori (text)"
 
 #: ../resources/launcher/js/menu.coffee:8
 msgid "By time installed"
-msgstr "Nach Installationszeit"
+msgstr "På tid för installation"
 
 #: ../resources/launcher/js/menu.coffee:9
 msgid "By frequency"
-msgstr "Nach Häufigkeit"
+msgstr "På frekvens"
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
-msgstr "Duplizieren"
+msgstr "Dubblett"
 
 #: ../resources/osd/js/monitor.coffee:39
 msgid "Extend"
-msgstr "Erweitern"
+msgstr "Utöka"
 
 #: ../resources/zone/js/utils.coffee:13
 msgid "Control Center"
-msgstr "Kontrollzentrum"
+msgstr "Kontrollcenter"
 
 #: ../resources/zone/js/utils.coffee:13
 msgid "All Windows"
-msgstr "Alle Fenster"
+msgstr "Alla Fönster"
 
 #: ../resources/zone/js/utils.coffee:13
 msgid "Desktop"
-msgstr "Desktop"
+msgstr "Skrivbord"
 
 #: ../resources/zone/js/utils.coffee:13
 msgid "None"
-msgstr "Keine"
+msgstr "Ingen"
 
 #: ../app/desktop/desktop.c:300
 msgid "New file"
-msgstr "Neue Datei"
+msgstr "Ny fil"
 
 #: ../app/desktop/desktop.c:311
 msgid "New directory"
-msgstr "Neuer Ordner"
+msgstr "Ny mapp"
 
 #: ../app/dock/dock.c:291
 msgid "Dock failed to start, because Compiz is not enabled."
-msgstr "Starten des Docks fehlgeschlagen, da Compiz nicht aktiviert ist."
+msgstr "Dock misslyckades med att starta, för att Compiz inte är aktiverat."
 
 #: ../app/greeter/greeter.c:209 ../app/greeter/lock.c:173
 msgid "Wrong Password"
-msgstr "Falsches Passwort"
+msgstr "Fel Lösenord"
 
 #: ../app/greeter/mutils.c:84
 msgid "%a, %b %d, %Y"
-msgstr "%a %b %d %Y"
+msgstr "%a, %b %d, %Y"
 
 #: ../lib/category.c:45
 msgid "all"
-msgstr "alles"
+msgstr "alla"
 
 #: ../lib/category.c:46
 msgid "internet"
-msgstr "Internet"
+msgstr "internet"
 
 #: ../lib/category.c:47
 msgid "multimedia"
-msgstr "Multimedia"
+msgstr "multimedia"
 
 #: ../lib/category.c:48
 msgid "games"
-msgstr "Spiele"
+msgstr "spel"
 
 #: ../lib/category.c:49
 msgid "graphics"
-msgstr "Grafik"
+msgstr "grafik"
 
 #: ../lib/category.c:50
 msgid "productivity"
-msgstr "Produktivität"
+msgstr "produktivitet"
 
 #: ../lib/category.c:51
 msgid "industry"
-msgstr "Industrie"
+msgstr "industri"
 
 #: ../lib/category.c:52
 msgid "education"
-msgstr "Bildung"
+msgstr "utbildning"
 
 #: ../lib/category.c:53
 msgid "development"
-msgstr "Entwicklung"
+msgstr "utveckling"
 
 #: ../lib/category.c:54
 msgid "system"
-msgstr "System"
+msgstr "system"
 
 #: ../lib/category.c:55
 msgid "utilities"
-msgstr "Werkzeuge"
+msgstr "verktyg"
 
 #: ../lib/category.c:56
 msgid "others"
-msgstr "andere"
+msgstr "annat"
 
 #: ../lib/category.c:60
 msgid "Network"
-msgstr "Netzwerk"
+msgstr "Nätverk"
 
 #: ../lib/category.c:61
 msgid "Game"
-msgstr "Spiel"
+msgstr "Spel"
 
 #: ../lib/category.c:62
 msgid "Office"
-msgstr "Büro"
+msgstr "Kontor"
 
 #: ../lib/dentry/entry.c:748
 #, c-format
 msgid ""
 "Cannot rename the item to \"%s\". This may be caused by lack of permissions."
-msgstr "Der Gegenstand konnte nicht zu \"%s\" umbenannt werden. Womöglich fehlen Ihnen die nötigen Berechtigungen dazu."
+msgstr "Kan inte byta namn till \"%s\". Det kan bero på brist på rättigheter."
 
 #: ../lib/dentry/entry.c:754
 #, c-format
 msgid ""
 "There is already a file with name \"%s\" in this folder. Please consider a "
 "different name."
-msgstr "Es existiert bereits eine Datei mit dem Namen \"%s\" in diesem Ordner. Bitte entscheiden Sie sich für einen anderen Namen."
+msgstr "Det finns redan en fil med namnet \"%s\" i denna mapp. Var vänlig överväg ett annat namn."
 
 #: ../lib/dentry/entry.c:760
 msgid "The item could not be renamed"
-msgstr "Der Gegenstand konnte nicht umbenannt werden."
+msgstr "Objektet kan inte döpas om"
 
 #: ../lib/dentry/entry.c:834 ../lib/dentry/fileops.c:804
 msgid "copy"
-msgstr "kopieren"
+msgstr "kopiera"
 
 #: ../lib/dentry/entry.c:1400
 msgid "App Group"
-msgstr "App Gruppe"
+msgstr "Programgrupp"
 
 #: ../lib/dentry/fileops.c:565
 msgid "Move"
-msgstr "Verschieben"
+msgstr "Flytta"
 
 #: ../lib/dentry/fileops.c:771
 msgid "Copy"
-msgstr "Kopieren"
+msgstr "Kopiera"
 
 #: ../lib/dentry/fileops_delete.c:29
 msgid "Delete Files"
-msgstr "Dateien löschen"
+msgstr "Ta bort Filer"
 
 #: ../lib/dentry/fileops_delete.c:32
 msgid "Are you sure you want to permanently delete the files?"
-msgstr "Sind sie sicher, dass Sie die Datei dauerhaft löschen wollen?"
+msgstr "Är du säker på att du vill ta bort filerna permanent?"
 
 #: ../lib/dentry/fileops_delete.c:33
 msgid "If you delete the files, they will be permanently lost."
-msgstr "Wenn Sie die Dateien löschen, werden diese unwiderruflich gelöscht sein."
+msgstr "Om du tar bort filerna, kommer dom raderas permanent."
 
 #: ../lib/dentry/fileops_delete.c:36
 msgid "Delete"
-msgstr "Löschen"
+msgstr "Ta bort"
 
 #: ../lib/dentry/fileops_error_dialog.c:60
 msgid "File conflict"
-msgstr "Dateikonflikt"
+msgstr "Filkonflikt"
 
 #: ../lib/dentry/fileops_error_dialog.c:103
 msgid "_Select a new name for the destination"
-msgstr "_Wählen Sie einen neuen Namen für das Ziel"
+msgstr "_Välj ett nytt namn för destinationen"
 
 #: ../lib/dentry/fileops_error_dialog.c:114
 msgid "Reset"
-msgstr "Zurücksetzen"
+msgstr "Återställ"
 
 #: ../lib/dentry/fileops_error_dialog.c:123
 msgid "Apply this action to all files"
-msgstr "Diese Aktion auf alle Dateien anwenden"
+msgstr "Verkställ ändringen för alla filer"
 
 #: ../lib/dentry/fileops_error_dialog.c:130
 msgid "_Skip"
-msgstr "_Überspringen"
+msgstr "_Hoppa över"
 
 #: ../lib/dentry/fileops_error_dialog.c:133
 msgid "Re_name"
-msgstr "Umben_nen"
+msgstr "Byt _namn"
 
 #: ../lib/dentry/fileops_error_dialog.c:138
 msgid "Replace"
-msgstr "Ersetzen"
+msgstr "Ersätt"
 
 #: ../lib/dentry/fileops_error_dialog.c:215
 #, c-format
 msgid "Do you want to merge with folder \"%s\"?"
-msgstr "Möchten Sie die Aktion mit dem Ordner \"%s\" zusammenführen?"
+msgstr "Vill du slå ihop med mappen \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:217
 msgid ""
 "The merging operation will be asked to confirm before replacing any files in"
 " the folder conflicted."
-msgstr "Es wird um Bestätigung der Einfügeoperation gebeten, bevor Dateien in dem Ordner mit Konflikt ersetzt werden."
+msgstr "Sammanslagningen kommer behöva bekräftas innan några filer i mappen med konflikter ersätts."
 
 #: ../lib/dentry/fileops_error_dialog.c:219
 #, c-format
 msgid "An older folder with the same name already exists in \"%s\"."
-msgstr "Ein Ordner mit dem selben Namen extistiert bereits in \"%s\"."
+msgstr "En äldre mapp med samma namn existerar i \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:223
 #, c-format
 msgid "A newer folder with the same name already exists in \"%s\"."
-msgstr "Ein neuer Ordner mit dem selben Namen existiert bereits in \"%s\"."
+msgstr "En nyare mapp med samma namn existerar redan i \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:227
 #, c-format
 msgid "Another folder with the same name already exists in \"%s\"."
-msgstr "Ein anderer Ordner mit dem selben Namen extistiert bereits in \"%s\"."
+msgstr "En annan mapp med samma namn existerar redan i \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:233
 msgid "All files in the folder will be removed by replacing."
-msgstr "Alle Dateien in dem Ordner werden durch das Ersetzen entfernt."
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:234
 #, c-format
 msgid "Do you want to replace folder \"%s\"?"
-msgstr "Möchten Sie den Ordner \"%s\" ersetzen?"
+msgstr "Vill du ersätta mappen \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:236
 #, c-format
 msgid "A folder with the same name already exists in \"%s\"."
-msgstr "Ein Ordner mit dem selben Namen existiert bereits in \"%s\"."
+msgstr "En mapp med samma namn existerar redan i \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:242
 #, c-format
 msgid "Do you want to replace file \"%s\"?"
-msgstr "Möchten Sie die Datei \"%s\" ersetzen?"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:243
 msgid "The content will be overwritten by replacing."
-msgstr "Der Inhalt wird durch das Ersetzen überschrieben."
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:245
 #, c-format
 msgid "An older file with the same name already exists in \"%s\"."
-msgstr "Eine ältere Datei mit dem selben Namen existiert bereits in \"%s\"."
+msgstr "En äldre fil med samma namn existerar redan i \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:249
 #, c-format
 msgid "A newer file with the same name already exists in \"%s\"."
-msgstr "Eine neue Datei mit dem selben Namen exisitiert bereits als \"%s\"."
+msgstr "En nyare fil med samma namn existerar redan i \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:253
 #, c-format
 msgid "Another file with the same name already exists in \"%s\"."
-msgstr "Eine andere Datei mit dem selben Namen existiert bereits als \"%s\"."
+msgstr "En annan fil med samma namn existerar redan i \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:325
 msgid "Original file"
-msgstr "Original Datei"
+msgstr "Ursprunglig fil"
 
 #: ../lib/dentry/fileops_error_dialog.c:326
 #: ../lib/dentry/fileops_error_dialog.c:354
 msgid "Size:"
-msgstr "Größe:"
+msgstr "Storlek:"
 
 #: ../lib/dentry/fileops_error_dialog.c:330
 #: ../lib/dentry/fileops_error_dialog.c:358
 msgid "Type:"
-msgstr "Art:"
+msgstr "Typ:"
 
 #: ../lib/dentry/fileops_error_dialog.c:334
 #: ../lib/dentry/fileops_error_dialog.c:362
 msgid "Last modified:"
-msgstr "Zuletzt bearbeitet:"
+msgstr "Senast ändrad:"
 
 #: ../lib/dentry/fileops_error_dialog.c:353
 msgid "Replace with"
-msgstr "Ersetzen mit"
+msgstr "Ersätt med"
 
 #: ../lib/dentry/fileops_error_dialog.c:379
 msgid "Merge"
-msgstr "Zusammenführen"
+msgstr "Sammanfoga"
 
 #: ../lib/dentry/fileops_error_reporting.c:106
 #: ../lib/dentry/fileops_error_reporting.c:191
 #, c-format
 msgid "Error while %s files"
-msgstr "Fehler während %s Dateien"
+msgstr "Fel vid %s av filer"
 
 #: ../lib/dentry/fileops_trash.c:58
 msgid "Empty Trash"
-msgstr "Papierkorb leeren"
+msgstr "Töm papperskorgen"
 
 #: ../lib/dentry/fileops_trash.c:67
 msgid "Empty all items from Trash?"
-msgstr "Wollen Sie wirklich alle Objekte aus dem Papierkorb löschen?"
+msgstr "Töm alla filer i papperskorgen?"
 
 #: ../lib/dentry/fileops_trash.c:68
 msgid "All items in the Trash will be permanently deleted."
-msgstr "Alle Objekte im Papierkorb werden dauerhaft gelöscht."
+msgstr "Alla filer i papperskorgen kommer att permanent tas bort."
 
 #: ../lib/dentry/fileops_trash.c:71
 msgid "Empty _Trash"
-msgstr "_Papierkorb leeren"
+msgstr "Töm _papperskorgen"
 
 #: ../lib/dentry/mime_actions.c:198
 #, c-format
 msgid "Do you want to run \"%s\", or display its contents?"
-msgstr "Wollen Sie \"%s\" ausführen, oder den Inhalt anzeigen lassen?"
+msgstr "Vill du köra \"%s\" eller visa innehållet?"
 
 #: ../lib/dentry/mime_actions.c:199
 #, c-format
 msgid "\"%s\" is an executable text file."
-msgstr "\"%s\" ist eine ausführbare Textdatei."
+msgstr "\"%s\" är en körbar textfil."
 
 #: ../lib/dentry/mime_actions.c:210
 msgid "Run in _Terminal"
-msgstr "Im_Terminal ausführen"
+msgstr "Kör i _terminal"
 
 #: ../lib/dentry/mime_actions.c:211
 msgid "_Display"
-msgstr "_Anzeigen"
+msgstr "_Visa"
 
 #: ../lib/dentry/mime_actions.c:213
 msgid "_Run"
-msgstr "_Ausführen"
+msgstr "_Kör"

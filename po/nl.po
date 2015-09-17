@@ -7,6 +7,7 @@
 # Heimen Stoffels <vistausss@outlook.com>, 2015
 # Anduxor <itachiandu@gmail.com>, 2014
 # Jop Vernooij <jop@jopv.net>, 2014
+# Lars Acou <lars.acou@gmail.com>, 2015
 # closeddoors1559 <mrvnp@msn.com>, 2014
 # Stefan van den Brink <stefan.vandenbrink@gmail.com>, 2014
 msgid ""
@@ -14,9 +15,9 @@ msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-12-26 11:18+0800\n"
-"PO-Revision-Date: 2015-03-23 10:24+0000\n"
-"Last-Translator: Heimen Stoffels <vistausss@outlook.com>\n"
-"Language-Team: Dutch (http://www.transifex.com/projects/p/deepin-desktop-environment/language/nl/)\n"
+"PO-Revision-Date: 2015-09-17 05:33+0000\n"
+"Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
+"Language-Team: Dutch (http://www.transifex.com/linuxdeepin/deepin-desktop-environment/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -216,7 +217,7 @@ msgstr "_Slim verbergen"
 #: ../resources/dock/js/global_menu.coffee:27
 #: ../resources/guide/js/dock.coffee:34
 msgid "_Fashion mode"
-msgstr "_Mode-modus"
+msgstr "_Moderne_modus"
 
 #: ../resources/dock/js/global_menu.coffee:28
 #: ../resources/guide/js/dock.coffee:35
@@ -330,17 +331,17 @@ msgstr "Slaapstand"
 msgid ""
 "The other users have logged in, shutdown or restart may cause the running "
 "data to be lost."
-msgstr "Andere gebruikers zijn ingelogd. Afsluiten of herstarten kan zorgen voor gegevensverlies."
+msgstr "Er zijn andere gebruikers aangemeld. Afsluiten of herstarten kan leiden tot gegevensverlies."
 
 #: ../resources/greeter/js/powermenu.coffee:77
 msgid ""
 "User %1 has logged in, shutdown or restart may cause the running data to be "
 "lost."
-msgstr "Gebruikers %1 is ingelogd. Afsluiten of herstarten kan zorgen voor gegevensverlies."
+msgstr "Gebruiker %1 is aangemeld. Afsluiten of herstarten kan leiden tot gegevensverlies."
 
 #: ../resources/greeter/js/powermenu.coffee:121
 msgid "Enter your password to %1"
-msgstr "Vul het wachtwoord in om %1"
+msgstr "Vul uw wachtwoord in om %1"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Jan"
@@ -352,7 +353,7 @@ msgstr "Feb"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Mar"
-msgstr "Maart"
+msgstr "Maa"
 
 #: ../resources/greeter/js/time.coffee:43
 msgid "Apr"
@@ -404,7 +405,7 @@ msgstr "di"
 
 #: ../resources/greeter/js/time.coffee:44
 msgid "Wed"
-msgstr "woe"
+msgstr "wo"
 
 #: ../resources/greeter/js/time.coffee:44
 msgid "Thu"
@@ -434,7 +435,7 @@ msgstr "Laten we het andere pictogram op het eerste pictogram slepen\nom een \"a
 
 #: ../resources/guide/js/desktop.coffee:121
 msgid "Well, you have learned how to create a \"application group\""
-msgstr "U heeft zojuist geleerd hoe u een \"applicatiegroep\" creëert"
+msgstr "Nu heeft u geleerd hoe u een \"applicatiegroep\" creërt"
 
 #: ../resources/guide/js/desktop.coffee:122
 msgid "tips: Right-click on the application group will provide more functions"
@@ -444,7 +445,7 @@ msgstr "tips: Klik met de rechtermuisknop op de applicatiegroep om meer functies
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different "
 "events"
-msgstr "Sleep de muis naar de vier bovenste hoeken, wat vier verschillende gebeurtenissen in gang kan zetten."
+msgstr "Sleep de muis naar de vier bovenste hoeken, waarmee u vier verschillende acties kunt uitvoeren"
 
 #: ../resources/guide/js/desktop.coffee:154
 msgid ""
@@ -478,7 +479,7 @@ msgstr "Er kan geschakeld worden tussen drie modi en de weergavestatus door met 
 msgid ""
 "The Control Center will be shown or hidden by sliding the mouse to the lower"
 " right corner"
-msgstr "Het Controlecentrum wordt weergegeven of verborgen door de muis naar de hoek links onderin te bewegen"
+msgstr "Het Controlecentrum wordt weergegeven of verborgen door de muis naar de linker benedenhoek te bewegen"
 
 #: ../resources/guide/js/dss.coffee:33
 msgid "tips: Click the setting icon on dock to implement"
@@ -486,19 +487,19 @@ msgstr "Tip: Klik het instellingenpictogram in het dock om te implementeren"
 
 #: ../resources/guide/js/dss.coffee:76
 msgid "Click the power button to shut down, reboot or do other operations"
-msgstr "Klik op de aan/uit-knop om af te sluiten, opnieuw op te starten of andere bewerkingen uit te voeren"
+msgstr "Klik op de aan/uitknop om af te sluiten, opnieuw op te starten of andere bewerkingen uit te voeren"
 
 #: ../resources/guide/js/dss.coffee:77
 msgid ""
 "tips: Hover the setting icon on dock to quickly implement some setting "
 "functions"
-msgstr "Tip: Houd uw muis op het instellingenpictogram in het dock om snelle instellingen te doen"
+msgstr "Tip: Houd uw muis op het instellingenpictogram in het dock om snel instellingen te wijzigen"
 
 #: ../resources/guide/js/end.coffee:25
 msgid ""
 "Thank you for your patience to learn! More surprises are waiting for you to "
 "explore"
-msgstr "Bedankt voor uw geduld om te leren! Er zijn nog meer verrassingen die wachten om door u ontdekt te worden"
+msgstr "Bedankt om de tijd te nemen één en ander te leren! Er valt nog veel meer te ontdekken"
 
 #: ../resources/guide/js/end.coffee:30
 msgid "Start my Deepin trip"
@@ -578,7 +579,7 @@ msgstr "Welkom bij het gebruiken van Deepin Besturingssysteem"
 
 #: ../resources/guide/js/welcome.coffee:38
 msgid "Prepare for operation ..."
-msgstr "Bereidt u voor op de bewerking ..."
+msgstr "Bereid u voor op de bewerking ..."
 
 #: ../resources/launcher/js/const.coffee:60
 msgid "_Hide the icon"
@@ -662,7 +663,7 @@ msgstr "Nieuwe map"
 
 #: ../app/dock/dock.c:291
 msgid "Dock failed to start, because Compiz is not enabled."
-msgstr "Het dock kon niet worden opgestart omdat Compiz niet is ingeschakeld."
+msgstr "Dock kon niet worden opgestart omdat Compiz niet is ingeschakeld."
 
 #: ../app/greeter/greeter.c:209 ../app/greeter/lock.c:173
 msgid "Wrong Password"
@@ -718,7 +719,7 @@ msgstr "hulpprogramma's"
 
 #: ../lib/category.c:56
 msgid "others"
-msgstr "overig"
+msgstr "overige"
 
 #: ../lib/category.c:60
 msgid "Network"
@@ -736,7 +737,7 @@ msgstr "Kantoor"
 #, c-format
 msgid ""
 "Cannot rename the item to \"%s\". This may be caused by lack of permissions."
-msgstr "Het bestand hernoemen naar \"%s\" is mislukt. Dit kan komen omdat u over onvoldoende rechten bezit."
+msgstr "Het bestand hernoemen naar \"%s\" is mislukt. Dit kan gebeuren als u over onvoldoende beheersrechten beschikt."
 
 #: ../lib/dentry/entry.c:754
 #, c-format
@@ -856,7 +857,7 @@ msgstr "Wilt u het bestand \"%s\" vervangen?"
 
 #: ../lib/dentry/fileops_error_dialog.c:243
 msgid "The content will be overwritten by replacing."
-msgstr "De inhoud wordt overgeschreven bij vervanging."
+msgstr "De inhoud wordt overschreven bij vervanging."
 
 #: ../lib/dentry/fileops_error_dialog.c:245
 #, c-format

@@ -3,16 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Massimo Antonio Carofano <real.massimo@hotmail.it>, 2014
+# Massimo Antonio Carofano <real.massimo@hotmail.it>, 2014-2015
 # Massimo Antonio Carofano <real.massimo@hotmail.it>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-12-26 11:18+0800\n"
-"PO-Revision-Date: 2015-03-23 10:24+0000\n"
-"Last-Translator: Martin <martin.ceronio@infosize.co.za>\n"
-"Language-Team: Italian (http://www.transifex.com/projects/p/deepin-desktop-environment/language/it/)\n"
+"PO-Revision-Date: 2015-09-17 05:33+0000\n"
+"Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
+"Language-Team: Italian (http://www.transifex.com/linuxdeepin/deepin-desktop-environment/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -162,7 +162,7 @@ msgstr "_Taglia"
 
 #: ../resources/desktop/js/item.coffee:404
 msgid "_Select All"
-msgstr "_Seleziona Tutto"
+msgstr "_Seleziona tutto"
 
 #: ../resources/desktop/js/richdir.coffee:142
 msgid "_Ungroup"
@@ -916,7 +916,7 @@ msgstr "Tutti i file del cestino saranno rimossi in modo permanente."
 
 #: ../lib/dentry/fileops_trash.c:71
 msgid "Empty _Trash"
-msgstr "Cestino_Vuoto"
+msgstr "Svuota_cestino"
 
 #: ../lib/dentry/mime_actions.c:198
 #, c-format

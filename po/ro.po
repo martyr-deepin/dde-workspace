@@ -4,15 +4,15 @@
 # 
 # Translators:
 # cricri8o <inactive+cricri8o@transifex.com>, 2014
-# Vasilii Rusu <basil_russu@hotmail.com>, 2014
+# Vasilii Rusu <basil_russu@hotmail.com>, 2014-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-12-26 11:18+0800\n"
-"PO-Revision-Date: 2015-03-23 10:24+0000\n"
-"Last-Translator: Martin <martin.ceronio@infosize.co.za>\n"
-"Language-Team: Romanian (http://www.transifex.com/projects/p/deepin-desktop-environment/language/ro/)\n"
+"PO-Revision-Date: 2015-09-17 05:33+0000\n"
+"Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
+"Language-Team: Romanian (http://www.transifex.com/linuxdeepin/deepin-desktop-environment/language/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -36,7 +36,7 @@ msgstr "\"%1\"  dezinstalare eșuată"
 #: ../resources/desktop/js/richdir.coffee:600
 #: ../resources/desktop/js/richdir.coffee:643
 msgid "The link is invalid. Do you want to delete it?"
-msgstr "Legăturaeste invalidă. Doriți să o ștergeți?"
+msgstr "Link-ul nu este valabil. Doriți să-l  ștergeți?"
 
 #: ../resources/desktop/js/application.coffee:179
 #: ../resources/desktop/js/desktopentry.coffee:166
@@ -109,11 +109,11 @@ msgstr "Acest fișier nu poate fi deschis."
 
 #: ../resources/desktop/js/grid.coffee:70 ../lib/dentry/fileops.c:402
 msgid "Untitled"
-msgstr "Nedenumit"
+msgstr "N-are nume"
 
 #: ../resources/desktop/js/grid.coffee:1029
 msgid "_Folder"
-msgstr "_Dosar"
+msgstr "_Directoriu"
 
 #: ../resources/desktop/js/grid.coffee:1030
 msgid "_Text document"
@@ -188,7 +188,7 @@ msgstr "_Curăță 1 obiect"
 #: ../resources/desktop/js/specialitem.coffee:154
 #: ../resources/dock/js/plugins/trash/trash.coffee:38
 msgid "_Empty"
-msgstr "_Gol"
+msgstr "_Golire"
 
 #: ../resources/dock/js/config.coffee:186
 msgid "Unknown"
@@ -289,12 +289,12 @@ msgstr "_Închide"
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
 #: ../resources/launcher/js/item.coffee:358
 msgid "Are you sure to remove"
-msgstr "Sigur doriți indepartarea"
+msgstr "Sigur doriți eliminare"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
 #: ../resources/launcher/js/item.coffee:358
 msgid "All dependencies will be removed"
-msgstr "Toate dependențele vor fi îndepărtate"
+msgstr "Toate dependențele vor fi eliminate"
 
 #: ../resources/dock/js/plugins/trash/trash.coffee:122
 #: ../resources/launcher/js/item.coffee:358
@@ -426,7 +426,7 @@ msgstr "Deblocare"
 msgid ""
 "Let's drag the other icon on the first icon \n"
 " to generate \"application group\""
-msgstr "Haideți să  glisăm o pictogramă pe altă\npentru a crea \"Grupul de Aplicații\""
+msgstr "Glisaţi o pictogramă peste altă\npentru a crea \"Grupul de Aplicații\""
 
 #: ../resources/guide/js/desktop.coffee:121
 msgid "Well, you have learned how to create a \"application group\""
@@ -440,25 +440,25 @@ msgstr "Sfat: Click-dreapta pe grupul de aplicații va arăta mai multe funcții
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different "
 "events"
-msgstr "Glisarea mous-ului în unul din colţurile ecranului va provoca anumite acţiuni"
+msgstr "Glisarea mouse-ului în unul din colţurile ecranului va provoca anumite acţiuni"
 
 #: ../resources/guide/js/desktop.coffee:154
 msgid ""
 "We already know that launcher can be shown/ hidden by sliding the mouse to "
 "the upper left corner"
-msgstr "Ştim deja că lansatorul poate fi afişat/ascuns prin mutarea mouseului în colțul din stânga sus"
+msgstr "Lansatorul poate fi afişat/ascuns prin glisarea mouse-ului în colțul din stânga sus"
 
 #: ../resources/guide/js/desktop.coffee:176
 msgid ""
 "The workspace will be shown or hidden by sliding the mouse to the lower left"
 " corner"
-msgstr "Spațiul de lucru va fi afişat sau ascuns prin mişcarea mouseului în colțul din stânga jos"
+msgstr "Spațiul de lucru va fi afişat sau ascuns prin mişcarea mouse-ului în colțul din stânga jos"
 
 #: ../resources/guide/js/desktop.coffee:202
 msgid ""
 "No functions are set in default on the upper right corner\n"
 "Right-click on desktop black area to call up the menu, select \"Corner navigation\" to set the corner used"
-msgstr "Nu sunt setate funcții în meniul implicit din colțul din dreapta sus\nApasă butonul din dreapta al mouseului pe zona neagră a desktopului pentru afişarea meniului, selectează \"Navigare colțuri\" pentru setarea colțului utilizat"
+msgstr "Nu sunt setate funcții pentru colțul din dreapta de sus.\nApasaţi butonul din dreapta al mouse-ului pe  o zonă goală a spațiului de lucru pentru afişarea meniului, selectaţi \"Navigare colț\" pentru setarea colțului dorit"
 
 #: ../resources/guide/js/desktop.coffee:203
 msgid "tips: Click on the corner navigation blank area to return"
@@ -468,17 +468,17 @@ msgstr "sfat: Click în colţul gol al zonei de navigare pentru ieşire "
 msgid ""
 "Three modes and the display status can be switched by right-click on the "
 "blank area of dock"
-msgstr "Cele trei moduri şi statutul afişajului pot fi schimbate între ele apăsând butonul din dreapta al mouseului pe zona goală a platformei"
+msgstr "Cele trei moduri şi statutul afişajului pot fi schimbate apăsând butonul din dreapta al mouse-ului pe zona goală al barei"
 
 #: ../resources/guide/js/dss.coffee:32
 msgid ""
 "The Control Center will be shown or hidden by sliding the mouse to the lower"
 " right corner"
-msgstr "Centrul de control va fi afişat sau ascuns prin poziționarea mouseului în colțul din dreapta jos"
+msgstr "Panou de control va fi afişat sau ascuns prin poziționarea mouse-ului în colțul din dreapta jos"
 
 #: ../resources/guide/js/dss.coffee:33
 msgid "tips: Click the setting icon on dock to implement"
-msgstr "Sfat: Apăsați pe pictograma setărilor de pe dock pentru aplicarea acestora. "
+msgstr "Sfat: Apăsați pe pictograma setărilor de pe bară pentru aplicarea acestora. "
 
 #: ../resources/guide/js/dss.coffee:76
 msgid "Click the power button to shut down, reboot or do other operations"
@@ -488,7 +488,7 @@ msgstr "Click pe butonul power, pentru a deconecta, reporni sistemul sau a execu
 msgid ""
 "tips: Hover the setting icon on dock to quickly implement some setting "
 "functions"
-msgstr "Sfat: plasați cursorul peste pictograma setărilor dock  pentru realizarea rapidă a unor funcții de setare. "
+msgstr "Sfat: glisaţi pictograma setărilor peste   bară  pentru realizarea rapidă a unor funcții de setare. "
 
 #: ../resources/guide/js/end.coffee:25
 msgid ""
@@ -518,11 +518,11 @@ msgstr "Puteţi trage pictograma aplicaţiei direct pe bară de aplicaţii sau �
 msgid ""
 "tips: Click the right mouse button on the application icon to call up the "
 "context menu"
-msgstr "indicii: Apasă butonul din dreapta al mouseului pe iconița aplicației pentru afişarea meniului context"
+msgstr "Sfat: Apăsaţi butonul din dreapta al mouse-ului pe iconița aplicației pentru afişarea meniului de context"
 
 #: ../resources/guide/js/launcher.coffee:135
 msgid "Remove from _favorites"
-msgstr "Înlăturare de la favorite"
+msgstr "Eliminare de la favorite"
 
 #: ../resources/guide/js/launcher.coffee:136
 #: ../resources/launcher/js/const.coffee:76
@@ -537,7 +537,7 @@ msgstr "Trimite pe ba_ră"
 #: ../resources/guide/js/launcher.coffee:139
 #: ../resources/launcher/js/const.coffee:68
 msgid "_Add to autostart"
-msgstr "A_daugă la pornire automată"
+msgstr "_Adaugă la pornire automată"
 
 #: ../resources/guide/js/launcher.coffee:140
 #: ../resources/launcher/js/item.coffee:294
@@ -566,7 +566,7 @@ msgstr "Start"
 
 #: ../resources/guide/js/start.coffee:52
 msgid "Skip the guide, experience immediately"
-msgstr "Omiterea ghidului, trecere imediată la acţiuni"
+msgstr "A se omite ghidul,  trecere imediată la acţiuni"
 
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
@@ -582,7 +582,7 @@ msgstr "_Ascunde pictograma"
 
 #: ../resources/launcher/js/const.coffee:61
 msgid "_Display hidden icons"
-msgstr "A_rată icoanele ascunse"
+msgstr "_Arată icoanele ascunse"
 
 #: ../resources/launcher/js/const.coffee:64
 msgid "_Hide this icon"
@@ -590,11 +590,11 @@ msgstr "_Ascunde această icoană"
 
 #: ../resources/launcher/js/const.coffee:65
 msgid "_Display this icon"
-msgstr "A_rată această icoană"
+msgstr "_Arată această icoană"
 
 #: ../resources/launcher/js/const.coffee:69
 msgid "_Remove from autostart"
-msgstr "_Înlătură de la pornire automată"
+msgstr "_Elimină de la pornire automată"
 
 #: ../resources/launcher/js/const.coffee:77
 msgid "Remove from d_esktop"
@@ -602,7 +602,7 @@ msgstr "Eliminare din s_pațiul de lucru"
 
 #: ../resources/launcher/js/const.coffee:81
 msgid "Remove from do_ck"
-msgstr "Eliminare din do_ck"
+msgstr "Eliminare din ba_ră"
 
 #: ../resources/launcher/js/menu.coffee:5
 msgid "By name"
@@ -654,11 +654,11 @@ msgstr "Fișier nou"
 
 #: ../app/desktop/desktop.c:311
 msgid "New directory"
-msgstr "Dosar nou"
+msgstr "Director nou"
 
 #: ../app/dock/dock.c:291
 msgid "Dock failed to start, because Compiz is not enabled."
-msgstr "Startarea Dock eșuată, deoarece Compiz-ul nu este activat."
+msgstr "Startarea Barei eșuată, deoarece Compiz-ul nu este activat."
 
 #: ../app/greeter/greeter.c:209 ../app/greeter/lock.c:173
 msgid "Wrong Password"
@@ -666,7 +666,7 @@ msgstr "Parolă Incorectă"
 
 #: ../app/greeter/mutils.c:84
 msgid "%a, %b %d, %Y"
-msgstr "%a, %"
+msgstr "%a, %b %d, %Y"
 
 #: ../lib/category.c:45
 msgid "all"
@@ -686,7 +686,7 @@ msgstr "jocuri"
 
 #: ../lib/category.c:49
 msgid "graphics"
-msgstr "grafică"
+msgstr "grafica"
 
 #: ../lib/category.c:50
 msgid "productivity"
@@ -751,7 +751,7 @@ msgstr "copie"
 
 #: ../lib/dentry/entry.c:1400
 msgid "App Group"
-msgstr "App Grup"
+msgstr "Grup de Aplicaţii"
 
 #: ../lib/dentry/fileops.c:565
 msgid "Move"
@@ -763,7 +763,7 @@ msgstr "Copie"
 
 #: ../lib/dentry/fileops_delete.c:29
 msgid "Delete Files"
-msgstr "Șterge Fișiere"
+msgstr "Șterge Fișierele"
 
 #: ../lib/dentry/fileops_delete.c:32
 msgid "Are you sure you want to permanently delete the files?"
@@ -783,7 +783,7 @@ msgstr "Conflict de fișiere"
 
 #: ../lib/dentry/fileops_error_dialog.c:103
 msgid "_Select a new name for the destination"
-msgstr "_Selectați un nou nume pentru destinație"
+msgstr "_Selectați un  nume nou  pentru destinație"
 
 #: ../lib/dentry/fileops_error_dialog.c:114
 msgid "Reset"
@@ -791,7 +791,7 @@ msgstr "Anulare"
 
 #: ../lib/dentry/fileops_error_dialog.c:123
 msgid "Apply this action to all files"
-msgstr "Fă la fel pentru toate fișierele"
+msgstr "Aplicare pentru toate fișierele"
 
 #: ../lib/dentry/fileops_error_dialog.c:130
 msgid "_Skip"
@@ -843,7 +843,7 @@ msgstr "Doriți să substituiți directorul \"%s\"?"
 #: ../lib/dentry/fileops_error_dialog.c:236
 #, c-format
 msgid "A folder with the same name already exists in \"%s\"."
-msgstr "Un dosar cu același nume există deja în \"%s\"."
+msgstr "Un director cu același nume există deja în \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:242
 #, c-format
@@ -894,7 +894,7 @@ msgstr "Înlocuiește cu"
 
 #: ../lib/dentry/fileops_error_dialog.c:379
 msgid "Merge"
-msgstr "Unește"
+msgstr "Comasează"
 
 #: ../lib/dentry/fileops_error_reporting.c:106
 #: ../lib/dentry/fileops_error_reporting.c:191
@@ -904,19 +904,19 @@ msgstr "Eroare în timpul \"%s\" fișierele"
 
 #: ../lib/dentry/fileops_trash.c:58
 msgid "Empty Trash"
-msgstr "Golește Gunoiul"
+msgstr "Golire Coşul de Gunoi"
 
 #: ../lib/dentry/fileops_trash.c:67
 msgid "Empty all items from Trash?"
-msgstr "Golesc toate obiectele din Gunoi?"
+msgstr "Golire toate obiectele din Coşul de Gunoi?"
 
 #: ../lib/dentry/fileops_trash.c:68
 msgid "All items in the Trash will be permanently deleted."
-msgstr "Toate obiectele din Gunoi vor fi șterse definitiv."
+msgstr "Toate obiectele din Coşul de Gunoi vor fi șterse definitiv."
 
 #: ../lib/dentry/fileops_trash.c:71
 msgid "Empty _Trash"
-msgstr "Golește_Gunoiul"
+msgstr "Golire_Coşul de Gunoiul"
 
 #: ../lib/dentry/mime_actions.c:198
 #, c-format
@@ -930,12 +930,12 @@ msgstr "\"%s\" este un fișier text executabil."
 
 #: ../lib/dentry/mime_actions.c:210
 msgid "Run in _Terminal"
-msgstr "Rulează în _Terminal"
+msgstr "Rulare în _Terminal"
 
 #: ../lib/dentry/mime_actions.c:211
 msgid "_Display"
-msgstr "_Vizualizează"
+msgstr "_Vizualizare"
 
 #: ../lib/dentry/mime_actions.c:213
 msgid "_Run"
-msgstr "_Rulează"
+msgstr "_Rulare"

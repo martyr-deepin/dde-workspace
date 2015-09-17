@@ -3,15 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# ilox11 <ilox11@gmail.com>, 2015
 # Mogi Fu <twen84@hotmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-12-26 11:18+0800\n"
-"PO-Revision-Date: 2015-03-23 10:24+0000\n"
-"Last-Translator: Martin <martin.ceronio@infosize.co.za>\n"
-"Language-Team: English (Australia) (http://www.transifex.com/projects/p/deepin-desktop-environment/language/en_AU/)\n"
+"PO-Revision-Date: 2015-09-17 05:33+0000\n"
+"Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
+"Language-Team: English (Australia) (http://www.transifex.com/linuxdeepin/deepin-desktop-environment/language/en_AU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -153,7 +154,7 @@ msgstr "_Corner navigation"
 
 #: ../resources/desktop/js/grid.coffee:1056
 msgid "Pe_rsonalize"
-msgstr "_Personalize"
+msgstr "_Personalise"
 
 #: ../resources/desktop/js/item.coffee:399
 msgid "_Cut"
@@ -433,31 +434,31 @@ msgstr "Well, you have learned how to create a \"application group\""
 
 #: ../resources/guide/js/desktop.coffee:122
 msgid "tips: Right-click on the application group will provide more functions"
-msgstr "tips: Right-click on the application group will for more functions"
+msgstr "tips: Right-clicking on the application group will provide more functions"
 
 #: ../resources/guide/js/desktop.coffee:132
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different "
 "events"
-msgstr "Move the mouse cursor to the four Hot Corners, which will display four different navigations Please move to the upper left corner to show or hide Launcher"
+msgstr "Move the mouse cursor to the four Hot Corners, which will display four different navigations.  Please move to the upper left corner to show or hide Launcher."
 
 #: ../resources/guide/js/desktop.coffee:154
 msgid ""
 "We already know that launcher can be shown/ hidden by sliding the mouse to "
 "the upper left corner"
-msgstr "\"Application Launcher\" can be started by moving the cursor to the upper left hot corner or clicking on the launcher."
+msgstr "\"Application Launcher\" can be started by moving the cursor to the upper left hot corner or by clicking on the launcher."
 
 #: ../resources/guide/js/desktop.coffee:176
 msgid ""
 "The workspace will be shown or hidden by sliding the mouse to the lower left"
 " corner"
-msgstr "The workspace will be shown or hidden by moving the mouse cursor to the left hot corner at the bottom of your screen."
+msgstr "The workspace will be shown or hidden by moving the mouse cursor to the hot corner at the bottom left of your screen."
 
 #: ../resources/guide/js/desktop.coffee:202
 msgid ""
 "No functions are set in default on the upper right corner\n"
 "Right-click on desktop black area to call up the menu, select \"Corner navigation\" to set the corner used"
-msgstr "No functions are set in default on the upper right hot corner\nRight-click on desktop black area to bring up the menu, select \"Corner navigation\" to customize the hot corner."
+msgstr "No functions are set in default on the upper right hot corner.\nRight-click on desktop black area to bring up the menu, select \"Corner navigation\" to customize the hot corner."
 
 #: ../resources/guide/js/desktop.coffee:203
 msgid "tips: Click on the corner navigation blank area to return"
@@ -493,7 +494,7 @@ msgstr "tips: Hover over the setting icon on dock to quickly change settings"
 msgid ""
 "Thank you for your patience to learn! More surprises are waiting for you to "
 "explore"
-msgstr "Congratulation, you have completed the tutorial! Thank you for going through the tutorial! More surprises are waiting for you to explore"
+msgstr "Congratulations, you have completed the tutorial! Thank you for going through the tutorial! More surprises are waiting for you to explore"
 
 #: ../resources/guide/js/end.coffee:30
 msgid "Start my Deepin trip"
@@ -503,7 +504,7 @@ msgstr "Start my Deepin trip"
 msgid ""
 "\"Application Launcher\" can be started by sliding the mouse to the upper "
 "left corner or clicking on the launcher."
-msgstr "\"Application Launcher\" can be started by moving the cursor to the upper left corner or clicking on the launcher."
+msgstr "\"Application Launcher\" can be started by moving the cursor to the upper left corner or by clicking on the launcher."
 
 #: ../resources/guide/js/launcher.coffee:83
 msgid "Please directly hit \"deepin\" in keyboard"
@@ -517,11 +518,11 @@ msgstr "You can drag the application icon directly to Dock or trash"
 msgid ""
 "tips: Click the right mouse button on the application icon to call up the "
 "context menu"
-msgstr "tips: Clicking on the right mouse button on the application icon will bring up the context menu"
+msgstr "tips: Clicking the right mouse button on the application icon will bring up the context menu"
 
 #: ../resources/guide/js/launcher.coffee:135
 msgid "Remove from _favorites"
-msgstr "_Remove from favorites"
+msgstr "_Remove from favourites"
 
 #: ../resources/guide/js/launcher.coffee:136
 #: ../resources/launcher/js/const.coffee:76
@@ -565,7 +566,7 @@ msgstr "Start"
 
 #: ../resources/guide/js/start.coffee:52
 msgid "Skip the guide, experience immediately"
-msgstr "Skip the guide, experience deepin immediately"
+msgstr "Skip the guide, experience Deepin immediately"
 
 #: ../resources/guide/js/welcome.coffee:35
 msgid "Welcome to use Deepin Operating System"
@@ -621,7 +622,7 @@ msgstr "By time installed"
 
 #: ../resources/launcher/js/menu.coffee:9
 msgid "By frequency"
-msgstr "By frequency"
+msgstr "By frequency (usage)"
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
@@ -633,7 +634,7 @@ msgstr "Extend"
 
 #: ../resources/zone/js/utils.coffee:13
 msgid "Control Center"
-msgstr "Control Center"
+msgstr "Control Centre"
 
 #: ../resources/zone/js/utils.coffee:13
 msgid "All Windows"
@@ -721,7 +722,7 @@ msgstr "Network"
 
 #: ../lib/category.c:61
 msgid "Game"
-msgstr ""
+msgstr "Game"
 
 #: ../lib/category.c:62
 msgid "Office"

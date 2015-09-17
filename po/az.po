@@ -4,15 +4,15 @@
 # 
 # Translators:
 # Nicat Məmmədov <n1c4t97@gmail.com>, 2014
-# Nicat Məmmədov <n1c4t97@gmail.com>, 2014
+# Nicat Məmmədov <n1c4t97@gmail.com>, 2014-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Desktop Environment 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-12-26 11:18+0800\n"
-"PO-Revision-Date: 2015-03-23 10:24+0000\n"
-"Last-Translator: Martin <martin.ceronio@infosize.co.za>\n"
-"Language-Team: Azerbaijani (http://www.transifex.com/projects/p/deepin-desktop-environment/language/az/)\n"
+"PO-Revision-Date: 2015-09-17 05:33+0000\n"
+"Last-Translator: deepin_transifex <xiabin@linuxdeepin.com>\n"
+"Language-Team: Azerbaijani (http://www.transifex.com/linuxdeepin/deepin-desktop-environment/language/az/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -158,11 +158,11 @@ msgstr "Şə_xsiləşdir"
 
 #: ../resources/desktop/js/item.coffee:399
 msgid "_Cut"
-msgstr ""
+msgstr "_"
 
 #: ../resources/desktop/js/item.coffee:404
 msgid "_Select All"
-msgstr ""
+msgstr "Hamısını _Seç"
 
 #: ../resources/desktop/js/richdir.coffee:142
 msgid "_Ungroup"
@@ -207,7 +207,7 @@ msgstr "_Gizli saxlayın"
 #: ../resources/dock/js/global_menu.coffee:12
 #: ../resources/guide/js/dock.coffee:40
 msgid "_Smart hide"
-msgstr ""
+msgstr "_Ağıllı gizlətmə"
 
 #: ../resources/dock/js/global_menu.coffee:27
 #: ../resources/guide/js/dock.coffee:34
@@ -227,7 +227,7 @@ msgstr "_Klassik rejim"
 #: ../resources/dock/js/global_menu.coffee:38
 #: ../resources/guide/js/dock.coffee:42
 msgid "Notification area settings"
-msgstr ""
+msgstr "Bildiriş sahəsi tənzimləmələri"
 
 #: ../resources/dock/js/main.coffee:117 ../resources/zone/js/utils.coffee:13
 msgid "Launcher"
@@ -244,35 +244,35 @@ msgstr "_Vaxt tənzimləmələri"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:34
 msgid "%b %d %H:%M %a"
-msgstr ""
+msgstr "%b %d %H:%M %a"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:36
 msgid "%b %d %I:%M %p %a"
-msgstr ""
+msgstr "%b %d %I:%M %p %a"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:38
 msgid "%b %d %H:%M"
-msgstr ""
+msgstr "%b %d %H:%M"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:40
 msgid "%b %d %I:%M %p"
-msgstr ""
+msgstr "%b %d %I:%M %p"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:42
 msgid "%H:%M %a"
-msgstr ""
+msgstr "%H:%M %a"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:44
 msgid "%I:%M %p %a"
-msgstr ""
+msgstr "%I:%M %p %a"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:46
 msgid "%H:%M"
-msgstr ""
+msgstr "%H:%M"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:48
 msgid "%I:%M %p"
-msgstr ""
+msgstr "%I:%M %p"
 
 #: ../resources/dock/js/plugins/time/tray_clock.coffee:82
 msgid "Display date"
@@ -326,13 +326,13 @@ msgstr "Gözlət"
 msgid ""
 "The other users have logged in, shutdown or restart may cause the running "
 "data to be lost."
-msgstr ""
+msgstr "Digər istifadəçilər sistemə daxil olublar. Sistemi söndürmək və ya yenidən başlatmaq məlumatların itirilməsi ilə nəticələnə bilər."
 
 #: ../resources/greeter/js/powermenu.coffee:77
 msgid ""
 "User %1 has logged in, shutdown or restart may cause the running data to be "
 "lost."
-msgstr ""
+msgstr "%1 sistemə daxil olub. Sistemi söndürmək və ya yenidən başlatmaq məlumatların itirilməsi ilə nəticələnə bilər."
 
 #: ../resources/greeter/js/powermenu.coffee:121
 msgid "Enter your password to %1"
@@ -420,7 +420,7 @@ msgstr "Daxil ol"
 
 #: ../resources/greeter/js/user.coffee:410
 msgid "Unlock"
-msgstr ""
+msgstr "Kilidi aç"
 
 #: ../resources/guide/js/desktop.coffee:28
 msgid ""
@@ -440,7 +440,7 @@ msgstr "ipucu: Tətbiqetmə qrupunun üzərinə siçanın sağ düyməsi ilə kl
 msgid ""
 "Slide the mouse to the four top corners, which can trigger four different "
 "events"
-msgstr ""
+msgstr "Siçanı ekranın dörd küncünə sürüşdürsəniz, dörd fərqli hadisə baş verəcək"
 
 #: ../resources/guide/js/desktop.coffee:154
 msgid ""
@@ -498,7 +498,7 @@ msgstr ""
 
 #: ../resources/guide/js/end.coffee:30
 msgid "Start my Deepin trip"
-msgstr ""
+msgstr "Deepin köməkçisini başlat"
 
 #: ../resources/guide/js/launcher.coffee:31
 msgid ""
@@ -606,23 +606,23 @@ msgstr "Do_kdan çıxart"
 
 #: ../resources/launcher/js/menu.coffee:5
 msgid "By name"
-msgstr ""
+msgstr "Ada görə"
 
 #: ../resources/launcher/js/menu.coffee:6
 msgid "By category (icon)"
-msgstr ""
+msgstr "Kateqoriyaya görə (piktoqram)"
 
 #: ../resources/launcher/js/menu.coffee:7
 msgid "By category (text)"
-msgstr ""
+msgstr "Kateqoriyaya görə (mətn)"
 
 #: ../resources/launcher/js/menu.coffee:8
 msgid "By time installed"
-msgstr ""
+msgstr "Quraşdırılma vaxtına görə"
 
 #: ../resources/launcher/js/menu.coffee:9
 msgid "By frequency"
-msgstr ""
+msgstr "Tezliyinə görə"
 
 #: ../resources/osd/js/monitor.coffee:38
 msgid "Duplicate"
@@ -722,7 +722,7 @@ msgstr "Şəbəkə"
 
 #: ../lib/category.c:61
 msgid "Game"
-msgstr ""
+msgstr "Oyun"
 
 #: ../lib/category.c:62
 msgid "Office"
