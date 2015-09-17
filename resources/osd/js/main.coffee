@@ -13,9 +13,9 @@ setBackground = (signal) ->
 check_mediakey_signal= ->
     #MediaKey DBus
     MEDIAKEY =
-        name: "com.deepin.daemon.KeyBinding"
-        path: "/com/deepin/daemon/MediaKey"
-        interface: "com.deepin.daemon.MediaKey"
+        name: "com.deepin.daemon.Keybinding"
+        path: "/com/deepin/daemon/Keybinding/Mediakey"
+        interface: "com.deepin.daemon.Keybinding.Mediakey"
     try
         DBusMediaKey = DCore.DBus.session_object(MEDIAKEY.name, MEDIAKEY.path, MEDIAKEY.interface)
     catch e
