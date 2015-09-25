@@ -24,7 +24,7 @@ class Zone extends Widget
         echo "Zone"
         document.body.appendChild(@element)
         @setZoneConfigAll()
-        @setZoneLauncher()
+        #@setZoneLauncher()
         enableZoneDetect(false)
 
     setZoneConfigAll: ->
