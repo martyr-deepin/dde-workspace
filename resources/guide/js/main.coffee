@@ -9,7 +9,7 @@ main = ->
     DCore.Guide.emit_webview_ok()
 
 DCore.signal_connect('primary_size_changed', (alloc)->
-    echo "primary_size_changed:#{alloc.x},#{alloc.y},#{alloc.width},#{alloc.height}"
+    console.log "primary_size_changed:#{alloc.x},#{alloc.y},#{alloc.width},#{alloc.height}"
     document.body.style.position = "absolute"
     document.body.style.left = alloc.x
     document.body.style.top = alloc.y

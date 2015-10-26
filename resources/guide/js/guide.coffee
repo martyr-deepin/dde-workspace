@@ -3,7 +3,7 @@ class Guide extends Widget
     constructor: (@id)->
         super
         @pages = []
-        echo "new Guide"
+        console.log "new Guide"
         document.body.appendChild(@element)
         if DEBUG
             @exit_button_create()
@@ -49,7 +49,7 @@ class Guide extends Widget
             @current_page_id = page.id
             @pages.push(page)
         catch error
-            echo "[add_page]:error:#{error}"
+            console.log "[add_page]:error:#{error}"
 
     remove_page: (cls) ->
         try
@@ -57,10 +57,10 @@ class Guide extends Widget
             @pages.splice(i_target,1)
             @element.removeChild(cls.element)
         catch error
-            echo "[remove_page]:error:#{error}"
+            console.log "[remove_page]:error:#{error}"
 
     switch_page: (old_page, new_page_cls_name) ->
-        echo "switch page from ---#{old_page.id}--- to ----#{new_page_cls_name}----"
+        console.log "switch page from ---#{old_page.id}--- to ----#{new_page_cls_name}----"
         @remove_page(old_page)
         @create_page(new_page_cls_name)
 
@@ -72,7 +72,7 @@ class Guide extends Widget
             DCore.Guide.disable_guide_region()
         enableZoneDetect(false)
         new Dss().hide() if cls_name != "DssShutdown"
-        echo "create_page #{cls_name}"
+        console.log "create_page #{cls_name}"
         switch cls_name
             when "Welcome"
                 page = new Welcome(cls_name)
@@ -149,5 +149,5 @@ class Guide extends Widget
                 page = new End(cls_name)
 
             else
-                echo "cls_name is #{cls_name}"
+                console.log "cls_name is #{cls_name}"
         @add_page(page)

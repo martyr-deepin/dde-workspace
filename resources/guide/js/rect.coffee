@@ -21,7 +21,7 @@
 class Rect extends Widget
     constructor:(@id,parent)->
         super
-        echo "Rect #{@id}"
+        console.log "Rect #{@id}"
         parent?.appendChild(@element)
 
     create_rect : (@width,@height) ->

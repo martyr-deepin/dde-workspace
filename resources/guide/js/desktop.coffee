@@ -70,14 +70,14 @@ class DesktopRichDir extends Page
         #)
 
     stop_pointer_hand_animation: ->
-        echo "stop_pointer_hand_animation"
+        console.log "stop_pointer_hand_animation"
         DCore.Guide.disable_guide_region()
         @pointer_up.style.display = "none"
         @hand_img.style.display = "none"
         clearInterval(hand_interval)
 
     pointer_hand_animation: ->
-        echo "pointer_hand_animation"
+        console.log "pointer_hand_animation"
         DCore.Guide.enable_guide_region()
         width = height = 64
         @pointer_up.style.display = "block"
@@ -229,7 +229,7 @@ class DesktopZoneSetting extends Page
         @zone_check()
 
     zone_check: ->
-        echo "zone_check"
+        console.log "zone_check"
         interval_is_zone = setInterval(=>
             if(DCore.Guide.is_zone_launched())
                 DCore.Guide.enable_guide_region()

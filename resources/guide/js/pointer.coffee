@@ -27,7 +27,7 @@ AREA_TYPE =
 class Pointer extends Widget
     constructor:(@id,parent)->
         super
-        echo "new Pointer #{@id}"
+        console.log "new Pointer #{@id}"
         @img_src = "img"
         parent?.appendChild(@element)
         inject_css(@element,"css/pointer.css")

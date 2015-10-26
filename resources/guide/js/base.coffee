@@ -9,12 +9,12 @@ class Fcitx
         @IMList = []
         @IMTrueList = []
         try
-            @dbus = DCore.DBus.session(
+            @dbus = DCore.DBus.session_object(
                 FCITX.name,
                 FCITX.path,
                 FCITX.interface
             )
-            @IMList = @DBusIM.IMList
+            @IMList = @dbus.IMList
             @IMTrueList.push(im[1]) for im in @IMList when im[3]
         catch e
             console.log "dbus #{FCITX.interface} error :#{e}"
@@ -82,7 +82,7 @@ class Dss
         @dbus?.Show_sync()
 
 class Launcher
-    LAUNCHER = "com.deepin.dde.launcher"
+    LAUNCHER = "com.deepin.dde.Launcher"
     constructor: ->
         @dbus_error = false
         try
@@ -169,7 +169,7 @@ class Dock
             @dss_index = DCore.Guide.get_dock_app_index("dde-control-center") + 2
             @region = @get_dock_region()
         catch e
-            echo "dock daemon dbus error:#{e}"
+            console.log "dock daemon dbus error:#{e}"
 
     get_dock_region: ->
         region = @dock_region_dbus?.GetDockRegion_sync()
@@ -212,7 +212,7 @@ class Dock
 class Page extends Widget
     constructor: (@id)->
         super
-        echo "new #{@id} Page"
+        console.log "new #{@id} Page"
         @img_src = "img"
         document.body.style.background = "rgba(0,0,0,0.6)"
         @element.style.display = "-webkit-box"
@@ -247,7 +247,7 @@ class Page extends Widget
 class DockMode extends Widget
     constructor:(@id,@mode,parent)->
         super
-        echo "new DockMode(#{@id},#{@mode})"
+        console.log "new DockMode(#{@id},#{@mode})"
         inject_css(@element,"css/dock.css")
         parent.appendChild(@element)
         @create_dock()

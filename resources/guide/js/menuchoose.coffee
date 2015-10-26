@@ -104,7 +104,7 @@ class MenuChoose extends Widget
     set_callback: (@cb)->
 
     fade:(i)->
-        echo "--------------fade:#{@option[i]}---------------"
+        console.log "--------------fade:#{@option[i]}---------------"
         @hide()
         @cb(@option[i], @option_text[i])
 
@@ -139,7 +139,7 @@ class MenuChoose extends Widget
 
     keydown:(e)->
         if @is_hide() then return
-        echo "MenuChoose #{@id} keydown from choose_num:#{choose_num}"
+        console.log "MenuChoose #{@id} keydown from choose_num:#{choose_num}"
         switch e.which
             when LEFT_ARROW
                 choose_num--
@@ -154,7 +154,7 @@ class MenuChoose extends Widget
                 @fade(i)
             when ESC_KEY
                 destory_all()
-        echo "to choose_num #{choose_num}}"
+        console.log "to choose_num #{choose_num}}"
 
     is_hide:->
         if @element.style.display is "none" then return true

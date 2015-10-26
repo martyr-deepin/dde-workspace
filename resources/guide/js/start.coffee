@@ -22,7 +22,7 @@
 class Start extends Page
     constructor:(@id)->
         super
-        echo "Start #{@id}"
+        console.log "Start #{@id}"
         DCore.Guide.toggle_show_desktop(true)
         inject_css(@element,"css/start.css")
         @option = ["launcher","desktop","dss"]

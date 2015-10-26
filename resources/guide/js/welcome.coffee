@@ -21,7 +21,7 @@
 class Welcome extends Page
     constructor:(@id)->
         super
-        echo "welcome #{@id}"
+        console.log "welcome #{@id}"
         inject_css(@element,"css/welcome.css")
         DEFAULT_BG = "/usr/share/backgrounds/default_background.jpg"
         @element.style.backgroundImage = "url(#{DEFAULT_BG})"

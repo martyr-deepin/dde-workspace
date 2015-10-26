@@ -30,20 +30,20 @@ set_pos = (el,x,y,position_type = "absolute",type = POS_TYPE.leftup)->
 
 
 enableZoneDetect = (enable) ->
-    echo "enableZoneDetect :#{enable}"
+    console.log "enableZoneDetect :#{enable}"
     ZONE = "com.deepin.daemon.Zone"
     try
         zoneDBus = DCore.DBus.session(ZONE)
         zoneDBus?.EnableZoneDetected_sync(enable)
     catch e
-        echo "zoneDBus #{ZONE} error : #{e}"
+        console.log "zoneDBus #{ZONE} error : #{e}"
 
 simulate_rightclick = (page,cb) ->
     DCore.Guide.enable_right_click()
     page.element.addEventListener("contextmenu",(e)->
         e.preventDefault()
         e.stopPropagation()
-        echo "simulate_rightclick"
+        console.log "simulate_rightclick"
         DCore.Guide.disable_guide_region()
         setTimeout(=>
             DCore.Guide.simulate_click(CLICK_TYPE.rightclick)
