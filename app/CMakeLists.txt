@@ -4,7 +4,7 @@
 #add_subdirectory(dock)
 #add_subdirectory(memory_test)
 #add_subdirectory(dominant_color)
-add_subdirectory(greeter)
+#add_subdirectory(greeter)
 add_subdirectory(zone)
 add_subdirectory(osd)
 add_subdirectory(lowpower)
