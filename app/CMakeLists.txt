@@ -8,7 +8,7 @@
 add_subdirectory(zone)
 add_subdirectory(osd)
 add_subdirectory(lowpower)
-add_subdirectory(guide)
+#add_subdirectory(guide)
 add_subdirectory(default_terminal)
 
 install(
