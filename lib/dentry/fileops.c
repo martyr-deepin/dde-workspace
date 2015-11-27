@@ -22,7 +22,8 @@ static gboolean _dummy_func             (GFile* file, gpointer data);
 
 static gboolean _delete_files_async     (GFile* file, gpointer data);
 static gboolean _trash_files_async      (GFile* file, gpointer data);
-static gboolean _move_files_async       (GFile* file, gpointer data);
+static gboolean _move_dir_async         (GFile* src, gpointer data);
+static gboolean _move_file_async       (GFile* file, gpointer data);
 static gboolean _copy_files_async       (GFile* file, gpointer data);
 
 
@@ -339,12 +340,7 @@ fileops_move (GFile* file_list[], guint num, GFile* dest_dir, gboolean prompt)
 
         data->dest_file = move_dest_file;
 
-        //retval &= _move_files_async (src, data);
-        //traverse_directory (dir, _move_files_async, _dummy_func, move_dest_gfile);
-        retval &= traverse_directory (src, _move_files_async, _dummy_func, data);
-        // here i must check out if dest has the same file or directory ,if true , fileops_delete,else, nothing do
-        if (retval)
-            fileops_delete (&src, 1);//ensure original file is removed.
+        retval = traverse_directory (src, _move_dir_async, _dummy_func, data);
 
         g_object_unref (move_dest_file);
     }
@@ -593,7 +589,7 @@ _move_files_async (GFile* src, gpointer data)
                     g_object_unref (dest);
                     _data->dest_file = new_dest;
 
-                    retval = _move_files_async (src, _data);
+                    retval = _move_dir_async (src, _data);
                     break;
                 case CONFLICT_RESPONSE_REPLACE:
                     if (type == G_FILE_TYPE_DIRECTORY)
@@ -609,7 +605,7 @@ _move_files_async (GFile* src, gpointer data)
                         retval = _delete_files_async (dest, _data);
                         if (retval == TRUE)
                         {
-                            retval = _move_files_async (src, _data);
+                            retval = _move_dir_async (src, _data);
                         }
                     }
 
@@ -642,6 +638,199 @@ _move_files_async (GFile* src, gpointer data)
 #endif
 
     return retval;
+}
+static gboolean
+_move_dir_async(GFile* src, gpointer data)
+{
+  if (g_file_query_file_type(src, G_FILE_QUERY_INFO_NONE, NULL) == G_FILE_TYPE_DIRECTORY) {
+    GFile* dest_dir = ((TDData*)data)->dest_file;
+    GError* error = NULL;
+
+    // ensure the dest dir exists.
+    if (!g_file_query_exists(dest_dir, NULL)) {
+      g_file_make_directory (dest_dir, NULL, &error);
+      if (error != NULL) {
+	g_warning("_move_dir_async mkdir failed %s\n", error->message);
+	g_error_free(&error);
+	return FALSE;
+      }
+    }
+    
+
+    GFileEnumerator* enumerator = g_file_enumerate_children(src,
+							    G_FILE_ATTRIBUTE_STANDARD_NAME,
+							    G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
+							    NULL,
+							    &error);
+    if (error != NULL) {
+      g_warning("_move_dir_async enumerate failed %s\n", error->message);
+      g_error_free(&error);
+      return FALSE;
+    }
+
+
+    GFileInfo* info = NULL;
+    gboolean succeed = TRUE;
+    while (succeed && (info = g_file_enumerator_next_file(enumerator, NULL, NULL)) != NULL) {
+      const char* child_name = g_file_info_get_name(info);
+      GFile* src_file = g_file_get_child(src, child_name);
+      GFile* dest_file = g_file_get_child_for_display_name(dest_dir, child_name, NULL);
+
+
+      TDData* td = new_td_data ();
+      td->dest_file = dest_file;
+      td->cancellable = NULL;
+      succeed = _move_dir_async(src_file, td);
+      free_td_data(td);
+	
+      g_object_unref(dest_file);
+      g_object_unref(src_file);
+      g_object_unref(info);
+    }
+
+    if (succeed) {
+      g_file_delete(src, NULL, &error);
+      if (error != NULL) {
+	g_warning("_move_dir_async delete src (%s) failed: %s\n", error->message);
+      }
+    }
+    
+    g_file_enumerator_close (enumerator, NULL, NULL);
+    g_object_unref(enumerator);
+
+    return succeed;
+  } else {
+    return _move_file_async(src, data);
+  }
+}
+
+/*
+ * NOTE: the retval has been hacked to please frontend.
+ *             it's not consistent with other hook functions.
+ *             use with care.
+ */
+static gboolean
+_move_file_async (GFile* src, gpointer data)
+{
+    
+  g_debug ("begin _move_files_async");
+  g_return_val_if_fail(g_file_query_file_type(src, G_FILE_QUERY_INFO_NONE, NULL) != G_FILE_TYPE_DIRECTORY, FALSE);
+
+  gboolean retval = TRUE;
+
+  TDData* _data = (TDData*) data;
+
+  GError* error = NULL;
+  GCancellable* _move_cancellable = NULL;
+  GFile* dest = NULL;
+
+  _move_cancellable = _data->cancellable;
+  dest = _data->dest_file;
+
+  g_return_val_if_fail(_cmp_files(src, dest), FALSE);
+  
+  g_file_move (src, dest,
+	       G_FILE_COPY_NOFOLLOW_SYMLINKS,
+	       _move_cancellable,
+	       NULL,
+	       NULL,
+	       &error);
+  
+  GFileType type = g_file_query_file_type (src, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
+  if (error != NULL)
+    {
+      //TEST:
+      if (g_prompt == TRUE)
+	{
+	  FileOpsResponse* response = NULL;
+	  if (g_move_response != NULL && g_move_response->apply_to_all)
+	    {
+	      response = fileops_response_dup (g_move_response); //FIXME:reduce dup calls
+	    }
+	  else
+	    {
+	      response = fileops_move_copy_error_show_dialog (_("Move"), error, src, dest, NULL);
+	      if (response != NULL && response->apply_to_all)
+		g_move_response = fileops_response_dup (response);
+	    }
+
+	  if(response != NULL)
+	    {
+	      switch (response->response_id)
+		{
+		case GTK_RESPONSE_CANCEL:
+		  //cancel all operations
+		  g_debug ("response : Cancel");
+		  retval = FALSE;
+		  break;
+
+		case CONFLICT_RESPONSE_SKIP:
+		  //skip, imediately return.
+		  g_debug ("response : Skip");
+		  retval = FALSE;
+		  break;
+		case CONFLICT_RESPONSE_RENAME:
+		  //rename, redo operations
+		  g_debug ("response : Rename");
+
+		  GFile* dest_parent = g_file_get_parent (dest);
+		  GFile* new_dest = g_file_get_child (dest_parent, response->file_name);
+		  g_object_unref (dest_parent);
+
+		  g_object_unref (dest);
+		  _data->dest_file = new_dest;
+
+		  retval = _move_dir_async (src, _data);
+		  break;
+		case CONFLICT_RESPONSE_REPLACE:
+		  if (type == G_FILE_TYPE_DIRECTORY)
+		    {
+		      //Merge:
+		      g_debug ("response : Merge");
+		      retval = TRUE;
+		    }
+		  else
+		    {
+		      //replace
+		      g_debug ("response : Replace");
+		      retval = _delete_files_async (dest, _data);
+		      if (retval == TRUE)
+			{
+			  retval = _move_dir_async (src, _data);
+			}
+		    }
+
+		  retval = TRUE;
+		  break;
+		default:
+		  retval = FALSE;
+		  break;
+		}
+
+	      fileops_response_free (response);
+	    } else {
+	    retval = FALSE;
+	  }
+	}
+      else  // g_prompt == FALSE
+	{
+	  retval = FALSE;
+	}
+      g_error_free (error);
+      g_debug ("move_async: error handling end");
+    }
+#if 1
+  else
+    {
+      char* src_uri = g_file_get_uri (src);
+      char* dest_uri = g_file_get_uri (dest);
+      g_debug ("_move_files_async: move %s to %s", src_uri, dest_uri);
+      g_free (src_uri);
+      g_free (dest_uri);
+    }
+#endif
+
+  return retval;
 }
 
 /*file copy async var global*/
