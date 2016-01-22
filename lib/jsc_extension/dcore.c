@@ -55,6 +55,11 @@ char* dcore_get_theme_icon(const char* name, double size)
     return icon_name_to_path_with_check_xpm(name, (int)size);
 }
 
+JS_EXPORT_API
+gboolean dcore_support_touchscreen()
+{
+  return g_file_test("/etc/support_touchscreen", G_FILE_TEST_IS_REGULAR);
+}
 
 JS_EXPORT_API
 char* dcore_get_name_by_appid(const char* id)

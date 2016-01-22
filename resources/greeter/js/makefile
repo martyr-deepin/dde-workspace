@@ -9,6 +9,6 @@ greeter_coffee = ${common_coffee} version.coffee desktopmenu.coffee usermenu.cof
 lock_coffee = ${common_coffee} keyboard.coffee time.coffee switchuser.coffee ${com_dir}/audioplay.coffee mediacontrol.coffee lock.coffee
 
 all: ${greeter_coffee} ${lock_coffee}
-	coffee -cj greeter.js ${greeter_coffee}
-	coffee -cj lock.js ${lock_coffee}
+	cat ${greeter_coffee} | coffee --compile --stdio > greeter.js
+	cat ${lock_coffee} | coffee --compile --stdio > lock.js
 

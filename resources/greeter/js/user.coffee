@@ -317,6 +317,7 @@ class UserInfo extends Widget
         if @face_login
             DCore[APP_NAME].cancel_detect()
 
+
 class LoginEntry extends Widget
     img_src_before = "images/userinfo/"
     constructor: (@id, @username,@on_active)->
@@ -343,9 +344,44 @@ class LoginEntry extends Widget
         @password_div = create_element("div", "password_div", @element)
         @password = create_element("input", "password", @password_div)
         @caps = create_element("div", "CapsWarning", @password_div)
+
+
         @password.type = "password"
         @password.setAttribute("autofocus", true) if @username isnt guest.UserName
         @password_eventlistener()
+
+        @enable_touchscreen() if DCore.support_touchscreen()
+
+    enable_touchscreen: ->
+        @onscreenkeyboard = create_img("ScreenKeyboard","css/images/keyboard.svg", @element)
+        @onscreenkeyboard.style.position = "absolute"
+        @onscreenkeyboard.style.right = "38px"
+        @onscreenkeyboard.style.bottom = "25px"
+        @onscreenkeyboard.style.width  = "30px"
+        @onscreenkeyboard.style.height = "30px"
+        jQuery(@onscreenkeyboard).click(=>
+            jQuery(@password).keyboard(
+                layout: "custom"
+                customLayout:
+                        normal: [
+                                                '` 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
+                                                '{tab} q w e r t y u i o p [ ] \\',
+                                                'a s d f g h j k l ; \' {accept}',
+                                                '{shift} z x c v b n m , . / {shift}',
+                                                '{space} {left} {right}'
+                        ]
+                        shift: [
+                                                '~ ! @ # $ % ^ & * ( ) _ + {bksp}',
+                                                '{tab} Q W E R T Y U I O P { } |',
+                                                'A S D F G H J K L : " {accept}',
+                                                '{shift} Z X C V B N M < > ? {shift}',
+                                                '{space} {left} {right}'
+                        ]
+                hidden: =>
+                        jQuery(@password).keyboard().getkeyboard().destroy()
+              ).getkeyboard().reveal()
+        )
+
 
     keyboard_img_create: ->
         if !is_greeter then @keyboard_dbus = new Keyboard()
@@ -562,4 +598,3 @@ DCore.signal_connect("auth-succeed", ->
             DCore.Lock.quit()
             echo "dlock exit"
 )
-
