@@ -2,8 +2,8 @@
 #include <glib.h>
 #include <gio/gio.h>
 
-#define SCHEMA_ID "com.deepin.dde.background"
-#define CURRENT_PCITURE "current-picture"
+#define SCHEMA_ID "com.deepin.dde.personalization"
+#define CURRENT_PCITURE "picture-uri"
 
 static GSettings* s = NULL;
 static gsize len = 0;

@@ -42,7 +42,7 @@ char* get_theme_config()
 
 char* get_current_bg_path()
 {
-    return g_settings_get_string(s, "current-picture");
+    return g_settings_get_string(s, "picture-uri");
 }
 
 void set_theme_background(GtkWidget* container,GtkWidget* child)
